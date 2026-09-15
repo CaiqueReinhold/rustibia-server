@@ -89,6 +89,10 @@ impl Player {
         self.capacity
     }
 
+    pub fn set_capacity(&mut self, capacity: u32) {
+        self.capacity = capacity;
+    }
+
     pub fn armor(&self) -> u16 {
         self.inventory.stats().armor
     }

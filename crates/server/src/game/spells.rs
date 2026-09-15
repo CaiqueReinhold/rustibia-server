@@ -236,24 +236,14 @@ pub fn resolve_area(
     )
 }
 
-pub fn consume_mana(
-    agent_key: AgentKey,
-    agent: &mut Agent,
-    mana_cost: u32,
-    events: &mut Vec<BroadcastMessage>,
-) {
-    agent.remove_mana(mana_cost);
-    events.push(BroadcastMessage::PlayerManaUpdated { agent_key });
-    let Some(player) = agent.get_player_mut() else {
+pub fn consume_mana(ctx: &mut TickCtx, agent_key: AgentKey, mana_cost: u32) {
+    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
         return;
     };
-    tick_skill(
-        player,
-        agent_key,
-        SkillType::Magic,
-        mana_cost as u64,
-        events,
-    );
+    agent.remove_mana(mana_cost);
+    ctx.events
+        .push(BroadcastMessage::PlayerManaUpdated { agent_key });
+    tick_skill(ctx, agent_key, SkillType::Magic, mana_cost as u64);
 }
 
 pub fn chain_attack(
@@ -371,7 +361,7 @@ fn execute_effect(
     if matches!(spell.group, SpellGroup::Attack) {
         agent.stamp_auto_attack(ctx.tick);
     }
-    consume_mana(agent_key, agent, spell.mana, ctx.events);
+    consume_mana(ctx, agent_key, spell.mana);
 
     Ok(())
 }

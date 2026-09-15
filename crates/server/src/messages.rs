@@ -106,7 +106,7 @@ pub enum ClientMessage {
 const SRV_PONG: u8 = 0;
 const SRV_LOGIN_ERROR: u8 = 1;
 const SRV_DESCRIBE_MAP: u8 = 2;
-const SRV_TILE_CHANGED: u8 = 3;
+const SRV_TILE_UPDATED: u8 = 3;
 const SRV_PLAYER_WALK_ACK: u8 = 4;
 const SRV_PLAYER_POS: u8 = 5;
 const SRV_DESCRIBE_PLAYER: u8 = 6;
@@ -130,12 +130,13 @@ const SRV_TARGET_LOST: u8 = 23;
 const SRV_AGENT_LIFE_UPDATED: u8 = 24;
 const SRV_SHOW_EFFECT: u8 = 25;
 const SRV_LAUNCH_MISSILE: u8 = 26;
-const SRV_AGENT_MANA_CHANGED: u8 = 27;
+const SRV_AGENT_MANA_UPDATED: u8 = 27;
 const SRV_PLAYER_SKILLS: u8 = 28;
-const SRV_SKILL_CHANGED: u8 = 29;
-const SRV_EXPERIENCE_CHANGED: u8 = 30;
+const SRV_SKILL_UPDATED: u8 = 29;
+const SRV_EXPERIENCE_UPDATED: u8 = 30;
 const SRV_SPELL_CAST: u8 = 31;
 const SRV_SPELL_LIST: u8 = 32;
+const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 
 #[derive(Clone, Debug)]
 pub enum TextMessageType {
@@ -197,7 +198,7 @@ pub enum ServerMessage {
         center: Position,
         floor: u8,
     },
-    TileChanged {
+    TileUpdated {
         position: Position,
         items: Box<ItemStack>,
     },
@@ -296,7 +297,7 @@ pub enum ServerMessage {
         to: Position,
         missile_id: MissileId,
     },
-    AgentManaChanged {
+    AgentManaUpdated {
         agent_id: AgentId,
         current: u32,
         max: u32,
@@ -305,11 +306,11 @@ pub enum ServerMessage {
         experience: u64,
         skills: Vec<(SkillType, SkillProgress)>,
     },
-    SkillChanged {
+    SkillUpdated {
         skill: SkillType,
         progress: SkillProgress,
     },
-    ExperienceChanged {
+    ExperienceUpdated {
         experience: u64,
     },
     SpellCast {
@@ -319,6 +320,10 @@ pub enum ServerMessage {
     },
     SpellList {
         spells: Vec<SpellListEntry>,
+    },
+    AgentSpeedUpdated {
+        agent_id: AgentId,
+        speed: u16,
     },
 }
 
@@ -597,8 +602,8 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                     encode_tile(tile.as_ref(), dst);
                 }
             }
-            ServerMessage::TileChanged { position, items } => {
-                dst.put_u8(SRV_TILE_CHANGED);
+            ServerMessage::TileUpdated { position, items } => {
+                dst.put_u8(SRV_TILE_UPDATED);
                 encode_position(position, dst);
                 encode_tile(items.as_ref(), dst);
             }
@@ -790,12 +795,12 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 encode_position(to, dst);
                 dst.put_u16_le(missile_id.0);
             }
-            ServerMessage::AgentManaChanged {
+            ServerMessage::AgentManaUpdated {
                 agent_id,
                 current,
                 max,
             } => {
-                dst.put_u8(SRV_AGENT_MANA_CHANGED);
+                dst.put_u8(SRV_AGENT_MANA_UPDATED);
                 dst.put_u16_le(agent_id.0);
                 dst.put_u32_le(current);
                 dst.put_u32_le(max);
@@ -810,14 +815,14 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                     dst.put_u16_le(progress.percent_bp);
                 }
             }
-            ServerMessage::SkillChanged { skill, progress } => {
-                dst.put_u8(SRV_SKILL_CHANGED);
+            ServerMessage::SkillUpdated { skill, progress } => {
+                dst.put_u8(SRV_SKILL_UPDATED);
                 dst.put_u8(skill.as_id());
                 dst.put_u16_le(progress.level);
                 dst.put_u16_le(progress.percent_bp);
             }
-            ServerMessage::ExperienceChanged { experience } => {
-                dst.put_u8(SRV_EXPERIENCE_CHANGED);
+            ServerMessage::ExperienceUpdated { experience } => {
+                dst.put_u8(SRV_EXPERIENCE_UPDATED);
                 dst.put_u64_le(experience);
             }
             ServerMessage::SpellCast {
@@ -842,6 +847,11 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                     dst.put_u8(u8::from(spell.aimable));
                     dst.put_u8(spell.group.as_id());
                 }
+            }
+            ServerMessage::AgentSpeedUpdated { agent_id, speed } => {
+                dst.put_u8(SRV_AGENT_SPEED_UPDATED);
+                dst.put_u16_le(agent_id.0);
+                dst.put_u16_le(speed);
             }
         }
 
@@ -1867,7 +1877,7 @@ mod tests {
         let mut dst = BytesMut::new();
         GameMessageCodec {}
             .encode(
-                ServerMessage::SkillChanged {
+                ServerMessage::SkillUpdated {
                     skill: SkillType::Sword,
                     progress: SkillProgress {
                         level: 12,
@@ -1883,7 +1893,7 @@ mod tests {
             &[
                 6,
                 0, // payload length
-                SRV_SKILL_CHANGED,
+                SRV_SKILL_UPDATED,
                 3, // SkillType::Sword
                 12,
                 0, // level
@@ -1898,7 +1908,7 @@ mod tests {
         let mut dst = BytesMut::new();
         GameMessageCodec {}
             .encode(
-                ServerMessage::ExperienceChanged { experience: 4231 },
+                ServerMessage::ExperienceUpdated { experience: 4231 },
                 &mut dst,
             )
             .unwrap();
@@ -1908,7 +1918,7 @@ mod tests {
             &[
                 9,
                 0, // payload length
-                SRV_EXPERIENCE_CHANGED,
+                SRV_EXPERIENCE_UPDATED,
                 0x87,
                 0x10,
                 0,

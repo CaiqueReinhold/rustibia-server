@@ -197,7 +197,7 @@ impl SessionActor {
             && let Some(agent_id) = self.agents.get_local(&self.player_key)
         {
             self.connection
-                .send_message(ServerMessage::AgentManaChanged {
+                .send_message(ServerMessage::AgentManaUpdated {
                     agent_id,
                     current: agent.mana().current,
                     max: agent.mana().maximum,
@@ -231,7 +231,7 @@ impl SessionActor {
         };
 
         self.connection
-            .send_message(ServerMessage::SkillChanged { skill, progress })
+            .send_message(ServerMessage::SkillUpdated { skill, progress })
             .await?;
 
         if let Some(experience) = experience {
@@ -246,7 +246,7 @@ impl SessionActor {
                     .await?;
             }
             self.connection
-                .send_message(ServerMessage::ExperienceChanged { experience })
+                .send_message(ServerMessage::ExperienceUpdated { experience })
                 .await?;
         }
         Ok(())
@@ -284,6 +284,35 @@ impl SessionActor {
                 })
                 .await?;
         }
+
+        if matches!(skill, SkillType::Level)
+            && let Some(agent) = map.get_agent(self.player_key)
+            && let Some(player) = agent.get_player()
+        {
+            let agent_id = self
+                .agents
+                .get_local(&self.player_key)
+                .ok_or(SessionError::InvalidState)?;
+            self.connection
+                .send_message(ServerMessage::AgentLifeChanged {
+                    agent_id,
+                    current: agent.life().current,
+                    max: agent.life().maximum,
+                })
+                .await?;
+            self.connection
+                .send_message(ServerMessage::AgentManaUpdated {
+                    agent_id,
+                    current: agent.mana().current,
+                    max: agent.mana().maximum,
+                })
+                .await?;
+            self.connection
+                .send_message(ServerMessage::PlayerCapacityUpdated {
+                    cap: player.capacity_available(),
+                })
+                .await?;
+        }
         Ok(())
     }
 
@@ -300,6 +329,21 @@ impl SessionActor {
                 missile_id,
             })
             .await?;
+        Ok(())
+    }
+
+    pub(super) async fn agent_speed_changed(&self, agent_key: AgentKey) -> Result<()> {
+        let speed = {
+            let map = self.shared_map.load();
+            map.get_agent(agent_key).map(|a| a.speed())
+        };
+        if let Some(speed) = speed
+            && let Some(agent_id) = self.agents.get_local(&agent_key)
+        {
+            self.connection
+                .send_message(ServerMessage::AgentSpeedUpdated { agent_id, speed })
+                .await?;
+        }
         Ok(())
     }
 }
@@ -437,7 +481,7 @@ mod tests {
         assert!(matches!(
             connection_rx.try_recv(),
             Ok(ConnectionCommand::SendPlayerMessage(
-                ServerMessage::SkillChanged {
+                ServerMessage::SkillUpdated {
                     skill: SkillType::Sword,
                     progress,
                 }
@@ -465,7 +509,7 @@ mod tests {
         assert!(matches!(
             connection_rx.try_recv(),
             Ok(ConnectionCommand::SendPlayerMessage(
-                ServerMessage::SkillChanged { .. }
+                ServerMessage::SkillUpdated { .. }
             ))
         ));
         // The floating number rides between the two, and now goes out whether or
@@ -480,7 +524,7 @@ mod tests {
         assert!(matches!(
             connection_rx.try_recv(),
             Ok(ConnectionCommand::SendPlayerMessage(
-                ServerMessage::ExperienceChanged { experience: 4255 }
+                ServerMessage::ExperienceUpdated { experience: 4255 }
             ))
         ));
     }

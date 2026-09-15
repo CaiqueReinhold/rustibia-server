@@ -462,6 +462,9 @@ impl SessionActor {
             BroadcastMessage::AreaEffectAppeared { area_effect } => {
                 self.send_effect(area_effect).await
             }
+            BroadcastMessage::AgentSpeedChanged { agent_key, .. } => {
+                self.agent_speed_changed(agent_key).await
+            }
         }
     }
 

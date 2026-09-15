@@ -97,6 +97,10 @@ impl Pool {
         self.current = self.current.saturating_add(amount).min(self.maximum)
     }
 
+    pub fn change_capacity(&mut self, amount: i32) {
+        self.maximum = self.maximum.saturating_add_signed(amount)
+    }
+
     pub fn to_wire(&self) -> u32 {
         ((self.current as f32) / (self.maximum as f32) * 100.0).round() as u32
     }
@@ -284,12 +288,20 @@ impl Agent {
         self.life.add(amount);
     }
 
+    pub fn change_max_life(&mut self, amount: i32) {
+        self.life.change_capacity(amount);
+    }
+
     pub fn remove_mana(&mut self, amount: u32) {
         self.mana.remove(amount);
     }
 
     pub fn restore_mana(&mut self, amount: u32) {
         self.mana.add(amount);
+    }
+
+    pub fn change_max_mana(&mut self, amount: i32) {
+        self.mana.change_capacity(amount);
     }
 
     pub fn is_fleeing(&self) -> bool {
@@ -309,6 +321,14 @@ impl Agent {
                 .base_speed
                 .saturating_add_signed(p.inventory().stats().speed),
         }
+    }
+
+    pub fn base_speed(&self) -> u16 {
+        self.base_speed
+    }
+
+    pub fn set_base_speed(&mut self, speed: u16) {
+        self.base_speed = speed;
     }
 
     pub fn facing(&self) -> Facing {

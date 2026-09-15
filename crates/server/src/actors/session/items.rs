@@ -303,7 +303,7 @@ impl SessionActor {
         {
             let tile = tile_stack(&map, &position);
             self.connection
-                .send_message(ServerMessage::TileChanged {
+                .send_message(ServerMessage::TileUpdated {
                     position,
                     items: tile,
                 })
@@ -346,7 +346,7 @@ mod tests {
 
         std::iter::from_fn(|| connection_rx.try_recv().ok())
             .filter_map(|c| match c {
-                ConnectionCommand::SendPlayerMessage(ServerMessage::TileChanged {
+                ConnectionCommand::SendPlayerMessage(ServerMessage::TileUpdated {
                     position,
                     ..
                 }) => Some(position),

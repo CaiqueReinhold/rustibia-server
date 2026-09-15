@@ -15,9 +15,7 @@ pub fn award(ctx: &mut TickCtx, victim: AgentKey) {
     let shares = agent.participation().shares(kind.experience);
 
     for (key, share) in shares {
-        if let Some(player) = ctx.map.get_player_mut(key) {
-            tick_skill(player, key, SkillType::Level, share, ctx.events);
-        }
+        tick_skill(ctx, key, SkillType::Level, share * 1000);
     }
 }
 

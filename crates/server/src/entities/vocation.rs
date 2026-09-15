@@ -7,6 +7,10 @@ pub enum Vocation {
     Druid = 3,
 }
 
+const LIFE_GAINED_LEVEL: [i32; 4] = [15, 10, 5, 5];
+const MANA_GAINED_LEVEL: [i32; 4] = [5, 15, 30, 30];
+const CAPACITY_GAINED_LEVEL: [i32; 4] = [2500, 2000, 1000, 1000];
+
 impl Vocation {
     pub fn from_i16(value: i16) -> Option<Self> {
         match value {
@@ -16,6 +20,18 @@ impl Vocation {
             3 => Some(Vocation::Druid),
             _ => None,
         }
+    }
+
+    pub fn life_on_level_up(&self) -> i32 {
+        LIFE_GAINED_LEVEL[*self as usize]
+    }
+
+    pub fn mana_on_level_up(&self) -> i32 {
+        MANA_GAINED_LEVEL[*self as usize]
+    }
+
+    pub fn capacity_on_level_up(&self) -> i32 {
+        CAPACITY_GAINED_LEVEL[*self as usize]
     }
 }
 

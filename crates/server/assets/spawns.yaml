@@ -7,16 +7,16 @@ spawns:
     respawn_ticks: 6000
   - position: { x: 1040, y: 1023, z: 8 }
     kind: elf
-    respawn_ticks: 6000
+    respawn_ticks: 600
   - position: { x: 1036, y: 1023, z: 8 }
     kind: elf
-    respawn_ticks: 6000
+    respawn_ticks: 600
   - position: { x: 1028, y: 1010, z: 8 }
     kind: elf
-    respawn_ticks: 6000
+    respawn_ticks: 600
   - position: { x: 1039, y: 1024, z: 8 }
     kind: elf
-    respawn_ticks: 6000
+    respawn_ticks: 600
   - position: { x: 1022, y: 1019, z: 8 }
     kind: dragon
-    respawn_ticks: 6000
+    respawn_ticks: 600

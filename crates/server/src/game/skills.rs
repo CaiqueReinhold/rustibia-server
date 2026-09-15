@@ -1,8 +1,8 @@
 use crate::entities::vocation::Vocation;
+use crate::game::TickCtx;
 use crate::{
     entities::{
         agent::AgentKey,
-        player::Player,
         skills::{SkillType, SkillValue},
     },
     game::{
@@ -95,13 +95,10 @@ fn advance(skill: &mut SkillValue, ticks: u64, required: impl Fn(u16) -> u64) ->
     gained
 }
 
-pub fn tick_skill(
-    player: &mut Player,
-    agent_key: AgentKey,
-    skill: SkillType,
-    ticks: u64,
-    events: &mut Vec<BroadcastMessage>,
-) {
+pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, ticks: u64) {
+    let Some(player) = ctx.map.get_player_mut(agent_key) else {
+        return;
+    };
     let vocation = player.vocation();
     let Some(skill_value) = player.skills_mut().get_mut(&skill) else {
         return;
@@ -110,8 +107,11 @@ pub fn tick_skill(
     let gained = advance(skill_value, ticks, |level| {
         required_ticks(vocation, &skill, level)
     });
+    if matches!(skill, SkillType::Level) && gained > 0 {
+        level_up(ctx, agent_key, gained as i16);
+    }
 
-    events.push(if gained > 0 {
+    ctx.events.push(if gained > 0 {
         BroadcastMessage::SkillUpgraded {
             agent_key,
             skill_type: skill,
@@ -125,6 +125,36 @@ pub fn tick_skill(
             amount: ticks,
         }
     });
+}
+
+fn level_up(ctx: &mut TickCtx, agent_key: AgentKey, gained: i16) {
+    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
+        return;
+    };
+    let base_speed = agent.base_speed();
+    let Some(player) = agent.get_player_mut() else {
+        return;
+    };
+    let vocation = player.vocation();
+
+    player.set_capacity(
+        player
+            .capacity()
+            .saturating_add_signed(vocation.capacity_on_level_up() * gained as i32),
+    );
+    agent.set_base_speed(base_speed + 1 * gained as u16);
+    agent.change_max_life(vocation.life_on_level_up() * gained as i32);
+    agent.change_max_mana(vocation.mana_on_level_up() * gained as i32);
+
+    if let Some(position) = ctx.map.agent_position(agent_key) {
+        // speed is broadcasted because changes how nearby players see
+        // the other updates are handled by the session on skill upgrade
+        // (in theory life could be seen too, but is too imperceptible of a difference)
+        ctx.events.push(BroadcastMessage::AgentSpeedChanged {
+            agent_key,
+            position: position.clone(),
+        });
+    }
 }
 
 #[cfg(test)]

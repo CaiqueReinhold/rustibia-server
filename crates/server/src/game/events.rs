@@ -130,6 +130,10 @@ pub enum BroadcastMessage {
         amount: u32,
         restore_type: RestoreType,
     },
+    AgentSpeedChanged {
+        agent_key: AgentKey,
+        position: Position,
+    },
 }
 
 /// Who a broadcast reaches.
@@ -158,7 +162,8 @@ impl BroadcastMessage {
             | Self::PlayerSpawned { position, .. }
             | Self::TileChanged { position }
             | Self::DamageTaken { position, .. }
-            | Self::AttackMissed { position } => Routing::Viewport {
+            | Self::AttackMissed { position }
+            | Self::AgentSpeedChanged { position, .. } => Routing::Viewport {
                 at: position,
                 same_floor: false,
             },

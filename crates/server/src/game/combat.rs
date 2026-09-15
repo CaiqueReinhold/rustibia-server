@@ -264,9 +264,7 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
             };
         }
         AttackCost::Mana(mana_cost) => {
-            if let Some(agent) = ctx.map.get_agent_mut(plan.attacker) {
-                consume_mana(plan.attacker, agent, mana_cost, ctx.events);
-            }
+            consume_mana(ctx, plan.attacker, mana_cost);
         }
         AttackCost::None => {}
     }
@@ -283,10 +281,8 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
     }
 
     for (target, dmg) in &plan.damage {
-        if dmg.blocked_shield
-            && let Some(player) = ctx.map.get_player_mut(*target)
-        {
-            tick_skill(player, *target, SkillType::Shielding, 1, ctx.events);
+        if dmg.blocked_shield {
+            tick_skill(ctx, *target, SkillType::Shielding, 1);
         }
     }
 
@@ -298,9 +294,8 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
 
     if let Some(skill_type) = plan.trains
         && landed
-        && let Some(player) = ctx.map.get_player_mut(plan.attacker)
     {
-        tick_skill(player, plan.attacker, skill_type, 1, ctx.events);
+        tick_skill(ctx, plan.attacker, skill_type, 1);
     }
 
     if let Some(area) = plan.area_effect {
