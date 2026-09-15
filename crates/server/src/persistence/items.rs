@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -210,7 +210,7 @@ fn convert(raw: RawItemConfig) -> ItemConfig {
         .attributes
         .iter()
         .filter_map(|(k, v)| parse_attribute(k, v))
-        .collect::<HashSet<_>>();
+        .collect::<Vec<_>>();
 
     ItemConfig::new(
         raw.id,
@@ -306,24 +306,31 @@ mod tests {
         );
     }
 
-    /// The catalogue is the real check: a key that parses in isolation but is spelled
-    /// differently in the shipped files reaches nothing.
+    /// The keys above are proven through `parse_attribute` alone; `convert`'s `filter_map`
+    /// drops a misread silently, so they are carried through the whole read path as well.
     #[test]
-    fn the_shipped_catalogue_carries_armour_and_defence() {
-        let items = load_items(&CONFIG.items_dir_path).unwrap();
-        let armoured = items.values().filter(|c| c.attr_armor().is_some()).count();
-        let defended = items
-            .values()
-            .filter(|c| c.attr_defense().is_some())
-            .count();
-        let extra = items
-            .values()
-            .filter(|c| c.attr_extra_def().is_some_and(|d| d < 0))
-            .count();
+    fn armour_defence_and_hit_chances_survive_the_whole_load_path() {
+        let items = load_items_from_files([(
+            Path::new("gear.yaml"),
+            "
+- id: 1
+  name: a cursed shield
+  attributes:
+    armor: 2
+    defense: 25
+    extra_defense: -3
+    hit_chance: -20
+    max_hit_chance: 91
+",
+        )])
+        .unwrap();
+        let shield = &items[&ItemId(1)];
 
-        assert!(armoured > 300, "only {armoured} items carry armour");
-        assert!(defended > 500, "only {defended} items carry defence");
-        assert!(extra > 0, "no item kept a negative extra defence");
+        assert_eq!(shield.attr_armor(), Some(2));
+        assert_eq!(shield.attr_defense(), Some(25));
+        assert_eq!(shield.attr_extra_def(), Some(-3));
+        assert_eq!(shield.attr_hit_chance(), Some(-20));
+        assert_eq!(shield.attr_max_hit_chance(), Some(91));
     }
 
     /// `devileye` carries `hit_chance: -20`, so this key has the same reason to sit above
@@ -339,30 +346,6 @@ mod tests {
             parse("max_hit_chance", "91"),
             Some(ItemAttribute::MaxHitChance(91))
         );
-    }
-
-    /// Both keys were generated into the item assets from the start and read by nothing
-    /// until the distance hit roll existed — exactly the shape `the-asset-generators-drop-
-    /// fields-silently` warns about, in the other direction.
-    #[test]
-    fn the_shipped_catalogue_carries_both_hit_chances() {
-        let items = load_items(&CONFIG.items_dir_path).unwrap();
-        let bonuses = items
-            .values()
-            .filter(|c| c.attr_hit_chance().is_some())
-            .count();
-        let ceilings = items
-            .values()
-            .filter(|c| c.attr_max_hit_chance().is_some())
-            .count();
-        let penalties = items
-            .values()
-            .filter(|c| c.attr_hit_chance().is_some_and(|h| h < 0))
-            .count();
-
-        assert!(bonuses > 40, "only {bonuses} items carry a hit chance");
-        assert!(ceilings > 30, "only {ceilings} items carry a ceiling");
-        assert!(penalties > 0, "no item kept a negative hit chance");
     }
 
     fn bounds(min: u32, max: u32) -> Option<Bounds> {

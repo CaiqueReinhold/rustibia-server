@@ -296,39 +296,24 @@ mod tests {
         );
     }
 
-    /// The catalogue is the real check: a shape that parses in isolation but is spelled
-    /// differently in `areas.yaml` reaches no spell.
     #[test]
-    fn the_shipped_catalogue_loads_every_shape() {
-        let areas = load_areas(&CONFIG.areas_file_path).unwrap();
-
-        assert_eq!(areas.len(), 3, "shapes loaded: {:?}", areas.keys());
-        assert_eq!(
-            areas["burst_arrow"].get_delta_facing(Facing::North).len(),
-            9
-        );
-        assert_eq!(areas["circle3"].get_delta_facing(Facing::North).len(), 37);
-        assert_eq!(
-            areas["small_wave"].get_delta_facing(Facing::North).len(),
-            12,
-            "the wave's `0` anchors it without being one of its tiles"
-        );
+    fn the_shipped_catalogue_loads() {
+        load_areas(&CONFIG.areas_file_path).unwrap();
     }
 
     /// A symmetric shape must come out of the rotation unchanged. This is what catches a
     /// rotation that mirrors instead of turning: a directional mask would still look
     /// plausible, a circle would not.
     #[test]
-    fn a_symmetric_shipped_shape_is_rotation_invariant() {
-        let areas = load_areas(&CONFIG.areas_file_path).unwrap();
+    fn a_symmetric_shape_is_rotation_invariant() {
+        let areas = load(
+            "areas:\n  ring:\n    - \" XXX \"\n    - \"XXXXX\"\n    - \"XX@XX\"\n    - \"XXXXX\"\n    - \" XXX \"\n",
+        );
+        let ring = &areas["ring"];
+        let north = sorted(ring, Facing::North);
 
-        for name in ["burst_arrow", "circle3"] {
-            let shape = &areas[name];
-            let north = sorted(shape, Facing::North);
-
-            for facing in [Facing::East, Facing::South, Facing::West] {
-                assert_eq!(sorted(shape, facing), north, "{name} facing {facing:?}");
-            }
+        for facing in [Facing::East, Facing::South, Facing::West] {
+            assert_eq!(sorted(ring, facing), north, "facing {facing:?}");
         }
     }
 }

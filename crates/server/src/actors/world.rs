@@ -14,11 +14,12 @@ use crate::actors::message_router::{MessageRouterActorHandle, MessageRouterGuard
 use crate::actors::session::SessionActorHandle;
 use crate::config::CONFIG;
 use crate::entities::agent::{Agent, AgentKey, Facing};
+use crate::entities::combat::CombatDamage;
 use crate::entities::creature::{CreatureAbilityId, CreatureKind};
 use crate::entities::items::ItemRef;
 use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, ItemPlacement, Position};
-use crate::entities::spells::{CastTarget, SpellId};
+use crate::entities::spells::{CastTarget, ChainAttack, SpellId};
 use crate::game::creature_behavior::CreatureAction;
 use crate::game::events::BroadcastMessage;
 use crate::game::item_multi_action::UseTarget;
@@ -91,6 +92,12 @@ pub enum WorldCommand {
     CastAbility {
         agent_key: AgentKey,
         ability_id: CreatureAbilityId,
+    },
+    ChainAttack {
+        attacker: AgentKey,
+        sources: Vec<(Position, CombatDamage)>,
+        chain: ChainAttack,
+        targeted: Vec<AgentKey>,
     },
 }
 
@@ -473,6 +480,16 @@ impl WorldActor {
             } => {
                 self.with_ctx(broadcast_messages, |ctx| {
                     creature_abilities::cast_ability(ctx, agent_key, ability_id)
+                });
+            }
+            WorldCommand::ChainAttack {
+                attacker,
+                sources,
+                chain,
+                targeted,
+            } => {
+                self.with_ctx(broadcast_messages, |ctx| {
+                    spells::chain_attack(ctx, attacker, sources, chain, targeted)
                 });
             }
         };

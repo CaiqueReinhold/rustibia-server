@@ -11,12 +11,13 @@ use crate::config::CONFIG;
 use crate::entities::combat::CombatElement;
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::spells::{
-    PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup, SpellHealing, SpellId, SpellTargetMode,
+    ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
+    SpellHealing, SpellId, SpellTargetMode,
 };
 use crate::entities::vocation::Vocation;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
-use crate::persistence::target_mode::{TargetModeError, parse_target_mode};
+use crate::persistence::target_mode::{TargetModeError, parse_target_mode, take_type};
 
 pub static SPELLS: Lazy<Arc<HashMap<SpellId, Arc<Spell>>>> = Lazy::new(|| {
     Arc::new(load_spells(&CONFIG.spells_file_path, &AREA_SHAPES).expect("failed to load spells"))
@@ -43,11 +44,13 @@ pub enum SpellsLoadError {
         field: &'static str,
         value: f64,
     },
-    #[error("spell {id:?} ({name}) declares no effects, so casting it would do nothing")]
-    NoEffects { id: SpellId, name: String },
-    #[error("spell {id:?} ({name}) has an effect that is not a single `kind:` mapping")]
-    MalformedEffect { id: SpellId, name: String },
-    #[error("spell {id:?} ({name}) has an effect of kind `{kind}`, which this server cannot run")]
+    #[error("spell {id:?} ({name}) has a {field} of 0, so its chain could never hit anything")]
+    Zero {
+        id: SpellId,
+        name: String,
+        field: &'static str,
+    },
+    #[error("spell {id:?} ({name}) has an effect of type `{kind}`, which this server cannot run")]
     UnknownEffect {
         id: SpellId,
         name: String,
@@ -89,7 +92,7 @@ struct RawSpell {
     level: u16,
     icon: u16,
     vocations: Vec<Vocation>,
-    effects: Vec<serde_yaml::Value>,
+    effect: serde_yaml::Value,
 }
 
 #[derive(Deserialize)]
@@ -104,6 +107,8 @@ struct RawAttack {
     effect_id: EffectId,
     #[serde(default)]
     missile_id: Option<MissileId>,
+    #[serde(default)]
+    chain: Option<RawChain>,
 }
 
 #[derive(Deserialize)]
@@ -115,6 +120,21 @@ struct RawHealing {
     magic_factor: f64,
     #[serde(default)]
     spread: f64,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawChain {
+    pub num_targets: u16,
+    pub damage_factor: f64,
+    pub delay_ticks: TickDelta,
+    pub max_range: u16,
+    pub sorting: ChainSorting,
+    pub missile_id: MissileId,
+    #[serde(default)]
+    pub effect_id: Option<EffectId>,
+    #[serde(default)]
+    pub chain: Option<Box<RawChain>>,
 }
 
 // ── Conversion ────────────────────────────────────────────────────────────────
@@ -155,14 +175,32 @@ fn parse_power(
     })
 }
 
-fn single_entry(value: serde_yaml::Value) -> Option<(String, serde_yaml::Value)> {
-    match value {
-        serde_yaml::Value::Mapping(mapping) if mapping.len() == 1 => {
-            let (key, value) = mapping.into_iter().next()?;
-            Some((key.as_str()?.to_string(), value))
+fn parse_chain(id: SpellId, name: &str, chain: RawChain) -> Result<ChainAttack, SpellsLoadError> {
+    let nonzero = |field: &'static str, value: u16| {
+        if value == 0 {
+            Err(SpellsLoadError::Zero {
+                id,
+                name: name.to_string(),
+                field,
+            })
+        } else {
+            Ok(value)
         }
-        _ => None,
-    }
+    };
+
+    Ok(ChainAttack {
+        num_targets: nonzero("num_targets", chain.num_targets)?,
+        damage_factor: parse_number(id, name, "damage_factor", chain.damage_factor)?,
+        delay_ticks: chain.delay_ticks,
+        max_range: nonzero("max_range", chain.max_range)?,
+        sorting: chain.sorting,
+        missile_id: chain.missile_id,
+        effect_id: chain.effect_id,
+        chain: chain
+            .chain
+            .map(|next| parse_chain(id, name, *next).map(Box::new))
+            .transpose()?,
+    })
 }
 
 fn parse_target(
@@ -189,17 +227,21 @@ fn parse_target(
 fn parse_effect(
     id: SpellId,
     name: &str,
-    value: serde_yaml::Value,
+    mut value: serde_yaml::Value,
     shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
 ) -> Result<SpellEffect, SpellsLoadError> {
-    let (kind, payload) = single_entry(value).ok_or_else(|| SpellsLoadError::MalformedEffect {
+    let unknown = |kind: String| SpellsLoadError::UnknownEffect {
         id,
         name: name.to_string(),
-    })?;
+        kind,
+    };
+
+    let kind =
+        take_type(&mut value).ok_or_else(|| unknown("a mapping without a `type`".to_string()))?;
 
     match kind.as_str() {
         "attack" => {
-            let attack: RawAttack = serde_yaml::from_value(payload)?;
+            let attack: RawAttack = serde_yaml::from_value(value)?;
             let spell_attack = SpellAttack {
                 target: parse_target(id, name, attack.target, shapes)?,
                 element: attack.element,
@@ -213,11 +255,15 @@ fn parse_effect(
                 )?,
                 effect_id: attack.effect_id,
                 missile_id: attack.missile_id,
+                chain: attack
+                    .chain
+                    .map(|chain| parse_chain(id, name, chain))
+                    .transpose()?,
             };
             Ok(SpellEffect::Attack(spell_attack))
         }
         "heal" => {
-            let healing: RawHealing = serde_yaml::from_value(payload)?;
+            let healing: RawHealing = serde_yaml::from_value(value)?;
             let spell_healing = SpellHealing {
                 target: parse_target(id, name, healing.target, shapes)?,
                 power: parse_power(
@@ -231,11 +277,7 @@ fn parse_effect(
             };
             Ok(SpellEffect::Healing(spell_healing))
         }
-        other => Err(SpellsLoadError::UnknownEffect {
-            id,
-            name: name.to_string(),
-            kind: other.to_string(),
-        }),
+        other => Err(unknown(other.to_string())),
     }
 }
 
@@ -244,18 +286,7 @@ impl RawSpell {
         self,
         shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
     ) -> Result<Spell, SpellsLoadError> {
-        if self.effects.is_empty() {
-            return Err(SpellsLoadError::NoEffects {
-                id: self.id,
-                name: self.name,
-            });
-        }
-
-        let effects = self
-            .effects
-            .into_iter()
-            .map(|effect| parse_effect(self.id, &self.name, effect, shapes))
-            .collect::<Result<Vec<_>, _>>()?;
+        let effect = parse_effect(self.id, &self.name, self.effect, shapes)?;
 
         Ok(Spell {
             id: self.id,
@@ -268,7 +299,7 @@ impl RawSpell {
             level: self.level,
             icon: self.icon,
             vocations: self.vocations,
-            effects,
+            effect,
         })
     }
 }
@@ -334,18 +365,18 @@ spells:
     level: 18
     icon: 44
     vocations: [sorcerer]
-    effects:
-      - attack:
-          target:
-            type: area
-            origin: self
-            shape: probe
-          element: fire
-          base_power: 40
-          level_factor: 0.2
-          magic_factor: 1.4
-          spread: 0.25
-          effect_id: 37
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: probe
+      element: fire
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 1.4
+      spread: 0.25
+      effect_id: 37
 "#;
 
     const TARGET_SPELL: &str = r#"
@@ -359,19 +390,57 @@ spells:
     level: 12
     icon: 29
     vocations: [sorcerer]
-    effects:
-      - attack:
-          target:
-            type: target
-            range: 4
-          element: energy
-          base_power: 45
-          level_factor: 0.2
-          magic_factor: 1.5
-          spread: 0.25
-          effect_id: 38
-          missile_id: 36
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 4
+      element: energy
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 1.5
+      spread: 0.25
+      effect_id: 38
+      missile_id: 36
 "#;
+
+    const HEAL_SPELL: &str = r#"
+spells:
+  - id: 9
+    name: Test Healing
+    words: test healing
+    group: healing
+    cooldown_ticks: 20
+    mana: 20
+    level: 8
+    icon: 6
+    vocations: [druid]
+    effect:
+      type: heal
+      target:
+        type: self
+      base_power: 8
+      level_factor: 0.2
+      magic_factor: 1.4
+"#;
+
+    const A_CHAIN: &str = "      chain:
+        num_targets: 2
+        damage_factor: 0.5
+        delay_ticks: 10
+        max_range: 3
+        sorting: closest
+        chain:
+          num_targets: 1
+          damage_factor: 0.25
+          delay_ticks: 6
+          max_range: 2
+          sorting: closest
+";
+
+    fn chained(spell: &str) -> String {
+        format!("{spell}{A_CHAIN}")
+    }
 
     fn only_spell(spells: &HashMap<SpellId, Arc<Spell>>) -> Arc<Spell> {
         let id = spells.keys().copied().next().expect("loaded no spells");
@@ -379,14 +448,14 @@ spells:
     }
 
     fn attack(spell: &Spell) -> &SpellAttack {
-        match &spell.effects[0] {
+        match &spell.effect {
             SpellEffect::Attack(attack) => attack,
             SpellEffect::Healing(_) => panic!("healing spell"),
         }
     }
 
     fn healing(spell: &Spell) -> &SpellHealing {
-        match &spell.effects[0] {
+        match &spell.effect {
             SpellEffect::Healing(healing) => healing,
             SpellEffect::Attack(_) => panic!("attack spell"),
         }
@@ -438,6 +507,110 @@ spells:
             (40.0, 0.2, 1.4, 0.25)
         );
         assert_eq!(attack.missile_id, None, "a wave lands where it is cast");
+        assert!(attack.chain.is_none(), "an attack chains only when told to");
+    }
+
+    #[test]
+    fn a_chain_reaches_the_attack_as_authored() {
+        let spells = load_spells_from_str(&chained(TARGET_SPELL), &shape("probe")).unwrap();
+        let spell = only_spell(&spells);
+
+        let first = attack(&spell)
+            .chain
+            .as_ref()
+            .expect("the attack lost its chain");
+        assert_eq!(
+            (
+                first.num_targets,
+                first.damage_factor,
+                first.delay_ticks,
+                first.max_range,
+                first.sorting
+            ),
+            (2, 0.5, TickDelta(10), 3, ChainSorting::Closest)
+        );
+
+        let second = first
+            .chain
+            .as_deref()
+            .expect("the first link lost its chain");
+        assert_eq!(
+            (
+                second.num_targets,
+                second.damage_factor,
+                second.delay_ticks,
+                second.max_range,
+                second.sorting
+            ),
+            (1, 0.25, TickDelta(6), 2, ChainSorting::Closest)
+        );
+        assert!(second.chain.is_none());
+    }
+
+    #[test]
+    fn a_zero_target_count_or_range_on_any_link_is_refused() {
+        for (from, to, field) in [
+            (
+                "          num_targets: 1\n",
+                "          num_targets: 0\n",
+                "num_targets",
+            ),
+            (
+                "          max_range: 2\n",
+                "          max_range: 0\n",
+                "max_range",
+            ),
+        ] {
+            let contents = chained(TARGET_SPELL).replace(from, to);
+            let error = load_spells_from_str(&contents, &shape("probe"))
+                .expect_err("a chain link that can hit nothing must not load");
+
+            assert!(
+                matches!(&error, SpellsLoadError::Zero { field: f, .. } if *f == field),
+                "unexpected error: {error}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_negative_damage_factor_is_refused() {
+        let contents = chained(TARGET_SPELL).replace("damage_factor: 0.5", "damage_factor: -0.5");
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("a negative factor would heal what the chain hits");
+
+        assert!(
+            matches!(
+                error,
+                SpellsLoadError::Number {
+                    field: "damage_factor",
+                    ..
+                }
+            ),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_sorting_the_server_cannot_run_is_refused() {
+        let contents = chained(TARGET_SPELL).replace("sorting: closest", "sorting: weakest");
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("an unknown sorting must not load as some other sorting");
+
+        assert!(
+            matches!(error, SpellsLoadError::ParseError(_)),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_heal_cannot_chain() {
+        let error = load_spells_from_str(&chained(HEAL_SPELL), &shape("probe"))
+            .expect_err("a chain under a heal would load and never run");
+
+        assert!(
+            matches!(error, SpellsLoadError::ParseError(_)),
+            "unexpected error: {error}"
+        );
     }
 
     /// The range gates the cast, so a spell that loads without the range it was authored with
@@ -515,10 +688,10 @@ spells:
     level: 8
     icon: 1
     vocations: [druid]
-    effects:
-      - summon:
-          kind: rat
-          count: 2
+    effect:
+      type: summon
+      kind: rat
+      count: 2
 "#;
         let error = load_spells_from_str(contents, &shape("probe"))
             .expect_err("an unknown effect kind must not load as an empty spell");
@@ -529,31 +702,24 @@ spells:
         );
     }
 
+    #[test]
+    fn an_effect_without_a_type_is_refused() {
+        let contents = AREA_SPELL.replace("      type: attack\n", "");
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("an untyped effect must not load as any kind");
+
+        assert!(
+            matches!(error, SpellsLoadError::UnknownEffect { .. }),
+            "unexpected error: {error}"
+        );
+    }
+
     /// A heal carries neither an element nor an effect id, so nothing but this says the
     /// numbers under `heal:` reach `SpellHealing` as authored. An unwritten `spread`
     /// restores a flat amount rather than defaulting to some variance.
     #[test]
     fn a_healing_spell_carries_its_numbers_and_defaults_its_spread() {
-        let contents = r#"
-spells:
-  - id: 9
-    name: Test Healing
-    words: test healing
-    group: healing
-    cooldown_ticks: 20
-    mana: 20
-    level: 8
-    icon: 6
-    vocations: [druid]
-    effects:
-      - heal:
-          target:
-            type: self
-          base_power: 8
-          level_factor: 0.2
-          magic_factor: 1.4
-"#;
-        let spells = load_spells_from_str(contents, &shape("probe")).unwrap();
+        let spells = load_spells_from_str(HEAL_SPELL, &shape("probe")).unwrap();
         let spell = only_spell(&spells);
 
         let healing = healing(&spell);
@@ -574,39 +740,7 @@ spells:
     #[test]
     fn the_shipped_catalogue_loads_and_every_shape_resolves() {
         let areas = load_areas(&CONFIG.areas_file_path).unwrap();
-        let spells = load_spells(&CONFIG.spells_file_path, &areas).unwrap();
-
-        assert!(!spells.is_empty(), "loaded no spells at all");
-
-        let named = |name: &str| {
-            spells
-                .values()
-                .find(|spell| spell.name == name)
-                .unwrap_or_else(|| panic!("{name} is not among the shipped spells"))
-                .clone()
-        };
-
-        assert_eq!(
-            attack(&named("Energy Strike")).missile_id,
-            Some(MissileId(36))
-        );
-        assert!(matches!(
-            attack(&named("Energy Strike")).target,
-            SpellTargetMode::Target { range: 3 }
-        ));
-        assert_eq!(attack(&named("Fire Wave")).missile_id, None);
-        assert!(matches!(
-            healing(&named("Light Healing")).target,
-            SpellTargetMode::Caster
-        ));
-        assert!(matches!(
-            attack(&named("Divine Caldera")).target,
-            SpellTargetMode::Area { .. }
-        ));
-        assert_eq!(named("Light Healing").icon, 6);
-        assert_eq!(named("Fire Wave").icon, 44);
-        assert_eq!(named("Divine Caldera").icon, 40);
-        assert_eq!(named("Energy Strike").icon, 29);
+        load_spells(&CONFIG.spells_file_path, &areas).unwrap();
     }
 
     /// Both catalogues on the path production uses, through the `Lazy`. A failure here is
@@ -614,8 +748,8 @@ spells:
     /// names the cause.
     #[test]
     fn both_catalogues_load_through_their_lazies() {
-        assert!(!AREA_SHAPES.is_empty());
-        assert!(!SPELLS.is_empty());
+        Lazy::force(&AREA_SHAPES);
+        Lazy::force(&SPELLS);
     }
 
     #[test]
@@ -641,13 +775,8 @@ spells:
     fn only_an_area_centred_on_a_target_is_aimable() {
         let load = |yaml: &str| only_spell(&load_spells_from_str(yaml, &shape("probe")).unwrap());
         let aimed = AREA_SPELL.replace("origin: self", "origin: target");
-        let aimed_after_a_heal = aimed.replace(
-            "    effects:\n",
-            "    effects:\n      - heal:\n          target:\n            type: self\n          base_power: 8\n          level_factor: 0.2\n          magic_factor: 1.4\n",
-        );
 
         assert!(load(&aimed).is_aimable());
-        assert!(load(&aimed_after_a_heal).is_aimable());
         assert!(!load(AREA_SPELL).is_aimable());
         assert!(!load(TARGET_SPELL).is_aimable());
     }

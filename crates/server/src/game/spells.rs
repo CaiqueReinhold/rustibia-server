@@ -1,15 +1,19 @@
+use smallvec::SmallVec;
 use thiserror::Error;
 
 use crate::{
+    actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::{Agent, AgentKey},
+        combat::{AttackCost, AttackPlan, CombatDamage},
+        effects::{AreaEffect, Missile},
         map::GameMap,
         player::Player,
-        position::Position,
+        position::{Position, Rect},
         skills::SkillType,
         spells::{
-            AreaOrigin, CastTarget, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
-            SpellHealing, SpellId, SpellTargetMode,
+            AreaOrigin, CastTarget, ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack,
+            SpellEffect, SpellGroup, SpellHealing, SpellId, SpellTargetMode,
         },
     },
     game::{
@@ -90,7 +94,7 @@ pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, tar
     }
 
     let mark = ctx.mark();
-    if let Err(reason) = execute_effects(ctx, agent_key, spell, target) {
+    if let Err(reason) = execute_effect(ctx, agent_key, spell, target) {
         ctx.rollback_to(mark);
         ctx.events.push(BroadcastMessage::SpellDenied {
             agent_key,
@@ -159,7 +163,7 @@ pub fn resolve_spell_targets(
             Ok(SpellTargets {
                 keys: Vec::from([target]),
                 aim: Some(target_pos.clone()),
-                delta: None,
+                delta: Some(vec![(0, 0)]),
             })
         }
         SpellTargetMode::Area { origin, shape } => {
@@ -252,6 +256,90 @@ pub fn consume_mana(
     );
 }
 
+pub fn chain_attack(
+    ctx: &mut TickCtx,
+    attacker: AgentKey,
+    sources: Vec<(Position, CombatDamage)>,
+    chain: ChainAttack,
+    mut targeted: Vec<AgentKey>,
+) {
+    let mut hits = Vec::new();
+    let mut positions = Vec::new();
+
+    for (target_pos, damage) in sources {
+        let mut candidates: Vec<(AgentKey, Position)> = ctx
+            .map
+            .iter_agents_in_rect(
+                &Rect::radius(&target_pos, (chain.max_range, chain.max_range)),
+                target_pos.z,
+            )
+            .filter(|(key, _)| *key != attacker && !targeted.contains(key))
+            .collect();
+        match chain.sorting {
+            ChainSorting::Closest => {
+                candidates.sort_by_key(|(_, pos)| pos.distance(&target_pos));
+            }
+        }
+        candidates.truncate(chain.num_targets as usize);
+
+        for (agent, pos) in &candidates {
+            ctx.events.push(BroadcastMessage::MissileLaunched {
+                missile: Missile {
+                    from: target_pos.clone(),
+                    to: pos.clone(),
+                    missile_id: chain.missile_id,
+                },
+            });
+            hits.push((
+                *agent,
+                CombatDamage {
+                    element: damage.element,
+                    value: ((damage.value as f32) * chain.damage_factor) as u32,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            ));
+            positions.push(pos.clone());
+            targeted.push(*agent);
+        }
+    }
+
+    let plan = AttackPlan {
+        attacker,
+        damage: SmallVec::from(hits.clone()),
+        cost: AttackCost::None,
+        trains: None,
+        missile: None,
+        area_effect: None,
+        missed: false,
+    };
+    execute_attack(ctx, plan);
+
+    if let Some(effect_id) = chain.effect_id {
+        for pos in &positions {
+            ctx.events.push(BroadcastMessage::AreaEffectAppeared {
+                area_effect: AreaEffect::single(effect_id, pos.clone()),
+            });
+        }
+    }
+
+    if let Some(new_chain) = chain.chain.map(|c| *c) {
+        ctx.scheduled.push(ScheduledCommand {
+            at_tick: ctx.tick + new_chain.delay_ticks,
+            command: WorldCommand::ChainAttack {
+                attacker,
+                sources: hits
+                    .into_iter()
+                    .zip(positions)
+                    .map(|((_, dmg), pos)| (pos, dmg))
+                    .collect(),
+                chain: new_chain.clone(),
+                targeted,
+            },
+        })
+    }
+}
+
 fn has_spell_requirements(spell: &Spell, player: &Player) -> bool {
     spell.level <= player.level() && spell.vocations.contains(&player.vocation())
 }
@@ -261,18 +349,16 @@ fn can_cast_spell(agent: &Agent, spell: &Spell, current_tick: Tick) -> bool {
         && agent.next_spell_tick(spell.id) <= current_tick
 }
 
-fn execute_effects(
+fn execute_effect(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
     spell: &Spell,
     target: CastTarget,
 ) -> Result<(), SpellCastingDenyReason> {
-    for effect in &spell.effects {
-        match effect {
-            SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, attack),
-            SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, healing),
-        }?;
-    }
+    match &spell.effect {
+        SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, attack),
+        SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, healing),
+    }?;
 
     let agent = ctx
         .map
@@ -297,6 +383,25 @@ fn attack_spell(
     spell_attack: &SpellAttack,
 ) -> Result<(), SpellCastingDenyReason> {
     let plan = plan_spell_attack(ctx.map, agent_key, ctx.roll, spell_attack, target)?;
+    let chain = spell_attack
+        .chain
+        .as_ref()
+        .and_then(|chain| plan.damage.first().map(|(t, d)| (chain, *t, d.clone())));
+
+    if let Some((chain, target, damage)) = chain
+        && let Some(target_pos) = ctx.map.agent_position(target)
+    {
+        ctx.scheduled.push(ScheduledCommand {
+            at_tick: ctx.tick + chain.delay_ticks,
+            command: WorldCommand::ChainAttack {
+                attacker: agent_key,
+                sources: vec![(target_pos.clone(), damage)],
+                chain: chain.clone(),
+                targeted: vec![target],
+            },
+        });
+    }
+
     execute_attack(ctx, plan);
     Ok(())
 }

@@ -255,7 +255,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Take, ItemFlag::Cumulative]),
-                HashSet::from([ItemAttribute::Weight(weight)]),
+                vec![ItemAttribute::Weight(weight)],
             )),
             amount,
         )
@@ -269,7 +269,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Take, ItemFlag::Container]),
-                HashSet::from([ItemAttribute::Weight(18), ItemAttribute::Capacity(20)]),
+                vec![ItemAttribute::Weight(18), ItemAttribute::Capacity(20)],
             )),
             1,
         )

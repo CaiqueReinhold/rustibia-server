@@ -535,7 +535,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
-                HashSet::new(),
+                Vec::new(),
             )),
             amount,
         )
@@ -549,7 +549,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Container]),
-                HashSet::from([ItemAttribute::Capacity(8)]),
+                vec![ItemAttribute::Capacity(8)],
             )),
             1,
         )

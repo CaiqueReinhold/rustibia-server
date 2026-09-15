@@ -571,7 +571,6 @@ mod tests {
     use crate::entities::map::MapTile;
     use crate::entities::position::Position;
     use crate::game::TestHarness;
-    use crate::persistence::items::ITEM_CONFIGS;
     use crate::persistence::test_fixtures::{a_player_with_a_full_backpack, a_test_snapshot};
     use std::collections::{HashMap, HashSet};
     use std::sync::Arc;
@@ -584,10 +583,11 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Take]),
-                HashSet::from([
+                [
                     ItemAttribute::Weight(weight),
                     ItemAttribute::Inventory(InventorySlot::Backpack),
-                ]),
+                ]
+                .to_vec(),
             )),
             1,
         )
@@ -604,7 +604,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Ground, ItemFlag::FullBank]),
-                HashSet::new(),
+                Vec::new(),
             )),
             1,
         ));
@@ -641,7 +641,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Ground, ItemFlag::FullBank, ItemFlag::Unpass]),
-                HashSet::new(),
+                Vec::new(),
             )),
             1,
         ));
@@ -760,11 +760,12 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Take]),
-                HashSet::from([
+                [
                     ItemAttribute::Weight(100),
                     ItemAttribute::Inventory(InventorySlot::Head),
                     ItemAttribute::Armor(8),
-                ]),
+                ]
+                .to_vec(),
             )),
             1,
         )
@@ -827,7 +828,7 @@ mod tests {
             .unwrap();
 
         let mut h = TestHarness::new();
-        let item = Item::new(ITEM_CONFIGS.get(&ItemId(283)).unwrap().clone(), 1);
+        let item = a_flask(1);
         let guid = item.guid.clone();
 
         stow_item(&mut h.ctx(&mut map), agent, item).unwrap();
@@ -856,7 +857,7 @@ mod tests {
             .unwrap();
 
         let mut h = TestHarness::new();
-        let item = Item::new(ITEM_CONFIGS.get(&ItemId(283)).unwrap().clone(), 1);
+        let item = a_flask(1);
 
         assert!(matches!(
             stow_item(&mut h.ctx(&mut map), agent, item),
@@ -874,7 +875,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Container, ItemFlag::Take]),
-                HashSet::from([ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)]),
+                [ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)].to_vec(),
             )),
             1,
         );
@@ -889,7 +890,17 @@ mod tests {
     }
 
     fn a_flask(amount: u8) -> Item {
-        Item::new(ITEM_CONFIGS.get(&ItemId(283)).unwrap().clone(), amount)
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(4321),
+                "flask".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
+                vec![ItemAttribute::Weight(160)],
+            )),
+            amount,
+        )
     }
 
     fn an_item_for(slot: InventorySlot) -> Item {
@@ -900,7 +911,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Take]),
-                HashSet::from([ItemAttribute::Weight(100), ItemAttribute::Inventory(slot)]),
+                vec![ItemAttribute::Weight(100), ItemAttribute::Inventory(slot)],
             )),
             1,
         )
@@ -1043,7 +1054,7 @@ mod tests {
                 .iter()
                 .map(|it| (it.item_id, it.amount))
                 .collect::<Vec<_>>(),
-            vec![(ItemId(283), 2)],
+            vec![(ItemId(4321), 2)],
             "it opened a second entry instead of merging"
         );
         assert_eq!(

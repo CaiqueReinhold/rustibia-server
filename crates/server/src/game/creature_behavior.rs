@@ -487,10 +487,10 @@ mod tests {
     use std::sync::Arc;
 
     fn an_item(id: u16, flags: HashSet<ItemFlag>) -> Item {
-        an_item_with(id, flags, HashSet::new())
+        an_item_with(id, flags, Vec::new())
     }
 
-    fn an_item_with(id: u16, flags: HashSet<ItemFlag>, attributes: HashSet<ItemAttribute>) -> Item {
+    fn an_item_with(id: u16, flags: HashSet<ItemFlag>, attributes: Vec<ItemAttribute>) -> Item {
         Item::new(
             Arc::new(ItemConfig::new(
                 ItemId(id),
@@ -512,7 +512,7 @@ mod tests {
         tile.push_item(an_item_with(
             1,
             HashSet::from([ItemFlag::Ground]),
-            HashSet::from([ItemAttribute::TileFriction(100)]),
+            vec![ItemAttribute::TileFriction(100)],
         ));
         tile
     }

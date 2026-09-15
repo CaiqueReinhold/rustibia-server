@@ -1089,6 +1089,7 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    attack: 30
 - id: 3069
   name: necrotic rod
   article: a
@@ -1128,6 +1129,7 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    attack: 30
 - id: 3072
   name: wand of decay
   article: a
@@ -3489,6 +3491,7 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    attack: 32
 - id: 8093
   name: wand of draconia
   article: a

@@ -141,7 +141,7 @@ pub fn a_test_snapshot(id: u32, account_id: i32) -> PlayerSnapshot {
 fn an_item_config(
     id: ItemId,
     flags: HashSet<ItemFlag>,
-    attributes: HashSet<ItemAttribute>,
+    attributes: Vec<ItemAttribute>,
 ) -> Arc<ItemConfig> {
     Arc::new(ItemConfig::new(
         id,
@@ -158,7 +158,7 @@ fn a_container(id: ItemId, capacity: u8) -> Item {
         an_item_config(
             id,
             HashSet::from([ItemFlag::Container]),
-            HashSet::from([ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)]),
+            [ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)].to_vec(),
         ),
         1,
     )
@@ -170,7 +170,7 @@ pub fn a_full_backpack() -> HashMap<InventorySlot, Item> {
     let coin = an_item_config(
         ItemId(2148),
         HashSet::from([ItemFlag::Take, ItemFlag::Cumulative]),
-        HashSet::from([ItemAttribute::Weight(1)]),
+        Vec::from([ItemAttribute::Weight(1)]),
     );
 
     let mut backpack = a_container(ItemId(1988), 20);

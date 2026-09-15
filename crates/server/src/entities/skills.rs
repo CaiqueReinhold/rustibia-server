@@ -47,7 +47,7 @@ mod tests {
 
     /// The client repeats these ids and nothing links the two — separate
     /// repositories, no shared crate. The matching assertion lives in the
-    /// client's `game_ui/skills/mod.rs`. A divergence is silent: every id still
+    /// client's `game_ui/skills/types.rs`. A divergence is silent: every id still
     /// decodes to some skill, so the bars are simply labelled wrong.
     #[test]
     fn the_wire_ids_are_the_stored_ids() {

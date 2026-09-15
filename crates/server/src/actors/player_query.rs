@@ -86,6 +86,7 @@ pub fn spell_list_for(vocation: Vocation, spells: &HashMap<SpellId, Arc<Spell>>)
             level: spell.level,
             icon: spell.icon,
             aimable: spell.is_aimable(),
+            group: spell.group,
         })
         .collect();
     entries.sort_by_key(|entry| (entry.level, entry.id.0));
@@ -128,14 +129,13 @@ mod tests {
         let key = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &position)
             .unwrap();
+        let sword = SkillValue {
+            value: 11,
+            current_ticks: 27,
+        };
         let player = map.get_player_mut(key).unwrap();
-        player.skills_mut().insert(
-            SkillType::Sword,
-            SkillValue {
-                value: 11,
-                current_ticks: 27,
-            },
-        );
+        let sword_bp = progress_bp(player.vocation(), &SkillType::Sword, &sword);
+        player.skills_mut().insert(SkillType::Sword, sword);
         player.skills_mut().insert(
             SkillType::Level,
             SkillValue {
@@ -154,7 +154,7 @@ mod tests {
         assert_eq!(skills[0].0, SkillType::Level);
         assert_eq!(skills[0].1.level, 8);
         assert_eq!(skills[1].0, SkillType::Sword);
-        assert_eq!(skills[1].1.percent_bp, 4909);
+        assert_eq!(skills[1].1.percent_bp, sword_bp);
     }
 
     /// A character whose `Level` row never loaded still gets a window, with a
@@ -190,13 +190,13 @@ mod tests {
     level: {level}
     icon: {id}
     vocations: [{vocations}]
-    effects:
-      - heal:
-          target:
-            type: self
-          base_power: 8
-          level_factor: 0.2
-          magic_factor: 1.4
+    effect:
+      type: heal
+      target:
+        type: self
+      base_power: 8
+      level_factor: 0.2
+      magic_factor: 1.4
 "#
         )
     }
@@ -224,5 +224,21 @@ mod tests {
         assert_eq!(ids(Vocation::Druid), vec![5, 2]);
         assert_eq!(ids(Vocation::Sorcerer), vec![1, 5]);
         assert!(ids(Vocation::Knight).is_empty());
+    }
+
+    #[test]
+    fn each_listed_spell_carries_its_group() {
+        use crate::entities::spells::SpellGroup;
+        use crate::entities::vocation::Vocation;
+        use crate::persistence::spells::load_spells_from_str;
+        use std::collections::HashMap;
+
+        let yaml = format!("spells:{}", a_heal(1, 8, "druid"));
+        let spells = load_spells_from_str(&yaml, &HashMap::new()).unwrap();
+
+        let ServerMessage::SpellList { spells } = spell_list_for(Vocation::Druid, &spells) else {
+            panic!("expected SpellList");
+        };
+        assert_eq!(spells[0].group, SpellGroup::Healing);
     }
 }

@@ -14,7 +14,7 @@ use crate::{
         items::{ClientItemRef, ContainerId, ItemId},
         position::{Direction, Position},
         skills::SkillType,
-        spells::{SpellId, SpellTarget},
+        spells::{SpellGroup, SpellId, SpellTarget},
     },
     game::config::Color,
 };
@@ -163,6 +163,7 @@ pub struct SpellListEntry {
     pub level: u16,
     pub icon: u16,
     pub aimable: bool,
+    pub group: SpellGroup,
 }
 
 #[derive(Clone, Debug)]
@@ -839,6 +840,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                     dst.put_u16_le(spell.level);
                     dst.put_u16_le(spell.icon);
                     dst.put_u8(u8::from(spell.aimable));
+                    dst.put_u8(spell.group.as_id());
                 }
             }
         }
@@ -1932,6 +1934,7 @@ mod tests {
                         level: 12,
                         icon: 29,
                         aimable: true,
+                        group: SpellGroup::Support,
                     }],
                 },
                 &mut dst,
@@ -1941,7 +1944,7 @@ mod tests {
         assert_eq!(
             &dst[..],
             &[
-                18,
+                19,
                 0, // payload length
                 SRV_SPELL_LIST,
                 1,
@@ -1961,6 +1964,7 @@ mod tests {
                 29,
                 0, // icon
                 1, // aimable
+                2, // group
             ]
         );
     }

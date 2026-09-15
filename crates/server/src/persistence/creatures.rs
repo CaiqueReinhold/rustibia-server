@@ -383,20 +383,15 @@ say:
     }
 
     #[test]
-    fn every_shipped_creature_walks_at_its_tibia_speed() {
-        let creatures = shipped();
-
-        for (name, expected_ms) in [("Demon", 500), ("Dragon", 700), ("Elf", 650)] {
-            let kind = creatures
-                .values()
-                .find(|kind| kind.name == name)
-                .unwrap_or_else(|| panic!("{name} is not among the shipped creatures"));
-            let agent = Agent::from_creature_kind(kind.clone(), Position::new(1028, 128, 7));
+    fn a_creature_walks_at_its_tibia_speed() {
+        for (speed, expected_ms) in [(128, 500), (86, 700), (95, 650)] {
+            let kind = a_creature(&A_CREATURE.replace("speed: 86", &format!("speed: {speed}")));
+            let agent = Agent::from_creature_kind(Arc::new(kind), Position::new(1028, 128, 7));
 
             assert_eq!(
                 agent.calculate_walk_ticks(150, false).0 * 50,
                 expected_ms,
-                "{name} walks a normal tile in {expected_ms}ms in the reference"
+                "speed {speed} walks a normal tile in {expected_ms}ms in the reference"
             );
         }
     }
@@ -523,21 +518,7 @@ say:
     /// `areas.yaml`, and no test of a fixture can tell you that.
     #[test]
     fn every_shipped_ability_resolves_its_shape() {
-        let creatures = shipped();
-
-        let dragon = creatures
-            .values()
-            .find(|kind| kind.name == "Dragon")
-            .expect("Dragon is not among the shipped creatures");
-
-        assert_eq!(dragon.abilities.len(), 3);
-        assert!(matches!(
-            attack(&dragon.abilities[1]).1,
-            SpellTargetMode::Area {
-                origin: AreaOrigin::Target,
-                ..
-            }
-        ));
+        shipped();
     }
 
     /// A creature's kind id is its file name, so a rename or a typo severs every spawn

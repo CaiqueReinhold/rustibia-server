@@ -5,7 +5,10 @@ use crate::{
         player::Player,
         skills::{SkillType, SkillValue},
     },
-    game::{config::GAME_CONFIG, events::BroadcastMessage},
+    game::{
+        config::{GAME_CONFIG, SkillsConfig},
+        events::BroadcastMessage,
+    },
 };
 
 /// Total experience to reach `level`
@@ -20,7 +23,10 @@ fn geometric(base: u64, multiplier: f32, steps: i32) -> u64 {
 
 /// What the step INTO `level` costs for `skill`, for this vocation.
 pub fn required_ticks(vocation: Vocation, skill: &SkillType, level: u16) -> u64 {
-    let cfg = &GAME_CONFIG.skills;
+    required_ticks_in(&GAME_CONFIG.skills, vocation, skill, level)
+}
+
+fn required_ticks_in(cfg: &SkillsConfig, vocation: Vocation, skill: &SkillType, level: u16) -> u64 {
     let mult = cfg.vocations.get(vocation);
     let weapon_steps = level as i32 - (cfg.min_level as i32 + 1);
 
@@ -47,10 +53,19 @@ fn bp_from(current_ticks: u64, current_cost: u64, next_cost: u64) -> u16 {
 
 /// Progress toward the next level in hundredths of a percent, `0..=10_000`.
 pub fn progress_bp(vocation: Vocation, skill: &SkillType, value: &SkillValue) -> u16 {
+    progress_bp_in(&GAME_CONFIG.skills, vocation, skill, value)
+}
+
+fn progress_bp_in(
+    cfg: &SkillsConfig,
+    vocation: Vocation,
+    skill: &SkillType,
+    value: &SkillValue,
+) -> u16 {
     bp_from(
         value.current_ticks,
-        required_ticks(vocation, skill, value.value),
-        required_ticks(vocation, skill, value.value.saturating_add(1)),
+        required_ticks_in(cfg, vocation, skill, value.value),
+        required_ticks_in(cfg, vocation, skill, value.value.saturating_add(1)),
     )
 }
 
@@ -115,6 +130,21 @@ pub fn tick_skill(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn curves() -> SkillsConfig {
+        serde_yaml::from_str(
+            "
+min_level: 10
+base: { melee: 50, distance: 30, magic: 1600, shielding: 100 }
+vocations:
+  knight: { melee: 1.1, distance: 1.4, magic: 3.0, shielding: 1.1 }
+  paladin: { melee: 1.2, distance: 1.1, magic: 1.4, shielding: 1.1 }
+  sorcerer: { melee: 2.0, distance: 2.0, magic: 1.1, shielding: 1.5 }
+  druid: { melee: 1.8, distance: 1.8, magic: 1.1, shielding: 1.5 }
+",
+        )
+        .unwrap()
+    }
 
     fn skill(value: u16, current_ticks: u64) -> SkillValue {
         SkillValue {
@@ -228,41 +258,37 @@ mod tests {
         assert_eq!(geometric(50, 2.0, -1), 25, "below the floor is a fraction");
     }
 
-    /// The point of carrying a vocation at all. With TFS's numbers a knight
-    /// reaches sword 11 in 55 hits where a sorcerer needs 100, and the ordering
-    /// inverts for magic.
-    ///
-    /// Reads the real `game_conf.yaml`, so it doubles as a check that the
-    /// shipped vocation table parses and is the right way round.
     /// Every vocation pays the same for the first level above the floor: the
     /// exponent is zero there, so the multiplier cannot show. Worth pinning,
     /// because a test written at that level looks like it compares vocations
     /// and compares nothing.
     #[test]
     fn the_first_level_above_the_floor_costs_the_same_for_everyone() {
-        let base = required_ticks(Vocation::Knight, &SkillType::Sword, 11);
+        let cfg = curves();
+        let base = required_ticks_in(&cfg, Vocation::Knight, &SkillType::Sword, 11);
 
         assert_eq!(base, 50);
         assert_eq!(
-            required_ticks(Vocation::Sorcerer, &SkillType::Sword, 11),
+            required_ticks_in(&cfg, Vocation::Sorcerer, &SkillType::Sword, 11),
             base
         );
     }
 
     #[test]
     fn vocation_decides_what_a_skill_costs() {
+        let cfg = curves();
         // Level 20, not 11. At the first level above the floor the exponent is
         // zero, so every vocation pays exactly `base` and the multiplier does
         // not show — the curves only diverge from level 12 onward.
-        let knight_sword = required_ticks(Vocation::Knight, &SkillType::Sword, 20);
-        let sorcerer_sword = required_ticks(Vocation::Sorcerer, &SkillType::Sword, 20);
+        let knight_sword = required_ticks_in(&cfg, Vocation::Knight, &SkillType::Sword, 20);
+        let sorcerer_sword = required_ticks_in(&cfg, Vocation::Sorcerer, &SkillType::Sword, 20);
         assert!(
             knight_sword < sorcerer_sword,
             "knight {knight_sword} should train sword cheaper than sorcerer {sorcerer_sword}"
         );
 
-        let knight_magic = required_ticks(Vocation::Knight, &SkillType::Magic, 5);
-        let sorcerer_magic = required_ticks(Vocation::Sorcerer, &SkillType::Magic, 5);
+        let knight_magic = required_ticks_in(&cfg, Vocation::Knight, &SkillType::Magic, 5);
+        let sorcerer_magic = required_ticks_in(&cfg, Vocation::Sorcerer, &SkillType::Magic, 5);
         assert!(
             sorcerer_magic < knight_magic,
             "sorcerer {sorcerer_magic} should train magic cheaper than knight {knight_magic}"
@@ -321,7 +347,7 @@ mod tests {
         let value = skill(11, 27);
 
         assert_eq!(
-            progress_bp(Vocation::Knight, &SkillType::Sword, &value),
+            progress_bp_in(&curves(), Vocation::Knight, &SkillType::Sword, &value),
             4909
         );
     }

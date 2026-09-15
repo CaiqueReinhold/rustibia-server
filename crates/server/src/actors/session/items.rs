@@ -37,23 +37,31 @@ impl SessionActor {
         };
         let item_guid = item.guid.clone();
 
-        let Some(target) = resolve_client_coord(to, &map, &self.containers, player_key) else {
+        let Some(mut target) = resolve_client_coord(to, &map, &self.containers, player_key) else {
             return Ok(());
         };
-        // Dropping onto a container already in that slot puts the item inside it rather than
-        // beside it.
-        let target = match (&target, item_at_placement(&map, &target)) {
-            (ItemPlacement::Container { within, .. }, Some(occupant))
-                if occupant.config.has_flag(ItemFlag::Container) =>
-            {
-                ItemPlacement::Container {
-                    guid: occupant.guid.clone(),
-                    within: within.clone(),
-                    index: 0,
+        {
+            // Dropping onto a container already in that slot puts the item inside it rather than
+            // beside it. And droping into any container always puts item in the first slot.
+            let target_item = item_at_placement(&map, &target);
+            target = match (target, target_item) {
+                (ItemPlacement::Container { within, .. }, Some(occupant))
+                    if occupant.config.has_flag(ItemFlag::Container) =>
+                {
+                    ItemPlacement::Container {
+                        guid: occupant.guid.clone(),
+                        within: within,
+                        index: 0,
+                    }
                 }
-            }
-            _ => target,
-        };
+                (ItemPlacement::Container { guid, within, .. }, _) => ItemPlacement::Container {
+                    guid,
+                    within,
+                    index: 0,
+                },
+                (target, _) => target,
+            };
+        }
 
         self.world
             .send(WorldCommand::MoveItem {

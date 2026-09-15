@@ -188,7 +188,7 @@ mod tests {
     const FAST: u16 = 100;
     const SLOW: u16 = 250;
 
-    fn an_item(id: u16, flags: HashSet<ItemFlag>, attributes: HashSet<ItemAttribute>) -> Item {
+    fn an_item(id: u16, flags: HashSet<ItemFlag>, attributes: Vec<ItemAttribute>) -> Item {
         Item::new(
             Arc::new(ItemConfig::new(
                 ItemId(id),
@@ -207,7 +207,7 @@ mod tests {
         an_item(
             1,
             HashSet::from([ItemFlag::Ground]),
-            HashSet::from([ItemAttribute::TileFriction(friction)]),
+            [ItemAttribute::TileFriction(friction)].to_vec(),
         )
     }
 
@@ -257,7 +257,7 @@ mod tests {
             &Position::new(x, y, FLOOR),
             None,
             None,
-            an_item(2, HashSet::from([flag]), HashSet::new()),
+            an_item(2, HashSet::from([flag]), Vec::new()),
         )
         .unwrap();
     }
@@ -343,11 +343,7 @@ mod tests {
     fn a_tile_with_no_friction_is_not_walked() {
         let mut map = a_corridor(5..=25);
         let mut frictionless = MapTile::new();
-        frictionless.push_item(an_item(
-            3,
-            HashSet::from([ItemFlag::Ground]),
-            HashSet::new(),
-        ));
+        frictionless.push_item(an_item(3, HashSet::from([ItemFlag::Ground]), Vec::new()));
         map.insert_tile(at(17, 10), frictionless);
         let rat = put_creature(&mut map, 15, 10);
 

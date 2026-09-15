@@ -144,7 +144,11 @@ impl Player {
         self.weapon_ammo()
             .and_then(|it| it.config.attr_weapon_attack())
             .or_else(|| self.weapon().and_then(|it| it.config.attr_weapon_attack()))
-            .unwrap_or(5)
+            .unwrap_or(if matches!(self.weapon_type(), WeaponType::None) {
+                5
+            } else {
+                0
+            })
     }
 
     pub fn weapon_type(&self) -> WeaponType {

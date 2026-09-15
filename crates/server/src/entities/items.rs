@@ -1,5 +1,6 @@
-use std::{collections::HashSet, fmt::Display, sync::Arc};
+use std::{fmt::Display, sync::Arc};
 
+use smallvec::SmallVec;
 use strum::{EnumCount, EnumIter};
 
 use crate::{
@@ -140,7 +141,7 @@ pub enum FloorChangeDirection {
     West,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum ItemAttribute {
     Capacity(u8),
     Weight(u32),
@@ -176,7 +177,7 @@ pub struct ItemConfig {
     pub description: Option<String>,
     pub article: Option<String>,
     flags: ItemFlags,
-    attributes: HashSet<ItemAttribute>,
+    attributes: SmallVec<[ItemAttribute; 4]>,
 }
 
 macro_rules! attr_accessors {
@@ -199,7 +200,7 @@ impl ItemConfig {
         description: Option<String>,
         article: Option<String>,
         flags: impl IntoIterator<Item = ItemFlag>,
-        attributes: HashSet<ItemAttribute>,
+        attributes: impl IntoIterator<Item = ItemAttribute>,
     ) -> Self {
         ItemConfig {
             id,
@@ -207,7 +208,7 @@ impl ItemConfig {
             description,
             article,
             flags: flags.into_iter().collect(),
-            attributes,
+            attributes: SmallVec::from_iter(attributes),
         }
     }
 
@@ -425,7 +426,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
-                HashSet::new(),
+                Vec::new(),
             )),
             amount,
         )
@@ -484,7 +485,7 @@ mod tests {
             None,
             None,
             [],
-            HashSet::from([attr]),
+            Vec::from([attr]),
         )
     }
 
@@ -581,7 +582,7 @@ mod tests {
             None,
             None,
             [ItemFlag::Take, ItemFlag::Container, ItemFlag::Take],
-            HashSet::new(),
+            Vec::new(),
         );
 
         assert!(config.has_flag(ItemFlag::Take));
@@ -600,7 +601,7 @@ mod tests {
             None,
             None,
             HashSet::new(),
-            HashSet::new(),
+            Vec::new(),
         ));
 
         let mut pool = Item::new(Arc::clone(&config), 1);

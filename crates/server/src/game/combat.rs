@@ -60,6 +60,10 @@ pub fn plan_auto_attack(
         return None;
     }
 
+    if agent.get_player().is_some_and(|p| p.weapon_attack() == 0) {
+        return None;
+    }
+
     if agent.attack_range() > 1 && !can_throw(map, &from, &to, true) {
         return None;
     }
@@ -527,7 +531,7 @@ mod tests {
     fn a_config(
         id: ItemId,
         flags: HashSet<ItemFlag>,
-        attrs: HashSet<ItemAttribute>,
+        attrs: Vec<ItemAttribute>,
     ) -> Arc<ItemConfig> {
         Arc::new(ItemConfig::new(
             id,
@@ -544,11 +548,11 @@ mod tests {
             a_config(
                 ItemId(1),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Wand),
                     ItemAttribute::ManaCost(mana_cost),
                     ItemAttribute::WeaponAttack(10),
-                ]),
+                ],
             ),
             1,
         )
@@ -559,22 +563,22 @@ mod tests {
             a_config(
                 ItemId(8),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Sword),
                     ItemAttribute::WeaponAttack(attack),
-                ]),
+                ],
             ),
             1,
         )
     }
 
     fn a_bow(range: Option<u8>) -> Item {
-        let mut attrs = HashSet::from([
+        let mut attrs = vec![
             ItemAttribute::WeaponType(WeaponType::Bow),
             ItemAttribute::WeaponAttack(10),
-        ]);
+        ];
         if let Some(range) = range {
-            attrs.insert(ItemAttribute::WeaponRange(range));
+            attrs.push(ItemAttribute::WeaponRange(range));
         }
         Item::new(a_config(ItemId(2), HashSet::new(), attrs), 1)
     }
@@ -584,20 +588,20 @@ mod tests {
             a_config(
                 ItemId(7),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Bow),
                     ItemAttribute::WeaponAttack(10),
                     ItemAttribute::MissileId(missile),
-                ]),
+                ],
             ),
             1,
         )
     }
 
     fn an_arrow(missile: Option<MissileId>) -> Item {
-        let mut attrs = HashSet::from([ItemAttribute::AmmoType(AmmoType::Arrow)]);
+        let mut attrs = vec![ItemAttribute::AmmoType(AmmoType::Arrow)];
         if let Some(missile) = missile {
-            attrs.insert(ItemAttribute::MissileId(missile));
+            attrs.push(ItemAttribute::MissileId(missile));
         }
         Item::new(a_config(ItemId(3), HashSet::new(), attrs), 10)
     }
@@ -607,10 +611,10 @@ mod tests {
             a_config(
                 ItemId(9),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::AmmoType(AmmoType::Arrow),
                     ItemAttribute::WeaponAttack(attack),
-                ]),
+                ],
             ),
             10,
         )
@@ -623,12 +627,12 @@ mod tests {
             a_config(
                 ItemId(10),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::AmmoType(AmmoType::Arrow),
                     ItemAttribute::WeaponAttack(25),
                     ItemAttribute::WeaponElement(element),
                     ItemAttribute::HitChance(100),
-                ]),
+                ],
             ),
             10,
         )
@@ -641,12 +645,12 @@ mod tests {
             a_config(
                 ItemId(12),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::AmmoType(AmmoType::Arrow),
                     ItemAttribute::WeaponAttack(25),
                     ItemAttribute::HitChance(chance),
                     ItemAttribute::MissileId(MissileId(1)),
-                ]),
+                ],
             ),
             10,
         )
@@ -657,11 +661,11 @@ mod tests {
             a_config(
                 ItemId(13),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Bow),
                     ItemAttribute::WeaponRange(5),
                     ItemAttribute::HitChance(bonus),
-                ]),
+                ],
             ),
             1,
         )
@@ -669,11 +673,7 @@ mod tests {
 
     fn a_ground_item() -> Item {
         Item::new(
-            a_config(
-                ItemId(14),
-                HashSet::from([ItemFlag::Ground]),
-                HashSet::new(),
-            ),
+            a_config(ItemId(14), HashSet::from([ItemFlag::Ground]), Vec::new()),
             1,
         )
     }
@@ -683,7 +683,7 @@ mod tests {
             a_config(
                 ItemId(15),
                 HashSet::from([ItemFlag::Ground, ItemFlag::Unpass, ItemFlag::Unmove]),
-                HashSet::new(),
+                Vec::new(),
             ),
             1,
         )
@@ -694,11 +694,11 @@ mod tests {
             a_config(
                 ItemId(11),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Bow),
                     ItemAttribute::WeaponAttack(10),
                     ItemAttribute::WeaponElement(element),
-                ]),
+                ],
             ),
             1,
         )
@@ -709,7 +709,7 @@ mod tests {
             a_config(
                 ItemId(4),
                 HashSet::from([ItemFlag::AmmoContainer]),
-                HashSet::new(),
+                Vec::new(),
             ),
             1,
         );
@@ -958,7 +958,7 @@ mod tests {
             None,
             None,
             Item::new(
-                a_config(ItemId(6), HashSet::from([ItemFlag::Unpass]), HashSet::new()),
+                a_config(ItemId(6), HashSet::from([ItemFlag::Unpass]), Vec::new()),
                 1,
             ),
         )
@@ -1049,10 +1049,10 @@ mod tests {
             a_config(
                 ItemId(5),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Distance),
                     ItemAttribute::WeaponAttack(10),
-                ]),
+                ],
             ),
             1,
         );
@@ -1491,11 +1491,7 @@ mod tests {
             None,
             None,
             Item::new(
-                a_config(
-                    ItemId(17),
-                    HashSet::from([ItemFlag::Unpass]),
-                    HashSet::new(),
-                ),
+                a_config(ItemId(17), HashSet::from([ItemFlag::Unpass]), Vec::new()),
                 1,
             ),
         )
@@ -1592,12 +1588,12 @@ mod tests {
             a_config(
                 ItemId(16),
                 HashSet::new(),
-                HashSet::from([
+                vec![
                     ItemAttribute::WeaponType(WeaponType::Distance),
                     ItemAttribute::WeaponAttack(25),
                     ItemAttribute::WeaponRange(3),
                     ItemAttribute::MaxHitChance(76),
-                ]),
+                ],
             ),
             1,
         );

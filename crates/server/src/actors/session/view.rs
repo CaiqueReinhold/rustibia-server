@@ -123,6 +123,9 @@ impl SessionActor {
         let Some(agent) = map.get_agent(agent_key) else {
             return Ok(());
         };
+        if self.agents.get_local(&agent_key).is_some() {
+            return Ok(());
+        }
         let agent_id = self.agents.get_or_insert(agent_key);
         self.connection
             .send_message(get_agent_desc(agent, agent_id, position))
@@ -420,13 +423,13 @@ mod tests {
     async fn a_ticked_skill_sends_its_level_and_progress() {
         let mut map = GameMap::new();
         let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
-        map.get_player_mut(me).unwrap().skills_mut().insert(
-            SkillType::Sword,
-            SkillValue {
-                value: 11,
-                current_ticks: 27,
-            },
-        );
+        let sword = SkillValue {
+            value: 11,
+            current_ticks: 27,
+        };
+        let player = map.get_player_mut(me).unwrap();
+        let sword_bp = progress_bp(player.vocation(), &SkillType::Sword, &sword);
+        player.skills_mut().insert(SkillType::Sword, sword);
         let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
         session.skill_progress(SkillType::Sword, 1).await.unwrap();
@@ -438,7 +441,7 @@ mod tests {
                     skill: SkillType::Sword,
                     progress,
                 }
-            )) if progress.level == 11 && progress.percent_bp == 4909
+            )) if progress.level == 11 && progress.percent_bp == sword_bp
         ));
     }
 

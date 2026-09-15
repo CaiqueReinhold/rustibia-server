@@ -479,7 +479,7 @@ mod tests {
             planned_damage(&plan).is_some_and(|damage| damage.value > 0),
             "unarmed swings must still hurt"
         );
-        assert_eq!(get_min_damage(5, 1, GAME_CONFIG.combat.unarmed_skill), 5);
-        assert_eq!(get_max_damage(5, 1, GAME_CONFIG.combat.unarmed_skill), 48);
+        assert_eq!(get_min_damage(5, 1, 100), 5);
+        assert_eq!(get_max_damage(5, 1, 100), 48);
     }
 }

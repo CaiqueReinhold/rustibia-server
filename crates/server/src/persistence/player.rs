@@ -223,7 +223,7 @@ mod tests {
             None,
             None,
             HashSet::new(),
-            HashSet::new(),
+            Vec::new(),
         ));
         let item = Item::new(config, 1);
         let mut inv: HashMap<InventorySlot, Item> = HashMap::new();

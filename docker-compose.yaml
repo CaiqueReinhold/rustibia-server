@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: rustibia
       POSTGRES_DB: rustibia
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql
     ports:
       - "5432:5432"
     healthcheck:

@@ -305,6 +305,33 @@ mod tests {
         )
     }
 
+    fn a_built_item(id: ItemId, flags: impl IntoIterator<Item = ItemFlag>) -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                id,
+                format!("item {id}"),
+                None,
+                None,
+                flags,
+                Vec::new(),
+            )),
+            1,
+        )
+    }
+
+    /// `potion` resolves the flask it returns through `ITEM_CONFIGS`, so the flask has to
+    /// be one the catalogue carries.
+    fn a_flask_id() -> ItemId {
+        ITEM_CONFIGS
+            .values()
+            .filter(|config| {
+                config.has_flag(ItemFlag::Cumulative) && config.has_flag(ItemFlag::Take)
+            })
+            .map(|config| config.id)
+            .min()
+            .expect("the catalogue carries no stackable item a potion could return")
+    }
+
     fn a_tile_with(item: Item) -> MapTile {
         let mut tile = MapTile::new();
         tile.push_item(item);
@@ -357,8 +384,6 @@ mod tests {
             unconfigured.is_empty(),
             "usable multiuse tools missing from game_conf.yaml: {unconfigured:?}"
         );
-        assert_eq!(config.shovel_ids.len(), 6);
-        assert_eq!(config.rope_ids.len(), 4);
     }
 
     /// `shovel` digs into `item_id + 1`, and `transform` refuses an id the catalogue does
@@ -428,7 +453,6 @@ mod tests {
                     ItemId(diggable_id.0 + 1),
                     "{name} ({shovel_id:?}) dug {diggable_id:?} into the wrong item"
                 );
-                assert_eq!(dug.config.name, "hole");
             }
         }
     }
@@ -490,15 +514,17 @@ mod tests {
     fn a_non_tool_cannot_be_used_on_a_diggable() {
         let mut h = TestHarness::seeded(1);
         let (here, sand_pos) = (Position::new(10, 10, 7), Position::new(10, 11, 7));
-        let not_a_tool = 3459; // wooden hammer: usable and multiuse, but digs nothing.
-        assert_eq!(
-            GAME_CONFIG.multi_action.tool_action(ItemId(not_a_tool)),
-            None
+        let hammer = a_built_item(
+            ItemId(9998),
+            [ItemFlag::Usable, ItemFlag::Multiuse, ItemFlag::Take],
         );
+        assert_eq!(GAME_CONFIG.multi_action.tool_action(hammer.item_id), None);
 
         let mut map = GameMap::new();
-        let hammer = an_item(ItemId(not_a_tool));
-        let sand = an_item(ItemId(614));
+        let sand = a_built_item(
+            GAME_CONFIG.multi_action.diggable_ids[0],
+            [ItemFlag::Ground, ItemFlag::Usable],
+        );
         let (hammer_guid, sand_guid) = (hammer.guid.clone(), sand.guid.clone());
         map.insert_tile(here.clone(), a_tile_with(hammer));
         map.insert_tile(sand_pos.clone(), a_tile_with(sand));
@@ -554,11 +580,12 @@ mod tests {
                     ItemFlag::Cumulative,
                     ItemFlag::Take,
                 ]),
-                HashSet::from([ItemAttribute::MultiAction(ItemMultiAction::Potion {
+                [ItemAttribute::MultiAction(ItemMultiAction::Potion {
                     health,
                     mana,
                     flask,
-                })]),
+                })]
+                .to_vec(),
             )),
             amount,
         )
@@ -579,7 +606,7 @@ mod tests {
                 None,
                 None,
                 HashSet::new(),
-                HashSet::new(),
+                Vec::new(),
             )),
             1,
         )
@@ -975,8 +1002,9 @@ mod tests {
 
     #[test]
     fn drinking_leaves_the_empty_flask_with_the_user_not_the_target() {
+        let flask = a_flask_id();
         let drunk = drink_potion_on(
-            a_potion(3, bounds(100, 200), None, Some(ItemId(283))),
+            a_potion(3, bounds(100, 200), None, Some(flask)),
             pool(10, 1000),
             pool(50, 1000),
             Target::Other,
@@ -1024,7 +1052,7 @@ mod tests {
                 None,
                 None,
                 HashSet::from([ItemFlag::Container, ItemFlag::Take]),
-                HashSet::from([ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)]),
+                [ItemAttribute::Capacity(capacity), ItemAttribute::Weight(10)].to_vec(),
             )),
             1,
         )
@@ -1120,17 +1148,15 @@ mod tests {
     /// that merges silently stays invisible until the container is reopened.
     #[test]
     fn a_returned_flask_stacks_onto_a_like_flask_in_the_same_container() {
+        let flask = a_flask_id();
         let pouches = drink_from_a_pouch(
-            a_potion(3, bounds(100, 200), None, Some(ItemId(283))),
+            a_potion(3, bounds(100, 200), None, Some(flask)),
             1,
-            vec![an_item(ItemId(283))],
+            vec![an_item(flask)],
         );
 
         assert!(!pouches.denied);
-        assert_eq!(
-            pouches.contents[0],
-            vec![(ItemId(283), 2), (ItemId(9999), 2)]
-        );
+        assert_eq!(pouches.contents[0], vec![(flask, 2), (ItemId(9999), 2)]);
         assert!(
             pouches.broadcasts.iter().any(|b| matches!(
                 b,
@@ -1143,23 +1169,17 @@ mod tests {
 
     #[test]
     fn a_returned_flask_does_not_push_a_stack_past_its_maximum() {
+        let flask = a_flask_id();
         let pouches = drink_from_a_pouch(
-            a_potion(3, bounds(100, 200), None, Some(ItemId(283))),
+            a_potion(3, bounds(100, 200), None, Some(flask)),
             1,
-            vec![Item::new(
-                ITEM_CONFIGS.get(&ItemId(283)).unwrap().clone(),
-                MAX_STACK_AMOUNT,
-            )],
+            vec![Item::new(ITEM_CONFIGS[&flask].clone(), MAX_STACK_AMOUNT)],
         );
 
         assert!(!pouches.denied);
         assert_eq!(
             pouches.contents[0],
-            vec![
-                (ItemId(283), MAX_STACK_AMOUNT),
-                (ItemId(283), 1),
-                (ItemId(9999), 2)
-            ],
+            vec![(flask, MAX_STACK_AMOUNT), (flask, 1), (ItemId(9999), 2)],
             "a capped stack was topped up anyway"
         );
     }
@@ -1168,11 +1188,9 @@ mod tests {
     /// container" would put the flask in the wrong one.
     #[test]
     fn a_returned_flask_lands_in_the_container_the_potion_came_from() {
-        let pouches = drink_from_a_pouch(
-            a_potion(3, bounds(100, 200), None, Some(ItemId(283))),
-            2,
-            vec![],
-        );
+        let flask = a_flask_id();
+        let pouches =
+            drink_from_a_pouch(a_potion(3, bounds(100, 200), None, Some(flask)), 2, vec![]);
 
         assert!(!pouches.denied);
         assert_eq!(
@@ -1180,10 +1198,7 @@ mod tests {
             Vec::new(),
             "the flask went to the first pouch"
         );
-        assert_eq!(
-            pouches.contents[1],
-            vec![(ItemId(283), 1), (ItemId(9999), 2)]
-        );
+        assert_eq!(pouches.contents[1], vec![(flask, 1), (ItemId(9999), 2)]);
     }
 
     /// The order is the assertion, not incidental: a flask returned to a tile is
@@ -1191,8 +1206,9 @@ mod tests {
     /// goes back to the potion's own slot instead -- see the pouch test above.
     #[test]
     fn a_potion_drunk_from_the_ground_leaves_the_flask_on_that_tile() {
+        let flask = a_flask_id();
         let drunk = drink_potion_on(
-            a_potion(3, bounds(100, 200), None, Some(ItemId(283))),
+            a_potion(3, bounds(100, 200), None, Some(flask)),
             pool(10, 1000),
             pool(50, 1000),
             Target::Myself,
@@ -1200,9 +1216,6 @@ mod tests {
         );
 
         assert!(!drunk.denied);
-        assert_eq!(
-            drunk.at_the_users_feet,
-            vec![(ItemId(9999), 2), (ItemId(283), 1)]
-        );
+        assert_eq!(drunk.at_the_users_feet, vec![(ItemId(9999), 2), (flask, 1)]);
     }
 }

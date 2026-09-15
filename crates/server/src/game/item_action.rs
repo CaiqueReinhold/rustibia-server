@@ -252,7 +252,7 @@ fn toggle_door(ctx: &mut TickCtx, item: &ItemRef, new_door: ItemId) -> Result<()
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::items::ItemId;
+    use crate::entities::items::{ItemConfig, ItemId};
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::game::TestHarness;
@@ -268,7 +268,17 @@ mod tests {
         );
 
         let pos = Position::new(10, 10, 7);
-        let sand = Item::new(ITEM_CONFIGS.get(&ItemId(614)).unwrap().clone(), 1);
+        let sand = Item::new(
+            std::sync::Arc::new(ItemConfig::new(
+                ItemId(4322),
+                "sand".to_string(),
+                None,
+                None,
+                [ItemFlag::Ground],
+                Vec::new(),
+            )),
+            1,
+        );
         let guid = sand.guid.clone();
         let mut tile = MapTile::new();
         tile.push_item(sand);
