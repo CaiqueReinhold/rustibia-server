@@ -129,6 +129,14 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
             };
             Some(ItemAttribute::Action(action))
         }
+        "food" => {
+            let duration = TickDelta(value.get("duration")?.as_u64()?);
+            let message_index = usize::try_from(value.get("message")?.as_u64()?).ok()?;
+            Some(ItemAttribute::Action(ItemAction::Food {
+                duration,
+                message_index,
+            }))
+        }
         "potion" => {
             let health = match value.get("health") {
                 Some(bounds) => Some(parse_bounds(bounds)?),
@@ -354,6 +362,23 @@ mod tests {
 
     fn potion(value: &str) -> Option<ItemAttribute> {
         parse("potion", value)
+    }
+
+    #[test]
+    fn a_food_attribute_becomes_an_eat_action() {
+        assert_eq!(
+            parse("food", "duration: 7200\nmessage: 6"),
+            Some(ItemAttribute::Action(ItemAction::Food {
+                duration: TickDelta(7200),
+                message_index: 6,
+            }))
+        );
+    }
+
+    #[test]
+    fn a_food_without_a_duration_or_a_message_is_dropped_whole() {
+        assert_eq!(parse("food", "message: 6"), None);
+        assert_eq!(parse("food", "duration: 7200"), None);
     }
 
     #[test]

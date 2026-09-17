@@ -29,6 +29,12 @@ pub enum GameConfigLoadError {
 
 #[derive(Deserialize)]
 pub struct GameConfig {
+    pub max_fed_ticks: TickDelta,
+    pub regen_ticks: TickDelta,
+    pub logout_block_ticks: TickDelta,
+    pub disconnect_linger_cap_ticks: TickDelta,
+    #[serde(default)]
+    pub action_messages: Vec<String>,
     pub multi_action: MultiActionConfig,
     pub action: ItemActionConfig,
     pub movement: MovementConfig,
@@ -37,6 +43,7 @@ pub struct GameConfig {
     pub text_colors: TextColors,
     pub combat: CombatConfig,
     pub skills: SkillsConfig,
+    pub vocation: VocationsConfig,
 }
 
 #[derive(Deserialize)]
@@ -174,6 +181,23 @@ pub struct SkillsConfig {
     pub min_level: u16,
     pub base: SkillBases,
     pub vocations: VocationCurves,
+}
+
+#[derive(Deserialize)]
+pub struct VocationsConfig {
+    pub knight: VocationConfig,
+    pub sorcerer: VocationConfig,
+    pub druid: VocationConfig,
+    pub paladin: VocationConfig,
+}
+
+#[derive(Deserialize)]
+pub struct VocationConfig {
+    pub life_regen_amount: u32,
+    pub mana_regen_amount: u32,
+    pub life_gain_level: u32,
+    pub mana_gain_level: u32,
+    pub capacity_gain_level: u32,
 }
 
 pub fn load_game_config(path: impl AsRef<Path>) -> Result<GameConfig, GameConfigLoadError> {

@@ -4,17 +4,24 @@ use crate::{
 };
 
 pub fn combat_system(ctx: &mut TickCtx) {
-    let with_targets: Vec<AgentKey> = ctx
+    let with_targets: Vec<(AgentKey, AgentKey)> = ctx
         .map
         .iter_agents()
         .filter(|(_, agent)| agent.target().is_some())
-        .map(|(key, _)| key)
+        .map(|(key, agent)| (key, agent.target().unwrap()))
         .collect();
 
-    for agent_key in with_targets {
+    for (agent_key, target) in with_targets {
         if targeting::drop_unreachable_target(ctx, agent_key) {
             continue;
         }
+
+        if let Some(agent) = ctx.map.get_agent_mut(target)
+            && !agent.is_creature()
+        {
+            agent.conditions_mut().reset_logout_block(ctx.tick);
+        }
+
         drive_auto_attack(ctx, agent_key);
     }
 }

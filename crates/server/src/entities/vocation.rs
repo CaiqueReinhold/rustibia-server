@@ -1,3 +1,5 @@
+use crate::game::config::GAME_CONFIG;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Vocation {
@@ -6,10 +8,6 @@ pub enum Vocation {
     Sorcerer = 2,
     Druid = 3,
 }
-
-const LIFE_GAINED_LEVEL: [i32; 4] = [15, 10, 5, 5];
-const MANA_GAINED_LEVEL: [i32; 4] = [5, 15, 30, 30];
-const CAPACITY_GAINED_LEVEL: [i32; 4] = [2500, 2000, 1000, 1000];
 
 impl Vocation {
     pub fn from_i16(value: i16) -> Option<Self> {
@@ -23,15 +21,48 @@ impl Vocation {
     }
 
     pub fn life_on_level_up(&self) -> i32 {
-        LIFE_GAINED_LEVEL[*self as usize]
+        match self {
+            Self::Knight => GAME_CONFIG.vocation.knight.life_gain_level as i32,
+            Self::Paladin => GAME_CONFIG.vocation.paladin.life_gain_level as i32,
+            Self::Sorcerer => GAME_CONFIG.vocation.sorcerer.life_gain_level as i32,
+            Self::Druid => GAME_CONFIG.vocation.druid.life_gain_level as i32,
+        }
     }
 
     pub fn mana_on_level_up(&self) -> i32 {
-        MANA_GAINED_LEVEL[*self as usize]
+        match self {
+            Self::Knight => GAME_CONFIG.vocation.knight.mana_gain_level as i32,
+            Self::Paladin => GAME_CONFIG.vocation.paladin.mana_gain_level as i32,
+            Self::Sorcerer => GAME_CONFIG.vocation.sorcerer.mana_gain_level as i32,
+            Self::Druid => GAME_CONFIG.vocation.druid.mana_gain_level as i32,
+        }
     }
 
     pub fn capacity_on_level_up(&self) -> i32 {
-        CAPACITY_GAINED_LEVEL[*self as usize]
+        match self {
+            Self::Knight => GAME_CONFIG.vocation.knight.capacity_gain_level as i32,
+            Self::Paladin => GAME_CONFIG.vocation.paladin.capacity_gain_level as i32,
+            Self::Sorcerer => GAME_CONFIG.vocation.sorcerer.capacity_gain_level as i32,
+            Self::Druid => GAME_CONFIG.vocation.druid.capacity_gain_level as i32,
+        }
+    }
+
+    pub fn life_regen_amount(&self) -> u32 {
+        match self {
+            Self::Knight => GAME_CONFIG.vocation.knight.life_regen_amount,
+            Self::Paladin => GAME_CONFIG.vocation.paladin.life_regen_amount,
+            Self::Sorcerer => GAME_CONFIG.vocation.sorcerer.life_regen_amount,
+            Self::Druid => GAME_CONFIG.vocation.druid.life_regen_amount,
+        }
+    }
+
+    pub fn mana_regen_amount(&self) -> u32 {
+        match self {
+            Self::Knight => GAME_CONFIG.vocation.knight.mana_regen_amount,
+            Self::Paladin => GAME_CONFIG.vocation.paladin.mana_regen_amount,
+            Self::Sorcerer => GAME_CONFIG.vocation.sorcerer.mana_regen_amount,
+            Self::Druid => GAME_CONFIG.vocation.druid.mana_regen_amount,
+        }
     }
 }
 

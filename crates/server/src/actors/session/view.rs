@@ -22,6 +22,23 @@ use crate::messages::{FloatingTextType, ServerMessage, SkillProgress, TextMessag
 use crate::persistence::player::PlayerSnapshot;
 
 impl SessionActor {
+    pub(super) async fn check_status_changed(&mut self) -> Result<()> {
+        let status = {
+            let map = self.shared_map.load();
+            let tick = self.tick_rx.borrow();
+            map.get_agent(self.player_key)
+                .map(|a| a.conditions().to_wire(*tick))
+                .unwrap_or(0)
+        };
+
+        if status != self.prev_status {
+            self.player_status_updated().await?;
+            self.prev_status = status;
+        }
+
+        Ok(())
+    }
+
     pub(super) async fn player_spawned(
         &mut self,
         agent_key: AgentKey,
@@ -48,6 +65,8 @@ impl SessionActor {
             if let Some(spells_msg) = get_spell_list(&map, self.player_key) {
                 self.connection.send_message(spells_msg).await?;
             }
+
+            self.player_status_updated().await?;
 
             Ok(())
         } else {
@@ -188,6 +207,21 @@ impl SessionActor {
                 max,
             })
             .await?;
+        Ok(())
+    }
+
+    pub(super) async fn player_status_updated(&self) -> Result<()> {
+        let tick = *self.tick_rx.borrow();
+        let status = {
+            let map = self.shared_map.load();
+            map.get_agent(self.player_key)
+                .map(|agent| agent.conditions().to_wire(tick))
+        };
+        if let Some(status) = status {
+            self.connection
+                .send_message(ServerMessage::PlayerStatus { status })
+                .await?;
+        }
         Ok(())
     }
 

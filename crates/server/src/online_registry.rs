@@ -10,6 +10,7 @@ pub struct OnlineRegistry {
     persistence: PersistenceActorHandle,
 }
 
+#[derive(Debug)]
 pub struct RegistryGuard {
     inner: Arc<Mutex<HashSet<PlayerId>>>,
     persistence: PersistenceActorHandle,

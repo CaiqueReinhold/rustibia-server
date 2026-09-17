@@ -28,6 +28,16 @@ pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
 
     let new_pos = current_pos.clone() + direction;
     if !ctx.map.can_move(&new_pos, agent_key) {
+        let facing = agent.facing();
+        if direction_to_facing(&direction) != facing {
+            let agent = ctx.map.get_agent_mut(agent_key).unwrap();
+            agent.set_facing(direction_to_facing(&direction));
+            ctx.events.push(BroadcastMessage::AgentChangedDirection {
+                agent_key,
+                facing,
+                position: current_pos,
+            });
+        }
         ctx.events
             .push(BroadcastMessage::AgentWalkDenied { agent_key });
         return;

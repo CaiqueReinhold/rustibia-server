@@ -28,6 +28,18 @@ impl SessionActor {
             .map(|(key, _)| key)
     }
 
+    pub(super) async fn action_message(&self, position: Position, message: String) -> Result<()> {
+        self.connection
+            .send_message(ServerMessage::FloatingText {
+                text: message,
+                position,
+                text_type: FloatingTextType::CreatureSay,
+                color: None,
+            })
+            .await?;
+        Ok(())
+    }
+
     pub(super) async fn send_chat(
         &mut self,
         author: AgentKey,

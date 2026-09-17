@@ -2,34 +2,38 @@ use anyhow::{Result, anyhow};
 use arc_swap::ArcSwap;
 use std::collections::binary_heap::BinaryHeap;
 
-use std::sync::Arc;
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 use strum::Display;
-use tokio::sync::{oneshot, watch};
-use tokio::time;
-use tokio::{select, sync::mpsc};
+use tokio::{
+    select,
+    sync::mpsc,
+    sync::{oneshot, watch},
+    time,
+};
 use tracing::{debug, error, info, warn};
 
-use crate::actors::message_router::{MessageRouterActorHandle, MessageRouterGuard};
-use crate::actors::session::SessionActorHandle;
-use crate::config::CONFIG;
-use crate::entities::agent::{Agent, AgentKey, Facing};
-use crate::entities::combat::CombatDamage;
-use crate::entities::creature::{CreatureAbilityId, CreatureKind};
-use crate::entities::items::ItemRef;
-use crate::entities::map::GameMap;
-use crate::entities::position::{Direction, ItemPlacement, Position};
-use crate::entities::spells::{CastTarget, ChainAttack, SpellId};
-use crate::game::creature_behavior::CreatureAction;
-use crate::game::events::BroadcastMessage;
-use crate::game::item_multi_action::UseTarget;
-use crate::game::random::Rolls;
-use crate::game::{
-    Tick, TickCtx, TickDelta, chat, creature_abilities, events, item_action, item_movement,
-    item_multi_action, movement, spells, systems, targeting,
+use crate::actors::{
+    message_router::{MessageRouterActorHandle, MessageRouterGuard},
+    session::SessionActorHandle,
 };
-use crate::persistence::creatures::CREATURE_KINDS;
-use crate::persistence::spawns::SpawnPoint;
+use crate::config::CONFIG;
+use crate::entities::{
+    agent::{Agent, AgentKey, Facing},
+    combat::{CombatDamage, CombatElement},
+    creature::{CreatureAbilityId, CreatureKind},
+    items::ItemRef,
+    map::GameMap,
+    position::{Direction, ItemPlacement, Position},
+    spells::{CastTarget, ChainAttack, SpellId},
+};
+use crate::game::{
+    Tick, TickCtx, TickDelta, chat, conditions, config::GAME_CONFIG, creature_abilities,
+    creature_behavior::CreatureAction, events, events::BroadcastMessage, item_action,
+    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls,
+    spells, systems, targeting,
+};
+use crate::online_registry::RegistryGuard;
+use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint};
 
 #[derive(Debug, Display)]
 pub enum WorldCommand {
@@ -63,6 +67,8 @@ pub enum WorldCommand {
     },
     DespawnPlayer {
         agent_key: AgentKey,
+        registry: Option<RegistryGuard>,
+        give_up_at: Option<Tick>,
     },
     SpawnCreature {
         kind: Arc<CreatureKind>,
@@ -98,6 +104,15 @@ pub enum WorldCommand {
         sources: Vec<(Position, CombatDamage)>,
         chain: ChainAttack,
         targeted: Vec<AgentKey>,
+    },
+    RegeneratePlayer {
+        agent_key: AgentKey,
+        generation: u32,
+    },
+    DamageOverTimeTick {
+        agent_key: AgentKey,
+        element: CombatElement,
+        generation: u32,
     },
 }
 
@@ -423,8 +438,28 @@ impl WorldActor {
                     targeting::set_target(ctx, agent_key, target, seq)
                 });
             }
-            WorldCommand::DespawnPlayer { agent_key, .. } => {
-                if let Some((_, position)) = self.map.remove_agent(agent_key) {
+            WorldCommand::DespawnPlayer {
+                agent_key,
+                registry,
+                give_up_at,
+            } => {
+                let give_up_at =
+                    give_up_at.unwrap_or(self.tick + GAME_CONFIG.disconnect_linger_cap_ticks);
+                let blocked = self
+                    .map
+                    .get_agent(agent_key)
+                    .is_some_and(|agent| agent.conditions().is_logout_blocked(self.tick));
+
+                if blocked && self.tick < give_up_at {
+                    self.command_queue.push(ScheduledCommand {
+                        at_tick: self.tick + TickDelta(1),
+                        command: WorldCommand::DespawnPlayer {
+                            agent_key,
+                            registry,
+                            give_up_at: Some(give_up_at),
+                        },
+                    });
+                } else if let Some((_, position)) = self.map.remove_agent(agent_key) {
                     info!("Player {:?} despawned after disconnect", agent_key);
                     broadcast_messages.push(BroadcastMessage::AgentDespawned {
                         agent_key,
@@ -492,6 +527,19 @@ impl WorldActor {
                     spells::chain_attack(ctx, attacker, sources, chain, targeted)
                 });
             }
+            WorldCommand::RegeneratePlayer {
+                agent_key,
+                generation,
+            } => self.with_ctx(broadcast_messages, |ctx| {
+                conditions::regenerate_life_mana(ctx, agent_key, generation)
+            }),
+            WorldCommand::DamageOverTimeTick {
+                agent_key,
+                element,
+                generation,
+            } => self.with_ctx(broadcast_messages, |ctx| {
+                conditions::tick_damage_over_time(ctx, agent_key, element, generation)
+            }),
         };
     }
 
@@ -503,6 +551,11 @@ impl WorldActor {
         let Some(agent) = self.map.get_agent(agent_key) else {
             return Ok(());
         };
+
+        if agent.conditions().is_logout_blocked(self.tick) {
+            broadcast_messages.push(BroadcastMessage::LogoutDenied { agent_key });
+            return Ok(());
+        }
 
         if !agent.can_logout(self.tick) {
             let next_tick = agent.next_walk_tick;
@@ -694,6 +747,63 @@ mod tests {
     /// hand: gutting the dispatch arm to a no-op `Ok(())` makes this test fail on
     /// `assert_eq!(actor.map.get_agent(attacker).unwrap().target(), Some(victim))`
     /// (left: `None`, right: `Some(victim)`); restoring the arm makes it pass again.
+    #[test]
+    fn a_blocked_disconnect_re_queues_instead_of_despawning() {
+        let mut map = GameMap::new();
+        let position = Position::new(5, 5, 7);
+        map.insert_tile(position.clone(), MapTile::new());
+        let agent_key = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &position)
+            .unwrap();
+        map.get_agent_mut(agent_key)
+            .unwrap()
+            .conditions_mut()
+            .reset_logout_block(Tick(0));
+
+        let mut actor = a_test_world_actor(map);
+        let mut broadcasts = Vec::new();
+        actor.handle_command(
+            WorldCommand::DespawnPlayer {
+                agent_key,
+                registry: None,
+                give_up_at: None,
+            },
+            &mut broadcasts,
+        );
+
+        assert!(actor.map.get_agent(agent_key).is_some());
+        assert_eq!(actor.command_queue.len(), 1);
+        assert!(broadcasts.is_empty());
+    }
+
+    #[test]
+    fn the_linger_cap_despawns_a_still_blocked_player() {
+        let mut map = GameMap::new();
+        let position = Position::new(5, 5, 7);
+        map.insert_tile(position.clone(), MapTile::new());
+        let agent_key = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &position)
+            .unwrap();
+        map.get_agent_mut(agent_key)
+            .unwrap()
+            .conditions_mut()
+            .reset_logout_block(Tick(0));
+
+        let mut actor = a_test_world_actor(map);
+        let mut broadcasts = Vec::new();
+        actor.handle_command(
+            WorldCommand::DespawnPlayer {
+                agent_key,
+                registry: None,
+                give_up_at: Some(Tick(0)),
+            },
+            &mut broadcasts,
+        );
+
+        assert!(actor.map.get_agent(agent_key).is_none());
+        assert!(actor.command_queue.is_empty());
+    }
+
     #[tokio::test]
     async fn set_target_command_dispatches_through_handle_command() {
         let mut map = GameMap::new();

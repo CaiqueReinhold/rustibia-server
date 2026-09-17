@@ -17,7 +17,7 @@ use crate::{
         spells::{CastTarget, SpellAttack, SpellTargetMode},
     },
     game::{
-        Tick, TickCtx,
+        Tick, TickCtx, conditions,
         config::{Color, GAME_CONFIG},
         damage::{apply_damage, get_creature_base_damage, get_player_base_damage},
         events::BroadcastMessage,
@@ -179,6 +179,9 @@ pub fn plan_auto_attack(
         missile,
         area_effect,
         missed,
+        condition: agent
+            .get_creature_kind()
+            .and_then(|kind| kind.melee.condition.clone()),
     })
 }
 
@@ -253,6 +256,7 @@ pub fn plan_spell_attack(
         missile,
         area_effect,
         missed: false,
+        condition: None,
     })
 }
 
@@ -304,7 +308,11 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
     }
 
     for (target, dmg) in plan.damage.into_iter() {
+        let landed = dmg.value > 0;
         apply_damage(ctx, target, dmg, Some(plan.attacker));
+        if landed && let Some(spec) = &plan.condition {
+            conditions::apply_condition(ctx, target, spec, Some(plan.attacker));
+        }
     }
 }
 
@@ -509,13 +517,16 @@ fn apply_armor(base_attack_value: u32, target: &Agent, roll: &mut Rolls) -> u32 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::actors::world::WorldCommand;
+    use crate::entities::Bounds;
     use crate::entities::agent::Agent;
     use crate::entities::combat::AmmoType;
+    use crate::entities::conditions::{ConditionSpec, SpecSchedule};
     use crate::entities::effects::MissileId;
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::skills::SkillValue;
-    use crate::game::TestHarness;
+    use crate::game::{TestHarness, TickDelta};
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::{
         a_test_creature, a_test_creature_that_flees, a_test_creature_with_defences, a_test_snapshot,
@@ -754,6 +765,89 @@ mod tests {
             .expect("a shot in flight carries a missile")
             .to
             .clone()
+    }
+
+    #[test]
+    fn a_landed_hit_applies_the_attacks_condition() {
+        let (mut map, attacker, target) = duel(
+            Agent::from_player(armed(None, None)),
+            a_test_creature("Rat", 100, (1, 2)),
+        );
+        let mut h = TestHarness::seeded(1);
+        let plan = AttackPlan {
+            attacker,
+            damage: SmallVec::from_vec(Vec::from([(
+                target,
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 5,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )])),
+            cost: AttackCost::None,
+            trains: None,
+            missile: None,
+            area_effect: None,
+            missed: false,
+            condition: Some(ConditionSpec {
+                element: CombatElement::Fire,
+                damage: Bounds { min: 40, max: 40 },
+                interval: TickDelta(180),
+                schedule: SpecSchedule::Decaying { start: None },
+            }),
+        };
+
+        execute_attack(&mut h.ctx(&mut map), plan);
+
+        assert!(h.scheduled.iter().any(|scheduled| matches!(
+            scheduled.command,
+            WorldCommand::DamageOverTimeTick {
+                element: CombatElement::Fire,
+                ..
+            }
+        )));
+    }
+
+    #[test]
+    fn a_hit_blocked_to_nothing_applies_no_condition() {
+        let (mut map, attacker, target) = duel(
+            Agent::from_player(armed(None, None)),
+            a_test_creature("Rat", 100, (1, 2)),
+        );
+        let mut h = TestHarness::seeded(1);
+        let plan = AttackPlan {
+            attacker,
+            damage: SmallVec::from_vec(Vec::from([(
+                target,
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 0,
+                    blocked_shield: true,
+                    blocked_armor: false,
+                },
+            )])),
+            cost: AttackCost::None,
+            trains: None,
+            missile: None,
+            area_effect: None,
+            missed: false,
+            condition: Some(ConditionSpec {
+                element: CombatElement::Fire,
+                damage: Bounds { min: 40, max: 40 },
+                interval: TickDelta(180),
+                schedule: SpecSchedule::Decaying { start: None },
+            }),
+        };
+
+        execute_attack(&mut h.ctx(&mut map), plan);
+
+        assert!(
+            !h.scheduled.iter().any(|scheduled| matches!(
+                scheduled.command,
+                WorldCommand::DamageOverTimeTick { .. }
+            ))
+        );
     }
 
     #[test]

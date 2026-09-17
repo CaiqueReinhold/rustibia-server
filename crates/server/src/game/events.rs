@@ -107,6 +107,10 @@ pub enum BroadcastMessage {
     PlayerManaUpdated {
         agent_key: AgentKey,
     },
+    PlayerLifeUpdated {
+        agent_key: AgentKey,
+        position: Position,
+    },
     PotionDrunk {
         target: AgentKey,
         position: Position,
@@ -133,6 +137,10 @@ pub enum BroadcastMessage {
     AgentSpeedChanged {
         agent_key: AgentKey,
         position: Position,
+    },
+    AgentActionMessage {
+        position: Position,
+        message: String,
     },
 }
 
@@ -163,7 +171,8 @@ impl BroadcastMessage {
             | Self::TileChanged { position }
             | Self::DamageTaken { position, .. }
             | Self::AttackMissed { position }
-            | Self::AgentSpeedChanged { position, .. } => Routing::Viewport {
+            | Self::AgentSpeedChanged { position, .. }
+            | Self::PlayerLifeUpdated { position, .. } => Routing::Viewport {
                 at: position,
                 same_floor: false,
             },
@@ -171,7 +180,8 @@ impl BroadcastMessage {
             Self::PotionDrunk { position, .. }
             | Self::SpellCast { position, .. }
             | Self::SpellDenied { position, .. }
-            | Self::AgentSaid { position, .. } => Routing::Viewport {
+            | Self::AgentSaid { position, .. }
+            | Self::AgentActionMessage { position, .. } => Routing::Viewport {
                 at: position,
                 same_floor: true,
             },
@@ -250,6 +260,7 @@ impl BroadcastMessage {
 enum RefreshKey {
     Tile(Position),
     Mana(AgentKey),
+    Life(AgentKey),
     Slot(AgentKey, InventorySlot),
     Container(ItemGuid),
 }
@@ -259,6 +270,9 @@ impl BroadcastMessage {
         match self {
             BroadcastMessage::TileChanged { position } => Some(RefreshKey::Tile(position.clone())),
             BroadcastMessage::PlayerManaUpdated { agent_key } => Some(RefreshKey::Mana(*agent_key)),
+            BroadcastMessage::PlayerLifeUpdated { agent_key, .. } => {
+                Some(RefreshKey::Life(*agent_key))
+            }
             BroadcastMessage::UpdateInventorySlot { agent_key, slot } => {
                 Some(RefreshKey::Slot(*agent_key, *slot))
             }

@@ -157,6 +157,8 @@ pub struct SessionActor {
     queued_walk: Option<Direction>,
     logout_pending: bool,
     prev_capacity: u32,
+    prev_status: u32,
+    registry_guard: Option<RegistryGuard>,
 }
 
 #[cfg(test)]
@@ -190,7 +192,6 @@ impl SessionActor {
                 .await;
             match spawn_result {
                 Ok((agent_key, message_router_guard)) => {
-                    let _registry_guard = registry_guard;
                     let _router_guard = message_router_guard;
                     let actor = Self {
                         session_id,
@@ -209,6 +210,8 @@ impl SessionActor {
                         queued_walk: None,
                         logout_pending: false,
                         prev_capacity: 0,
+                        prev_status: 0,
+                        registry_guard: Some(registry_guard),
                     };
                     actor.run().await;
                 }
@@ -295,6 +298,8 @@ impl SessionActor {
             .send_delayed(
                 WorldCommand::DespawnPlayer {
                     agent_key: self.player_key,
+                    registry: self.registry_guard.take(),
+                    give_up_at: None,
                 },
                 TickDelta(delay_ticks),
             )
@@ -465,6 +470,12 @@ impl SessionActor {
             BroadcastMessage::AgentSpeedChanged { agent_key, .. } => {
                 self.agent_speed_changed(agent_key).await
             }
+            BroadcastMessage::AgentActionMessage { position, message } => {
+                self.action_message(position, message).await
+            }
+            BroadcastMessage::PlayerLifeUpdated { agent_key, .. } => {
+                self.life_updated(agent_key).await
+            }
         }
     }
 
@@ -498,6 +509,7 @@ impl SessionActor {
     async fn tick_schedules(&mut self) -> Result<()> {
         self.check_walk_queue().await?;
         self.check_capacity_changed().await?;
+        self.check_status_changed().await?;
         self.remove_agents_not_in_reach().await?;
         Ok(())
     }
@@ -548,6 +560,8 @@ impl SessionActor {
                 queued_walk: None,
                 logout_pending: false,
                 prev_capacity: 0,
+                prev_status: 0,
+                registry_guard: None,
             },
             connection_rx,
             world_rx,

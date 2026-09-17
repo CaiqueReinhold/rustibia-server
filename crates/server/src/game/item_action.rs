@@ -9,7 +9,7 @@ use crate::{
         position::ItemPlacement,
     },
     game::{
-        Mark, Tick, TickCtx,
+        Mark, Tick, TickCtx, TickDelta,
         config::GAME_CONFIG,
         item_movement::{ItemMovementError, insert_item_at, remove_item_at},
     },
@@ -20,12 +20,14 @@ use crate::persistence::items::ITEM_CONFIGS;
 
 #[derive(Error, Debug)]
 pub enum ItemActionError {
-    #[error("Action failed")]
+    #[error("This item can't be used")]
     ActionFailed,
     #[error("Invalid State")]
     InvalidState,
     #[error("No target")]
     NoTarget,
+    #[error("You're already full")]
+    PlayerFull,
 }
 
 pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {
@@ -135,13 +137,17 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
                 return;
             }
             Err(e) => {
-                if let ItemActionError::InvalidState = e {
-                    warn!("{e}");
-                }
+                let message = match e {
+                    ItemActionError::InvalidState => {
+                        warn!("{e}");
+                        "Item cannot be used"
+                    }
+                    e => &e.to_string(),
+                };
+                use_item_failed(ctx, mark, agent_key, message);
             }
         }
     }
-    use_item_failed(ctx, mark, agent_key, "Can't use that")
 }
 
 /// Discards whatever a half-finished use reported and announces the refusal in its place.
@@ -156,12 +162,16 @@ fn use_item_failed(ctx: &mut TickCtx, mark: Mark, agent_key: AgentKey, message: 
 pub fn route_action(
     ctx: &mut TickCtx,
     action: &ItemAction,
-    _agent_key: AgentKey,
+    agent_key: AgentKey,
     item: &ItemRef,
 ) -> Result<(), ItemActionError> {
     match action {
         ItemAction::Transform { into } => transform(ctx, item, *into),
         ItemAction::Door { new } => toggle_door(ctx, item, *new),
+        ItemAction::Food {
+            duration,
+            message_index,
+        } => eat_food(ctx, item, agent_key, *duration, *message_index),
     }
 }
 
@@ -244,6 +254,58 @@ fn toggle_door(ctx: &mut TickCtx, item: &ItemRef, new_door: ItemId) -> Result<()
         .map_err(|_| ItemActionError::InvalidState)?
     {
         // todo: move agents from closed door.
+    }
+
+    Ok(())
+}
+
+fn eat_food(
+    ctx: &mut TickCtx,
+    item: &ItemRef,
+    agent_key: AgentKey,
+    duration: TickDelta,
+    message_index: usize,
+) -> Result<(), ItemActionError> {
+    let agent = ctx
+        .map
+        .get_agent(agent_key)
+        .ok_or(ItemActionError::InvalidState)?;
+    if !agent.conditions().can_feed(ctx.tick, duration) {
+        return Err(ItemActionError::PlayerFull);
+    }
+    let old_generation = agent
+        .conditions()
+        .fed()
+        .filter(|(until, _)| *until > ctx.tick)
+        .map(|(_, generation)| generation);
+    let position = ctx
+        .map
+        .agent_position(agent_key)
+        .ok_or(ItemActionError::InvalidState)?
+        .clone();
+
+    if remove_item_at(ctx, item, 1).is_err() {
+        return Err(ItemActionError::InvalidState);
+    }
+
+    let agent = ctx.map.get_agent_mut(agent_key).unwrap();
+    let generation = agent.conditions_mut().add_fed_ticks(ctx.tick, duration);
+
+    if Some(generation) != old_generation {
+        ctx.scheduled.push(ScheduledCommand {
+            at_tick: ctx.tick + GAME_CONFIG.regen_ticks,
+            command: WorldCommand::RegeneratePlayer {
+                agent_key,
+                generation,
+            },
+        });
+    }
+
+    if let Some(message) = GAME_CONFIG.action_messages.get(message_index) {
+        ctx.events.push(BroadcastMessage::AgentActionMessage {
+            position,
+            message: message.clone(),
+        });
     }
 
     Ok(())

@@ -1,6 +1,7 @@
 pub mod agent;
 pub mod chat;
 pub mod combat;
+pub mod conditions;
 pub mod creature;
 pub mod effects;
 pub mod healing;

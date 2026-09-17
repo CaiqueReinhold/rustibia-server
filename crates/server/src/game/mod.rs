@@ -1,6 +1,7 @@
 pub mod admin;
 pub mod chat;
 pub mod combat;
+pub mod conditions;
 pub mod config;
 pub mod creature_abilities;
 pub mod creature_behavior;

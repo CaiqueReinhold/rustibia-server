@@ -240,6 +240,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
         melee: CreatureAttackDamage {
             element: CombatElement::Physical,
             value: Bounds { min: 1, max: 2 },
+            condition: None,
         },
         abilities: vec![],
         blood_type: BloodType::Blood,
@@ -278,6 +279,7 @@ fn a_creature(
                     min: damage.0,
                     max: damage.1,
                 },
+                condition: None,
             },
             armor,
             defense,

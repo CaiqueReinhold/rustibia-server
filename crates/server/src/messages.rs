@@ -137,6 +137,7 @@ const SRV_EXPERIENCE_UPDATED: u8 = 30;
 const SRV_SPELL_CAST: u8 = 31;
 const SRV_SPELL_LIST: u8 = 32;
 const SRV_AGENT_SPEED_UPDATED: u8 = 33;
+const SRV_PLAYER_STATUS: u8 = 34;
 
 #[derive(Clone, Debug)]
 pub enum TextMessageType {
@@ -324,6 +325,9 @@ pub enum ServerMessage {
     AgentSpeedUpdated {
         agent_id: AgentId,
         speed: u16,
+    },
+    PlayerStatus {
+        status: u32,
     },
 }
 
@@ -853,6 +857,10 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 dst.put_u16_le(agent_id.0);
                 dst.put_u16_le(speed);
             }
+            ServerMessage::PlayerStatus { status } => {
+                dst.put_u8(SRV_PLAYER_STATUS);
+                dst.put_u32_le(status);
+            }
         }
 
         let payload_len = (dst.len() - len_offset - 2) as u16;
@@ -985,6 +993,18 @@ mod tests {
             encode_floating_text_type(FloatingTextType::CreatureSay),
             0x02
         );
+    }
+
+    /// The client repeats these bit positions; nothing links the two but this frame.
+    #[test]
+    fn a_player_status_is_a_little_endian_bitset() {
+        let mut codec = GameMessageCodec {};
+        let mut buf = BytesMut::new();
+        codec
+            .encode(ServerMessage::PlayerStatus { status: 0x0A }, &mut buf)
+            .unwrap();
+
+        assert_eq!(&buf[..], &[5u8, 0, SRV_PLAYER_STATUS, 0x0A, 0, 0, 0]);
     }
 
     #[test]

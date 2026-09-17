@@ -2,6 +2,7 @@ use smallvec::SmallVec;
 
 use crate::entities::{
     agent::AgentKey,
+    conditions::ConditionSpec,
     effects::{AreaEffect, Missile},
     items::ItemRef,
     skills::SkillType,
@@ -79,6 +80,7 @@ pub struct AttackPlan {
     pub missile: Option<Missile>,
     pub area_effect: Option<AreaEffect>,
     pub missed: bool,
+    pub condition: Option<ConditionSpec>,
 }
 
 #[derive(Debug, Clone, Default)]

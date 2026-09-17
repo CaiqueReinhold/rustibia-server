@@ -11,6 +11,7 @@ use crate::config::CONFIG;
 use crate::entities::Bounds;
 use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
+use crate::entities::conditions::{ConditionSpec, SpecSchedule};
 use crate::entities::creature::{
     AbilityEffect, BloodType, CreatureAbility, CreatureAbilityId, CreatureAttack,
     CreatureAttackDamage, CreatureKind, CreatureKindId, CreatureVoices, LootEntry,
@@ -79,6 +80,8 @@ impl From<RawBounds> for Bounds {
 struct RawAttackDamage {
     damage: RawBounds,
     element: CombatElement,
+    #[serde(default)]
+    condition: Option<RawConditionSpec>,
 }
 
 impl From<RawAttackDamage> for CreatureAttackDamage {
@@ -86,6 +89,54 @@ impl From<RawAttackDamage> for CreatureAttackDamage {
         CreatureAttackDamage {
             element: raw.element,
             value: raw.damage.into(),
+            condition: raw.condition.map(Into::into),
+        }
+    }
+}
+
+#[derive(Deserialize)]
+#[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
+enum RawConditionSpec {
+    Decaying {
+        element: CombatElement,
+        damage: RawBounds,
+        interval: TickDelta,
+        #[serde(default)]
+        start: Option<u32>,
+    },
+    Flat {
+        element: CombatElement,
+        damage: RawBounds,
+        interval: TickDelta,
+        count: u32,
+    },
+}
+
+impl From<RawConditionSpec> for ConditionSpec {
+    fn from(raw: RawConditionSpec) -> Self {
+        match raw {
+            RawConditionSpec::Decaying {
+                element,
+                damage,
+                interval,
+                start,
+            } => ConditionSpec {
+                element,
+                damage: damage.into(),
+                interval,
+                schedule: SpecSchedule::Decaying { start },
+            },
+            RawConditionSpec::Flat {
+                element,
+                damage,
+                interval,
+                count,
+            } => ConditionSpec {
+                element,
+                damage: damage.into(),
+                interval,
+                schedule: SpecSchedule::Flat { count },
+            },
         }
     }
 }
@@ -97,6 +148,8 @@ struct RawAttackAbility {
     chance: u32,
     element: CombatElement,
     damage: RawBounds,
+    #[serde(default)]
+    condition: Option<RawConditionSpec>,
     target: serde_yaml::Value,
     #[serde(default)]
     effect_id: Option<EffectId>,
@@ -189,6 +242,7 @@ fn parse_ability(
                     damage: CreatureAttackDamage {
                         element: attack.element,
                         value: attack.damage.into(),
+                        condition: attack.condition.map(Into::into),
                     },
                     target,
                     effect_id: attack.effect_id,
@@ -421,6 +475,64 @@ say:
     /// A melee element is authored per creature rather than assumed physical, and nothing
     /// downstream of the loader would notice a swing that arrived as the wrong element —
     /// it would mitigate, colour and splash as whatever it was given.
+    const A_POISONOUS_CREATURE: &str = r#"
+name: Test Spider
+life: 100
+speed: 86
+blood_type: blood
+armor: 10
+defense: 10
+experience: 50
+outfit:
+  id: 34
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 4
+    max: 20
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 40
+      max: 40
+    interval: 80
+corpse: 5973
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - HISSS
+"#;
+
+    #[test]
+    fn a_melee_condition_is_authored_beside_the_damage() {
+        let kind = a_creature(A_POISONOUS_CREATURE);
+
+        let condition = kind.melee.condition.as_ref().unwrap();
+        assert_eq!(condition.element, CombatElement::Earth);
+        assert_eq!(condition.damage, Bounds { min: 40, max: 40 });
+        assert_eq!(condition.interval, TickDelta(80));
+        assert!(matches!(
+            condition.schedule,
+            SpecSchedule::Decaying { start: None }
+        ));
+    }
+
+    #[test]
+    fn a_flat_condition_carries_its_count() {
+        let kind = a_creature(&A_POISONOUS_CREATURE.replace(
+            "    type: decaying\n    element: earth",
+            "    type: flat\n    count: 7\n    element: fire",
+        ));
+
+        assert!(matches!(
+            kind.melee.condition.as_ref().unwrap().schedule,
+            SpecSchedule::Flat { count: 7 }
+        ));
+    }
+
     #[test]
     fn a_melee_block_carries_its_element_and_bounds() {
         let kind = a_creature(A_CREATURE);

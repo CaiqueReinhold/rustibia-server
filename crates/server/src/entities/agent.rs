@@ -18,6 +18,7 @@ use crate::{
     constants::movement::{DIAGONAL_STEP_FACTOR, SPEED_PARAM_A, SPEED_PARAM_B, SPEED_PARAM_C},
     entities::{
         combat::Participation,
+        conditions::Conditions,
         creature::{BloodType, CreatureKind},
         items::ItemId,
         position::Position,
@@ -151,6 +152,8 @@ pub struct Agent {
     // player
     pub next_use_tick: Tick,
 
+    conditions: Conditions,
+
     spell_cooldowns: SmallVec<[(SpellId, Tick); 4]>,
     group_cooldowns: [Tick; SpellGroup::COUNT],
     target: Option<AgentKey>,
@@ -217,6 +220,7 @@ impl Agent {
             respawn_ticks: None,
             spell_cooldowns: SmallVec::new(),
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
+            conditions: Conditions::new(),
         }
     }
 
@@ -244,6 +248,7 @@ impl Agent {
             respawn_ticks: None,
             spell_cooldowns: SmallVec::new(),
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
+            conditions: Conditions::new(),
         }
     }
 
@@ -270,6 +275,14 @@ impl Agent {
             AgentInner::Creature(c) => &c.name,
             AgentInner::Player(p) => p.name(),
         }
+    }
+
+    pub fn conditions(&self) -> &Conditions {
+        &self.conditions
+    }
+
+    pub fn conditions_mut(&mut self) -> &mut Conditions {
+        &mut self.conditions
     }
 
     pub fn life(&self) -> &Pool {
@@ -379,7 +392,7 @@ impl Agent {
     }
 
     pub fn can_logout(&self, current_tick: Tick) -> bool {
-        self.next_walk_tick <= current_tick
+        self.next_walk_tick <= current_tick && !self.conditions.is_logout_blocked(current_tick)
     }
 
     pub fn attack_range(&self) -> u8 {
@@ -505,7 +518,7 @@ mod tests {
     use crate::entities::vocation::Vocation;
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::a_creature_kind;
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
     use std::collections::HashMap;
 
     fn make_snapshot(id: u32) -> PlayerSnapshot {
@@ -608,6 +621,23 @@ mod tests {
         assert_eq!(snap.capacity, 40000);
         assert_eq!(snap.outfit, (OutfitId(133), OutfitColors::new(1, 2, 3, 4)));
         assert_eq!(snap.skills[&SkillType::Level].value, 120);
+    }
+
+    #[test]
+    fn a_creature_can_carry_a_condition() {
+        let mut agent = a_test_creature("Rat", 100, (1, 2));
+        agent.conditions_mut().reset_logout_block(Tick(0));
+
+        assert!(agent.conditions().is_logout_blocked(Tick(0)));
+    }
+
+    #[test]
+    fn a_blocked_agent_cannot_logout_even_when_standing_still() {
+        let mut agent = Agent::from_player(make_snapshot(1));
+        agent.conditions_mut().reset_logout_block(Tick(0));
+
+        assert!(!agent.can_logout(Tick(0)));
+        assert!(agent.can_logout(Tick(0) + GAME_CONFIG.logout_block_ticks));
     }
 
     #[test]

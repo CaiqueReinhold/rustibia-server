@@ -397,8 +397,16 @@ pub struct ClientItemRef {
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug, Copy)]
 pub enum ItemAction {
-    Transform { into: ItemId },
-    Door { new: ItemId },
+    Transform {
+        into: ItemId,
+    },
+    Door {
+        new: ItemId,
+    },
+    Food {
+        duration: TickDelta,
+        message_index: usize,
+    },
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]

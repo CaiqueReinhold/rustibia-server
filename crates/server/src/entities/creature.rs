@@ -5,6 +5,7 @@ use crate::{
         Bounds,
         agent::{OutfitColors, OutfitId, Pool},
         combat::CombatElement,
+        conditions::ConditionSpec,
         effects::{EffectId, MissileId},
         items::{FluidType, ItemId},
         spells::{SpellGroup, SpellTargetMode},
@@ -48,6 +49,7 @@ pub struct CreatureVoices {
 pub struct CreatureAttackDamage {
     pub element: CombatElement,
     pub value: Bounds,
+    pub condition: Option<ConditionSpec>,
 }
 
 #[derive(Clone, Debug)]

@@ -78,3 +78,27 @@ skills:
     paladin: { melee: 1.2, distance: 1.1, magic: 1.4, shielding: 1.1 }
     sorcerer: { melee: 2.0, distance: 2.0, magic: 1.1, shielding: 1.5 }
     druid: { melee: 1.8, distance: 1.8, magic: 1.1, shielding: 1.5 }
+
+max_fed_ticks: 24000
+regen_ticks: 120
+logout_block_ticks: 1200
+disconnect_linger_cap_ticks: 2400
+
+vocation:
+  knight:   { life_regen_amount: 10, mana_regen_amount: 5,  life_gain_level: 15, mana_gain_level: 5,  capacity_gain_level: 2500 }
+  paladin:  { life_regen_amount: 7,  mana_regen_amount: 7,  life_gain_level: 10, mana_gain_level: 15, capacity_gain_level: 2000 }
+  sorcerer: { life_regen_amount: 5,  mana_regen_amount: 10, life_gain_level: 5,  mana_gain_level: 30, capacity_gain_level: 1000 }
+  druid:    { life_regen_amount: 5,  mana_regen_amount: 10, life_gain_level: 5,  mana_gain_level: 30, capacity_gain_level: 1000 }
+
+action_messages:
+  - Burp.
+  - Chomp.
+  - Crunch.
+  - Gulp.
+  - Mmmm.
+  - Mmmmm!
+  - Munch.
+  - Slurp.
+  - Smack.
+  - Urgh.
+  - Yum.

@@ -21,6 +21,13 @@ abilities:
     damage:
       min: 100
       max: 200
+    condition:
+      type: decaying
+      element: fire
+      damage:
+        min: 40
+        max: 60
+      interval: 180
     target:
       type: area
       origin: self

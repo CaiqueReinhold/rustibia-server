@@ -302,6 +302,7 @@ pub fn chain_attack(
         missile: None,
         area_effect: None,
         missed: false,
+        condition: None,
     };
     execute_attack(ctx, plan);
 

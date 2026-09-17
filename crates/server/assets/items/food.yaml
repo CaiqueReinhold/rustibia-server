@@ -6,6 +6,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 2
     weight: 10
 - id: 841
   name: peanut
@@ -15,6 +18,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 2
     weight: 10
 - id: 901
   name: marlin
@@ -24,6 +30,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 14400
+      message: 6
     weight: 1800
 - id: 3250
   name: carrot of doom
@@ -33,6 +42,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 2
     weight: 160
 - id: 3577
   name: meat
@@ -41,6 +53,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 6
     weight: 1300
 - id: 3578
   name: fish
@@ -50,6 +65,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 6
     weight: 520
 - id: 3579
   name: salmon
@@ -58,6 +76,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 4
     weight: 320
 - id: 3580
   name: northern pike
@@ -67,6 +88,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4080
+      message: 6
     weight: 830
 - id: 3581
   name: shrimp
@@ -75,6 +99,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 3
     weight: 50
 - id: 3582
   name: ham
@@ -83,6 +110,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 7200
+      message: 1
     weight: 2000
 - id: 3583
   name: dragon ham
@@ -91,6 +121,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 14400
+      message: 1
     weight: 3000
 - id: 3584
   name: pear
@@ -100,6 +133,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 10
     weight: 140
 - id: 3585
   name: red apple
@@ -109,6 +145,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 10
     weight: 150
 - id: 3586
   name: orange
@@ -118,6 +157,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3120
+      message: 10
     weight: 110
 - id: 3587
   name: banana
@@ -127,6 +169,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1920
+      message: 10
     weight: 180
 - id: 3588
   name: blueberry
@@ -136,6 +181,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 10
     weight: 20
 - id: 3589
   name: coconut
@@ -145,6 +193,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4320
+      message: 7
     weight: 480
 - id: 3590
   name: cherry
@@ -154,6 +205,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 10
     weight: 20
 - id: 3591
   name: strawberry
@@ -163,6 +217,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 20
 - id: 3592
   name: grapes
@@ -171,6 +228,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 10
     weight: 250
 - id: 3593
   name: melon
@@ -180,6 +240,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4800
+      message: 10
     weight: 950
 - id: 3594
   name: pumpkin
@@ -189,6 +252,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4080
+      message: 6
     weight: 1350
 - id: 3595
   name: carrot
@@ -198,6 +264,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 2
     weight: 160
 - id: 3596
   name: tomato
@@ -207,6 +276,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 6
     weight: 100
 - id: 3597
   name: corncob
@@ -216,6 +288,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 2
     weight: 350
 - id: 3598
   name: cookie
@@ -225,6 +300,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 2
     weight: 10
 - id: 3599
   name: candy cane
@@ -234,6 +312,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 6
     weight: 50
 - id: 3600
   name: bread
@@ -242,6 +323,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 2
     weight: 500
 - id: 3601
   name: roll
@@ -251,6 +335,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 720
+      message: 2
     weight: 100
 - id: 3602
   name: brown bread
@@ -260,6 +347,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1920
+      message: 2
     weight: 400
 - id: 3603
   name: flour
@@ -298,6 +388,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 3607
   name: cheese
@@ -306,6 +399,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 8
     weight: 400
 - id: 3723
   name: white mushroom
@@ -315,6 +411,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 6
     weight: 40
 - id: 3724
   name: red mushroom
@@ -324,6 +423,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 6
     weight: 50
 - id: 3725
   name: brown mushroom
@@ -333,6 +435,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 5280
+      message: 6
     weight: 20
 - id: 3726
   name: orange mushroom
@@ -342,6 +447,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 7200
+      message: 6
     weight: 30
 - id: 3727
   name: wood mushroom
@@ -351,6 +459,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 6
     weight: 30
 - id: 3728
   name: dark mushroom
@@ -360,6 +471,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 6
     weight: 10
 - id: 3729
   name: some mushrooms
@@ -368,6 +482,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 6
     weight: 10
 - id: 3730
   name: some mushrooms
@@ -376,6 +493,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 6
     weight: 10
 - id: 3731
   name: fire mushroom
@@ -385,6 +505,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 8640
+      message: 6
     weight: 10
 - id: 3732
   name: green mushroom
@@ -394,6 +517,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 6
     weight: 10
 - id: 5096
   name: mango
@@ -403,6 +529,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 10
     weight: 180
 - id: 5466
   name: bunch of sugar cane
@@ -422,6 +551,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1920
+      message: 3
     weight: 30
 - id: 6125
   name: tortoise egg from Nargor
@@ -430,6 +562,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1920
+      message: 3
     weight: 30
 - id: 6276
   name: lump of cake dough
@@ -449,6 +584,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 4
     weight: 500
 - id: 6278
   name: cake
@@ -458,6 +596,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 4
     weight: 500
 - id: 6279
   name: party cake
@@ -476,6 +617,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 4
     weight: 500
 - id: 6393
   name: cream cake
@@ -485,6 +629,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 4
     weight: 500
 - id: 6500
   name: gingerbreadman
@@ -494,6 +641,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4800
+      message: 4
     weight: 500
 - id: 6541
   name: coloured egg
@@ -503,6 +653,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 6542
   name: coloured egg
@@ -512,6 +665,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 6543
   name: coloured egg
@@ -521,6 +677,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 6544
   name: coloured egg
@@ -530,6 +689,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 6545
   name: coloured egg
@@ -539,6 +701,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 3
     weight: 30
 - id: 6569
   name: candy
@@ -548,6 +713,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 4
     weight: 5
 - id: 6574
   name: bar of chocolate
@@ -557,6 +725,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 4
     weight: 10
 - id: 7158
   name: rainbow trout
@@ -566,6 +737,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 6
     weight: 1200
 - id: 7159
   name: green perch
@@ -575,6 +749,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3120
+      message: 6
     weight: 800
 - id: 7372
   name: ice cream cone
@@ -584,6 +761,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 7373
   name: ice cream cone
@@ -593,6 +773,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 7374
   name: ice cream cone
@@ -602,6 +785,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 7375
   name: ice cream cone
@@ -611,6 +797,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 7376
   name: ice cream cone
@@ -620,6 +809,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 7377
   name: ice cream cone
@@ -629,6 +821,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 100
 - id: 8010
   name: potato
@@ -638,6 +833,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 3
     weight: 170
 - id: 8011
   name: plum
@@ -647,6 +845,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 10
     weight: 130
 - id: 8012
   name: raspberry
@@ -656,6 +857,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 10
     weight: 20
 - id: 8013
   name: lemon
@@ -665,6 +869,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 9
     weight: 20
 - id: 8014
   name: cucumber
@@ -674,6 +881,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1680
+      message: 6
     weight: 200
 - id: 8015
   name: onion
@@ -683,6 +893,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 2
     weight: 140
 - id: 8016
   name: jalapeno pepper
@@ -692,6 +905,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 240
+      message: 3
     weight: 30
 - id: 8017
   name: beetroot
@@ -701,6 +917,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 6
     weight: 130
 - id: 8018
   name: lump of chocolate dough
@@ -720,6 +939,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2640
+      message: 10
     weight: 500
 - id: 8020
   name: baking tray
@@ -739,6 +961,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1680
+      message: 7
     weight: 20
 - id: 8197
   name: bulb of garlic
@@ -748,6 +973,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1200
+      message: 2
     weight: 140
 - id: 9079
   name: rotworm stew
@@ -847,6 +1075,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 4
     weight: 440
 - id: 10328
   name: bunch of ripe rice
@@ -866,6 +1097,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 10
     weight: 30
 - id: 10453
   name: terramite eggs
@@ -874,6 +1108,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 720
+      message: 9
     weight: 20
 - id: 11459
   name: pineapple
@@ -883,6 +1120,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4800
+      message: 10
     weight: 750
 - id: 11460
   name: aubergine
@@ -892,6 +1132,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 6
     weight: 200
 - id: 11461
   name: broccoli
@@ -900,6 +1143,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1920
+      message: 2
     weight: 300
 - id: 11462
   name: cauliflower
@@ -909,6 +1155,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2160
+      message: 2
     weight: 680
 - id: 11584
   name: coconut shrimp bake
@@ -953,6 +1202,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 13200
+      message: 3
     weight: 400
 - id: 11682
   name: dragonfruit
@@ -962,6 +1214,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4320
+      message: 10
     weight: 350
 - id: 11683
   name: peas
@@ -970,6 +1225,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 6
     weight: 80
 - id: 11685
   name: cheese cookie
@@ -988,6 +1246,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4800
+      message: 2
     weight: 1400
 - id: 13992
   name: sandfish
@@ -997,6 +1258,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 13200
+      message: 6
     weight: 660
 - id: 14084
   name: larvae
@@ -1005,6 +1269,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3360
+      message: 9
     weight: 350
 - id: 14085
   name: deepling filet
@@ -1014,6 +1281,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 6
     weight: 640
 - id: 14681
   name: anniversary cake
@@ -1023,6 +1293,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 14400
+      message: 4
     weight: 500
 - id: 16103
   name: mushroom pie
@@ -1032,6 +1305,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 7920
+      message: 6
     weight: 900
 - id: 17457
   name: insectoid eggs
@@ -1040,6 +1316,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 9
     weight: 20
 - id: 17820
   name: soft cheese
@@ -1049,6 +1328,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 8
     weight: 500
 - id: 17821
   name: rat cheese
@@ -1057,6 +1339,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 8
     weight: 300
 - id: 20310
   name: christmas cookie tray
@@ -1075,6 +1360,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 6
     weight: 800
 - id: 21144
   name: bowl of glooth soup
@@ -1084,6 +1372,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1680
+      message: 7
     weight: 100
 - id: 21145
   name: bottle of glooth wine
@@ -1093,6 +1384,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 1440
+      message: 0
     weight: 400
 - id: 21146
   name: glooth steak
@@ -1102,6 +1396,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 6000
+      message: 1
     weight: 1200
 - id: 22185
   name: prickly pear
@@ -1111,6 +1408,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2880
+      message: 10
     weight: 125
 - id: 22187
   name: roasted meat
@@ -1119,6 +1419,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 14400
+      message: 1
     weight: 2500
 - id: 23535
   name: energy bar
@@ -1128,6 +1431,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 6000
+      message: 4
     weight: 750
 - id: 23545
   name: energy drink
@@ -1137,6 +1443,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 4
     weight: 900
 - id: 24382
   name: bug meat
@@ -1145,6 +1454,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 4800
+      message: 9
     weight: 1100
 - id: 24383
   name: cave turnip
@@ -1154,6 +1466,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 3
     weight: 250
 - id: 24396
   name: birthday cake
@@ -1163,6 +1478,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 14400
+      message: 4
     weight: 500
 - id: 24439
   name: shell
@@ -1172,6 +1490,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 960
+      message: 7
     weight: 100
 - id: 24948
   name: bottle of Tibian Wine
@@ -1181,6 +1502,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 2400
+      message: 7
     weight: 100
 - id: 25692
   name: fresh fruit
@@ -1189,6 +1513,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 5
     weight: 150
 - id: 28484
   name: blueberry cupcake
@@ -1234,6 +1561,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 9600
+      message: 4
     weight: 500
 - id: 30202
   name: winterberry liquor
@@ -1243,6 +1573,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 7
     weight: 150
 - id: 31332
   name: jar of honey
@@ -1346,6 +1679,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 7
     weight: 240
 - id: 32070
   name: Stockfish
@@ -1401,6 +1737,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 3600
+      message: 7
     weight: 40
 - id: 37532
   name: ice cream cone
@@ -1410,6 +1749,9 @@
   - usable
   - take
   attributes:
+    food:
+      duration: 480
+      message: 10
     weight: 70
 - id: 37533
   name: birthday layer cake

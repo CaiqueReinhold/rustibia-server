@@ -878,6 +878,7 @@ mod tests {
                 damage: CreatureAttackDamage {
                     element: CombatElement::Energy,
                     value: Bounds { min: 1, max: 2 },
+                    condition: None,
                 },
                 target: SpellTargetMode::Target { range: 1 },
                 effect_id: None,
