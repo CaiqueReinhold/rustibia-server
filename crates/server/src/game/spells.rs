@@ -5,7 +5,6 @@ use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::{Agent, AgentKey},
-        targeting::{AreaOrigin, AreaTarget, TargetMode},
         combat::{AttackCost, AttackPlan, CombatDamage},
         effects::{AreaEffect, Missile},
         map::GameMap,
@@ -16,6 +15,7 @@ use crate::{
             ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
             SpellHealing, SpellId,
         },
+        targeting::{AreaOrigin, AreaTarget, TargetFilter, TargetMode},
     },
     game::{
         Tick, TickCtx,
@@ -45,9 +45,17 @@ pub enum SpellCastingDenyReason {
     OutOfReach,
     #[error("You're exausted")]
     StillInCooldown,
+    #[error("You need a weapon")]
+    NoWeapon,
 }
 
-pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, target: AreaTarget) {
+pub fn cast_spell(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    spell_id: SpellId,
+    target: AreaTarget,
+    param: Option<String>,
+) {
     let Some(position) = ctx.map.agent_position(agent_key).cloned() else {
         return;
     };
@@ -95,7 +103,7 @@ pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, tar
     }
 
     let mark = ctx.mark();
-    if let Err(reason) = execute_effect(ctx, agent_key, spell, target) {
+    if let Err(reason) = execute_effect(ctx, agent_key, spell, target, param.as_deref()) {
         ctx.rollback_to(mark);
         ctx.events.push(BroadcastMessage::SpellDenied {
             agent_key,
@@ -125,6 +133,8 @@ pub fn resolve_targets(
     caster: AgentKey,
     mode: &TargetMode,
     area_target: &AreaTarget,
+    param: Option<&str>,
+    filter: TargetFilter,
 ) -> Result<ResolvedTargets, SpellCastingDenyReason> {
     let agent = map
         .get_agent(caster)
@@ -161,16 +171,44 @@ pub fn resolve_targets(
                 return Err(SpellCastingDenyReason::OutOfReach);
             }
 
+            if !passes(map, target, filter) {
+                return Err(SpellCastingDenyReason::InvalidTarget);
+            }
+
             Ok(ResolvedTargets {
                 keys: Vec::from([target]),
                 aim: Some(target_pos.clone()),
                 delta: Some(vec![(0, 0)]),
             })
         }
+        TargetMode::Named { range } => {
+            let name = param.ok_or(SpellCastingDenyReason::InvalidTarget)?;
+            let (key, target_pos) = map
+                .iter_agents_in_rect(&Rect::radius(position, (*range, *range)), position.z)
+                .find(|(key, _)| {
+                    map.get_player(*key)
+                        .is_some_and(|player| player.name() == name)
+                })
+                .ok_or(SpellCastingDenyReason::InvalidTarget)?;
+
+            if position.distance(&target_pos) > *range
+                || !can_throw(map, position, &target_pos, true)
+            {
+                return Err(SpellCastingDenyReason::OutOfReach);
+            }
+
+            Ok(ResolvedTargets {
+                keys: Vec::from([key]),
+                aim: Some(target_pos),
+                delta: Some(vec![(0, 0)]),
+            })
+        }
         TargetMode::Area { origin, shape } => {
             let origin = resolve_area_origin(map, origin, position, area_target)
                 .ok_or(SpellCastingDenyReason::InvalidTarget)?;
-            let (keys, delta) = resolve_area(map, origin, shape.get_delta_facing(agent.facing()));
+            let (mut keys, delta) =
+                resolve_area(map, origin, shape.get_delta_facing(agent.facing()));
+            keys.retain(|key| passes(map, *key, filter));
             Ok(ResolvedTargets {
                 keys,
                 aim: Some(origin.clone()),
@@ -181,13 +219,25 @@ pub fn resolve_targets(
 }
 
 /// The curve's centre scaled by the caster's level and magic level, rolled across its spread.
-pub fn roll_power(player: &Player, curve: &PowerCurve, roll: &mut Rolls) -> u32 {
+pub fn roll_power(player: &Player, curve: &PowerCurve, roll: &mut Rolls, use_weapon: bool) -> u32 {
+    let weapon_attack = if use_weapon {
+        player.weapon_attack() as f32
+    } else {
+        0.0
+    };
+    let melee_skill = player
+        .weapon_type()
+        .skill()
+        .map(|skill_type| player.skill(skill_type) as f32)
+        .unwrap_or(0.0);
     let center = curve.base_power
         * (1.0
-            + (f32::from(player.level()) * curve.level_factor / 100.0)
-            + (f32::from(player.skill(SkillType::Magic)) * curve.magic_factor / 100.0));
-    let min = (center * (1.0 - curve.spread)).max(0.0).round() as u32;
-    let max = (center * (1.0 + curve.spread)).round() as u32;
+            + (f32::from(player.skill(SkillType::Magic)) * curve.magic_factor / 100.0)
+            + ((melee_skill + weapon_attack) * curve.melee_factor / 100.0))
+        + f32::from(player.level()) * curve.level_factor
+        + curve.flat;
+    let min = (center * (1.0 - curve.spread_min)).max(0.0).round() as u32;
+    let max = (center * (1.0 + curve.spread_max)).max(0.0).round() as u32;
     roll.damage_roll(min, max)
 }
 
@@ -208,6 +258,13 @@ fn resolve_area_origin<'a>(
             candidate
                 .filter(|pos| can_target(caster_pos, pos) && can_throw(map, caster_pos, pos, true))
         }
+    }
+}
+
+fn passes(map: &GameMap, key: AgentKey, filter: TargetFilter) -> bool {
+    match filter {
+        TargetFilter::Any => true,
+        TargetFilter::Players => map.get_player(key).is_some(),
     }
 }
 
@@ -346,10 +403,11 @@ fn execute_effect(
     agent_key: AgentKey,
     spell: &Spell,
     target: AreaTarget,
+    param: Option<&str>,
 ) -> Result<(), SpellCastingDenyReason> {
     match &spell.effect {
-        SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, attack),
-        SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, healing),
+        SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, param, attack),
+        SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, param, healing),
     }?;
 
     let agent = ctx
@@ -372,9 +430,10 @@ fn attack_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
     target: &AreaTarget,
+    param: Option<&str>,
     spell_attack: &SpellAttack,
 ) -> Result<(), SpellCastingDenyReason> {
-    let plan = plan_spell_attack(ctx.map, agent_key, ctx.roll, spell_attack, target)?;
+    let plan = plan_spell_attack(ctx.map, agent_key, ctx.roll, spell_attack, target, param)?;
     let chain = spell_attack
         .chain
         .as_ref()
@@ -402,9 +461,10 @@ fn healing_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
     target: &AreaTarget,
+    param: Option<&str>,
     spell_healing: &SpellHealing,
 ) -> Result<(), SpellCastingDenyReason> {
-    let plan = plan_healing_spell(ctx.map, agent_key, ctx.roll, spell_healing, target)?;
+    let plan = plan_healing_spell(ctx.map, agent_key, ctx.roll, spell_healing, target, param)?;
     execute_healing(ctx, plan);
     Ok(())
 }
@@ -416,7 +476,7 @@ mod tests {
     use super::*;
     use crate::entities::effects::AreaShape;
     use crate::entities::map::MapTile;
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
 
     fn a_caster_at(position: &Position) -> (GameMap, AgentKey) {
         let mut map = GameMap::new();
@@ -427,11 +487,116 @@ mod tests {
         (map, key)
     }
 
+    /// Places `agent` next to the caster and hands back both keys.
+    fn beside(map: &mut GameMap, position: &Position, agent: Agent) -> AgentKey {
+        let spot = Position::new(position.x + 1, position.y, position.z);
+        map.insert_tile(spot.clone(), MapTile::new());
+        map.insert_agent(agent, &spot).unwrap()
+    }
+
+    /// Symmetric under rotation, so the caster's facing cannot move a tile out of it.
+    fn a_cross_area() -> TargetMode {
+        TargetMode::Area {
+            origin: AreaOrigin::Caster,
+            shape: Arc::new(AreaShape::new(
+                vec![(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)].into_boxed_slice(),
+            )),
+        }
+    }
+
     fn aimed_area() -> TargetMode {
         TargetMode::Area {
             origin: AreaOrigin::Target,
             shape: Arc::new(AreaShape::new(vec![(0, 0)].into_boxed_slice())),
         }
+    }
+
+    /// What lets `exura gran mas res` exist: the same area that hands a wave every agent
+    /// hands a heal only the players among them.
+    #[test]
+    fn a_players_only_area_leaves_the_creatures_in_it_alone() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let creature = beside(&mut map, &position, a_test_creature("Rat", 10, (1, 2)));
+
+        let any = resolve_targets(
+            &map,
+            caster,
+            &a_cross_area(),
+            &AreaTarget::None,
+            None,
+            TargetFilter::Any,
+        )
+        .unwrap();
+        let players = resolve_targets(
+            &map,
+            caster,
+            &a_cross_area(),
+            &AreaTarget::None,
+            None,
+            TargetFilter::Players,
+        )
+        .unwrap();
+
+        assert!(any.keys.contains(&creature));
+        assert_eq!(players.keys, Vec::from([caster]));
+    }
+
+    #[test]
+    fn a_named_cast_reaches_the_player_it_names_and_no_one_else() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let named = TargetMode::Named { range: 7 };
+
+        let targets = resolve_targets(
+            &map,
+            caster,
+            &named,
+            &AreaTarget::None,
+            Some("Rizael"),
+            TargetFilter::Players,
+        )
+        .unwrap();
+        assert_eq!(targets.keys, Vec::from([caster]));
+
+        for param in [None, Some("Nobody")] {
+            assert!(
+                matches!(
+                    resolve_targets(
+                        &map,
+                        caster,
+                        &named,
+                        &AreaTarget::None,
+                        param,
+                        TargetFilter::Players
+                    ),
+                    Err(SpellCastingDenyReason::InvalidTarget)
+                ),
+                "{param:?} must not resolve to a player"
+            );
+        }
+
+        let far = Position::new(position.x + 20, position.y, position.z);
+        map.insert_tile(far.clone(), MapTile::new());
+        let mut stranger = a_test_snapshot(2, 2);
+        stranger.name = "Stranger".to_string();
+        map.insert_agent(Agent::from_player(stranger), &far)
+            .unwrap();
+
+        assert!(
+            matches!(
+                resolve_targets(
+                    &map,
+                    caster,
+                    &named,
+                    &AreaTarget::None,
+                    Some("Stranger"),
+                    TargetFilter::Players
+                ),
+                Err(SpellCastingDenyReason::InvalidTarget)
+            ),
+            "a player past the range is not in the rect the cast searches"
+        );
     }
 
     #[test]
@@ -444,6 +609,8 @@ mod tests {
             caster,
             &aimed_area(),
             &AreaTarget::Position(aim.clone()),
+            None,
+            TargetFilter::Any,
         )
         .unwrap();
 
@@ -461,7 +628,9 @@ mod tests {
                         &map,
                         caster,
                         &aimed_area(),
-                        &AreaTarget::Position(aim.clone())
+                        &AreaTarget::Position(aim.clone()),
+                        None,
+                        TargetFilter::Any,
                     ),
                     Err(SpellCastingDenyReason::InvalidTarget)
                 ),

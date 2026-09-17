@@ -472,7 +472,6 @@ mod tests {
     use crate::constants::items::MAX_DROP_CHANCE;
     use crate::entities::Bounds;
     use crate::entities::agent::Agent;
-    use crate::entities::targeting::TargetMode;
     use crate::entities::combat::CombatElement;
     use crate::entities::creature::{AbilityEffect, CreatureAbility, CreatureAttack};
     use crate::entities::creature::{CreatureAttackDamage, CreatureKind};
@@ -480,6 +479,7 @@ mod tests {
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag};
     use crate::entities::map::MapTile;
     use crate::entities::spells::SpellGroup;
+    use crate::entities::targeting::TargetMode;
     use crate::game::TickDelta;
     use crate::persistence::test_fixtures::{
         a_creature_kind, a_test_creature, a_test_creature_that_flees, a_test_snapshot,

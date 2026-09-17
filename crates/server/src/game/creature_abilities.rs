@@ -9,7 +9,7 @@ use crate::{
         effects::{AreaEffect, Missile},
         healing::{HealPlan, Restore},
         map::GameMap,
-        targeting::AreaTarget,
+        targeting::{AreaTarget, TargetFilter},
     },
     game::{
         TickCtx, combat::execute_attack, healing::execute_healing, random::Rolls,
@@ -55,11 +55,16 @@ fn plan_ability_attack(
     let target = map.get_agent(creature)?.target()?;
     let from = map.agent_position(creature)?.clone();
 
-    let mut targets =
-        resolve_targets(map, creature, &attack.target, &AreaTarget::Agent(target)).ok()?;
-    targets
-        .keys
-        .retain(|key| creature != *key && map.get_agent(*key).is_some_and(|a| !a.is_creature()));
+    let mut targets = resolve_targets(
+        map,
+        creature,
+        &attack.target,
+        &AreaTarget::Agent(target),
+        None,
+        TargetFilter::Players,
+    )
+    .ok()?;
+    targets.keys.retain(|key| creature != *key);
 
     let missile = attack
         .missile_id
@@ -130,12 +135,12 @@ mod tests {
     use crate::constants::items::MAX_DROP_CHANCE;
     use crate::entities::Bounds;
     use crate::entities::agent::Agent;
-    use crate::entities::targeting::TargetMode;
     use crate::entities::combat::CombatElement;
     use crate::entities::creature::{CreatureAbility, CreatureAttackDamage, CreatureKind};
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::entities::spells::SpellGroup;
+    use crate::entities::targeting::TargetMode;
     use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick, TickDelta};
     use crate::persistence::test_fixtures::{a_creature_kind, a_test_snapshot};

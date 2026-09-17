@@ -8,13 +8,13 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::CONFIG;
-use crate::entities::targeting::TargetMode;
 use crate::entities::combat::CombatElement;
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::spells::{
     ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
     SpellHealing, SpellId,
 };
+use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
@@ -45,6 +45,13 @@ pub enum SpellsLoadError {
         field: &'static str,
         value: f64,
     },
+    #[error("spell {id:?} ({name}) has a {field} of {value}, which must be a finite number")]
+    NotFinite {
+        id: SpellId,
+        name: String,
+        field: &'static str,
+        value: f64,
+    },
     #[error("spell {id:?} ({name}) has a {field} of 0, so its chain could never hit anything")]
     Zero {
         id: SpellId,
@@ -57,7 +64,7 @@ pub enum SpellsLoadError {
         name: String,
         kind: String,
     },
-    #[error("spell {id:?} ({name}) targets `{target}`, not `self`, `target` or `area`")]
+    #[error("spell {id:?} ({name}) targets `{target}`, not `self`, `target`, `named` or `area`")]
     UnknownTarget {
         id: SpellId,
         name: String,
@@ -100,16 +107,25 @@ struct RawSpell {
 #[serde(deny_unknown_fields)]
 struct RawAttack {
     target: serde_yaml::Value,
+    #[serde(default)]
     element: CombatElement,
     base_power: f64,
     level_factor: f64,
+    #[serde(default)]
     magic_factor: f64,
-    spread: f64,
+    #[serde(default)]
+    melee_factor: f64,
+    spread_min: f64,
+    spread_max: f64,
+    #[serde(default)]
+    flat: f64,
     effect_id: EffectId,
     #[serde(default)]
     missile_id: Option<MissileId>,
     #[serde(default)]
     chain: Option<RawChain>,
+    #[serde(default)]
+    weapon_required: bool,
 }
 
 #[derive(Deserialize)]
@@ -120,7 +136,11 @@ struct RawHealing {
     level_factor: f64,
     magic_factor: f64,
     #[serde(default)]
-    spread: f64,
+    spread_min: f64,
+    #[serde(default)]
+    spread_max: f64,
+    #[serde(default)]
+    flat: f64,
 }
 
 #[derive(Deserialize)]
@@ -142,14 +162,32 @@ pub struct RawChain {
 
 /// Read as an `f64` and narrowed here so the error can name the number as authored: a value
 /// too large for an `f32` becomes an infinity on the way in, and `inf` names nothing.
-fn parse_number(
+fn parse_finite(
     id: SpellId,
     name: &str,
     field: &'static str,
     value: f64,
 ) -> Result<f32, SpellsLoadError> {
     let narrowed = value as f32;
-    if !narrowed.is_finite() || narrowed < 0.0 {
+    if !narrowed.is_finite() {
+        return Err(SpellsLoadError::NotFinite {
+            id,
+            name: name.to_string(),
+            field,
+            value,
+        });
+    }
+    Ok(narrowed)
+}
+
+fn parse_number(
+    id: SpellId,
+    name: &str,
+    field: &'static str,
+    value: f64,
+) -> Result<f32, SpellsLoadError> {
+    let narrowed = parse_finite(id, name, field, value)?;
+    if narrowed < 0.0 {
         return Err(SpellsLoadError::Number {
             id,
             name: name.to_string(),
@@ -166,13 +204,19 @@ fn parse_power(
     base_power: f64,
     level_factor: f64,
     magic_factor: f64,
-    spread: f64,
+    melee_factor: f64,
+    spread_min: f64,
+    spread_max: f64,
+    flat: f64,
 ) -> Result<PowerCurve, SpellsLoadError> {
     Ok(PowerCurve {
         base_power: parse_number(id, name, "base_power", base_power)?,
         level_factor: parse_number(id, name, "level_factor", level_factor)?,
         magic_factor: parse_number(id, name, "magic_factor", magic_factor)?,
-        spread: parse_number(id, name, "spread", spread)?,
+        melee_factor: parse_number(id, name, "melee_factor", melee_factor)?,
+        spread_min: parse_number(id, name, "spread_min", spread_min)?,
+        spread_max: parse_number(id, name, "spread_max", spread_max)?,
+        flat: parse_finite(id, name, "flat", flat)?,
     })
 }
 
@@ -252,7 +296,10 @@ fn parse_effect(
                     attack.base_power,
                     attack.level_factor,
                     attack.magic_factor,
-                    attack.spread,
+                    attack.melee_factor,
+                    attack.spread_min,
+                    attack.spread_max,
+                    attack.flat,
                 )?,
                 effect_id: attack.effect_id,
                 missile_id: attack.missile_id,
@@ -260,6 +307,7 @@ fn parse_effect(
                     .chain
                     .map(|chain| parse_chain(id, name, chain))
                     .transpose()?,
+                weapon_required: attack.weapon_required,
             };
             Ok(SpellEffect::Attack(spell_attack))
         }
@@ -273,7 +321,10 @@ fn parse_effect(
                     healing.base_power,
                     healing.level_factor,
                     healing.magic_factor,
-                    healing.spread,
+                    0.0,
+                    healing.spread_min,
+                    healing.spread_max,
+                    healing.flat,
                 )?,
             };
             Ok(SpellEffect::Healing(spell_healing))
@@ -376,7 +427,8 @@ spells:
       base_power: 40
       level_factor: 0.2
       magic_factor: 1.4
-      spread: 0.25
+      spread_min: 0.25
+      spread_max: 0.3
       effect_id: 37
 "#;
 
@@ -400,7 +452,8 @@ spells:
       base_power: 45
       level_factor: 0.2
       magic_factor: 1.5
-      spread: 0.25
+      spread_min: 0.25
+      spread_max: 0.3
       effect_id: 38
       missile_id: 36
 "#;
@@ -431,12 +484,14 @@ spells:
         delay_ticks: 10
         max_range: 3
         sorting: closest
+        missile_id: 36
         chain:
           num_targets: 1
           damage_factor: 0.25
           delay_ticks: 6
           max_range: 2
           sorting: closest
+          missile_id: 36
 ";
 
     fn chained(spell: &str) -> String {
@@ -503,9 +558,10 @@ spells:
                 attack.power.base_power,
                 attack.power.level_factor,
                 attack.power.magic_factor,
-                attack.power.spread
+                attack.power.spread_min,
+                attack.power.spread_max
             ),
-            (40.0, 0.2, 1.4, 0.25)
+            (40.0, 0.2, 1.4, 0.25, 0.3)
         );
         assert_eq!(attack.missile_id, None, "a wave lands where it is cast");
         assert!(attack.chain.is_none(), "an attack chains only when told to");
@@ -661,6 +717,15 @@ spells:
     }
 
     #[test]
+    fn a_flat_is_the_one_number_that_may_be_negative() {
+        let contents = AREA_SPELL.replace("effect_id: 37", "flat: -20\n      effect_id: 37");
+        let spells = load_spells_from_str(&contents, &shape("probe"))
+            .expect("a flat below zero is what holds a curve down at low levels");
+
+        assert_eq!(attack(&only_spell(&spells)).power.flat, -20.0);
+    }
+
+    #[test]
     fn a_reused_id_is_refused_rather_than_overwritten() {
         let contents = format!("{AREA_SPELL}{}", AREA_SPELL.trim_start_matches("\nspells:"));
         let error = load_spells_from_str(&contents, &shape("probe"))
@@ -716,7 +781,7 @@ spells:
     }
 
     /// A heal carries neither an element nor an effect id, so nothing but this says the
-    /// numbers under `heal:` reach `SpellHealing` as authored. An unwritten `spread`
+    /// numbers under `heal:` reach `SpellHealing` as authored. An unwritten spread
     /// restores a flat amount rather than defaulting to some variance.
     #[test]
     fn a_healing_spell_carries_its_numbers_and_defaults_its_spread() {
@@ -730,9 +795,10 @@ spells:
                 healing.power.base_power,
                 healing.power.level_factor,
                 healing.power.magic_factor,
-                healing.power.spread
+                healing.power.spread_min,
+                healing.power.spread_max
             ),
-            (8.0, 0.2, 1.4, 0.0)
+            (8.0, 0.2, 1.4, 0.0, 0.0)
         );
     }
 

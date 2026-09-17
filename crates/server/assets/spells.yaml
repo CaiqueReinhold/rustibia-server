@@ -12,10 +12,12 @@ spells:
       type: heal
       target:
         type: self
-      base_power: 50
+      base_power: 40
       level_factor: 0.2
-      magic_factor: 1.4
-      spread: 0.4
+      magic_factor: 3.994
+      spread_min: 0.1
+      spread_max: 0.085
+      flat: -30.5
   - id: 2
     name: Fire Strike
     words: exori flam
@@ -31,10 +33,12 @@ spells:
         type: target
         range: 3
       element: fire
-      base_power: 25
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.4
+      base_power: 30
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -19.5
+      spread_min: 0.18
+      spread_max: 0.165
       effect_id: 16
       missile_id: 4
   - id: 3
@@ -52,10 +56,12 @@ spells:
         type: target
         range: 3
       element: energy
-      base_power: 25
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.4
+      base_power: 30
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -19.5
+      spread_min: 0.18
+      spread_max: 0.165
       effect_id: 38
       missile_id: 36
   - id: 4
@@ -74,10 +80,12 @@ spells:
         origin: self
         shape: small_wave
       element: fire
-      base_power: 30
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.25
+      base_power: 25
+      level_factor: 0.2
+      magic_factor: 6.5
+      flat: -17.0
+      spread_min: 0.22
+      spread_max: 0.2
       effect_id: 16
   - id: 5
     name: Death Strike
@@ -95,9 +103,11 @@ spells:
         range: 3
       element: death
       base_power: 35
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.4
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -22.75
+      spread_min: 0.223
+      spread_max: 0.223
       effect_id: 18
       missile_id: 11
   - id: 6
@@ -113,10 +123,12 @@ spells:
       type: heal
       target:
         type: self
-      base_power: 100
+      base_power: 60
       level_factor: 0.2
-      magic_factor: 1.4
-      spread: 0.4
+      magic_factor: 7.312
+      spread_min: 0.25
+      spread_max: 0.23
+      flat: -32.5
   - id: 7
     name: Energy Beam
     words: exevo vis lux
@@ -133,10 +145,12 @@ spells:
         origin: self
         shape: beam
       element: energy
-      base_power: 50
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.25
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 8.125
+      flat: -40.0
+      spread_min: 0.19
+      spread_max: 0.18
       effect_id: 179
   - id: 8
     name: Lightning
@@ -153,10 +167,12 @@ spells:
         type: target
         range: 7
       element: energy
-      base_power: 60
-      level_factor: 0.25
-      magic_factor: 1.5
-      spread: 0.4
+      base_power: 35
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -22.75
+      spread_min: 0.223
+      spread_max: 0.223
       effect_id: 179
       missile_id: 36
       chain:
@@ -173,3 +189,659 @@ spells:
           max_range: 3
           missile_id: 36
           sorting: closest
+  - id: 9
+    name: Bersek
+    words: exori
+    group: attack
+    cooldown_ticks: 80
+    mana: 135
+    level: 15
+    icon: 21
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: boxed
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.8976
+      flat: -100
+      spread_min: 0.355
+      spread_max: 0.49
+      effect_id: 10
+      weapon_required: true
+  - id: 10
+    name: Fierce Bersek
+    words: exori gran
+    group: attack
+    cooldown_ticks: 120
+    mana: 200
+    level: 30
+    icon: 22
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: boxed
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 2.397
+      flat: -100
+      spread_min: 0.345
+      spread_max: 0.575
+      effect_id: 10
+      weapon_required: true
+  - id: 11
+    name: Ice Strike
+    words: exori frigo
+    group: attack
+    cooldown_ticks: 40
+    mana: 20
+    level: 8
+    icon: 27
+    vocations: [sorcerer, druid]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: ice
+      base_power: 30
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -19.5
+      spread_min: 0.18
+      spread_max: 0.165
+      effect_id: 44
+      missile_id: 29
+  - id: 12
+    name: Terra Strike
+    words: exori tera
+    group: attack
+    cooldown_ticks: 40
+    mana: 20
+    level: 13
+    icon: 28
+    vocations: [sorcerer, druid]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: earth
+      base_power: 30
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -19.5
+      spread_min: 0.18
+      spread_max: 0.16
+      effect_id: 46
+      missile_id: 30
+  - id: 13
+    name: Strong Flame Strike
+    words: exori gran flam
+    group: attack
+    cooldown_ticks: 160
+    mana: 60
+    level: 70
+    icon: 31
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: fire
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 4.007
+      flat: -34.5
+      spread_min: 0.223
+      spread_max: 0.223
+      effect_id: 37
+      missile_id: 4
+  - id: 14
+    name: Strong Ice Strike
+    words: exori gran frigo
+    group: attack
+    cooldown_ticks: 160
+    mana: 60
+    level: 80
+    icon: 32
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: ice
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 4.007
+      flat: -34.5
+      spread_min: 0.223
+      spread_max: 0.223
+      effect_id: 44
+      missile_id: 29
+  - id: 15
+    name: Ice Wave
+    words: exevo frigo hur
+    group: attack
+    cooldown_ticks: 80
+    mana: 25
+    level: 18
+    icon: 45
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: small_wave
+      element: ice
+      base_power: 25
+      level_factor: 0.2
+      magic_factor: 5.62
+      flat: -17.0
+      spread_min: 0.35
+      spread_max: 0.31
+      effect_id: 44
+  - id: 16
+    name: Terra Wave
+    words: exevo tera hur
+    group: attack
+    cooldown_ticks: 80
+    mana: 170
+    level: 38
+    icon: 46
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: big_wave
+      element: earth
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 11.667
+      flat: -45.0
+      spread_min: 0.3
+      spread_max: 0.29
+      effect_id: 46
+  - id: 17
+    name: Energy Wave
+    words: exevo vis hur
+    group: attack
+    cooldown_ticks: 160
+    mana: 170
+    level: 38
+    icon: 47
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: big_wave
+      element: energy
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 15.0
+      flat: -45.0
+      spread_min: 0.3
+      spread_max: 0.3
+      effect_id: 48
+  - id: 18
+    name: Great Energy Beam
+    words: exevo gran vis lux
+    group: attack
+    cooldown_ticks: 120
+    mana: 110
+    level: 29
+    icon: 42
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: long_beam
+      element: energy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 13.75
+      flat: -40.0
+      spread_min: 0.24
+      spread_max: 0.235
+      effect_id: 48
+  - id: 19
+    name: Rage of the Skies
+    words: exevo gran mas vis
+    group: attack
+    cooldown_ticks: 800
+    mana: 600
+    level: 55
+    icon: 52
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle5
+      element: energy
+      base_power: 50
+      level_factor: 0.2
+      magic_factor: 17.0
+      flat: -50.0
+      spread_min: 0.375
+      spread_max: 0.375
+      effect_id: 48
+  - id: 20
+    name: Hell's Core
+    words: exevo gran mas flam
+    group: attack
+    cooldown_ticks: 800
+    mana: 1100
+    level: 60
+    icon: 53
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle5
+      element: fire
+      base_power: 60
+      level_factor: 0.2
+      magic_factor: 17.5
+      flat: -60.0
+      spread_min: 0.31
+      spread_max: 0.305
+      effect_id: 37
+  - id: 21
+    name: Wrath of Nature
+    words: exevo gran mas tera
+    group: attack
+    cooldown_ticks: 800
+    mana: 700
+    level: 55
+    icon: 54
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle5
+      element: earth
+      base_power: 50
+      level_factor: 0.2
+      magic_factor: 15.0
+      flat: -50.0
+      spread_min: 0.3
+      spread_max: 0.3
+      effect_id: 46
+  - id: 22
+    name: Eternal Winter
+    words: exevo gran mas frigo
+    group: attack
+    cooldown_ticks: 800
+    mana: 1050
+    level: 60
+    icon: 55
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle5
+      element: ice
+      base_power: 55
+      level_factor: 0.2
+      magic_factor: 16.364
+      flat: -55.0
+      spread_min: 0.31
+      spread_max: 0.305
+      effect_id: 44
+  - id: 23
+    name: Divine Missile
+    words: exori san
+    group: attack
+    cooldown_ticks: 40
+    mana: 20
+    level: 40
+    icon: 33
+    vocations: [paladin]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 4
+      element: holy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 5.987
+      flat: -25.5
+      spread_min: 0.21
+      spread_max: 0.205
+      effect_id: 40
+      missile_id: 31
+  - id: 24
+    name: Divine Caldera
+    words: exevo mas san
+    group: attack
+    cooldown_ticks: 80
+    mana: 160
+    level: 50
+    icon: 34
+    vocations: [paladin]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle3
+      element: holy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 12.5
+      flat: -40.0
+      spread_min: 0.175
+      spread_max: 0.175
+      effect_id: 40
+  - id: 25
+    name: Ethereal Spear
+    words: exori con
+    group: attack
+    cooldown_ticks: 40
+    mana: 25
+    level: 23
+    icon: 35
+    vocations: [paladin]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 7
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.6
+      flat: -100
+      spread_min: 0.417
+      spread_max: 0.417
+      effect_id: 1
+      missile_id: 25
+      weapon_required: true
+  - id: 26
+    name: Divine Healing
+    words: exura san
+    group: healing
+    cooldown_ticks: 20
+    mana: 160
+    level: 35
+    icon: 8
+    vocations: [paladin]
+    effect:
+      type: heal
+      target:
+        type: self
+      base_power: 60
+      level_factor: 0.2
+      magic_factor: 36.25
+      flat: -60.0
+      spread_min: 0.145
+      spread_max: 0.145
+  - id: 27
+    name: Wound Cleansing
+    words: exura ico
+    group: healing
+    cooldown_ticks: 20
+    mana: 40
+    level: 8
+    icon: 10
+    vocations: [knight]
+    effect:
+      type: heal
+      target:
+        type: self
+      base_power: 60
+      level_factor: 0.2
+      magic_factor: 9.958
+      flat: -22.0
+      spread_min: 0.305
+      spread_max: 0.3
+  - id: 28
+    name: Whirlwind Throw
+    words: exori hur
+    group: attack
+    cooldown_ticks: 120
+    mana: 40
+    level: 28
+    icon: 23
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 5
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.6666
+      flat: -100
+      spread_min: 0.375
+      spread_max: 0.33
+      effect_id: 1
+      missile_id: 25
+      weapon_required: true
+  - id: 29
+    name: Groundshaker
+    words: exori mas
+    group: attack
+    cooldown_ticks: 160
+    mana: 200
+    level: 33
+    icon: 24
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: circle2
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.8
+      flat: -100
+      spread_min: 0.27
+      spread_max: 0.255
+      effect_id: 1
+      weapon_required: true
+  - id: 30
+    name: Brutal Strike
+    words: exori ico
+    group: attack
+    cooldown_ticks: 120
+    mana: 30
+    level: 16
+    icon: 19
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 1
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.8
+      flat: -100
+      spread_min: 0.5
+      spread_max: 0.5
+      effect_id: 1
+      missile_id: 25
+      weapon_required: true
+  - id: 31
+    name: Front Sweep
+    words: exori min
+    group: attack
+    cooldown_ticks: 120
+    mana: 200
+    level: 70
+    icon: 20
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: self
+        shape: front
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 0.95
+      flat: -100
+      spread_min: 0.421
+      spread_max: 0.421
+      effect_id: 1
+      weapon_required: true
+  - id: 32
+    name: Annihilation
+    words: exori gran ico
+    group: attack
+    cooldown_ticks: 600
+    mana: 300
+    level: 110
+    icon: 25
+    vocations: [knight]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 1
+      element: physical
+      base_power: 100
+      level_factor: 0.2
+      melee_factor: 2.5
+      flat: -100
+      spread_min: 0.44
+      spread_max: 0.44
+      effect_id: 1
+      missile_id: 25
+      weapon_required: true
+  - id: 33
+    name: Ultimate Healing
+    words: exura vita
+    group: healing
+    cooldown_ticks: 20
+    mana: 160
+    level: 30
+    icon: 9
+    vocations: [sorcerer, druid]
+    effect:
+      type: heal
+      target:
+        type: self
+      base_power: 80
+      level_factor: 0.2
+      magic_factor: 12.506
+      flat: -18.5
+      spread_min: 0.26
+      spread_max: 0.255
+  - id: 34
+    name: Strong Energy Strike
+    words: exori gran vis
+    group: attack
+    cooldown_ticks: 160
+    mana: 60
+    level: 80
+    icon: 30
+    vocations: [sorcerer]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: energy
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -29.25
+      spread_min: 0.18
+      spread_max: 0.165
+      effect_id: 48
+      missile_id: 36
+  - id: 35
+    name: Strong Terra Strike
+    words: exori gran tera
+    group: attack
+    cooldown_ticks: 160
+    mana: 60
+    level: 70
+    icon: 36
+    vocations: [druid]
+    effect:
+      type: attack
+      target:
+        type: target
+        range: 3
+      element: earth
+      base_power: 45
+      level_factor: 0.2
+      magic_factor: 6.01
+      flat: -29.25
+      spread_min: 0.18
+      spread_max: 0.165
+      effect_id: 46
+      missile_id: 30
+  - id: 36
+    name: Mass Healing
+    words: exura gran mas res
+    group: healing
+    cooldown_ticks: 40
+    mana: 150
+    level: 36
+    icon: 11
+    vocations: [druid]
+    effect:
+      type: heal
+      target:
+        type: area
+        origin: self
+        shape: circle3
+      base_power: 70
+      level_factor: 0.2
+      magic_factor: 11.521
+      flat: -26
+      spread_min: 0.303
+      spread_max: 0.303
+  - id: 37
+    name: Heal Friend
+    words: exura sio
+    group: healing
+    cooldown_ticks: 20
+    mana: 120
+    level: 18
+    icon: 12
+    vocations: [druid]
+    effect:
+      type: heal
+      target:
+        type: named
+        range: 7
+      base_power: 70
+      level_factor: 0.2
+      magic_factor: 17.143
+      flat: -70
+      spread_min: 0.167
+      spread_max: 0.167

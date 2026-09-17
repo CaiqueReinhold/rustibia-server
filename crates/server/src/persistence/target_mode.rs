@@ -4,14 +4,14 @@ use std::sync::Arc;
 use serde::Deserialize;
 use thiserror::Error;
 
-use crate::entities::targeting::{AreaOrigin, TargetMode};
 use crate::entities::effects::{AreaShape, AreaShapeId};
+use crate::entities::targeting::{AreaOrigin, TargetMode};
 
 /// Fragments rather than sentences: each caller wraps these into an error of its own that
 /// names the spell or the creature file the target was authored in.
 #[derive(Error, Debug)]
 pub enum TargetModeError {
-    #[error("targets `{target}`, not `self`, `target` or `area`")]
+    #[error("targets `{target}`, not `self`, `target`, `named` or `area`")]
     UnknownTarget { target: String },
     #[error("names the area shape `{shape}`, which `areas.yaml` has not")]
     UnknownShape { shape: AreaShapeId },
@@ -82,6 +82,10 @@ pub fn parse_target_mode(
             Ok(TargetMode::Target {
                 range: targeted.range,
             })
+        }
+        "named" => {
+            let named: RawTargeted = serde_yaml::from_value(value)?;
+            Ok(TargetMode::Named { range: named.range })
         }
         "area" => {
             let area: RawArea = serde_yaml::from_value(value)?;

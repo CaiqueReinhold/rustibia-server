@@ -99,6 +99,7 @@ pub enum ClientMessage {
     CastSpell {
         spell_id: SpellId,
         target: SpellTarget,
+        param: Option<String>,
     },
 }
 
@@ -482,6 +483,7 @@ impl Decoder for GameMessageCodec {
             CLI_CAST_SPELL => Ok(Some(ClientMessage::CastSpell {
                 spell_id: SpellId(buf.get_u16_le()),
                 target: decode_spell_target(buf)?,
+                param: decode_param(buf)?,
             })),
             _ => Err(MessageDecodeError::WrongSequence),
         }
@@ -536,6 +538,18 @@ fn decode_spell_target(buf: &mut BytesMut) -> Result<SpellTarget, MessageDecodeE
         0x02 => Ok(SpellTarget::Position(decode_position(buf))),
         _ => Err(MessageDecodeError::WrongSequence),
     }
+}
+
+/// Length-prefixed and empty rather than absent for a cast that names nothing, so the field
+/// is the same width to skip whatever the spell is.
+fn decode_param(buf: &mut BytesMut) -> Result<Option<String>, MessageDecodeError> {
+    let len = buf.get_u16_le() as usize;
+    if len == 0 {
+        return Ok(None);
+    }
+    String::from_utf8(buf.split_to(len).to_vec())
+        .map(Some)
+        .map_err(|_| MessageDecodeError::WrongSequence)
 }
 
 #[derive(Error, Debug)]
@@ -1623,6 +1637,45 @@ mod tests {
         match codec.decode(&mut buf).unwrap().unwrap() {
             ClientMessage::OpenPmChat { name } => assert_eq!(name, "Rizael"),
             other => panic!("expected OpenPmChat, got {other:?}"),
+        }
+        assert!(buf.is_empty());
+    }
+
+    /// The frame the client's `cast_spell_encodes_each_target_variant` writes, byte for byte.
+    /// The param is the trailing field, so a width read wrongly here consumes the next frame
+    /// rather than failing, and the two tests are what hold the pair in step.
+    #[test]
+    fn decode_cast_spell_message_with_and_without_a_param() {
+        let mut codec = GameMessageCodec {};
+        let mut buf = BytesMut::new();
+
+        buf.extend_from_slice(&6u16.to_le_bytes());
+        buf.extend_from_slice(&[CLI_CAST_SPELL, 0x04, 0x00, 0x00, 0x00, 0x00]);
+        buf.extend_from_slice(&9u16.to_le_bytes());
+        buf.extend_from_slice(&[
+            CLI_CAST_SPELL,
+            0x04,
+            0x00,
+            0x00,
+            0x03,
+            0x00,
+            b'B',
+            b'o',
+            b'b',
+        ]);
+
+        match codec.decode(&mut buf).unwrap().unwrap() {
+            ClientMessage::CastSpell {
+                spell_id, param, ..
+            } => {
+                assert_eq!(spell_id, SpellId(4));
+                assert_eq!(param, None);
+            }
+            other => panic!("expected CastSpell, got {other:?}"),
+        }
+        match codec.decode(&mut buf).unwrap().unwrap() {
+            ClientMessage::CastSpell { param, .. } => assert_eq!(param.as_deref(), Some("Bob")),
+            other => panic!("expected CastSpell, got {other:?}"),
         }
         assert!(buf.is_empty());
     }

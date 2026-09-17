@@ -367,9 +367,11 @@ impl SessionActor {
             ClientMessage::SetTarget { agent_id, seq } => {
                 self.handle_set_target(agent_id, seq).await
             }
-            ClientMessage::CastSpell { spell_id, target } => {
-                self.handle_cast_spell(spell_id, target).await
-            }
+            ClientMessage::CastSpell {
+                spell_id,
+                target,
+                param,
+            } => self.handle_cast_spell(spell_id, target, param).await,
         }
     }
 

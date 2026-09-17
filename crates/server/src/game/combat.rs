@@ -5,7 +5,6 @@ use crate::{
     constants::combat::{AMMO_HIT_CEILING, THROWN_HIT_CEILING},
     entities::{
         agent::{Agent, AgentKey},
-        targeting::{AreaTarget, TargetMode},
         combat::{AttackCost, AttackPlan, CombatDamage, CombatElement, WeaponType},
         creature::BloodType,
         effects::{AreaEffect, EffectId, Missile},
@@ -16,6 +15,7 @@ use crate::{
         position::{ItemPlacement, Position},
         skills::SkillType,
         spells::SpellAttack,
+        targeting::{AreaTarget, TargetFilter, TargetMode},
     },
     game::{
         Tick, TickCtx, conditions,
@@ -190,6 +190,7 @@ pub fn plan_spell_attack(
     roll: &mut Rolls,
     spell: &SpellAttack,
     area_target: &AreaTarget,
+    param: Option<&str>,
 ) -> Result<AttackPlan, SpellCastingDenyReason> {
     if matches!(spell.target, TargetMode::Caster) {
         return Err(SpellCastingDenyReason::InvalidTarget);
@@ -209,7 +210,18 @@ pub fn plan_spell_attack(
             "non player casting spell",
         ))?;
 
-    let mut targets = resolve_targets(map, attacker, &spell.target, area_target)?;
+    if spell.weapon_required && matches!(player.weapon_type(), WeaponType::None) {
+        return Err(SpellCastingDenyReason::NoWeapon);
+    }
+
+    let mut targets = resolve_targets(
+        map,
+        attacker,
+        &spell.target,
+        area_target,
+        param,
+        TargetFilter::Any,
+    )?;
     targets.keys.retain(|key| attacker != *key);
 
     let missile = spell
@@ -229,7 +241,7 @@ pub fn plan_spell_attack(
             delta,
         });
 
-    let value = roll_power(player, &spell.power, roll);
+    let value = roll_power(player, &spell.power, roll, spell.weapon_required);
     let element = spell.element;
     let damage = targets
         .keys

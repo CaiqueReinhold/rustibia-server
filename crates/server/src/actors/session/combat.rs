@@ -40,6 +40,7 @@ impl SessionActor {
         &self,
         spell_id: SpellId,
         target: SpellTarget,
+        param: Option<String>,
     ) -> Result<()> {
         let target = match target {
             SpellTarget::None => AreaTarget::None,
@@ -57,6 +58,7 @@ impl SessionActor {
                 agent_key: self.player_key,
                 spell: spell_id,
                 target,
+                param,
             })
             .await;
 

@@ -95,6 +95,7 @@ pub enum WorldCommand {
         agent_key: AgentKey,
         spell: SpellId,
         target: AreaTarget,
+        param: Option<String>,
     },
     CastAbility {
         agent_key: AgentKey,
@@ -505,9 +506,10 @@ impl WorldActor {
                 agent_key,
                 spell,
                 target,
+                param,
             } => {
                 self.with_ctx(broadcast_messages, |ctx| {
-                    spells::cast_spell(ctx, agent_key, spell, target)
+                    spells::cast_spell(ctx, agent_key, spell, target, param)
                 });
             }
             WorldCommand::CastAbility {

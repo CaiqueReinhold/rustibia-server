@@ -3,10 +3,10 @@ use strum::EnumCount;
 use crate::{
     entities::{
         agent::AgentId,
-        targeting::{AreaOrigin, TargetMode},
         combat::CombatElement,
         effects::{EffectId, MissileId},
         position::Position,
+        targeting::{AreaOrigin, TargetMode},
         vocation::Vocation,
     },
     game::{TickDelta, config::GAME_CONFIG},
@@ -76,14 +76,19 @@ impl Spell {
     }
 }
 
-/// `level_factor` and `magic_factor` are percentages of `base_power`; `spread` is the
-/// fraction either side of the centre the roll spans.
+/// `magic_factor` and `melee_factor` are percentages of `base_power`, the latter weighing
+/// the weapon's attack plus its skill; `level_factor` is damage per level, and `flat` is
+/// added to the centre. `spread_min` and `spread_max` are the fractions below and above
+/// the centre the roll spans.
 #[derive(Debug)]
 pub struct PowerCurve {
     pub base_power: f32,
     pub level_factor: f32,
     pub magic_factor: f32,
-    pub spread: f32,
+    pub melee_factor: f32,
+    pub spread_min: f32,
+    pub spread_max: f32,
+    pub flat: f32,
 }
 
 #[derive(Debug)]
@@ -95,6 +100,7 @@ pub struct SpellAttack {
     pub missile_id: Option<MissileId>,
     #[allow(dead_code)]
     pub chain: Option<ChainAttack>,
+    pub weapon_required: bool,
 }
 
 #[derive(Debug, Clone, PartialEq)]

@@ -20,6 +20,12 @@ pub enum CombatElement {
     Death,
 }
 
+impl Default for CombatElement {
+    fn default() -> Self {
+        CombatElement::Physical
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum WeaponType {
     None,
