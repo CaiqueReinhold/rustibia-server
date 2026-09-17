@@ -11,7 +11,8 @@ use crate::{
         effects::AreaEffect,
         healing::RestoreType,
         position::Position,
-        spells::{CastTarget, SpellId, SpellTarget},
+        spells::{SpellId, SpellTarget},
+        targeting::AreaTarget,
     },
     game::{combat::get_damage_visuals, config::GAME_CONFIG, spells::SpellCastingDenyReason},
     messages::{FloatingTextType, ServerMessage},
@@ -41,14 +42,14 @@ impl SessionActor {
         target: SpellTarget,
     ) -> Result<()> {
         let target = match target {
-            SpellTarget::None => CastTarget::None,
+            SpellTarget::None => AreaTarget::None,
             SpellTarget::Agent(agent_id) => {
                 let Some(key) = self.agents.get_global(agent_id) else {
                     return self.deny("Invalid target").await;
                 };
-                CastTarget::Agent(*key)
+                AreaTarget::Agent(*key)
             }
-            SpellTarget::Position(pos) => CastTarget::Position(pos),
+            SpellTarget::Position(pos) => AreaTarget::Position(pos),
         };
 
         self.world
@@ -71,7 +72,8 @@ impl SessionActor {
 
     pub(super) async fn agent_took_damage(
         &self,
-        agent_key: AgentKey,
+        source: Option<AgentKey>,
+        target: AgentKey,
         position: Position,
         blood_type: Option<BloodType>,
         damage: CombatDamage,
@@ -79,6 +81,15 @@ impl SessionActor {
         let (effect, text_color) = get_damage_visuals(&damage, blood_type.as_ref());
         self.send_effect(AreaEffect::single(effect, position.clone()))
             .await?;
+
+        if target == self.player_key
+            && let Some(agent_id) = source.and_then(|key| self.agents.get_local(&key))
+        {
+            self.connection
+                .send_message(ServerMessage::DamagedBy { agent_id })
+                .await?;
+        }
+
         if damage.value > 0 {
             self.connection
                 .send_message(ServerMessage::FloatingText {
@@ -90,9 +101,10 @@ impl SessionActor {
                 .await?;
         }
 
-        self.life_updated(agent_key).await
+        self.life_updated(target).await
     }
 
+    // TODO: remove this, use action message
     pub(super) async fn potion_drunk(&self, target: AgentKey, position: Position) -> Result<()> {
         if self.agents.get_local(&target).is_some() {
             self.connection
@@ -234,6 +246,7 @@ mod tests {
 
         session
             .agent_took_damage(
+                None,
                 reaped,
                 tile.clone(),
                 Some(BloodType::Blood),
@@ -403,5 +416,137 @@ mod tests {
             )),
             "the heal draws the sparkle; a second one here would double it: {sent:?}"
         );
+    }
+
+    fn damaged_by(sent: &[ConnectionCommand]) -> Option<AgentId> {
+        sent.iter().find_map(|c| match c {
+            ConnectionCommand::SendPlayerMessage(ServerMessage::DamagedBy { agent_id }) => {
+                Some(*agent_id)
+            }
+            _ => None,
+        })
+    }
+
+    #[tokio::test]
+    async fn a_hit_on_the_player_names_its_attacker() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let attacker = seat_player(&mut map, &Position::new(101, 100, 7), 2);
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+        let attacker_id = session.agents.get_or_insert(attacker);
+
+        session
+            .agent_took_damage(
+                Some(attacker),
+                me,
+                Position::new(100, 100, 7),
+                Some(BloodType::Blood),
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 12,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert_eq!(damaged_by(&sent), Some(attacker_id), "got {sent:?}");
+    }
+
+    /// The gate is invertible in a way nothing catches: with source and target
+    /// swapped the square still appears, on the wrong creature, and every other
+    /// test still passes.
+    #[tokio::test]
+    async fn a_hit_the_player_deals_names_nobody() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let victim = seat_player(&mut map, &Position::new(101, 100, 7), 2);
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+        session.agents.get_or_insert(victim);
+
+        session
+            .agent_took_damage(
+                Some(me),
+                victim,
+                Position::new(101, 100, 7),
+                Some(BloodType::Blood),
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 12,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert_eq!(damaged_by(&sent), None, "got {sent:?}");
+    }
+
+    /// A block is the case where the player can least tell what is hitting them:
+    /// a puff and no number.
+    #[tokio::test]
+    async fn a_blocked_hit_marks_and_shows_no_number() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let attacker = seat_player(&mut map, &Position::new(101, 100, 7), 2);
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+        let attacker_id = session.agents.get_or_insert(attacker);
+
+        session
+            .agent_took_damage(
+                Some(attacker),
+                me,
+                Position::new(100, 100, 7),
+                Some(BloodType::Blood),
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 0,
+                    blocked_shield: true,
+                    blocked_armor: false,
+                },
+            )
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert_eq!(damaged_by(&sent), Some(attacker_id), "got {sent:?}");
+        assert!(
+            !sent.iter().any(|c| matches!(
+                c,
+                ConnectionCommand::SendPlayerMessage(ServerMessage::FloatingText { .. })
+            )),
+            "a block has no number to show: {sent:?}"
+        );
+    }
+
+    #[tokio::test]
+    async fn an_attacker_with_no_local_id_names_nobody() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let attacker = seat_player(&mut map, &Position::new(101, 100, 7), 2);
+        let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session
+            .agent_took_damage(
+                Some(attacker),
+                me,
+                Position::new(100, 100, 7),
+                Some(BloodType::Blood),
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 12,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert_eq!(damaged_by(&sent), None, "got {sent:?}");
     }
 }

@@ -8,11 +8,12 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::CONFIG;
+use crate::entities::targeting::TargetMode;
 use crate::entities::combat::CombatElement;
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::spells::{
     ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
-    SpellHealing, SpellId, SpellTargetMode,
+    SpellHealing, SpellId,
 };
 use crate::entities::vocation::Vocation;
 use crate::game::TickDelta;
@@ -208,7 +209,7 @@ fn parse_target(
     name: &str,
     value: serde_yaml::Value,
     shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
-) -> Result<SpellTargetMode, SpellsLoadError> {
+) -> Result<TargetMode, SpellsLoadError> {
     parse_target_mode(value, shapes).map_err(|error| match error {
         TargetModeError::UnknownTarget { target } => SpellsLoadError::UnknownTarget {
             id,
@@ -344,7 +345,7 @@ pub(crate) fn load_spells_from_str(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::spells::AreaOrigin;
+    use crate::entities::targeting::AreaOrigin;
     use crate::persistence::areas::load_areas;
 
     fn shape(name: &str) -> HashMap<AreaShapeId, Arc<AreaShape>> {
@@ -467,7 +468,7 @@ spells:
         let spell = only_spell(&spells);
 
         match &attack(&spell).target {
-            SpellTargetMode::Area {
+            TargetMode::Area {
                 origin: AreaOrigin::Caster,
                 shape,
             } => assert_eq!(shape.get_delta(), [(0, 0)]),
@@ -621,7 +622,7 @@ spells:
         let spell = only_spell(&spells);
 
         assert!(
-            matches!(attack(&spell).target, SpellTargetMode::Target { range: 4 }),
+            matches!(attack(&spell).target, TargetMode::Target { range: 4 }),
             "unexpected target mode: {:?}",
             attack(&spell).target
         );
@@ -723,7 +724,7 @@ spells:
         let spell = only_spell(&spells);
 
         let healing = healing(&spell);
-        assert!(matches!(healing.target, SpellTargetMode::Caster));
+        assert!(matches!(healing.target, TargetMode::Caster));
         assert_eq!(
             (
                 healing.power.base_power,

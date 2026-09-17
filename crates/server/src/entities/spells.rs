@@ -1,12 +1,11 @@
-use std::sync::Arc;
-
 use strum::EnumCount;
 
 use crate::{
     entities::{
-        agent::{AgentId, AgentKey},
+        agent::AgentId,
+        targeting::{AreaOrigin, TargetMode},
         combat::CombatElement,
-        effects::{AreaShape, EffectId, MissileId},
+        effects::{EffectId, MissileId},
         position::Position,
         vocation::Vocation,
     },
@@ -69,7 +68,7 @@ impl Spell {
         };
         matches!(
             target,
-            SpellTargetMode::Area {
+            TargetMode::Area {
                 origin: AreaOrigin::Target,
                 ..
             }
@@ -89,7 +88,7 @@ pub struct PowerCurve {
 
 #[derive(Debug)]
 pub struct SpellAttack {
-    pub target: SpellTargetMode,
+    pub target: TargetMode,
     pub element: CombatElement,
     pub power: PowerCurve,
     pub effect_id: EffectId,
@@ -119,7 +118,7 @@ pub enum ChainSorting {
 
 #[derive(Debug)]
 pub struct SpellHealing {
-    pub target: SpellTargetMode,
+    pub target: TargetMode,
     pub power: PowerCurve,
 }
 
@@ -130,39 +129,9 @@ pub enum SpellEffect {
 }
 
 #[derive(Debug, Clone)]
-pub enum SpellTargetMode {
-    /// Accepts only CastTarget::None
-    Caster,
-    /// Accepts only CastTarget::None, the target is always
-    /// agent.target()
-    Target { range: u16 },
-    /// if origin is caster accepts only CastTarget::None
-    /// otherwise accepts only CastTarget::Agent or CastTarget::Position
-    Area {
-        origin: AreaOrigin,
-        shape: Arc<AreaShape>,
-    },
-}
-
-#[derive(Debug, Clone)]
-pub enum AreaOrigin {
-    Caster,
-    Target,
-}
-
-/// Client target enum
-#[derive(Debug, Clone)]
 pub enum SpellTarget {
     None,
     Agent(AgentId),
-    Position(Position),
-}
-
-/// World target enum
-#[derive(Debug, Clone)]
-pub enum CastTarget {
-    None,
-    Agent(AgentKey),
     Position(Position),
 }
 

@@ -5,6 +5,7 @@ use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::{Agent, AgentKey},
+        targeting::{AreaOrigin, AreaTarget, TargetMode},
         combat::{AttackCost, AttackPlan, CombatDamage},
         effects::{AreaEffect, Missile},
         map::GameMap,
@@ -12,8 +13,8 @@ use crate::{
         position::{Position, Rect},
         skills::SkillType,
         spells::{
-            AreaOrigin, CastTarget, ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack,
-            SpellEffect, SpellGroup, SpellHealing, SpellId, SpellTargetMode,
+            ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
+            SpellHealing, SpellId,
         },
     },
     game::{
@@ -46,7 +47,7 @@ pub enum SpellCastingDenyReason {
     StillInCooldown,
 }
 
-pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, target: CastTarget) {
+pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, target: AreaTarget) {
     let Some(position) = ctx.map.agent_position(agent_key).cloned() else {
         return;
     };
@@ -110,7 +111,7 @@ pub fn cast_spell(ctx: &mut TickCtx, agent_key: AgentKey, spell_id: SpellId, tar
     }
 }
 
-pub struct SpellTargets {
+pub struct ResolvedTargets {
     /// Includes the caster when an area covers it; a planner that must not hit its own
     /// caster filters this itself.
     pub keys: Vec<AgentKey>,
@@ -119,12 +120,12 @@ pub struct SpellTargets {
     pub delta: Option<Vec<(i8, i8)>>,
 }
 
-pub fn resolve_spell_targets(
+pub fn resolve_targets(
     map: &GameMap,
     caster: AgentKey,
-    mode: &SpellTargetMode,
-    cast_target: &CastTarget,
-) -> Result<SpellTargets, SpellCastingDenyReason> {
+    mode: &TargetMode,
+    area_target: &AreaTarget,
+) -> Result<ResolvedTargets, SpellCastingDenyReason> {
     let agent = map
         .get_agent(caster)
         .ok_or(SpellCastingDenyReason::InvalidState(
@@ -139,12 +140,12 @@ pub fn resolve_spell_targets(
         ))?;
 
     match mode {
-        SpellTargetMode::Caster => Ok(SpellTargets {
+        TargetMode::Caster => Ok(ResolvedTargets {
             keys: Vec::from([caster]),
             aim: None,
             delta: None,
         }),
-        SpellTargetMode::Target { range } => {
+        TargetMode::Target { range } => {
             let target = agent
                 .target()
                 .ok_or(SpellCastingDenyReason::InvalidTarget)?;
@@ -160,17 +161,17 @@ pub fn resolve_spell_targets(
                 return Err(SpellCastingDenyReason::OutOfReach);
             }
 
-            Ok(SpellTargets {
+            Ok(ResolvedTargets {
                 keys: Vec::from([target]),
                 aim: Some(target_pos.clone()),
                 delta: Some(vec![(0, 0)]),
             })
         }
-        SpellTargetMode::Area { origin, shape } => {
-            let origin = resolve_area_origin(map, origin, position, cast_target)
+        TargetMode::Area { origin, shape } => {
+            let origin = resolve_area_origin(map, origin, position, area_target)
                 .ok_or(SpellCastingDenyReason::InvalidTarget)?;
             let (keys, delta) = resolve_area(map, origin, shape.get_delta_facing(agent.facing()));
-            Ok(SpellTargets {
+            Ok(ResolvedTargets {
                 keys,
                 aim: Some(origin.clone()),
                 delta: Some(delta),
@@ -194,15 +195,15 @@ fn resolve_area_origin<'a>(
     map: &'a GameMap,
     origin: &'a AreaOrigin,
     caster_pos: &'a Position,
-    cast_target: &'a CastTarget,
+    area_target: &'a AreaTarget,
 ) -> Option<&'a Position> {
     match origin {
         AreaOrigin::Caster => Some(caster_pos),
         AreaOrigin::Target => {
-            let candidate = match cast_target {
-                CastTarget::Agent(key) => map.agent_position(*key),
-                CastTarget::Position(pos) => Some(pos),
-                CastTarget::None => None,
+            let candidate = match area_target {
+                AreaTarget::Agent(key) => map.agent_position(*key),
+                AreaTarget::Position(pos) => Some(pos),
+                AreaTarget::None => None,
             };
             candidate
                 .filter(|pos| can_target(caster_pos, pos) && can_throw(map, caster_pos, pos, true))
@@ -344,7 +345,7 @@ fn execute_effect(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
     spell: &Spell,
-    target: CastTarget,
+    target: AreaTarget,
 ) -> Result<(), SpellCastingDenyReason> {
     match &spell.effect {
         SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, attack),
@@ -370,7 +371,7 @@ fn execute_effect(
 fn attack_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
-    target: &CastTarget,
+    target: &AreaTarget,
     spell_attack: &SpellAttack,
 ) -> Result<(), SpellCastingDenyReason> {
     let plan = plan_spell_attack(ctx.map, agent_key, ctx.roll, spell_attack, target)?;
@@ -400,7 +401,7 @@ fn attack_spell(
 fn healing_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
-    target: &CastTarget,
+    target: &AreaTarget,
     spell_healing: &SpellHealing,
 ) -> Result<(), SpellCastingDenyReason> {
     let plan = plan_healing_spell(ctx.map, agent_key, ctx.roll, spell_healing, target)?;
@@ -426,8 +427,8 @@ mod tests {
         (map, key)
     }
 
-    fn aimed_area() -> SpellTargetMode {
-        SpellTargetMode::Area {
+    fn aimed_area() -> TargetMode {
+        TargetMode::Area {
             origin: AreaOrigin::Target,
             shape: Arc::new(AreaShape::new(vec![(0, 0)].into_boxed_slice())),
         }
@@ -438,11 +439,11 @@ mod tests {
         let (map, caster) = a_caster_at(&Position::new(100, 100, 7));
         let aim = Position::new(103, 101, 7);
 
-        let targets = resolve_spell_targets(
+        let targets = resolve_targets(
             &map,
             caster,
             &aimed_area(),
-            &CastTarget::Position(aim.clone()),
+            &AreaTarget::Position(aim.clone()),
         )
         .unwrap();
 
@@ -456,11 +457,11 @@ mod tests {
         for aim in [Position::new(140, 100, 7), Position::new(101, 100, 6)] {
             assert!(
                 matches!(
-                    resolve_spell_targets(
+                    resolve_targets(
                         &map,
                         caster,
                         &aimed_area(),
-                        &CastTarget::Position(aim.clone())
+                        &AreaTarget::Position(aim.clone())
                     ),
                     Err(SpellCastingDenyReason::InvalidTarget)
                 ),

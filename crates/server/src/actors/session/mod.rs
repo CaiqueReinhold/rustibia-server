@@ -419,12 +419,13 @@ impl SessionActor {
             } => self.agent_said(agent_key, position, message).await,
             BroadcastMessage::AgentLostTarget { seq, .. } => self.target_lost(seq).await,
             BroadcastMessage::DamageTaken {
-                agent_key,
+                source,
+                target,
                 position,
                 blood_type,
                 damage,
             } => {
-                self.agent_took_damage(agent_key, position, blood_type, damage)
+                self.agent_took_damage(source, target, position, blood_type, damage)
                     .await
             }
             BroadcastMessage::MissileLaunched { missile } => {

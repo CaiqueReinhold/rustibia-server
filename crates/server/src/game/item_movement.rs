@@ -147,7 +147,7 @@ pub fn move_item(
         return;
     }
 
-    let Some(player_pos) = ctx.map.agent_position(agent) else {
+    let Some(player_pos) = ctx.map.agent_position(agent).cloned() else {
         return;
     };
 
@@ -178,8 +178,8 @@ pub fn move_item(
     match (to.site(), to.container()) {
         (PlacementSite::Tile(pos), None) => {
             if !ctx.map.can_drop_item(pos)
-                || !Rect::player_viewport(player_pos).contains(pos)
-                || !can_throw(ctx.map, player_pos, pos, false)
+                || !Rect::player_viewport(&player_pos).contains(pos)
+                || !can_throw(ctx.map, &player_pos, pos, false)
             {
                 ctx.events.push(BroadcastMessage::MoveItemDenied {
                     agent_key: agent,
@@ -227,6 +227,10 @@ pub fn move_item(
         }
     }
 
+    let old_speed = ctx
+        .map
+        .get_player(agent)
+        .map(|p| p.inventory().stats().speed);
     // --- Remove from source ---
     let Ok((source_item, source_index)) = remove_item_at(ctx, &source, amount) else {
         ctx.events.push(BroadcastMessage::MoveItemDenied {
@@ -269,6 +273,17 @@ pub fn move_item(
                 }
                 e => e.to_string(),
             },
+        });
+    }
+
+    let new_speed = ctx
+        .map
+        .get_player(agent)
+        .map(|p| p.inventory().stats().speed);
+    if old_speed != new_speed {
+        ctx.events.push(BroadcastMessage::AgentSpeedChanged {
+            agent_key: agent,
+            position: player_pos,
         });
     }
 }

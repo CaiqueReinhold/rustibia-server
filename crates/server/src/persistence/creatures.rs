@@ -364,9 +364,9 @@ pub fn load_creatures(
 mod tests {
     use super::*;
     use crate::entities::agent::Agent;
+    use crate::entities::targeting::{AreaOrigin, TargetMode};
     use crate::entities::items::ItemId;
     use crate::entities::position::Position;
-    use crate::entities::spells::{AreaOrigin, SpellTargetMode};
     use crate::persistence::areas::load_areas;
     use crate::persistence::items::ITEM_CONFIGS;
 
@@ -429,7 +429,7 @@ say:
         load_creatures(&CONFIG.creatures_dir_path, &areas).unwrap()
     }
 
-    fn attack(ability: &CreatureAbility) -> (&CreatureAttackDamage, &SpellTargetMode) {
+    fn attack(ability: &CreatureAbility) -> (&CreatureAttackDamage, &TargetMode) {
         match &ability.effect {
             AbilityEffect::Attack(attk) => (&attk.damage, &attk.target),
             AbilityEffect::Heal(..) => panic!("a heal"),
@@ -554,7 +554,7 @@ say:
         assert_eq!(damage.element, CombatElement::Fire);
         assert_eq!(damage.value, Bounds { min: 100, max: 200 });
         match target {
-            SpellTargetMode::Area {
+            TargetMode::Area {
                 origin: AreaOrigin::Caster,
                 shape,
             } => assert_eq!(shape.get_delta(), [(0, 0)]),

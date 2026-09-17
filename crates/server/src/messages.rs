@@ -138,6 +138,7 @@ const SRV_SPELL_CAST: u8 = 31;
 const SRV_SPELL_LIST: u8 = 32;
 const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
+const SRV_DAMAGED_BY: u8 = 35;
 
 #[derive(Clone, Debug)]
 pub enum TextMessageType {
@@ -282,6 +283,9 @@ pub enum ServerMessage {
     },
     TargetLost {
         seq: u32,
+    },
+    DamagedBy {
+        agent_id: AgentId,
     },
     ShowEffect {
         effect_id: EffectId,
@@ -765,6 +769,10 @@ impl Encoder<ServerMessage> for GameMessageCodec {
             ServerMessage::TargetLost { seq } => {
                 dst.put_u8(SRV_TARGET_LOST);
                 dst.put_u32_le(seq);
+            }
+            ServerMessage::DamagedBy { agent_id } => {
+                dst.put_u8(SRV_DAMAGED_BY);
+                dst.put_u16_le(agent_id.0);
             }
             ServerMessage::AgentLifeChanged {
                 agent_id,
@@ -1293,6 +1301,33 @@ mod tests {
         assert_eq!(buf[14], 0x01, "colour present");
         assert_eq!(&buf[15..18], &[255, 0, 64], "rgb");
         assert_eq!(buf.len(), 18, "no trailing bytes");
+    }
+
+    /// The byte layout the client's `decodes_a_damaged_by` reads back. If these
+    /// two disagree the mark silently stops appearing; nothing fails to compile.
+    #[test]
+    fn encode_damaged_by_is_an_opcode_and_one_id() {
+        let mut codec = GameMessageCodec {};
+        let mut buf = BytesMut::new();
+
+        codec
+            .encode(
+                ServerMessage::DamagedBy {
+                    agent_id: AgentId(0x0201),
+                },
+                &mut buf,
+            )
+            .unwrap();
+
+        let payload_len = u16::from_le_bytes([buf[0], buf[1]]) as usize;
+        assert_eq!(
+            payload_len,
+            buf.len() - 2,
+            "length prefix must cover the payload"
+        );
+        assert_eq!(buf[2], SRV_DAMAGED_BY);
+        assert_eq!(u16::from_le_bytes([buf[3], buf[4]]), 0x0201, "agent id");
+        assert_eq!(buf.len(), 5, "no trailing bytes");
     }
 
     /// The length prefix is a *byte* count. This codebase has been bitten by

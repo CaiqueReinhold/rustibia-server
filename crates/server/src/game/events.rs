@@ -82,7 +82,8 @@ pub enum BroadcastMessage {
         seq: u32,
     },
     DamageTaken {
-        agent_key: AgentKey,
+        source: Option<AgentKey>,
+        target: AgentKey,
         position: Position,
         blood_type: Option<BloodType>,
         damage: CombatDamage,
@@ -329,7 +330,8 @@ mod tests {
 
     fn hit(agent_key: AgentKey, value: u32) -> BroadcastMessage {
         BroadcastMessage::DamageTaken {
-            agent_key,
+            source: None,
+            target: agent_key,
             position: Position::new(10, 10, 7),
             blood_type: Some(BloodType::Blood),
             damage: CombatDamage {

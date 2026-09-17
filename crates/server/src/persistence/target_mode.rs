@@ -4,8 +4,8 @@ use std::sync::Arc;
 use serde::Deserialize;
 use thiserror::Error;
 
+use crate::entities::targeting::{AreaOrigin, TargetMode};
 use crate::entities::effects::{AreaShape, AreaShapeId};
-use crate::entities::spells::{AreaOrigin, SpellTargetMode};
 
 /// Fragments rather than sentences: each caller wraps these into an error of its own that
 /// names the spell or the creature file the target was authored in.
@@ -66,7 +66,7 @@ fn parse_origin(origin: RawOrigin) -> AreaOrigin {
 pub fn parse_target_mode(
     mut value: serde_yaml::Value,
     shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
-) -> Result<SpellTargetMode, TargetModeError> {
+) -> Result<TargetMode, TargetModeError> {
     let unknown = |target: String| TargetModeError::UnknownTarget { target };
 
     let kind =
@@ -75,11 +75,11 @@ pub fn parse_target_mode(
     match kind.as_str() {
         "self" => {
             let RawCaster {} = serde_yaml::from_value(value)?;
-            Ok(SpellTargetMode::Caster)
+            Ok(TargetMode::Caster)
         }
         "target" => {
             let targeted: RawTargeted = serde_yaml::from_value(value)?;
-            Ok(SpellTargetMode::Target {
+            Ok(TargetMode::Target {
                 range: targeted.range,
             })
         }
@@ -93,7 +93,7 @@ pub fn parse_target_mode(
                         shape: area.shape.clone(),
                     })?;
 
-            Ok(SpellTargetMode::Area {
+            Ok(TargetMode::Area {
                 origin: parse_origin(area.origin),
                 shape,
             })

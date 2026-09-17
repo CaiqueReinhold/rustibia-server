@@ -42,7 +42,8 @@ pub fn apply_damage(
     if damage.value == 0 {
         if damage.blocked_shield || damage.blocked_armor {
             ctx.events.push(BroadcastMessage::DamageTaken {
-                agent_key: target,
+                source,
+                target,
                 position: target_pos,
                 blood_type,
                 damage,
@@ -62,7 +63,8 @@ pub fn apply_damage(
     }
 
     ctx.events.push(BroadcastMessage::DamageTaken {
-        agent_key: target,
+        source,
+        target,
         position: target_pos.clone(),
         blood_type,
         damage,

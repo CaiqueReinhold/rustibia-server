@@ -37,6 +37,7 @@
   attributes:
     weight: 750
     slot: 8
+    speed: 20
 - id: 3246
   name: boots of waterwalking
   flags:
@@ -118,6 +119,7 @@
     weight: 2500
     slot: 8
     armor: 3
+    speed: 15
 - id: 5461
   name: pirate boots
   flags:
@@ -149,6 +151,7 @@
     weight: 1200
     slot: 8
     armor: 2
+    speed: -6
 - id: 9017
   name: coconut shoes
   article: a
@@ -218,6 +221,7 @@
     weight: 700
     slot: 8
     armor: 1
+    speed: 5
 - id: 11542
   name: fish tail
   flags:
@@ -242,6 +246,7 @@
     weight: 3700
     slot: 8
     armor: 3
+    speed: -5
 - id: 16112
   name: prismatic boots
   flags:

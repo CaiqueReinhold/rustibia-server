@@ -199,6 +199,7 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
             AREA_SHAPES.get(value.get("shape")?.as_str()?).cloned()?,
             EffectId(value.get("effect_id")?.as_u64()? as u16),
         )),
+        "speed" => Some(ItemAttribute::Speed(value.as_i64()? as i16)),
         _ => {
             let n = value.as_u64()? as u32;
             match key {

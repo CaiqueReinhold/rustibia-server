@@ -24,7 +24,8 @@ use crate::entities::{
     items::ItemRef,
     map::GameMap,
     position::{Direction, ItemPlacement, Position},
-    spells::{CastTarget, ChainAttack, SpellId},
+    spells::{ChainAttack, SpellId},
+    targeting::AreaTarget,
 };
 use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, config::GAME_CONFIG, creature_abilities,
@@ -93,7 +94,7 @@ pub enum WorldCommand {
     CastSpell {
         agent_key: AgentKey,
         spell: SpellId,
-        target: CastTarget,
+        target: AreaTarget,
     },
     CastAbility {
         agent_key: AgentKey,
@@ -720,7 +721,8 @@ mod tests {
                     position: position.clone(),
                 },
                 BroadcastMessage::DamageTaken {
-                    agent_key: AgentKey::default(),
+                    source: None,
+                    target: AgentKey::default(),
                     position: position.clone(),
                     blood_type: None,
                     damage: CombatDamage {

@@ -4,14 +4,15 @@ use crate::{
         effects::AreaEffect,
         healing::{HealPlan, Restore, RestoreType},
         map::GameMap,
-        spells::{CastTarget, SpellHealing},
+        spells::SpellHealing,
+        targeting::AreaTarget,
     },
     game::{
         TickCtx,
         config::GAME_CONFIG,
         events::BroadcastMessage,
         random::Rolls,
-        spells::{SpellCastingDenyReason, resolve_spell_targets, roll_power},
+        spells::{SpellCastingDenyReason, resolve_targets, roll_power},
     },
 };
 
@@ -20,7 +21,7 @@ pub fn plan_healing_spell(
     caster: AgentKey,
     roll: &mut Rolls,
     spell: &SpellHealing,
-    cast_target: &CastTarget,
+    area_target: &AreaTarget,
 ) -> Result<HealPlan, SpellCastingDenyReason> {
     let player = map
         .get_player(caster)
@@ -29,7 +30,7 @@ pub fn plan_healing_spell(
             "non player casting spell",
         ))?;
 
-    let targets = resolve_spell_targets(map, caster, &spell.target, cast_target)?;
+    let targets = resolve_targets(map, caster, &spell.target, area_target)?;
 
     let area_effect = targets
         .delta

@@ -12,6 +12,7 @@ pub mod player;
 pub mod position;
 pub mod skills;
 pub mod spells;
+pub mod targeting;
 pub mod vocation;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]

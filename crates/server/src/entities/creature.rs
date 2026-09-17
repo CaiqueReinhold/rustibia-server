@@ -8,7 +8,8 @@ use crate::{
         conditions::ConditionSpec,
         effects::{EffectId, MissileId},
         items::{FluidType, ItemId},
-        spells::{SpellGroup, SpellTargetMode},
+        spells::SpellGroup,
+        targeting::TargetMode,
     },
     game::TickDelta,
 };
@@ -55,7 +56,7 @@ pub struct CreatureAttackDamage {
 #[derive(Clone, Debug)]
 pub struct CreatureAttack {
     pub damage: CreatureAttackDamage,
-    pub target: SpellTargetMode,
+    pub target: TargetMode,
     pub effect_id: Option<EffectId>,
     pub missile_id: Option<MissileId>,
 }
