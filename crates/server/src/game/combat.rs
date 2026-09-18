@@ -224,6 +224,10 @@ pub fn plan_spell_attack(
     )?;
     targets.keys.retain(|key| attacker != *key);
 
+    if matches!(spell.target, TargetMode::Aimed) && targets.keys.is_empty() {
+        return Err(SpellCastingDenyReason::InvalidTarget);
+    }
+
     let missile = spell
         .missile_id
         .zip(targets.aim.clone())

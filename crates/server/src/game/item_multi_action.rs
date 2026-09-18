@@ -9,6 +9,8 @@ use crate::{
         items::{Item, ItemFlag, ItemId, ItemMultiAction, ItemRef},
         map::GameMap,
         position::{ItemPlacement, Position},
+        spells::Spell,
+        targeting::AreaTarget,
     },
     game::{
         Mark, TickCtx,
@@ -18,14 +20,16 @@ use crate::{
         item_action::{ItemActionError, transform},
         item_movement::{insert_item_at, remove_item_at, return_item},
         map_query::find_item,
+        spells::{CastSource, cast_spell},
     },
-    persistence::items::ITEM_CONFIGS,
+    persistence::{items::ITEM_CONFIGS, spells::SPELLS},
 };
 
 #[derive(Debug)]
 pub struct UseTarget {
     pub item: Option<ItemRef>,
     pub agent: Option<AgentKey>,
+    pub position: Option<Position>,
 }
 
 pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, target: UseTarget) {
@@ -75,6 +79,7 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
             ctx.map.get_agent_mut(agent_key).unwrap().next_use_tick =
                 ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks;
         }
+        Err(ItemActionError::Reported) => {}
         Err(e) => {
             if let ItemActionError::InvalidState = e {
                 warn!("{e}");
@@ -122,7 +127,45 @@ fn route_multi_action(
             *mana,
             *flask,
         ),
+        ItemMultiAction::Rune { spell } => match SPELLS.get(spell) {
+            Some(found) => rune(ctx, agent_key, source, found, target),
+            None => {
+                error!("rune {source:?} names spell {spell:?}, which is not in the catalogue");
+                Err(ItemActionError::ActionFailed)
+            }
+        },
     }
+}
+
+fn rune_target(target: &UseTarget) -> AreaTarget {
+    match (target.agent, target.position.as_ref()) {
+        (Some(key), _) => AreaTarget::Agent(key),
+        (None, Some(position)) => AreaTarget::Position(position.clone()),
+        (None, None) => AreaTarget::None,
+    }
+}
+
+fn rune(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    source: &ItemRef,
+    spell: &Spell,
+    target: &UseTarget,
+) -> Result<(), ItemActionError> {
+    cast_spell(
+        ctx,
+        agent_key,
+        spell,
+        rune_target(target),
+        None,
+        CastSource::Rune,
+    )
+    .map_err(|_| ItemActionError::Reported)?;
+
+    if remove_item_at(ctx, source, 1).is_err() {
+        error!("could not spend rune {source:?} after its cast succeeded");
+    }
+    Ok(())
 }
 
 fn tool_target<'a>(map: &GameMap, target: &'a UseTarget) -> Result<&'a ItemRef, ItemActionError> {
@@ -282,6 +325,13 @@ fn potion(
 mod tests {
     use super::*;
     use crate::constants::items::MAX_STACK_AMOUNT;
+    use crate::entities::combat::CombatElement;
+    use crate::entities::effects::EffectId;
+    use crate::entities::spells::{
+        PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect, SpellGroup, SpellHealing,
+        SpellId,
+    };
+    use crate::entities::targeting::TargetMode;
     use crate::entities::{
         agent::{Agent, Pool},
         healing::RestoreType,
@@ -289,9 +339,10 @@ mod tests {
         items::{Item, ItemAttribute, ItemConfig, ItemGuid, ItemId},
         map::MapTile,
     };
-    use crate::game::TestHarness;
+    use crate::game::spells::SpellCastingDenyReason;
+    use crate::game::{TestHarness, Tick};
     use crate::persistence::items::ITEM_CONFIGS;
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{a_spell, a_test_creature, a_test_snapshot};
     use std::collections::{HashMap, HashSet};
     use std::sync::Arc;
 
@@ -426,6 +477,7 @@ mod tests {
                     placement: ItemPlacement::Map(there.clone()),
                 }),
                 agent: None,
+                position: None,
             },
         );
 
@@ -491,6 +543,7 @@ mod tests {
                         placement: ItemPlacement::Map(spot),
                     }),
                     agent: None,
+                    position: None,
                 },
             );
 
@@ -545,6 +598,7 @@ mod tests {
                     placement: ItemPlacement::Map(sand_pos.clone()),
                 }),
                 agent: None,
+                position: None,
             },
         );
 
@@ -708,6 +762,7 @@ mod tests {
                         placement: ItemPlacement::Map(there.clone()),
                     }),
                     agent: target,
+                    position: None,
                 },
             );
         }
@@ -877,6 +932,317 @@ mod tests {
             "an empty stack was left on the tile"
         );
         assert!(drunk.life.current > 10);
+    }
+
+    fn attack_aimed(mut spell: Spell) -> Spell {
+        spell.effect = SpellEffect::Attack(SpellAttack {
+            target: TargetMode::Aimed,
+            element: CombatElement::Fire,
+            power: PowerCurve {
+                base_power: 5.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+            effect_id: EffectId(1),
+            missile_id: None,
+            chain: None,
+            weapon_required: false,
+        });
+        spell
+    }
+
+    fn a_rune(amount: u8, spell: SpellId) -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(9998),
+                "test rune".to_string(),
+                None,
+                None,
+                HashSet::from([
+                    ItemFlag::Usable,
+                    ItemFlag::Multiuse,
+                    ItemFlag::Cumulative,
+                    ItemFlag::Take,
+                ]),
+                [ItemAttribute::MultiAction(ItemMultiAction::Rune { spell })].to_vec(),
+            )),
+            amount,
+        )
+    }
+
+    fn throw_rune(
+        spell: &Spell,
+    ) -> (
+        Result<(), ItemActionError>,
+        Vec<BroadcastMessage>,
+        Option<u8>,
+        Tick,
+        GameMap,
+        AgentKey,
+    ) {
+        let mut h = TestHarness::new();
+        let here = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+
+        let item = a_rune(3, spell.id);
+        let guid = item.guid.clone();
+        map.insert_tile(here.clone(), a_tile_with(item));
+        let agent = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
+            .unwrap();
+
+        let source = ItemRef {
+            guid,
+            placement: ItemPlacement::Map(here.clone()),
+        };
+        let result = rune(
+            &mut h.ctx(&mut map),
+            agent,
+            &source,
+            spell,
+            &UseTarget {
+                item: None,
+                agent: Some(agent),
+                position: None,
+            },
+        );
+
+        let left = map.get_top_item(&here).map(|item| item.amount);
+        (result, h.events, left, h.tick, map, agent)
+    }
+
+    #[test]
+    fn a_rune_aims_at_its_agent_before_its_tile() {
+        let key = AgentKey::default();
+        let here = Position::new(100, 100, 7);
+
+        assert!(matches!(
+            rune_target(&UseTarget {
+                item: None,
+                agent: Some(key),
+                position: Some(here.clone()),
+            }),
+            AreaTarget::Agent(_)
+        ));
+        assert!(matches!(
+            rune_target(&UseTarget {
+                item: None,
+                agent: None,
+                position: Some(here),
+            }),
+            AreaTarget::Position(_)
+        ));
+        assert!(matches!(
+            rune_target(&UseTarget {
+                item: None,
+                agent: None,
+                position: None,
+            }),
+            AreaTarget::None
+        ));
+    }
+
+    #[test]
+    fn a_successful_rune_spends_one_from_the_stack_and_stamps_both_clocks() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+
+        let (result, _events, left, tick, map, agent) = throw_rune(&spell);
+
+        assert!(result.is_ok(), "{result:?}");
+        assert_eq!(left, Some(2), "the rune was not spent");
+        assert!(
+            map.get_agent(agent)
+                .unwrap()
+                .next_spell_group_tick(SpellGroup::Attack)
+                > tick
+        );
+    }
+
+    /// The user-facing half of the heal filter: `exura gran mas res` must not heal the
+    /// monsters around the caster, but a healing rune aimed at one must reach it.
+    #[test]
+    fn an_aimed_healing_rune_reaches_a_creature() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+        spell.group = SpellGroup::Healing;
+        spell.effect = SpellEffect::Healing(SpellHealing {
+            target: TargetMode::Aimed,
+            power: PowerCurve {
+                base_power: 20.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+        });
+
+        let mut h = TestHarness::new();
+        let here = Position::new(10, 10, 7);
+        let there = Position::new(11, 10, 7);
+        let mut map = GameMap::new();
+        let item = a_rune(3, spell.id);
+        let guid = item.guid.clone();
+        map.insert_tile(here.clone(), a_tile_with(item));
+        map.insert_tile(there.clone(), MapTile::new());
+        let agent = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
+            .unwrap();
+        let creature = map
+            .insert_agent(a_test_creature("Rat", 10, (1, 2)), &there)
+            .unwrap();
+        map.get_agent_mut(creature).unwrap().remove_life(9);
+
+        let source = ItemRef {
+            guid,
+            placement: ItemPlacement::Map(here.clone()),
+        };
+        let result = rune(
+            &mut h.ctx(&mut map),
+            agent,
+            &source,
+            &spell,
+            &UseTarget {
+                item: None,
+                agent: Some(creature),
+                position: None,
+            },
+        );
+
+        assert!(result.is_ok(), "{result:?}");
+        assert!(
+            map.get_agent(creature).unwrap().life().current > 1,
+            "the creature was not healed"
+        );
+        assert_eq!(map.get_top_item(&here).map(|item| item.amount), Some(2));
+    }
+
+    #[test]
+    fn an_aimed_attack_rune_pointed_at_its_own_caster_is_refused() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+
+        let (result, _events, left, ..) = throw_rune(&attack_aimed(spell));
+
+        assert!(
+            matches!(result, Err(ItemActionError::Reported)),
+            "{result:?}"
+        );
+        assert_eq!(left, Some(3), "the rune was spent on nobody");
+    }
+
+    #[test]
+    fn a_single_target_rune_aimed_at_bare_ground_is_refused() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+        spell.effect = SpellEffect::Healing(SpellHealing {
+            target: TargetMode::Aimed,
+            power: PowerCurve {
+                base_power: 1.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+        });
+
+        let mut h = TestHarness::new();
+        let here = Position::new(10, 10, 7);
+        let empty = Position::new(11, 10, 7);
+        let mut map = GameMap::new();
+        let item = a_rune(3, spell.id);
+        let guid = item.guid.clone();
+        map.insert_tile(here.clone(), a_tile_with(item));
+        map.insert_tile(empty.clone(), MapTile::new());
+        let agent = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
+            .unwrap();
+
+        let source = ItemRef {
+            guid,
+            placement: ItemPlacement::Map(here.clone()),
+        };
+        let result = rune(
+            &mut h.ctx(&mut map),
+            agent,
+            &source,
+            &spell,
+            &UseTarget {
+                item: None,
+                agent: None,
+                position: Some(empty),
+            },
+        );
+
+        assert!(
+            matches!(result, Err(ItemActionError::Reported)),
+            "a healing rune thrown at empty ground was accepted: {result:?}"
+        );
+        assert_eq!(
+            map.get_top_item(&here).map(|item| item.amount),
+            Some(3),
+            "the rune was spent on nobody"
+        );
+        assert!(matches!(
+            h.events.as_slice(),
+            [BroadcastMessage::SpellDenied {
+                reason: SpellCastingDenyReason::InvalidTarget,
+                ..
+            }]
+        ));
+    }
+
+    #[test]
+    fn a_single_target_rune_aimed_at_an_agent_is_spent() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+        spell.effect = SpellEffect::Healing(SpellHealing {
+            target: TargetMode::Aimed,
+            power: PowerCurve {
+                base_power: 1.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+        });
+
+        let (result, _events, left, ..) = throw_rune(&spell);
+
+        assert!(result.is_ok(), "{result:?}");
+        assert_eq!(left, Some(2));
+    }
+
+    #[test]
+    fn a_refused_rune_keeps_its_stack_and_reports_the_reason_itself() {
+        let mut spell = a_spell(99, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+
+        let (result, events, left, ..) = throw_rune(&spell);
+
+        assert!(matches!(result, Err(ItemActionError::Reported)));
+        assert_eq!(left, Some(3), "a refused rune was spent");
+        assert!(
+            matches!(
+                events.as_slice(),
+                [BroadcastMessage::SpellDenied {
+                    reason: SpellCastingDenyReason::RequirementFailed,
+                    delivery: SpellDelivery::Rune,
+                    ..
+                }]
+            ),
+            "{events:?}"
+        );
     }
 
     #[test]
@@ -1109,6 +1475,7 @@ mod tests {
             UseTarget {
                 item: None,
                 agent: Some(user),
+                position: None,
             },
         );
 

@@ -457,7 +457,11 @@ impl SessionActor {
                 agent_key,
                 position,
                 reason,
-            } => self.spell_denied(agent_key, position, reason).await,
+                delivery,
+            } => {
+                self.spell_denied(agent_key, position, reason, delivery)
+                    .await
+            }
             BroadcastMessage::AgentHealed {
                 agent_key,
                 position,

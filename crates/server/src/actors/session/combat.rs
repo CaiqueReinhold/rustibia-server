@@ -11,13 +11,17 @@ use crate::{
         effects::AreaEffect,
         healing::RestoreType,
         position::Position,
-        spells::{SpellId, SpellTarget},
+        spells::{Spell, SpellDelivery, SpellId, SpellTarget},
         targeting::AreaTarget,
     },
     game::{combat::get_damage_visuals, config::GAME_CONFIG, spells::SpellCastingDenyReason},
     messages::{FloatingTextType, ServerMessage},
     persistence::spells::SPELLS,
 };
+
+fn speaks_its_words(spell: &Spell) -> bool {
+    matches!(spell.delivery, SpellDelivery::Words)
+}
 
 impl SessionActor {
     pub(super) async fn handle_set_target(
@@ -172,13 +176,13 @@ impl SessionActor {
                 return Ok(());
             };
             (
-                ServerMessage::ChatMessage {
+                speaks_its_words(spell).then(|| ServerMessage::ChatMessage {
                     author: agent.name().to_owned(),
                     message_type: ChatMessageType::Local,
                     channel: ChannelId(0),
                     position: Some(position.clone()),
                     message: spell.words.clone(),
-                },
+                }),
                 if self.player_key == agent_key {
                     Some(ServerMessage::SpellCast {
                         spell: spell_id,
@@ -197,7 +201,9 @@ impl SessionActor {
                 },
             )
         };
-        self.connection.send_message(chat).await?;
+        if let Some(chat) = chat {
+            self.connection.send_message(chat).await?;
+        }
         if let Some(cd) = cooldown {
             self.connection.send_message(cd).await?;
         }
@@ -209,12 +215,13 @@ impl SessionActor {
         agent_key: AgentKey,
         position: Position,
         reason: SpellCastingDenyReason,
+        delivery: SpellDelivery,
     ) -> Result<()> {
         self.send_effect(AreaEffect::single(GAME_CONFIG.effect_ids.puff, position))
             .await?;
 
         if self.player_key == agent_key {
-            self.deny(&reason.to_string()).await?;
+            self.deny(&reason.message(delivery)).await?;
         }
         Ok(())
     }
@@ -225,6 +232,17 @@ mod tests {
     use super::*;
     use crate::actors::connection::ConnectionCommand;
     use crate::actors::session::test_support::seat_player;
+    use crate::persistence::test_fixtures::a_spell;
+
+    #[test]
+    fn a_rune_speaks_no_words() {
+        let mut spell = a_spell(1, 0, Vec::new());
+        assert!(speaks_its_words(&spell));
+
+        spell.delivery = SpellDelivery::Rune;
+        assert!(!speaks_its_words(&spell));
+    }
+
     use crate::entities::combat::CombatElement;
     use crate::entities::map::GameMap;
     use crate::messages::TextMessageType;
@@ -330,7 +348,12 @@ mod tests {
         let tile = Position::new(102, 100, 7);
 
         session
-            .spell_denied(stranger, tile.clone(), SpellCastingDenyReason::NoMana)
+            .spell_denied(
+                stranger,
+                tile.clone(),
+                SpellCastingDenyReason::NoMana,
+                SpellDelivery::Words,
+            )
             .await
             .unwrap();
 
@@ -367,6 +390,7 @@ mod tests {
                 me,
                 Position::new(100, 100, 7),
                 SpellCastingDenyReason::StillInCooldown,
+                SpellDelivery::Words,
             )
             .await
             .unwrap();

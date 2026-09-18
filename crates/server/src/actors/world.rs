@@ -24,7 +24,7 @@ use crate::entities::{
     items::ItemRef,
     map::GameMap,
     position::{Direction, ItemPlacement, Position},
-    spells::{ChainAttack, SpellId},
+    spells::{ChainAttack, SpellDelivery, SpellId},
     targeting::AreaTarget,
 };
 use crate::game::{
@@ -34,7 +34,7 @@ use crate::game::{
     spells, systems, targeting,
 };
 use crate::online_registry::RegistryGuard;
-use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint};
+use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
 
 #[derive(Debug, Display)]
 pub enum WorldCommand {
@@ -508,8 +508,28 @@ impl WorldActor {
                 target,
                 param,
             } => {
-                self.with_ctx(broadcast_messages, |ctx| {
-                    spells::cast_spell(ctx, agent_key, spell, target, param)
+                self.with_ctx(broadcast_messages, |ctx| match SPELLS.get(&spell) {
+                    Some(spell) => {
+                        let _ = spells::cast_spell(
+                            ctx,
+                            agent_key,
+                            spell,
+                            target,
+                            param,
+                            spells::CastSource::Words,
+                        );
+                    }
+                    None => {
+                        let Some(position) = ctx.map.agent_position(agent_key).cloned() else {
+                            return;
+                        };
+                        ctx.events.push(BroadcastMessage::SpellDenied {
+                            agent_key,
+                            position,
+                            reason: spells::SpellCastingDenyReason::IdNotFound,
+                            delivery: SpellDelivery::Words,
+                        });
+                    }
                 });
             }
             WorldCommand::CastAbility {

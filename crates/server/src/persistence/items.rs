@@ -15,6 +15,7 @@ use crate::entities::inventory::InventorySlot;
 use crate::entities::items::{
     FloorChangeDirection, ItemAction, ItemAttribute, ItemConfig, ItemFlag, ItemId, ItemMultiAction,
 };
+use crate::entities::spells::SpellId;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
 use crate::persistence::yaml_files_in;
@@ -158,6 +159,10 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
                 mana,
                 flask,
             }))
+        }
+        "rune" => {
+            let spell = SpellId(u16::try_from(value.get("spell")?.as_u64()?).ok()?);
+            Some(ItemAttribute::MultiAction(ItemMultiAction::Rune { spell }))
         }
         "decay" => {
             let duration = TickDelta(value.get("duration")?.as_u64()?);
@@ -363,6 +368,56 @@ mod tests {
 
     fn potion(value: &str) -> Option<ItemAttribute> {
         parse("potion", value)
+    }
+
+    #[test]
+    fn a_rune_attribute_names_the_spell_it_casts() {
+        assert_eq!(
+            parse("rune", "spell: 42"),
+            Some(ItemAttribute::MultiAction(ItemMultiAction::Rune {
+                spell: SpellId(42),
+            }))
+        );
+    }
+
+    #[test]
+    fn a_rune_without_a_spell_is_dropped_whole() {
+        assert_eq!(parse("rune", "charges: 4"), None);
+    }
+
+    /// The catalogue is the real check: a `rune:` naming a spell that is missing, or one
+    /// delivered by words, would be a free cast off the item path.
+    #[test]
+    fn every_shipped_rune_names_a_spell_delivered_by_runes() {
+        use crate::entities::spells::SpellDelivery;
+        use crate::persistence::spells::SPELLS;
+
+        let runes: Vec<(ItemId, SpellId)> = ITEM_CONFIGS
+            .values()
+            .filter_map(|config| match config.attr_multi_action()? {
+                ItemMultiAction::Rune { spell } => Some((config.id, spell)),
+                _ => None,
+            })
+            .collect();
+
+        assert!(
+            !runes.is_empty(),
+            "no runes shipped; this would pass vacuously"
+        );
+
+        let wrong: Vec<&(ItemId, SpellId)> = runes
+            .iter()
+            .filter(|(_, spell)| {
+                SPELLS
+                    .get(spell)
+                    .is_none_or(|spell| spell.delivery != SpellDelivery::Rune)
+            })
+            .collect();
+
+        assert!(
+            wrong.is_empty(),
+            "these runes name a missing or word-delivered spell: {wrong:?}"
+        );
     }
 
     #[test]

@@ -11,8 +11,8 @@ use crate::config::CONFIG;
 use crate::entities::combat::CombatElement;
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::spells::{
-    ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
-    SpellHealing, SpellId,
+    ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
+    SpellGroup, SpellHealing, SpellId,
 };
 use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
@@ -98,6 +98,10 @@ struct RawSpell {
     cooldown_ticks: TickDelta,
     mana: u32,
     level: u16,
+    #[serde(default)]
+    magic_level: u16,
+    #[serde(default)]
+    delivery: SpellDelivery,
     icon: u16,
     vocations: Vec<Vocation>,
     effect: serde_yaml::Value,
@@ -349,6 +353,8 @@ impl RawSpell {
             cooldown: self.cooldown_ticks,
             mana: self.mana,
             level: self.level,
+            magic_level: self.magic_level,
+            delivery: self.delivery,
             icon: self.icon,
             vocations: self.vocations,
             effect,
@@ -478,6 +484,34 @@ spells:
       magic_factor: 1.4
 "#;
 
+    const RUNE_SPELL: &str = r#"
+spells:
+  - id: 42
+    name: Test Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 30
+    magic_level: 4
+    delivery: rune
+    icon: 44
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: probe
+      element: ice
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 1.4
+      spread_min: 0.25
+      spread_max: 0.3
+      effect_id: 37
+"#;
+
     const A_CHAIN: &str = "      chain:
         num_targets: 2
         damage_factor: 0.5
@@ -496,6 +530,41 @@ spells:
 
     fn chained(spell: &str) -> String {
         format!("{spell}{A_CHAIN}")
+    }
+
+    #[test]
+    fn a_rune_spell_carries_its_delivery_and_magic_level() {
+        let spells = load_spells_from_str(RUNE_SPELL, &shape("probe")).unwrap();
+        let spell = spells.get(&SpellId(42)).expect("the document's only spell");
+
+        assert_eq!(spell.delivery, SpellDelivery::Rune);
+        assert_eq!(spell.magic_level, 4);
+        assert!(spell.vocations.is_empty());
+    }
+
+    #[test]
+    fn an_aimed_target_loads_and_takes_no_fields() {
+        let contents = RUNE_SPELL.replace(
+            "      target:\n        type: area\n        origin: target\n        shape: probe\n",
+            "      target:\n        type: aimed\n",
+        );
+        let spells = load_spells_from_str(&contents, &shape("probe")).unwrap();
+        let spell = spells.get(&SpellId(42)).expect("the document's only spell");
+
+        let SpellEffect::Attack(attack) = &spell.effect else {
+            panic!("an attack spell");
+        };
+        assert!(matches!(attack.target, TargetMode::Aimed));
+        assert!(spell.is_aimable());
+    }
+
+    #[test]
+    fn a_spell_that_names_neither_is_delivered_by_words_at_magic_level_zero() {
+        let spells = load_spells_from_str(AREA_SPELL, &shape("probe")).unwrap();
+        let spell = spells.get(&SpellId(7)).expect("the document's only spell");
+
+        assert_eq!(spell.delivery, SpellDelivery::Words);
+        assert_eq!(spell.magic_level, 0);
     }
 
     fn only_spell(spells: &HashMap<SpellId, Arc<Spell>>) -> Arc<Spell> {

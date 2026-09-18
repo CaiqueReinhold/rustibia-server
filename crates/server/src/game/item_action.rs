@@ -28,6 +28,8 @@ pub enum ItemActionError {
     NoTarget,
     #[error("You're already full")]
     PlayerFull,
+    #[error("Already reported")]
+    Reported,
 }
 
 pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {

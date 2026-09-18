@@ -17,6 +17,8 @@ pub enum TargetMode {
     Named {
         range: u16,
     },
+    /// The agent the cast aims at, refused when it aims at a tile or at nothing.
+    Aimed,
 }
 
 /// Which agents a resolved cast may reach: a heal must not land on what a wave is for.

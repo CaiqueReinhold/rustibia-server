@@ -11,7 +11,7 @@ use crate::entities::targeting::{AreaOrigin, TargetMode};
 /// names the spell or the creature file the target was authored in.
 #[derive(Error, Debug)]
 pub enum TargetModeError {
-    #[error("targets `{target}`, not `self`, `target`, `named` or `area`")]
+    #[error("targets `{target}`, not `self`, `target`, `named`, `aimed` or `area`")]
     UnknownTarget { target: String },
     #[error("names the area shape `{shape}`, which `areas.yaml` has not")]
     UnknownShape { shape: AreaShapeId },
@@ -86,6 +86,10 @@ pub fn parse_target_mode(
         "named" => {
             let named: RawTargeted = serde_yaml::from_value(value)?;
             Ok(TargetMode::Named { range: named.range })
+        }
+        "aimed" => {
+            let RawCaster {} = serde_yaml::from_value(value)?;
+            Ok(TargetMode::Aimed)
         }
         "area" => {
             let area: RawArea = serde_yaml::from_value(value)?;

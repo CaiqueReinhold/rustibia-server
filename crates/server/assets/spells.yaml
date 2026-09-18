@@ -845,3 +845,342 @@ spells:
       flat: -70
       spread_min: 0.167
       spread_max: 0.167
+  - id: 38
+    name: Avalanche Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 30
+    magic_level: 4
+    delivery: rune
+    icon: 44
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: circle3
+      element: ice
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 5.0625
+      flat: -28.5
+      spread_min: 0.328
+      spread_max: 0.328
+      effect_id: 44
+      missile_id: 29
+  - id: 39
+    name: Great Fireball Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 30
+    magic_level: 4
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: circle3
+      element: fire
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 5.0625
+      flat: -28.5
+      spread_min: 0.328
+      spread_max: 0.328
+      effect_id: 37
+      missile_id: 4
+  - id: 40
+    name: Intense Healing Rune
+    words: ""
+    group: healing
+    cooldown_ticks: 40
+    mana: 0
+    level: 15
+    magic_level: 1
+    delivery: rune
+    icon: 6
+    vocations: []
+    effect:
+      type: heal
+      target:
+        type: aimed
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 10.75
+      flat: -10
+      spread_min: 0.25
+      spread_max: 0.25
+  - id: 41
+    name: Sudden Death Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 45
+    magic_level: 15
+    delivery: rune
+    icon: 38
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: death
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 14.625
+      spread_min: 0.231
+      spread_max: 0.231
+      effect_id: 18
+      missile_id: 11
+  - id: 42
+    name: Fireball Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 27
+    magic_level: 4
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: fire
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 6.0
+      flat: -25.5
+      spread_min: 0.195
+      spread_max: 0.195
+      effect_id: 16
+      missile_id: 4
+  - id: 43
+    name: Icicle Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 28
+    magic_level: 4
+    delivery: rune
+    icon: 44
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: ice
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 6.0
+      flat: -25.5
+      spread_min: 0.195
+      spread_max: 0.195
+      effect_id: 44
+      missile_id: 29
+  - id: 44
+    name: Stalagmite Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 24
+    magic_level: 3
+    delivery: rune
+    icon: 46
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: earth
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 3.0
+      flat: -32.5
+      spread_min: 0.241
+      spread_max: 0.241
+      effect_id: 46
+      missile_id: 30
+  - id: 45
+    name: Heavy Magic Missile Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 25
+    magic_level: 3
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: energy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 3.0
+      flat: -32.5
+      spread_min: 0.241
+      spread_max: 0.241
+      effect_id: 48
+      missile_id: 36
+  - id: 46
+    name: Light Magic Missile Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 15
+    magic_level: 0
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: energy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 1.5
+      flat: -36.0
+      spread_min: 0.179
+      spread_max: 0.179
+      effect_id: 48
+      missile_id: 36
+  - id: 47
+    name: Holy Missile Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 27
+    magic_level: 4
+    delivery: rune
+    icon: 40
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: aimed
+      element: holy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 7.0
+      flat: -23.0
+      spread_min: 0.306
+      spread_max: 0.306
+      effect_id: 40
+      missile_id: 31
+  - id: 48
+    name: Stone Shower Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 28
+    magic_level: 4
+    delivery: rune
+    icon: 46
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: circle3
+      element: earth
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 4.5
+      flat: -29.0
+      spread_min: 0.356
+      spread_max: 0.356
+      effect_id: 46
+      missile_id: 30
+  - id: 49
+    name: Thunderstorm Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 28
+    magic_level: 4
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: circle3
+      element: energy
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 4.5
+      flat: -29.0
+      spread_min: 0.356
+      spread_max: 0.356
+      effect_id: 48
+      missile_id: 36
+  - id: 50
+    name: Explosion Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 31
+    magic_level: 6
+    delivery: rune
+    icon: 10
+    vocations: []
+    effect:
+      type: attack
+      target:
+        type: area
+        origin: target
+        shape: cross1
+      element: physical
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 6.0
+      flat: -26.0
+      spread_min: 0.284
+      spread_max: 0.284
+      effect_id: 1
+      missile_id: 25
+  - id: 51
+    name: Ultimate Healing Rune
+    words: ""
+    group: healing
+    cooldown_ticks: 40
+    mana: 0
+    level: 24
+    magic_level: 4
+    delivery: rune
+    icon: 6
+    vocations: []
+    effect:
+      type: heal
+      target:
+        type: aimed
+      base_power: 40
+      level_factor: 0.2
+      magic_factor: 24.625
+      flat: 26.0
+      spread_min: 0.273
+      spread_max: 0.273

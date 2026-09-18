@@ -44,6 +44,14 @@ impl SpellGroup {
     }
 }
 
+#[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Deserialize, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum SpellDelivery {
+    #[default]
+    Words,
+    Rune,
+}
+
 #[derive(Debug)]
 pub struct Spell {
     pub id: SpellId,
@@ -54,6 +62,8 @@ pub struct Spell {
     pub cooldown: TickDelta,
     pub mana: u32,
     pub level: u16,
+    pub magic_level: u16,
+    pub delivery: SpellDelivery,
     pub icon: u16,
     pub vocations: Vec<Vocation>,
     pub effect: SpellEffect,
@@ -68,10 +78,11 @@ impl Spell {
         };
         matches!(
             target,
-            TargetMode::Area {
-                origin: AreaOrigin::Target,
-                ..
-            }
+            TargetMode::Aimed
+                | TargetMode::Area {
+                    origin: AreaOrigin::Target,
+                    ..
+                }
         )
     }
 }

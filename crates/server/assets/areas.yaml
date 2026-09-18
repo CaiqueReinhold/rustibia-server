@@ -3,6 +3,10 @@ areas:
     - "XXX"
     - "X@X"
     - "XXX"
+  cross1:
+    - " X "
+    - "X@X"
+    - " X "
   small_wave:
     - "XXXXX"
     - " XXX "

@@ -12,8 +12,8 @@ use crate::{
         position::{Position, Rect},
         skills::SkillType,
         spells::{
-            ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellEffect, SpellGroup,
-            SpellHealing, SpellId,
+            ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
+            SpellGroup, SpellHealing,
         },
         targeting::{AreaOrigin, AreaTarget, TargetFilter, TargetMode},
     },
@@ -26,7 +26,6 @@ use crate::{
         random::Rolls,
         skills::tick_skill,
     },
-    persistence::spells::SPELLS,
 };
 
 #[derive(Error, Debug, Clone)]
@@ -49,74 +48,111 @@ pub enum SpellCastingDenyReason {
     NoWeapon,
 }
 
+impl SpellCastingDenyReason {
+    pub fn message(&self, via: SpellDelivery) -> String {
+        match (self, via) {
+            (Self::RequirementFailed, SpellDelivery::Rune) => {
+                "You do not have the requirements to use this object.".to_owned()
+            }
+            (Self::StillInCooldown, SpellDelivery::Rune) => "You are exhausted.".to_owned(),
+            (Self::OutOfReach, SpellDelivery::Rune) => "Destination is out of range.".to_owned(),
+            (Self::InvalidTarget | Self::IdNotFound, SpellDelivery::Rune) => {
+                "You cannot use this object.".to_owned()
+            }
+            _ => self.to_string(),
+        }
+    }
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub enum CastSource {
+    Words,
+    Rune,
+}
+
+impl CastSource {
+    fn delivers(&self, delivery: SpellDelivery) -> bool {
+        matches!(
+            (self, delivery),
+            (CastSource::Words, SpellDelivery::Words) | (CastSource::Rune, SpellDelivery::Rune)
+        )
+    }
+}
+
 pub fn cast_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
-    spell_id: SpellId,
+    spell: &Spell,
     target: AreaTarget,
     param: Option<String>,
-) {
+    source: CastSource,
+) -> Result<(), SpellCastingDenyReason> {
     let Some(position) = ctx.map.agent_position(agent_key).cloned() else {
-        return;
+        return Err(SpellCastingDenyReason::InvalidState(
+            agent_key,
+            "spell caster not found",
+        ));
     };
     let Some(player) = ctx.map.get_player(agent_key) else {
-        return;
+        return Err(SpellCastingDenyReason::InvalidState(
+            agent_key,
+            "non player casting spell",
+        ));
     };
     let Some(agent) = ctx.map.get_agent(agent_key) else {
-        return;
+        return Err(SpellCastingDenyReason::InvalidState(
+            agent_key,
+            "spell caster not found",
+        ));
     };
 
-    let Some(spell) = SPELLS.get(&spell_id) else {
-        ctx.events.push(BroadcastMessage::SpellDenied {
-            agent_key,
-            position,
-            reason: SpellCastingDenyReason::IdNotFound,
-        });
-        return;
+    let refusal = if !source.delivers(spell.delivery) {
+        Some(SpellCastingDenyReason::IdNotFound)
+    } else if !has_spell_requirements(spell, player) {
+        Some(SpellCastingDenyReason::RequirementFailed)
+    } else if !agent.mana().can_afford(spell.mana) {
+        Some(SpellCastingDenyReason::NoMana)
+    } else if !can_cast_spell(agent, spell, ctx.tick) {
+        Some(SpellCastingDenyReason::StillInCooldown)
+    } else {
+        None
     };
 
-    if !has_spell_requirements(spell, player) {
-        ctx.events.push(BroadcastMessage::SpellDenied {
-            agent_key,
-            position,
-            reason: SpellCastingDenyReason::RequirementFailed,
-        });
-        return;
-    }
-
-    if !agent.mana().can_afford(spell.mana) {
-        ctx.events.push(BroadcastMessage::SpellDenied {
-            agent_key,
-            position,
-            reason: SpellCastingDenyReason::NoMana,
-        });
-        return;
-    }
-
-    if !can_cast_spell(agent, spell, ctx.tick) {
-        ctx.events.push(BroadcastMessage::SpellDenied {
-            agent_key,
-            position,
-            reason: SpellCastingDenyReason::StillInCooldown,
-        });
-        return;
+    if let Some(reason) = refusal {
+        return deny(ctx, agent_key, position, spell.delivery, reason);
     }
 
     let mark = ctx.mark();
-    if let Err(reason) = execute_effect(ctx, agent_key, spell, target, param.as_deref()) {
-        ctx.rollback_to(mark);
-        ctx.events.push(BroadcastMessage::SpellDenied {
-            agent_key,
-            position,
-            reason,
-        });
-    } else {
-        ctx.events.push(BroadcastMessage::SpellCast {
-            agent_key,
-            position,
-            spell_id,
-        });
+    match execute_effect(ctx, agent_key, spell, target, param.as_deref()) {
+        Err(reason) => {
+            ctx.rollback_to(mark);
+            deny(ctx, agent_key, position, spell.delivery, reason)
+        }
+        Ok(()) => {
+            ctx.events.push(BroadcastMessage::SpellCast {
+                agent_key,
+                position,
+                spell_id: spell.id,
+            });
+            Ok(())
+        }
     }
+}
+
+fn deny(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    position: Position,
+    delivery: SpellDelivery,
+    reason: SpellCastingDenyReason,
+) -> Result<(), SpellCastingDenyReason> {
+    ctx.events.push(BroadcastMessage::SpellDenied {
+        agent_key,
+        position,
+        reason: reason.clone(),
+        delivery,
+    });
+    Err(reason)
 }
 
 pub struct ResolvedTargets {
@@ -200,6 +236,31 @@ pub fn resolve_targets(
             Ok(ResolvedTargets {
                 keys: Vec::from([key]),
                 aim: Some(target_pos),
+                delta: Some(vec![(0, 0)]),
+            })
+        }
+        TargetMode::Aimed => {
+            let AreaTarget::Agent(key) = area_target else {
+                return Err(SpellCastingDenyReason::InvalidTarget);
+            };
+            let target_pos =
+                map.agent_position(*key)
+                    .ok_or(SpellCastingDenyReason::InvalidState(
+                        *key,
+                        "spell target not found",
+                    ))?;
+
+            if !can_target(position, target_pos) || !can_throw(map, position, target_pos, true) {
+                return Err(SpellCastingDenyReason::OutOfReach);
+            }
+
+            if !passes(map, *key, filter) {
+                return Err(SpellCastingDenyReason::InvalidTarget);
+            }
+
+            Ok(ResolvedTargets {
+                keys: Vec::from([*key]),
+                aim: Some(target_pos.clone()),
                 delta: Some(vec![(0, 0)]),
             })
         }
@@ -390,7 +451,9 @@ pub fn chain_attack(
 }
 
 fn has_spell_requirements(spell: &Spell, player: &Player) -> bool {
-    spell.level <= player.level() && spell.vocations.contains(&player.vocation())
+    spell.level <= player.level()
+        && spell.magic_level <= player.skill(SkillType::Magic)
+        && (spell.vocations.is_empty() || spell.vocations.contains(&player.vocation()))
 }
 
 fn can_cast_spell(agent: &Agent, spell: &Spell, current_tick: Tick) -> bool {
@@ -476,7 +539,10 @@ mod tests {
     use super::*;
     use crate::entities::effects::AreaShape;
     use crate::entities::map::MapTile;
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::entities::skills::SkillValue;
+    use crate::entities::vocation::Vocation;
+    use crate::game::TestHarness;
+    use crate::persistence::test_fixtures::{a_spell, a_test_creature, a_test_snapshot};
 
     fn a_caster_at(position: &Position) -> (GameMap, AgentKey) {
         let mut map = GameMap::new();
@@ -509,6 +575,163 @@ mod tests {
             origin: AreaOrigin::Target,
             shape: Arc::new(AreaShape::new(vec![(0, 0)].into_boxed_slice())),
         }
+    }
+
+    fn a_player_at(position: &Position, level: u16, magic: u16) -> (GameMap, AgentKey) {
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.skills.insert(
+            SkillType::Level,
+            SkillValue {
+                value: level,
+                current_ticks: 0,
+            },
+        );
+        snapshot.skills.insert(
+            SkillType::Magic,
+            SkillValue {
+                value: magic,
+                current_ticks: 0,
+            },
+        );
+
+        let mut map = GameMap::new();
+        map.insert_tile(position.clone(), MapTile::new());
+        let key = map
+            .insert_agent(Agent::from_player(snapshot), position)
+            .unwrap();
+        (map, key)
+    }
+
+    #[test]
+    fn an_aimed_cast_refuses_a_tile_and_refuses_naming_nothing() {
+        let position = Position::new(100, 100, 7);
+        let (map, caster) = a_caster_at(&position);
+
+        for named in [AreaTarget::None, AreaTarget::Position(position.clone())] {
+            let refused = resolve_targets(
+                &map,
+                caster,
+                &TargetMode::Aimed,
+                &named,
+                None,
+                TargetFilter::Any,
+            );
+            assert!(
+                matches!(refused, Err(SpellCastingDenyReason::InvalidTarget)),
+                "{named:?} resolved"
+            );
+        }
+    }
+
+    #[test]
+    fn an_aimed_cast_resolves_an_agent_and_still_honours_the_filter() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let creature = beside(&mut map, &position, a_test_creature("Rat", 10, (1, 2)));
+
+        let hit = resolve_targets(
+            &map,
+            caster,
+            &TargetMode::Aimed,
+            &AreaTarget::Agent(creature),
+            None,
+            TargetFilter::Any,
+        )
+        .unwrap();
+        assert_eq!(hit.keys, Vec::from([creature]));
+
+        let healed = resolve_targets(
+            &map,
+            caster,
+            &TargetMode::Aimed,
+            &AreaTarget::Agent(creature),
+            None,
+            TargetFilter::Players,
+        );
+        assert!(matches!(healed, Err(SpellCastingDenyReason::InvalidTarget)));
+    }
+
+    #[test]
+    fn a_rune_refusal_is_worded_as_an_object_not_a_spell() {
+        assert_eq!(
+            SpellCastingDenyReason::RequirementFailed.message(SpellDelivery::Rune),
+            "You do not have the requirements to use this object."
+        );
+        assert_eq!(
+            SpellCastingDenyReason::StillInCooldown.message(SpellDelivery::Rune),
+            "You are exhausted."
+        );
+        assert_eq!(
+            SpellCastingDenyReason::RequirementFailed.message(SpellDelivery::Words),
+            SpellCastingDenyReason::RequirementFailed.to_string()
+        );
+    }
+
+    #[test]
+    fn a_rune_spell_cannot_be_cast_by_words() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.delivery = SpellDelivery::Rune;
+        let mut h = TestHarness::new();
+
+        let result = cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::None,
+            None,
+            CastSource::Words,
+        );
+
+        assert!(matches!(result, Err(SpellCastingDenyReason::IdNotFound)));
+        assert!(matches!(
+            h.events.as_slice(),
+            [BroadcastMessage::SpellDenied {
+                delivery: SpellDelivery::Rune,
+                ..
+            }]
+        ));
+    }
+
+    #[test]
+    fn a_word_spell_cannot_be_cast_by_a_rune() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let spell = a_spell(1, 0, Vec::new());
+        let mut h = TestHarness::new();
+
+        let result = cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::None,
+            None,
+            CastSource::Rune,
+        );
+
+        assert!(matches!(result, Err(SpellCastingDenyReason::IdNotFound)));
+    }
+
+    #[test]
+    fn a_spell_is_refused_below_its_magic_level_and_allowed_at_it() {
+        let (map, key) = a_player_at(&Position::new(100, 100, 7), 30, 3);
+        let player = map.get_player(key).expect("the player just inserted");
+
+        assert!(!has_spell_requirements(&a_spell(1, 4, Vec::new()), player));
+        assert!(has_spell_requirements(&a_spell(1, 3, Vec::new()), player));
+    }
+
+    #[test]
+    fn an_empty_vocation_list_admits_every_vocation() {
+        let (map, key) = a_player_at(&Position::new(100, 100, 7), 30, 3);
+        let player = map.get_player(key).expect("the player just inserted");
+
+        assert!(has_spell_requirements(&a_spell(1, 0, Vec::new()), player));
+        assert!(!has_spell_requirements(
+            &a_spell(1, 0, Vec::from([Vocation::Druid])),
+            player
+        ));
     }
 
     /// What lets `exura gran mas res` exist: the same area that hands a wave every agent

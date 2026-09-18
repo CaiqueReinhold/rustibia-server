@@ -10,6 +10,7 @@ use crate::{
         effects::{AreaShape, EffectId, MissileId},
         inventory::InventorySlot,
         position::{ItemPlacement, Position},
+        spells::SpellId,
     },
     game::TickDelta,
     local_id::LocalId,
@@ -417,6 +418,9 @@ pub enum ItemMultiAction {
         health: Option<Bounds>,
         mana: Option<Bounds>,
         flask: Option<ItemId>,
+    },
+    Rune {
+        spell: SpellId,
     },
 }
 

@@ -5,7 +5,7 @@ use crate::{
         healing::{HealPlan, Restore, RestoreType},
         map::GameMap,
         spells::SpellHealing,
-        targeting::{AreaTarget, TargetFilter},
+        targeting::{AreaTarget, TargetFilter, TargetMode},
     },
     game::{
         TickCtx,
@@ -31,14 +31,12 @@ pub fn plan_healing_spell(
             "non player casting spell",
         ))?;
 
-    let targets = resolve_targets(
-        map,
-        caster,
-        &spell.target,
-        area_target,
-        param,
-        TargetFilter::Players,
-    )?;
+    let filter = match spell.target {
+        TargetMode::Aimed => TargetFilter::Any,
+        _ => TargetFilter::Players,
+    };
+
+    let targets = resolve_targets(map, caster, &spell.target, area_target, param, filter)?;
 
     let area_effect = targets
         .delta

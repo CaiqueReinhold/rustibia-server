@@ -8,7 +8,7 @@ use crate::{
         map::GameMap,
         position::Position,
         skills::SkillType,
-        spells::{Spell, SpellId},
+        spells::{Spell, SpellDelivery, SpellId},
         vocation::Vocation,
     },
     game::skills::{progress_bp, total_experience},
@@ -78,7 +78,10 @@ pub fn get_player_skills(map: &GameMap, key: AgentKey) -> Option<ServerMessage> 
 pub fn spell_list_for(vocation: Vocation, spells: &HashMap<SpellId, Arc<Spell>>) -> ServerMessage {
     let mut entries: Vec<SpellListEntry> = spells
         .values()
-        .filter(|spell| spell.vocations.contains(&vocation))
+        .filter(|spell| {
+            matches!(spell.delivery, SpellDelivery::Words)
+                && (spell.vocations.is_empty() || spell.vocations.contains(&vocation))
+        })
         .map(|spell| SpellListEntry {
             id: spell.id,
             name: spell.name.clone(),
@@ -240,5 +243,33 @@ mod tests {
             panic!("expected SpellList");
         };
         assert_eq!(spells[0].group, SpellGroup::Healing);
+    }
+
+    #[test]
+    fn the_list_omits_rune_spells_and_keeps_an_unrestricted_word_spell() {
+        use crate::entities::spells::{SpellDelivery, SpellId};
+        use crate::entities::vocation::Vocation;
+        use crate::persistence::test_fixtures::a_spell;
+        use std::collections::HashMap;
+        use std::sync::Arc;
+
+        let mut rune = a_spell(1, 0, Vec::new());
+        rune.id = SpellId(42);
+        rune.delivery = SpellDelivery::Rune;
+        let unrestricted = a_spell(1, 0, Vec::new());
+
+        let spells = HashMap::from([
+            (SpellId(42), Arc::new(rune)),
+            (SpellId(1), Arc::new(unrestricted)),
+        ]);
+
+        let ServerMessage::SpellList { spells } = spell_list_for(Vocation::Druid, &spells) else {
+            panic!("expected SpellList");
+        };
+
+        assert_eq!(
+            spells.iter().map(|entry| entry.id).collect::<Vec<_>>(),
+            Vec::from([SpellId(1)])
+        );
     }
 }

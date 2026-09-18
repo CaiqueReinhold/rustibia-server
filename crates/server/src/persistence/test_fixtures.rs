@@ -1,5 +1,6 @@
-//! Database fixtures shared by the save tests (`player.rs`) and the login tests
-//! (`login.rs`).
+//! Fixtures shared across the crate's tests: the database ones below, used by the save
+//! tests (`player.rs`) and the login tests (`login.rs`), and `a_spell`, which the cast-path
+//! tests build a mutable `Spell` from.
 //!
 //! They were private to `player.rs` until login moved out of it. Sharing them rather than
 //! duplicating matters because of what they encode: `accounts.id` and `players.id` are
@@ -14,6 +15,10 @@ use sqlx::PgPool;
 use crate::entities::agent::{OutfitColors, OutfitId};
 use crate::entities::creature::CreatureVoices;
 use crate::entities::player::PlayerId;
+use crate::entities::spells::{
+    PowerCurve, Spell, SpellDelivery, SpellEffect, SpellGroup, SpellHealing, SpellId,
+};
+use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
 use crate::entities::{
     Bounds,
@@ -27,6 +32,37 @@ use crate::entities::{
 };
 use crate::game::TickDelta;
 use crate::persistence::player::PlayerSnapshot;
+
+/// A `TargetMode::Caster` heal is the one effect that cannot fail to resolve, which is what
+/// lets a caller use this as the success case of a cast.
+pub fn a_spell(level: u16, magic_level: u16, vocations: Vec<Vocation>) -> Spell {
+    Spell {
+        id: SpellId(1),
+        name: "Probe".to_owned(),
+        words: "probe".to_owned(),
+        group: SpellGroup::Attack,
+        group_cooldown: None,
+        cooldown: TickDelta(0),
+        mana: 0,
+        level,
+        magic_level,
+        delivery: SpellDelivery::Words,
+        icon: 1,
+        vocations,
+        effect: SpellEffect::Healing(SpellHealing {
+            target: TargetMode::Caster,
+            power: PowerCurve {
+                base_power: 1.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+        }),
+    }
+}
 
 /// An empty item catalogue. Restoring an inventory needs one, and every test here starts
 /// a character with nothing equipped.

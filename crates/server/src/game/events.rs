@@ -12,7 +12,7 @@ use crate::{
         items::{ItemGuid, ItemRef},
         position::{Direction, PlacementSite, Position},
         skills::SkillType,
-        spells::SpellId,
+        spells::{SpellDelivery, SpellId},
     },
     game::spells::SpellCastingDenyReason,
 };
@@ -128,6 +128,7 @@ pub enum BroadcastMessage {
         agent_key: AgentKey,
         position: Position,
         reason: SpellCastingDenyReason,
+        delivery: SpellDelivery,
     },
     AgentHealed {
         agent_key: AgentKey,
@@ -378,7 +379,8 @@ mod tests {
         assert!(same_floor(BroadcastMessage::SpellDenied {
             agent_key: key(1),
             position: at(),
-            reason: crate::game::spells::SpellCastingDenyReason::NoMana
+            reason: crate::game::spells::SpellCastingDenyReason::NoMana,
+            delivery: SpellDelivery::Words
         }));
         assert!(same_floor(container("bag", ItemPlacement::Map(at()))));
 

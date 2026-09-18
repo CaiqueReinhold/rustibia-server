@@ -116,6 +116,15 @@ impl SessionActor {
         };
 
         let target_item = retrieve_item(&map, &target, &self.containers, self.player_key);
+        let target_position = match resolve_client_coord(
+            target.position.clone(),
+            &map,
+            &self.containers,
+            self.player_key,
+        ) {
+            Some(ItemPlacement::Map(position)) => Some(position),
+            _ => None,
+        };
 
         self.world
             .send(WorldCommand::UseItemWith {
@@ -130,6 +139,7 @@ impl SessionActor {
                         placement,
                     }),
                     agent: target_agent.and_then(|id| self.agents.get_global(id).copied()),
+                    position: target_position,
                 },
             })
             .await;
