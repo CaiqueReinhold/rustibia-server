@@ -14,10 +14,14 @@ use crate::entities::spells::{
     ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
     SpellGroup, SpellHealing, SpellId,
 };
+use crate::entities::support::SupportCast;
 use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
+use crate::persistence::support::{
+    RawSpeedFormula, RawSupportFields, SupportError, SupportKind, build_support,
+};
 use crate::persistence::target_mode::{TargetModeError, parse_target_mode, take_type};
 
 pub static SPELLS: Lazy<Arc<HashMap<SpellId, Arc<Spell>>>> = Lazy::new(|| {
@@ -69,6 +73,12 @@ pub enum SpellsLoadError {
         id: SpellId,
         name: String,
         target: String,
+    },
+    #[error("spell {id:?} ({name}) is a support effect that {source}")]
+    Support {
+        id: SpellId,
+        name: String,
+        source: SupportError,
     },
     #[error("spell id {id:?} is used by both `{first}` and `{second}`")]
     DuplicateId {
@@ -145,6 +155,22 @@ struct RawHealing {
     spread_max: f64,
     #[serde(default)]
     flat: f64,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawSupport {
+    target: serde_yaml::Value,
+    #[serde(default)]
+    speed: Option<RawSpeedFormula>,
+    #[serde(default)]
+    duration_ticks: Option<TickDelta>,
+    #[serde(default)]
+    element: Option<CombatElement>,
+    #[serde(default)]
+    effect_id: Option<EffectId>,
+    #[serde(default)]
+    missile_id: Option<MissileId>,
 }
 
 #[derive(Deserialize)]
@@ -333,7 +359,31 @@ fn parse_effect(
             };
             Ok(SpellEffect::Healing(spell_healing))
         }
-        other => Err(unknown(other.to_string())),
+        other => {
+            let Some(support_kind) = SupportKind::parse(other) else {
+                return Err(unknown(other.to_string()));
+            };
+            let support: RawSupport = serde_yaml::from_value(value)?;
+            let effect = build_support(
+                support_kind,
+                RawSupportFields {
+                    speed: support.speed,
+                    duration_ticks: support.duration_ticks,
+                    element: support.element,
+                },
+            )
+            .map_err(|source| SpellsLoadError::Support {
+                id,
+                name: name.to_string(),
+                source,
+            })?;
+            Ok(SpellEffect::Support(SupportCast {
+                target: parse_target(id, name, support.target, shapes)?,
+                effect,
+                effect_id: support.effect_id,
+                missile_id: support.missile_id,
+            }))
+        }
     }
 }
 
@@ -575,14 +625,14 @@ spells:
     fn attack(spell: &Spell) -> &SpellAttack {
         match &spell.effect {
             SpellEffect::Attack(attack) => attack,
-            SpellEffect::Healing(_) => panic!("healing spell"),
+            _ => panic!("not an attack spell"),
         }
     }
 
     fn healing(spell: &Spell) -> &SpellHealing {
         match &spell.effect {
             SpellEffect::Healing(healing) => healing,
-            SpellEffect::Attack(_) => panic!("attack spell"),
+            _ => panic!("not a healing spell"),
         }
     }
 
@@ -915,5 +965,121 @@ spells:
         assert!(load(&aimed).is_aimable());
         assert!(!load(AREA_SPELL).is_aimable());
         assert!(!load(TARGET_SPELL).is_aimable());
+    }
+
+    use crate::entities::conditions::SpeedEffect;
+    use crate::entities::support::{SpeedFormula, SpeedTerm, SupportEffect};
+    use crate::persistence::support::SupportError;
+
+    const HASTE_SPELL: &str = r#"
+spells:
+  - id: 10
+    name: Test Haste
+    words: test haste
+    group: support
+    cooldown_ticks: 40
+    mana: 60
+    level: 14
+    icon: 101
+    vocations: []
+    effect:
+      type: haste
+      target:
+        type: self
+      speed:
+        min: { factor: 0.3, flat: -12 }
+        max: { factor: 0.3, flat: -12 }
+      duration_ticks: 660
+      effect_id: 15
+"#;
+
+    const CURE_SPELL: &str = r#"
+spells:
+  - id: 11
+    name: Test Cure
+    words: test cure
+    group: healing
+    cooldown_ticks: 120
+    mana: 30
+    level: 10
+    icon: 10
+    vocations: []
+    effect:
+      type: cure
+      target:
+        type: self
+      element: earth
+"#;
+
+    #[test]
+    fn a_haste_spell_carries_its_formula_and_duration() {
+        let spells = load_spells_from_str(HASTE_SPELL, &shape("probe")).unwrap();
+        let spell = only_spell(&spells);
+        let SpellEffect::Support(support) = &spell.effect else {
+            panic!("not a support spell");
+        };
+        let term = SpeedTerm {
+            factor: 0.3,
+            flat: -12,
+        };
+
+        assert_eq!(
+            support.effect,
+            SupportEffect::Speed {
+                effect: SpeedEffect::Haste,
+                formula: SpeedFormula {
+                    min: term.clone(),
+                    max: term,
+                },
+                duration: TickDelta(660),
+            }
+        );
+        assert_eq!(support.effect_id, Some(EffectId(15)));
+        assert!(matches!(support.target, TargetMode::Caster));
+    }
+
+    #[test]
+    fn a_cure_without_an_element_is_refused() {
+        let contents = CURE_SPELL.replace("      element: earth\n", "");
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("a cure that names no element would cure nothing");
+
+        assert!(
+            matches!(
+                error,
+                SpellsLoadError::Support {
+                    source: SupportError::Missing {
+                        field: "element",
+                        ..
+                    },
+                    ..
+                }
+            ),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_field_the_support_kind_does_not_read_is_refused() {
+        let contents = CURE_SPELL.replace(
+            "      element: earth\n",
+            "      element: earth\n      duration_ticks: 100\n",
+        );
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("a cure has no duration, and one authored would be dropped silently");
+
+        assert!(
+            matches!(
+                error,
+                SpellsLoadError::Support {
+                    source: SupportError::Unexpected {
+                        field: "duration_ticks",
+                        ..
+                    },
+                    ..
+                }
+            ),
+            "unexpected error: {error}"
+        );
     }
 }

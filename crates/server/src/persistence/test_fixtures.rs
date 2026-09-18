@@ -291,6 +291,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
             chance: 10000,
             sentences: vec!["sentence".to_owned()],
         },
+        flags: vec![],
     }
 }
 

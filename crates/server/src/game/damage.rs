@@ -21,6 +21,34 @@ pub fn apply_damage(
     mut damage: CombatDamage,
     source: Option<AgentKey>,
 ) {
+    if damage.element == CombatElement::Mana {
+        drain_mana(ctx, target, damage, source);
+        return;
+    }
+
+    let absorbed = ctx
+        .map
+        .get_agent(target)
+        .filter(|agent| agent.conditions().is_magic_shielded(ctx.tick))
+        .map_or(0, |agent| damage.value.min(agent.mana().current));
+    if absorbed > 0 {
+        drain_mana(
+            ctx,
+            target,
+            CombatDamage {
+                element: CombatElement::Mana,
+                value: absorbed,
+                blocked_shield: false,
+                blocked_armor: false,
+            },
+            source,
+        );
+        damage.value -= absorbed;
+        if damage.value == 0 {
+            return;
+        }
+    }
+
     let Some(agent) = ctx.map.get_agent(target) else {
         return;
     };
@@ -81,6 +109,36 @@ pub fn apply_damage(
     {
         death::reap(ctx, target, source);
     }
+}
+
+fn drain_mana(
+    ctx: &mut TickCtx,
+    target: AgentKey,
+    mut damage: CombatDamage,
+    source: Option<AgentKey>,
+) {
+    let Some(position) = ctx.map.agent_position(target).cloned() else {
+        return;
+    };
+    let Some(agent) = ctx.map.get_agent_mut(target) else {
+        return;
+    };
+    damage.value = damage.value.min(agent.mana().current);
+    if damage.value == 0 {
+        return;
+    }
+    let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
+    agent.remove_mana(damage.value);
+
+    ctx.events
+        .push(BroadcastMessage::PlayerManaUpdated { agent_key: target });
+    ctx.events.push(BroadcastMessage::DamageTaken {
+        source,
+        target,
+        position,
+        blood_type,
+        damage,
+    });
 }
 
 pub fn get_player_base_damage(player: &Player, roll: &mut Rolls) -> (CombatElement, u32) {
@@ -483,5 +541,138 @@ mod tests {
         );
         assert_eq!(get_min_damage(5, 1, 100), 5);
         assert_eq!(get_max_damage(5, 1, 100), 48);
+    }
+
+    use crate::actors::world::WorldCommand;
+    use crate::entities::Bounds;
+    use crate::entities::combat::AttackCost;
+    use crate::entities::conditions::{ConditionSpec, SpecSchedule};
+    use crate::game::TickDelta;
+    use crate::game::combat::execute_attack;
+    use smallvec::SmallVec;
+
+    fn a_shielded_player(mana: u32) -> (GameMap, AgentKey) {
+        let (mut map, player) = map_with_player();
+        let agent = map.get_agent_mut(player).unwrap();
+        let spent = agent.mana().current - mana;
+        agent.remove_mana(spent);
+        agent.conditions_mut().set_magic_shield(Tick(1000));
+        (map, player)
+    }
+
+    fn reported(msgs: &[BroadcastMessage]) -> Vec<(CombatElement, u32)> {
+        msgs.iter()
+            .filter_map(|m| match m {
+                BroadcastMessage::DamageTaken { damage, .. } => {
+                    Some((damage.element, damage.value))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn mana(value: u32) -> CombatDamage {
+        CombatDamage {
+            element: CombatElement::Mana,
+            value,
+            blocked_shield: false,
+            blocked_armor: false,
+        }
+    }
+
+    #[test]
+    fn a_shielded_hit_comes_off_mana_and_is_reported_as_mana() {
+        let (mut map, player) = a_shielded_player(100);
+        let mut h = TestHarness::seeded(1);
+
+        apply_damage(&mut h.ctx(&mut map), player, fire(30), None);
+
+        let agent = map.get_agent(player).unwrap();
+        assert_eq!((agent.life().current, agent.mana().current), (100, 70));
+        assert!(agent.conditions().is_magic_shielded(h.tick));
+        assert_eq!(reported(&h.events), [(CombatElement::Mana, 30)]);
+        assert!(h.events.iter().any(|m| matches!(
+            m,
+            BroadcastMessage::PlayerManaUpdated { agent_key } if *agent_key == player
+        )));
+    }
+
+    #[test]
+    fn a_hit_the_mana_cannot_cover_spills_into_life_and_ends_the_shield() {
+        let (mut map, player) = a_shielded_player(20);
+        let mut h = TestHarness::seeded(1);
+
+        apply_damage(&mut h.ctx(&mut map), player, fire(50), None);
+
+        let agent = map.get_agent(player).unwrap();
+        assert_eq!((agent.life().current, agent.mana().current), (70, 0));
+        assert!(!agent.conditions().is_magic_shielded(h.tick));
+        assert_eq!(
+            reported(&h.events),
+            [(CombatElement::Mana, 20), (CombatElement::Fire, 30)]
+        );
+    }
+
+    #[test]
+    fn an_unshielded_hit_takes_only_life() {
+        let (mut map, player) = map_with_player();
+        let mut h = TestHarness::seeded(1);
+
+        apply_damage(&mut h.ctx(&mut map), player, fire(30), None);
+
+        let agent = map.get_agent(player).unwrap();
+        assert_eq!((agent.life().current, agent.mana().current), (70, 100));
+        assert_eq!(reported(&h.events), [(CombatElement::Fire, 30)]);
+    }
+
+    #[test]
+    fn a_mana_hit_drains_mana_and_never_life() {
+        let (mut map, player) = map_with_player();
+        let mut h = TestHarness::seeded(1);
+
+        apply_damage(&mut h.ctx(&mut map), player, mana(30), None);
+        apply_damage(&mut h.ctx(&mut map), player, mana(500), None);
+
+        let agent = map.get_agent(player).unwrap();
+        assert_eq!((agent.life().current, agent.mana().current), (100, 0));
+        assert_eq!(
+            reported(&h.events),
+            [(CombatElement::Mana, 30), (CombatElement::Mana, 70)]
+        );
+    }
+
+    #[test]
+    fn a_fully_absorbed_hit_still_applies_its_condition() {
+        let (mut map, player, rat) = an_attacked_player();
+        map.get_agent_mut(player)
+            .unwrap()
+            .conditions_mut()
+            .set_magic_shield(Tick(1000));
+        let mut h = TestHarness::seeded(1);
+
+        execute_attack(
+            &mut h.ctx(&mut map),
+            AttackPlan {
+                attacker: rat,
+                damage: SmallVec::from([(player, fire(10))]),
+                cost: AttackCost::None,
+                trains: None,
+                missile: None,
+                area_effect: None,
+                missed: false,
+                condition: Some(ConditionSpec {
+                    element: CombatElement::Earth,
+                    damage: Bounds { min: 40, max: 40 },
+                    interval: TickDelta(80),
+                    schedule: SpecSchedule::Decaying { start: None },
+                }),
+            },
+        );
+
+        assert_eq!(map.get_agent(player).unwrap().life().current, 100);
+        assert!(h.scheduled.iter().any(|s| matches!(
+            s.command,
+            WorldCommand::DamageOverTimeTick { agent_key, .. } if agent_key == player
+        )));
     }
 }

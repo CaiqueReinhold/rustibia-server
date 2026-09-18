@@ -307,6 +307,9 @@ impl Agent {
 
     pub fn remove_mana(&mut self, amount: u32) {
         self.mana.remove(amount);
+        if self.mana.current == 0 {
+            self.conditions.remove_magic_shield();
+        }
     }
 
     pub fn restore_mana(&mut self, amount: u32) {
@@ -328,11 +331,17 @@ impl Agent {
     }
 
     pub fn speed(&self) -> u16 {
-        match &self.inner {
+        let base = match &self.inner {
             AgentInner::Creature(c) => c.speed,
             AgentInner::Player(p) => self
                 .base_speed
                 .saturating_add_signed(p.inventory().stats().speed),
+        };
+        match self.conditions.speed_change() {
+            0 => base,
+            change => base
+                .saturating_add_signed(change)
+                .max(GAME_CONFIG.movement.min_speed),
         }
     }
 
@@ -941,5 +950,44 @@ mod tests {
                 .get(&InventorySlot::Backpack)
                 .is_some()
         );
+    }
+
+    #[test]
+    fn a_speed_condition_moves_speed_and_never_below_the_floor() {
+        use crate::entities::conditions::SpeedEffect;
+
+        let mut agent = Agent::from_player(a_test_snapshot(1, 1));
+        agent.conditions_mut().apply_speed(SpeedEffect::Haste, 30);
+        assert_eq!(agent.speed(), 150);
+
+        agent
+            .conditions_mut()
+            .apply_speed(SpeedEffect::Paralysis, -1000);
+        assert_eq!(agent.speed(), GAME_CONFIG.movement.min_speed);
+    }
+
+    #[test]
+    fn a_creature_reads_its_speed_condition() {
+        use crate::entities::conditions::SpeedEffect;
+
+        let mut agent = Agent::from_creature_kind(
+            Arc::new(a_creature_kind("Rat")),
+            Position::new(1028, 128, 7),
+        );
+        agent.conditions_mut().apply_speed(SpeedEffect::Haste, 20);
+
+        assert_eq!(agent.speed(), 120);
+    }
+
+    #[test]
+    fn emptying_the_mana_pool_ends_the_magic_shield() {
+        let mut agent = Agent::from_player(a_test_snapshot(1, 1));
+        agent.conditions_mut().set_magic_shield(Tick(1000));
+
+        agent.remove_mana(40);
+        assert!(agent.conditions().is_magic_shielded(Tick(0)));
+
+        agent.remove_mana(60);
+        assert!(!agent.conditions().is_magic_shielded(Tick(0)));
     }
 }

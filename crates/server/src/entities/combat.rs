@@ -18,6 +18,7 @@ pub enum CombatElement {
     Ice,
     Holy,
     Death,
+    Mana,
 }
 
 impl Default for CombatElement {

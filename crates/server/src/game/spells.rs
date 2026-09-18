@@ -15,6 +15,7 @@ use crate::{
             ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
             SpellGroup, SpellHealing,
         },
+        support::SupportCast,
         targeting::{AreaOrigin, AreaTarget, TargetFilter, TargetMode},
     },
     game::{
@@ -25,6 +26,7 @@ use crate::{
         map_query::{can_target, can_throw},
         random::Rolls,
         skills::tick_skill,
+        support::cast_support,
     },
 };
 
@@ -471,6 +473,7 @@ fn execute_effect(
     match &spell.effect {
         SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, param, attack),
         SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, param, healing),
+        SpellEffect::Support(support) => support_spell(ctx, agent_key, &target, param, support),
     }?;
 
     let agent = ctx
@@ -529,6 +532,22 @@ fn healing_spell(
 ) -> Result<(), SpellCastingDenyReason> {
     let plan = plan_healing_spell(ctx.map, agent_key, ctx.roll, spell_healing, target, param)?;
     execute_healing(ctx, plan);
+    Ok(())
+}
+
+fn support_spell(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    target: &AreaTarget,
+    param: Option<&str>,
+    cast: &SupportCast,
+) -> Result<(), SpellCastingDenyReason> {
+    let filter = match cast.target {
+        TargetMode::Aimed => TargetFilter::Any,
+        _ => TargetFilter::Players,
+    };
+    let targets = resolve_targets(ctx.map, agent_key, &cast.target, target, param, filter)?;
+    cast_support(ctx, agent_key, cast, targets);
     Ok(())
 }
 

@@ -31,7 +31,7 @@ use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, config::GAME_CONFIG, creature_abilities,
     creature_behavior::CreatureAction, events, events::BroadcastMessage, item_action,
     item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls,
-    spells, systems, targeting,
+    spells, support, systems, targeting,
 };
 use crate::online_registry::RegistryGuard;
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
@@ -114,6 +114,10 @@ pub enum WorldCommand {
     DamageOverTimeTick {
         agent_key: AgentKey,
         element: CombatElement,
+        generation: u32,
+    },
+    SpeedExpired {
+        agent_key: AgentKey,
         generation: u32,
     },
 }
@@ -562,6 +566,12 @@ impl WorldActor {
                 generation,
             } => self.with_ctx(broadcast_messages, |ctx| {
                 conditions::tick_damage_over_time(ctx, agent_key, element, generation)
+            }),
+            WorldCommand::SpeedExpired {
+                agent_key,
+                generation,
+            } => self.with_ctx(broadcast_messages, |ctx| {
+                support::expire_speed(ctx, agent_key, generation)
             }),
         };
     }

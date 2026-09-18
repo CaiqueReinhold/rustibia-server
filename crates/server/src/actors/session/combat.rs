@@ -575,4 +575,44 @@ mod tests {
         let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
         assert_eq!(damaged_by(&sent), None, "got {sent:?}");
     }
+
+    #[tokio::test]
+    async fn a_mana_hit_shows_a_blue_number_and_the_mana_effect() {
+        let mut map = GameMap::new();
+        let tile = Position::new(100, 100, 7);
+        let me = seat_player(&mut map, &tile, 1);
+        let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session
+            .agent_took_damage(
+                None,
+                me,
+                tile,
+                Some(BloodType::Blood),
+                CombatDamage {
+                    element: CombatElement::Mana,
+                    value: 30,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        let blue = GAME_CONFIG.text_colors.blue;
+        assert!(sent.iter().any(|c| matches!(
+            c,
+            ConnectionCommand::SendPlayerMessage(ServerMessage::FloatingText {
+                text,
+                color: Some(color),
+                ..
+            }) if text == "30" && (color.0, color.1, color.2) == (blue.0, blue.1, blue.2)
+        )));
+        assert!(sent.iter().any(|c| matches!(
+            c,
+            ConnectionCommand::SendPlayerMessage(ServerMessage::ShowEffect { effect_id, .. })
+                if *effect_id == GAME_CONFIG.effect_ids.mana_hit
+        )));
+    }
 }

@@ -13,13 +13,17 @@ use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
 use crate::entities::conditions::{ConditionSpec, SpecSchedule};
 use crate::entities::creature::{
-    AbilityEffect, BloodType, CreatureAbility, CreatureAbilityId, CreatureAttack,
-    CreatureAttackDamage, CreatureKind, CreatureKindId, CreatureVoices, LootEntry,
+    AbilityEffect, BloodType, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
+    CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, CreatureVoices, LootEntry,
 };
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::items::ItemId;
+use crate::entities::support::SupportCast;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
+use crate::persistence::support::{
+    RawSpeedFormula, RawSupportFields, SupportError, SupportKind, build_support,
+};
 use crate::persistence::target_mode::{TargetModeError, parse_target_mode, take_type};
 use crate::persistence::yaml_files_in;
 
@@ -52,6 +56,10 @@ pub enum CreaturesLoadError {
     },
     #[error("{path} has an ability of type `{kind}`, which this server cannot run")]
     UnknownAbility { path: PathBuf, kind: String },
+    #[error("{path} has an attack ability that {reason}")]
+    BadAttack { path: PathBuf, reason: &'static str },
+    #[error("{path} has a support ability that {source}")]
+    Support { path: PathBuf, source: SupportError },
 }
 
 #[derive(Deserialize)]
@@ -146,8 +154,10 @@ impl From<RawConditionSpec> for ConditionSpec {
 struct RawAttackAbility {
     cooldown: TickDelta,
     chance: u32,
-    element: CombatElement,
-    damage: RawBounds,
+    #[serde(default)]
+    element: Option<CombatElement>,
+    #[serde(default)]
+    damage: Option<RawBounds>,
     #[serde(default)]
     condition: Option<RawConditionSpec>,
     target: serde_yaml::Value,
@@ -163,6 +173,24 @@ struct RawHealAbility {
     cooldown: TickDelta,
     chance: u32,
     life: RawBounds,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawSupportAbility {
+    cooldown: TickDelta,
+    chance: u32,
+    target: serde_yaml::Value,
+    #[serde(default)]
+    speed: Option<RawSpeedFormula>,
+    #[serde(default)]
+    duration_ticks: Option<TickDelta>,
+    #[serde(default)]
+    element: Option<CombatElement>,
+    #[serde(default)]
+    effect_id: Option<EffectId>,
+    #[serde(default)]
+    missile_id: Option<MissileId>,
 }
 
 fn default_amount() -> u32 {
@@ -204,6 +232,8 @@ struct RawCreature {
     #[serde(default)]
     flee_threshold: Option<u32>,
     say: RawCreatureVoices,
+    #[serde(default)]
+    flags: Vec<CreatureFlag>,
 }
 
 fn parse_ability(
@@ -234,20 +264,36 @@ fn parse_ability(
                 }
             })?;
 
-            Ok(CreatureAbility {
-                id: CreatureAbilityId(index as u8),
-                cooldown: attack.cooldown,
-                chance: attack.chance,
-                effect: AbilityEffect::Attack(CreatureAttack {
+            let bad = |reason| CreaturesLoadError::BadAttack {
+                path: path.to_path_buf(),
+                reason,
+            };
+            let effect = match (attack.damage, attack.element, attack.condition) {
+                (Some(damage), Some(element), condition) => AbilityEffect::Attack(CreatureAttack {
                     damage: CreatureAttackDamage {
-                        element: attack.element,
-                        value: attack.damage.into(),
-                        condition: attack.condition.map(Into::into),
+                        element,
+                        value: damage.into(),
+                        condition: condition.map(Into::into),
                     },
                     target,
                     effect_id: attack.effect_id,
                     missile_id: attack.missile_id,
                 }),
+                (Some(_), None, _) => return Err(bad("deals damage of no element")),
+                (None, _, Some(condition)) => AbilityEffect::Condition(ConditionAttack {
+                    condition: condition.into(),
+                    target,
+                    effect_id: attack.effect_id,
+                    missile_id: attack.missile_id,
+                }),
+                (None, _, None) => return Err(bad("deals no damage and applies no condition")),
+            };
+
+            Ok(CreatureAbility {
+                id: CreatureAbilityId(index as u8),
+                cooldown: attack.cooldown,
+                chance: attack.chance,
+                effect,
             })
         }
         "heal" => {
@@ -260,7 +306,42 @@ fn parse_ability(
                 effect: AbilityEffect::Heal(heal.life.into()),
             })
         }
-        other => Err(unknown(other.to_string())),
+        other => {
+            let Some(support_kind) = SupportKind::parse(other) else {
+                return Err(unknown(other.to_string()));
+            };
+            let support: RawSupportAbility = serde_yaml::from_value(value).map_err(parse_error)?;
+            let target = parse_target_mode(support.target, shapes).map_err(|source| {
+                CreaturesLoadError::Ability {
+                    path: path.to_path_buf(),
+                    source,
+                }
+            })?;
+            let effect = build_support(
+                support_kind,
+                RawSupportFields {
+                    speed: support.speed,
+                    duration_ticks: support.duration_ticks,
+                    element: support.element,
+                },
+            )
+            .map_err(|source| CreaturesLoadError::Support {
+                path: path.to_path_buf(),
+                source,
+            })?;
+
+            Ok(CreatureAbility {
+                id: CreatureAbilityId(index as u8),
+                cooldown: support.cooldown,
+                chance: support.chance,
+                effect: AbilityEffect::Support(SupportCast {
+                    target,
+                    effect,
+                    effect_id: support.effect_id,
+                    missile_id: support.missile_id,
+                }),
+            })
+        }
     }
 }
 
@@ -307,6 +388,7 @@ impl RawCreature {
                 chance: self.say.chance,
                 sentences: self.say.sentences,
             },
+            flags: self.flags,
         })
     }
 }
@@ -432,13 +514,13 @@ say:
     fn attack(ability: &CreatureAbility) -> (&CreatureAttackDamage, &TargetMode) {
         match &ability.effect {
             AbilityEffect::Attack(attk) => (&attk.damage, &attk.target),
-            AbilityEffect::Heal(..) => panic!("a heal"),
+            _ => panic!("not an attack"),
         }
     }
 
     #[test]
     fn a_creature_walks_at_its_tibia_speed() {
-        for (speed, expected_ms) in [(128, 500), (86, 700), (95, 650)] {
+        for (speed, expected_ms) in [(128, 500), (86, 700), (95, 650), (109, 550)] {
             let kind = a_creature(&A_CREATURE.replace("speed: 86", &format!("speed: {speed}")));
             let agent = Agent::from_creature_kind(Arc::new(kind), Position::new(1028, 128, 7));
 
@@ -563,7 +645,7 @@ say:
 
         match heal.effect {
             AbilityEffect::Heal(life) => assert_eq!(life, Bounds { min: 50, max: 100 }),
-            AbilityEffect::Attack(..) => panic!("an attack"),
+            _ => panic!("not a heal"),
         }
     }
 
@@ -650,6 +732,101 @@ say:
             unknown.is_empty(),
             "spawns.yaml names creatures with no file in {}: {unknown:?}",
             CONFIG.creatures_dir_path
+        );
+    }
+
+    use crate::entities::conditions::SpeedEffect;
+    use crate::entities::support::SupportEffect;
+
+    #[test]
+    fn flags_reach_the_kind_and_default_to_none() {
+        assert!(a_creature(A_CREATURE).flags.is_empty());
+
+        let flagged = a_creature(
+            &A_CREATURE.replace("speed: 86\n", "speed: 86\nflags: [immune_paralysis]\n"),
+        );
+        assert!(flagged.has_flag(CreatureFlag::ImmuneParalysis));
+    }
+
+    #[test]
+    fn a_paralysing_ability_loads_as_support() {
+        let contents = A_CREATURE.replace(
+            "abilities:\n",
+            "abilities:
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min: { factor: -1.0, flat: 44 }
+      max: { factor: -1.0, flat: 149 }
+    duration_ticks: 500
+",
+        );
+        let kind = a_creature(&contents);
+        let AbilityEffect::Support(cast) = &kind.abilities[0].effect else {
+            panic!("not a support ability");
+        };
+
+        assert!(matches!(
+            cast.effect,
+            SupportEffect::Speed {
+                effect: SpeedEffect::Paralysis,
+                duration: TickDelta(500),
+                ..
+            }
+        ));
+        assert!(matches!(cast.target, TargetMode::Target { range: 7 }));
+    }
+
+    #[test]
+    fn an_attack_with_only_a_condition_loads_as_a_condition_attack() {
+        let contents = A_CREATURE.replace(
+            "abilities:\n",
+            "abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 440
+        max: 520
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: probe
+",
+        );
+        let AbilityEffect::Condition(attack) = &a_creature(&contents).abilities[0].effect else {
+            panic!("not a condition attack");
+        };
+
+        assert_eq!(attack.condition.damage, Bounds { min: 440, max: 520 });
+    }
+
+    #[test]
+    fn an_attack_with_neither_damage_nor_condition_is_refused() {
+        let contents = A_CREATURE.replace(
+            "abilities:\n",
+            "abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    target:
+      type: self
+",
+        );
+        let error = parse_creature(Path::new("test.yaml"), &contents, &shape("probe"))
+            .expect_err("an attack that does nothing must not load");
+
+        assert!(
+            matches!(error, CreaturesLoadError::BadAttack { .. }),
+            "unexpected error: {error}"
         );
     }
 }

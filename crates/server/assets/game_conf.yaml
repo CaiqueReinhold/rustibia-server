@@ -12,6 +12,7 @@ movement:
   wander_chance: 90000
   wander_ticks: 20
   wander_distance: 10
+  min_speed: 40
 
 chat:
   server_channels:
@@ -39,6 +40,7 @@ effect_ids:
   miss: 3
   puff: 3
   healing_spell: 13
+  mana_hit: 2
 
 text_colors:
   blue: [0, 0, 255]

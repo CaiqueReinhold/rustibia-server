@@ -9,6 +9,7 @@ use crate::{
         effects::{EffectId, MissileId},
         items::{FluidType, ItemId},
         spells::SpellGroup,
+        support::SupportCast,
         targeting::TargetMode,
     },
     game::TickDelta,
@@ -62,9 +63,25 @@ pub struct CreatureAttack {
 }
 
 #[derive(Clone, Debug)]
+pub struct ConditionAttack {
+    pub condition: ConditionSpec,
+    pub target: TargetMode,
+    pub effect_id: Option<EffectId>,
+    pub missile_id: Option<MissileId>,
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CreatureFlag {
+    ImmuneParalysis,
+}
+
+#[derive(Clone, Debug)]
 pub enum AbilityEffect {
     Attack(CreatureAttack),
     Heal(Bounds),
+    Support(SupportCast),
+    Condition(ConditionAttack),
 }
 
 impl AbilityEffect {
@@ -72,6 +89,8 @@ impl AbilityEffect {
         match self {
             AbilityEffect::Attack { .. } => SpellGroup::Attack,
             AbilityEffect::Heal { .. } => SpellGroup::Healing,
+            AbilityEffect::Support(..) => SpellGroup::Support,
+            AbilityEffect::Condition(..) => SpellGroup::Attack,
         }
     }
 }
@@ -104,9 +123,14 @@ pub struct CreatureKind {
     pub loot_table: Vec<LootEntry>,
     pub flee_threshold: Option<u32>,
     pub say: CreatureVoices,
+    pub flags: Vec<CreatureFlag>,
 }
 
 impl CreatureKind {
+    pub fn has_flag(&self, flag: CreatureFlag) -> bool {
+        self.flags.contains(&flag)
+    }
+
     pub fn get_ability_effect(&self, id: CreatureAbilityId) -> Option<&AbilityEffect> {
         self.abilities
             .iter()

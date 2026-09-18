@@ -20,3 +20,6 @@ spawns:
   - position: { x: 1022, y: 1019, z: 8 }
     kind: dragon
     respawn_ticks: 600
+  - position: { x: 1024, y: 1019, z: 8 }
+    kind: ancient_scarab
+    respawn_ticks: 600

@@ -6,6 +6,7 @@ use crate::{
         combat::CombatElement,
         effects::{EffectId, MissileId},
         position::Position,
+        support::SupportCast,
         targeting::{AreaOrigin, TargetMode},
         vocation::Vocation,
     },
@@ -75,6 +76,7 @@ impl Spell {
         let target = match &self.effect {
             SpellEffect::Attack(attack) => &attack.target,
             SpellEffect::Healing(healing) => &healing.target,
+            SpellEffect::Support(support) => &support.target,
         };
         matches!(
             target,
@@ -143,6 +145,7 @@ pub struct SpellHealing {
 pub enum SpellEffect {
     Attack(SpellAttack),
     Healing(SpellHealing),
+    Support(SupportCast),
 }
 
 #[derive(Debug, Clone)]

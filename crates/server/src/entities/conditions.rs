@@ -11,6 +11,8 @@ const PARALYZED_BIT: u32 = 1 << 2;
 const BURNING_BIT: u32 = 1 << 3;
 const POISONED_BIT: u32 = 1 << 4;
 const ELECTRIFIED_BIT: u32 = 1 << 5;
+const HASTED_BIT: u32 = 1 << 6;
+const MAGIC_SHIELD_BIT: u32 = 1 << 7;
 
 #[derive(Debug, Clone)]
 pub struct ConditionSpec {
@@ -24,6 +26,12 @@ pub struct ConditionSpec {
 pub enum SpecSchedule {
     Decaying { start: Option<u32> },
     Flat { count: u32 },
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub enum SpeedEffect {
+    Haste,
+    Paralysis,
 }
 
 #[derive(Debug, PartialEq)]
@@ -172,10 +180,13 @@ pub enum Condition {
         until: Tick,
     },
     DamageOverTime(Box<DamageOverTime>),
-    Paralized {
-        strength: f32,
-        until: Tick,
+    Speed {
+        effect: SpeedEffect,
+        change: i16,
         generation: u32,
+    },
+    MagicShield {
+        until: Tick,
     },
 }
 
@@ -267,26 +278,66 @@ impl Conditions {
             .is_some()
     }
 
-    pub fn add_paralysis(&mut self, until: Tick, strength: f32) {
-        self.remove_paralysis();
-        self.conditions.push(Condition::Paralized {
-            strength,
-            until,
-            generation: self.next_generation,
+    pub fn apply_speed(&mut self, effect: SpeedEffect, change: i16) -> u32 {
+        self.conditions
+            .retain(|c| !matches!(c, Condition::Speed { .. }));
+        let generation = self.next_generation;
+        self.conditions.push(Condition::Speed {
+            effect,
+            change,
+            generation,
         });
         self.next_generation += 1;
+        generation
     }
 
-    pub fn remove_paralysis(&mut self) {
+    pub fn speed_change(&self) -> i16 {
         self.conditions
-            .retain(|c| !matches!(c, Condition::Paralized { .. }));
+            .iter()
+            .find_map(|c| match c {
+                Condition::Speed { change, .. } => Some(*change),
+                _ => None,
+            })
+            .unwrap_or(0)
     }
 
-    pub fn get_paralysis_strength(&self) -> Option<f32> {
+    fn speed_effect(&self) -> Option<SpeedEffect> {
         self.conditions.iter().find_map(|c| match c {
-            Condition::Paralized { strength, .. } => Some(*strength),
+            Condition::Speed { effect, .. } => Some(*effect),
             _ => None,
         })
+    }
+
+    /// `false` when `generation` names a speed condition that has since been replaced.
+    pub fn expire_speed(&mut self, generation: u32) -> bool {
+        let before = self.conditions.len();
+        self.conditions.retain(
+            |c| !matches!(c, Condition::Speed { generation: live, .. } if *live == generation),
+        );
+        self.conditions.len() != before
+    }
+
+    pub fn set_magic_shield(&mut self, until: Tick) {
+        self.remove_magic_shield();
+        self.conditions.push(Condition::MagicShield { until });
+    }
+
+    pub fn remove_magic_shield(&mut self) {
+        self.conditions
+            .retain(|c| !matches!(c, Condition::MagicShield { .. }));
+    }
+
+    pub fn is_magic_shielded(&self, current_tick: Tick) -> bool {
+        self.conditions
+            .iter()
+            .any(|c| matches!(c, Condition::MagicShield { until } if *until > current_tick))
+    }
+
+    pub fn cure(&mut self, element: CombatElement) -> bool {
+        let before = self.conditions.len();
+        self.conditions
+            .retain(|c| !matches!(c, Condition::DamageOverTime(dot) if dot.element() == element));
+        self.conditions.len() != before
     }
 
     pub fn apply_damage_over_time(&mut self, mut incoming: DamageOverTime) -> Option<u32> {
@@ -358,8 +409,14 @@ impl Conditions {
             status |= HUNGRY_BIT;
         }
 
-        if self.get_paralysis_strength().is_some() {
-            status |= PARALYZED_BIT;
+        match self.speed_effect() {
+            Some(SpeedEffect::Paralysis) => status |= PARALYZED_BIT,
+            Some(SpeedEffect::Haste) => status |= HASTED_BIT,
+            None => {}
+        }
+
+        if self.is_magic_shielded(current_tick) {
+            status |= MAGIC_SHIELD_BIT;
         }
 
         for condition in &self.conditions {
@@ -492,5 +549,77 @@ mod tests {
 
         assert_ne!(first, second);
         assert_eq!(conditions.fed().unwrap().0, Tick(200));
+    }
+
+    #[test]
+    fn a_speed_condition_replaces_the_other_kind_and_takes_a_new_generation() {
+        let mut conditions = Conditions::new();
+        let hasted = conditions.apply_speed(SpeedEffect::Haste, 30);
+        let paralysed = conditions.apply_speed(SpeedEffect::Paralysis, -80);
+
+        assert_ne!(hasted, paralysed);
+        assert_eq!(conditions.speed_change(), -80);
+        assert_eq!(
+            conditions.to_wire(Tick(0)) & (PARALYZED_BIT | HASTED_BIT),
+            PARALYZED_BIT
+        );
+    }
+
+    #[test]
+    fn a_paralysis_clamped_to_nothing_still_shows_as_paralysed() {
+        let mut conditions = Conditions::new();
+        conditions.apply_speed(SpeedEffect::Paralysis, 0);
+
+        assert_eq!(conditions.to_wire(Tick(0)) & PARALYZED_BIT, PARALYZED_BIT);
+    }
+
+    #[test]
+    fn only_the_live_generation_expires_a_speed_condition() {
+        let mut conditions = Conditions::new();
+        let first = conditions.apply_speed(SpeedEffect::Haste, 30);
+        let second = conditions.apply_speed(SpeedEffect::Haste, 50);
+
+        assert!(!conditions.expire_speed(first));
+        assert_eq!(conditions.speed_change(), 50);
+        assert!(conditions.expire_speed(second));
+        assert_eq!(conditions.speed_change(), 0);
+        assert_eq!(conditions.to_wire(Tick(0)) & HASTED_BIT, 0);
+    }
+
+    #[test]
+    fn a_cure_removes_only_its_element() {
+        let mut conditions = Conditions::new();
+        conditions.apply_damage_over_time(poison(100));
+        conditions.apply_damage_over_time(DamageOverTime::decaying(
+            CombatElement::Fire,
+            None,
+            TickDelta(180),
+            100,
+            None,
+        ));
+
+        assert!(conditions.cure(CombatElement::Earth));
+        assert!(!conditions.cure(CombatElement::Earth));
+        assert_eq!(
+            conditions.to_wire(Tick(0)) & (POISONED_BIT | BURNING_BIT),
+            BURNING_BIT
+        );
+    }
+
+    #[test]
+    fn the_magic_shield_lapses_at_its_deadline() {
+        let mut conditions = Conditions::new();
+        conditions.set_magic_shield(Tick(100));
+
+        assert!(conditions.is_magic_shielded(Tick(99)));
+        assert_eq!(
+            conditions.to_wire(Tick(99)) & MAGIC_SHIELD_BIT,
+            MAGIC_SHIELD_BIT
+        );
+        assert!(!conditions.is_magic_shielded(Tick(100)));
+
+        conditions.set_magic_shield(Tick(300));
+        conditions.remove_magic_shield();
+        assert!(!conditions.is_magic_shielded(Tick(0)));
     }
 }

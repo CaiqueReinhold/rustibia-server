@@ -51,6 +51,7 @@ pub struct MovementConfig {
     pub wander_chance: u32,
     pub wander_ticks: TickDelta,
     pub wander_distance: u16,
+    pub min_speed: u16,
 }
 
 #[derive(Deserialize)]
@@ -112,6 +113,7 @@ pub struct EffectsConfig {
     pub miss: EffectId,
     pub puff: EffectId,
     pub healing_spell: EffectId,
+    pub mana_hit: EffectId,
 }
 
 #[derive(Deserialize, Debug, Clone, Copy)]
