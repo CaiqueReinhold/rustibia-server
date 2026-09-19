@@ -543,6 +543,7 @@ mod tests {
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::skills::SkillValue;
+    use crate::entities::world_map::WorldMap;
     use crate::game::{TestHarness, TickDelta};
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::{
@@ -786,7 +787,7 @@ mod tests {
 
     #[test]
     fn a_landed_hit_applies_the_attacks_condition() {
-        let (mut map, attacker, target) = duel(
+        let (map, attacker, target) = duel(
             Agent::from_player(armed(None, None)),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -815,6 +816,7 @@ mod tests {
             }),
         };
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         assert!(h.scheduled.iter().any(|scheduled| matches!(
@@ -828,7 +830,7 @@ mod tests {
 
     #[test]
     fn a_hit_blocked_to_nothing_applies_no_condition() {
-        let (mut map, attacker, target) = duel(
+        let (map, attacker, target) = duel(
             Agent::from_player(armed(None, None)),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -857,6 +859,7 @@ mod tests {
             }),
         };
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         assert!(
@@ -1111,16 +1114,10 @@ mod tests {
         assert!(plan_auto_attack(&map, attacker, &mut roll, Tick(0)).is_none());
     }
 
-    /// Pins the broadcast order the spec calls load-bearing: cost, then skill, then damage.
-    /// The `Magic` skill entry is required — `tick_skill` returns without emitting for a skill
-    /// the player does not have, and `a_test_snapshot` carries only `Level`.
-    ///
-    /// The auto-attack cooldown is **not** asserted here: it is the one auto-attack-specific
-    /// thing the executor lost when the spell planners joined it, and it is stamped by
-    /// `systems::combat_system` instead. `a_swing_stamps_the_auto_attack_cooldown` is what
-    /// covers it now.
+    /// The `Magic` skill entry is required: `tick_skill` marks nothing for a skill the player
+    /// does not have, and `a_test_snapshot` carries only `Level`.
     #[test]
-    fn executing_spends_the_mana_in_the_order_the_spec_pins() {
+    fn executing_spends_the_mana_and_reports_the_hit() {
         let mut snapshot = armed(Some(a_wand(20)), None);
         snapshot.skills.insert(
             SkillType::Magic,
@@ -1129,7 +1126,7 @@ mod tests {
                 current_ticks: 0,
             },
         );
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, target) = duel(
             Agent::from_player(snapshot),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1137,14 +1134,21 @@ mod tests {
         h.tick = Tick(7);
         let plan = plan_auto_attack(&map, attacker, &mut h.roll, Tick(7)).unwrap();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         let agent = map.get_agent(attacker).unwrap();
         assert_eq!(agent.mana().current, 80);
-        assert_eq!(
-            broadcast_kinds(&h.events),
-            ["mana", "skill", "damage", "blood"]
+        assert_eq!(broadcast_kinds(&h.events), ["damage"]);
+        assert!(
+            map.delta()
+                .agent(attacker)
+                .skills()
+                .any(|skill| skill == SkillType::Magic)
         );
+        assert!(map.delta().agent(attacker).mana());
+        let target_pos = map.agent_position(target).unwrap().clone();
+        assert!(map.delta().tile_dirty(&target_pos));
     }
 
     /// `Distance` is its own weapon type but costs nothing to swing — it fell through the
@@ -1175,7 +1179,7 @@ mod tests {
 
     #[test]
     fn executing_spends_one_arrow() {
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(a_quiver_of_arrows()))),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1183,6 +1187,7 @@ mod tests {
         h.tick = Tick(0);
         let plan = plan_auto_attack(&map, attacker, &mut h.roll, Tick(0)).unwrap();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         let arrows = map
@@ -1200,16 +1205,13 @@ mod tests {
         assert_eq!(arrows, 9);
     }
 
-    /// The count drawn on the arrow stack comes from `UpdateContainer`, and the session
-    /// only sends one for a guid it holds as an open container. Naming the arrow instead of
-    /// the quiver dropped the message on the floor, freezing the number until the stack ran
-    /// out — the last arrow took the whole-removal branch, which named the quiver correctly.
+    /// Spending an arrow refreshes the quiver it came out of, not the arrow.
     #[test]
     fn executing_a_shot_updates_the_quiver_rather_than_the_arrow() {
         let quiver = a_quiver_of_arrows();
         let quiver_guid = quiver.guid.clone();
         let arrow_guid = quiver.content.as_ref().unwrap()[0].guid.clone();
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(quiver))),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1217,18 +1219,11 @@ mod tests {
         h.tick = Tick(0);
         let plan = plan_auto_attack(&map, attacker, &mut h.roll, Tick(0)).unwrap();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
-        let updated = h
-            .events
-            .iter()
-            .find_map(|m| match m {
-                BroadcastMessage::ContainerUpdated { item } => Some(item),
-                _ => None,
-            })
-            .expect("spending an arrow must announce the container it came out of");
-        assert_eq!(updated.guid, quiver_guid);
-        assert_ne!(updated.guid, arrow_guid);
+        assert!(map.delta().container_dirty(&quiver_guid));
+        assert!(!map.delta().container_dirty(&arrow_guid));
     }
 
     fn broadcast_kinds(msgs: &[BroadcastMessage]) -> Vec<&'static str> {
@@ -1236,12 +1231,9 @@ mod tests {
             .map(|m| match m {
                 BroadcastMessage::MissileLaunched { .. } => "missile",
                 BroadcastMessage::AttackMissed { .. } => "miss",
-                BroadcastMessage::PlayerManaUpdated { .. } => "mana",
-                BroadcastMessage::SkillProgressUpdated { .. }
+                BroadcastMessage::ExperienceGained { .. }
                 | BroadcastMessage::SkillUpgraded { .. } => "skill",
-                BroadcastMessage::ContainerUpdated { .. } => "ammo",
                 BroadcastMessage::DamageTaken { .. } => "damage",
-                BroadcastMessage::TileChanged { .. } => "blood",
                 _ => "other",
             })
             .collect()
@@ -1294,7 +1286,7 @@ mod tests {
 
     #[test]
     fn an_unarmed_attack_does_not_copy_the_player() {
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, _) = duel(
             Agent::from_player(a_test_snapshot(1, 1)),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1305,6 +1297,7 @@ mod tests {
 
         let snapshot = map.clone();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         assert!(std::ptr::eq(
@@ -1315,7 +1308,7 @@ mod tests {
 
     #[test]
     fn an_attack_that_pays_a_cost_copies_the_player() {
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_wand(5)), None)),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1325,6 +1318,7 @@ mod tests {
 
         let snapshot = map.clone();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
         assert!(!std::ptr::eq(
@@ -1333,13 +1327,20 @@ mod tests {
         ));
     }
 
-    /// Zero has to come from the weapon: `weapon_attack()` falls back to **5** when no
-    /// weapon is held, so an unarmed player is not a zero-damage one. An attack of 0
-    /// zeroes both damage bounds whatever the skill, because it is a factor in each.
+    /// At level 1 with no sword skill, an attack of 1 rounds both damage bounds to 0. An
+    /// attack of 0 is no use here: the planner refuses to swing it at all.
     #[test]
     fn a_zero_damage_hit_is_not_reported_as_a_block() {
+        let mut snapshot = armed(Some(a_weapon_with_attack(1)), None);
+        snapshot.skills.insert(
+            SkillType::Sword,
+            SkillValue {
+                value: 0,
+                current_ticks: 0,
+            },
+        );
         let (map, attacker, _) = duel(
-            Agent::from_player(armed(Some(a_weapon_with_attack(0)), None)),
+            Agent::from_player(snapshot),
             a_test_creature("Rat", 10, (1, 2)),
         );
         let mut roll = Rolls::new(1);
@@ -1348,7 +1349,7 @@ mod tests {
 
         let damage = planned_damage(&plan).expect("a melee swing always lands");
         assert!(matches!(damage.element, CombatElement::Physical));
-        assert_eq!(damage.value, 0, "a zero-attack weapon deals nothing");
+        assert_eq!(damage.value, 0);
         assert!(!damage.blocked_shield);
         assert!(!damage.blocked_armor);
     }
@@ -1509,7 +1510,7 @@ mod tests {
                 current_ticks: 0,
             },
         );
-        let (mut map, attacker, _) = duel(
+        let (map, attacker, _) = duel(
             Agent::from_player(snapshot),
             a_test_creature("Rat", 100, (1, 2)),
         );
@@ -1517,9 +1518,10 @@ mod tests {
         h.tick = Tick(0);
         let plan = plan_auto_attack(&map, attacker, &mut h.roll, Tick(0)).unwrap();
 
+        let mut map = WorldMap::new(map);
         execute_attack(&mut h.ctx(&mut map), plan);
 
-        assert_eq!(broadcast_kinds(&h.events), ["ammo", "missile", "miss"]);
+        assert_eq!(broadcast_kinds(&h.events), ["missile", "miss"]);
         let arrows = map
             .get_agent(attacker)
             .unwrap()

@@ -4,6 +4,7 @@ use smallvec::SmallVec;
 use strum::{EnumCount, EnumIter};
 
 use crate::{
+    constants::items::MAX_STACK_AMOUNT,
     entities::{
         Bounds,
         combat::{AmmoType, CombatElement, WeaponType},
@@ -354,6 +355,19 @@ impl Item {
             fluid: None,
             content: None,
         }
+    }
+
+    pub fn stacks_with(&self, other: &Item) -> bool {
+        self.item_id == other.item_id
+            && self.config.has_flag(ItemFlag::Cumulative)
+            && self.amount < MAX_STACK_AMOUNT
+    }
+
+    pub fn top_up_from(&mut self, other: &mut Item) -> u8 {
+        let moved = other.amount.min(MAX_STACK_AMOUNT - self.amount);
+        self.amount += moved;
+        other.amount -= moved;
+        moved
     }
 
     /// Removes `amount` of `guid` from somewhere inside this container, reporting the removed

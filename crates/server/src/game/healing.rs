@@ -100,7 +100,7 @@ fn restore_agent(ctx: &mut TickCtx, agent_key: AgentKey, restore: &Restore) {
     let Some(pos) = ctx.map.agent_position(agent_key).cloned() else {
         return;
     };
-    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
+    let Some(mut agent) = ctx.map.agent_mut(agent_key) else {
         return;
     };
 

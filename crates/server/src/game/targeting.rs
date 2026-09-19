@@ -15,7 +15,7 @@ pub fn set_target(ctx: &mut TickCtx, agent: AgentKey, target: Option<AgentKey>, 
     };
 
     ctx.map
-        .get_agent_mut(agent)
+        .agent_mut(agent)
         .expect("agent was just found by get_agent above")
         .set_target(accepted, if accepted.is_some() { seq } else { 0 });
 
@@ -39,7 +39,7 @@ pub fn lose_target(ctx: &mut TickCtx, agent: AgentKey) {
     let seq = actor.target_seq();
 
     ctx.map
-        .get_agent_mut(agent)
+        .agent_mut(agent)
         .expect("agent was just found by get_agent above")
         .set_target(None, 0);
 
@@ -83,6 +83,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::persistence::test_fixtures::a_test_snapshot;
 
@@ -114,8 +115,9 @@ mod tests {
     #[test]
     fn sets_a_valid_target_and_says_nothing() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
 
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
         let msgs = &h.events;
 
@@ -130,7 +132,8 @@ mod tests {
     #[test]
     fn clears_on_none_and_says_nothing() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 
         set_target(&mut h.ctx(&mut map), attacker, None, 6);
@@ -146,9 +149,10 @@ mod tests {
     #[test]
     fn rejecting_a_missing_agent_announces_the_loss_with_the_new_seq() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
-        map.remove_agent(victim);
+        map.inner_mut().remove_agent(victim);
 
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 6);
         let msgs = &h.events;
@@ -164,8 +168,9 @@ mod tests {
     #[test]
     fn rejects_self_targeting() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, _) = map_with_two_players();
+        let (map, attacker, _) = map_with_two_players();
 
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(attacker), 7);
         let msgs = &h.events;
 
@@ -182,6 +187,7 @@ mod tests {
         let (mut map, attacker, victim) = map_with_two_players();
         map.remove_agent(attacker);
 
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 1);
         assert!(h.events.is_empty());
     }
@@ -189,7 +195,8 @@ mod tests {
     #[test]
     fn a_reachable_target_is_kept() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 
         drop_unreachable_target(&mut h.ctx(&mut map), attacker);
@@ -206,6 +213,7 @@ mod tests {
         let mut map = GameMap::new();
         let attacker = seat(&mut map, &Position::new(100, 100, 7), 1);
         let victim = seat(&mut map, &Position::new(105, 105, 7), 2);
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 
         drop_unreachable_target(&mut h.ctx(&mut map), attacker);
@@ -221,6 +229,7 @@ mod tests {
         let mut map = GameMap::new();
         let attacker = seat(&mut map, &Position::new(100, 100, 7), 1);
         let victim = seat(&mut map, &Position::new(110, 100, 7), 2);
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 9);
 
         drop_unreachable_target(&mut h.ctx(&mut map), attacker);
@@ -240,6 +249,7 @@ mod tests {
         let mut map = GameMap::new();
         let attacker = seat(&mut map, &Position::new(100, 100, 7), 1);
         let victim = seat(&mut map, &Position::new(109, 107, 7), 2);
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 
         assert!(!drop_unreachable_target(&mut h.ctx(&mut map), attacker));
@@ -252,6 +262,7 @@ mod tests {
         let mut map = GameMap::new();
         let attacker = seat(&mut map, &Position::new(100, 100, 7), 1);
         let victim = seat(&mut map, &Position::new(101, 100, 6), 2);
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 
         drop_unreachable_target(&mut h.ctx(&mut map), attacker);
@@ -266,9 +277,10 @@ mod tests {
     #[test]
     fn a_target_that_left_the_map_is_dropped() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
-        map.remove_agent(victim);
+        map.inner_mut().remove_agent(victim);
 
         drop_unreachable_target(&mut h.ctx(&mut map), attacker);
         let msgs = &h.events;
@@ -280,8 +292,9 @@ mod tests {
     #[test]
     fn an_agent_with_no_target_produces_nothing() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, _) = map_with_two_players();
+        let (map, attacker, _) = map_with_two_players();
 
+        let mut map = WorldMap::new(map);
         assert!(!drop_unreachable_target(&mut h.ctx(&mut map), attacker));
     }
 
@@ -290,9 +303,10 @@ mod tests {
     #[test]
     fn an_absent_attacker_produces_nothing() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, victim) = map_with_two_players();
+        let (map, attacker, victim) = map_with_two_players();
+        let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
-        map.remove_agent(attacker);
+        map.inner_mut().remove_agent(attacker);
 
         assert!(!drop_unreachable_target(&mut h.ctx(&mut map), attacker));
     }
@@ -300,8 +314,9 @@ mod tests {
     #[test]
     fn lose_target_on_an_agent_with_no_target_says_nothing() {
         let mut h = TestHarness::new();
-        let (mut map, attacker, _) = map_with_two_players();
+        let (map, attacker, _) = map_with_two_players();
 
+        let mut map = WorldMap::new(map);
         lose_target(&mut h.ctx(&mut map), attacker);
         assert!(h.events.is_empty());
     }

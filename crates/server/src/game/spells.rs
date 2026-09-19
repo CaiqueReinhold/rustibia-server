@@ -358,12 +358,10 @@ pub fn resolve_area(
 }
 
 pub fn consume_mana(ctx: &mut TickCtx, agent_key: AgentKey, mana_cost: u32) {
-    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
+    let Some(mut agent) = ctx.map.agent_mut(agent_key) else {
         return;
     };
     agent.remove_mana(mana_cost);
-    ctx.events
-        .push(BroadcastMessage::PlayerManaUpdated { agent_key });
     tick_skill(ctx, agent_key, SkillType::Magic, mana_cost as u64);
 }
 
@@ -476,9 +474,9 @@ fn execute_effect(
         SpellEffect::Support(support) => support_spell(ctx, agent_key, &target, param, support),
     }?;
 
-    let agent = ctx
+    let mut agent = ctx
         .map
-        .get_agent_mut(agent_key)
+        .agent_mut(agent_key)
         .ok_or(SpellCastingDenyReason::InvalidState(
             agent_key,
             "missing after casting spell sucessfully",
@@ -553,6 +551,7 @@ fn support_spell(
 
 #[cfg(test)]
 mod tests {
+    use crate::entities::world_map::WorldMap;
     use std::sync::Arc;
 
     use super::*;
@@ -689,11 +688,12 @@ mod tests {
     #[test]
     fn a_rune_spell_cannot_be_cast_by_words() {
         let position = Position::new(100, 100, 7);
-        let (mut map, caster) = a_caster_at(&position);
+        let (map, caster) = a_caster_at(&position);
         let mut spell = a_spell(1, 0, Vec::new());
         spell.delivery = SpellDelivery::Rune;
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         let result = cast_spell(
             &mut h.ctx(&mut map),
             caster,
@@ -716,10 +716,11 @@ mod tests {
     #[test]
     fn a_word_spell_cannot_be_cast_by_a_rune() {
         let position = Position::new(100, 100, 7);
-        let (mut map, caster) = a_caster_at(&position);
+        let (map, caster) = a_caster_at(&position);
         let spell = a_spell(1, 0, Vec::new());
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         let result = cast_spell(
             &mut h.ctx(&mut map),
             caster,

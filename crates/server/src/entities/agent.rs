@@ -982,7 +982,7 @@ mod tests {
     #[test]
     fn emptying_the_mana_pool_ends_the_magic_shield() {
         let mut agent = Agent::from_player(a_test_snapshot(1, 1));
-        agent.conditions_mut().set_magic_shield(Tick(1000));
+        agent.conditions_mut().extend_magic_shield(Tick(1000));
 
         agent.remove_mana(40);
         assert!(agent.conditions().is_magic_shielded(Tick(0)));

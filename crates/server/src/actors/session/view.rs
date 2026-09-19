@@ -22,23 +22,6 @@ use crate::messages::{FloatingTextType, ServerMessage, SkillProgress, TextMessag
 use crate::persistence::player::PlayerSnapshot;
 
 impl SessionActor {
-    pub(super) async fn check_status_changed(&mut self) -> Result<()> {
-        let status = {
-            let map = self.shared_map.load();
-            let tick = self.tick_rx.borrow();
-            map.get_agent(self.player_key)
-                .map(|a| a.conditions().to_wire(*tick))
-                .unwrap_or(0)
-        };
-
-        if status != self.prev_status {
-            self.player_status_updated().await?;
-            self.prev_status = status;
-        }
-
-        Ok(())
-    }
-
     pub(super) async fn player_spawned(
         &mut self,
         agent_key: AgentKey,
@@ -211,12 +194,11 @@ impl SessionActor {
     }
 
     pub(super) async fn player_status_updated(&self) -> Result<()> {
-        let tick = *self.tick_rx.borrow();
-        let status = {
-            let map = self.shared_map.load();
-            map.get_agent(self.player_key)
-                .map(|agent| agent.conditions().to_wire(tick))
-        };
+        let status = self
+            .shared_map
+            .load()
+            .get_agent(self.player_key)
+            .map(|agent| agent.conditions().status());
         if let Some(status) = status {
             self.connection
                 .send_message(ServerMessage::PlayerStatus { status })
@@ -241,12 +223,8 @@ impl SessionActor {
         Ok(())
     }
 
-    pub(super) async fn skill_progress(&self, skill: SkillType, amount: u64) -> Result<()> {
-        self.send_skill_update(skill, amount).await
-    }
-
-    async fn send_skill_update(&self, skill: SkillType, amount: u64) -> Result<()> {
-        let (progress, experience, position) = {
+    pub(super) async fn send_skill(&self, skill: SkillType) -> Result<()> {
+        let (progress, experience) = {
             let map = self.shared_map.load();
             let Some(player) = map.get_player(self.player_key) else {
                 return Ok(());
@@ -260,25 +238,12 @@ impl SessionActor {
                     percent_bp: progress_bp(player.vocation(), &skill, value),
                 },
                 (skill == SkillType::Level).then(|| total_experience(value)),
-                map.agent_position(self.player_key).cloned(),
             )
         };
-
         self.connection
             .send_message(ServerMessage::SkillUpdated { skill, progress })
             .await?;
-
         if let Some(experience) = experience {
-            if let Some(position) = position {
-                self.connection
-                    .send_message(ServerMessage::FloatingText {
-                        text: amount.to_string(),
-                        position,
-                        text_type: FloatingTextType::HitPoints,
-                        color: Some(GAME_CONFIG.text_colors.white),
-                    })
-                    .await?;
-            }
             self.connection
                 .send_message(ServerMessage::ExperienceUpdated { experience })
                 .await?;
@@ -286,15 +251,28 @@ impl SessionActor {
         Ok(())
     }
 
-    pub(super) async fn skill_upgraded(
-        &self,
-        skill: SkillType,
-        gained: u16,
-        amount: u64,
-    ) -> Result<()> {
-        self.send_skill_update(skill, amount).await?;
-        let map = self.shared_map.load();
-        let message = map.get_player(self.player_key).map(|p| {
+    pub(super) async fn experience_gained(&self, amount: u64) -> Result<()> {
+        let Some(position) = self
+            .shared_map
+            .load()
+            .agent_position(self.player_key)
+            .cloned()
+        else {
+            return Ok(());
+        };
+        self.connection
+            .send_message(ServerMessage::FloatingText {
+                text: amount.to_string(),
+                position,
+                text_type: FloatingTextType::HitPoints,
+                color: Some(GAME_CONFIG.text_colors.white),
+            })
+            .await?;
+        Ok(())
+    }
+
+    pub(super) async fn skill_upgraded(&self, skill: SkillType, gained: u16) -> Result<()> {
+        let message = self.shared_map.load().get_player(self.player_key).map(|p| {
             let value = p.skill(skill);
             match skill {
                 SkillType::Axe => format!("You advanced to axe fighting {value}"),
@@ -309,41 +287,11 @@ impl SessionActor {
                 ),
             }
         });
-
         if let Some(message) = message {
             self.connection
                 .send_message(ServerMessage::TextMessage {
                     text: message,
                     message_type: TextMessageType::Look,
-                })
-                .await?;
-        }
-
-        if matches!(skill, SkillType::Level)
-            && let Some(agent) = map.get_agent(self.player_key)
-            && let Some(player) = agent.get_player()
-        {
-            let agent_id = self
-                .agents
-                .get_local(&self.player_key)
-                .ok_or(SessionError::InvalidState)?;
-            self.connection
-                .send_message(ServerMessage::AgentLifeChanged {
-                    agent_id,
-                    current: agent.life().current,
-                    max: agent.life().maximum,
-                })
-                .await?;
-            self.connection
-                .send_message(ServerMessage::AgentManaUpdated {
-                    agent_id,
-                    current: agent.mana().current,
-                    max: agent.mana().maximum,
-                })
-                .await?;
-            self.connection
-                .send_message(ServerMessage::PlayerCapacityUpdated {
-                    cap: player.capacity_available(),
                 })
                 .await?;
         }
@@ -510,7 +458,7 @@ mod tests {
         player.skills_mut().insert(SkillType::Sword, sword);
         let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
-        session.skill_progress(SkillType::Sword, 1).await.unwrap();
+        session.send_skill(SkillType::Sword).await.unwrap();
 
         assert!(matches!(
             connection_rx.try_recv(),
@@ -538,21 +486,12 @@ mod tests {
         );
         let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
-        session.skill_progress(SkillType::Level, 30).await.unwrap();
+        session.send_skill(SkillType::Level).await.unwrap();
 
         assert!(matches!(
             connection_rx.try_recv(),
             Ok(ConnectionCommand::SendPlayerMessage(
                 ServerMessage::SkillUpdated { .. }
-            ))
-        ));
-        // The floating number rides between the two, and now goes out whether or
-        // not this session has a local id for the player: it is pinned to a tile,
-        // and nothing about it is addressed to an agent.
-        assert!(matches!(
-            connection_rx.try_recv(),
-            Ok(ConnectionCommand::SendPlayerMessage(
-                ServerMessage::FloatingText { .. }
             ))
         ));
         assert!(matches!(
@@ -563,26 +502,13 @@ mod tests {
         ));
     }
 
-    /// The floating number over a player that just levelled is the experience the kill
-    /// awarded. It used to be a hard-coded `0`, because `SkillUpgraded` did not carry it.
     #[tokio::test]
-    async fn a_level_up_floats_the_experience_it_awarded() {
+    async fn gained_experience_floats_over_the_player() {
         let mut map = GameMap::new();
         let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
-        map.get_player_mut(me).unwrap().skills_mut().insert(
-            SkillType::Level,
-            SkillValue {
-                value: 2,
-                current_ticks: 0,
-            },
-        );
-        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
-        session.agents.get_or_insert(me);
+        let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
-        session
-            .skill_upgraded(SkillType::Level, 1, 40)
-            .await
-            .unwrap();
+        session.experience_gained(40).await.unwrap();
 
         let mut floated = None;
         while let Ok(ConnectionCommand::SendPlayerMessage(message)) = connection_rx.try_recv() {
@@ -593,9 +519,9 @@ mod tests {
         assert_eq!(floated.as_deref(), Some("40"));
     }
 
-    /// `tick_skill` returns without emitting for a skill the player has no row
-    /// for, but the broadcast handler must not assume that — the map it reads is
-    /// a snapshot, not the map the event was produced from.
+    /// `skill_mut` marks nothing for a skill the player has no row for, but the
+    /// sender must not assume that — the map it reads is a snapshot, not the map
+    /// the delta was recorded from.
     #[tokio::test]
     async fn a_skill_the_player_does_not_have_sends_nothing() {
         let mut map = GameMap::new();
@@ -603,7 +529,7 @@ mod tests {
         map.get_player_mut(me).unwrap().skills_mut().clear();
         let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
-        session.skill_progress(SkillType::Axe, 1).await.unwrap();
+        session.send_skill(SkillType::Axe).await.unwrap();
 
         assert!(connection_rx.try_recv().is_err());
     }

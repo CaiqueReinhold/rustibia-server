@@ -96,11 +96,11 @@ fn advance(skill: &mut SkillValue, ticks: u64, required: impl Fn(u16) -> u64) ->
 }
 
 pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, ticks: u64) {
-    let Some(player) = ctx.map.get_player_mut(agent_key) else {
+    let Some(mut player) = ctx.map.player_mut(agent_key) else {
         return;
     };
     let vocation = player.vocation();
-    let Some(skill_value) = player.skills_mut().get_mut(&skill) else {
+    let Some(skill_value) = player.skill_mut(skill) else {
         return;
     };
 
@@ -111,50 +111,37 @@ pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, tick
         level_up(ctx, agent_key, gained as i16);
     }
 
-    ctx.events.push(if gained > 0 {
-        BroadcastMessage::SkillUpgraded {
+    if matches!(skill, SkillType::Level) {
+        ctx.events.push(BroadcastMessage::ExperienceGained {
+            agent_key,
+            amount: ticks,
+        });
+    }
+    if gained > 0 {
+        ctx.events.push(BroadcastMessage::SkillUpgraded {
             agent_key,
             skill_type: skill,
             gained,
-            amount: ticks,
-        }
-    } else {
-        BroadcastMessage::SkillProgressUpdated {
-            agent_key,
-            skill_type: skill,
-            amount: ticks,
-        }
-    });
+        });
+    }
 }
 
 fn level_up(ctx: &mut TickCtx, agent_key: AgentKey, gained: i16) {
-    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
+    let Some(mut agent) = ctx.map.agent_mut(agent_key) else {
         return;
     };
     let base_speed = agent.base_speed();
-    let Some(player) = agent.get_player_mut() else {
+    let Some(mut player) = agent.player_mut() else {
         return;
     };
     let vocation = player.vocation();
-
-    player.set_capacity(
-        player
-            .capacity()
-            .saturating_add_signed(vocation.capacity_on_level_up() * gained as i32),
-    );
-    agent.set_base_speed(base_speed + 1 * gained as u16);
+    let capacity = player
+        .capacity()
+        .saturating_add_signed(vocation.capacity_on_level_up() * gained as i32);
+    player.set_capacity(capacity);
+    agent.set_base_speed(base_speed + gained as u16);
     agent.change_max_life(vocation.life_on_level_up() * gained as i32);
     agent.change_max_mana(vocation.mana_on_level_up() * gained as i32);
-
-    if let Some(position) = ctx.map.agent_position(agent_key) {
-        // speed is broadcasted because changes how nearby players see
-        // the other updates are handled by the session on skill upgrade
-        // (in theory life could be seen too, but is too imperceptible of a difference)
-        ctx.events.push(BroadcastMessage::AgentSpeedChanged {
-            agent_key,
-            position: position.clone(),
-        });
-    }
 }
 
 #[cfg(test)]

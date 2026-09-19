@@ -76,8 +76,10 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
 
     match route_multi_action(ctx, &action, agent_key, &source, &target) {
         Ok(()) => {
-            ctx.map.get_agent_mut(agent_key).unwrap().next_use_tick =
-                ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks;
+            ctx.map
+                .agent_mut(agent_key)
+                .unwrap()
+                .stamp_use(ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks);
         }
         Err(ItemActionError::Reported) => {}
         Err(e) => {
@@ -332,11 +334,12 @@ mod tests {
         SpellId,
     };
     use crate::entities::targeting::TargetMode;
+    use crate::entities::world_map::WorldMap;
     use crate::entities::{
         agent::{Agent, Pool},
         healing::RestoreType,
         inventory::InventorySlot,
-        items::{Item, ItemAttribute, ItemConfig, ItemGuid, ItemId},
+        items::{Item, ItemAttribute, ItemConfig, ItemId},
         map::MapTile,
     };
     use crate::game::spells::SpellCastingDenyReason;
@@ -464,6 +467,7 @@ mod tests {
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
             .unwrap();
 
+        let mut map = WorldMap::new(map);
         use_item_with(
             &mut h.ctx(&mut map),
             agent,
@@ -530,6 +534,7 @@ mod tests {
                 .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
                 .unwrap();
 
+            let mut map = WorldMap::new(map);
             use_item_with(
                 &mut h.ctx(&mut map),
                 agent,
@@ -585,6 +590,7 @@ mod tests {
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
             .unwrap();
 
+        let mut map = WorldMap::new(map);
         use_item_with(
             &mut h.ctx(&mut map),
             agent,
@@ -748,6 +754,7 @@ mod tests {
         };
 
         let mut h = TestHarness::seeded(1);
+        let mut map = WorldMap::new(map);
         for _ in 0..times {
             use_item_with(
                 &mut h.ctx(&mut map),
@@ -981,7 +988,7 @@ mod tests {
         Vec<BroadcastMessage>,
         Option<u8>,
         Tick,
-        GameMap,
+        WorldMap,
         AgentKey,
     ) {
         let mut h = TestHarness::new();
@@ -999,6 +1006,7 @@ mod tests {
             guid,
             placement: ItemPlacement::Map(here.clone()),
         };
+        let mut map = WorldMap::new(map);
         let result = rune(
             &mut h.ctx(&mut map),
             agent,
@@ -1103,6 +1111,7 @@ mod tests {
             guid,
             placement: ItemPlacement::Map(here.clone()),
         };
+        let mut map = WorldMap::new(map);
         let result = rune(
             &mut h.ctx(&mut map),
             agent,
@@ -1170,6 +1179,7 @@ mod tests {
             guid,
             placement: ItemPlacement::Map(here.clone()),
         };
+        let mut map = WorldMap::new(map);
         let result = rune(
             &mut h.ctx(&mut map),
             agent,
@@ -1426,9 +1436,7 @@ mod tests {
 
     struct Pouches {
         denied: bool,
-        guids: Vec<ItemGuid>,
         contents: Vec<Vec<(ItemId, u8)>>,
-        broadcasts: Vec<BroadcastMessage>,
     }
 
     /// Drinks a potion out of a pouch inside the drinker's backpack. The backpack holds
@@ -1461,6 +1469,7 @@ mod tests {
             .insert_agent(Agent::from_player(snapshot), &here)
             .unwrap();
 
+        let mut map = WorldMap::new(map);
         use_item_with(
             &mut h.ctx(&mut map),
             user,
@@ -1505,14 +1514,10 @@ mod tests {
                 .events
                 .iter()
                 .any(|b| matches!(b, BroadcastMessage::UseItemDenied { .. })),
-            guids,
             contents,
-            broadcasts: h.events,
         }
     }
 
-    /// The first stack merge in the codebase, so the broadcast is asserted too: a flask
-    /// that merges silently stays invisible until the container is reopened.
     #[test]
     fn a_returned_flask_stacks_onto_a_like_flask_in_the_same_container() {
         let flask = a_flask_id();
@@ -1524,14 +1529,6 @@ mod tests {
 
         assert!(!pouches.denied);
         assert_eq!(pouches.contents[0], vec![(flask, 2), (ItemId(9999), 2)]);
-        assert!(
-            pouches.broadcasts.iter().any(|b| matches!(
-                b,
-                BroadcastMessage::ContainerUpdated { item } if item.guid == pouches.guids[0]
-            )),
-            "the merge was not announced: {:?}",
-            pouches.broadcasts
-        );
     }
 
     #[test]

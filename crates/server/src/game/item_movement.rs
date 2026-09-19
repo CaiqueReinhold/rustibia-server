@@ -2,13 +2,12 @@ use thiserror::Error;
 use tracing::error;
 
 use crate::{
-    constants::items::MAX_STACK_AMOUNT,
     entities::{
         agent::AgentKey,
         combat::WeaponType,
         inventory::InventorySlot,
-        items::{Item, ItemFlag, ItemId, ItemRef},
-        map::{GameMap, MapError},
+        items::{Item, ItemFlag, ItemRef},
+        map::MapError,
         position::{ItemPlacement, PlacementSite, Rect},
     },
     game::map_query::{can_throw, find_item},
@@ -43,8 +42,8 @@ fn displace_inventory_items(
 ) -> Result<(), ItemMovementError> {
     let current_item = ctx
         .map
-        .get_player_mut(agent)
-        .and_then(|player| player.inventory_mut().take_slot(&slot));
+        .player_mut(agent)
+        .and_then(|mut player| player.inventory_mut().take_slot(&slot));
 
     // Displace any item currently in the slot back to the source
     // (inventory-to-inventory swaps are rejected upstream, so source is always Map)
@@ -89,20 +88,16 @@ fn displace_inventory_items(
     }
 
     if source_slot.unwrap() == InventorySlot::BothHands {
-        let player = ctx.map.get_player_mut(agent).unwrap();
+        let mut player = ctx.map.player_mut(agent).unwrap();
         if let Some(rh_item) = player.inventory_mut().take_slot(&InventorySlot::RightHand) {
             let rh_copy = rh_item.clone();
             if let Err(e) = stow_item(ctx, agent, rh_item) {
-                let player = ctx.map.get_player_mut(agent).unwrap();
+                let mut player = ctx.map.player_mut(agent).unwrap();
                 let _ = player
                     .inventory_mut()
                     .insert(InventorySlot::RightHand, None, rh_copy);
                 return Err(e);
             }
-            ctx.events.push(BroadcastMessage::UpdateInventorySlot {
-                agent_key: agent,
-                slot: InventorySlot::RightHand,
-            });
         }
     }
 
@@ -115,23 +110,19 @@ fn displace_inventory_items(
         .map(|it| it.config.attr_inventory().unwrap() == InventorySlot::BothHands)
         .unwrap_or(false);
     if slot == InventorySlot::RightHand && left_is_two_handed {
-        let player = ctx.map.get_player_mut(agent).unwrap();
+        let mut player = ctx.map.player_mut(agent).unwrap();
         let lh_item = player
             .inventory_mut()
             .take_slot(&InventorySlot::LeftHand)
             .unwrap();
         let lh_copy = lh_item.clone();
         if let Err(e) = stow_item(ctx, agent, lh_item) {
-            let player = ctx.map.get_player_mut(agent).unwrap();
+            let mut player = ctx.map.player_mut(agent).unwrap();
             let _ = player
                 .inventory_mut()
                 .insert(InventorySlot::LeftHand, None, lh_copy);
             return Err(e);
         }
-        ctx.events.push(BroadcastMessage::UpdateInventorySlot {
-            agent_key: agent,
-            slot: InventorySlot::LeftHand,
-        });
     }
     Ok(())
 }
@@ -227,10 +218,6 @@ pub fn move_item(
         }
     }
 
-    let old_speed = ctx
-        .map
-        .get_player(agent)
-        .map(|p| p.inventory().stats().speed);
     // --- Remove from source ---
     let Ok((source_item, source_index)) = remove_item_at(ctx, &source, amount) else {
         ctx.events.push(BroadcastMessage::MoveItemDenied {
@@ -275,17 +262,6 @@ pub fn move_item(
             },
         });
     }
-
-    let new_speed = ctx
-        .map
-        .get_player(agent)
-        .map(|p| p.inventory().stats().speed);
-    if old_speed != new_speed {
-        ctx.events.push(BroadcastMessage::AgentSpeedChanged {
-            agent_key: agent,
-            position: player_pos,
-        });
-    }
 }
 
 /// Into the first backpack container with room; `Err` when there is none.
@@ -296,20 +272,13 @@ pub fn stow_item(ctx: &mut TickCtx, agent: AgentKey, item: Item) -> Result<(), I
         .and_then(|player| player.inventory().first_available_container().cloned())
         .ok_or(ItemMovementError::CannotEquip)?;
 
-    let player = ctx
+    let mut player = ctx
         .map
-        .get_player_mut(agent)
+        .player_mut(agent)
         .ok_or(ItemMovementError::PlayerDespawned)?;
     player
         .inventory_mut()
         .insert(InventorySlot::Backpack, Some((&container, 0)), item)?;
-
-    ctx.events.push(BroadcastMessage::ContainerUpdated {
-        item: ItemRef {
-            guid: container,
-            placement: ItemPlacement::Inventory(InventorySlot::Backpack, agent),
-        },
-    });
     Ok(())
 }
 
@@ -322,27 +291,8 @@ pub fn return_item(
     index: Option<usize>,
     mut item: Item,
 ) -> Result<(), ItemMovementError> {
-    if merge_into_like_stack(ctx.map, placement, &mut item) {
-        // `insert_item_at` emits its own refresh, but a merge never reaches it: a
-        // flask that stacks silently stays invisible until the container is reopened.
-        ctx.events
-            .push(match (placement.site(), placement.container()) {
-                (_, Some((guid, _))) => BroadcastMessage::ContainerUpdated {
-                    item: ItemRef {
-                        guid: guid.clone(),
-                        placement: placement.site_placement(),
-                    },
-                },
-                (PlacementSite::Tile(pos), None) => BroadcastMessage::TileChanged {
-                    position: pos.clone(),
-                },
-                (PlacementSite::Slot(slot, agent_key), None) => {
-                    BroadcastMessage::UpdateInventorySlot { agent_key, slot }
-                }
-            });
-        if item.amount == 0 {
-            return Ok(());
-        }
+    if ctx.map.stack_onto(placement, &mut item) > 0 && item.amount == 0 {
+        return Ok(());
     }
 
     let slot_taken = match placement {
@@ -366,75 +316,6 @@ pub fn return_item(
     insert_item_at(ctx, item, &ItemPlacement::Map(pos), None)
 }
 
-/// Moves as much of `item` as the cap allows onto a like stack already sitting in
-/// `placement`, reducing `item.amount` by whatever it consumed. Reports whether
-/// anything moved.
-fn merge_into_like_stack(map: &mut GameMap, placement: &ItemPlacement, item: &mut Item) -> bool {
-    let item_id = item.item_id;
-    let container = placement.container().map(|(guid, _)| guid);
-    match placement.site() {
-        PlacementSite::Tile(pos) => {
-            let Ok(mut items) = map.iter_items_mut(pos) else {
-                return false;
-            };
-            let stack = match container {
-                Some(guid) => items
-                    .find_map(|it| it.find_by_guid_mut(guid))
-                    .and_then(|c| c.content.as_mut())
-                    .and_then(|content| find_like_stack(content, item_id)),
-                None => items.find(|it| is_like_stack(it, item_id)),
-            };
-            match stack {
-                Some(stack) => top_up(stack, item) > 0,
-                None => false,
-            }
-        }
-        PlacementSite::Slot(slot, agent_key) => {
-            let unit_weight = item.config.attr_weight().unwrap_or(0);
-            let Some(player) = map.get_player_mut(agent_key) else {
-                return false;
-            };
-            let inventory = player.inventory_mut();
-            let Some(slot_item) = inventory.get_mut(&slot) else {
-                return false;
-            };
-            let stack = match container {
-                Some(guid) => slot_item
-                    .find_by_guid_mut(guid)
-                    .and_then(|c| c.content.as_mut())
-                    .and_then(|content| find_like_stack(content, item_id)),
-                None => Some(slot_item).filter(|it| is_like_stack(it, item_id)),
-            };
-            let moved = match stack {
-                Some(stack) => top_up(stack, item),
-                None => 0,
-            };
-            if moved == 0 {
-                return false;
-            }
-            inventory.set_carried_weight(inventory.carried_weight() + unit_weight * moved as u32);
-            true
-        }
-    }
-}
-
-fn find_like_stack(items: &mut [Item], item_id: ItemId) -> Option<&mut Item> {
-    items.iter_mut().find(|it| is_like_stack(it, item_id))
-}
-
-fn is_like_stack(item: &Item, item_id: ItemId) -> bool {
-    item.item_id == item_id
-        && item.config.has_flag(ItemFlag::Cumulative)
-        && item.amount < MAX_STACK_AMOUNT
-}
-
-fn top_up(stack: &mut Item, item: &mut Item) -> u8 {
-    let moved = item.amount.min(MAX_STACK_AMOUNT - stack.amount);
-    stack.amount += moved;
-    item.amount -= moved;
-    moved
-}
-
 pub fn insert_item_at(
     ctx: &mut TickCtx,
     item: Item,
@@ -442,27 +323,13 @@ pub fn insert_item_at(
     index: Option<usize>,
 ) -> Result<(), ItemMovementError> {
     let container = placement.container().map(|(g, i)| (g.clone(), i));
-    let site = placement.site_placement();
     match placement.site() {
         PlacementSite::Tile(pos) => {
             match ctx
                 .map
                 .place_item(pos, index, container.as_ref().map(|(g, i)| (g, *i)), item)
             {
-                Ok(..) => {
-                    if let Some((guid, _)) = &container {
-                        ctx.events.push(BroadcastMessage::ContainerUpdated {
-                            item: ItemRef {
-                                guid: guid.clone(),
-                                placement: site.clone(),
-                            },
-                        });
-                    } else {
-                        ctx.events.push(BroadcastMessage::TileChanged {
-                            position: pos.clone(),
-                        });
-                    }
-                }
+                Ok(..) => {}
                 Err(e) => {
                     return Err(match e {
                         MapError::ContainerIsFull => ItemMovementError::ContainerIsFull,
@@ -484,7 +351,7 @@ pub fn insert_item_at(
             }
 
             if let Some((c_guid, c_index)) = container.as_ref() {
-                let result = ctx.map.get_player_mut(agent).map(|player| {
+                let result = ctx.map.player_mut(agent).map(|mut player| {
                     player
                         .inventory_mut()
                         .insert(slot, Some((c_guid, *c_index)), item)
@@ -492,33 +359,13 @@ pub fn insert_item_at(
                 let Some(result) = result else {
                     return Err(ItemMovementError::PlayerDespawned);
                 };
-                match result {
-                    Ok(..) => {
-                        ctx.events.push(BroadcastMessage::ContainerUpdated {
-                            item: ItemRef {
-                                guid: c_guid.clone(),
-                                placement: site.clone(),
-                            },
-                        });
-                    }
-                    Err(e) => return Err(e),
-                }
+                result?;
             } else {
-                match ctx
-                    .map
-                    .get_player_mut(agent)
+                ctx.map
+                    .player_mut(agent)
                     .unwrap()
                     .inventory_mut()
-                    .insert(slot, None, item)
-                {
-                    Ok(..) => {
-                        ctx.events.push(BroadcastMessage::UpdateInventorySlot {
-                            agent_key: agent,
-                            slot,
-                        });
-                    }
-                    Err(e) => return Err(e),
-                }
+                    .insert(slot, None, item)?;
             }
         }
     }
@@ -533,44 +380,13 @@ pub fn remove_item_at(
     let removed = match item.placement.site() {
         PlacementSite::Tile(pos) => {
             let removed = ctx.map.remove_item_from_tile(pos, &item.guid, amount);
-            match &removed {
-                Some((_, Some(_), None)) => {
-                    ctx.events.push(BroadcastMessage::TileChanged {
-                        position: pos.clone(),
-                    });
-                }
-                Some((_, None, Some((guid, _)))) => {
-                    ctx.events.push(BroadcastMessage::ContainerUpdated {
-                        item: ItemRef {
-                            guid: guid.clone(),
-                            placement: item.placement.site_placement(),
-                        },
-                    });
-                }
-                _ => (),
-            };
             removed.map(|(i, index, _)| (i, index))
         }
         PlacementSite::Slot(slot, agent_key) => {
             let removed = ctx
                 .map
-                .get_player_mut(agent_key)
-                .and_then(|player| player.inventory_mut().remove(slot, &item.guid, amount));
-            match &removed {
-                Some((_, Some((guid, _)))) => {
-                    ctx.events.push(BroadcastMessage::ContainerUpdated {
-                        item: ItemRef {
-                            guid: guid.clone(),
-                            placement: item.placement.site_placement(),
-                        },
-                    });
-                }
-                Some((_, None)) => {
-                    ctx.events
-                        .push(BroadcastMessage::UpdateInventorySlot { agent_key, slot });
-                }
-                None => (),
-            };
+                .player_mut(agent_key)
+                .and_then(|mut player| player.inventory_mut().remove(slot, &item.guid, amount));
             removed.map(|(i, _)| (i, None))
         }
     };
@@ -583,8 +399,10 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::items::{ItemAttribute, ItemConfig};
     use crate::entities::items::{ItemGuid, ItemId};
+    use crate::entities::map::GameMap;
     use crate::entities::map::MapTile;
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::persistence::test_fixtures::{a_player_with_a_full_backpack, a_test_snapshot};
     use std::collections::{HashMap, HashSet};
@@ -664,7 +482,7 @@ mod tests {
     }
 
     fn drop_onto(
-        map: &mut GameMap,
+        map: &mut WorldMap,
         agent: AgentKey,
         source: Position,
         guid: ItemGuid,
@@ -690,6 +508,7 @@ mod tests {
         let above = Position::new(11, 10, 6);
         map.insert_tile(above.clone(), a_ground_tile());
 
+        let mut map = WorldMap::new(map);
         let events = drop_onto(&mut map, agent, source, guid.clone(), above.clone());
 
         assert!(map.get_item_by_id(&above, &guid).is_some(), "{events:?}");
@@ -704,6 +523,7 @@ mod tests {
         map.insert_tile(Position::new(13, 10, 7), a_wall_tile());
         map.insert_tile(target.clone(), a_ground_tile());
 
+        let mut map = WorldMap::new(map);
         let events = drop_onto(&mut map, agent, source, guid.clone(), target.clone());
 
         assert!(map.get_item_by_id(&target, &guid).is_none());
@@ -718,9 +538,10 @@ mod tests {
     #[test]
     fn a_move_between_tiles_does_not_copy_the_player() {
         let mut h = TestHarness::new();
-        let (mut map, agent, source, target, guid) = a_player_beside(a_movable_item(100));
+        let (map, agent, source, target, guid) = a_player_beside(a_movable_item(100));
         let before = map.clone();
 
+        let mut map = WorldMap::new(map);
         move_item(
             &mut h.ctx(&mut map),
             agent,
@@ -742,10 +563,11 @@ mod tests {
     #[test]
     fn a_move_into_the_inventory_copies_the_player_and_refreshes_capacity() {
         let mut h = TestHarness::new();
-        let (mut map, agent, source, _, guid) = a_player_beside(a_movable_item(100));
+        let (map, agent, source, _, guid) = a_player_beside(a_movable_item(100));
         let before = map.clone();
         let available_before = before.get_player(agent).unwrap().capacity_available();
 
+        let mut map = WorldMap::new(map);
         move_item(
             &mut h.ctx(&mut map),
             agent,
@@ -792,9 +614,10 @@ mod tests {
     #[test]
     fn equipping_and_unequipping_track_the_armour_total() {
         let mut h = TestHarness::new();
-        let (mut map, agent, source, target, guid) = a_player_beside(an_armoured_helmet());
+        let (map, agent, source, target, guid) = a_player_beside(an_armoured_helmet());
         assert_eq!(map.get_player(agent).unwrap().armor(), 0);
 
+        let mut map = WorldMap::new(map);
         move_item(
             &mut h.ctx(&mut map),
             agent,
@@ -846,6 +669,7 @@ mod tests {
         let item = a_flask(1);
         let guid = item.guid.clone();
 
+        let mut map = WorldMap::new(map);
         stow_item(&mut h.ctx(&mut map), agent, item).unwrap();
 
         assert!(
@@ -874,6 +698,7 @@ mod tests {
         let mut h = TestHarness::new();
         let item = a_flask(1);
 
+        let mut map = WorldMap::new(map);
         assert!(matches!(
             stow_item(&mut h.ctx(&mut map), agent, item),
             Err(ItemMovementError::CannotEquip)
@@ -957,6 +782,7 @@ mod tests {
             .insert_agent(Agent::from_player(snapshot), &here)
             .unwrap();
 
+        let mut map = WorldMap::new(map);
         move_item(
             &mut h.ctx(&mut map),
             agent,
@@ -1014,6 +840,7 @@ mod tests {
         let item = a_flask(1);
         let guid = item.guid.clone();
 
+        let mut map = WorldMap::new(map);
         return_item(
             &mut h.ctx(&mut map),
             agent,
@@ -1043,6 +870,7 @@ mod tests {
         let before = map.get_player(agent).unwrap().inventory().carried_weight();
 
         let mut h = TestHarness::new();
+        let mut map = WorldMap::new(map);
         return_item(
             &mut h.ctx(&mut map),
             agent,
@@ -1098,6 +926,7 @@ mod tests {
         let item = a_flask(1);
         let guid = item.guid.clone();
 
+        let mut map = WorldMap::new(map);
         return_item(
             &mut h.ctx(&mut map),
             agent,

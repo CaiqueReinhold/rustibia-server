@@ -81,7 +81,7 @@ pub fn cast_ability(ctx: &mut TickCtx, agent_key: AgentKey, ability_id: Creature
         }
     }
 
-    if let Some(agent) = ctx.map.get_agent_mut(agent_key) {
+    if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
         agent.stamp_spell_group(ctx.tick, group, None);
     }
 }
@@ -208,6 +208,7 @@ mod tests {
     use crate::entities::position::Position;
     use crate::entities::spells::SpellGroup;
     use crate::entities::targeting::TargetMode;
+    use crate::entities::world_map::WorldMap;
     use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick, TickDelta};
     use crate::persistence::test_fixtures::{a_creature_kind, a_test_snapshot};
@@ -250,7 +251,7 @@ mod tests {
 
     #[test]
     fn an_attack_ability_stamps_the_attack_group() {
-        let (mut map, demon) = a_map_with(AbilityEffect::Attack(CreatureAttack {
+        let (map, demon) = a_map_with(AbilityEffect::Attack(CreatureAttack {
             damage: CreatureAttackDamage {
                 element: CombatElement::Energy,
                 value: Bounds { min: 1, max: 2 },
@@ -263,6 +264,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
 
+        let mut map = WorldMap::new(map);
         cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
 
         assert_eq!(
@@ -275,10 +277,11 @@ mod tests {
 
     #[test]
     fn a_heal_ability_stamps_the_healing_group() {
-        let (mut map, demon) = a_map_with(AbilityEffect::Heal(Bounds { min: 5, max: 5 }));
+        let (map, demon) = a_map_with(AbilityEffect::Heal(Bounds { min: 5, max: 5 }));
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
 
+        let mut map = WorldMap::new(map);
         cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
 
         let agent = map.get_agent(demon).unwrap();
@@ -318,10 +321,11 @@ mod tests {
 
     #[test]
     fn a_support_ability_on_itself_hastes_the_creature_and_stamps_the_support_group() {
-        let (mut map, demon) = a_map_with(a_speed_cast(TargetMode::Caster, SpeedEffect::Haste, 30));
+        let (map, demon) = a_map_with(a_speed_cast(TargetMode::Caster, SpeedEffect::Haste, 30));
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
 
+        let mut map = WorldMap::new(map);
         cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
 
         let agent = map.get_agent(demon).unwrap();
@@ -334,7 +338,7 @@ mod tests {
 
     #[test]
     fn a_paralysing_ability_slows_the_creatures_target() {
-        let (mut map, demon) = a_map_with(a_speed_cast(
+        let (map, demon) = a_map_with(a_speed_cast(
             TargetMode::Target { range: 1 },
             SpeedEffect::Paralysis,
             -50,
@@ -342,6 +346,7 @@ mod tests {
         let player = map.get_agent(demon).unwrap().target().unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
 
         assert_eq!(map.get_agent(player).unwrap().speed(), 70);
@@ -353,7 +358,7 @@ mod tests {
 
     #[test]
     fn a_condition_attack_poisons_its_target_without_a_hit() {
-        let (mut map, demon) = a_map_with(AbilityEffect::Condition(ConditionAttack {
+        let (map, demon) = a_map_with(AbilityEffect::Condition(ConditionAttack {
             condition: ConditionSpec {
                 element: CombatElement::Earth,
                 damage: Bounds { min: 40, max: 40 },
@@ -367,6 +372,7 @@ mod tests {
         let player = map.get_agent(demon).unwrap().target().unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
 
         assert_eq!(map.get_agent(player).unwrap().life().current, 100);

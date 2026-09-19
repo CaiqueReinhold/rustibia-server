@@ -33,19 +33,25 @@ const CHUNK_MASK: u16 = CHUNK_SIDE - 1;
 const CHUNK_AREA: usize = (CHUNK_SIDE as usize) * (CHUNK_SIDE as usize);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-struct ChunkCoord {
+pub(in crate::entities) struct ChunkCoord {
     cx: u16,
     cy: u16,
     z: u8,
 }
 
 impl ChunkCoord {
-    fn from_pos(pos: &Position) -> Self {
+    pub(in crate::entities) fn from_pos(pos: &Position) -> Self {
         ChunkCoord {
             cx: pos.x >> CHUNK_BITS,
             cy: pos.y >> CHUNK_BITS,
             z: pos.z,
         }
+    }
+
+    pub(in crate::entities) fn overlaps(&self, rect: &Rect, floors: &[u8]) -> bool {
+        floors.contains(&self.z)
+            && ((rect.min_x() >> CHUNK_BITS)..=(rect.max_x() >> CHUNK_BITS)).contains(&self.cx)
+            && ((rect.min_y() >> CHUNK_BITS)..=(rect.max_y() >> CHUNK_BITS)).contains(&self.cy)
     }
 }
 
@@ -556,9 +562,8 @@ mod tests {
     }
 
     /// The `Option<(ItemGuid, usize)>` a removal returns is the *container* the item came
-    /// out of: callers re-insert into that guid to roll a failed move back, and broadcast
-    /// it so the client redraws that container. Taking part of a stack used to answer with
-    /// the stack's own guid, which names nothing the caller can open or insert into.
+    /// out of: callers re-insert into that guid to roll a failed move back, and `WorldMap`
+    /// marks it as the container to refresh.
     #[test]
     fn removing_part_of_a_stack_names_the_container_it_came_from() {
         let pos = Position::new(10, 10, 7);

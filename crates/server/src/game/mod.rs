@@ -27,7 +27,7 @@ pub mod targeting;
 use serde::Deserialize;
 
 use crate::actors::world::ScheduledCommand;
-use crate::entities::map::GameMap;
+use crate::entities::world_map::WorldMap;
 use crate::game::events::BroadcastMessage;
 use crate::game::random::Rolls;
 
@@ -111,7 +111,7 @@ impl std::fmt::Display for TickDelta {
 }
 
 pub struct TickCtx<'a> {
-    pub map: &'a mut GameMap,
+    pub map: &'a mut WorldMap,
     pub events: &'a mut Vec<BroadcastMessage>,
     pub scheduled: &'a mut Vec<ScheduledCommand>,
     pub roll: &'a mut Rolls,
@@ -165,7 +165,7 @@ impl TestHarness {
         }
     }
 
-    pub fn ctx<'a>(&'a mut self, map: &'a mut GameMap) -> TickCtx<'a> {
+    pub fn ctx<'a>(&'a mut self, map: &'a mut WorldMap) -> TickCtx<'a> {
         TickCtx {
             map,
             events: &mut self.events,

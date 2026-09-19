@@ -20,18 +20,20 @@ use crate::config::CONFIG;
 use crate::entities::{
     agent::{Agent, AgentKey, Facing},
     combat::{CombatDamage, CombatElement},
+    conditions::TimedCondition,
     creature::{CreatureAbilityId, CreatureKind},
     items::ItemRef,
     map::GameMap,
     position::{Direction, ItemPlacement, Position},
     spells::{ChainAttack, SpellDelivery, SpellId},
     targeting::AreaTarget,
+    world_map::WorldMap,
 };
 use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, config::GAME_CONFIG, creature_abilities,
-    creature_behavior::CreatureAction, events, events::BroadcastMessage, item_action,
-    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls,
-    spells, support, systems, targeting,
+    creature_behavior::CreatureAction, events::BroadcastMessage, item_action, item_movement,
+    item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, spells, support,
+    systems, targeting,
 };
 use crate::online_registry::RegistryGuard;
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
@@ -119,6 +121,10 @@ pub enum WorldCommand {
     SpeedExpired {
         agent_key: AgentKey,
         generation: u32,
+    },
+    ConditionExpired {
+        agent_key: AgentKey,
+        kind: TimedCondition,
     },
 }
 
@@ -226,7 +232,7 @@ pub struct WorldActor {
     rx: mpsc::Receiver<(WorldCommand, Option<TickDelta>)>,
     message_router: MessageRouterActorHandle,
     command_queue: BinaryHeap<ScheduledCommand>,
-    map: GameMap,
+    map: WorldMap,
     shared_map: Arc<ArcSwap<GameMap>>,
     tick: Tick,
     tick_duration: Duration,
@@ -249,7 +255,7 @@ impl WorldActor {
             rx,
             message_router,
             command_queue: BinaryHeap::with_capacity(CONFIG.max_queue_size),
-            map,
+            map: WorldMap::new(map),
             shared_map,
             tick: Tick(0),
             tick_duration: CONFIG.tick_duration,
@@ -346,13 +352,12 @@ impl WorldActor {
         }
     }
 
-    async fn end_tick(&mut self, mut broadcast_messages: Vec<BroadcastMessage>) {
-        events::dedupe_refreshes(&mut broadcast_messages);
+    async fn end_tick(&mut self, broadcast_messages: Vec<BroadcastMessage>) {
+        let delta = Arc::new(self.map.take_delta());
 
-        let snapshot = self.map.clone();
-        self.shared_map.store(Arc::new(snapshot));
+        self.shared_map.store(Arc::new(self.map.snapshot()));
         let _ = self.tick_tx.send(self.tick);
-        self.message_router.broadcast(broadcast_messages).await;
+        self.message_router.tick(broadcast_messages, delta).await;
     }
 
     /// Lends the tick's five writable things to `game/` functions as one `TickCtx`, then queues
@@ -573,6 +578,10 @@ impl WorldActor {
             } => self.with_ctx(broadcast_messages, |ctx| {
                 support::expire_speed(ctx, agent_key, generation)
             }),
+            WorldCommand::ConditionExpired { agent_key, kind } => self
+                .with_ctx(broadcast_messages, |ctx| {
+                    conditions::expire_condition(ctx, agent_key, kind)
+                }),
         };
     }
 
@@ -654,12 +663,13 @@ impl WorldActor {
 mod tests {
     use super::*;
     use crate::actors::message_router::MessageRouterCommand;
-    use crate::entities::combat::{CombatDamage, CombatElement};
     use crate::entities::inventory::InventorySlot;
+    use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
     use crate::persistence::test_fixtures::{
         a_creature_kind, a_player_with_a_full_backpack, a_test_creature, a_test_snapshot,
     };
+    use std::collections::HashSet;
 
     /// Builds a `WorldActor` from bare fields, the same way `SessionActorHandle::for_test`
     /// (session.rs) fabricates a channel-backed handle for tests. The `rx` half of the
@@ -673,7 +683,7 @@ mod tests {
             rx,
             message_router,
             command_queue: BinaryHeap::new(),
-            map,
+            map: WorldMap::new(map),
             shared_map: Arc::new(ArcSwap::from_pointee(GameMap::new())),
             tick: Tick(0),
             tick_duration: Duration::from_millis(50),
@@ -737,43 +747,71 @@ mod tests {
         assert_eq!(*agent.get_origin(), pos);
     }
 
-    /// Pins the call site rather than the collapsing itself — `dedupe_refreshes` has its
-    /// own tests in `game::events`. Verified by hand: dropping the call from `end_tick`
-    /// makes this fail with `left: 3, right: 2`.
+    fn a_ground_tile() -> MapTile {
+        let mut tile = MapTile::new();
+        tile.push_item(Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "ground".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Ground, ItemFlag::FullBank]),
+                Vec::new(),
+            )),
+            1,
+        ));
+        tile
+    }
+
+    fn a_movable_item() -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1234),
+                "thing".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Take]),
+                vec![ItemAttribute::Weight(1)],
+            )),
+            1,
+        )
+    }
+
     #[tokio::test]
-    async fn the_tick_hands_the_router_one_refresh_per_tile() {
-        let mut actor = a_test_world_actor(GameMap::new());
+    async fn a_moved_item_reaches_the_router_as_two_dirty_tiles() {
+        let (here, there) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_ground_tile());
+        map.insert_tile(there.clone(), a_ground_tile());
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
+            .unwrap();
+        let item = a_movable_item();
+        let guid = item.guid.clone();
+        map.place_item(&here, None, None, item).unwrap();
+        let mut actor = a_test_world_actor(map);
         let (message_router, mut router_rx) = MessageRouterActorHandle::for_test();
         actor.message_router = message_router;
-        let position = Position::new(10, 10, 7);
+        let mut events = Vec::new();
 
-        actor
-            .end_tick(vec![
-                BroadcastMessage::TileChanged {
-                    position: position.clone(),
+        actor.handle_command(
+            WorldCommand::MoveItem {
+                agent: player,
+                source: ItemRef {
+                    guid,
+                    placement: ItemPlacement::Map(here.clone()),
                 },
-                BroadcastMessage::DamageTaken {
-                    source: None,
-                    target: AgentKey::default(),
-                    position: position.clone(),
-                    blood_type: None,
-                    damage: CombatDamage {
-                        element: CombatElement::Physical,
-                        value: 5,
-                        blocked_shield: false,
-                        blocked_armor: false,
-                    },
-                },
-                BroadcastMessage::TileChanged {
-                    position: position.clone(),
-                },
-            ])
-            .await;
+                amount: 1,
+                to: ItemPlacement::Map(there.clone()),
+            },
+            &mut events,
+        );
+        actor.end_tick(events).await;
 
-        let Some(MessageRouterCommand::Broadcast { messages }) = router_rx.recv().await else {
-            panic!("the tick did not broadcast");
+        let Some(MessageRouterCommand::Tick { delta, .. }) = router_rx.recv().await else {
+            panic!("the tick did not reach the router");
         };
-        assert_eq!(messages.len(), 2, "{messages:?}");
+        assert!(delta.tile_dirty(&here) && delta.tile_dirty(&there));
     }
 
     /// Goes through the real `WorldCommand::SetTarget` dispatch arm in
@@ -985,11 +1023,12 @@ mod tests {
             .unwrap();
 
         let mut actor = a_test_world_actor(map);
-        actor.shared_map.store(Arc::new(actor.map.clone()));
+        actor.shared_map.store(Arc::new(actor.map.snapshot()));
         let published = actor.shared_map.load_full();
 
         actor
             .map
+            .inner_mut()
             .get_player_mut(key)
             .unwrap()
             .inventory_mut()

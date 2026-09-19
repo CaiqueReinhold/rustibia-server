@@ -25,6 +25,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::persistence::test_fixtures::a_test_snapshot;
 
@@ -38,6 +39,7 @@ mod tests {
             .unwrap();
 
         let mut h = TestHarness::new();
+        let mut map = WorldMap::new(map);
         say(&mut h.ctx(&mut map), key, "hello".to_owned());
 
         let events = h.events;
@@ -61,7 +63,7 @@ mod tests {
     fn an_agent_no_longer_on_the_map_produces_nothing() {
         let mut h = TestHarness::new();
         say(
-            &mut h.ctx(&mut GameMap::new()),
+            &mut h.ctx(&mut WorldMap::new(GameMap::new())),
             AgentKey::default(),
             "hello".to_owned(),
         );

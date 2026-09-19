@@ -107,7 +107,7 @@ impl SessionActor {
                 .await?;
         }
 
-        self.life_updated(target).await
+        Ok(())
     }
 
     // TODO: remove this, use action message
@@ -127,7 +127,6 @@ impl SessionActor {
 
     pub(super) async fn agent_healed(
         &self,
-        agent_key: AgentKey,
         position: Position,
         amount: u32,
         restore_type: RestoreType,
@@ -152,10 +151,7 @@ impl SessionActor {
                 .await?;
         }
 
-        match restore_type {
-            RestoreType::Life => self.life_updated(agent_key).await,
-            RestoreType::Mana => self.mana_updated().await,
-        }
+        Ok(())
     }
 
     pub(super) async fn attack_missed(&self, position: Position) -> Result<()> {

@@ -3,9 +3,9 @@ use crate::{
     entities::{
         agent::AgentKey,
         combat::{CombatDamage, CombatElement},
-        conditions::{ConditionSpec, DamageOverTime, SpecSchedule},
+        conditions::{ConditionSpec, DamageOverTime, SpecSchedule, TimedCondition},
     },
-    game::{TickCtx, config::GAME_CONFIG, damage::apply_damage, events::BroadcastMessage},
+    game::{TickCtx, config::GAME_CONFIG, damage::apply_damage},
 };
 
 pub fn regenerate_life_mana(ctx: &mut TickCtx, agent_key: AgentKey, generation: u32) {
@@ -19,8 +19,8 @@ pub fn regenerate_life_mana(ctx: &mut TickCtx, agent_key: AgentKey, generation: 
         return;
     }
     if until <= ctx.tick {
-        if let Some(agent) = ctx.map.get_agent_mut(agent_key) {
-            agent.conditions_mut().remove_fed();
+        if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
+            agent.conditions(|c| c.remove_fed());
         }
         return;
     }
@@ -32,8 +32,7 @@ pub fn regenerate_life_mana(ctx: &mut TickCtx, agent_key: AgentKey, generation: 
     else {
         return;
     };
-    let position = ctx.map.agent_position(agent_key).cloned();
-    let agent = ctx.map.get_agent_mut(agent_key).unwrap();
+    let mut agent = ctx.map.agent_mut(agent_key).unwrap();
     let life_missing = agent.life().missing() > 0;
     let mana_missing = agent.mana().missing() > 0;
     if life_missing {
@@ -43,17 +42,6 @@ pub fn regenerate_life_mana(ctx: &mut TickCtx, agent_key: AgentKey, generation: 
         agent.restore_mana(vocation.mana_regen_amount());
     }
 
-    if let Some(position) = position.filter(|_| life_missing) {
-        ctx.events.push(BroadcastMessage::PlayerLifeUpdated {
-            agent_key,
-            position,
-        });
-    }
-    if mana_missing {
-        ctx.events
-            .push(BroadcastMessage::PlayerManaUpdated { agent_key });
-    }
-
     ctx.scheduled.push(ScheduledCommand {
         at_tick: ctx.tick + GAME_CONFIG.regen_ticks,
         command: WorldCommand::RegeneratePlayer {
@@ -61,6 +49,36 @@ pub fn regenerate_life_mana(ctx: &mut TickCtx, agent_key: AgentKey, generation: 
             generation,
         },
     });
+}
+
+pub fn schedule_expiry(ctx: &mut TickCtx, agent_key: AgentKey, kind: TimedCondition) {
+    let Some(until) = ctx
+        .map
+        .get_agent(agent_key)
+        .and_then(|agent| agent.conditions().until(kind))
+    else {
+        return;
+    };
+    ctx.scheduled.push(ScheduledCommand {
+        at_tick: until,
+        command: WorldCommand::ConditionExpired { agent_key, kind },
+    });
+}
+
+pub fn expire_condition(ctx: &mut TickCtx, agent_key: AgentKey, kind: TimedCondition) {
+    let Some(until) = ctx
+        .map
+        .get_agent(agent_key)
+        .and_then(|agent| agent.conditions().until(kind))
+    else {
+        return;
+    };
+    if until > ctx.tick {
+        return schedule_expiry(ctx, agent_key, kind);
+    }
+    if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
+        agent.conditions(|c| c.remove_timed(kind));
+    }
 }
 
 pub fn apply_condition(
@@ -82,10 +100,10 @@ pub fn apply_condition(
         }
     };
 
-    let Some(agent) = ctx.map.get_agent_mut(target) else {
+    let Some(mut agent) = ctx.map.agent_mut(target) else {
         return;
     };
-    let Some(generation) = agent.conditions_mut().apply_damage_over_time(dot) else {
+    let Some(generation) = agent.conditions(|c| c.apply_damage_over_time(dot)) else {
         return;
     };
     ctx.scheduled.push(ScheduledCommand {
@@ -104,10 +122,10 @@ pub fn tick_damage_over_time(
     element: CombatElement,
     generation: u32,
 ) {
-    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
+    let Some(mut agent) = ctx.map.agent_mut(agent_key) else {
         return;
     };
-    let Some(hit) = agent.conditions_mut().next_damage_hit(element, generation) else {
+    let Some(hit) = agent.conditions(|c| c.next_damage_hit(element, generation)) else {
         return;
     };
     let source = hit
@@ -141,6 +159,8 @@ pub fn tick_damage_over_time(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::conditions::TimedCondition;
+    use crate::entities::world_map::WorldMap;
     use crate::entities::{
         agent::Agent,
         map::{GameMap, MapTile},
@@ -171,6 +191,7 @@ mod tests {
 
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(120);
+        let mut map = WorldMap::new(map);
         regenerate_life_mana(&mut h.ctx(&mut map), key, generation);
 
         let mana = map.get_agent(key).unwrap().mana().current;
@@ -184,10 +205,11 @@ mod tests {
 
     #[test]
     fn the_chain_ends_and_clears_fed_when_the_food_runs_out() {
-        let (mut map, key, generation) = a_fed_player(100);
+        let (map, key, generation) = a_fed_player(100);
 
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
+        let mut map = WorldMap::new(map);
         regenerate_life_mana(&mut h.ctx(&mut map), key, generation);
 
         assert!(map.get_agent(key).unwrap().conditions().fed().is_none());
@@ -201,6 +223,7 @@ mod tests {
 
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(120);
+        let mut map = WorldMap::new(map);
         regenerate_life_mana(&mut h.ctx(&mut map), key, generation + 7);
 
         assert_eq!(map.get_agent(key).unwrap().life().current, 50);
@@ -230,6 +253,7 @@ mod tests {
 
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(80);
+        let mut map = WorldMap::new(map);
         tick_damage_over_time(&mut h.ctx(&mut map), key, CombatElement::Earth, generation);
 
         assert_eq!(map.get_agent(key).unwrap().life().current, 95);
@@ -260,6 +284,7 @@ mod tests {
 
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(200);
+        let mut map = WorldMap::new(map);
         tick_damage_over_time(
             &mut h.ctx(&mut map),
             key,
@@ -268,6 +293,70 @@ mod tests {
         );
 
         assert_eq!(map.get_agent(key).unwrap().life().current, 100);
+        assert!(h.scheduled.is_empty());
+    }
+
+    fn a_blocked_player(at: Tick) -> (WorldMap, AgentKey) {
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let key = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &pos)
+            .unwrap();
+        map.get_agent_mut(key)
+            .unwrap()
+            .conditions_mut()
+            .reset_logout_block(at);
+        (WorldMap::new(map), key)
+    }
+
+    #[test]
+    fn a_due_condition_is_removed_and_marks_the_status() {
+        let (mut map, player) = a_blocked_player(Tick(0));
+        let mut h = TestHarness::new();
+        h.tick = Tick(0) + GAME_CONFIG.logout_block_ticks;
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::LogoutBlock);
+
+        let conditions = map.get_agent(player).unwrap().conditions();
+        assert_eq!(conditions.until(TimedCondition::LogoutBlock), None);
+        assert!(map.delta().agent(player).status());
+    }
+
+    #[test]
+    fn an_extended_condition_reschedules_instead_of_expiring() {
+        let (mut map, player) = a_blocked_player(Tick(0));
+        map.inner_mut()
+            .get_agent_mut(player)
+            .unwrap()
+            .conditions_mut()
+            .reset_logout_block(Tick(10));
+        let mut h = TestHarness::new();
+        h.tick = Tick(0) + GAME_CONFIG.logout_block_ticks;
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::LogoutBlock);
+
+        assert!(map.delta().is_empty());
+        assert!(matches!(
+            h.scheduled.as_slice(),
+            [ScheduledCommand {
+                at_tick,
+                command: WorldCommand::ConditionExpired {
+                    kind: TimedCondition::LogoutBlock,
+                    ..
+                },
+            }] if *at_tick == Tick(10) + GAME_CONFIG.logout_block_ticks
+        ));
+    }
+
+    #[test]
+    fn an_expiry_for_a_condition_already_gone_does_nothing() {
+        let (mut map, player) = a_blocked_player(Tick(0));
+        let mut h = TestHarness::new();
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::MagicShield);
+
+        assert!(map.delta().is_empty());
         assert!(h.scheduled.is_empty());
     }
 }

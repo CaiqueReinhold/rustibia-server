@@ -15,6 +15,8 @@ pub mod spells;
 pub mod support;
 pub mod targeting;
 pub mod vocation;
+pub mod world_delta;
+pub mod world_map;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct Bounds {

@@ -5,15 +5,15 @@ use anyhow::Result;
 
 use crate::actors::session::{SessionActor, SessionError};
 use crate::actors::world::WorldCommand;
-use crate::entities::agent::{AgentId, AgentKey};
+use crate::entities::agent::AgentId;
 use crate::entities::inventory::InventorySlot;
-use crate::entities::items::{ClientItemRef, ContainerId, ItemFlag, ItemId, ItemRef};
-use crate::entities::position::{ItemPlacement, Position, Rect};
+use crate::entities::items::{ClientItemRef, ContainerId, ItemFlag, ItemGuid, ItemId, ItemRef};
+use crate::entities::position::{ItemPlacement, Position};
 use crate::game::description::get_look_description;
 use crate::game::item_multi_action::UseTarget;
 use crate::game::map_query::{
-    find_item, find_item_in_reach, find_parent_container, item_at_placement, iter_visible_floors,
-    resolve_client_coord, retrieve_item, tile_stack,
+    find_item, find_item_in_reach, find_parent_container, item_at_placement, resolve_client_coord,
+    retrieve_item, tile_stack,
 };
 use crate::messages::ServerMessage;
 use crate::messages::TextMessageType;
@@ -235,52 +235,43 @@ impl SessionActor {
         Ok(())
     }
 
-    pub(super) async fn update_container(&mut self, item_ref: ItemRef) -> Result<()> {
-        if let Some(local_id) = self.containers.get_local(&item_ref.guid) {
+    pub(super) async fn send_container(&self, guid: &ItemGuid) -> Result<()> {
+        let Some(container_id) = self.containers.get_local(guid) else {
+            return Ok(());
+        };
+        let items = {
             let map = self.shared_map.load();
-            let Some(item) = find_item(&map, &item_ref.placement, &item_ref.guid) else {
-                return Err(SessionError::InvalidState.into());
+            let Some(content) = find_item_in_reach(&map, guid, self.player_key)
+                .and_then(|(item, _)| item.content.as_ref())
+            else {
+                return Ok(());
             };
-
-            let Some(content) = &item.content else {
-                return Err(SessionError::InvalidState.into());
-            };
-
-            let items = content
+            content
                 .iter()
                 .map(|i| Some((i.item_id, i.wire_subtype())))
                 .collect::<Vec<Option<(ItemId, u8)>>>()
-                .into_boxed_slice();
-
-            self.connection
-                .send_message(ServerMessage::UpdateContainer {
-                    container_id: local_id,
-                    items,
-                })
-                .await?;
-        }
-
+                .into_boxed_slice()
+        };
+        self.connection
+            .send_message(ServerMessage::UpdateContainer {
+                container_id,
+                items,
+            })
+            .await?;
         Ok(())
     }
 
-    pub(super) async fn update_inventory_slot(
-        &mut self,
-        agent_key: AgentKey,
-        slot: InventorySlot,
-    ) -> Result<()> {
-        self.drop_unreachable_containers().await?;
-        let map = self.shared_map.load();
-        let Some(agent) = map.get_agent(agent_key) else {
-            return Ok(());
+    pub(super) async fn send_inventory_slot(&self, slot: InventorySlot) -> Result<()> {
+        let item_id = {
+            let map = self.shared_map.load();
+            let Some(player) = map.get_player(self.player_key) else {
+                return Ok(());
+            };
+            player.inventory().get(&slot).map(|it| it.item_id)
         };
-        let Some(player) = agent.get_player() else {
-            return Ok(());
-        };
-        let item_id = player.inventory().get(&slot).map(|it| it.item_id);
         self.connection
             .send_message(ServerMessage::IventorySlotUpdated { slot, item_id })
             .await?;
-
         Ok(())
     }
 
@@ -301,39 +292,24 @@ impl SessionActor {
         Ok(())
     }
 
-    pub(super) async fn tile_changed(&mut self, position: Position) -> Result<()> {
-        self.drop_unreachable_containers().await?;
-        let map = self.shared_map.load();
-        let player_pos = map
-            .agent_position(self.player_key)
-            .ok_or(SessionError::NotSpawned)?;
-
-        if Rect::player_viewport(player_pos).contains(&position)
-            && iter_visible_floors(player_pos.z).any(|z| z == position.z)
-        {
-            let tile = tile_stack(&map, &position);
-            self.connection
-                .send_message(ServerMessage::TileUpdated {
-                    position,
-                    items: tile,
-                })
-                .await?;
-        }
-
+    pub(super) async fn send_tile(&self, position: Position) -> Result<()> {
+        let items = tile_stack(&self.shared_map.load(), &position);
+        self.connection
+            .send_message(ServerMessage::TileUpdated { position, items })
+            .await?;
         Ok(())
     }
 
-    pub(super) async fn check_capacity_changed(&mut self) -> Result<()> {
-        let map = self.shared_map.load();
-        if let Some(player) = map.get_player(self.player_key)
-            && player.capacity_available() != self.prev_capacity
-        {
+    pub(super) async fn send_capacity(&self) -> Result<()> {
+        let cap = self
+            .shared_map
+            .load()
+            .get_player(self.player_key)
+            .map(|player| player.capacity_available());
+        if let Some(cap) = cap {
             self.connection
-                .send_message(ServerMessage::PlayerCapacityUpdated {
-                    cap: player.capacity_available(),
-                })
+                .send_message(ServerMessage::PlayerCapacityUpdated { cap })
                 .await?;
-            self.prev_capacity = player.capacity_available();
         }
         Ok(())
     }
@@ -345,59 +321,6 @@ mod tests {
     use crate::actors::connection::ConnectionCommand;
     use crate::actors::session::test_support::seat_player;
     use crate::entities::map::{GameMap, MapTile};
-
-    async fn forwarded_tiles(player_at: Position, changed: Position) -> Vec<Position> {
-        let mut map = GameMap::new();
-        let me = seat_player(&mut map, &player_at, 1);
-        map.insert_tile(changed.clone(), MapTile::new());
-        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
-
-        session.tile_changed(changed).await.unwrap();
-
-        std::iter::from_fn(|| connection_rx.try_recv().ok())
-            .filter_map(|c| match c {
-                ConnectionCommand::SendPlayerMessage(ServerMessage::TileUpdated {
-                    position,
-                    ..
-                }) => Some(position),
-                _ => None,
-            })
-            .collect()
-    }
-
-    #[tokio::test]
-    async fn a_tile_change_on_the_players_own_floor_is_forwarded() {
-        let changed = Position::new(101, 100, 7);
-
-        let sent = forwarded_tiles(Position::new(100, 100, 7), changed.clone()).await;
-
-        assert_eq!(sent, vec![changed]);
-    }
-
-    /// A player on the surface sees the whole stack above them, so a floor nearer the sky
-    /// is still theirs to draw.
-    #[tokio::test]
-    async fn a_tile_change_on_another_visible_floor_is_forwarded() {
-        let changed = Position::new(101, 100, 5);
-
-        let sent = forwarded_tiles(Position::new(100, 100, 7), changed.clone()).await;
-
-        assert_eq!(sent, vec![changed]);
-    }
-
-    #[tokio::test]
-    async fn a_tile_change_on_a_floor_the_player_cannot_see_is_dropped() {
-        let sent = forwarded_tiles(Position::new(100, 100, 7), Position::new(101, 100, 10)).await;
-
-        assert!(sent.is_empty(), "{sent:?}");
-    }
-
-    #[tokio::test]
-    async fn a_tile_change_outside_the_viewport_is_dropped() {
-        let sent = forwarded_tiles(Position::new(100, 100, 7), Position::new(140, 100, 7)).await;
-
-        assert!(sent.is_empty(), "{sent:?}");
-    }
 
     use crate::constants::items::{CARRIED_SEARCH_FLAG, INVENTORY_COORD_FLAG};
     use crate::entities::agent::Agent;

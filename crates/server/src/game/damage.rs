@@ -83,7 +83,7 @@ pub fn apply_damage(
     let element = damage.element;
     let applied = damage.value;
 
-    if let Some(agent) = ctx.map.get_agent_mut(target) {
+    if let Some(mut agent) = ctx.map.agent_mut(target) {
         agent.remove_life(applied);
         if records_participation && let Some(source) = source {
             agent.record_damage(source, applied);
@@ -120,7 +120,7 @@ fn drain_mana(
     let Some(position) = ctx.map.agent_position(target).cloned() else {
         return;
     };
-    let Some(agent) = ctx.map.get_agent_mut(target) else {
+    let Some(mut agent) = ctx.map.agent_mut(target) else {
         return;
     };
     damage.value = damage.value.min(agent.mana().current);
@@ -130,8 +130,6 @@ fn drain_mana(
     let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
     agent.remove_mana(damage.value);
 
-    ctx.events
-        .push(BroadcastMessage::PlayerManaUpdated { agent_key: target });
     ctx.events.push(BroadcastMessage::DamageTaken {
         source,
         target,
@@ -212,9 +210,6 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
     if let Some(guid) = existing {
         ctx.map.remove_item_from_tile(attacked_pos, &guid, 1);
     }
-    ctx.events.push(BroadcastMessage::TileChanged {
-        position: attacked_pos.clone(),
-    })
 }
 #[cfg(test)]
 mod tests {
@@ -222,6 +217,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::combat::AttackPlan;
     use crate::entities::map::{GameMap, MapTile};
+    use crate::entities::world_map::WorldMap;
     use crate::game::combat::plan_auto_attack;
     use crate::game::{TestHarness, Tick};
     use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
@@ -312,9 +308,10 @@ mod tests {
 
     #[test]
     fn overkill_reports_only_the_damage_that_landed() {
-        let (mut map, rat, _) = map_with_creature(3);
+        let (map, rat, _) = map_with_creature(3);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(50), None);
 
         assert_eq!(reported_damage(&h.events), Some(3));
@@ -322,9 +319,10 @@ mod tests {
 
     #[test]
     fn a_lethal_hit_removes_the_creature() {
-        let (mut map, rat, _) = map_with_creature(3);
+        let (map, rat, _) = map_with_creature(3);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(50), None);
 
         assert!(map.get_agent(rat).is_none());
@@ -332,9 +330,10 @@ mod tests {
 
     #[test]
     fn a_survivable_hit_leaves_the_creature_in_the_map() {
-        let (mut map, rat, _) = map_with_creature(10);
+        let (map, rat, _) = map_with_creature(10);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(3), None);
 
         assert_eq!(map.get_agent(rat).unwrap().life().current, 7);
@@ -343,9 +342,10 @@ mod tests {
 
     #[test]
     fn a_lethal_hit_on_a_player_leaves_one_life() {
-        let (mut map, player) = map_with_player();
+        let (map, player) = map_with_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, physical(500), None);
 
         assert_eq!(map.get_agent(player).unwrap().life().current, 1);
@@ -354,8 +354,9 @@ mod tests {
 
     #[test]
     fn a_player_at_one_life_takes_no_further_damage() {
-        let (mut map, player) = map_with_player();
+        let (map, player) = map_with_player();
         let mut h = TestHarness::seeded(1);
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, physical(500), None);
         h.events.clear();
 
@@ -371,6 +372,7 @@ mod tests {
         map.remove_agent(rat);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(3), None);
 
         assert!(h.events.is_empty());
@@ -378,9 +380,10 @@ mod tests {
 
     #[test]
     fn physical_damage_splashes_blood() {
-        let (mut map, rat, pos) = map_with_creature(10);
+        let (map, rat, pos) = map_with_creature(10);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(3), None);
 
         let pooled = map
@@ -392,9 +395,10 @@ mod tests {
 
     #[test]
     fn a_non_physical_element_does_not_splash() {
-        let (mut map, rat, pos) = map_with_creature(10);
+        let (map, rat, pos) = map_with_creature(10);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, fire(3), None);
 
         let pooled = map
@@ -406,9 +410,10 @@ mod tests {
 
     #[test]
     fn a_hit_records_the_attackers_participation() {
-        let (mut map, rat, hunter) = an_attacked_creature(100);
+        let (map, rat, hunter) = an_attacked_creature(100);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(30), Some(hunter));
 
         let table = map.get_agent(rat).unwrap().participation();
@@ -418,8 +423,9 @@ mod tests {
 
     #[test]
     fn repeated_hits_from_one_attacker_accumulate() {
-        let (mut map, rat, hunter) = an_attacked_creature(100);
+        let (map, rat, hunter) = an_attacked_creature(100);
         let mut h = TestHarness::seeded(1);
+        let mut map = WorldMap::new(map);
 
         for _ in 0..3 {
             apply_damage(&mut h.ctx(&mut map), rat, physical(10), Some(hunter));
@@ -430,9 +436,10 @@ mod tests {
 
     #[test]
     fn a_hit_with_no_source_records_nothing() {
-        let (mut map, rat, _) = an_attacked_creature(100);
+        let (map, rat, _) = an_attacked_creature(100);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(30), None);
 
         assert_eq!(map.get_agent(rat).unwrap().life().current, 70);
@@ -441,9 +448,10 @@ mod tests {
 
     #[test]
     fn a_fully_blocked_hit_records_nothing() {
-        let (mut map, rat, hunter) = an_attacked_creature(100);
+        let (map, rat, hunter) = an_attacked_creature(100);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, blocked(), Some(hunter));
 
         assert_eq!(reported_damage(&h.events), Some(0));
@@ -454,9 +462,10 @@ mod tests {
     /// clear it would grow an entry per creature that ever hit them.
     #[test]
     fn a_players_participation_table_is_never_written() {
-        let (mut map, player, rat) = an_attacked_player();
+        let (map, player, rat) = an_attacked_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, physical(30), Some(rat));
 
         assert_eq!(map.get_agent(player).unwrap().life().current, 70);
@@ -489,6 +498,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), rat, physical(40), Some(first));
 
         apply_damage(&mut h.ctx(&mut map), rat, physical(500), Some(second));
@@ -556,7 +566,7 @@ mod tests {
         let agent = map.get_agent_mut(player).unwrap();
         let spent = agent.mana().current - mana;
         agent.remove_mana(spent);
-        agent.conditions_mut().set_magic_shield(Tick(1000));
+        agent.conditions_mut().extend_magic_shield(Tick(1000));
         (map, player)
     }
 
@@ -582,26 +592,25 @@ mod tests {
 
     #[test]
     fn a_shielded_hit_comes_off_mana_and_is_reported_as_mana() {
-        let (mut map, player) = a_shielded_player(100);
+        let (map, player) = a_shielded_player(100);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, fire(30), None);
 
         let agent = map.get_agent(player).unwrap();
         assert_eq!((agent.life().current, agent.mana().current), (100, 70));
         assert!(agent.conditions().is_magic_shielded(h.tick));
         assert_eq!(reported(&h.events), [(CombatElement::Mana, 30)]);
-        assert!(h.events.iter().any(|m| matches!(
-            m,
-            BroadcastMessage::PlayerManaUpdated { agent_key } if *agent_key == player
-        )));
+        assert!(map.delta().agent(player).mana());
     }
 
     #[test]
     fn a_hit_the_mana_cannot_cover_spills_into_life_and_ends_the_shield() {
-        let (mut map, player) = a_shielded_player(20);
+        let (map, player) = a_shielded_player(20);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, fire(50), None);
 
         let agent = map.get_agent(player).unwrap();
@@ -615,9 +624,10 @@ mod tests {
 
     #[test]
     fn an_unshielded_hit_takes_only_life() {
-        let (mut map, player) = map_with_player();
+        let (map, player) = map_with_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, fire(30), None);
 
         let agent = map.get_agent(player).unwrap();
@@ -627,9 +637,10 @@ mod tests {
 
     #[test]
     fn a_mana_hit_drains_mana_and_never_life() {
-        let (mut map, player) = map_with_player();
+        let (map, player) = map_with_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, mana(30), None);
         apply_damage(&mut h.ctx(&mut map), player, mana(500), None);
 
@@ -647,9 +658,10 @@ mod tests {
         map.get_agent_mut(player)
             .unwrap()
             .conditions_mut()
-            .set_magic_shield(Tick(1000));
+            .extend_magic_shield(Tick(1000));
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         execute_attack(
             &mut h.ctx(&mut map),
             AttackPlan {

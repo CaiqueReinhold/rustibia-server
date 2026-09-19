@@ -34,6 +34,13 @@ pub enum SpeedEffect {
     Paralysis,
 }
 
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub enum TimedCondition {
+    Fed,
+    LogoutBlock,
+    MagicShield,
+}
+
 #[derive(Debug, PartialEq)]
 pub struct DamageHit {
     pub value: u32,
@@ -253,18 +260,21 @@ impl Conditions {
             .retain(|c| !matches!(c, Condition::Fed { .. }));
     }
 
-    pub fn reset_logout_block(&mut self, current_tick: Tick) {
-        let condition = self
-            .conditions
-            .iter_mut()
-            .find(|c| matches!(c, Condition::LogoutBlock { .. }));
-
-        if let Some(Condition::LogoutBlock { until }) = condition {
-            *until = current_tick + GAME_CONFIG.logout_block_ticks;
-        } else {
-            self.conditions.push(Condition::LogoutBlock {
-                until: current_tick + GAME_CONFIG.logout_block_ticks,
-            });
+    pub fn reset_logout_block(&mut self, current_tick: Tick) -> bool {
+        let until = current_tick + GAME_CONFIG.logout_block_ticks;
+        let existing = self.conditions.iter_mut().find_map(|c| match c {
+            Condition::LogoutBlock { until } => Some(until),
+            _ => None,
+        });
+        match existing {
+            Some(existing) => {
+                *existing = until;
+                false
+            }
+            None => {
+                self.conditions.push(Condition::LogoutBlock { until });
+                true
+            }
         }
     }
 
@@ -301,13 +311,6 @@ impl Conditions {
             .unwrap_or(0)
     }
 
-    fn speed_effect(&self) -> Option<SpeedEffect> {
-        self.conditions.iter().find_map(|c| match c {
-            Condition::Speed { effect, .. } => Some(*effect),
-            _ => None,
-        })
-    }
-
     /// `false` when `generation` names a speed condition that has since been replaced.
     pub fn expire_speed(&mut self, generation: u32) -> bool {
         let before = self.conditions.len();
@@ -317,9 +320,43 @@ impl Conditions {
         self.conditions.len() != before
     }
 
-    pub fn set_magic_shield(&mut self, until: Tick) {
-        self.remove_magic_shield();
-        self.conditions.push(Condition::MagicShield { until });
+    pub fn extend_magic_shield(&mut self, until: Tick) -> bool {
+        let existing = self.conditions.iter_mut().find_map(|c| match c {
+            Condition::MagicShield { until } => Some(until),
+            _ => None,
+        });
+        match existing {
+            Some(existing) => {
+                *existing = (*existing).max(until);
+                false
+            }
+            None => {
+                self.conditions.push(Condition::MagicShield { until });
+                true
+            }
+        }
+    }
+
+    pub fn until(&self, kind: TimedCondition) -> Option<Tick> {
+        self.conditions
+            .iter()
+            .find_map(|condition| match (kind, condition) {
+                (TimedCondition::Fed, Condition::Fed { until, .. })
+                | (TimedCondition::LogoutBlock, Condition::LogoutBlock { until })
+                | (TimedCondition::MagicShield, Condition::MagicShield { until }) => Some(*until),
+                _ => None,
+            })
+    }
+
+    pub fn remove_timed(&mut self, kind: TimedCondition) {
+        self.conditions.retain(|condition| {
+            !matches!(
+                (kind, condition),
+                (TimedCondition::Fed, Condition::Fed { .. })
+                    | (TimedCondition::LogoutBlock, Condition::LogoutBlock { .. })
+                    | (TimedCondition::MagicShield, Condition::MagicShield { .. })
+            )
+        });
     }
 
     pub fn remove_magic_shield(&mut self) {
@@ -398,38 +435,36 @@ impl Conditions {
         Some(hit)
     }
 
-    pub fn to_wire(&self, current_tick: Tick) -> u32 {
+    pub fn status(&self) -> u32 {
         let mut status = 0;
-
-        if self.is_logout_blocked(current_tick) {
-            status |= LOGOUT_BLOCK_BIT;
-        }
-
-        if !self.fed().is_some_and(|(until, _)| until > current_tick) {
-            status |= HUNGRY_BIT;
-        }
-
-        match self.speed_effect() {
-            Some(SpeedEffect::Paralysis) => status |= PARALYZED_BIT,
-            Some(SpeedEffect::Haste) => status |= HASTED_BIT,
-            None => {}
-        }
-
-        if self.is_magic_shielded(current_tick) {
-            status |= MAGIC_SHIELD_BIT;
-        }
-
+        let mut fed = false;
         for condition in &self.conditions {
-            if let Condition::DamageOverTime(dot) = condition {
-                status |= match dot.element() {
+            status |= match condition {
+                Condition::Fed { .. } => {
+                    fed = true;
+                    0
+                }
+                Condition::LogoutBlock { .. } => LOGOUT_BLOCK_BIT,
+                Condition::Speed {
+                    effect: SpeedEffect::Paralysis,
+                    ..
+                } => PARALYZED_BIT,
+                Condition::Speed {
+                    effect: SpeedEffect::Haste,
+                    ..
+                } => HASTED_BIT,
+                Condition::MagicShield { .. } => MAGIC_SHIELD_BIT,
+                Condition::DamageOverTime(dot) => match dot.element() {
                     CombatElement::Fire => BURNING_BIT,
                     CombatElement::Earth => POISONED_BIT,
                     CombatElement::Energy => ELECTRIFIED_BIT,
                     _ => 0,
-                };
-            }
+                },
+            };
         }
-
+        if !fed {
+            status |= HUNGRY_BIT;
+        }
         status
     }
 }
@@ -437,6 +472,18 @@ impl Conditions {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_status_word_reads_what_is_present_and_hungry_without_food() {
+        let mut conditions = Conditions::new();
+        assert_eq!(conditions.status(), HUNGRY_BIT);
+
+        conditions.add_fed_ticks(Tick(0), TickDelta(100));
+        conditions.reset_logout_block(Tick(0));
+        conditions.apply_speed(SpeedEffect::Haste, 30);
+
+        assert_eq!(conditions.status(), LOGOUT_BLOCK_BIT | HASTED_BIT);
+    }
 
     fn poison(total: u32) -> DamageOverTime {
         DamageOverTime::decaying(CombatElement::Earth, None, TickDelta(80), total, None)
@@ -510,11 +557,13 @@ mod tests {
     #[test]
     fn hungry_is_the_absence_of_fed() {
         let mut conditions = Conditions::new();
-        assert_eq!(conditions.to_wire(Tick(0)) & HUNGRY_BIT, HUNGRY_BIT);
+        assert_eq!(conditions.status() & HUNGRY_BIT, HUNGRY_BIT);
 
         conditions.add_fed_ticks(Tick(0), TickDelta(100));
-        assert_eq!(conditions.to_wire(Tick(0)) & HUNGRY_BIT, 0);
-        assert_eq!(conditions.to_wire(Tick(100)) & HUNGRY_BIT, HUNGRY_BIT);
+        assert_eq!(conditions.status() & HUNGRY_BIT, 0);
+
+        conditions.remove_timed(TimedCondition::Fed);
+        assert_eq!(conditions.status() & HUNGRY_BIT, HUNGRY_BIT);
     }
 
     #[test]
@@ -528,8 +577,8 @@ mod tests {
             None,
         ));
 
-        assert_eq!(conditions.to_wire(Tick(0)) & BURNING_BIT, BURNING_BIT);
-        assert_eq!(conditions.to_wire(Tick(0)) & POISONED_BIT, 0);
+        assert_eq!(conditions.status() & BURNING_BIT, BURNING_BIT);
+        assert_eq!(conditions.status() & POISONED_BIT, 0);
     }
 
     #[test]
@@ -560,7 +609,7 @@ mod tests {
         assert_ne!(hasted, paralysed);
         assert_eq!(conditions.speed_change(), -80);
         assert_eq!(
-            conditions.to_wire(Tick(0)) & (PARALYZED_BIT | HASTED_BIT),
+            conditions.status() & (PARALYZED_BIT | HASTED_BIT),
             PARALYZED_BIT
         );
     }
@@ -570,7 +619,7 @@ mod tests {
         let mut conditions = Conditions::new();
         conditions.apply_speed(SpeedEffect::Paralysis, 0);
 
-        assert_eq!(conditions.to_wire(Tick(0)) & PARALYZED_BIT, PARALYZED_BIT);
+        assert_eq!(conditions.status() & PARALYZED_BIT, PARALYZED_BIT);
     }
 
     #[test]
@@ -583,7 +632,7 @@ mod tests {
         assert_eq!(conditions.speed_change(), 50);
         assert!(conditions.expire_speed(second));
         assert_eq!(conditions.speed_change(), 0);
-        assert_eq!(conditions.to_wire(Tick(0)) & HASTED_BIT, 0);
+        assert_eq!(conditions.status() & HASTED_BIT, 0);
     }
 
     #[test]
@@ -601,7 +650,7 @@ mod tests {
         assert!(conditions.cure(CombatElement::Earth));
         assert!(!conditions.cure(CombatElement::Earth));
         assert_eq!(
-            conditions.to_wire(Tick(0)) & (POISONED_BIT | BURNING_BIT),
+            conditions.status() & (POISONED_BIT | BURNING_BIT),
             BURNING_BIT
         );
     }
@@ -609,17 +658,60 @@ mod tests {
     #[test]
     fn the_magic_shield_lapses_at_its_deadline() {
         let mut conditions = Conditions::new();
-        conditions.set_magic_shield(Tick(100));
+        conditions.extend_magic_shield(Tick(100));
 
         assert!(conditions.is_magic_shielded(Tick(99)));
-        assert_eq!(
-            conditions.to_wire(Tick(99)) & MAGIC_SHIELD_BIT,
-            MAGIC_SHIELD_BIT
-        );
+        assert_eq!(conditions.status() & MAGIC_SHIELD_BIT, MAGIC_SHIELD_BIT);
         assert!(!conditions.is_magic_shielded(Tick(100)));
 
-        conditions.set_magic_shield(Tick(300));
+        conditions.extend_magic_shield(Tick(300));
         conditions.remove_magic_shield();
         assert!(!conditions.is_magic_shielded(Tick(0)));
+    }
+
+    #[test]
+    fn a_logout_block_reports_only_its_creation() {
+        let mut conditions = Conditions::new();
+
+        assert!(conditions.reset_logout_block(Tick(0)));
+        assert!(!conditions.reset_logout_block(Tick(10)));
+
+        assert_eq!(
+            conditions.until(TimedCondition::LogoutBlock),
+            Some(Tick(10) + GAME_CONFIG.logout_block_ticks)
+        );
+    }
+
+    #[test]
+    fn a_shorter_magic_shield_does_not_shorten_a_longer_one() {
+        let mut conditions = Conditions::new();
+
+        assert!(conditions.extend_magic_shield(Tick(100)));
+        assert!(!conditions.extend_magic_shield(Tick(50)));
+        assert_eq!(
+            conditions.until(TimedCondition::MagicShield),
+            Some(Tick(100))
+        );
+
+        conditions.extend_magic_shield(Tick(200));
+        assert_eq!(
+            conditions.until(TimedCondition::MagicShield),
+            Some(Tick(200))
+        );
+    }
+
+    #[test]
+    fn removing_a_timed_condition_leaves_the_others() {
+        let mut conditions = Conditions::new();
+        conditions.reset_logout_block(Tick(0));
+        conditions.extend_magic_shield(Tick(100));
+
+        conditions.remove_timed(TimedCondition::LogoutBlock);
+
+        assert_eq!(conditions.until(TimedCondition::LogoutBlock), None);
+        assert_eq!(
+            conditions.until(TimedCondition::MagicShield),
+            Some(Tick(100))
+        );
     }
 }

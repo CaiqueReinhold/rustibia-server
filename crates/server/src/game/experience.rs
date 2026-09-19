@@ -25,6 +25,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::game::events::BroadcastMessage;
     use crate::persistence::test_fixtures::{
@@ -83,29 +84,18 @@ mod tests {
     }
 
     fn progressed(msgs: &[BroadcastMessage], key: AgentKey) -> bool {
-        msgs.iter().any(|m| {
-            matches!(
-                m,
-                BroadcastMessage::SkillProgressUpdated { agent_key, skill_type: SkillType::Level, .. }
-                    if *agent_key == key
-            )
-        })
+        awarded(msgs, key).is_some()
     }
 
     fn awarded(msgs: &[BroadcastMessage], key: AgentKey) -> Option<u64> {
         msgs.iter().find_map(|m| match m {
-            BroadcastMessage::SkillUpgraded {
-                agent_key,
-                skill_type: SkillType::Level,
-                amount,
-                ..
-            } if *agent_key == key => Some(*amount),
+            BroadcastMessage::ExperienceGained { agent_key, amount } if *agent_key == key => {
+                Some(*amount)
+            }
             _ => None,
         })
     }
 
-    /// The level-up branch used to drop the experience on the floor, and the session
-    /// floated a `0` over the player that had just levelled.
     #[test]
     fn a_kill_that_levels_still_reports_the_experience_it_awarded() {
         let (mut map, rat) = a_victim(100);
@@ -113,6 +103,7 @@ mod tests {
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert!(upgraded(&h.events, hunter));
@@ -128,6 +119,7 @@ mod tests {
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, hunter), (2, 0));
@@ -141,6 +133,7 @@ mod tests {
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, hunter), (1, 50));
@@ -157,6 +150,7 @@ mod tests {
         hit(&mut map, rat, second, 60);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, first), (1, 40));
@@ -174,6 +168,7 @@ mod tests {
         hit(&mut map, rat, wolf, 50);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, hunter), (1, 50));
@@ -189,6 +184,7 @@ mod tests {
         map.remove_agent(quitter);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, hunter), (1, 50));
@@ -202,6 +198,7 @@ mod tests {
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert_eq!(level(&map, hunter), (1, 0));
@@ -210,9 +207,10 @@ mod tests {
 
     #[test]
     fn an_untouched_creature_emits_nothing() {
-        let (mut map, rat) = a_victim(100);
+        let (map, rat) = a_victim(100);
         let mut h = TestHarness::new();
 
+        let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
         assert!(h.events.is_empty());

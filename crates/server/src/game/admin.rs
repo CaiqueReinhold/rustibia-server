@@ -6,7 +6,7 @@ use crate::{
         items::{Item, ItemId},
         position::Position,
     },
-    game::{TickCtx, events::BroadcastMessage},
+    game::TickCtx,
     persistence::items::ITEM_CONFIGS,
 };
 
@@ -56,6 +56,4 @@ pub fn create_item(ctx: &mut TickCtx, id: ItemId, amount: u8, agent_key: AgentKe
         Facing::West => Position::new(pos.x.saturating_sub(1), pos.y, pos.z),
     };
     let _ = ctx.map.place_item(&at_pos, None, None, item);
-    ctx.events
-        .push(BroadcastMessage::TileChanged { position: at_pos });
 }

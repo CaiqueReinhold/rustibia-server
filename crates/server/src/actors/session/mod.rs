@@ -4,6 +4,7 @@
 
 mod chat;
 mod combat;
+mod delta;
 mod items;
 mod movement;
 mod view;
@@ -36,6 +37,7 @@ use crate::entities::items::ContainerId;
 use crate::entities::items::ItemGuid;
 use crate::entities::map::GameMap;
 use crate::entities::position::Direction;
+use crate::entities::world_delta::WorldDelta;
 use crate::game::events::BroadcastMessage;
 use crate::game::{Tick, TickDelta};
 use crate::local_id::LocalIdMap;
@@ -49,8 +51,6 @@ pub enum SessionError {
     FailedToInitialize,
     #[error("Message type unknown or out of order")]
     WrongMessageType,
-    #[error("Player is not spawned")]
-    NotSpawned,
     #[error("Invalid State")]
     InvalidState,
     #[error("Connection is closed")]
@@ -65,6 +65,7 @@ pub enum SessionError {
 pub enum SessionCommand {
     PlayerMessage(ClientMessage),
     Broadcast(BroadcastMessage),
+    WorldDelta(Arc<WorldDelta>),
     ChatPrivate {
         author: AgentKey,
         message: String,
@@ -100,6 +101,14 @@ impl SessionActorHandle {
         msg: BroadcastMessage,
     ) -> Result<(), mpsc::error::TrySendError<SessionCommand>> {
         self.tx.try_send(SessionCommand::Broadcast(msg))?;
+        Ok(())
+    }
+
+    pub fn receive_delta(
+        &self,
+        delta: Arc<WorldDelta>,
+    ) -> Result<(), mpsc::error::TrySendError<SessionCommand>> {
+        self.tx.try_send(SessionCommand::WorldDelta(delta))?;
         Ok(())
     }
 
@@ -156,8 +165,6 @@ pub struct SessionActor {
     next_chat_tick: Tick,
     queued_walk: Option<Direction>,
     logout_pending: bool,
-    prev_capacity: u32,
-    prev_status: u32,
     registry_guard: Option<RegistryGuard>,
 }
 
@@ -209,8 +216,6 @@ impl SessionActor {
                         next_chat_tick: Tick(0),
                         queued_walk: None,
                         logout_pending: false,
-                        prev_capacity: 0,
-                        prev_status: 0,
                         registry_guard: Some(registry_guard),
                     };
                     actor.run().await;
@@ -318,6 +323,7 @@ impl SessionActor {
         match cmd {
             SessionCommand::PlayerMessage(msg) => self.handle_client_message(msg).await,
             SessionCommand::Broadcast(msg) => self.route_broadcast(msg).await,
+            SessionCommand::WorldDelta(delta) => self.apply_delta(&delta).await,
             SessionCommand::ChatPrivate { author, message } => {
                 self.receive_private_message(author, message).await
             }
@@ -392,17 +398,9 @@ impl SessionActor {
                 position,
             } => self.player_spawned(agent_key, position).await,
             BroadcastMessage::MoveItemDenied { message, .. } => self.deny(&message).await,
-            BroadcastMessage::TileChanged { position } => self.tile_changed(position).await,
             BroadcastMessage::UseItemDenied { message, .. } => self.deny(&message).await,
             BroadcastMessage::OpenContainer { item, .. } => self.open_container(item).await,
-            BroadcastMessage::ContainerUpdated { item } => self.update_container(item).await,
             BroadcastMessage::AgentWalkDenied { .. } => self.walk_denied().await,
-            BroadcastMessage::UpdateInventorySlot { agent_key, slot } => {
-                self.update_inventory_slot(agent_key, slot).await
-            }
-            BroadcastMessage::AgentChangedDirection {
-                agent_key, facing, ..
-            } => self.actor_direction_changed(agent_key, facing).await,
             BroadcastMessage::AgentDespawned {
                 agent_key,
                 snapshot,
@@ -435,16 +433,12 @@ impl SessionActor {
                     .await
             }
             BroadcastMessage::AttackMissed { position } => self.attack_missed(position).await,
-            BroadcastMessage::SkillProgressUpdated {
-                skill_type, amount, ..
-            } => self.skill_progress(skill_type, amount).await,
+            BroadcastMessage::ExperienceGained { amount, .. } => {
+                self.experience_gained(amount).await
+            }
             BroadcastMessage::SkillUpgraded {
-                skill_type,
-                gained,
-                amount,
-                ..
-            } => self.skill_upgraded(skill_type, gained, amount).await,
-            BroadcastMessage::PlayerManaUpdated { .. } => self.mana_updated().await,
+                skill_type, gained, ..
+            } => self.skill_upgraded(skill_type, gained).await,
             BroadcastMessage::PotionDrunk { target, position } => {
                 self.potion_drunk(target, position).await
             }
@@ -463,25 +457,16 @@ impl SessionActor {
                     .await
             }
             BroadcastMessage::AgentHealed {
-                agent_key,
                 position,
                 amount,
                 restore_type,
-            } => {
-                self.agent_healed(agent_key, position, amount, restore_type)
-                    .await
-            }
+                ..
+            } => self.agent_healed(position, amount, restore_type).await,
             BroadcastMessage::AreaEffectAppeared { area_effect } => {
                 self.send_effect(area_effect).await
             }
-            BroadcastMessage::AgentSpeedChanged { agent_key, .. } => {
-                self.agent_speed_changed(agent_key).await
-            }
             BroadcastMessage::AgentActionMessage { position, message } => {
                 self.action_message(position, message).await
-            }
-            BroadcastMessage::PlayerLifeUpdated { agent_key, .. } => {
-                self.life_updated(agent_key).await
             }
         }
     }
@@ -515,8 +500,6 @@ impl SessionActor {
 
     async fn tick_schedules(&mut self) -> Result<()> {
         self.check_walk_queue().await?;
-        self.check_capacity_changed().await?;
-        self.check_status_changed().await?;
         self.remove_agents_not_in_reach().await?;
         Ok(())
     }
@@ -566,8 +549,6 @@ impl SessionActor {
                 next_chat_tick: Tick(0),
                 queued_walk: None,
                 logout_pending: false,
-                prev_capacity: 0,
-                prev_status: 0,
                 registry_guard: None,
             },
             connection_rx,

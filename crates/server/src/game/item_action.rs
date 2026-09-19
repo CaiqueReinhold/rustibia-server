@@ -5,11 +5,12 @@ use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::AgentKey,
+        conditions::TimedCondition,
         items::{Item, ItemAction, ItemFlag, ItemId, ItemRef},
         position::ItemPlacement,
     },
     game::{
-        Mark, Tick, TickCtx, TickDelta,
+        Mark, Tick, TickCtx, TickDelta, conditions,
         config::GAME_CONFIG,
         item_movement::{ItemMovementError, insert_item_at, remove_item_at},
     },
@@ -134,8 +135,10 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
     } else if let Some(action) = action {
         match route_action(ctx, &action, agent_key, &item_ref) {
             Ok(()) => {
-                ctx.map.get_agent_mut(agent_key).unwrap().next_use_tick =
-                    ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks;
+                ctx.map
+                    .agent_mut(agent_key)
+                    .unwrap()
+                    .stamp_use(ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks);
                 return;
             }
             Err(e) => {
@@ -290,8 +293,12 @@ fn eat_food(
         return Err(ItemActionError::InvalidState);
     }
 
-    let agent = ctx.map.get_agent_mut(agent_key).unwrap();
-    let generation = agent.conditions_mut().add_fed_ticks(ctx.tick, duration);
+    let tick = ctx.tick;
+    let generation = ctx
+        .map
+        .agent_mut(agent_key)
+        .unwrap()
+        .conditions(|c| c.add_fed_ticks(tick, duration));
 
     if Some(generation) != old_generation {
         ctx.scheduled.push(ScheduledCommand {
@@ -301,6 +308,7 @@ fn eat_food(
                 generation,
             },
         });
+        conditions::schedule_expiry(ctx, agent_key, TimedCondition::Fed);
     }
 
     if let Some(message) = GAME_CONFIG.action_messages.get(message_index) {
@@ -319,6 +327,7 @@ mod tests {
     use crate::entities::items::{ItemConfig, ItemId};
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
 
     /// `into` comes from data -- a `transform(N)` attribute or a diggable's `id + 1` -- so
@@ -350,6 +359,7 @@ mod tests {
         map.insert_tile(pos.clone(), tile);
 
         let mut h = TestHarness::new();
+        let mut map = WorldMap::new(map);
         let result = transform(
             &mut h.ctx(&mut map),
             &ItemRef {

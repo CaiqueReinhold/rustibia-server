@@ -154,6 +154,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::game::{Tick, TickDelta};
     use crate::persistence::test_fixtures::{
@@ -180,6 +181,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(50);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, None);
 
         assert!(
@@ -211,6 +213,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, None);
 
         assert!(map.get_agent(rat).is_none(), "it should still be reaped");
@@ -227,16 +230,15 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, None);
 
         assert!(map.get_agent(rat).is_none());
         assert!(matches!(
             h.events.as_slice(),
-            [
-                BroadcastMessage::AgentDespawned { agent_key, .. },
-                BroadcastMessage::TileChanged { position },
-            ] if *agent_key == rat && *position == pos
+            [BroadcastMessage::AgentDespawned { agent_key, .. }] if *agent_key == rat
         ));
+        assert!(map.delta().tile_dirty(&pos));
     }
 
     #[test]
@@ -249,6 +251,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, None);
 
         assert!(map.get_agent(rat).is_some());
@@ -271,6 +274,7 @@ mod tests {
         map.get_agent_mut(hunter).unwrap().set_target(Some(rat), 0);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, Some(hunter));
 
         assert_eq!(map.get_agent(hunter).unwrap().target(), None);
@@ -309,6 +313,7 @@ mod tests {
             .set_target(Some(third), 0);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, Some(hunter));
 
         assert_eq!(map.get_agent(hunter).unwrap().target(), None);
@@ -329,6 +334,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), player, None);
 
         assert!(map.get_agent(player).is_some());
@@ -351,6 +357,7 @@ mod tests {
         map.get_agent_mut(rat).unwrap().record_damage(hunter, 100);
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, Some(hunter));
 
         assert!(map.get_agent(rat).is_none());
@@ -380,6 +387,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         reap(&mut h.ctx(&mut map), rat, Some(hunter));
 
         assert_eq!(

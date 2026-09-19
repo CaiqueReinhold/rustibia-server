@@ -5,8 +5,8 @@ use anyhow::Result;
 
 use crate::actors::session::{SessionActor, SessionError};
 use crate::actors::world::WorldCommand;
-use crate::entities::agent::AgentKey;
 use crate::entities::agent::Facing;
+use crate::entities::agent::{AgentId, AgentKey};
 use crate::entities::position::{Direction, Position};
 use crate::game::TickDelta;
 use crate::game::map_query::get_map_expansion;
@@ -175,12 +175,17 @@ impl SessionActor {
         }
     }
 
-    pub(super) async fn actor_direction_changed(
+    pub(super) async fn facing_changed(
         &self,
         agent_key: AgentKey,
-        facing: Facing,
+        agent_id: AgentId,
     ) -> Result<()> {
-        if let Some(agent_id) = self.agents.get_local(&agent_key) {
+        let facing = self
+            .shared_map
+            .load()
+            .get_agent(agent_key)
+            .map(|agent| agent.facing());
+        if let Some(facing) = facing {
             self.connection
                 .send_message(ServerMessage::AgentChangedDirection { agent_id, facing })
                 .await?;

@@ -2,12 +2,12 @@ use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::AgentKey,
-        conditions::SpeedEffect,
+        conditions::{SpeedEffect, TimedCondition},
         creature::CreatureFlag,
         effects::{AreaEffect, Missile},
         support::{SpeedFormula, SpeedTerm, SupportCast, SupportEffect},
     },
-    game::{TickCtx, events::BroadcastMessage, random::Rolls, spells::ResolvedTargets},
+    game::{TickCtx, conditions, events::BroadcastMessage, random::Rolls, spells::ResolvedTargets},
 };
 
 pub fn cast_support(
@@ -60,13 +60,10 @@ pub fn apply_support(ctx: &mut TickCtx, target: AgentKey, effect: &SupportEffect
                 return;
             }
             let change = roll_speed_change(*effect, formula, agent.base_speed(), ctx.roll);
-            let Some(position) = ctx.map.agent_position(target).cloned() else {
+            let Some(mut agent) = ctx.map.agent_mut(target) else {
                 return;
             };
-            let Some(agent) = ctx.map.get_agent_mut(target) else {
-                return;
-            };
-            let generation = agent.conditions_mut().apply_speed(*effect, change);
+            let generation = agent.conditions(|c| c.apply_speed(*effect, change));
 
             ctx.scheduled.push(ScheduledCommand {
                 at_tick: ctx.tick + *duration,
@@ -75,37 +72,28 @@ pub fn apply_support(ctx: &mut TickCtx, target: AgentKey, effect: &SupportEffect
                     generation,
                 },
             });
-            ctx.events.push(BroadcastMessage::AgentSpeedChanged {
-                agent_key: target,
-                position,
-            });
         }
         SupportEffect::MagicShield { duration } => {
             let until = ctx.tick + *duration;
-            if let Some(agent) = ctx.map.get_agent_mut(target) {
-                agent.conditions_mut().set_magic_shield(until);
+            let created = ctx
+                .map
+                .agent_mut(target)
+                .is_some_and(|mut agent| agent.conditions(|c| c.extend_magic_shield(until)));
+            if created {
+                conditions::schedule_expiry(ctx, target, TimedCondition::MagicShield);
             }
         }
         SupportEffect::Cure { element } => {
-            if let Some(agent) = ctx.map.get_agent_mut(target) {
-                agent.conditions_mut().cure(*element);
+            if let Some(mut agent) = ctx.map.agent_mut(target) {
+                agent.conditions(|c| c.cure(*element));
             }
         }
     }
 }
 
 pub fn expire_speed(ctx: &mut TickCtx, agent_key: AgentKey, generation: u32) {
-    let Some(agent) = ctx.map.get_agent_mut(agent_key) else {
-        return;
-    };
-    if !agent.conditions_mut().expire_speed(generation) {
-        return;
-    }
-    if let Some(position) = ctx.map.agent_position(agent_key).cloned() {
-        ctx.events.push(BroadcastMessage::AgentSpeedChanged {
-            agent_key,
-            position,
-        });
+    if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
+        agent.conditions(|c| c.expire_speed(generation));
     }
 }
 
@@ -129,6 +117,7 @@ fn roll_speed_change(
 
 #[cfg(test)]
 mod tests {
+    use crate::entities::world_map::WorldMap;
     use std::sync::Arc;
 
     use super::*;
@@ -216,7 +205,7 @@ mod tests {
 
     #[test]
     fn a_haste_speeds_up_its_caster_until_its_expiry_is_due() {
-        let (mut map, player) = a_player();
+        let (map, player) = a_player();
         let spell = a_support_spell(
             SpellGroup::Support,
             TargetMode::Caster,
@@ -225,6 +214,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
 
+        let mut map = WorldMap::new(map);
         cast_spell(
             &mut h.ctx(&mut map),
             player,
@@ -241,19 +231,17 @@ mod tests {
             agent.next_spell_group_tick(SpellGroup::Support),
             Tick(100) + GAME_CONFIG.combat.support_group_cooldown
         );
-        assert!(h.events.iter().any(|e| matches!(
-            e,
-            BroadcastMessage::AgentSpeedChanged { agent_key, .. } if *agent_key == player
-        )));
+        assert!(map.delta().agent(player).speed());
         assert!(h.scheduled.iter().any(|s| s.at_tick == Tick(760)
             && matches!(s.command, WorldCommand::SpeedExpired { agent_key, .. } if agent_key == player)));
     }
 
     #[test]
     fn the_expiry_restores_speed_and_a_stale_one_does_nothing() {
-        let (mut map, player) = a_player();
+        let (map, player) = a_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_support(
             &mut h.ctx(&mut map),
             player,
@@ -266,25 +254,23 @@ mod tests {
             &flat(SpeedEffect::Haste, 50, 100),
         );
         let live = booked_generation(&h);
-        h.events.clear();
+        map.take_delta();
 
         expire_speed(&mut h.ctx(&mut map), player, stale);
         assert_eq!(map.get_agent(player).unwrap().speed(), 170);
-        assert!(h.events.is_empty());
+        assert!(map.delta().is_empty());
 
         expire_speed(&mut h.ctx(&mut map), player, live);
         assert_eq!(map.get_agent(player).unwrap().speed(), 120);
-        assert!(matches!(
-            h.events.as_slice(),
-            [BroadcastMessage::AgentSpeedChanged { .. }]
-        ));
+        assert!(map.delta().agent(player).speed());
     }
 
     #[test]
     fn a_haste_cast_while_paralysed_replaces_the_paralysis() {
-        let (mut map, player) = a_player();
+        let (map, player) = a_player();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_support(
             &mut h.ctx(&mut map),
             player,
@@ -360,6 +346,7 @@ mod tests {
             .unwrap();
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         apply_support(
             &mut h.ctx(&mut map),
             scarab,
@@ -403,6 +390,7 @@ mod tests {
         );
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         cast_spell(
             &mut h.ctx(&mut map),
             player,
@@ -413,14 +401,18 @@ mod tests {
         )
         .unwrap();
 
-        let conditions = map.get_agent_mut(player).unwrap().conditions_mut();
+        let conditions = map
+            .inner_mut()
+            .get_agent_mut(player)
+            .unwrap()
+            .conditions_mut();
         assert!(!conditions.cure(CombatElement::Earth));
         assert!(conditions.cure(CombatElement::Fire));
     }
 
     #[test]
     fn a_magic_shield_spell_shields_its_caster_for_its_duration() {
-        let (mut map, player) = a_player();
+        let (map, player) = a_player();
         let spell = a_support_spell(
             SpellGroup::Support,
             TargetMode::Caster,
@@ -431,6 +423,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
         h.tick = Tick(100);
 
+        let mut map = WorldMap::new(map);
         cast_spell(
             &mut h.ctx(&mut map),
             player,
@@ -464,6 +457,7 @@ mod tests {
         spell.delivery = SpellDelivery::Rune;
         let mut h = TestHarness::seeded(1);
 
+        let mut map = WorldMap::new(map);
         cast_spell(
             &mut h.ctx(&mut map),
             player,

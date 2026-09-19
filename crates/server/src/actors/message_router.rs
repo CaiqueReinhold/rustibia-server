@@ -11,7 +11,9 @@ use tracing::{info, warn};
 use crate::{
     actors::session::{SessionActorHandle, SessionCommand},
     config::CONFIG,
-    entities::{agent::AgentKey, chat::ChannelId, map::GameMap, position::Rect},
+    entities::{
+        agent::AgentKey, chat::ChannelId, map::GameMap, position::Rect, world_delta::WorldDelta,
+    },
     game::{
         events::{BroadcastMessage, Routing},
         map_query::iter_visible_floors,
@@ -27,8 +29,9 @@ pub enum MessageRouterCommand {
     Unsubscribe {
         agent_key: AgentKey,
     },
-    Broadcast {
-        messages: Vec<BroadcastMessage>,
+    Tick {
+        events: Vec<BroadcastMessage>,
+        delta: Arc<WorldDelta>,
     },
     DeliverPrivateMessage {
         author: AgentKey,
@@ -96,10 +99,10 @@ impl MessageRouterActorHandle {
             .try_send(MessageRouterCommand::Unsubscribe { agent_key });
     }
 
-    pub async fn broadcast(&self, messages: Vec<BroadcastMessage>) {
+    pub async fn tick(&self, events: Vec<BroadcastMessage>, delta: Arc<WorldDelta>) {
         let _ = self
             .tx
-            .send(MessageRouterCommand::Broadcast { messages })
+            .send(MessageRouterCommand::Tick { events, delta })
             .await;
     }
 
@@ -195,7 +198,7 @@ impl MessageRouterActor {
                 self.subscribe(agent_key, session)
             }
             MessageRouterCommand::Unsubscribe { agent_key } => self.unsubscribe(agent_key),
-            MessageRouterCommand::Broadcast { messages } => self.broadcast(messages).await,
+            MessageRouterCommand::Tick { events, delta } => self.tick(events, delta).await,
             MessageRouterCommand::DeliverPrivateMessage {
                 author,
                 recipient,
@@ -224,6 +227,22 @@ impl MessageRouterActor {
 
     fn unsubscribe(&mut self, agent_key: AgentKey) {
         self.session_map.remove(&agent_key);
+    }
+
+    async fn tick(&mut self, events: Vec<BroadcastMessage>, delta: Arc<WorldDelta>) {
+        self.broadcast(events).await;
+        if delta.is_empty() {
+            return;
+        }
+        let sessions: Vec<(AgentKey, SessionActorHandle)> = self
+            .session_map
+            .iter()
+            .map(|(key, session)| (*key, session.clone()))
+            .collect();
+        for (agent_key, session) in sessions {
+            let result = session.receive_delta(delta.clone());
+            self.handle_send_result(agent_key, &session, result);
+        }
     }
 
     async fn broadcast(&mut self, messages: Vec<BroadcastMessage>) {
@@ -377,6 +396,8 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::map::MapTile;
     use crate::entities::position::Position;
+    use crate::entities::world_delta::WorldDelta;
+    use crate::entities::world_map::WorldMap;
     use crate::persistence::test_fixtures::a_test_snapshot;
 
     fn a_router() -> MessageRouterActor {
@@ -472,5 +493,52 @@ mod tests {
             !router.session_map.contains_key(&key),
             "a closed session must also be unsubscribed"
         );
+    }
+
+    #[tokio::test]
+    async fn a_tick_delivers_its_events_before_its_delta() {
+        let pos = Position::new(100, 100, 7);
+        let (map, key) = map_with_player(&pos);
+        let mut router = a_router();
+        router.shared_map.store(Arc::new(map));
+        let (handle, mut rx) = SessionActorHandle::for_test();
+        router.session_map.insert(key, handle);
+        let mut world = WorldMap::new(GameMap::new());
+        world.insert_tile(pos.clone(), MapTile::new());
+
+        router
+            .tick(
+                vec![BroadcastMessage::AgentSaid {
+                    agent_key: key,
+                    position: pos.clone(),
+                    message: "hi".to_owned(),
+                }],
+                Arc::new(world.take_delta()),
+            )
+            .await;
+
+        assert!(matches!(
+            rx.try_recv(),
+            Ok(SessionCommand::Broadcast(
+                BroadcastMessage::AgentSaid { .. }
+            ))
+        ));
+        assert!(matches!(rx.try_recv(), Ok(SessionCommand::WorldDelta(_))));
+    }
+
+    #[tokio::test]
+    async fn an_empty_delta_is_not_sent() {
+        let pos = Position::new(100, 100, 7);
+        let (map, key) = map_with_player(&pos);
+        let mut router = a_router();
+        router.shared_map.store(Arc::new(map));
+        let (handle, mut rx) = SessionActorHandle::for_test();
+        router.session_map.insert(key, handle);
+
+        router
+            .tick(Vec::new(), Arc::new(WorldDelta::default()))
+            .await;
+
+        assert!(rx.try_recv().is_err());
     }
 }
