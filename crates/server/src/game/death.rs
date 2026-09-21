@@ -118,7 +118,7 @@ fn add_to_corpse(corpse: &mut Item, item_id: ItemId, amount: u32) -> bool {
         if let Some(content) = &mut corpse.content {
             content.push(item);
         } else {
-            error!("Corpse {} is not a container", corpse.item_id);
+            error!("Corpse {} is not a container", corpse.id());
         }
         corpse.available_capacity() == Some(0) || corpse.available_capacity().is_none()
     };

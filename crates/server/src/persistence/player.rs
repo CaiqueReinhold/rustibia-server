@@ -138,7 +138,7 @@ fn serialize_inventory(inventory: &HashMap<InventorySlot, Item>) -> HashMap<Stri
 
 fn serialize_item(item: &Item) -> StoredItem {
     StoredItem {
-        item_id: item.item_id,
+        item_id: item.id(),
         amount: item.amount,
         content: item
             .content

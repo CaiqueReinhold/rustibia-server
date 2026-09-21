@@ -188,7 +188,7 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
             let existing = items
                 .iter()
                 .find(|it| it.config.has_flag(ItemFlag::LiquidPool))
-                .map(|it| it.guid.clone());
+                .map(|it| it.guid);
             (depth, existing)
         })
         .unwrap_or((0, None));

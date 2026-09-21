@@ -70,7 +70,7 @@ pub fn plan_auto_attack(
     let cost = match agent.get_player() {
         Some(player) => match player.weapon_type() {
             WeaponType::Bow | WeaponType::Crossbow => AttackCost::Item(ItemRef {
-                guid: player.weapon_ammo()?.guid.clone(),
+                guid: player.weapon_ammo()?.guid,
                 placement: ItemPlacement::Inventory(InventorySlot::RightHand, attacker),
             }),
             WeaponType::Wand | WeaponType::Rod => {
@@ -737,7 +737,7 @@ mod tests {
             ),
             1,
         );
-        quiver.content = Some(vec![arrow]);
+        quiver.content = Some(Box::new(vec![arrow]));
         quiver
     }
 
@@ -906,7 +906,7 @@ mod tests {
     #[test]
     fn a_bow_with_a_quiver_plans_an_ammo_cost() {
         let quiver = a_quiver_of_arrows();
-        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid.clone();
+        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid;
         let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(quiver))),
             a_test_creature("Rat", 10, (1, 2)),
@@ -1211,8 +1211,8 @@ mod tests {
     #[test]
     fn executing_a_shot_updates_the_quiver_rather_than_the_arrow() {
         let quiver = a_quiver_of_arrows();
-        let quiver_guid = quiver.guid.clone();
-        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid.clone();
+        let quiver_guid = quiver.guid;
+        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid;
         let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(quiver))),
             a_test_creature("Rat", 100, (1, 2)),

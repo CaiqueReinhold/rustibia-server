@@ -194,12 +194,12 @@ fn restore_item(
 
     let mut item = Item::new(config, stored.amount);
     if let Some(children) = stored.content {
-        item.content = Some(
+        item.content = Some(Box::new(
             children
                 .into_iter()
                 .filter_map(|c| restore_item(items, c))
                 .collect(),
-        );
+        ));
     }
     Some(item)
 }

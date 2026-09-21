@@ -6,7 +6,6 @@ use std::time::Instant;
 
 use thiserror::Error;
 use tracing::info;
-use uuid::Uuid;
 
 use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
 use crate::entities::map::{GameMap, MapTile};
@@ -347,14 +346,13 @@ fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> 
         .cloned()
         .expect(&format!("Map contains invalid item id: {item_id}"));
     let content = if config.has_flag(ItemFlag::Container) {
-        Some(content)
+        Some(Box::new(content))
     } else {
         None
     };
     Item {
         config,
-        guid: ItemGuid(Uuid::now_v7().to_string()),
-        item_id,
+        guid: ItemGuid::new(),
         amount,
         fluid: None,
         content,
@@ -474,7 +472,7 @@ mod tests {
         map.get_tile(&pos)
             .expect("tile is loaded")
             .visible_items()
-            .map(|item| item.item_id.0)
+            .map(|item| item.id().0)
             .collect()
     }
 

@@ -53,7 +53,7 @@ fn item_stack(tile: Option<&MapTile>) -> ItemStack {
         .flat_map(MapTile::visible_items)
         .enumerate()
     {
-        stack[i] = Some((item.item_id, item.wire_subtype()));
+        stack[i] = Some((item.id(), item.wire_subtype()));
     }
     stack
 }
@@ -189,7 +189,7 @@ pub fn resolve_client_coord(
         let guid = containers.get_global(ContainerId(position.y))?;
         let (_, within) = find_item_in_reach(map, guid, agent_key)?;
         Some(ItemPlacement::Container {
-            guid: guid.clone(),
+            guid: *guid,
             within: Box::new(within),
             index: position.z as usize,
         })
@@ -218,7 +218,7 @@ pub fn retrieve_item<'a>(
         ItemPlacement::Map(pos) => map.get_item_at(pos, cli_item.stack_index as usize)?,
         other => item_at_placement(map, other)?,
     };
-    (item.item_id == cli_item.item_id).then_some((item, placement))
+    (item.id() == cli_item.item_id).then_some((item, placement))
 }
 
 /// The first item of `item_id` the agent carries: its slots in slot order, each searched
@@ -235,14 +235,14 @@ pub fn find_carried_item(
     slots.into_iter().find_map(|slot| {
         let item = inventory.get(&slot)?;
         let site = ItemPlacement::Inventory(slot, agent_key);
-        if item.item_id == item_id {
+        if item.id() == item_id {
             return Some((item, site));
         }
         let (found, holder, index) = find_in_contents(item, item_id)?;
         Some((
             found,
             ItemPlacement::Container {
-                guid: holder.guid.clone(),
+                guid: holder.guid,
                 within: Box::new(site),
                 index,
             },
@@ -258,7 +258,7 @@ fn find_in_contents(container: &Item, item_id: ItemId) -> Option<(&Item, &Item, 
         .iter()
         .enumerate()
         .find_map(|(index, item)| {
-            if item.item_id == item_id {
+            if item.id() == item_id {
                 Some((item, container, index))
             } else {
                 find_in_contents(item, item_id)
@@ -468,10 +468,9 @@ mod tests {
             .inventory()
             .get(&InventorySlot::Backpack)
             .unwrap()
-            .guid
-            .clone();
+            .guid;
         let mut containers: LocalIdMap<ItemGuid, ContainerId> = LocalIdMap::new();
-        let open = containers.get_or_insert(backpack.clone());
+        let open = containers.get_or_insert(backpack);
 
         let ground = Position::new(11, 10, 7);
         assert_eq!(
@@ -659,7 +658,7 @@ mod tests {
 
         let (item, placement) = find_carried_item(&map, ItemId(1988), key).unwrap();
 
-        assert_eq!(item.item_id, ItemId(1988));
+        assert_eq!(item.id(), ItemId(1988));
         assert_eq!(
             placement,
             ItemPlacement::Inventory(InventorySlot::Backpack, key)
@@ -678,8 +677,8 @@ mod tests {
             .inventory()
             .get(&InventorySlot::Backpack)
             .unwrap();
-        let backpack_guid = backpack.guid.clone();
-        let first_pouch_guid = backpack.content.as_ref().unwrap()[0].guid.clone();
+        let backpack_guid = backpack.guid;
+        let first_pouch_guid = backpack.content.as_ref().unwrap()[0].guid;
         let in_backpack = Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, key));
 
         let (_, third_pouch) = find_carried_item(&map, ItemId(1992), key).unwrap();
@@ -720,7 +719,7 @@ mod tests {
             .as_mut()
             .unwrap()
             .remove(3);
-        let pouch_guid = pouch.guid.clone();
+        let pouch_guid = pouch.guid;
         snapshot.inventory.insert(InventorySlot::Head, pouch);
         let (map, key) = carrying(snapshot);
 
@@ -765,7 +764,7 @@ mod tests {
             1991,
         );
         let (item, _) = retrieve_item(&map, &search, &containers, key).unwrap();
-        assert_eq!(item.item_id, ItemId(1991));
+        assert_eq!(item.id(), ItemId(1991));
 
         let slot = reference(
             Position::new(

@@ -35,7 +35,7 @@ impl SessionActor {
         else {
             return Ok(());
         };
-        let item_guid = item.guid.clone();
+        let item_guid = item.guid;
 
         let Some(mut target) = resolve_client_coord(to, &map, &self.containers, player_key) else {
             return Ok(());
@@ -49,7 +49,7 @@ impl SessionActor {
                     if occupant.config.has_flag(ItemFlag::Container) =>
                 {
                     ItemPlacement::Container {
-                        guid: occupant.guid.clone(),
+                        guid: occupant.guid,
                         within: within,
                         index: 0,
                     }
@@ -91,7 +91,7 @@ impl SessionActor {
             .send(WorldCommand::UseItem {
                 agent: self.player_key,
                 item: ItemRef {
-                    guid: item.guid.clone(),
+                    guid: item.guid,
                     placement,
                 },
             })
@@ -130,12 +130,12 @@ impl SessionActor {
             .send(WorldCommand::UseItemWith {
                 agent: self.player_key,
                 source: ItemRef {
-                    guid: source_item.guid.clone(),
+                    guid: source_item.guid,
                     placement: source_placement,
                 },
                 target: UseTarget {
                     item: target_item.map(|(item, placement)| ItemRef {
-                        guid: item.guid.clone(),
+                        guid: item.guid,
                         placement,
                     }),
                     agent: target_agent.and_then(|id| self.agents.get_global(id).copied()),
@@ -170,7 +170,7 @@ impl SessionActor {
             if let Some((parent_guid, placement)) = container {
                 return self
                     .open_container(ItemRef {
-                        guid: parent_guid.clone(),
+                        guid: *parent_guid,
                         placement,
                     })
                     .await;
@@ -216,10 +216,10 @@ impl SessionActor {
         let title = item.get_name().to_owned();
         let items = content
             .iter()
-            .map(|i| Some((i.item_id, i.wire_subtype())))
+            .map(|i| Some((i.id(), i.wire_subtype())))
             .collect::<Vec<Option<(ItemId, u8)>>>()
             .into_boxed_slice();
-        let container_id = self.containers.get_or_insert(item_ref.guid.clone());
+        let container_id = self.containers.get_or_insert(item_ref.guid);
         let has_parent = find_parent_container(&map, &item_ref.guid, self.player_key).is_some();
 
         self.connection
@@ -248,7 +248,7 @@ impl SessionActor {
             };
             content
                 .iter()
-                .map(|i| Some((i.item_id, i.wire_subtype())))
+                .map(|i| Some((i.id(), i.wire_subtype())))
                 .collect::<Vec<Option<(ItemId, u8)>>>()
                 .into_boxed_slice()
         };
@@ -267,7 +267,7 @@ impl SessionActor {
             let Some(player) = map.get_player(self.player_key) else {
                 return Ok(());
             };
-            player.inventory().get(&slot).map(|it| it.item_id)
+            player.inventory().get(&slot).map(|it| it.id())
         };
         self.connection
             .send_message(ServerMessage::IventorySlotUpdated { slot, item_id })

@@ -94,7 +94,7 @@ pub fn check_decay(
             at_tick: current_tick + duration,
             command: WorldCommand::DecayItem {
                 item: ItemRef {
-                    guid: item.guid.clone(),
+                    guid: item.guid,
                     placement,
                 },
             },
@@ -222,7 +222,7 @@ pub(super) fn transform(
         };
 
         if result.is_err() {
-            let guid = old_item.guid.clone();
+            let guid = old_item.guid;
             if let Err(e) = insert_item_at(ctx, old_item, &item.placement, source_index) {
                 error!(
                     "Failed to revert item move. Item {:?} at {:?}. Error: {}",
@@ -356,7 +356,7 @@ mod tests {
 
         let next = decayed_into(&burning, config(2));
 
-        assert_eq!(next.item_id, ItemId(2));
+        assert_eq!(next.id(), ItemId(2));
         assert_eq!(next.owner, Some(owner));
     }
 
@@ -382,7 +382,7 @@ mod tests {
             )),
             1,
         );
-        let guid = sand.guid.clone();
+        let guid = sand.guid;
         let mut tile = MapTile::new();
         tile.push_item(sand);
         let mut map = GameMap::new();
@@ -393,7 +393,7 @@ mod tests {
         let result = transform(
             &mut h.ctx(&mut map),
             &ItemRef {
-                guid: guid.clone(),
+                guid,
                 placement: ItemPlacement::Map(pos.clone()),
             },
             missing,

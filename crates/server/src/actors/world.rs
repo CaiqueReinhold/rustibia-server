@@ -295,7 +295,6 @@ impl WorldActor {
 
         info!("Starting world loop");
         loop {
-            debug!("World: receiving messages");
             loop {
                 select! {
                     biased;
@@ -392,7 +391,6 @@ impl WorldActor {
         command: WorldCommand,
         broadcast_messages: &mut Vec<BroadcastMessage>,
     ) {
-        info!("Executing command: {}", command);
         match command {
             WorldCommand::SpawnPlayer {
                 player,
@@ -787,7 +785,7 @@ mod tests {
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
             .unwrap();
         let item = a_movable_item();
-        let guid = item.guid.clone();
+        let guid = item.guid;
         map.place_item(&here, None, None, item).unwrap();
         let mut actor = a_test_world_actor(map);
         let (message_router, mut router_rx) = MessageRouterActorHandle::for_test();

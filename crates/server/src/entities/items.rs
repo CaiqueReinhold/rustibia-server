@@ -1,4 +1,10 @@
-use std::{fmt::Display, sync::Arc};
+use std::{
+    fmt::Display,
+    sync::{
+        Arc,
+        atomic::{AtomicU64, Ordering},
+    },
+};
 
 use smallvec::SmallVec;
 use strum::{EnumCount, EnumIter};
@@ -19,10 +25,10 @@ use crate::{
     local_id::LocalId,
 };
 
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-pub struct ItemGuid(pub String);
-/// An item's identity in the catalogue loaded from `assets/items/`. Global and stable,
-/// unlike the session-local ids a `LocalIdMap` mints.
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Hash)]
+#[repr(transparent)]
+pub struct ItemGuid(pub u64);
+
 #[derive(
     Copy, Clone, Eq, PartialEq, Hash, Debug, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
 )]
@@ -53,7 +59,14 @@ impl LocalId for ContainerId {
 
 impl ItemGuid {
     pub fn new() -> Self {
-        ItemGuid(uuid::Uuid::now_v7().to_string())
+        static NEXT: AtomicU64 = AtomicU64::new(1);
+        ItemGuid(NEXT.fetch_add(1, Ordering::Relaxed))
+    }
+}
+
+impl Default for ItemGuid {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -275,25 +288,26 @@ impl ItemConfig {
 pub struct Item {
     pub guid: ItemGuid,
     pub config: Arc<ItemConfig>,
-    pub item_id: ItemId,
     pub amount: u8,
     pub fluid: Option<FluidType>,
-    pub content: Option<Vec<Item>>,
+    /// Boxed because only a container ever has one, and an inline `Vec` was 24 bytes on
+    /// every item — 17.7M of them sit inside the shipped map's tiles. The indirection is
+    /// the point, so `box_collection`'s usual advice does not apply.
+    #[allow(clippy::box_collection)]
+    pub content: Option<Box<Vec<Item>>>,
     pub owner: Option<AgentKey>,
 }
 
 impl Item {
     pub fn new(config: Arc<ItemConfig>, amount: u8) -> Self {
         let content = if config.has_flag(ItemFlag::Container) {
-            Some(Vec::new())
+            Some(Box::new(Vec::new()))
         } else {
             None
         };
-        let item_id = config.id;
         Item {
             config,
             guid: ItemGuid::new(),
-            item_id,
             amount,
             fluid: None,
             content,
@@ -302,11 +316,9 @@ impl Item {
     }
 
     pub fn new_fluid(config: Arc<ItemConfig>, fluid: FluidType) -> Self {
-        let item_id = config.id;
         Item {
             config,
             guid: ItemGuid::new(),
-            item_id,
             amount: 1,
             fluid: Some(fluid),
             content: None,
@@ -357,6 +369,10 @@ impl Item {
             .find_map(|i| i.find_by_guid_mut(guid))
     }
 
+    pub fn id(&self) -> ItemId {
+        self.config.id
+    }
+
     /// Splits `amount` off this stack into a new item with its own guid. The caller must have
     /// established `amount < self.amount`.
     pub fn split_off(&mut self, amount: u8) -> Item {
@@ -364,7 +380,6 @@ impl Item {
         Item {
             guid: ItemGuid::new(),
             config: self.config.clone(),
-            item_id: self.item_id,
             amount,
             fluid: None,
             content: None,
@@ -373,7 +388,7 @@ impl Item {
     }
 
     pub fn stacks_with(&self, other: &Item) -> bool {
-        self.item_id == other.item_id
+        self.id() == other.id()
             && self.config.has_flag(ItemFlag::Cumulative)
             && self.amount < MAX_STACK_AMOUNT
     }
@@ -399,9 +414,9 @@ impl Item {
             let held = content[idx].amount;
             return match held.cmp(&amount) {
                 std::cmp::Ordering::Greater => {
-                    Some((content[idx].split_off(amount), (self.guid.clone(), idx)))
+                    Some((content[idx].split_off(amount), (self.guid, idx)))
                 }
-                std::cmp::Ordering::Equal => Some((content.remove(idx), (self.guid.clone(), idx))),
+                std::cmp::Ordering::Equal => Some((content.remove(idx), (self.guid, idx))),
                 std::cmp::Ordering::Less => None,
             };
         }
@@ -479,7 +494,7 @@ mod tests {
     #[test]
     fn a_split_stack_gets_an_identity_of_its_own() {
         let mut stack = a_stack(50);
-        let original = stack.guid.clone();
+        let original = stack.guid;
 
         let taken = stack.split_off(20);
 
@@ -487,7 +502,7 @@ mod tests {
         assert_eq!(stack.amount, 30);
         assert_ne!(taken.guid, original);
         assert_eq!(stack.guid, original);
-        assert_eq!(taken.item_id, stack.item_id);
+        assert_eq!(taken.id(), stack.id());
     }
 
     /// The client repeats this enum with the same discriminants, and nothing

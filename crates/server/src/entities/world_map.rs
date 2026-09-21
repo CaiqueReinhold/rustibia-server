@@ -486,7 +486,7 @@ mod tests {
     fn placing_into_a_container_marks_the_container_and_not_the_tile() {
         let (mut map, pos) = one_tile();
         let bag = a_bag();
-        let guid = bag.guid.clone();
+        let guid = bag.guid;
         map.inner_mut().place_item(&pos, None, None, bag).unwrap();
 
         map.place_item(&pos, None, Some((&guid, 0)), coins(1))
@@ -513,9 +513,9 @@ mod tests {
         let (mut map, pos) = one_tile();
         let mut bag = a_bag();
         let coin = coins(1);
-        let coin_guid = coin.guid.clone();
+        let coin_guid = coin.guid;
         bag.content.as_mut().unwrap().push(coin);
-        let bag_guid = bag.guid.clone();
+        let bag_guid = bag.guid;
         map.inner_mut().place_item(&pos, None, None, bag).unwrap();
 
         map.remove_item_from_tile(&pos, &coin_guid, 1).unwrap();
@@ -528,7 +528,7 @@ mod tests {
     fn removing_from_the_tile_marks_the_tile() {
         let (mut map, pos) = one_tile();
         let coin = coins(1);
-        let guid = coin.guid.clone();
+        let guid = coin.guid;
         map.inner_mut().place_item(&pos, None, None, coin).unwrap();
 
         map.remove_item_from_tile(&pos, &guid, 1).unwrap();
@@ -787,7 +787,7 @@ mod tests {
     #[test]
     fn inserting_into_a_carried_container_marks_the_container_not_the_slot() {
         let (mut map, key) = a_player_with_a_backpack();
-        let guid = backpack(&map, key).guid.clone();
+        let guid = backpack(&map, key).guid;
 
         map.player_mut(key)
             .unwrap()
@@ -805,8 +805,8 @@ mod tests {
         let (mut map, key) = a_player_with_a_backpack();
         let pouch = &backpack(&map, key).content.as_ref().unwrap()[0];
         let (pouch_guid, coin_guid) = (
-            pouch.guid.clone(),
-            pouch.content.as_ref().unwrap()[0].guid.clone(),
+            pouch.guid,
+            pouch.content.as_ref().unwrap()[0].guid,
         );
 
         map.player_mut(key)
@@ -838,7 +838,7 @@ mod tests {
     #[test]
     fn a_failed_insert_marks_nothing() {
         let (mut map, key) = a_player_with_a_backpack();
-        let missing = ItemGuid("no such container".to_owned());
+        let missing = ItemGuid(u64::MAX); // minted by nothing
 
         let result = map.player_mut(key).unwrap().inventory_mut().insert(
             InventorySlot::Backpack,
@@ -882,10 +882,10 @@ mod tests {
         let (mut map, pos) = one_tile();
         let mut bag = a_bag();
         bag.content.as_mut().unwrap().push(coins(10));
-        let bag_guid = bag.guid.clone();
+        let bag_guid = bag.guid;
         map.inner_mut().place_item(&pos, None, None, bag).unwrap();
         let placement = ItemPlacement::Container {
-            guid: bag_guid.clone(),
+            guid: bag_guid,
             within: Box::new(ItemPlacement::Map(pos.clone())),
             index: 0,
         };
@@ -901,11 +901,10 @@ mod tests {
     fn stacking_into_a_carried_container_marks_it_and_carries_the_weight() {
         let (mut map, key) = a_player_with_a_backpack();
         let pouch_guid = backpack(&map, key).content.as_ref().unwrap()[0]
-            .guid
-            .clone();
+            .guid;
         let weight = map.get_player(key).unwrap().inventory().carried_weight();
         let placement = ItemPlacement::Container {
-            guid: pouch_guid.clone(),
+            guid: pouch_guid,
             within: Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, key)),
             index: 0,
         };

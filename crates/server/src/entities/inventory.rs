@@ -220,7 +220,7 @@ fn find_available_container(item: &Item) -> Option<&ItemGuid> {
     if available > 0 {
         return Some(&item.guid);
     }
-    for child in item.content.as_ref()? {
+    for child in item.content.as_deref()? {
         if let Some(guid) = find_available_container(child) {
             return Some(guid);
         }
@@ -285,7 +285,7 @@ mod tests {
     #[test]
     fn a_snapshot_totals_what_it_was_given() {
         let mut backpack = a_backpack();
-        backpack.content = Some(vec![a_thing(5, 3)]);
+        backpack.content = Some(Box::new(vec![a_thing(5, 3)]));
         let inventory = Inventory::from_snapshot(HashMap::from([
             (InventorySlot::Backpack, backpack),
             (InventorySlot::Head, a_thing(40, 1)),
@@ -312,7 +312,7 @@ mod tests {
     #[test]
     fn inserting_into_a_container_counts_through_the_nesting() {
         let backpack = a_backpack();
-        let backpack_guid = backpack.guid.clone();
+        let backpack_guid = backpack.guid;
         let mut inventory =
             Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
 
@@ -331,8 +331,8 @@ mod tests {
     #[test]
     fn a_full_container_insert_leaves_the_total_untouched() {
         let mut backpack = a_backpack();
-        let backpack_guid = backpack.guid.clone();
-        backpack.content = Some((0..20).map(|_| a_thing(1, 1)).collect());
+        let backpack_guid = backpack.guid;
+        backpack.content = Some(Box::new((0..20).map(|_| a_thing(1, 1)).collect()));
         let mut inventory =
             Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
         let before = inventory.carried_weight;
@@ -351,7 +351,7 @@ mod tests {
     #[test]
     fn removing_a_whole_stack_removes_all_of_its_weight() {
         let coins = a_thing(5, 4);
-        let guid = coins.guid.clone();
+        let guid = coins.guid;
         let mut inventory = Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]));
 
         inventory.remove(InventorySlot::Head, &guid, 4).unwrap();
@@ -363,7 +363,7 @@ mod tests {
     #[test]
     fn splitting_a_stack_only_removes_the_part_that_left() {
         let coins = a_thing(5, 4);
-        let guid = coins.guid.clone();
+        let guid = coins.guid;
         let mut inventory = Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]));
 
         let (taken, _) = inventory.remove(InventorySlot::Head, &guid, 1).unwrap();
@@ -376,10 +376,10 @@ mod tests {
     #[test]
     fn removing_from_a_container_counts_through_the_nesting() {
         let mut backpack = a_backpack();
-        let backpack_guid = backpack.guid.clone();
+        let backpack_guid = backpack.guid;
         let coins = a_thing(5, 4);
-        let coins_guid = coins.guid.clone();
-        backpack.content = Some(vec![coins]);
+        let coins_guid = coins.guid;
+        backpack.content = Some(Box::new(vec![coins]));
         let mut inventory =
             Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
 
@@ -395,7 +395,7 @@ mod tests {
     #[test]
     fn taking_a_slot_drops_the_container_and_everything_in_it() {
         let mut backpack = a_backpack();
-        backpack.content = Some(vec![a_thing(5, 4)]);
+        backpack.content = Some(Box::new(vec![a_thing(5, 4)]));
         let mut inventory = Inventory::from_snapshot(HashMap::from([
             (InventorySlot::Backpack, backpack),
             (InventorySlot::Head, a_thing(40, 1)),

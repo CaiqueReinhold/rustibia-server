@@ -43,7 +43,7 @@ fn replace_field(ctx: &mut TickCtx, owner: AgentKey, field: &Arc<ItemConfig>, po
     };
     let replaced: Vec<ItemGuid> = items
         .filter(|item| item.config.attr_field().is_some())
-        .map(|item| item.guid.clone())
+        .map(|item| item.guid)
         .collect();
     for guid in &replaced {
         ctx.map.remove_item_from_tile(pos, guid, 1);
@@ -144,7 +144,7 @@ mod tests {
     fn ids_at(map: &WorldMap, pos: &Position) -> Vec<ItemId> {
         map.iter_items(pos)
             .unwrap()
-            .map(|item| item.item_id)
+            .map(|item| item.id())
             .collect()
     }
 

@@ -47,7 +47,7 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
     let Some(source_item) = find_item(ctx.map, &source.placement, &source.guid) else {
         return use_item_failed(ctx, mark, agent_key, "Item was not found");
     };
-    let source_item_id = source_item.item_id;
+    let source_item_id = source_item.id();
     let source_is_usable = source_item.config.has_flag(ItemFlag::Usable);
     // Two sources, and they answer different questions. What a shovel does is a
     // property of the world, so it stays in `game_conf.yaml`'s id lists; what a
@@ -181,7 +181,7 @@ fn tool_target<'a>(map: &GameMap, target: &'a UseTarget) -> Result<&'a ItemRef, 
 fn shovel(ctx: &mut TickCtx, target: &ItemRef) -> Result<(), ItemActionError> {
     let target_item_id = find_item(ctx.map, &target.placement, &target.guid)
         .unwrap()
-        .item_id;
+        .id();
     if !GAME_CONFIG
         .multi_action
         .diggable_ids
@@ -211,7 +211,7 @@ fn first_available_position_up(
 fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), ItemActionError> {
     let target_item_id = find_item(ctx.map, &target.placement, &target.guid)
         .unwrap()
-        .item_id;
+        .id();
     let ItemPlacement::Map(pos) = &target.placement else {
         return Err(ItemActionError::ActionFailed);
     };
@@ -259,7 +259,7 @@ fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), 
         let top_item = ctx
             .map
             .get_top_item(&down)
-            .map(|item| (item.guid.clone(), item.amount));
+            .map(|item| (item.guid, item.amount));
         if let Some((guid, amount)) = top_item {
             let hauled = remove_item_at(
                 ctx,
@@ -460,7 +460,7 @@ mod tests {
         let mut map = GameMap::new();
 
         let (tool, target) = (an_item(tool_id), an_item(target_id));
-        let (tool_guid, target_guid) = (tool.guid.clone(), target.guid.clone());
+        let (tool_guid, target_guid) = (tool.guid, target.guid);
         map.insert_tile(here.clone(), a_tile_with(tool));
         map.insert_tile(there.clone(), a_tile_with(target));
         let agent = map
@@ -505,7 +505,7 @@ mod tests {
                     panic!("{name} ({shovel_id}) left {diggable_id}'s tile empty")
                 });
                 assert_eq!(
-                    dug.item_id,
+                    dug.id(),
                     ItemId(diggable_id.0 + 1),
                     "{name} ({shovel_id:?}) dug {diggable_id:?} into the wrong item"
                 );
@@ -525,7 +525,7 @@ mod tests {
             let mut map = GameMap::new();
 
             let (rope, target) = (an_item(*rope_id), an_item(rope_spot));
-            let (rope_guid, target_guid) = (rope.guid.clone(), target.guid.clone());
+            let (rope_guid, target_guid) = (rope.guid, target.guid);
             map.insert_tile(here.clone(), a_tile_with(rope));
             map.insert_tile(spot.clone(), a_tile_with(target));
             // The only tile `firt_available_position_up` can find, so the destination is known.
@@ -576,14 +576,14 @@ mod tests {
             ItemId(9998),
             [ItemFlag::Usable, ItemFlag::Multiuse, ItemFlag::Take],
         );
-        assert_eq!(GAME_CONFIG.multi_action.tool_action(hammer.item_id), None);
+        assert_eq!(GAME_CONFIG.multi_action.tool_action(hammer.id()), None);
 
         let mut map = GameMap::new();
         let sand = a_built_item(
             GAME_CONFIG.multi_action.diggable_ids[0],
             [ItemFlag::Ground, ItemFlag::Usable],
         );
-        let (hammer_guid, sand_guid) = (hammer.guid.clone(), sand.guid.clone());
+        let (hammer_guid, sand_guid) = (hammer.guid, sand.guid);
         map.insert_tile(here.clone(), a_tile_with(hammer));
         map.insert_tile(sand_pos.clone(), a_tile_with(sand));
         let agent = map
@@ -600,7 +600,7 @@ mod tests {
             },
             UseTarget {
                 item: Some(ItemRef {
-                    guid: sand_guid.clone(),
+                    guid: sand_guid,
                     placement: ItemPlacement::Map(sand_pos.clone()),
                 }),
                 agent: None,
@@ -719,9 +719,9 @@ mod tests {
         let (here, there) = (Position::new(10, 10, 7), Position::new(10, 11, 7));
         let mut map = GameMap::new();
 
-        let potion_guid = potion.guid.clone();
+        let potion_guid = potion.guid;
         let clicked = a_plain_item();
-        let clicked_guid = clicked.guid.clone();
+        let clicked_guid = clicked.guid;
         map.insert_tile(here.clone(), a_tile_with(potion));
         map.insert_tile(there.clone(), a_tile_with(clicked));
 
@@ -760,12 +760,12 @@ mod tests {
                 &mut h.ctx(&mut map),
                 user,
                 ItemRef {
-                    guid: potion_guid.clone(),
+                    guid: potion_guid,
                     placement: ItemPlacement::Map(here.clone()),
                 },
                 UseTarget {
                     item: Some(ItemRef {
-                        guid: clicked_guid.clone(),
+                        guid: clicked_guid,
                         placement: ItemPlacement::Map(there.clone()),
                     }),
                     agent: target,
@@ -791,15 +791,15 @@ mod tests {
             charges_left: map
                 .iter_items(&here)
                 .ok()
-                .and_then(|mut items| items.find(|i| i.item_id == ItemId(9999)))
+                .and_then(|mut items| items.find(|i| i.id() == ItemId(9999)))
                 .map(|item| item.amount),
             flasks_at_the_users_feet: map
                 .iter_items(&here)
-                .map(|items| items.filter(|i| i.item_id != ItemId(9999)).count())
+                .map(|items| items.filter(|i| i.id() != ItemId(9999)).count())
                 .unwrap_or(0),
             at_the_users_feet: map
                 .iter_items(&here)
-                .map(|items| items.map(|i| (i.item_id, i.amount)).collect())
+                .map(|items| items.map(|i| (i.id(), i.amount)).collect())
                 .unwrap_or_default(),
             broadcasts: h.events,
         }
@@ -996,7 +996,7 @@ mod tests {
         let mut map = GameMap::new();
 
         let item = a_rune(3, spell.id);
-        let guid = item.guid.clone();
+        let guid = item.guid;
         map.insert_tile(here.clone(), a_tile_with(item));
         let agent = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
@@ -1096,7 +1096,7 @@ mod tests {
         let there = Position::new(11, 10, 7);
         let mut map = GameMap::new();
         let item = a_rune(3, spell.id);
-        let guid = item.guid.clone();
+        let guid = item.guid;
         map.insert_tile(here.clone(), a_tile_with(item));
         map.insert_tile(there.clone(), MapTile::new());
         let agent = map
@@ -1168,7 +1168,7 @@ mod tests {
         let empty = Position::new(11, 10, 7);
         let mut map = GameMap::new();
         let item = a_rune(3, spell.id);
-        let guid = item.guid.clone();
+        let guid = item.guid;
         map.insert_tile(here.clone(), a_tile_with(item));
         map.insert_tile(empty.clone(), MapTile::new());
         let agent = map
@@ -1449,12 +1449,12 @@ mod tests {
         let mut map = GameMap::new();
         map.insert_tile(here.clone(), MapTile::new());
 
-        let potion_guid = potion.guid.clone();
+        let potion_guid = potion.guid;
         let mut backpack = a_pouch(ItemId(1988), 20);
         let mut guids = Vec::new();
         for n in 0..pouches {
             let mut pouch = a_pouch(ItemId(1990 + n as u16), 8);
-            guids.push(pouch.guid.clone());
+            guids.push(pouch.guid);
             if n == pouches - 1 {
                 let content = pouch.content.as_mut().unwrap();
                 content.extend(beside_it.iter().cloned());
@@ -1476,7 +1476,7 @@ mod tests {
             ItemRef {
                 guid: potion_guid,
                 placement: ItemPlacement::Container {
-                    guid: guids.last().unwrap().clone(),
+                    guid: *guids.last().unwrap(),
                     within: Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, user)),
                     index: beside_it.len(),
                 },
@@ -1504,7 +1504,7 @@ mod tests {
                     .as_ref()
                     .unwrap()
                     .iter()
-                    .map(|it| (it.item_id, it.amount))
+                    .map(|it| (it.id(), it.amount))
                     .collect()
             })
             .collect();

@@ -21,7 +21,7 @@ pub fn get_player_desc(map: &GameMap, key: AgentKey, id: AgentId) -> Option<Serv
     let position = map.agent_position(key)?;
     let player = agent.get_player()?;
 
-    let slot_item = |slot: InventorySlot| player.inventory().get(&slot).map(|it| it.item_id);
+    let slot_item = |slot: InventorySlot| player.inventory().get(&slot).map(|it| it.id());
 
     Some(ServerMessage::DescribePlayer {
         agent_id: id,

@@ -9,7 +9,7 @@ action:
   use_item_cooldown_ticks: 20
 
 movement:
-  wander_chance: 90000
+  wander_chance: 60000
   wander_ticks: 20
   wander_distance: 10
   min_speed: 40

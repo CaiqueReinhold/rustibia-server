@@ -191,14 +191,14 @@ mod tests {
             let mut player = world.player_mut(me).unwrap();
             let mut inventory = player.inventory_mut();
             for pouch in &pouches[..2] {
-                let coin = pouch.content.as_ref().unwrap()[0].guid.clone();
+                let coin = pouch.content.as_ref().unwrap()[0].guid;
                 inventory.remove(InventorySlot::Backpack, &coin, 1).unwrap();
             }
         }
         let delta = world.take_delta();
         let (mut session, mut connection_rx, _world_rx, _tick_tx) =
             SessionActor::for_test(me, world.snapshot());
-        let open = session.containers.get_or_insert(pouches[0].guid.clone());
+        let open = session.containers.get_or_insert(pouches[0].guid);
 
         session.apply_delta(&delta).await.unwrap();
 

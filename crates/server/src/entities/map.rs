@@ -1,9 +1,13 @@
 use slotmap::SlotMap;
 use smallvec::SmallVec;
-use std::{collections::HashMap, ops::RangeInclusive, sync::Arc};
+use std::{ops::RangeInclusive, sync::Arc};
+
+use imbl::HashMap;
 use thiserror::Error;
 
 use crate::constants::view::MAX_VISIBLE_ITEMS;
+
+const TILE_INLINE_ITEMS: usize = 2;
 use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::items::{FloorChangeDirection, Item, ItemFlag, ItemGuid};
 use crate::entities::player::Player;
@@ -13,7 +17,7 @@ pub type RemovedItem = (Item, Option<usize>, Option<(ItemGuid, usize)>);
 
 #[derive(Debug, Clone)]
 pub struct MapTile {
-    items: SmallVec<[Item; MAX_VISIBLE_ITEMS]>,
+    items: SmallVec<[Item; TILE_INLINE_ITEMS]>,
     agents: SmallVec<[AgentKey; 1]>,
 }
 
@@ -497,7 +501,7 @@ impl GameMap {
         if item.guid == *guid {
             return Some((parent_guid, item));
         }
-        if let Some(content) = &item.content {
+        if let Some(content) = item.content.as_deref() {
             for inner in content {
                 if let Some(found) = Self::find_by_id_inner(inner, guid, Some(&item.guid)) {
                     return Some(found);
@@ -569,10 +573,10 @@ mod tests {
         let pos = Position::new(10, 10, 7);
         let mut map = map_with_one_tile(&pos);
         let bag = a_bag();
-        let bag_guid = bag.guid.clone();
+        let bag_guid = bag.guid;
         map.place_item(&pos, None, None, bag).unwrap();
         let stack = a_stack_of(50);
-        let stack_guid = stack.guid.clone();
+        let stack_guid = stack.guid;
         map.place_item(&pos, None, Some((&bag_guid, 0)), stack)
             .unwrap();
 
@@ -593,10 +597,10 @@ mod tests {
         let pos = Position::new(10, 10, 7);
         let mut map = map_with_one_tile(&pos);
         let bag = a_bag();
-        let bag_guid = bag.guid.clone();
+        let bag_guid = bag.guid;
         map.place_item(&pos, None, None, bag).unwrap();
         let stack = a_stack_of(20);
-        let stack_guid = stack.guid.clone();
+        let stack_guid = stack.guid;
         map.place_item(&pos, None, Some((&bag_guid, 0)), stack)
             .unwrap();
 
@@ -610,14 +614,14 @@ mod tests {
         let pos = Position::new(10, 10, 7);
         let mut map = map_with_one_tile(&pos);
         let outer = a_bag();
-        let outer_guid = outer.guid.clone();
+        let outer_guid = outer.guid;
         map.place_item(&pos, None, None, outer).unwrap();
         let inner = a_bag();
-        let inner_guid = inner.guid.clone();
+        let inner_guid = inner.guid;
         map.place_item(&pos, None, Some((&outer_guid, 0)), inner)
             .unwrap();
         let stack = a_stack_of(50);
-        let stack_guid = stack.guid.clone();
+        let stack_guid = stack.guid;
         map.place_item(&pos, None, Some((&inner_guid, 0)), stack)
             .unwrap();
 
@@ -634,7 +638,7 @@ mod tests {
         let pos = Position::new(10, 10, 7);
         let mut map = map_with_one_tile(&pos);
         let stack = a_stack_of(5);
-        let stack_guid = stack.guid.clone();
+        let stack_guid = stack.guid;
         map.place_item(&pos, None, None, stack).unwrap();
 
         assert!(map.remove_item_from_tile(&pos, &stack_guid, 20).is_none());
@@ -752,6 +756,20 @@ mod tests {
         }
     }
 
+    /// A ceiling, not a pin: every `MapTile` is multiplied by the map's 18.9M tile slots,
+    /// so a field added to `Item` or a larger `TILE_INLINE_ITEMS` costs gigabytes of
+    /// resident set and nothing else would report it. Raise it deliberately or not at all.
+    #[test]
+    fn a_tile_stays_small_enough_to_hold_nineteen_million_of() {
+        let size = std::mem::size_of::<MapTile>();
+        assert!(
+            size <= 128,
+            "MapTile is {size} bytes; at {} slots that is {:.1} GB",
+            18_887_168u64,
+            (size as f64 * 18_887_168.0) / 1024.0 / 1024.0 / 1024.0
+        );
+    }
+
     #[test]
     #[ignore = "timing, not a pass/fail assertion"]
     fn map_clone_cost_by_player_count() {
@@ -837,6 +855,36 @@ mod tests {
 
         assert_eq!(snapshot.iter_agents_at(&pos).unwrap().count(), 0);
         assert_eq!(map.iter_agents_at(&pos).unwrap().count(), 1);
+    }
+
+    /// The tile-write path: `get_tile_mut` reaches a chunk through the container and then
+    /// `Arc::make_mut`s it. Both levels have to copy, and only the second one used to.
+    #[test]
+    fn an_item_added_after_a_clone_is_not_in_the_snapshot() {
+        let pos = Position::new(3, 3, 7);
+        let mut map = map_with_one_tile(&pos);
+
+        let snapshot = map.clone();
+        map.place_item(&pos, None, None, a_stack_of(1)).unwrap();
+
+        assert_eq!(snapshot.iter_items(&pos).unwrap().count(), 0);
+        assert_eq!(map.iter_items(&pos).unwrap().count(), 1);
+    }
+
+    /// The other write path: a tile in a chunk the map does not hold yet adds an entry to
+    /// the container itself, which is the structure a snapshot now shares rather than owns.
+    #[test]
+    fn a_chunk_added_after_a_clone_is_not_in_the_snapshot() {
+        let here = Position::new(3, 3, 7);
+        let far = Position::new(300, 300, 7); // a chunk the map has no entry for
+        let mut map = map_with_one_tile(&here);
+
+        let snapshot = map.clone();
+        map.insert_tile(far.clone(), MapTile::new());
+
+        assert!(!snapshot.contains_tile(&far), "the snapshot gained a chunk");
+        assert!(map.contains_tile(&far));
+        assert!(snapshot.contains_tile(&here), "and kept the one it had");
     }
 
     #[test]

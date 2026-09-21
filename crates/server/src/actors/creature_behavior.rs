@@ -44,7 +44,7 @@ impl CreatureBehaviorActor {
         info!("CreatureBehaviorActor started");
         while self.tick_rx.changed().await.is_ok() {
             let tick = *self.tick_rx.borrow();
-            if tick.0.is_multiple_of(5) {
+            if tick.0.is_multiple_of(10) {
                 self.process_tick(tick).await;
             }
         }

@@ -322,7 +322,7 @@ pub fn insert_item_at(
     placement: &ItemPlacement,
     index: Option<usize>,
 ) -> Result<(), ItemMovementError> {
-    let container = placement.container().map(|(g, i)| (g.clone(), i));
+    let container = placement.container().map(|(g, i)| (*g, i));
     match placement.site() {
         PlacementSite::Tile(pos) => {
             match ctx
@@ -452,7 +452,7 @@ mod tests {
             Position::new(11, 10, 7),
             Position::new(12, 10, 7),
         );
-        let guid = item.guid.clone();
+        let guid = item.guid;
         let mut map = GameMap::new();
         map.insert_tile(here.clone(), a_ground_tile());
         let mut source_tile = a_ground_tile();
@@ -509,7 +509,7 @@ mod tests {
         map.insert_tile(above.clone(), a_ground_tile());
 
         let mut map = WorldMap::new(map);
-        let events = drop_onto(&mut map, agent, source, guid.clone(), above.clone());
+        let events = drop_onto(&mut map, agent, source, guid, above.clone());
 
         assert!(map.get_item_by_id(&above, &guid).is_some(), "{events:?}");
     }
@@ -524,7 +524,7 @@ mod tests {
         map.insert_tile(target.clone(), a_ground_tile());
 
         let mut map = WorldMap::new(map);
-        let events = drop_onto(&mut map, agent, source, guid.clone(), target.clone());
+        let events = drop_onto(&mut map, agent, source, guid, target.clone());
 
         assert!(map.get_item_by_id(&target, &guid).is_none());
         assert!(
@@ -546,7 +546,7 @@ mod tests {
             &mut h.ctx(&mut map),
             agent,
             ItemRef {
-                guid: guid.clone(),
+                guid,
                 placement: ItemPlacement::Map(source),
             },
             1,
@@ -622,7 +622,7 @@ mod tests {
             &mut h.ctx(&mut map),
             agent,
             ItemRef {
-                guid: guid.clone(),
+                guid,
                 placement: ItemPlacement::Map(source),
             },
             1,
@@ -667,7 +667,7 @@ mod tests {
 
         let mut h = TestHarness::new();
         let item = a_flask(1);
-        let guid = item.guid.clone();
+        let guid = item.guid;
 
         let mut map = WorldMap::new(map);
         stow_item(&mut h.ctx(&mut map), agent, item).unwrap();
@@ -767,12 +767,12 @@ mod tests {
         map.insert_tile(here.clone(), a_ground_tile());
         let mut source_tile = a_ground_tile();
         let weapon = an_item_for(InventorySlot::BothHands);
-        let weapon_guid = weapon.guid.clone();
+        let weapon_guid = weapon.guid;
         source_tile.push_item(weapon);
         map.insert_tile(source.clone(), source_tile);
 
         let shield = an_item_for(InventorySlot::RightHand);
-        let shield_guid = shield.guid.clone();
+        let shield_guid = shield.guid;
         let mut snapshot = a_test_snapshot(1, 1);
         snapshot.inventory = HashMap::from([
             (InventorySlot::Backpack, a_stuffed_backpack()),
@@ -787,7 +787,7 @@ mod tests {
             &mut h.ctx(&mut map),
             agent,
             ItemRef {
-                guid: weapon_guid.clone(),
+                guid: weapon_guid,
                 placement: ItemPlacement::Map(source.clone()),
             },
             1,
@@ -806,7 +806,7 @@ mod tests {
             player
                 .inventory()
                 .get(&InventorySlot::RightHand)
-                .map(|it| it.guid.clone()),
+                .map(|it| it.guid),
             Some(shield_guid),
             "the off-hand item left the hand"
         );
@@ -819,7 +819,7 @@ mod tests {
             "the two-hander did not go back to the ground"
         );
         assert!(
-            map.get_top_item(&here).map(|it| it.guid.clone()) != Some(weapon_guid),
+            map.get_top_item(&here).map(|it| it.guid) != Some(weapon_guid),
             "the two-hander landed at the player's feet"
         );
     }
@@ -838,7 +838,7 @@ mod tests {
 
         let mut h = TestHarness::new();
         let item = a_flask(1);
-        let guid = item.guid.clone();
+        let guid = item.guid;
 
         let mut map = WorldMap::new(map);
         return_item(
@@ -850,7 +850,7 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(map.get_top_item(&pos).map(|i| i.guid.clone()), Some(guid));
+        assert_eq!(map.get_top_item(&pos).map(|i| i.guid), Some(guid));
     }
 
     /// Nothing else updates `carried_weight` for an item that never passed through
@@ -861,7 +861,7 @@ mod tests {
         let mut map = GameMap::new();
         map.insert_tile(pos.clone(), MapTile::new());
         let backpack = a_backpack_with(8, vec![a_flask(1)]);
-        let container_guid = backpack.guid.clone();
+        let container_guid = backpack.guid;
         let mut snapshot = a_test_snapshot(1, 1);
         snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
         let agent = map
@@ -895,7 +895,7 @@ mod tests {
         assert_eq!(
             content
                 .iter()
-                .map(|it| (it.item_id, it.amount))
+                .map(|it| (it.id(), it.amount))
                 .collect::<Vec<_>>(),
             vec![(ItemId(4321), 2)],
             "it opened a second entry instead of merging"
@@ -915,7 +915,7 @@ mod tests {
         let mut map = GameMap::new();
         map.insert_tile(pos.clone(), MapTile::new());
         let helmet = an_armoured_helmet();
-        let helmet_guid = helmet.guid.clone();
+        let helmet_guid = helmet.guid;
         let mut snapshot = a_test_snapshot(1, 1);
         snapshot.inventory = HashMap::from([(InventorySlot::Head, helmet)]);
         let agent = map
@@ -924,7 +924,7 @@ mod tests {
 
         let mut h = TestHarness::new();
         let item = a_flask(1);
-        let guid = item.guid.clone();
+        let guid = item.guid;
 
         let mut map = WorldMap::new(map);
         return_item(
@@ -941,10 +941,10 @@ mod tests {
                 .unwrap()
                 .inventory()
                 .get(&InventorySlot::Head)
-                .map(|it| it.guid.clone()),
+                .map(|it| it.guid),
             Some(helmet_guid),
             "the helmet was evicted"
         );
-        assert_eq!(map.get_top_item(&pos).map(|i| i.guid.clone()), Some(guid));
+        assert_eq!(map.get_top_item(&pos).map(|i| i.guid), Some(guid));
     }
 }

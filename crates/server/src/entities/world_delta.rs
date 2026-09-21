@@ -140,7 +140,7 @@ impl WorldDelta {
 
     pub(in crate::entities) fn mark_container(&mut self, guid: &ItemGuid) {
         if !self.containers.contains(guid) {
-            self.containers.insert(guid.clone());
+            self.containers.insert(*guid);
         }
     }
 }
@@ -218,9 +218,9 @@ mod tests {
         let mut delta = WorldDelta::default();
         assert!(delta.is_empty());
 
-        delta.mark_container(&ItemGuid("bag".to_owned()));
+        delta.mark_container(&ItemGuid(1));
 
         assert!(!delta.is_empty());
-        assert!(delta.container_dirty(&ItemGuid("bag".to_owned())));
+        assert!(delta.container_dirty(&ItemGuid(1)));
     }
 }

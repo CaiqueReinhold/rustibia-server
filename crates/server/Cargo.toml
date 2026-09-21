@@ -34,6 +34,7 @@ tokio-stream = "0.1.18"
 tokio-util = { version = "0.7", features = ["codec"] }
 rand_distr = "0.6.0"
 strum = { version = "0.28.0", features = ["derive"] }
+imbl = "7.0.2"
 
 [dev-dependencies]
 rustibia-certgen = { path = "../certgen" }

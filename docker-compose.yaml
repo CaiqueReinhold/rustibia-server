@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rustibia -d rustibia"]
+      test: [ "CMD-SHELL", "pg_isready -U rustibia -d rustibia" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["cargo", "run"]
+    command: [ "cargo", "run" ]
     working_dir: /app/crates/site
     depends_on:
       db:
@@ -43,7 +43,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["cargo", "run"]
+    command: [ "cargo", "run", "--release" ]
     working_dir: /app/crates/server
     depends_on:
       db:
