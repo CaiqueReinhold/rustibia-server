@@ -1,0 +1,27 @@
+name: Incredibly Old Witch
+life: 100
+speed: 101
+blood_type: blood
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 54
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 18254
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Feel the wrath of the witch!
+    - Oh how you will regret to have distubed me!
+    - Everyone is so stupid!
+    - Stupid people!
+    - I will teach them all to leave me alone!

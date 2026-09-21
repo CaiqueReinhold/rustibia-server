@@ -1,0 +1,68 @@
+name: Swarmer
+life: 460
+speed: 95
+blood_type: poison
+armor: 10
+defense: 10
+experience: 350
+outfit:
+  id: 460
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 102
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 80
+      max: 80
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 110
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.22
+        flat: 0
+      max:
+        factor: 0.22
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 13973
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Flzlzlzlzlzlzlz!
+    - Rzlrzlrzlrzlrzlrzl!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 75
+  - item_id: 3032  # small emerald
+    chance: 920
+  - item_id: 3326  # epee
+    chance: 450
+  - item_id: 14076  # swarmer antenna
+    chance: 15300
+  - item_id: 14083  # compound eye
+    chance: 12500

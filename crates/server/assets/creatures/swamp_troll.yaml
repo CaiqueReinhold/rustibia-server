@@ -1,0 +1,55 @@
+name: Swamp Troll
+life: 55
+speed: 64
+blood_type: blood
+armor: 6
+defense: 6
+experience: 25
+outfit:
+  id: 76
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 13
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 1
+      max: 1
+    interval: 80
+corpse: 6018
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrr
+    - Groar!
+    - Me strong! Me ate spinach!
+loot:
+  - item_id: 3578  # fish
+    chance: 60000
+  - item_id: 3031  # gold coin
+    chance: 50300
+    amount: 5
+  - item_id: 2920  # torch
+    chance: 15000
+  - item_id: 3277  # spear
+    chance: 13000
+  - item_id: 3120  # mouldy cheese
+    chance: 10000
+  - item_id: 3552  # leather boots
+    chance: 10000
+  - item_id: 9686  # swamp grass
+    chance: 3100
+  - item_id: 12517  # medicine pouch
+    chance: 2400
+  - item_id: 5901  # wood
+    chance: 2000
+  - item_id: 3741  # troll green
+    chance: 1000
+  - item_id: 3483  # fishing rod
+    chance: 80

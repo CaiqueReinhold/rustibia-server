@@ -1,0 +1,52 @@
+name: Skeleton
+life: 50
+speed: 77
+blood_type: blood
+armor: 2
+defense: 2
+experience: 35
+outfit:
+  id: 33
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 17
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 7
+      max: 13
+    target:
+      type: target
+      range: 1
+corpse: 5972
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3115  # bone
+    chance: 50915
+  - item_id: 3031  # gold coin
+    chance: 44978
+    amount: 10
+  - item_id: 2920  # torch
+    chance: 10285
+  - item_id: 11481  # pelvis bone
+    chance: 10178
+  - item_id: 3367  # viking helmet
+    chance: 7687
+  - item_id: 3276  # hatchet
+    chance: 5375
+  - item_id: 3286  # mace
+    chance: 4625
+  - item_id: 3264  # sword
+    chance: 2107
+  - item_id: 23986  # heavy old tome
+    chance: 2036
+  - item_id: 3411  # brass shield
+    chance: 920

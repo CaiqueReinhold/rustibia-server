@@ -1,0 +1,34 @@
+name: Cave Rat
+life: 30
+speed: 75
+blood_type: blood
+armor: 1
+defense: 1
+experience: 10
+outfit:
+  id: 56
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+corpse: 5964
+flee_threshold: 3
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Meeeeep!
+    - Meep!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 85000
+    amount: 2
+  - item_id: 3607  # cheese
+    chance: 30000
+  - item_id: 3492  # worm
+    chance: 10000
+    amount: 2
+  - item_id: 3598  # cookie
+    chance: 940

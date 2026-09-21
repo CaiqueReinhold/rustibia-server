@@ -1,0 +1,50 @@
+name: Deepling Brawler
+life: 380
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 260
+outfit:
+  id: 470
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 60
+      max: 120
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+    effect_id: 2
+corpse: 12685
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 61000
+    amount: 44
+  - item_id: 3578  # fish
+    chance: 19120
+    amount: 3
+  - item_id: 5895  # fish fin
+    chance: 740
+  - item_id: 12683  # heavy trident
+    chance: 2940
+  - item_id: 12730  # eye of a deepling
+    chance: 6600
+  - item_id: 14017  # deepling scales
+    chance: 14500

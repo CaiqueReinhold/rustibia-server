@@ -1,0 +1,33 @@
+name: Blood Crab
+life: 290
+speed: 80
+blood_type: blood
+armor: 28
+defense: 28
+experience: 160
+outfit:
+  id: 200
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+corpse: 6075
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 85818
+    amount: 20
+  - item_id: 3578  # fish
+    chance: 14803
+  - item_id: 9633  # bloody pincers
+    chance: 6053
+  - item_id: 3358  # chain armor
+    chance: 5122
+  - item_id: 3372  # brass legs
+    chance: 2143
+  - item_id: 3026  # white pearl
+    chance: 517

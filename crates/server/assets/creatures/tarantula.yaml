@@ -1,0 +1,57 @@
+name: Tarantula
+life: 225
+speed: 107
+blood_type: poison
+armor: 20
+defense: 20
+experience: 120
+outfit:
+  id: 219
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 40
+      max: 40
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.22
+        flat: 0
+      max:
+        factor: 0.22
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6060
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 79114
+    amount: 40
+  - item_id: 10281  # tarantula egg
+    chance: 9960
+  - item_id: 8031  # spider fangs
+    chance: 4844
+  - item_id: 3372  # brass legs
+    chance: 3021
+  - item_id: 3410  # plate shield
+    chance: 1966
+  - item_id: 3351  # steel helmet
+    chance: 925
+  - item_id: 3053  # time ring
+    chance: 112

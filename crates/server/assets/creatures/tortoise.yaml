@@ -1,0 +1,36 @@
+name: Tortoise
+life: 185
+speed: 100
+blood_type: blood
+armor: 30
+defense: 30
+experience: 90
+outfit:
+  id: 197
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+corpse: 6072
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 59000
+    amount: 30
+  - item_id: 3305  # battle hammer
+    chance: 730
+  - item_id: 3410  # plate shield
+    chance: 2850
+  - item_id: 3578  # fish
+    chance: 4600
+  - item_id: 5678  # tortoise egg
+    chance: 770
+    amount: 2
+  - item_id: 5899  # turtle shell
+    chance: 1300
+  - item_id: 6131  # tortoise shield
+    chance: 200

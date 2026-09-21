@@ -1,0 +1,28 @@
+name: Crimson Frog
+life: 60
+speed: 100
+blood_type: blood
+armor: 5
+defense: 5
+experience: 20
+outfit:
+  id: 226
+  colors: [94, 78, 77, 112]
+melee:
+  damage:
+    min: 0
+    max: 24
+  element: physical
+corpse: 6079
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit!
+    - Ribbit! Ribbit!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 74000
+    amount: 11
+  - item_id: 3492  # worm
+    chance: 9000

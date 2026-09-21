@@ -1,0 +1,33 @@
+name: Carrion Worm
+life: 145
+speed: 80
+blood_type: blood
+armor: 15
+defense: 15
+experience: 70
+outfit:
+  id: 192
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+corpse: 6069
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 45
+  - item_id: 3577  # meat
+    chance: 9460
+    amount: 2
+  - item_id: 3492  # worm
+    chance: 2100
+    amount: 2
+  - item_id: 10275  # carrion worm fang
+    chance: 10000
+  - item_id: 12600  # coal
+    chance: 210

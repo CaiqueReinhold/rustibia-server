@@ -1,0 +1,140 @@
+name: Ironblight
+life: 6600
+speed: 143
+blood_type: blood
+armor: 84
+defense: 84
+experience: 4400
+outfit:
+  id: 498
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 460
+        max: 480
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 260
+      max: 350
+    target:
+      type: area
+      origin: self
+      shape: beam7
+    missile_id: 29
+    effect_id: 44
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 180
+      max: 250
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 20
+    effect_id: 51
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 600
+    effect_id: 4
+corpse: 16079
+flee_threshold: 260
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Clonk!
+    - Yowl!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 199
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 8
+  - item_id: 9654  # war crystal
+    chance: 21215
+  - item_id: 7643  # ultimate health potion
+    chance: 18606
+  - item_id: 16138  # crystalline spikes
+    chance: 17836
+  - item_id: 238  # great mana potion
+    chance: 17151
+  - item_id: 3033  # small amethyst
+    chance: 15141
+    amount: 3
+  - item_id: 10310  # shiny stone
+    chance: 14286
+  - item_id: 16123  # brown crystal splinter
+    chance: 12703
+    amount: 2
+  - item_id: 16126  # red crystal fragment
+    chance: 10736
+  - item_id: 3032  # small emerald
+    chance: 10565
+    amount: 3
+  - item_id: 16121  # green crystal shard
+    chance: 5518
+  - item_id: 9028  # crystal of balance
+    chance: 4962
+  - item_id: 3039  # red gem
+    chance: 3464
+  - item_id: 9067  # crystal of power
+    chance: 2352
+  - item_id: 8084  # springsprout rod
+    chance: 1668
+  - item_id: 16118  # glacial rod
+    chance: 898
+  - item_id: 5904  # magic sulphur
+    chance: 898
+  - item_id: 812  # terra legs
+    chance: 898
+  - item_id: 7437  # sapphire hammer
+    chance: 770
+  - item_id: 3041  # blue gem
+    chance: 599
+  - item_id: 3326  # epee
+    chance: 599
+  - item_id: 3333  # crystal mace
+    chance: 556
+  - item_id: 10451  # jade hat
+    chance: 257
+  - item_id: 8027  # composite hornbow
+    chance: 171

@@ -1,0 +1,36 @@
+name: Rotworm
+life: 65
+speed: 58
+blood_type: blood
+armor: 8
+defense: 8
+experience: 40
+outfit:
+  id: 26
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+corpse: 5967
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 71834
+    amount: 17
+  - item_id: 3582  # ham
+    chance: 20104
+  - item_id: 3577  # meat
+    chance: 20006
+  - item_id: 9692  # lump of dirt
+    chance: 10004
+  - item_id: 3286  # mace
+    chance: 4441
+  - item_id: 3492  # worm
+    chance: 3057
+    amount: 3
+  - item_id: 3264  # sword
+    chance: 3047

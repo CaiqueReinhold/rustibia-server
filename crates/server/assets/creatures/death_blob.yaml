@@ -1,0 +1,41 @@
+name: Death Blob
+life: 320
+speed: 90
+blood_type: blood
+armor: 15
+defense: 15
+experience: 300
+outfit:
+  id: 315
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: physical
+    damage:
+      min: 35
+      max: 60
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 3
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 20
+      max: 30
+corpse: 9047
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 9055  # glob of tar
+    chance: 14285

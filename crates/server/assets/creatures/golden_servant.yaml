@@ -1,0 +1,90 @@
+name: Golden Servant
+life: 550
+speed: 105
+blood_type: blood
+armor: 29
+defense: 29
+experience: 450
+outfit:
+  id: 396
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 60
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 5
+    effect_id: 49
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 80
+      max: 110
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 90
+      max: 150
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 49
+corpse: 12500
+flee_threshold: 50
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Error. LOAD 'PROGRAM',8,1
+    - Remain. Obedient.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 84992
+    amount: 140
+  - item_id: 266  # health potion
+    chance: 4962
+  - item_id: 268  # mana potion
+    chance: 4960
+  - item_id: 3269  # halberd
+    chance: 3030
+  - item_id: 3732  # green mushroom
+    chance: 1510
+  - item_id: 8775  # gear wheel
+    chance: 943
+  - item_id: 8072  # spellbook of enlightenment
+    chance: 524
+  - item_id: 3049  # stealth ring
+    chance: 478
+  - item_id: 12601  # slime mould
+    chance: 356
+  - item_id: 12801  # golden can of oil
+    chance: 36
+  - item_id: 3360  # golden armor
+    chance: 22
+  - item_id: 3063  # gold ring
+    chance: 8

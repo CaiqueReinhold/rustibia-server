@@ -1,0 +1,49 @@
+name: Smuggler
+life: 130
+speed: 88
+blood_type: blood
+armor: 8
+defense: 8
+experience: 48
+outfit:
+  id: 134
+  colors: [95, 0, 113, 115]
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+corpse: 18226
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I will silence you forever!
+    - You saw something you shouldn't!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 79815
+    amount: 10
+  - item_id: 2920  # torch
+    chance: 30203
+    amount: 2
+  - item_id: 3559  # leather legs
+    chance: 14782
+  - item_id: 3582  # ham
+    chance: 10185
+  - item_id: 3294  # short sword
+    chance: 10051
+  - item_id: 3355  # leather helmet
+    chance: 10036
+  - item_id: 3291  # knife
+    chance: 10012
+  - item_id: 3264  # sword
+    chance: 5012
+  - item_id: 8012  # raspberry
+    chance: 4896
+    amount: 5
+  - item_id: 3292  # combat knife
+    chance: 4042
+  - item_id: 7397  # deer trophy
+    chance: 112

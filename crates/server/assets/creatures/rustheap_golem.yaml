@@ -1,0 +1,112 @@
+name: Rustheap Golem
+life: 2800
+speed: 125
+blood_type: blood
+armor: 26
+defense: 33
+experience: 2300
+outfit:
+  id: 603
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 320
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    speed:
+      min:
+        factor: -0.9
+        flat: 0
+      max:
+        factor: -0.9
+        flat: 0
+    duration_ticks: 200
+    effect_id: 14
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: energy
+    damage:
+      min: 110
+      max: 210
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 11000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.428
+        flat: 0
+      max:
+        factor: 0.428
+        flat: 0
+    duration_ticks: 120
+    effect_id: 13
+corpse: 20984
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - "*clatter*"
+    - "*krrk*"
+    - "*frzzp*"
+loot:
+  - item_id: 953  # nail
+    chance: 1950
+  - item_id: 9016  # flask of rust remover
+    chance: 5860
+  - item_id: 21196  # necromantic rust
+    chance: 14980
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 90
+  - item_id: 5880  # iron ore
+    chance: 330
+  - item_id: 21755  # bronze gear wheel
+    chance: 1950
+  - item_id: 3035  # platinum coin
+    chance: 58310
+    amount: 3
+  - item_id: 3026  # white pearl
+    chance: 1300
+  - item_id: 3027  # black pearl
+    chance: 1630
+  - item_id: 236  # strong health potion
+    chance: 10100
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 7170
+    amount: 2
+  - item_id: 3279  # war hammer
+    chance: 3580
+  - item_id: 7452  # spiked squelcher
+    chance: 330
+  - item_id: 21171  # metal bat
+    chance: 330
+  - item_id: 21170  # gearwheel chain
+    chance: 2930
+  - item_id: 8896  # slightly rusted armor
+    chance: 5860
+  - item_id: 8899  # slightly rusted legs
+    chance: 4230

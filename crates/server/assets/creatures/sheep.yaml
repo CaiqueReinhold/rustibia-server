@@ -1,0 +1,28 @@
+name: Sheep
+life: 20
+speed: 58
+blood_type: blood
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 14
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 1
+  element: physical
+corpse: 5991
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Maeh
+loot:
+  - item_id: 3577  # meat
+    chance: 70000
+    amount: 4
+  - item_id: 10319  # wool
+    chance: 1000

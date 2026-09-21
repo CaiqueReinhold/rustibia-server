@@ -1,0 +1,54 @@
+name: Orc Spearman
+life: 105
+speed: 88
+blood_type: blood
+armor: 10
+defense: 10
+experience: 38
+outfit:
+  id: 50
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 25
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 30
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 5996
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ugaar!
+loot:
+  - item_id: 3577  # meat
+    chance: 30387
+  - item_id: 3031  # gold coin
+    chance: 24846
+    amount: 11
+  - item_id: 3277  # spear
+    chance: 17907
+  - item_id: 3362  # studded legs
+    chance: 9210
+  - item_id: 3376  # studded helmet
+    chance: 8239
+  - item_id: 3308  # machete
+    chance: 3027
+  - item_id: 11479  # orc leather
+    chance: 2013
+  - item_id: 23986  # heavy old tome
+    chance: 1899
+  - item_id: 10196  # orc tooth
+    chance: 100

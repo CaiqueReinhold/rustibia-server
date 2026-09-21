@@ -1,0 +1,113 @@
+name: War Golem
+life: 4300
+speed: 120
+blood_type: blood
+armor: 40
+defense: 40
+experience: 2750
+outfit:
+  id: 326
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 550
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 165
+      max: 220
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 9092
+say:
+  cooldown: 50
+  chance: 10000
+  sentences:
+    - Azerus barada nikto!
+    - Klonk klonk klonk
+    - Engaging Enemy!
+    - Threat level processed.
+    - Charging weapon systems!
+    - Auto repair in progress.
+    - The battle is joined!
+    - Termination initialized!
+    - Rrrtttarrrttarrrtta
+loot:
+  - item_id: 3031  # gold coin
+    chance: 37500
+    amount: 90
+  - item_id: 3031  # gold coin
+    chance: 37500
+    amount: 80
+  - item_id: 3061  # life crystal
+    chance: 1000
+  - item_id: 3093  # club ring
+    chance: 810
+  - item_id: 3097  # dwarven ring
+    chance: 1210
+  - item_id: 3265  # two handed sword
+    chance: 5500
+  - item_id: 3282  # morning star
+    chance: 7000
+  - item_id: 3326  # epee
+    chance: 6400
+  - item_id: 3410  # plate shield
+    chance: 9000
+  - item_id: 3413  # battle shield
+    chance: 6500
+  - item_id: 3554  # steel boots
+    chance: 620
+  - item_id: 5880  # iron ore
+    chance: 1920
+  - item_id: 7403  # berserker
+    chance: 50
+  - item_id: 7422  # jade hammer
+    chance: 120
+  - item_id: 7428  # bonebreaker
+    chance: 770
+  - item_id: 7439  # berserk potion
+    chance: 900
+  - item_id: 238  # great mana potion
+    chance: 8860
+  - item_id: 820  # lightning boots
+    chance: 90
+  - item_id: 953  # nail
+    chance: 5260
+    amount: 5
+  - item_id: 7643  # ultimate health potion
+    chance: 10080
+  - item_id: 8895  # rusted armor
+    chance: 260
+  - item_id: 9065  # crystal pedestal
+    chance: 1080
+  - item_id: 9067  # crystal of power
+    chance: 130

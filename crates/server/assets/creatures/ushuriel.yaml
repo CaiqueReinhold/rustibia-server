@@ -1,0 +1,187 @@
+name: Ushuriel
+life: 31500
+speed: 220
+blood_type: blood
+armor: 50
+defense: 45
+experience: 10000
+outfit:
+  id: 12
+  colors: [0, 57, 0, 61]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1088
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 250
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: beam10
+    effect_id: 18
+  - cooldown: 20
+    chance: 8000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 760
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 18
+    missile_id: 11
+  - cooldown: 40
+    chance: 9000
+    type: attack
+    element: earth
+    damage:
+      min: 200
+      max: 585
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 46
+  - cooldown: 20
+    chance: 8000
+    type: attack
+    element: ice
+    damage:
+      min: 0
+      max: 430
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 43
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: energy
+      damage:
+        min: 250
+        max: 250
+      interval: 200
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 12
+  - cooldown: 20
+    chance: 12000
+    type: heal
+    life:
+      min: 400
+      max: 600
+  - cooldown: 20
+    chance: 4000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 140
+    effect_id: 13
+corpse: 6068
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You can't run or hide forever!
+    - I'm the executioner of the Seven!
+    - The final punishment awaits you!
+    - The judgement is guilty! The sentence is death!
+loot:
+  - item_id: 6499  # demonic essence
+    chance: 100000
+  - item_id: 3725  # brown mushroom
+    chance: 96863
+    amount: 30
+  - item_id: 3031  # gold coin
+    chance: 96863
+    amount: 190
+  - item_id: 5880  # iron ore
+    chance: 43922
+  - item_id: 5925  # hardened bone
+    chance: 28235
+    amount: 20
+  - item_id: 7643  # ultimate health potion
+    chance: 26667
+  - item_id: 239  # great health potion
+    chance: 25490
+  - item_id: 3392  # royal helmet
+    chance: 25294
+  - item_id: 7642  # great spirit potion
+    chance: 23725
+  - item_id: 3061  # life crystal
+    chance: 21176
+  - item_id: 238  # great mana potion
+    chance: 20980
+  - item_id: 5741  # skull helmet
+    chance: 20980
+  - item_id: 3035  # platinum coin
+    chance: 20784
+    amount: 30
+  - item_id: 9058  # gold ingot
+    chance: 20196
+  - item_id: 3062  # mind stone
+    chance: 20196
+  - item_id: 5668  # mysterious voodoo skull
+    chance: 20000
+  - item_id: 3369  # warrior helmet
+    chance: 19412
+  - item_id: 7391  # thaian sword
+    chance: 19216
+  - item_id: 3280  # fire sword
+    chance: 18824
+  - item_id: 3060  # orb
+    chance: 17647
+  - item_id: 8896  # slightly rusted armor
+    chance: 16471
+  - item_id: 5892  # huge chunk of crude iron
+    chance: 14510
+  - item_id: 3281  # giant sword
+    chance: 11961
+  - item_id: 3307  # scimitar
+    chance: 10980
+  - item_id: 5954  # demon horn
+    chance: 10784
+    amount: 2
+  - item_id: 3271  # spike sword
+    chance: 10196
+  - item_id: 7402  # dragon slayer
+    chance: 10000
+  - item_id: 7385  # crimson sword
+    chance: 9216
+  - item_id: 3385  # crown helmet
+    chance: 9020
+  - item_id: 3373  # strange helmet
+    chance: 9020
+  - item_id: 7417  # runed sword
+    chance: 8431
+  - item_id: 5891  # enchanted chicken wing
+    chance: 5686
+  - item_id: 5884  # spirit container
+    chance: 5098
+  - item_id: 6103  # unholy book
+    chance: 4118
+  - item_id: 5885  # flask of warrior's sweat
+    chance: 3725

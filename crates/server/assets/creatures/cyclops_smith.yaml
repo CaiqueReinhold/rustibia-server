@@ -1,0 +1,65 @@
+name: Cyclops Smith
+life: 435
+speed: 102
+blood_type: blood
+armor: 28
+defense: 28
+experience: 255
+outfit:
+  id: 277
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 70
+    target:
+      type: target
+      range: 7
+    missile_id: 27
+corpse: 656
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Outis emoi g' onoma.
+    - Whack da humy!
+    - Ai humy phary ty kaynon
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82761
+    amount: 70
+  - item_id: 3577  # meat
+    chance: 50252
+  - item_id: 9657  # cyclops toe
+    chance: 10011
+  - item_id: 3413  # battle shield
+    chance: 6211
+  - item_id: 3266  # battle axe
+    chance: 5139
+  - item_id: 3305  # battle hammer
+    chance: 5117
+  - item_id: 3410  # plate shield
+    chance: 2099
+  - item_id: 3330  # heavy machete
+    chance: 2064
+  - item_id: 3275  # double axe
+    chance: 977
+  - item_id: 236  # strong health potion
+    chance: 520
+  - item_id: 3384  # dark helmet
+    chance: 199
+  - item_id: 7452  # spiked squelcher
+    chance: 142
+  - item_id: 7398  # cyclops trophy
+    chance: 126
+  - item_id: 3093  # club ring
+    chance: 88

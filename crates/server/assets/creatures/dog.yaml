@@ -1,0 +1,22 @@
+name: Dog
+life: 20
+speed: 62
+blood_type: blood
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 32
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 5971
+flee_threshold: 8
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Wuff wuff

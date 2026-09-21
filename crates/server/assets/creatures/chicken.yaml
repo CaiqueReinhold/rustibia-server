@@ -1,0 +1,33 @@
+name: Chicken
+life: 15
+speed: 64
+blood_type: blood
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 111
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 6042
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gokgoooook
+    - Cluck Cluck
+loot:
+  - item_id: 5890  # chicken feather
+    chance: 20000
+  - item_id: 3492  # worm
+    chance: 10000
+  - item_id: 3577  # meat
+    chance: 2120
+    amount: 2
+  - item_id: 3606  # egg
+    chance: 1000

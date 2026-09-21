@@ -1,0 +1,100 @@
+name: Young Sea Serpent
+life: 1050
+speed: 160
+blood_type: blood
+armor: 30
+defense: 30
+experience: 1000
+outfit:
+  id: 317
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 10
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: wave7_2
+    effect_id: 46
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 80
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: wave7_2
+    effect_id: 44
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 25
+      max: 175
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 8965
+flee_threshold: 400
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - CHHHRRRR
+    - HISSSS
+loot:
+  - item_id: 3029  # small sapphire
+    chance: 1900
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 48000
+    amount: 74
+  - item_id: 3049  # stealth ring
+    chance: 1000
+  - item_id: 3061  # life crystal
+    chance: 300
+  - item_id: 3266  # battle axe
+    chance: 8000
+  - item_id: 3282  # morning star
+    chance: 40000
+  - item_id: 3305  # battle hammer
+    chance: 5000
+  - item_id: 236  # strong health potion
+    chance: 5000
+  - item_id: 237  # strong mana potion
+    chance: 4000
+  - item_id: 8894  # heavily rusted armor
+    chance: 7940
+  - item_id: 8895  # rusted armor
+    chance: 7940
+  - item_id: 9666  # sea serpent scale
+    chance: 5000

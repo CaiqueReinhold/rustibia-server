@@ -1,0 +1,120 @@
+name: Werebadger
+life: 1700
+speed: 130
+blood_type: blood
+armor: 31
+defense: 31
+experience: 1600
+outfit:
+  id: 729
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 170
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 140
+      max: 140
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 21
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 30
+    effect_id: 47
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 10
+      max: 100
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 47
+  - cooldown: 80
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    speed:
+      min:
+        factor: -0.1
+        flat: 0
+      max:
+        factor: -0.1
+        flat: 0
+    duration_ticks: 200
+    effect_id: 3
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 50
+      max: 100
+corpse: 22067
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - SNUFFLE
+    - Sniff Sniff
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 80742
+    amount: 75
+  - item_id: 8017  # beetroot
+    chance: 25432
+  - item_id: 22051  # werebadger claws
+    chance: 15068
+  - item_id: 22055  # werebadger skull
+    chance: 14125
+  - item_id: 3725  # brown mushroom
+    chance: 7473
+  - item_id: 268  # mana potion
+    chance: 5231
+  - item_id: 3741  # troll green
+    chance: 5096
+  - item_id: 237  # strong mana potion
+    chance: 3822
+  - item_id: 238  # great mana potion
+    chance: 2034
+  - item_id: 22083  # moonlight crystals
+    chance: 1985
+  - item_id: 678  # small enchanted amethyst
+    chance: 1642
+    amount: 2
+  - item_id: 3098  # ring of healing
+    chance: 956
+  - item_id: 22086  # badger boots
+    chance: 882
+  - item_id: 22060  # werewolf amulet
+    chance: 625
+  - item_id: 3055  # platinum amulet
+    chance: 551
+  - item_id: 8082  # underworld rod
+    chance: 392
+  - item_id: 8094  # wand of voodoo
+    chance: 380
+  - item_id: 22101  # werebadger trophy
+    chance: 306

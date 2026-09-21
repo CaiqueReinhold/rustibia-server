@@ -1,0 +1,133 @@
+name: Mutated Rat
+life: 550
+speed: 115
+blood_type: blood
+armor: 15
+defense: 15
+experience: 450
+outfit:
+  id: 305
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 158
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 100
+      max: 100
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 45
+      max: 85
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 80
+        max: 100
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 600
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 70
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 0
+        max: 80
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 21
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 80
+      max: 95
+corpse: 8957
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrrrrrrrrrrrr!
+    - Fcccccchhhhhh
+loot:
+  - item_id: 3031  # gold coin
+    chance: 78725
+    amount: 130
+  - item_id: 3114  # skull
+    chance: 20298
+  - item_id: 3735  # stone herb
+    chance: 4874
+  - item_id: 9668  # mutated rat tail
+    chance: 3852
+  - item_id: 3410  # plate shield
+    chance: 3777
+  - item_id: 3269  # halberd
+    chance: 2957
+  - item_id: 3732  # green mushroom
+    chance: 1370
+  - item_id: 3120  # mouldy cheese
+    chance: 950
+  - item_id: 3049  # stealth ring
+    chance: 562
+  - item_id: 266  # health potion
+    chance: 507
+  - item_id: 8072  # spellbook of enlightenment
+    chance: 297
+  - item_id: 3428  # tower shield
+    chance: 50

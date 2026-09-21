@@ -1,0 +1,114 @@
+name: Gravedigger
+life: 1500
+speed: 115
+blood_type: blood
+armor: 20
+defense: 20
+experience: 950
+outfit:
+  id: 558
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 320
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 180
+      max: 180
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 40
+      max: 250
+    target:
+      type: target
+      range: 1
+    effect_id: 13
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 175
+      max: 300
+    target:
+      type: target
+      range: 1
+    missile_id: 11
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 100
+      max: 250
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.42
+        flat: 0
+      max:
+        factor: 0.42
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 18962
+flee_threshold: 200
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - High Five!
+    - scrabble
+    - Put it there!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 37
+  - item_id: 3035  # platinum coin
+    chance: 24470
+  - item_id: 3037  # yellow gem
+    chance: 800
+  - item_id: 3071  # wand of inferno
+    chance: 5590
+  - item_id: 3155  # sudden death rune
+    chance: 7300
+    amount: 9
+  - item_id: 3324  # skull staff
+    chance: 130
+  - item_id: 5668  # mysterious voodoo skull
+    chance: 100
+  - item_id: 5925  # hardened bone
+    chance: 50
+  - item_id: 6299  # death ring
+    chance: 800
+  - item_id: 236  # strong health potion
+    chance: 2260
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 3600
+    amount: 2
+  - item_id: 9692  # lump of dirt
+    chance: 100
+  - item_id: 10316  # unholy bone
+    chance: 9570
+  - item_id: 11484  # pile of grave earth
+    chance: 6650
+  - item_id: 11493  # safety pin
+    chance: 6000

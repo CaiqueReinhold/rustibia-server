@@ -1,0 +1,96 @@
+name: Ice Witch
+life: 650
+speed: 100
+blood_type: blood
+armor: 20
+defense: 20
+experience: 580
+outfit:
+  id: 149
+  colors: [0, 9, 86, 86]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 60
+      max: 130
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 43
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: ice
+    damage:
+      min: 55
+      max: 115
+    target:
+      type: target
+      range: 7
+    missile_id: 37
+    effect_id: 44
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 400
+    missile_id: 37
+    effect_id: 43
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 90
+      max: 120
+corpse: 18142
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - So you think you are cool?
+    - I hope it is not too cold for you! HeHeHe.
+    - Freeze!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 29630
+    amount: 90
+  - item_id: 3311  # clerical mace
+    chance: 920
+  - item_id: 3574  # mystic turban
+    chance: 430
+  - item_id: 3732  # green mushroom
+    chance: 1310
+  - item_id: 7290  # shard
+    chance: 530
+  - item_id: 7387  # diamond sceptre
+    chance: 330
+  - item_id: 7441  # ice cube
+    chance: 10000
+  - item_id: 7449  # crystal sword
+    chance: 400
+  - item_id: 7459  # pair of earmuffs
+    chance: 90
+  - item_id: 237  # strong mana potion
+    chance: 820
+  - item_id: 819  # glacier shoes
+    chance: 280

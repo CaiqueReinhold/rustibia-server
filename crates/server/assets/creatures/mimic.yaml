@@ -1,0 +1,19 @@
+name: Mimic
+life: 30
+speed: 85
+blood_type: blood
+armor: 2
+defense: 3
+experience: 0
+outfit:
+  id: 92
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 2472
+say:
+  cooldown: 100
+  chance: 0

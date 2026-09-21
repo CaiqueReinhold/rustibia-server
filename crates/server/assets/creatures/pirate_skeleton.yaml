@@ -1,0 +1,38 @@
+name: Pirate Skeleton
+life: 190
+speed: 90
+blood_type: blood
+armor: 15
+defense: 15
+experience: 85
+outfit:
+  id: 195
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+corpse: 6070
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 48000
+    amount: 25
+  - item_id: 3114  # skull
+    chance: 4460
+  - item_id: 3115  # bone
+    chance: 4250
+  - item_id: 3116  # big bone
+    chance: 5140
+  - item_id: 3264  # sword
+    chance: 550
+  - item_id: 3294  # short sword
+    chance: 1003
+  - item_id: 3337  # bone club
+    chance: 960
+  - item_id: 9642  # spooky blue eye
+    chance: 4730

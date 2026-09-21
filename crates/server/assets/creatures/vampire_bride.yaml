@@ -1,0 +1,119 @@
+name: Vampire Bride
+life: 1200
+speed: 115
+blood_type: blood
+armor: 20
+defense: 20
+experience: 1050
+outfit:
+  id: 312
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 190
+  element: physical
+abilities:
+  - cooldown: 60
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 130
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 80
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 36
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 60
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 40
+      max: 80
+corpse: 8742
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Kneel before your Mistress!
+    - Dead is the new alive.
+    - Come, let me kiss you, darling. Oh wait, I meant kill.
+    - Enjoy the pain - I know you love it.
+    - Are you suffering nicely enough?
+    - You won't regret you came to me, sweetheart.
+loot:
+  - item_id: 3010  # emerald bangle
+    chance: 1100
+  - item_id: 3028  # small diamond
+    chance: 1020
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 45000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 45000
+    amount: 49
+  - item_id: 3035  # platinum coin
+    chance: 9910
+  - item_id: 3070  # moonlight rod
+    chance: 5500
+  - item_id: 3079  # boots of haste
+    chance: 220
+  - item_id: 5669  # enigmatic voodoo skull
+    chance: 170
+  - item_id: 236  # strong health potion
+    chance: 5000
+  - item_id: 237  # strong mana potion
+    chance: 10210
+  - item_id: 649  # flower bouquet
+    chance: 200
+  - item_id: 8045  # hibiscus dress
+    chance: 1030
+  - item_id: 8531  # blood goblet
+    chance: 60
+  - item_id: 8895  # rusted armor
+    chance: 1010
+  - item_id: 8923  # velvet tapestry
+    chance: 970
+  - item_id: 9685  # vampire teeth
+    chance: 10000
+  - item_id: 11449  # blood preservation
+    chance: 4950
+  - item_id: 12306  # leather whip
+    chance: 20

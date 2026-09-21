@@ -1,0 +1,130 @@
+name: Bonebeast
+life: 515
+speed: 109
+blood_type: blood
+armor: 40
+defense: 40
+experience: 580
+outfit:
+  id: 101
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 100
+      max: 100
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 90
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 25
+      max: 47
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 50
+        max: 60
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 70
+        max: 80
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 260
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 60
+corpse: 6030
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Cccchhhhhhhhh!
+    - Knooorrrrr!
+loot:
+  - item_id: 3115  # bone
+    chance: 49750
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 90
+  - item_id: 3114  # skull
+    chance: 20000
+  - item_id: 10277  # bony tail
+    chance: 9980
+  - item_id: 3357  # plate armor
+    chance: 8000
+  - item_id: 3337  # bone club
+    chance: 4950
+  - item_id: 3441  # bone shield
+    chance: 2000
+  - item_id: 3732  # green mushroom
+    chance: 1450
+  - item_id: 5925  # hardened bone
+    chance: 1000
+  - item_id: 266  # health potion
+    chance: 540
+  - item_id: 10244  # bonebeast trophy
+    chance: 120

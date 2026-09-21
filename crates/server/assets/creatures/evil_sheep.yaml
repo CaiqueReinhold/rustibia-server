@@ -1,0 +1,38 @@
+name: Evil Sheep
+life: 350
+speed: 125
+blood_type: blood
+armor: 30
+defense: 35
+experience: 240
+outfit:
+  id: 14
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 80
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 50
+    target:
+      type: target
+      range: 7
+    missile_id: 13
+corpse: 5991
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 50

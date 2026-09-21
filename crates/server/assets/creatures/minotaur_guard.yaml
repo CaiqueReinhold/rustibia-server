@@ -1,0 +1,47 @@
+name: Minotaur Guard
+life: 185
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 160
+outfit:
+  id: 29
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+corpse: 5983
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Kirrl Karrrl!
+    - Kaplar
+loot:
+  - item_id: 3031  # gold coin
+    chance: 59686
+    amount: 20
+  - item_id: 11472  # minotaur horn
+    chance: 8195
+    amount: 2
+  - item_id: 11482  # piece of warrior armor
+    chance: 4980
+  - item_id: 3359  # brass armor
+    chance: 4125
+  - item_id: 3358  # chain armor
+    chance: 2983
+  - item_id: 3413  # battle shield
+    chance: 2093
+  - item_id: 5878  # minotaur leather
+    chance: 945
+  - item_id: 3483  # fishing rod
+    chance: 481
+  - item_id: 3275  # double axe
+    chance: 434
+  - item_id: 266  # health potion
+    chance: 413
+  - item_id: 7401  # minotaur trophy
+    chance: 94

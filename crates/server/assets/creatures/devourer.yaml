@@ -1,0 +1,141 @@
+name: Devourer
+life: 1900
+speed: 100
+blood_type: poison
+armor: 45
+defense: 45
+experience: 1755
+outfit:
+  id: 617
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 260
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 40
+      max: 125
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 14
+  - cooldown: 40
+    chance: 8000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 160
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 9
+  - cooldown: 40
+    chance: 9000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    speed:
+      min:
+        factor: -0.75
+        flat: 0
+      max:
+        factor: -0.55
+        flat: 0
+    duration_ticks: 300
+    missile_id: 15
+    effect_id: 9
+  - cooldown: 40
+    chance: 7000
+    type: attack
+    element: earth
+    damage:
+      min: 120
+      max: 135
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 9
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 0
+      max: 136
+corpse: 21113
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - "*gulp*"
+    - "*Bruaarrr!*"
+    - "*omnnommm nomm*"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99437
+    amount: 165
+  - item_id: 3035  # platinum coin
+    chance: 55673
+    amount: 2
+  - item_id: 21182  # glob of glooth
+    chance: 12882
+  - item_id: 3030  # small ruby
+    chance: 5801
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 5750
+    amount: 3
+  - item_id: 9057  # small topaz
+    chance: 5511
+    amount: 3
+  - item_id: 3033  # small amethyst
+    chance: 5409
+    amount: 3
+  - item_id: 3029  # small sapphire
+    chance: 5255
+    amount: 3
+  - item_id: 3028  # small diamond
+    chance: 5136
+    amount: 3
+  - item_id: 21180  # glooth axe
+    chance: 2986
+  - item_id: 21178  # glooth club
+    chance: 2952
+  - item_id: 21179  # glooth blade
+    chance: 2696
+  - item_id: 3034  # talon
+    chance: 2491
+  - item_id: 3037  # yellow gem
+    chance: 1740
+  - item_id: 21158  # glooth spear
+    chance: 1621
+  - item_id: 8084  # springsprout rod
+    chance: 1041
+  - item_id: 21183  # glooth amulet
+    chance: 682
+  - item_id: 3065  # terra rod
+    chance: 648
+  - item_id: 21164  # glooth cape
+    chance: 188
+  - item_id: 3038  # green gem
+    chance: 51

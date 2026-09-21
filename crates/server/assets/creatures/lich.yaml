@@ -1,0 +1,144 @@
+name: Lich
+life: 880
+speed: 105
+blood_type: blood
+armor: 50
+defense: 50
+experience: 900
+outfit:
+  id: 99
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 75
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 140
+      max: 190
+    target:
+      type: area
+      origin: self
+      shape: beam7
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 300
+        max: 400
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: beam7
+    effect_id: 17
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 245
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.3
+        flat: 0
+      max:
+        factor: -0.3
+        flat: 0
+    duration_ticks: 600
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 130
+      max: 195
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 80
+      max: 100
+corpse: 6028
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Doomed be the living!
+    - Death awaits all!
+    - Thy living flesh offends me!
+    - Death and Decay!
+    - You will endure agony beyond thy death!
+    - Pain sweet pain!
+    - Come to me my children!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 139
+  - item_id: 3035  # platinum coin
+    chance: 19628
+  - item_id: 3059  # spellbook
+    chance: 10351
+  - item_id: 237  # strong mana potion
+    chance: 7810
+  - item_id: 3027  # black pearl
+    chance: 5252
+    amount: 3
+  - item_id: 3026  # white pearl
+    chance: 4886
+  - item_id: 9057  # small topaz
+    chance: 2439
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 2370
+    amount: 3
+  - item_id: 3432  # ancient shield
+    chance: 2072
+  - item_id: 3098  # ring of healing
+    chance: 1637
+  - item_id: 3037  # yellow gem
+    chance: 759
+  - item_id: 3373  # strange helmet
+    chance: 716
+  - item_id: 3062  # mind stone
+    chance: 418
+  - item_id: 3055  # platinum amulet
+    chance: 401
+  - item_id: 820  # lightning boots
+    chance: 281
+  - item_id: 3324  # skull staff
+    chance: 273
+  - item_id: 3435  # castle shield
+    chance: 264
+  - item_id: 3567  # blue robe
+    chance: 205
+  - item_id: 12304  # maxilla maximus
+    chance: 43

@@ -1,0 +1,29 @@
+name: Polar Bear
+life: 85
+speed: 78
+blood_type: blood
+armor: 7
+defense: 7
+experience: 28
+outfit:
+  id: 42
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+corpse: 5987
+flee_threshold: 5
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - GROARRR!
+loot:
+  - item_id: 3577  # meat
+    chance: 50363
+  - item_id: 3582  # ham
+    chance: 50166
+  - item_id: 9650  # polar bear paw
+    chance: 1013

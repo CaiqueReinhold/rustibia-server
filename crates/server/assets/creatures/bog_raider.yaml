@@ -1,0 +1,110 @@
+name: Bog Raider
+life: 1300
+speed: 125
+blood_type: poison
+armor: 20
+defense: 20
+experience: 800
+outfit:
+  id: 299
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 180
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 80
+      max: 80
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 90
+      max: 140
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 175
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 26
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 96
+      max: 110
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    effect_id: 46
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 65
+      max: 95
+corpse: 8123
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Tchhh!
+    - Slurp!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50750
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50750
+    amount: 5
+  - item_id: 9667  # boggy dreads
+    chance: 9870
+  - item_id: 239  # great health potion
+    chance: 2030
+  - item_id: 3557  # plate legs
+    chance: 2020
+  - item_id: 7642  # great spirit potion
+    chance: 2000
+  - item_id: 8084  # springsprout rod
+    chance: 1030
+  - item_id: 7643  # ultimate health potion
+    chance: 770
+  - item_id: 8044  # belted cape
+    chance: 590
+  - item_id: 8063  # paladin armor
+    chance: 140

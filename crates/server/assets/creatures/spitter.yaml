@@ -1,0 +1,109 @@
+name: Spitter
+life: 1500
+speed: 95
+blood_type: poison
+armor: 20
+defense: 20
+experience: 1100
+outfit:
+  id: 461
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 240
+      max: 240
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 160
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    effect_id: 21
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 13979
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 90
+  - item_id: 3033  # small amethyst
+    chance: 8000
+    amount: 2
+  - item_id: 3035  # platinum coin
+    chance: 75250
+  - item_id: 3038  # green gem
+    chance: 210
+  - item_id: 3053  # time ring
+    chance: 2400
+  - item_id: 3055  # platinum amulet
+    chance: 260
+  - item_id: 3391  # crusader helmet
+    chance: 230
+  - item_id: 3725  # brown mushroom
+    chance: 7500
+    amount: 3
+  - item_id: 7440  # mastermind potion
+    chance: 310
+  - item_id: 7449  # crystal sword
+    chance: 2000
+  - item_id: 238  # great mana potion
+    chance: 8000
+  - item_id: 239  # great health potion
+    chance: 5000
+  - item_id: 14078  # spitter nose
+    chance: 18000
+  - item_id: 14083  # compound eye
+    chance: 15000
+  - item_id: 14086  # calopteryx cape
+    chance: 240
+  - item_id: 14087  # grasshopper legs
+    chance: 130

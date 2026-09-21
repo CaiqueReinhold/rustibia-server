@@ -1,0 +1,65 @@
+name: Barbarian Headsplitter
+life: 100
+speed: 84
+blood_type: blood
+armor: 7
+defense: 7
+experience: 85
+outfit:
+  id: 253
+  colors: [115, 86, 119, 113]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 60
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 26
+corpse: 18062
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I will regain my honor with your blood!
+    - Surrender is not option!
+    - Its you or me!
+    - Die! Die! Die!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 75228
+    amount: 30
+  - item_id: 2920  # torch
+    chance: 59812
+  - item_id: 3354  # brass helmet
+    chance: 20170
+  - item_id: 3291  # knife
+    chance: 14928
+  - item_id: 3367  # viking helmet
+    chance: 4960
+  - item_id: 3377  # scale armor
+    chance: 4046
+  - item_id: 3114  # skull
+    chance: 3194
+  - item_id: 5913  # brown piece of cloth
+    chance: 968
+  - item_id: 266  # health potion
+    chance: 531
+  - item_id: 3052  # life ring
+    chance: 228
+  - item_id: 7461  # krimhorn helmet
+    chance: 112
+  - item_id: 7457  # fur boots
+    chance: 87

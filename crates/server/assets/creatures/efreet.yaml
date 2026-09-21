@@ -1,0 +1,118 @@
+name: Efreet
+life: 550
+speed: 117
+blood_type: blood
+armor: 24
+defense: 24
+experience: 410
+outfit:
+  id: 103
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 40
+      max: 110
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 30
+      max: 90
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 65
+      max: 120
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 80
+corpse: 6032
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I grant you a deathwish!
+    - Good wishes are for fairytales
+loot:
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 30
+  - item_id: 7378  # royal spear
+    chance: 15570
+    amount: 3
+  - item_id: 237  # strong mana potion
+    chance: 10500
+  - item_id: 3584  # pear
+    chance: 9390
+    amount: 5
+  - item_id: 11470  # jewelled belt
+    chance: 8540
+  - item_id: 3032  # small emerald
+    chance: 7200
+  - item_id: 3330  # heavy machete
+    chance: 5000
+  - item_id: 5910  # green piece of cloth
+    chance: 3000
+  - item_id: 2647  # green tapestry
+    chance: 2200
+  - item_id: 11486  # noble turban
+    chance: 1130
+  - item_id: 827  # magma monocle
+    chance: 420
+  - item_id: 3071  # wand of inferno
+    chance: 390
+  - item_id: 3574  # mystic turban
+    chance: 180
+  - item_id: 2933  # small oil lamp
+    chance: 180
+  - item_id: 3038  # green gem
+    chance: 150

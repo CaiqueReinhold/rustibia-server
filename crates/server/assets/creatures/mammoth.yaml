@@ -1,0 +1,42 @@
+name: Mammoth
+life: 320
+speed: 95
+blood_type: blood
+armor: 20
+defense: 20
+experience: 160
+outfit:
+  id: 199
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+corpse: 6074
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Troooooot!
+    - Hooooot-Toooooot!
+    - Tooooot.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 89882
+    amount: 40
+  - item_id: 3577  # meat
+    chance: 40278
+  - item_id: 3582  # ham
+    chance: 29949
+  - item_id: 10307  # thick fur
+    chance: 7669
+  - item_id: 10321  # mammoth tusk
+    chance: 7462
+    amount: 2
+  - item_id: 7381  # mammoth whopper
+    chance: 2507
+  - item_id: 7432  # furry club
+    chance: 526
+  - item_id: 3443  # tusk shield
+    chance: 494

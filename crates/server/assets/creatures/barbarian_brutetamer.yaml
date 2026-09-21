@@ -1,0 +1,71 @@
+name: Barbarian Brutetamer
+life: 145
+speed: 95
+blood_type: blood
+armor: 10
+defense: 10
+experience: 90
+outfit:
+  id: 264
+  colors: [78, 97, 95, 121]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 34
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 13
+  - cooldown: 40
+    chance: 40000
+    type: heal
+    life:
+      min: 50
+      max: 80
+corpse: 18058
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - To me, creatures of the wild!
+    - My instincts tell me about your cowardice.
+loot:
+  - item_id: 2824  # book
+    chance: 5000
+  - item_id: 3031  # gold coin
+    chance: 58000
+    amount: 15
+  - item_id: 3289  # staff
+    chance: 6500
+  - item_id: 3358  # chain armor
+    chance: 8900
+  - item_id: 3597  # corncob
+    chance: 11000
+    amount: 2
+  - item_id: 3347  # hunting spear
+    chance: 5250
+  - item_id: 7343  # fur bag
+    chance: 7540
+  - item_id: 7379  # brutetamer's staff
+    chance: 380
+  - item_id: 7457  # fur boots
+    chance: 160
+  - item_id: 7463  # mammoth fur cape
+    chance: 160
+  - item_id: 7464  # mammoth fur shorts
+    chance: 90
+  - item_id: 268  # mana potion
+    chance: 630

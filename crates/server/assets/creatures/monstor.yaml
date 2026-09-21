@@ -1,0 +1,42 @@
+name: Monstor
+life: 960
+speed: 175
+blood_type: blood
+armor: 15
+defense: 15
+experience: 575
+outfit:
+  id: 244
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 167
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 66
+      max: 85
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 15
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 90
+      max: 200
+corpse: 9405
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - NO ARMY ME STOPPING! GRARR!
+    - ME DESTROY CITY! GROAR!
+    - WHARR! MUST ... KIDNAP WOMEN!

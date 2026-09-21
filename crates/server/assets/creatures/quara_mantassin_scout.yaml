@@ -1,0 +1,40 @@
+name: Quara Mantassin Scout
+life: 220
+speed: 70
+blood_type: blood
+armor: 7
+defense: 7
+experience: 100
+outfit:
+  id: 72
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+corpse: 6064
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zuerk Pachak!
+    - Shrrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 93987
+    amount: 30
+  - item_id: 11489  # mantassin tail
+    chance: 7916
+  - item_id: 3358  # chain armor
+    chance: 4990
+  - item_id: 3029  # small sapphire
+    chance: 996
+  - item_id: 3114  # skull
+    chance: 979
+  - item_id: 3265  # two handed sword
+    chance: 802
+  - item_id: 3049  # stealth ring
+    chance: 711
+  - item_id: 5895  # fish fin
+    chance: 365

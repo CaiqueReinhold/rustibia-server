@@ -1,0 +1,32 @@
+name: Bear
+life: 80
+speed: 78
+blood_type: blood
+armor: 6
+defense: 6
+experience: 23
+outfit:
+  id: 16
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 25
+  element: physical
+corpse: 5975
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrr
+    - Groar
+loot:
+  - item_id: 3577  # meat
+    chance: 39964
+  - item_id: 3582  # ham
+    chance: 19987
+  - item_id: 5896  # bear paw
+    chance: 1973
+  - item_id: 5902  # honeycomb
+    chance: 480

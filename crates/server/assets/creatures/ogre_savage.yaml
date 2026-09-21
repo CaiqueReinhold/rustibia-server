@@ -1,0 +1,121 @@
+name: Ogre Savage
+life: 800
+speed: 52
+blood_type: blood
+armor: 30
+defense: 24
+experience: 625
+outfit:
+  id: 858
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 140
+    target:
+      type: target
+      range: 7
+    missile_id: 27
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 60
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 5
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: physical
+      damage:
+        min: 20
+        max: 25
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 1
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.21
+        flat: 0
+      max:
+        factor: 0.21
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 22147
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - You tasty!
+    - Must! Chop! Food! Raahh!
+    - UGGA UGGA!!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 54
+  - item_id: 22188  # ogre ear stud
+    chance: 19720
+  - item_id: 22189  # ogre nose ring
+    chance: 17360
+  - item_id: 236  # strong health potion
+    chance: 15330
+  - item_id: 22191  # skull fetish
+    chance: 9300
+  - item_id: 3598  # cookie
+    chance: 8350
+    amount: 5
+  - item_id: 3078  # mysterious fetish
+    chance: 6120
+  - item_id: 8016  # jalapeno pepper
+    chance: 4130
+    amount: 2
+  - item_id: 22193  # onyx chip
+    chance: 3060
+    amount: 2
+  - item_id: 3030  # small ruby
+    chance: 2840
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 2500
+    amount: 2
+  - item_id: 22194  # opal
+    chance: 2240
+    amount: 2
+  - item_id: 3279  # war hammer
+    chance: 1510
+  - item_id: 22172  # ogre choppa
+    chance: 1160
+  - item_id: 7439  # berserk potion
+    chance: 520
+  - item_id: 22192  # shamanic mask
+    chance: 340
+  - item_id: 7419  # dreaded cleaver
+    chance: 40

@@ -1,0 +1,27 @@
+name: Badger
+life: 23
+speed: 70
+blood_type: blood
+armor: 1
+defense: 1
+experience: 5
+outfit:
+  id: 105
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 12
+  element: physical
+corpse: 6034
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 8017  # beetroot
+    chance: 40710
+  - item_id: 10299  # badger fur
+    chance: 10230
+  - item_id: 10296  # acorn
+    chance: 5130

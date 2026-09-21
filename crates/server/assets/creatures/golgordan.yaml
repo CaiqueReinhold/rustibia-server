@@ -1,0 +1,73 @@
+name: Golgordan
+life: 40000
+speed: 175
+blood_type: blood
+armor: 48
+defense: 54
+experience: 10000
+outfit:
+  id: 12
+  colors: [128, 62, 95, 15]
+melee:
+  damage:
+    min: 0
+    max: 575
+  element: physical
+abilities:
+  - cooldown: 60
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 250
+      max: 850
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 18
+  - cooldown: 20
+    chance: 11000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 300
+        max: 350
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 21
+  - cooldown: 20
+    chance: 8000
+    type: attack
+    element: physical
+    damage:
+      min: 50
+      max: 955
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 35
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 50
+      max: 200
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    effect_id: 7
+corpse: 7893
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Latrivan your fool

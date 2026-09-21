@@ -1,0 +1,55 @@
+name: Cyclops
+life: 260
+speed: 95
+blood_type: blood
+armor: 17
+defense: 17
+experience: 150
+outfit:
+  id: 22
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 105
+  element: physical
+corpse: 5962
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Il lorstok human!
+    - Toks utat.
+    - Human, uh whil dyh!
+    - Youh ah trak!
+    - Let da mashing begin!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82276
+    amount: 47
+  - item_id: 3577  # meat
+    chance: 29087
+  - item_id: 3294  # short sword
+    chance: 7795
+  - item_id: 9657  # cyclops toe
+    chance: 5265
+  - item_id: 3410  # plate shield
+    chance: 2442
+  - item_id: 23986  # heavy old tome
+    chance: 2062
+  - item_id: 3413  # battle shield
+    chance: 1462
+  - item_id: 3269  # halberd
+    chance: 892
+  - item_id: 24415  # old rag
+    chance: 322
+  - item_id: 3012  # wolf tooth chain
+    chance: 322
+  - item_id: 3384  # dark helmet
+    chance: 234
+  - item_id: 266  # health potion
+    chance: 146
+  - item_id: 7398  # cyclops trophy
+    chance: 117
+  - item_id: 3093  # club ring
+    chance: 44

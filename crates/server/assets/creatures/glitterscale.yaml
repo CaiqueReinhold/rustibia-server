@@ -1,0 +1,48 @@
+name: Glitterscale
+life: 1000
+speed: 90
+blood_type: blood
+armor: 25
+defense: 18
+experience: 700
+outfit:
+  id: 34
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 8000
+    type: attack
+    element: fire
+    damage:
+      min: 90
+      max: 180
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 7
+  - cooldown: 40
+    chance: 12000
+    type: attack
+    element: fire
+    damage:
+      min: 70
+      max: 120
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+corpse: 5973
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 0

@@ -1,0 +1,72 @@
+name: Orc Leader
+life: 450
+speed: 115
+blood_type: blood
+armor: 20
+defense: 20
+experience: 270
+outfit:
+  id: 59
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 185
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 70
+    target:
+      type: target
+      range: 7
+    missile_id: 9
+corpse: 6001
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ulderek futgyr human!
+loot:
+  - item_id: 3578  # fish
+    chance: 30075
+  - item_id: 3031  # gold coin
+    chance: 28207
+    amount: 35
+  - item_id: 11479  # orc leather
+    chance: 19721
+  - item_id: 3410  # plate shield
+    chance: 10140
+  - item_id: 3298  # throwing knife
+    chance: 10007
+    amount: 4
+  - item_id: 3725  # brown mushroom
+    chance: 9833
+  - item_id: 3091  # sword ring
+    chance: 3778
+  - item_id: 3285  # longsword
+    chance: 2970
+  - item_id: 7378  # royal spear
+    chance: 2647
+  - item_id: 3372  # brass legs
+    chance: 2435
+  - item_id: 3307  # scimitar
+    chance: 2191
+  - item_id: 11480  # skull belt
+    chance: 2115
+  - item_id: 3357  # plate armor
+    chance: 1597
+  - item_id: 10196  # orc tooth
+    chance: 1022
+  - item_id: 3301  # broadsword
+    chance: 748
+  - item_id: 266  # health potion
+    chance: 583
+  - item_id: 3557  # plate legs
+    chance: 396
+  - item_id: 3369  # warrior helmet
+    chance: 114

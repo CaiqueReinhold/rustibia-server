@@ -1,0 +1,133 @@
+name: Massive Earth Elemental
+life: 1330
+speed: 120
+blood_type: blood
+armor: 35
+defense: 35
+experience: 950
+outfit:
+  id: 285
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 99
+      max: 145
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+    effect_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 95
+      max: 169
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 12
+    effect_id: 3
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 300
+        max: 320
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 51
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 200
+        max: 220
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 5
+    speed:
+      min:
+        factor: -0.33
+        flat: 0
+      max:
+        factor: -0.33
+        flat: 0
+    duration_ticks: 100
+    effect_id: 46
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 150
+      max: 180
+corpse: 8105
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 1781  # small stone
+    chance: 25280
+    amount: 10
+  - item_id: 3031  # gold coin
+    chance: 32000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 32000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 32000
+    amount: 41
+  - item_id: 3081  # stone skin amulet
+    chance: 980
+  - item_id: 3084  # protection amulet
+    chance: 1580
+  - item_id: 3097  # dwarven ring
+    chance: 2790
+  - item_id: 7387  # diamond sceptre
+    chance: 150
+  - item_id: 814  # terra amulet
+    chance: 500
+  - item_id: 8895  # rusted armor
+    chance: 3300
+  - item_id: 9057  # small topaz
+    chance: 5280
+    amount: 2
+  - item_id: 10305  # lump of earth
+    chance: 40680
+  - item_id: 10422  # clay lump
+    chance: 480
+  - item_id: 12600  # coal
+    chance: 430

@@ -1,0 +1,101 @@
+name: Mad Scientist
+life: 325
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 205
+outfit:
+  id: 133
+  colors: [39, 0, 19, 20]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 20
+      max: 56
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 39
+    effect_id: 3
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 20
+      max: 36
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.3
+        flat: 0
+      max:
+        factor: -0.3
+        flat: 0
+    duration_ticks: 40
+    missile_id: 15
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 10
+      max: 30
+corpse: 18158
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Die in the name of Science!
+    - You will regret interrupting my studies!
+    - Let me test this!
+    - I will study your corpse!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 65
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 50
+  - item_id: 3046  # magic light wand
+    chance: 2000
+  - item_id: 3061  # life crystal
+    chance: 2000
+  - item_id: 3195  # soulfire rune
+    chance: 6000
+  - item_id: 3598  # cookie
+    chance: 1200
+    amount: 5
+  - item_id: 3723  # white mushroom
+    chance: 8000
+    amount: 3
+  - item_id: 6323  # elemental ashes
+    chance: 820
+  - item_id: 7440  # mastermind potion
+    chance: 130
+  - item_id: 266  # health potion
+    chance: 19000
+  - item_id: 268  # mana potion
+    chance: 19000
+  - item_id: 678  # small enchanted amethyst
+    chance: 470

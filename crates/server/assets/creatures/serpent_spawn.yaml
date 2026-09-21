@@ -1,0 +1,148 @@
+name: Serpent Spawn
+life: 3000
+speed: 117
+blood_type: blood
+armor: 35
+defense: 35
+experience: 3050
+outfit:
+  id: 220
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 250
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 80
+      max: 300
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 25000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    speed:
+      min:
+        factor: -0.85
+        flat: 0
+      max:
+        factor: -0.85
+        flat: 0
+    duration_ticks: 240
+    missile_id: 15
+    effect_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 20
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 200
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 250
+      max: 500
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.34
+        flat: 0
+      max:
+        factor: 0.34
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6061
+flee_threshold: 275
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Sssssouls for the one
+    - HISSSS
+    - Tsssse one will risssse again
+    - I bring your deathhh, mortalssss
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97236
+    amount: 245
+  - item_id: 3732  # green mushroom
+    chance: 18300
+  - item_id: 9694  # snake skin
+    chance: 14967
+  - item_id: 3029  # small sapphire
+    chance: 12132
+  - item_id: 3450  # power bolt
+    chance: 6107
+  - item_id: 3052  # life ring
+    chance: 6058
+  - item_id: 3051  # energy ring
+    chance: 5968
+  - item_id: 2903  # golden mug
+    chance: 2958
+  - item_id: 7386  # mercenary sword
+    chance: 2030
+  - item_id: 238  # great mana potion
+    chance: 2014
+  - item_id: 3066  # snakebite rod
+    chance: 986
+  - item_id: 10313  # winged tail
+    chance: 941
+  - item_id: 3428  # tower shield
+    chance: 855
+  - item_id: 7456  # noble axe
+    chance: 807
+  - item_id: 3061  # life crystal
+    chance: 789
+  - item_id: 3373  # strange helmet
+    chance: 633
+  - item_id: 4831  # old parchment
+    chance: 569
+  - item_id: 3369  # warrior helmet
+    chance: 564
+  - item_id: 3381  # crown armor
+    chance: 504
+  - item_id: 3407  # charmer's tiara
+    chance: 184
+  - item_id: 3392  # royal helmet
+    chance: 124
+  - item_id: 8074  # spellbook of mind control
+    chance: 98
+  - item_id: 8052  # swamplair armor
+    chance: 84

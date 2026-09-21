@@ -1,0 +1,56 @@
+name: Eternal Guardian
+life: 2500
+speed: 102
+blood_type: blood
+armor: 62
+defense: 62
+experience: 1800
+outfit:
+  id: 345
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+corpse: 10383
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zzrkrrch!
+    - "<crackle>"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99955
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 99708
+    amount: 4
+  - item_id: 1781  # small stone
+    chance: 30268
+    amount: 10
+  - item_id: 9632  # ancient stone
+    chance: 20024
+  - item_id: 10408  # spiked iron ball
+    chance: 10020
+  - item_id: 10406  # Zaoan halberd
+    chance: 1991
+  - item_id: 5880  # iron ore
+    chance: 1682
+  - item_id: 10310  # shiny stone
+    chance: 819
+  - item_id: 3428  # tower shield
+    chance: 807
+  - item_id: 10422  # clay lump
+    chance: 729
+  - item_id: 3315  # guardian halberd
+    chance: 566
+  - item_id: 10426  # piece of marble rock
+    chance: 499
+  - item_id: 12600  # coal
+    chance: 443
+  - item_id: 10390  # Zaoan sword
+    chance: 107

@@ -1,0 +1,36 @@
+name: Crustacea Gigantica
+life: 1600
+speed: 145
+blood_type: blood
+armor: 30
+defense: 45
+experience: 1800
+outfit:
+  id: 383
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 600
+  element: physical
+corpse: 12344
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chrchrchr
+    - Klonklonk
+    - Chrrrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 43
+  - item_id: 237  # strong mana potion
+    chance: 14285
+  - item_id: 12317  # giant crab pincer
+    chance: 5000

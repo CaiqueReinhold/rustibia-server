@@ -1,0 +1,81 @@
+name: Zombie
+life: 500
+speed: 90
+blood_type: blood
+armor: 15
+defense: 15
+experience: 280
+outfit:
+  id: 311
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 130
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 14
+      max: 23
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 15
+      max: 24
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 49
+    target:
+      type: target
+      range: 1
+    effect_id: 39
+corpse: 8961
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Mst.... klll....
+    - Whrrrr... ssss.... mmm.... grrrrl
+    - Dnnnt... cmmm... clsrrr....
+    - Httt.... hmnnsss...
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82036
+    amount: 65
+  - item_id: 3354  # brass helmet
+    chance: 9793
+  - item_id: 3286  # mace
+    chance: 7847
+  - item_id: 3305  # battle hammer
+    chance: 6856
+  - item_id: 8894  # heavily rusted armor
+    chance: 5790
+  - item_id: 3351  # steel helmet
+    chance: 4799
+  - item_id: 3269  # halberd
+    chance: 3802
+  - item_id: 3052  # life ring
+    chance: 960
+  - item_id: 268  # mana potion
+    chance: 748
+  - item_id: 3568  # simple dress
+    chance: 530

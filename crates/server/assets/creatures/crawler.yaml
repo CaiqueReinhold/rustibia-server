@@ -1,0 +1,83 @@
+name: Crawler
+life: 1450
+speed: 100
+blood_type: poison
+armor: 30
+defense: 30
+experience: 1000
+outfit:
+  id: 456
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 228
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 80
+      max: 80
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 180
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 60
+    effect_id: 14
+corpse: 13865
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Sssschrchrsss!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 90
+  - item_id: 3037  # yellow gem
+    chance: 530
+  - item_id: 3052  # life ring
+    chance: 50000
+  - item_id: 3279  # war hammer
+    chance: 2070
+  - item_id: 238  # great mana potion
+    chance: 9300
+  - item_id: 239  # great health potion
+    chance: 6200
+  - item_id: 8084  # springsprout rod
+    chance: 710
+  - item_id: 9057  # small topaz
+    chance: 10040
+    amount: 2
+  - item_id: 14079  # crawler head plating
+    chance: 18430
+  - item_id: 14083  # compound eye
+    chance: 14640
+  - item_id: 14087  # grasshopper legs
+    chance: 100

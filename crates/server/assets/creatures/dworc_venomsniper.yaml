@@ -1,0 +1,66 @@
+name: Dworc Venomsniper
+life: 80
+speed: 76
+blood_type: blood
+armor: 3
+defense: 3
+experience: 35
+outfit:
+  id: 216
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 15
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 20
+        max: 40
+      interval: 80
+    target:
+      type: target
+      range: 5
+    missile_id: 15
+corpse: 6059
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Brak brrretz!
+    - Grow truk grrrrr.
+    - Prek tars, dekklep zurk.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 74992
+    amount: 13
+  - item_id: 3361  # leather armor
+    chance: 10048
+  - item_id: 3298  # throwing knife
+    chance: 7906
+    amount: 2
+  - item_id: 2920  # torch
+    chance: 5486
+  - item_id: 3448  # poison arrow
+    chance: 4957
+    amount: 3
+  - item_id: 3299  # poison dagger
+    chance: 1500
+  - item_id: 3114  # skull
+    chance: 983
+    amount: 2
+  - item_id: 3403  # tribal mask
+    chance: 502
+  - item_id: 647  # seeds
+    chance: 193
+  - item_id: 3560  # bast skirt
+    chance: 99
+  - item_id: 3056  # bronze amulet
+    chance: 97

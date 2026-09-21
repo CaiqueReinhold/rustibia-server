@@ -1,0 +1,143 @@
+name: Demon Outcast
+life: 6900
+speed: 148
+blood_type: blood
+armor: 40
+defense: 40
+experience: 6200
+outfit:
+  id: 590
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 250
+      max: 450
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 48
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 350
+      max: 550
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 49
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: energy
+    damage:
+      min: 100
+      max: 250
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    effect_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 80
+      max: 150
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 250
+      max: 425
+corpse: 20215
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Back in the evil business!
+    - This prison break will have casualties!
+    - At last someone to hurt
+    - No one will imprison me again!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 6
+  - item_id: 3731  # fire mushroom
+    chance: 20245
+    amount: 6
+  - item_id: 7643  # ultimate health potion
+    chance: 20029
+    amount: 3
+  - item_id: 238  # great mana potion
+    chance: 19829
+    amount: 2
+  - item_id: 3028  # small diamond
+    chance: 10310
+    amount: 5
+  - item_id: 3030  # small ruby
+    chance: 10055
+    amount: 5
+  - item_id: 3029  # small sapphire
+    chance: 10003
+    amount: 5
+  - item_id: 3032  # small emerald
+    chance: 9939
+    amount: 5
+  - item_id: 9057  # small topaz
+    chance: 9784
+    amount: 5
+  - item_id: 7368  # assassin star
+    chance: 8655
+    amount: 10
+  - item_id: 3098  # ring of healing
+    chance: 2448
+  - item_id: 3281  # giant sword
+    chance: 2010
+  - item_id: 3049  # stealth ring
+    chance: 1397
+  - item_id: 3419  # crown shield
+    chance: 903
+  - item_id: 3284  # ice rapier
+    chance: 877
+  - item_id: 3048  # might ring
+    chance: 661
+  - item_id: 3055  # platinum amulet
+    chance: 661
+  - item_id: 3391  # crusader helmet
+    chance: 571
+  - item_id: 3356  # devil helmet
+    chance: 555
+  - item_id: 5906  # demon dust
+    chance: 532
+  - item_id: 20062  # cluster of solace
+    chance: 468
+  - item_id: 3420  # demon shield
+    chance: 458
+  - item_id: 3381  # crown armor
+    chance: 274
+  - item_id: 7382  # demonrage sword
+    chance: 87

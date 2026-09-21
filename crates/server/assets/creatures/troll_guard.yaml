@@ -1,0 +1,31 @@
+name: Troll Guard
+life: 60
+speed: 90
+blood_type: blood
+armor: 1
+defense: 2
+experience: 25
+outfit:
+  id: 281
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 15
+  element: physical
+corpse: 861
+flee_threshold: 17
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3003  # rope
+    chance: 10000
+  - item_id: 3031  # gold coin
+    chance: 58000
+    amount: 12
+  - item_id: 3336  # studded club
+    chance: 3000
+  - item_id: 3577  # meat
+    chance: 14000
+    amount: 2

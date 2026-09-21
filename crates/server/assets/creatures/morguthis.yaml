@@ -1,0 +1,136 @@
+name: Morguthis
+life: 4800
+speed: 160
+blood_type: blood
+armor: 75
+defense: 75
+experience: 3000
+outfit:
+  id: 90
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1000
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 65
+      max: 65
+    interval: 80
+abilities:
+  - cooldown: 60
+    chance: 7000
+    type: attack
+    element: death
+    damage:
+      min: 55
+      max: 550
+    target:
+      type: target
+      range: 1
+  - cooldown: 20
+    chance: 25000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 1000
+    effect_id: 14
+  - cooldown: 20
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 40
+      max: 400
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 10
+  - cooldown: 60
+    chance: 7000
+    type: attack
+    element: physical
+    damage:
+      min: 50
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 18
+  - cooldown: 20
+    chance: 13000
+    type: heal
+    life:
+      min: 200
+      max: 300
+  - cooldown: 20
+    chance: 7000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.6
+        flat: 0
+      max:
+        factor: 0.6
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6025
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Vengeance!
+    - You will make a fine trophy.
+    - Come and fight me, cowards!
+    - I am the supreme warrior!
+    - Let me hear the music of battle.
+    - Anotherone to bite the dust!
+loot:
+  - item_id: 3237  # sword hilt
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 21
+  - item_id: 3027  # black pearl
+    chance: 10000
+  - item_id: 7368  # assassin star
+    chance: 9700
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 9500
+  - item_id: 3318  # knight axe
+    chance: 6000
+  - item_id: 3081  # stone skin amulet
+    chance: 5000
+  - item_id: 10290  # mini mummy
+    chance: 140
+  - item_id: 3331  # ravager's axe
+    chance: 150
+  - item_id: 3554  # steel boots
+    chance: 150
+  - item_id: 3019  # demonbone amulet
+    chance: 140

@@ -1,0 +1,132 @@
+name: Grim Reaper
+life: 3900
+speed: 160
+blood_type: blood
+armor: 30
+defense: 30
+experience: 5500
+outfit:
+  id: 300
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 320
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 165
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 350
+      max: 720
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 1
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: wave7_3
+    effect_id: 5
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 225
+      max: 275
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 1
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 130
+      max: 205
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.45
+        flat: 0
+      max:
+        factor: 0.45
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 8127
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Death!
+    - Come a little closer!
+    - The end is near!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99228
+    amount: 272
+  - item_id: 6558  # flask of demonic blood
+    chance: 36153
+  - item_id: 6499  # demonic essence
+    chance: 11837
+  - item_id: 7643  # ultimate health potion
+    chance: 10839
+  - item_id: 238  # great mana potion
+    chance: 10035
+  - item_id: 3453  # scythe
+    chance: 9778
+  - item_id: 9660  # mystical hourglass
+    chance: 5436
+  - item_id: 3035  # platinum coin
+    chance: 5146
+    amount: 4
+  - item_id: 3046  # magic light wand
+    chance: 4921
+  - item_id: 3421  # dark shield
+    chance: 2830
+  - item_id: 8896  # slightly rusted armor
+    chance: 2509
+  - item_id: 5021  # orichalcum pearl
+    chance: 1287
+    amount: 4
+  - item_id: 8082  # underworld rod
+    chance: 1190
+  - item_id: 7418  # nightmare blade
+    chance: 868
+  - item_id: 823  # glacier kilt
+    chance: 289
+  - item_id: 8061  # skullcracker armor
+    chance: 257
+  - item_id: 6299  # death ring
+    chance: 225

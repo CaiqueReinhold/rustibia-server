@@ -1,0 +1,50 @@
+name: Stalker
+life: 120
+speed: 130
+blood_type: blood
+armor: 14
+defense: 14
+experience: 90
+outfit:
+  id: 128
+  colors: [97, 116, 95, 95]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 20
+      max: 30
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+corpse: 18230
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 13123
+    amount: 8
+  - item_id: 3298  # throwing knife
+    chance: 11116
+    amount: 2
+  - item_id: 3147  # blank rune
+    chance: 8811
+  - item_id: 3411  # brass shield
+    chance: 5617
+  - item_id: 3372  # brass legs
+    chance: 3531
+  - item_id: 11474  # miraculum
+    chance: 1543
+  - item_id: 3313  # obsidian lance
+    chance: 1198
+  - item_id: 3300  # katana
+    chance: 519

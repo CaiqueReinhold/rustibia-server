@@ -1,0 +1,82 @@
+name: Dwarf Geomancer
+life: 380
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 265
+outfit:
+  id: 66
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 110
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+    effect_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 25
+      max: 80
+    target:
+      type: target
+      range: 7
+  - cooldown: 40
+    chance: 40000
+    type: heal
+    life:
+      min: 25
+      max: 130
+corpse: 6015
+flee_threshold: 150
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hail Durin!
+    - Earth is the strongest element.
+    - Dust to dust.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 75000
+    amount: 45
+  - item_id: 3723  # white mushroom
+    chance: 60000
+    amount: 2
+  - item_id: 3147  # blank rune
+    chance: 33000
+  - item_id: 3584  # pear
+    chance: 24000
+  - item_id: 3046  # magic light wand
+    chance: 14000
+  - item_id: 11458  # geomancer's robe
+    chance: 8000
+  - item_id: 11463  # geomancer's staff
+    chance: 7000
+  - item_id: 3311  # clerical mace
+    chance: 1120
+  - item_id: 3097  # dwarven ring
+    chance: 580
+  - item_id: 3029  # small sapphire
+    chance: 580
+  - item_id: 3059  # spellbook
+    chance: 500
+  - item_id: 813  # terra boots
+    chance: 500
+  - item_id: 5880  # iron ore
+    chance: 290

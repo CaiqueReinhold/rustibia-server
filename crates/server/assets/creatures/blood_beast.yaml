@@ -1,0 +1,110 @@
+name: Blood Beast
+life: 1600
+speed: 110
+blood_type: poison
+armor: 19
+defense: 28
+experience: 1000
+outfit:
+  id: 602
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 230
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 260
+      max: 260
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 13000
+    type: attack
+    element: earth
+    damage:
+      min: 65
+      max: 105
+    target:
+      type: target
+      range: 5
+    missile_id: 20
+    effect_id: 21
+  - cooldown: 40
+    chance: 17000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 300
+        max: 400
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 15
+  - cooldown: 40
+    chance: 8000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.314
+        flat: 0
+      max:
+        factor: 0.314
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+  - cooldown: 40
+    chance: 17000
+    type: heal
+    life:
+      min: 80
+      max: 120
+corpse: 20980
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - Rawrrr!
+    - "*grlb*"
+    - Roarr!
+loot:
+  - item_id: 21178  # glooth club
+    chance: 16010
+  - item_id: 9640  # poisonous slime
+    chance: 5080
+  - item_id: 21146  # glooth steak
+    chance: 3720
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 50
+  - item_id: 21194  # slime heart
+    chance: 20040
+  - item_id: 236  # strong health potion
+    chance: 7710
+  - item_id: 7366  # viper star
+    chance: 8290
+    amount: 5
+  - item_id: 21183  # glooth amulet
+    chance: 850
+  - item_id: 21179  # glooth blade
+    chance: 810
+  - item_id: 21178  # glooth club
+    chance: 810
+  - item_id: 21180  # glooth axe
+    chance: 1050
+  - item_id: 21158  # glooth spear
+    chance: 780

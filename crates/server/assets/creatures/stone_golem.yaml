@@ -1,0 +1,48 @@
+name: Stone Golem
+life: 270
+speed: 90
+blood_type: blood
+armor: 30
+defense: 30
+experience: 160
+outfit:
+  id: 67
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+corpse: 6005
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 95794
+    amount: 40
+  - item_id: 1781  # small stone
+    chance: 12849
+    amount: 4
+  - item_id: 10315  # sulphurous stone
+    chance: 10115
+  - item_id: 3050  # power ring
+    chance: 5137
+  - item_id: 3283  # carlin sword
+    chance: 2572
+  - item_id: 5880  # iron ore
+    chance: 2054
+  - item_id: 9632  # ancient stone
+    chance: 1017
+  - item_id: 10310  # shiny stone
+    chance: 782
+  - item_id: 12600  # coal
+    chance: 528
+  - item_id: 10426  # piece of marble rock
+    chance: 416
+  - item_id: 3007  # crystal ring
+    chance: 181
+  - item_id: 3039  # red gem
+    chance: 48

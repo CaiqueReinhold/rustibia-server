@@ -1,0 +1,77 @@
+name: Shadow Pupil
+life: 450
+speed: 105
+blood_type: blood
+armor: 25
+defense: 25
+experience: 410
+outfit:
+  id: 551
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 90
+      max: 90
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 60
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 18
+corpse: 18937
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - When I'm finished with you, you'll be a shadow of your former self.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 64
+  - item_id: 3079  # boots of haste
+    chance: 60
+  - item_id: 3311  # clerical mace
+    chance: 290
+  - item_id: 3574  # mystic turban
+    chance: 580
+  - item_id: 3725  # brown mushroom
+    chance: 5170
+  - item_id: 237  # strong mana potion
+    chance: 470
+  - item_id: 8072  # spellbook of enlightenment
+    chance: 290
+  - item_id: 10320  # book of necromantic rituals
+    chance: 6920
+  - item_id: 18926  # horoscope
+    chance: 15000
+  - item_id: 18929  # incantation notes
+    chance: 9130
+  - item_id: 18930  # pieces of magic chalk
+    chance: 4300

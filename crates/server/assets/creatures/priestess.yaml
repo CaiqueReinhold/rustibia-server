@@ -1,0 +1,104 @@
+name: Priestess
+life: 390
+speed: 85
+blood_type: blood
+armor: 30
+defense: 30
+experience: 420
+outfit:
+  id: 58
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 75
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 55
+      max: 120
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 2
+      max: 170
+    target:
+      type: target
+      range: 7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 0
+        max: 200
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 80
+corpse: 18210
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Your energy is mine.
+    - Now your life is come to the end, hahahaha!
+    - Throw the soul on the altar!
+loot:
+  - item_id: 3738  # sling herb
+    chance: 13494
+  - item_id: 3674  # goat grass
+    chance: 12093
+  - item_id: 10303  # dark rosary
+    chance: 9795
+  - item_id: 3585  # red apple
+    chance: 7403
+    amount: 2
+  - item_id: 3739  # powder herb
+    chance: 6183
+  - item_id: 9645  # black hood
+    chance: 5036
+  - item_id: 3727  # wood mushroom
+    chance: 3343
+  - item_id: 9639  # cultish robe
+    chance: 1796
+  - item_id: 3311  # clerical mace
+    chance: 1484
+  - item_id: 2948  # wooden flute
+    chance: 1425
+  - item_id: 3076  # crystal ball
+    chance: 1132
+  - item_id: 3067  # hailstorm rod
+    chance: 1069
+  - item_id: 2828  # book
+    chance: 932
+  - item_id: 268  # mana potion
+    chance: 932
+  - item_id: 3034  # talon
+    chance: 717
+  - item_id: 3008  # crystal necklace
+    chance: 615
+  - item_id: 3429  # black shield
+    chance: 210
+  - item_id: 2995  # piggy bank
+    chance: 68

@@ -1,0 +1,60 @@
+name: Kongra
+life: 340
+speed: 92
+blood_type: blood
+armor: 18
+defense: 18
+experience: 115
+outfit:
+  id: 116
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.26
+        flat: 0
+      max:
+        factor: 0.26
+        flat: 0
+    duration_ticks: 60
+    effect_id: 14
+corpse: 6043
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hugah!
+    - Ungh! Ungh!
+    - Huaauaauaauaa!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 88003
+    amount: 40
+  - item_id: 3587  # banana
+    chance: 30813
+    amount: 12
+  - item_id: 11471  # kongra's shoulderpad
+    chance: 9356
+  - item_id: 3084  # protection amulet
+    chance: 1012
+  - item_id: 3357  # plate armor
+    chance: 1007
+  - item_id: 5883  # ape fur
+    chance: 968
+  - item_id: 266  # health potion
+    chance: 507
+  - item_id: 3050  # power ring
+    chance: 310
+  - item_id: 3093  # club ring
+    chance: 196

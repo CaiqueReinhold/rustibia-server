@@ -1,0 +1,127 @@
+name: Mooh'Tah Warrior
+life: 1200
+speed: 110
+blood_type: blood
+armor: 30
+defense: 30
+experience: 900
+outfit:
+  id: 611
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 220
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 14000
+    type: attack
+    element: energy
+    damage:
+      min: 150
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: beam4
+    effect_id: 49
+  - cooldown: 40
+    chance: 11000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 135
+    target:
+      type: target
+      range: 7
+    effect_id: 5
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 150
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 10
+  - cooldown: 40
+    chance: 22000
+    type: heal
+    life:
+      min: 110
+      max: 160
+  - cooldown: 40
+    chance: 8000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.22
+        flat: 0
+      max:
+        factor: 0.22
+        flat: 0
+    duration_ticks: 20
+    effect_id: 14
+corpse: 21091
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - Feel the power of the Mooh'Tah!
+    - Ommm!
+    - I am at peace and you are dead!
+    - There is no rage, there is only control!
+    - You will not disrupt my inner balance!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 20
+  - item_id: 3035  # platinum coin
+    chance: 39860
+    amount: 3
+  - item_id: 21202  # mooh'tah shell
+    chance: 15030
+  - item_id: 237  # strong mana potion
+    chance: 7110
+  - item_id: 236  # strong health potion
+    chance: 6390
+  - item_id: 5878  # minotaur leather
+    chance: 5530
+  - item_id: 3030  # small ruby
+    chance: 5470
+  - item_id: 3032  # small emerald
+    chance: 5280
+  - item_id: 3033  # small amethyst
+    chance: 5200
+  - item_id: 9057  # small topaz
+    chance: 4760
+  - item_id: 11472  # minotaur horn
+    chance: 4710
+    amount: 2
+  - item_id: 21177  # cowtana
+    chance: 1380
+  - item_id: 3091  # sword ring
+    chance: 1110
+  - item_id: 21166  # mooh'tah plate
+    chance: 1090
+  - item_id: 3415  # guardian shield
+    chance: 1020
+  - item_id: 3371  # knight legs
+    chance: 710
+  - item_id: 5911  # red piece of cloth
+    chance: 650
+  - item_id: 3370  # knight armor
+    chance: 490
+  - item_id: 7401  # minotaur trophy
+    chance: 150

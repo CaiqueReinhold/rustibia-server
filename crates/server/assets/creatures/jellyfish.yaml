@@ -1,0 +1,24 @@
+name: Jellyfish
+life: 55
+speed: 85
+blood_type: blood
+armor: 10
+defense: 10
+experience: 0
+outfit:
+  id: 452
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+corpse: 13857
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Luuurrrp
+loot:
+  - item_id: 3581  # shrimp
+    chance: 8333

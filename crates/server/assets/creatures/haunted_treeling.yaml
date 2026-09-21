@@ -1,0 +1,102 @@
+name: Haunted Treeling
+life: 450
+speed: 115
+blood_type: blood
+armor: 20
+defense: 20
+experience: 310
+outfit:
+  id: 310
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: mana
+    damage:
+      min: 30
+      max: 100
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 9
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    speed:
+      min:
+        factor: -0.7
+        flat: 0
+      max:
+        factor: -0.7
+        flat: 0
+    duration_ticks: 300
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 39
+    effect_id: 47
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 55
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    effect_id: 17
+corpse: 8953
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Knarrrz
+    - Huuhuuhuuuhuuaarrr
+    - Knorrrrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 92016
+    amount: 95
+  - item_id: 4849  # wooden trash
+    chance: 29201
+  - item_id: 3724  # red mushroom
+    chance: 7814
+  - item_id: 266  # health potion
+    chance: 5051
+  - item_id: 3723  # white mushroom
+    chance: 5033
+    amount: 2
+  - item_id: 9683  # haunted piece of wood
+    chance: 4983
+  - item_id: 3726  # orange mushroom
+    chance: 1817
+  - item_id: 236  # strong health potion
+    chance: 1081
+  - item_id: 3097  # dwarven ring
+    chance: 655
+  - item_id: 3032  # small emerald
+    chance: 646
+  - item_id: 7443  # bullseye potion
+    chance: 103

@@ -1,0 +1,105 @@
+name: Werebear
+life: 2400
+speed: 110
+blood_type: blood
+armor: 30
+defense: 30
+experience: 2100
+outfit:
+  id: 720
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+abilities:
+  - cooldown: 80
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    speed:
+      min:
+        factor: -0.1
+        flat: 0
+      max:
+        factor: -0.1
+        flat: 0
+    duration_ticks: 200
+    effect_id: 3
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 65
+      max: 335
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 15
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 50
+      max: 100
+corpse: 22010
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - GROOOWL
+    - GRRR
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 80752
+    amount: 100
+  - item_id: 22057  # werebear fur
+    chance: 14678
+  - item_id: 22056  # werebear skull
+    chance: 14170
+  - item_id: 3582  # ham
+    chance: 12070
+  - item_id: 239  # great health potion
+    chance: 5193
+  - item_id: 5896  # bear paw
+    chance: 3323
+  - item_id: 5902  # honeycomb
+    chance: 2700
+  - item_id: 7643  # ultimate health potion
+    chance: 1892
+  - item_id: 675  # small enchanted sapphire
+    chance: 1431
+    amount: 2
+  - item_id: 22060  # werewolf amulet
+    chance: 1246
+  - item_id: 3081  # stone skin amulet
+    chance: 1223
+  - item_id: 7432  # furry club
+    chance: 1062
+  - item_id: 22083  # moonlight crystals
+    chance: 877
+  - item_id: 7439  # berserk potion
+    chance: 854
+  - item_id: 22085  # fur armor
+    chance: 785
+  - item_id: 7383  # relic sword
+    chance: 715
+  - item_id: 7452  # spiked squelcher
+    chance: 600
+  - item_id: 3053  # time ring
+    chance: 531
+  - item_id: 22103  # werebear trophy
+    chance: 162
+  - item_id: 7419  # dreaded cleaver
+    chance: 115

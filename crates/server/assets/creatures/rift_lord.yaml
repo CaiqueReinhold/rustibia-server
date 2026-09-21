@@ -1,0 +1,26 @@
+name: Rift Lord
+life: 5
+speed: 110
+blood_type: blood
+armor: 5
+defense: 6
+experience: 0
+outfit:
+  id: 12
+  colors: [9, 0, 9, 85]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 19000
+    type: heal
+    life:
+      min: 0
+      max: 0
+corpse: 6068
+say:
+  cooldown: 100
+  chance: 0

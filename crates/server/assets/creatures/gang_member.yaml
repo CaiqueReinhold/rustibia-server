@@ -1,0 +1,40 @@
+name: Gang Member
+life: 295
+speed: 95
+blood_type: blood
+armor: 8
+defense: 8
+experience: 70
+outfit:
+  id: 151
+  colors: [114, 19, 23, 40]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+corpse: 18122
+flee_threshold: 35
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - This is our territory!
+    - Help me guys!
+    - I don't like the way you look!
+    - You're wearing the wrong colours!
+    - Don't mess with us!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 48971
+    amount: 30
+  - item_id: 3559  # leather legs
+    chance: 15541
+  - item_id: 3286  # mace
+    chance: 9182
+  - item_id: 3602  # brown bread
+    chance: 5251
+  - item_id: 3362  # studded legs
+    chance: 5040
+  - item_id: 3093  # club ring
+    chance: 1029

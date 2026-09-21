@@ -1,0 +1,29 @@
+name: Calamary
+life: 75
+speed: 80
+blood_type: blood
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 451
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 13853
+flee_threshold: 75
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Bubble!
+    - Bobble!
+loot:
+  - item_id: 3581  # shrimp
+    chance: 12270
+    amount: 2

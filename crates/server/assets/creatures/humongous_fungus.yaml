@@ -1,0 +1,141 @@
+name: Humongous Fungus
+life: 3400
+speed: 135
+blood_type: blood
+armor: 45
+defense: 45
+experience: 2600
+outfit:
+  id: 488
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 330
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 180
+      max: 350
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+    effect_id: 46
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 500
+        max: 1000
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 130
+      max: 260
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 400
+        max: 640
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 17
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 225
+      max: 380
+corpse: 15872
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Munch munch munch!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 6
+  - item_id: 5909  # white piece of cloth
+    chance: 10000
+  - item_id: 5911  # red piece of cloth
+    chance: 2941
+  - item_id: 5912  # blue piece of cloth
+    chance: 4545
+  - item_id: 5913  # brown piece of cloth
+    chance: 15285
+  - item_id: 7436  # angelic axe
+    chance: 1265
+  - item_id: 236  # strong health potion
+    chance: 5000
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 5000
+    amount: 2
+  - item_id: 238  # great mana potion
+    chance: 5000
+    amount: 2
+  - item_id: 239  # great health potion
+    chance: 5000
+    amount: 2
+  - item_id: 268  # mana potion
+    chance: 5000
+    amount: 3
+  - item_id: 811  # terra mantle
+    chance: 869
+  - item_id: 812  # terra legs
+    chance: 1123
+  - item_id: 813  # terra boots
+    chance: 1851
+  - item_id: 814  # terra amulet
+    chance: 2127
+  - item_id: 16099  # mushroom backpack
+    chance: 20
+  - item_id: 16103  # mushroom pie
+    chance: 16666
+    amount: 3
+  - item_id: 16117  # muck rod
+    chance: 680
+  - item_id: 16139  # humongous chunk
+    chance: 10000
+  - item_id: 16142  # drill bolt
+    chance: 14285
+    amount: 15
+  - item_id: 16164  # mycological bow
+    chance: 150

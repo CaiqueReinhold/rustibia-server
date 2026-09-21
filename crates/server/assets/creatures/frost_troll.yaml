@@ -1,0 +1,41 @@
+name: Frost Troll
+life: 55
+speed: 70
+blood_type: blood
+armor: 6
+defense: 6
+experience: 23
+outfit:
+  id: 53
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+corpse: 5998
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Brrr
+    - Broar!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50404
+    amount: 12
+  - item_id: 3277  # spear
+    chance: 20343
+  - item_id: 3578  # fish
+    chance: 18162
+  - item_id: 3272  # rapier
+    chance: 15591
+  - item_id: 3412  # wooden shield
+    chance: 15508
+  - item_id: 3130  # twigs
+    chance: 8229
+  - item_id: 9648  # frosty ear of a troll
+    chance: 2011
+  - item_id: 3562  # coat
+    chance: 1126

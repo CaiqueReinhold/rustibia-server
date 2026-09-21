@@ -1,0 +1,70 @@
+name: Valkyrie
+life: 190
+speed: 88
+blood_type: blood
+armor: 12
+defense: 12
+experience: 85
+outfit:
+  id: 139
+  colors: [113, 38, 76, 96]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 50
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 18242
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Another head for me!
+    - Head off!
+    - Your head will be mine!
+    - Stand still!
+    - One more head for me!
+loot:
+  - item_id: 3277  # spear
+    chance: 55000
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 32000
+    amount: 12
+  - item_id: 3577  # meat
+    chance: 30100
+  - item_id: 3358  # chain armor
+    chance: 10000
+  - item_id: 3585  # red apple
+    chance: 7500
+    amount: 2
+  - item_id: 11443  # girlish hair decoration
+    chance: 6000
+  - item_id: 3347  # hunting spear
+    chance: 5155
+  - item_id: 11444  # protective charm
+    chance: 3200
+  - item_id: 3084  # protection amulet
+    chance: 1100
+  - item_id: 3357  # plate armor
+    chance: 820
+  - item_id: 3114  # skull
+    chance: 740
+  - item_id: 266  # health potion
+    chance: 500
+  - item_id: 3275  # double axe
+    chance: 420
+  - item_id: 3028  # small diamond
+    chance: 200

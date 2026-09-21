@@ -1,0 +1,69 @@
+name: Vicious Manbat
+life: 1700
+speed: 110
+blood_type: blood
+armor: 35
+defense: 35
+experience: 1200
+outfit:
+  id: 554
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 215
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 100
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 1
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: single
+    speed:
+      min:
+        factor: -0.4
+        flat: 0
+      max:
+        factor: -0.4
+        flat: 0
+    duration_ticks: 200
+    effect_id: 67
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    condition:
+      type: decaying
+      element: physical
+      damage:
+        min: 400
+        max: 600
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: cross1
+    effect_id: 1
+corpse: 18949
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100

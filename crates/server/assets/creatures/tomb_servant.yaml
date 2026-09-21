@@ -1,0 +1,58 @@
+name: Tomb Servant
+life: 475
+speed: 95
+blood_type: blood
+armor: 30
+defense: 30
+experience: 215
+outfit:
+  id: 100
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 130
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 40
+      max: 55
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+corpse: 6029
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chaarr!!
+    - Ngl..Nglll...Gll
+loot:
+  - item_id: 3031  # gold coin
+    chance: 41000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 41000
+    amount: 8
+  - item_id: 3042  # scarab coin
+    chance: 8210
+  - item_id: 3112  # rotten meat
+    chance: 2000
+  - item_id: 3115  # bone
+    chance: 49000
+  - item_id: 3285  # longsword
+    chance: 6560
+  - item_id: 3441  # bone shield
+    chance: 5300
+  - item_id: 3492  # worm
+    chance: 25325
+    amount: 12
+  - item_id: 10283  # half-digested piece of meat
+    chance: 1000
+  - item_id: 12546  # fist on a stick
+    chance: 230

@@ -1,0 +1,131 @@
+name: Ashmunrah
+life: 5000
+speed: 215
+blood_type: blood
+armor: 25
+defense: 30
+experience: 3100
+outfit:
+  id: 87
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1000
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 55
+      max: 55
+    interval: 80
+abilities:
+  - cooldown: 60
+    chance: 7000
+    type: attack
+    element: death
+    damage:
+      min: 100
+      max: 700
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 12000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 500
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 60
+    chance: 12000
+    type: attack
+    element: physical
+    damage:
+      min: 120
+      max: 750
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 18
+  - cooldown: 60
+    chance: 25000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 1000
+    effect_id: 14
+  - cooldown: 40
+    chance: 18000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 550
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 8
+  - cooldown: 20
+    chance: 20000
+    type: heal
+    life:
+      min: 200
+      max: 400
+corpse: 6031
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - No mortal or undead will steal my secrets!
+    - Ahhhh all those long years.
+    - My traitorous son has thee.
+    - Come to me, my allys and underlings.
+    - I might be trapped but not without power.
+    - Ages come, ages go. Ashmunrah remains.
+    - You will be history soon.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 4
+  - item_id: 238  # great mana potion
+    chance: 12005
+  - item_id: 3048  # might ring
+    chance: 4662
+  - item_id: 3017  # silver brooch
+    chance: 4196
+  - item_id: 3381  # crown armor
+    chance: 466
+  - item_id: 10290  # mini mummy
+    chance: 175
+  - item_id: 3332  # hammer of wrath
+    chance: 117
+  - item_id: 3023  # holy scarab
+    chance: 117

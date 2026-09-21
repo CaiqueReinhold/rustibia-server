@@ -1,0 +1,109 @@
+name: Thalas
+life: 4100
+speed: 160
+blood_type: blood
+armor: 40
+defense: 40
+experience: 2950
+outfit:
+  id: 90
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 900
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 650
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 20
+    chance: 6000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 400
+    effect_id: 14
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 34
+        max: 35
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 21
+  - cooldown: 60
+    chance: 17000
+    type: attack
+    element: earth
+    damage:
+      min: 55
+      max: 550
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 21
+  - cooldown: 20
+    chance: 20000
+    type: heal
+    life:
+      min: 150
+      max: 450
+corpse: 6025
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You will become a feast for my maggots!
+loot:
+  - item_id: 3238  # cobrafang dagger
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 38
+  - item_id: 3299  # poison dagger
+    chance: 21000
+  - item_id: 3032  # small emerald
+    chance: 9000
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 8200
+  - item_id: 3053  # time ring
+    chance: 5200
+  - item_id: 3297  # serpent sword
+    chance: 2700
+  - item_id: 3339  # djinn blade
+    chance: 1000
+  - item_id: 3038  # green gem
+    chance: 100

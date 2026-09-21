@@ -1,0 +1,45 @@
+name: Quara Predator Scout
+life: 890
+speed: 85
+blood_type: blood
+armor: 30
+defense: 30
+experience: 400
+outfit:
+  id: 20
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 190
+  element: physical
+corpse: 6067
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gnarrr!
+    - Tcharrr!
+    - Rrrah!
+    - Rraaar!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 98959
+    amount: 132
+  - item_id: 11491  # quara bone
+    chance: 10105
+  - item_id: 3377  # scale armor
+    chance: 8959
+  - item_id: 3275  # double axe
+    chance: 5785
+  - item_id: 3581  # shrimp
+    chance: 5045
+  - item_id: 3028  # small diamond
+    chance: 5020
+    amount: 2
+  - item_id: 3265  # two handed sword
+    chance: 3011
+  - item_id: 5895  # fish fin
+    chance: 1067
+  - item_id: 8083  # northwind rod
+    chance: 947

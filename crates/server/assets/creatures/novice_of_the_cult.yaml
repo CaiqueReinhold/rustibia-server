@@ -1,0 +1,75 @@
+name: Novice of the Cult
+life: 285
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 100
+outfit:
+  id: 133
+  colors: [114, 114, 76, 114]
+melee:
+  damage:
+    min: 0
+    max: 65
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 1
+      max: 1
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 20
+      max: 80
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 15
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 20
+      max: 40
+corpse: 18186
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Fear us!
+    - You will not tell anyone what you have seen!
+    - Your curiosity will be punished!
+loot:
+  - item_id: 2828  # book
+    chance: 700
+  - item_id: 3028  # small diamond
+    chance: 210
+  - item_id: 3031  # gold coin
+    chance: 43380
+    amount: 40
+  - item_id: 3074  # wand of vortex
+    chance: 450
+  - item_id: 3083  # garlic necklace
+    chance: 420
+  - item_id: 3097  # dwarven ring
+    chance: 500
+  - item_id: 3572  # scarf
+    chance: 2900
+  - item_id: 5810  # pirate voodoo doll
+    chance: 520
+  - item_id: 6087  # music sheet
+    chance: 970
+  - item_id: 9639  # cultish robe
+    chance: 1030
+  - item_id: 11492  # rope belt
+    chance: 5910

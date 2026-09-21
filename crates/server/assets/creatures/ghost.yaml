@@ -1,0 +1,56 @@
+name: Ghost
+life: 150
+speed: 80
+blood_type: blood
+armor: 0
+defense: 0
+experience: 120
+outfit:
+  id: 48
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 20
+      max: 45
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+corpse: 5993
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Huh!
+    - Shhhhhh
+    - Buuuuuh
+loot:
+  - item_id: 2828  # book
+    chance: 1310
+  - item_id: 3049  # stealth ring
+    chance: 180
+  - item_id: 3282  # morning star
+    chance: 10610
+  - item_id: 3292  # combat knife
+    chance: 7002
+  - item_id: 3432  # ancient shield
+    chance: 860
+  - item_id: 3565  # cape
+    chance: 8800
+  - item_id: 3740  # shadow herb
+    chance: 14400
+  - item_id: 5909  # white piece of cloth
+    chance: 1940
+  - item_id: 9690  # ghostly tissue
+    chance: 1870

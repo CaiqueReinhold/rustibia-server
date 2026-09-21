@@ -1,0 +1,152 @@
+name: Terrorsleep
+life: 7200
+speed: 180
+blood_type: poison
+armor: 80
+defense: 80
+experience: 5900
+outfit:
+  id: 587
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 450
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 1000
+        max: 1500
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: radius7
+    effect_id: 8
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 350
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 49
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 450
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 350
+      max: 600
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 20163
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Aktat Roshok! Marruk!
+    - I will eat you in your sleep.
+    - I am the darkness around you...
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99960
+    amount: 197
+  - item_id: 3035  # platinum coin
+    chance: 99960
+    amount: 9
+  - item_id: 238  # great mana potion
+    chance: 34849
+    amount: 2
+  - item_id: 7643  # ultimate health potion
+    chance: 21811
+  - item_id: 16125  # cyan crystal fragment
+    chance: 16700
+  - item_id: 20204  # bowl of terror sweat
+    chance: 16660
+  - item_id: 3033  # small amethyst
+    chance: 14889
+    amount: 3
+  - item_id: 9057  # small topaz
+    chance: 14447
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 13561
+    amount: 3
+  - item_id: 3030  # small ruby
+    chance: 12797
+    amount: 3
+  - item_id: 16124  # blue crystal splinter
+    chance: 12274
+  - item_id: 20203  # trapped bad dream monster
+    chance: 12233
+  - item_id: 16119  # blue crystal shard
+    chance: 8974
+  - item_id: 5909  # white piece of cloth
+    chance: 4024
+  - item_id: 5912  # blue piece of cloth
+    chance: 3461
+  - item_id: 3370  # knight armor
+    chance: 2294
+  - item_id: 5895  # fish fin
+    chance: 2173
+  - item_id: 20029  # broken dream
+    chance: 2093
+  - item_id: 3281  # giant sword
+    chance: 1650
+  - item_id: 3369  # warrior helmet
+    chance: 1650
+  - item_id: 3567  # blue robe
+    chance: 1207
+  - item_id: 5911  # red piece of cloth
+    chance: 1127
+  - item_id: 20062  # cluster of solace
+    chance: 805

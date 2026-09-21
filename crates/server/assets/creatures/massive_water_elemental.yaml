@@ -1,0 +1,101 @@
+name: Massive Water Elemental
+life: 1250
+speed: 140
+blood_type: blood
+armor: 25
+defense: 25
+experience: 1100
+outfit:
+  id: 11
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 220
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 300
+      max: 300
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 330
+      max: 450
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    effect_id: 2
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: ice
+    damage:
+      min: 170
+      max: 210
+    target:
+      type: target
+      range: 7
+    missile_id: 37
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 355
+        max: 420
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 21
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 120
+      max: 250
+corpse: 9582
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3028  # small diamond
+    chance: 1900
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3032  # small emerald
+    chance: 1000
+    amount: 2
+  - item_id: 3035  # platinum coin
+    chance: 20000
+    amount: 2
+  - item_id: 3051  # energy ring
+    chance: 910
+  - item_id: 3052  # life ring
+    chance: 1000
+  - item_id: 3578  # fish
+    chance: 40000
+    amount: 2
+  - item_id: 7158  # rainbow trout
+    chance: 1340
+  - item_id: 7159  # green perch
+    chance: 1590
+  - item_id: 238  # great mana potion
+    chance: 10400
+  - item_id: 239  # great health potion
+    chance: 10000

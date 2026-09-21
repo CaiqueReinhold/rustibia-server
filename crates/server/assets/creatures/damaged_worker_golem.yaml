@@ -1,0 +1,62 @@
+name: Damaged Worker Golem
+life: 260
+speed: 100
+blood_type: blood
+armor: 25
+defense: 25
+experience: 95
+outfit:
+  id: 304
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 45
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 5
+      max: 11
+corpse: 8887
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Klonk klonk klonk
+    - Failure! Failure!
+    - Good morning citizen. How may I serve you?
+    - "Target identified: Rat! Termination initiated!"
+    - Rrrtttarrrttarrrtta
+    - Danger will...chrrr! Danger!
+    - Self-diagnosis failed.
+    - Aw... chhhrrr orders.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 68810
+    amount: 88
+  - item_id: 3091  # sword ring
+    chance: 570
+  - item_id: 5880  # iron ore
+    chance: 400
+  - item_id: 953  # nail
+    chance: 1460
+  - item_id: 8894  # heavily rusted armor
+    chance: 790
+  - item_id: 9655  # gear crystal
+    chance: 200

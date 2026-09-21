@@ -1,0 +1,22 @@
+name: Green Frog
+life: 25
+speed: 100
+blood_type: blood
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 224
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 25
+  element: physical
+corpse: 6079
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit!
+    - Ribbit! Ribbit!

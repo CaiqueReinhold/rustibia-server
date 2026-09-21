@@ -1,0 +1,83 @@
+name: Ice Golem
+life: 385
+speed: 97
+blood_type: blood
+armor: 25
+defense: 26
+experience: 295
+outfit:
+  id: 261
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 220
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 13000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 400
+    effect_id: 12
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 50
+      max: 85
+    target:
+      type: target
+      range: 7
+    missile_id: 37
+    effect_id: 44
+corpse: 7282
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - Chrrr.
+    - Crrrrk.
+    - Gnarr.
+loot:
+  - item_id: 3027  # black pearl
+    chance: 1612
+  - item_id: 3028  # small diamond
+    chance: 66
+  - item_id: 3029  # small sapphire
+    chance: 578
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 3
+  - item_id: 3284  # ice rapier
+    chance: 400
+  - item_id: 3373  # strange helmet
+    chance: 444
+  - item_id: 7290  # shard
+    chance: 266
+  - item_id: 7441  # ice cube
+    chance: 5000
+  - item_id: 7449  # crystal sword
+    chance: 177
+  - item_id: 236  # strong health potion
+    chance: 444
+  - item_id: 829  # glacier mask
+    chance: 111
+  - item_id: 9661  # frosty heart
+    chance: 11111

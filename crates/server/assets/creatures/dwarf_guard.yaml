@@ -1,0 +1,50 @@
+name: Dwarf Guard
+life: 245
+speed: 103
+blood_type: blood
+armor: 15
+defense: 15
+experience: 165
+outfit:
+  id: 70
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 140
+  element: physical
+corpse: 6013
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hail Durin!
+loot:
+  - item_id: 3723  # white mushroom
+    chance: 55243
+    amount: 2
+  - item_id: 3552  # leather boots
+    chance: 40075
+  - item_id: 3031  # gold coin
+    chance: 39985
+    amount: 30
+  - item_id: 3377  # scale armor
+    chance: 9009
+  - item_id: 3413  # battle shield
+    chance: 6014
+  - item_id: 3305  # battle hammer
+    chance: 3849
+  - item_id: 3351  # steel helmet
+    chance: 1549
+  - item_id: 3275  # double axe
+    chance: 592
+  - item_id: 5880  # iron ore
+    chance: 481
+  - item_id: 266  # health potion
+    chance: 394
+  - item_id: 3092  # axe ring
+    chance: 198
+  - item_id: 12600  # coal
+    chance: 195
+  - item_id: 3033  # small amethyst
+    chance: 120

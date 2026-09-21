@@ -1,0 +1,74 @@
+name: Minotaur Mage
+life: 155
+speed: 85
+blood_type: blood
+armor: 18
+defense: 18
+experience: 150
+outfit:
+  id: 23
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 20
+      max: 58
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 50
+      max: 105
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 4
+    effect_id: 7
+corpse: 5981
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Learrn tha secrret uf deathhh!
+    - Kaplar!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 85291
+    amount: 35
+  - item_id: 3595  # carrot
+    chance: 14690
+    amount: 8
+  - item_id: 11473  # purple robe
+    chance: 6068
+  - item_id: 2920  # torch
+    chance: 5008
+  - item_id: 3559  # leather legs
+    chance: 4908
+  - item_id: 3355  # leather helmet
+    chance: 3197
+  - item_id: 11472  # minotaur horn
+    chance: 3096
+    amount: 2
+  - item_id: 5878  # minotaur leather
+    chance: 2090
+  - item_id: 7425  # taurus mace
+    chance: 959
+  - item_id: 3073  # wand of cosmic energy
+    chance: 556
+  - item_id: 268  # mana potion
+    chance: 470

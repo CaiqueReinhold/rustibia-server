@@ -1,0 +1,47 @@
+name: Cobra
+life: 65
+speed: 60
+blood_type: blood
+armor: 1
+defense: 1
+experience: 30
+outfit:
+  id: 81
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 100
+      max: 100
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 20
+        max: 40
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 4188
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zzzzzz
+    - Fsssss
+loot:
+  - item_id: 9634  # cobra tongue
+    chance: 5000

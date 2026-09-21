@@ -1,0 +1,36 @@
+name: Clomp
+life: 900
+speed: 215
+blood_type: blood
+armor: 45
+defense: 45
+experience: 475
+outfit:
+  id: 860
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 260
+  element: physical
+corpse: 22742
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Snort!
+    - Grunt!
+    - Snarl!
+loot:
+  - item_id: 22186  # raw meat
+    chance: 18061
+  - item_id: 5925  # hardened bone
+    chance: 7211
+  - item_id: 10307  # thick fur
+    chance: 6923
+  - item_id: 3443  # tusk shield
+    chance: 555
+  - item_id: 7432  # furry club
+    chance: 444

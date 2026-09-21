@@ -1,0 +1,28 @@
+name: Orchid Frog
+life: 60
+speed: 100
+blood_type: blood
+armor: 5
+defense: 5
+experience: 20
+outfit:
+  id: 226
+  colors: [71, 14, 71, 70]
+melee:
+  damage:
+    min: 0
+    max: 24
+  element: physical
+corpse: 6079
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit!
+    - Ribbit! Ribbit!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 73230
+    amount: 10
+  - item_id: 3492  # worm
+    chance: 8000

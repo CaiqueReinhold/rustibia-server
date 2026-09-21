@@ -1,0 +1,103 @@
+name: Lost Soul
+life: 5800
+speed: 190
+blood_type: blood
+armor: 30
+defense: 30
+experience: 4000
+outfit:
+  id: 232
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 420
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 40
+      max: 210
+    target:
+      type: area
+      origin: self
+      shape: beam3
+    effect_id: 14
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 80
+    effect_id: 39
+corpse: 6309
+flee_threshold: 450
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Forgive Meeeee!
+    - Mouuuurn meeee!
+    - Help meeee!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 196
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 7
+  - item_id: 3147  # blank rune
+    chance: 36842
+    amount: 3
+  - item_id: 10316  # unholy bone
+    chance: 33684
+  - item_id: 238  # great mana potion
+    chance: 17193
+    amount: 2
+  - item_id: 3027  # black pearl
+    chance: 15439
+    amount: 3
+  - item_id: 5944  # soul orb
+    chance: 15439
+  - item_id: 3026  # white pearl
+    chance: 14035
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 8421
+    amount: 2
+  - item_id: 6499  # demonic essence
+    chance: 5614
+  - item_id: 5806  # silver goblet
+    chance: 3860
+  - item_id: 8896  # slightly rusted armor
+    chance: 3158
+  - item_id: 3081  # stone skin amulet
+    chance: 2807
+  - item_id: 6299  # death ring
+    chance: 2456
+  - item_id: 3016  # ruby necklace
+    chance: 1404
+  - item_id: 6525  # skeleton decoration
+    chance: 1404
+  - item_id: 3039  # red gem
+    chance: 1053
+  - item_id: 7407  # haunted blade
+    chance: 702
+  - item_id: 3324  # skull staff
+    chance: 702
+  - item_id: 7413  # titan axe
+    chance: 351

@@ -1,0 +1,102 @@
+name: Glooth Golem
+life: 2700
+speed: 130
+blood_type: poison
+armor: 27
+defense: 35
+experience: 2200
+outfit:
+  id: 600
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 175
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: energy
+    damage:
+      min: 125
+      max: 245
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 13000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.404
+        flat: 0
+      max:
+        factor: 0.404
+        flat: 0
+    duration_ticks: 80
+    effect_id: 14
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 20972
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - "*slosh*"
+    - "*clank*"
+loot:
+  - item_id: 5880  # iron ore
+    chance: 1030
+  - item_id: 21183  # glooth amulet
+    chance: 1720
+  - item_id: 21170  # gearwheel chain
+    chance: 1720
+  - item_id: 21165  # rubber cap
+    chance: 1370
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 100
+  - item_id: 21755  # bronze gear wheel
+    chance: 4470
+  - item_id: 8775  # gear wheel
+    chance: 690
+  - item_id: 21143  # glooth sandwich
+    chance: 9970
+  - item_id: 3035  # platinum coin
+    chance: 56010
+    amount: 4
+  - item_id: 21103  # glooth injection tube
+    chance: 16840
+  - item_id: 7643  # ultimate health potion
+    chance: 4470
+  - item_id: 238  # great mana potion
+    chance: 9280
+  - item_id: 21167  # heat core
+    chance: 690
+  - item_id: 21179  # glooth blade
+    chance: 3440
+  - item_id: 21178  # glooth club
+    chance: 1030
+  - item_id: 21180  # glooth axe
+    chance: 690
+  - item_id: 3037  # yellow gem
+    chance: 1030
+  - item_id: 9057  # small topaz
+    chance: 7560
+    amount: 4
+  - item_id: 3032  # small emerald
+    chance: 8590
+    amount: 4

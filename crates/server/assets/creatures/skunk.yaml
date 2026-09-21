@@ -1,0 +1,36 @@
+name: Skunk
+life: 20
+speed: 68
+blood_type: blood
+armor: 1
+defense: 1
+experience: 3
+outfit:
+  id: 106
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 5
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 1
+      max: 3
+    target:
+      type: target
+      range: 1
+corpse: 6035
+flee_threshold: 8
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 8197  # bulb of garlic
+    chance: 4472
+  - item_id: 10274  # skunk tail
+    chance: 884

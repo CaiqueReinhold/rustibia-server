@@ -1,0 +1,34 @@
+name: Parrot
+life: 25
+speed: 160
+blood_type: blood
+armor: 2
+defense: 2
+experience: 0
+outfit:
+  id: 217
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 5
+  element: physical
+corpse: 6056
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You advanshed, you advanshed!
+    - Neeewbiiieee!
+    - Screeech!
+    - Hunterrr ish PK!
+    - BR? PL? SWE?
+    - Hope you die and loooosh it!
+    - You powerrrrrrabuserrrrr!
+    - You are corrrrupt! Corrrrupt!
+    - Tarrrrp?
+    - Blesshhh my stake! Screeech!
+    - Leeave orrr hunted!!
+    - Shhtop whining! Rraaah!
+    - I'm heeerrre! Screeeech!

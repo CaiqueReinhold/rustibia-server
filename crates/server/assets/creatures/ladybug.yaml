@@ -1,0 +1,49 @@
+name: Ladybug
+life: 255
+speed: 100
+blood_type: poison
+armor: 10
+defense: 10
+experience: 70
+outfit:
+  id: 448
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 4
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 0
+      max: 20
+    target:
+      type: target
+      range: 1
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 0
+      max: 20
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 13845
+flee_threshold: 60
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Nee pah!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 65000
+    amount: 40

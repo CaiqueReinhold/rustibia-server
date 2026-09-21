@@ -1,0 +1,127 @@
+name: Seacrest Serpent
+life: 3000
+speed: 250
+blood_type: poison
+armor: 51
+defense: 51
+experience: 2600
+outfit:
+  id: 675
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 530
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 7000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 260
+    target:
+      type: target
+      range: 7
+    missile_id: 30
+    effect_id: 20
+  - cooldown: 40
+    chance: 11000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 285
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: ice
+    damage:
+      min: 0
+      max: 284
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 54
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 200
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: beam4
+    effect_id: 13
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 145
+      max: 200
+corpse: 21893
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - LEAVE THESE GROUNDS...
+    - THE DARK TIDE WILL SWALLOW YOU...
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 5
+  - item_id: 21800  # seacrest scale
+    chance: 16853
+  - item_id: 3583  # dragon ham
+    chance: 14030
+  - item_id: 21801  # seacrest hair
+    chance: 11330
+  - item_id: 762  # shiver arrow
+    chance: 8305
+    amount: 19
+  - item_id: 237  # strong mana potion
+    chance: 7919
+    amount: 2
+  - item_id: 236  # strong health potion
+    chance: 7452
+    amount: 2
+  - item_id: 21747  # seacrest pearl
+    chance: 6843
+  - item_id: 3028  # small diamond
+    chance: 4284
+    amount: 3
+  - item_id: 5944  # soul orb
+    chance: 3533
+  - item_id: 823  # glacier kilt
+    chance: 2335
+  - item_id: 3026  # white pearl
+    chance: 2132
+    amount: 2
+  - item_id: 829  # glacier mask
+    chance: 2112
+  - item_id: 3027  # black pearl
+    chance: 1929
+    amount: 3
+  - item_id: 819  # glacier shoes
+    chance: 1848
+  - item_id: 281  # giant shimmering pearl
+    chance: 1624
+  - item_id: 21892  # crest of the deep seas
+    chance: 1076
+  - item_id: 815  # glacier amulet
+    chance: 1015
+  - item_id: 8093  # wand of draconia
+    chance: 893
+  - item_id: 16096  # wand of defiance
+    chance: 223

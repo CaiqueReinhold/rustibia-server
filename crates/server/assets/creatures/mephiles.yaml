@@ -1,0 +1,53 @@
+name: Mephiles
+life: 415
+speed: 150
+blood_type: blood
+armor: 30
+defense: 35
+experience: 415
+outfit:
+  id: 237
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+abilities:
+  - cooldown: 30
+    chance: 70000
+    type: attack
+    element: fire
+    damage:
+      min: 15
+      max: 45
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 20
+    chance: 40000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 800
+    effect_id: 14
+corpse: 9406
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I have a contract here which you should sign!
+    - I sence so much potential in you. It's almost a shame I have to kill you.
+    - Yes, slay me for the loot I might have. Give in to your greed.
+    - Wealth, Power, it is all at your fingertips. All you have to do is a bit blackmailing and bullying.
+    - Come on. being a bit evil won't hurt you.

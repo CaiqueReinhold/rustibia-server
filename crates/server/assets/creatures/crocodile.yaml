@@ -1,0 +1,30 @@
+name: Crocodile
+life: 105
+speed: 78
+blood_type: blood
+armor: 13
+defense: 13
+experience: 40
+outfit:
+  id: 119
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+corpse: 6046
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 49805
+    amount: 10
+  - item_id: 3582  # ham
+    chance: 39795
+  - item_id: 10279  # piece of crocodile leather
+    chance: 20032
+  - item_id: 3556  # crocodile boots
+    chance: 86

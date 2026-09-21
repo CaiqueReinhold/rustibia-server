@@ -1,0 +1,23 @@
+name: Flamingo
+life: 25
+speed: 105
+blood_type: blood
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 212
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 6054
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 11684  # downy feather
+    chance: 1000

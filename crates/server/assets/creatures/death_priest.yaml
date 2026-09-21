@@ -1,0 +1,65 @@
+name: Death Priest
+life: 800
+speed: 110
+blood_type: blood
+armor: 20
+defense: 20
+experience: 750
+outfit:
+  id: 99
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 250
+    target:
+      type: target
+      range: 7
+    missile_id: 11
+    effect_id: 18
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 80
+      max: 200
+corpse: 12840
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3026  # white pearl
+    chance: 3000
+  - item_id: 3031  # gold coin
+    chance: 35000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 35000
+    amount: 44
+  - item_id: 3042  # scarab coin
+    chance: 10000
+    amount: 3
+  - item_id: 3059  # spellbook
+    chance: 6800
+  - item_id: 3098  # ring of healing
+    chance: 1000
+  - item_id: 5021  # orichalcum pearl
+    chance: 6000
+    amount: 4
+  - item_id: 266  # health potion
+    chance: 15000
+  - item_id: 268  # mana potion
+    chance: 15000
+  - item_id: 12482  # hieroglyph banner
+    chance: 27000

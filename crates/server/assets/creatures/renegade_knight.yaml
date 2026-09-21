@@ -1,0 +1,78 @@
+name: Renegade Knight
+life: 1450
+speed: 105
+blood_type: blood
+armor: 27
+defense: 33
+experience: 1200
+outfit:
+  id: 268
+  colors: [97, 113, 76, 98]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 245
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 25
+      max: 125
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 18137
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - I'll teach you a lesson!
+    - Feel my steel!
+    - Take this!
+    - Your abilities are no match for mine!
+    - Let's see how good you are!
+    - A challenge at last!
+loot:
+  - item_id: 11450  # small notebook
+    chance: 1655
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 25165
+    amount: 2
+  - item_id: 11510  # scroll of heroic deeds
+    chance: 4635
+  - item_id: 3577  # meat
+    chance: 7615
+  - item_id: 3265  # two handed sword
+    chance: 5960
+  - item_id: 3279  # war hammer
+    chance: 993
+  - item_id: 5911  # red piece of cloth
+    chance: 2317
+  - item_id: 3381  # crown armor
+    chance: 662
+  - item_id: 3385  # crown helmet
+    chance: 331
+  - item_id: 239  # great health potion
+    chance: 7284
+  - item_id: 3030  # small ruby
+    chance: 6622
+  - item_id: 2995  # piggy bank
+    chance: 331
+  - item_id: 3382  # crown legs
+    chance: 331

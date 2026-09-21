@@ -1,0 +1,54 @@
+name: Sacred Spider
+life: 550
+speed: 105
+blood_type: poison
+armor: 25
+defense: 25
+experience: 330
+outfit:
+  id: 219
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 160
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 80
+      max: 80
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 6060
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 19
+  - item_id: 3042  # scarab coin
+    chance: 7142
+    amount: 4
+  - item_id: 3357  # plate armor
+    chance: 4761
+  - item_id: 8031  # spider fangs
+    chance: 25000
+  - item_id: 9058  # gold ingot
+    chance: 95

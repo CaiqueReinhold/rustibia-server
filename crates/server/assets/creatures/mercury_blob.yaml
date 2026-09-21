@@ -1,0 +1,43 @@
+name: Mercury Blob
+life: 150
+speed: 90
+blood_type: blood
+armor: 15
+defense: 15
+experience: 180
+outfit:
+  id: 316
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 75
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: energy
+    damage:
+      min: 10
+      max: 30
+    target:
+      type: target
+      range: 7
+    effect_id: 12
+    missile_id: 5
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 20
+      max: 30
+corpse: 9048
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Crackle
+loot:
+  - item_id: 9053  # glob of mercury
+    chance: 17966

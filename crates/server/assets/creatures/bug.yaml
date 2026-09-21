@@ -1,0 +1,26 @@
+name: Bug
+life: 29
+speed: 80
+blood_type: poison
+armor: 2
+defense: 2
+experience: 18
+outfit:
+  id: 45
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 23
+  element: physical
+corpse: 5990
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 6
+  - item_id: 3590  # cherry
+    chance: 3000
+    amount: 3

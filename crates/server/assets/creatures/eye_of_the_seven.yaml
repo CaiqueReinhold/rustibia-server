@@ -1,0 +1,32 @@
+name: Eye of the Seven
+life: 1
+speed: 1
+blood_type: poison
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 109
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 500
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 9000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 500
+    target:
+      type: target
+      range: 6
+corpse: 6036
+say:
+  cooldown: 100
+  chance: 0

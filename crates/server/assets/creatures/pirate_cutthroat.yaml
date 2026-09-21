@@ -1,0 +1,72 @@
+name: Pirate Cutthroat
+life: 325
+speed: 107
+blood_type: blood
+armor: 15
+defense: 15
+experience: 175
+outfit:
+  id: 96
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 170
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 10
+      max: 10
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 95
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 41
+    effect_id: 5
+corpse: 18198
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Give up!
+    - Hiyaa!
+    - Plundeeeeer!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 77548
+    amount: 50
+  - item_id: 10302  # compass
+    chance: 10074
+  - item_id: 3377  # scale armor
+    chance: 3070
+  - item_id: 3409  # steel shield
+    chance: 2884
+  - item_id: 5710  # light shovel
+    chance: 1960
+  - item_id: 5706  # treasure map
+    chance: 1092
+  - item_id: 5918  # pirate knee breeches
+    chance: 1019
+  - item_id: 5927  # pirate bag
+    chance: 987
+  - item_id: 6097  # hook
+    chance: 534
+  - item_id: 6126  # peg leg
+    chance: 514
+  - item_id: 6098  # eye patch
+    chance: 468
+  - item_id: 5792  # die
+    chance: 93
+  - item_id: 5552  # rum flask
+    chance: 89

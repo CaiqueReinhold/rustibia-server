@@ -1,0 +1,63 @@
+name: Berserker Chicken
+life: 465
+speed: 150
+blood_type: blood
+armor: 30
+defense: 35
+experience: 220
+outfit:
+  id: 111
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 41
+      max: 70
+    target:
+      type: target
+      range: 7
+    effect_id: 5
+  - cooldown: 20
+    chance: 40000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 160
+    effect_id: 14
+corpse: 6042
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gokgoooook
+    - Cluck Cluck
+    - I will fill MY cushion with YOUR hair! CLUCK!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100

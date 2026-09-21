@@ -1,0 +1,40 @@
+name: Insectoid Worker
+life: 950
+speed: 100
+blood_type: poison
+armor: 15
+defense: 15
+experience: 650
+outfit:
+  id: 403
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 163
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+corpse: 12525
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 90
+  - item_id: 3032  # small emerald
+    chance: 2880
+  - item_id: 3326  # epee
+    chance: 560
+  - item_id: 266  # health potion
+    chance: 5090
+  - item_id: 14083  # compound eye
+    chance: 15380
+  - item_id: 14225  # dung ball
+    chance: 14990

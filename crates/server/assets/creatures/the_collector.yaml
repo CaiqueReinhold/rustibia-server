@@ -1,0 +1,62 @@
+name: The Collector
+life: 340
+speed: 97
+blood_type: blood
+armor: 25
+defense: 26
+experience: 100
+outfit:
+  id: 261
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 220
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 13000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 400
+    effect_id: 12
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 85
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 10
+      max: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 10
+corpse: 7282
+flee_threshold: 20
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - Leave as long as you can.

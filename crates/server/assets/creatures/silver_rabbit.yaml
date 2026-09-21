@@ -1,0 +1,28 @@
+name: Silver Rabbit
+life: 15
+speed: 92
+blood_type: blood
+armor: 1
+defense: 1
+experience: 0
+outfit:
+  id: 262
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 7338
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3577  # meat
+    chance: 85000
+    amount: 2
+  - item_id: 10292  # silky fur
+    chance: 30000
+  - item_id: 3595  # carrot
+    chance: 10000

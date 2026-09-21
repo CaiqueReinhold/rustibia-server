@@ -1,0 +1,111 @@
+name: Stone Devourer
+life: 4200
+speed: 125
+blood_type: blood
+armor: 35
+defense: 35
+experience: 2900
+outfit:
+  id: 486
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 990
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 230
+      max: 460
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+    effect_id: 45
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 650
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 150
+      max: 260
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    effect_id: 45
+corpse: 15865
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Rumble!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 92000
+    amount: 7
+  - item_id: 3081  # stone skin amulet
+    chance: 2270
+  - item_id: 3097  # dwarven ring
+    chance: 2840
+  - item_id: 3281  # giant sword
+    chance: 570
+  - item_id: 3333  # crystal mace
+    chance: 850
+  - item_id: 3342  # war axe
+    chance: 920
+  - item_id: 7437  # sapphire hammer
+    chance: 1490
+  - item_id: 7452  # spiked squelcher
+    chance: 1490
+  - item_id: 7454  # glorious axe
+    chance: 3340
+  - item_id: 236  # strong health potion
+    chance: 13840
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 14900
+    amount: 2
+  - item_id: 238  # great mana potion
+    chance: 15610
+    amount: 2
+  - item_id: 268  # mana potion
+    chance: 15050
+    amount: 2
+  - item_id: 7643  # ultimate health potion
+    chance: 14410
+  - item_id: 7920  # wood
+    chance: 11360
+  - item_id: 9632  # ancient stone
+    chance: 12850
+  - item_id: 15793  # crystalline arrow
+    chance: 9940
+    amount: 10
+  - item_id: 16122  # green crystal splinter
+    chance: 6960
+  - item_id: 16125  # cyan crystal fragment
+    chance: 6810
+  - item_id: 16137  # stone nose
+    chance: 18679
+  - item_id: 16138  # crystalline spikes
+    chance: 16320

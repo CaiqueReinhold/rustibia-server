@@ -1,0 +1,51 @@
+name: Demon Parrot
+life: 360
+speed: 150
+blood_type: blood
+armor: 30
+defense: 35
+experience: 225
+outfit:
+  id: 217
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 25
+      max: 45
+    target:
+      type: target
+      range: 5
+    missile_id: 32
+  - cooldown: 20
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 15
+      max: 45
+    target:
+      type: target
+      range: 1
+corpse: 6056
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - ISHH THAT THE BESHHT YOU HAVE TO OFFERRR?
+    - YOU ARRRRRE DOOMED!
+    - I SHHMELL FEEAARRR!
+    - MY SHHEED IS FEARRR AND MY HARRRVEST ISHH YOURRR SHHOUL!
+    - Your shhoooul will be mineee!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 99

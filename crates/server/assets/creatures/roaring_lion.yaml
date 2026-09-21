@@ -1,0 +1,48 @@
+name: Roaring Lion
+life: 1000
+speed: 105
+blood_type: blood
+armor: 28
+defense: 28
+experience: 800
+outfit:
+  id: 570
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 130
+  element: physical
+corpse: 19103
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Groarrrr! Rwarrrr!
+    - Growl!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 115
+  - item_id: 3577  # meat
+    chance: 25326
+  - item_id: 3582  # ham
+    chance: 24811
+  - item_id: 9691  # lion's mane
+    chance: 20073
+  - item_id: 3035  # platinum coin
+    chance: 9973
+  - item_id: 3029  # small sapphire
+    chance: 7149
+  - item_id: 9057  # small topaz
+    chance: 6926
+  - item_id: 3030  # small ruby
+    chance: 6842
+  - item_id: 3033  # small amethyst
+    chance: 6700
+  - item_id: 3077  # ankh
+    chance: 2857
+  - item_id: 3048  # might ring
+    chance: 731
+  - item_id: 3385  # crown helmet
+    chance: 581

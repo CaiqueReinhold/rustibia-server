@@ -1,0 +1,169 @@
+name: Hellflayer
+life: 14000
+speed: 165
+blood_type: blood
+armor: 55
+defense: 55
+experience: 11000
+outfit:
+  id: 856
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1000
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 170
+      max: 300
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 250
+      max: 500
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 48
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 300
+      max: 550
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 4
+    effect_id: 37
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 300
+      max: 500
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 41
+    effect_id: 33
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 80
+      max: 95
+corpse: 22784
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Your tainted soul belongs to us anyway!
+    - You should consider bargaining for your life!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 90500
+    amount: 198
+  - item_id: 3035  # platinum coin
+    chance: 89170
+    amount: 12
+  - item_id: 6558  # flask of demonic blood
+    chance: 21195
+  - item_id: 6499  # demonic essence
+    chance: 17627
+  - item_id: 238  # great mana potion
+    chance: 14798
+    amount: 5
+  - item_id: 22729  # pair of hellflayer horns
+    chance: 14207
+  - item_id: 7642  # great spirit potion
+    chance: 13215
+    amount: 5
+  - item_id: 7643  # ultimate health potion
+    chance: 12413
+    amount: 5
+  - item_id: 3030  # small ruby
+    chance: 7431
+    amount: 5
+  - item_id: 9057  # small topaz
+    chance: 7304
+    amount: 5
+  - item_id: 3028  # small diamond
+    chance: 7051
+    amount: 5
+  - item_id: 3032  # small emerald
+    chance: 6819
+    amount: 5
+  - item_id: 3033  # small amethyst
+    chance: 6713
+    amount: 5
+  - item_id: 9058  # gold ingot
+    chance: 5890
+    amount: 2
+  - item_id: 281  # giant shimmering pearl
+    chance: 3779
+  - item_id: 3039  # red gem
+    chance: 2111
+  - item_id: 3036  # violet gem
+    chance: 1182
+  - item_id: 22727  # rift lance
+    chance: 908
+  - item_id: 818  # magma boots
+    chance: 887
+  - item_id: 3038  # green gem
+    chance: 866
+  - item_id: 821  # magma legs
+    chance: 844
+  - item_id: 7413  # titan axe
+    chance: 718
+  - item_id: 3360  # golden armor
+    chance: 486
+  - item_id: 22866  # rift bow
+    chance: 464
+  - item_id: 22867  # rift crossbow
+    chance: 443
+  - item_id: 3414  # mastermind shield
+    chance: 422
+  - item_id: 22726  # rift shield
+    chance: 253
+  - item_id: 5741  # skull helmet
+    chance: 253
+  - item_id: 3366  # magic plate armor
+    chance: 232
+  - item_id: 3019  # demonbone amulet
+    chance: 169
+  - item_id: 8074  # spellbook of mind control
+    chance: 84
+  - item_id: 3340  # heavy mace
+    chance: 42

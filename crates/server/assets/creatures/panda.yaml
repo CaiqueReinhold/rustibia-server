@@ -1,0 +1,30 @@
+name: Panda
+life: 80
+speed: 78
+blood_type: blood
+armor: 8
+defense: 8
+experience: 23
+outfit:
+  id: 123
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+corpse: 6049
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrr
+    - Groar
+loot:
+  - item_id: 3577  # meat
+    chance: 69144
+  - item_id: 3582  # ham
+    chance: 36695
+  - item_id: 11445  # bamboo stick
+    chance: 9423

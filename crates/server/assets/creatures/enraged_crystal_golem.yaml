@@ -1,0 +1,44 @@
+name: Enraged Crystal Golem
+life: 700
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 550
+outfit:
+  id: 508
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+corpse: 16176
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Crrrrk! Chhhhr!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 7449  # crystal sword
+    chance: 4710
+  - item_id: 7454  # glorious axe
+    chance: 360
+  - item_id: 236  # strong health potion
+    chance: 7140
+  - item_id: 237  # strong mana potion
+    chance: 8270
+  - item_id: 16124  # blue crystal splinter
+    chance: 4120
+  - item_id: 16125  # cyan crystal fragment
+    chance: 1050
+  - item_id: 16138  # crystalline spikes
+    chance: 7980
+  - item_id: 16161  # crystalline axe
+    chance: 5008
+    amount: 5

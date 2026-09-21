@@ -1,0 +1,62 @@
+name: Inky
+life: 600
+speed: 260
+blood_type: blood
+armor: 15
+defense: 15
+experience: 250
+outfit:
+  id: 46
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 741
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 87
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 10
+  - cooldown: 40
+    chance: 7000
+    type: attack
+    element: physical
+    damage:
+      min: 56
+      max: 87
+    target:
+      type: target
+      range: 7
+    missile_id: 13
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: energy
+      damage:
+        min: 75
+        max: 75
+      interval: 200
+    target:
+      type: target
+      range: 1
+    missile_id: 5
+corpse: 6065
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Tssss!
+    - Gaaahhh!
+    - Gluh! Gluh!
+    - Boohaa!

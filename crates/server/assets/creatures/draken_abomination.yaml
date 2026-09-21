@@ -1,0 +1,102 @@
+name: Draken Abomination
+life: 6250
+speed: 115
+blood_type: poison
+armor: 30
+defense: 30
+experience: 3800
+outfit:
+  id: 357
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 420
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 310
+      max: 630
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 6
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 170
+      max: 370
+    target:
+      type: area
+      origin: self
+      shape: beam4
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 650
+      max: 700
+corpse: 11667
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ugggh!
+    - Gll
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 98
+  - item_id: 3035  # platinum coin
+    chance: 50590
+    amount: 8
+  - item_id: 3577  # meat
+    chance: 50450
+    amount: 4
+  - item_id: 238  # great mana potion
+    chance: 9950
+    amount: 3
+  - item_id: 830  # terra hood
+    chance: 8730
+  - item_id: 7642  # great spirit potion
+    chance: 4905
+    amount: 3
+  - item_id: 7643  # ultimate health potion
+    chance: 9400
+    amount: 3
+  - item_id: 8094  # wand of voodoo
+    chance: 1020
+  - item_id: 9057  # small topaz
+    chance: 2900
+    amount: 4
+  - item_id: 10384  # Zaoan armor
+    chance: 470
+  - item_id: 10385  # Zaoan helmet
+    chance: 560
+  - item_id: 10387  # Zaoan legs
+    chance: 780
+  - item_id: 11671  # eye of corruption
+    chance: 12110
+  - item_id: 11672  # tail of corruption
+    chance: 6240
+  - item_id: 11673  # scale of corruption
+    chance: 10940
+  - item_id: 11688  # shield of corruption
+    chance: 10
+  - item_id: 4033  # draken boots
+    chance: 540
+  - item_id: 11691  # snake god's wristguard
+    chance: 10
+  - item_id: 12549  # bamboo leaves
+    chance: 360

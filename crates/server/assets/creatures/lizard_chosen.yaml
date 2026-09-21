@@ -1,0 +1,105 @@
+name: Lizard Chosen
+life: 3050
+speed: 136
+blood_type: blood
+armor: 28
+defense: 28
+experience: 2200
+outfit:
+  id: 344
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 360
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 240
+        max: 320
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave3_2
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 190
+      max: 340
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 17
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 90
+      max: 180
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 75
+      max: 125
+corpse: 10371
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grzzzzzzz!
+    - Garrrblarrrrzzzz!
+    - Kzzzzzz!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97523
+    amount: 236
+  - item_id: 10408  # spiked iron ball
+    chance: 10048
+  - item_id: 239  # great health potion
+    chance: 6895
+    amount: 3
+  - item_id: 10410  # cursed shoulder spikes
+    chance: 5939
+  - item_id: 3035  # platinum coin
+    chance: 2997
+    amount: 5
+  - item_id: 11673  # scale of corruption
+    chance: 2995
+  - item_id: 10409  # corrupted flag
+    chance: 2971
+  - item_id: 3028  # small diamond
+    chance: 2537
+    amount: 5
+  - item_id: 5876  # lizard leather
+    chance: 2003
+  - item_id: 3428  # tower shield
+    chance: 1118
+  - item_id: 5881  # lizard scale
+    chance: 1035
+  - item_id: 10384  # Zaoan armor
+    chance: 992
+  - item_id: 10387  # Zaoan legs
+    chance: 889
+  - item_id: 10386  # Zaoan shoes
+    chance: 809
+  - item_id: 10385  # Zaoan helmet
+    chance: 130

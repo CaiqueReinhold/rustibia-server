@@ -1,0 +1,49 @@
+name: Snake God Essence
+life: 20000
+speed: 150
+blood_type: blood
+armor: 70
+defense: 65
+experience: 1350
+outfit:
+  id: 356
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 800
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 40000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 14
+  - cooldown: 40
+    chance: 50000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 270
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 15
+corpse: 11429
+say:
+  cooldown: 40
+  chance: 10000
+  sentences:
+    - AHHH ZHE POWER...
+    - ZHE TIME OF ZHE SNAKE HAZ COME!

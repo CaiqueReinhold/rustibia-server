@@ -1,0 +1,104 @@
+name: Mutated Human
+life: 240
+speed: 77
+blood_type: blood
+armor: 15
+defense: 15
+experience: 150
+outfit:
+  id: 323
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 60
+      max: 60
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 60
+    target:
+      type: area
+      origin: self
+      shape: wave3_1
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 600
+    effect_id: 32
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.22
+        flat: 0
+      max:
+        factor: 0.22
+        flat: 0
+    duration_ticks: 100
+    effect_id: 9
+corpse: 5798
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Take that creature off my back!! I can fell it!
+    - HEEEEEEEELP!
+    - You will be the next infected one... GRAAAAAAAAARRR!
+    - Science... is a curse.
+    - Run as fast as you can.
+    - Oh by the gods! What is this... aaaaaargh!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 88222
+    amount: 130
+  - item_id: 10308  # mutated flesh
+    chance: 19936
+  - item_id: 3111  # fishbone
+    chance: 10064
+  - item_id: 3607  # cheese
+    chance: 8076
+  - item_id: 3377  # scale armor
+    chance: 7833
+  - item_id: 3492  # worm
+    chance: 7081
+    amount: 2
+  - item_id: 3264  # sword
+    chance: 5069
+  - item_id: 3045  # strange talisman
+    chance: 4946
+  - item_id: 8894  # heavily rusted armor
+    chance: 2007
+  - item_id: 841  # peanut
+    chance: 534
+  - item_id: 3737  # fern
+    chance: 421
+  - item_id: 3054  # silver amulet
+    chance: 102

@@ -1,0 +1,85 @@
+name: Worker Golem
+life: 1470
+speed: 80
+blood_type: blood
+armor: 35
+defense: 35
+experience: 1250
+outfit:
+  id: 304
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 125
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 8887
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - INTRUDER ALARM!
+    - klonk klonk klonk
+    - Rrrtttarrrttarrrtta
+    - Awaiting orders.
+    - Secret objective complete.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 93817
+    amount: 139
+  - item_id: 953  # nail
+    chance: 4809
+    amount: 5
+  - item_id: 9655  # gear crystal
+    chance: 2169
+  - item_id: 239  # great health potion
+    chance: 1974
+  - item_id: 238  # great mana potion
+    chance: 1574
+  - item_id: 8895  # rusted armor
+    chance: 1559
+  - item_id: 8775  # gear wheel
+    chance: 1066
+  - item_id: 3061  # life crystal
+    chance: 1010
+  - item_id: 3279  # war hammer
+    chance: 990
+  - item_id: 3028  # small diamond
+    chance: 974
+    amount: 2
+  - item_id: 8898  # rusted legs
+    chance: 928
+  - item_id: 7452  # spiked squelcher
+    chance: 913
+  - item_id: 5880  # iron ore
+    chance: 872
+  - item_id: 7642  # great spirit potion
+    chance: 820
+  - item_id: 7439  # berserk potion
+    chance: 784
+  - item_id: 3048  # might ring
+    chance: 502
+  - item_id: 9066  # crystal pedestal
+    chance: 159
+  - item_id: 7428  # bonebreaker
+    chance: 113

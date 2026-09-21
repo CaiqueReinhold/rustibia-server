@@ -1,0 +1,48 @@
+name: Sharptooth
+life: 2500
+speed: 145
+blood_type: blood
+armor: 20
+defense: 29
+experience: 1600
+outfit:
+  id: 20
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 1000
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.21
+        flat: 0
+      max:
+        factor: 0.21
+        flat: 0
+    duration_ticks: 200
+    effect_id: 15
+  - cooldown: 40
+    chance: 12000
+    type: heal
+    life:
+      min: 200
+      max: 240
+corpse: 6067
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gnarrr!
+    - Tcharrr!
+    - Rrrah!
+    - Rraaar!
+loot:
+  - item_id: 3111  # fishbone
+    chance: 50000

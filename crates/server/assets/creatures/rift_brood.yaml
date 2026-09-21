@@ -1,0 +1,48 @@
+name: Rift Brood
+life: 2950
+speed: 150
+blood_type: blood
+armor: 30
+defense: 30
+experience: 1600
+outfit:
+  id: 290
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 255
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 50000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 180
+    target:
+      type: target
+      range: 1
+  - cooldown: 20
+    chance: 90000
+    type: attack
+    element: energy
+    damage:
+      min: 200
+      max: 400
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    effect_id: 48
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 70
+      max: 100
+corpse: 2126
+say:
+  cooldown: 100
+  chance: 0

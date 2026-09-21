@@ -1,0 +1,42 @@
+name: Terror Bird
+life: 300
+speed: 106
+blood_type: blood
+armor: 13
+defense: 13
+experience: 150
+outfit:
+  id: 218
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+corpse: 6057
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - CRAAAHHH!
+    - Gruuuh Gruuuh.
+    - Carrah Carrah!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82500
+    amount: 30
+  - item_id: 3577  # meat
+    chance: 48000
+    amount: 3
+  - item_id: 10273  # terrorbird beak
+    chance: 10000
+  - item_id: 3492  # worm
+    chance: 9500
+  - item_id: 11514  # colourful feather
+    chance: 3000
+  - item_id: 266  # health potion
+    chance: 690
+  - item_id: 647  # seeds
+    chance: 230
+  - item_id: 3406  # feather headdress
+    chance: 100

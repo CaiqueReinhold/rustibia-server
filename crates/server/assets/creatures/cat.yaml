@@ -1,0 +1,24 @@
+name: Cat
+life: 20
+speed: 95
+blood_type: blood
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 276
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 286
+flee_threshold: 8
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Mew!
+    - Meow!
+    - Meow meow!

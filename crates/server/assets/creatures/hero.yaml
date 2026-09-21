@@ -1,0 +1,100 @@
+name: Hero
+life: 1400
+speed: 140
+blood_type: blood
+armor: 35
+defense: 35
+experience: 1200
+outfit:
+  id: 73
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 120
+    target:
+      type: target
+      range: 7
+    missile_id: 3
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 18134
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Let's have a fight!
+    - Welcome to my battleground!
+    - Have you seen princess Lumelia?
+    - I will sing a tune at your grave.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 60324
+    amount: 100
+  - item_id: 2815  # scroll
+    chance: 45128
+  - item_id: 3447  # arrow
+    chance: 27005
+    amount: 13
+  - item_id: 3658  # red rose
+    chance: 20384
+  - item_id: 3592  # grapes
+    chance: 20164
+  - item_id: 3350  # bow
+    chance: 13005
+  - item_id: 7364  # sniper arrow
+    chance: 11558
+    amount: 4
+  - item_id: 3577  # meat
+    chance: 8585
+  - item_id: 3563  # green tunic
+    chance: 7964
+  - item_id: 3004  # wedding ring
+    chance: 5153
+  - item_id: 11510  # scroll of heroic deeds
+    chance: 5038
+  - item_id: 3003  # rope
+    chance: 2079
+  - item_id: 5911  # red piece of cloth
+    chance: 2013
+  - item_id: 3265  # two handed sword
+    chance: 1612
+  - item_id: 2949  # lyre
+    chance: 1577
+  - item_id: 3572  # scarf
+    chance: 1120
+  - item_id: 3279  # war hammer
+    chance: 959
+  - item_id: 11450  # small notebook
+    chance: 952
+  - item_id: 239  # great health potion
+    chance: 736
+  - item_id: 3381  # crown armor
+    chance: 614
+  - item_id: 3382  # crown legs
+    chance: 586
+  - item_id: 3048  # might ring
+    chance: 527
+  - item_id: 3280  # fire sword
+    chance: 478
+  - item_id: 3385  # crown helmet
+    chance: 450
+  - item_id: 3419  # crown shield
+    chance: 202
+  - item_id: 2995  # piggy bank
+    chance: 73

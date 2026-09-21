@@ -1,0 +1,127 @@
+name: Crystal Spider
+life: 1250
+speed: 115
+blood_type: blood
+armor: 43
+defense: 43
+experience: 900
+outfit:
+  id: 263
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 250
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 300
+    effect_id: 3
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 50
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 29
+    effect_id: 42
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 200
+    missile_id: 13
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.25
+        flat: 0
+      max:
+        factor: 0.25
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 7344
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Screeech!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 197
+  - item_id: 237  # strong mana potion
+    chance: 14973
+  - item_id: 3357  # plate armor
+    chance: 9929
+  - item_id: 7364  # sniper arrow
+    chance: 5874
+    amount: 6
+  - item_id: 3351  # steel helmet
+    chance: 5164
+  - item_id: 7441  # ice cube
+    chance: 4906
+  - item_id: 7449  # crystal sword
+    chance: 2517
+  - item_id: 5879  # spider silk
+    chance: 1983
+  - item_id: 3008  # crystal necklace
+    chance: 1640
+  - item_id: 3007  # crystal ring
+    chance: 1587
+  - item_id: 3053  # time ring
+    chance: 1485
+  - item_id: 3371  # knight legs
+    chance: 747
+  - item_id: 7290  # shard
+    chance: 717
+  - item_id: 829  # glacier mask
+    chance: 664
+  - item_id: 3370  # knight armor
+    chance: 559
+  - item_id: 7437  # sapphire hammer
+    chance: 142
+  - item_id: 3055  # platinum amulet
+    chance: 123
+  - item_id: 5801  # jewelled backpack
+    chance: 83

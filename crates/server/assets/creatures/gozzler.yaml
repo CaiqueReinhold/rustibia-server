@@ -1,0 +1,78 @@
+name: Gozzler
+life: 240
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 180
+outfit:
+  id: 313
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 32
+      max: 135
+    target:
+      type: target
+      range: 1
+    effect_id: 1
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 30
+      max: 50
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.21
+        flat: 0
+      max:
+        factor: 0.21
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 9024
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Huhuhuhuuu!
+    - Let the fun begin!
+    - Yihahaha!
+    - I'll bite you! Nyehehehehe!
+loot:
+  - item_id: 2885  # brown flask
+    chance: 8750
+  - item_id: 3029  # small sapphire
+    chance: 360
+  - item_id: 3031  # gold coin
+    chance: 52500
+    amount: 70
+  - item_id: 3097  # dwarven ring
+    chance: 190
+  - item_id: 3266  # battle axe
+    chance: 3100
+  - item_id: 3273  # sabre
+    chance: 8250
+  - item_id: 3282  # morning star
+    chance: 5000
+  - item_id: 3297  # serpent sword
+    chance: 250
+  - item_id: 3311  # clerical mace
+    chance: 900
+  - item_id: 3410  # plate shield
+    chance: 10000

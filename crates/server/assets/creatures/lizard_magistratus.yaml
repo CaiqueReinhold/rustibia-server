@@ -1,0 +1,46 @@
+name: Lizard Magistratus
+life: 8000
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 2000
+outfit:
+  id: 115
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 50000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 6041
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Shhhhhhhh
+loot:
+  - item_id: 3030  # small ruby
+    chance: 8970
+    amount: 5
+  - item_id: 3031  # gold coin
+    chance: 77230
+    amount: 50
+  - item_id: 3035  # platinum coin
+    chance: 13400
+    amount: 19
+  - item_id: 5876  # lizard leather
+    chance: 220
+  - item_id: 5881  # lizard scale
+    chance: 450
+  - item_id: 237  # strong mana potion
+    chance: 6280
+  - item_id: 238  # great mana potion
+    chance: 4480

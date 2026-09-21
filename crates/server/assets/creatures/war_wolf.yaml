@@ -1,0 +1,31 @@
+name: War Wolf
+life: 140
+speed: 132
+blood_type: blood
+armor: 8
+defense: 8
+experience: 55
+outfit:
+  id: 3
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+corpse: 6009
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrrrrr
+    - Yoooohhuuuu!
+loot:
+  - item_id: 3582  # ham
+    chance: 39170
+  - item_id: 10318  # warwolf fur
+    chance: 4951
+  - item_id: 5897  # wolf paw
+    chance: 993
+  - item_id: 7394  # wolf trophy
+    chance: 48

@@ -1,0 +1,33 @@
+name: Poison Spider
+life: 26
+speed: 80
+blood_type: poison
+armor: 2
+defense: 2
+experience: 22
+outfit:
+  id: 36
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 30
+      max: 30
+    interval: 80
+corpse: 5974
+flee_threshold: 6
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 75000
+    amount: 4
+  - item_id: 11485  # poison spider shell
+    chance: 1140

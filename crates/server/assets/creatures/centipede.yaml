@@ -1,0 +1,32 @@
+name: Centipede
+life: 70
+speed: 83
+blood_type: poison
+armor: 8
+defense: 8
+experience: 34
+outfit:
+  id: 124
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 20
+      max: 20
+    interval: 80
+corpse: 6050
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 15
+  - item_id: 10301  # centipede leg
+    chance: 10300

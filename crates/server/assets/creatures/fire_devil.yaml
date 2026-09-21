@@ -1,0 +1,69 @@
+name: Fire Devil
+life: 200
+speed: 90
+blood_type: blood
+armor: 13
+defense: 13
+experience: 145
+outfit:
+  id: 40
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 90
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 20
+      max: 50
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 4
+    effect_id: 7
+corpse: 5985
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hot, eh?
+    - Hell, oh, hell!
+loot:
+  - item_id: 11513  # small pitchfork
+    chance: 19770
+  - item_id: 3147  # blank rune
+    chance: 11000
+  - item_id: 3307  # scimitar
+    chance: 3000
+  - item_id: 2920  # torch
+    chance: 1370
+    amount: 2
+  - item_id: 3275  # double axe
+    chance: 1200
+  - item_id: 3471  # cleaver
+    chance: 920
+  - item_id: 3069  # necrotic rod
+    chance: 460
+  - item_id: 3033  # small amethyst
+    chance: 280
+  - item_id: 3415  # guardian shield
+    chance: 210

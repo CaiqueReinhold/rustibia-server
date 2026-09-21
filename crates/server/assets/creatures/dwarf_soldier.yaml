@@ -1,0 +1,62 @@
+name: Dwarf Soldier
+life: 135
+speed: 88
+blood_type: blood
+armor: 9
+defense: 9
+experience: 70
+outfit:
+  id: 71
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 60
+    target:
+      type: target
+      range: 7
+    missile_id: 2
+corpse: 6014
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hail Durin!
+loot:
+  - item_id: 3723  # white mushroom
+    chance: 39924
+    amount: 2
+  - item_id: 3446  # bolt
+    chance: 37815
+    amount: 7
+  - item_id: 3031  # gold coin
+    chance: 28337
+    amount: 12
+  - item_id: 3375  # soldier helmet
+    chance: 11820
+  - item_id: 3457  # shovel
+    chance: 10026
+  - item_id: 3358  # chain armor
+    chance: 7525
+  - item_id: 7363  # piercing bolt
+    chance: 3822
+    amount: 3
+  - item_id: 3425  # dwarven shield
+    chance: 3056
+  - item_id: 3349  # crossbow
+    chance: 3023
+  - item_id: 3266  # battle axe
+    chance: 2481
+  - item_id: 5880  # iron ore
+    chance: 303
+  - item_id: 3092  # axe ring
+    chance: 121

@@ -1,0 +1,56 @@
+name: Spidris Elite
+life: 5000
+speed: 130
+blood_type: poison
+armor: 30
+defense: 30
+experience: 4000
+outfit:
+  id: 457
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 349
+  element: physical
+corpse: 13870
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3030  # small ruby
+    chance: 23280
+    amount: 5
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 45000
+    amount: 6
+  - item_id: 3036  # violet gem
+    chance: 1120
+  - item_id: 6299  # death ring
+    chance: 4480
+  - item_id: 7413  # titan axe
+    chance: 1440
+  - item_id: 238  # great mana potion
+    chance: 20400
+    amount: 2
+  - item_id: 281  # giant shimmering pearl
+    chance: 3040
+  - item_id: 7643  # ultimate health potion
+    chance: 9250
+    amount: 2
+  - item_id: 14082  # spidris mandible
+    chance: 27440
+  - item_id: 14083  # compound eye
+    chance: 13210
+  - item_id: 14086  # calopteryx cape
+    chance: 1280
+  - item_id: 14088  # carapace shield
+    chance: 1170
+  - item_id: 14089  # hive scythe
+    chance: 1390

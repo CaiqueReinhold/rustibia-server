@@ -1,0 +1,86 @@
+name: Wereboar
+life: 2200
+speed: 150
+blood_type: blood
+armor: 32
+defense: 32
+experience: 2000
+outfit:
+  id: 721
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 80
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    speed:
+      min:
+        factor: -0.1
+        flat: 0
+      max:
+        factor: -0.1
+        flat: 0
+    duration_ticks: 200
+    effect_id: 3
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 50
+      max: 100
+corpse: 22066
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - GRUNT
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 79553
+    amount: 75
+  - item_id: 22054  # wereboar tusks
+    chance: 15649
+  - item_id: 22053  # wereboar hooves
+    chance: 15408
+  - item_id: 3725  # brown mushroom
+    chance: 7360
+    amount: 2
+  - item_id: 236  # strong health potion
+    chance: 5004
+  - item_id: 7643  # ultimate health potion
+    chance: 2064
+  - item_id: 22083  # moonlight crystals
+    chance: 1788
+  - item_id: 22087  # wereboar loincloth
+    chance: 1651
+  - item_id: 676  # small enchanted ruby
+    chance: 1307
+    amount: 2
+  - item_id: 3081  # stone skin amulet
+    chance: 1169
+  - item_id: 7439  # berserk potion
+    chance: 980
+  - item_id: 7432  # furry club
+    chance: 722
+  - item_id: 22060  # werewolf amulet
+    chance: 688
+  - item_id: 22085  # fur armor
+    chance: 447
+  - item_id: 22102  # wereboar trophy
+    chance: 155
+  - item_id: 7419  # dreaded cleaver
+    chance: 69

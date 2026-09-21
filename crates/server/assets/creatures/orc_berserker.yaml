@@ -1,0 +1,58 @@
+name: Orc Berserker
+life: 210
+speed: 125
+blood_type: blood
+armor: 12
+defense: 12
+experience: 195
+outfit:
+  id: 8
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.29
+        flat: 0
+      max:
+        factor: 0.29
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+corpse: 5980
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - KRAK ORRRRRRK!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 54944
+    amount: 25
+  - item_id: 11477  # orcish gear
+    chance: 10397
+  - item_id: 3582  # ham
+    chance: 9754
+  - item_id: 3269  # halberd
+    chance: 6943
+  - item_id: 3266  # battle axe
+    chance: 5740
+  - item_id: 3347  # hunting spear
+    chance: 4968
+  - item_id: 11479  # orc leather
+    chance: 4144
+  - item_id: 10196  # orc tooth
+    chance: 2763
+  - item_id: 3358  # chain armor
+    chance: 982
+  - item_id: 2914  # lamp
+    chance: 840

@@ -1,0 +1,132 @@
+name: Koshei The Deathless
+life: 3000
+speed: 195
+blood_type: blood
+armor: 20
+defense: 20
+experience: 0
+outfit:
+  id: 99
+  colors: [95, 116, 119, 115]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 170
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 300
+      max: 300
+    interval: 80
+abilities:
+  - cooldown: 60
+    chance: 9000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 250
+    target:
+      type: target
+      range: 1
+    effect_id: 13
+  - cooldown: 20
+    chance: 11000
+    type: attack
+    element: death
+    damage:
+      min: 70
+      max: 135
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 9000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 140
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 18
+  - cooldown: 60
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: death
+      damage:
+        min: 54
+        max: 54
+      interval: 80
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.9
+        flat: 0
+      max:
+        factor: -0.9
+        flat: 0
+    duration_ticks: 600
+    effect_id: 14
+  - cooldown: 20
+    chance: 30000
+    type: heal
+    life:
+      min: 150
+      max: 300
+corpse: 6028
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Your pain will be beyond imagination!
+    - You can't defeat me! I will ressurect and take your soul!
+    - Death is my ally!
+    - Welcome to my domain, visitor!
+    - You will be my toy on the other side!
+    - What a disgusting smell of life!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 12
+  - item_id: 3049  # stealth ring
+    chance: 888
+  - item_id: 3055  # platinum amulet
+    chance: 1666
+  - item_id: 3059  # spellbook
+    chance: 10000
+  - item_id: 3063  # gold ring
+    chance: 900
+  - item_id: 3122  # dirty cape
+    chance: 10000
+  - item_id: 3289  # staff
+    chance: 10000
+  - item_id: 3435  # castle shield
+    chance: 588
+  - item_id: 3567  # blue robe
+    chance: 709
+  - item_id: 3343  # lich staff
+    chance: 1000
+  - item_id: 820  # lightning boots
+    chance: 688

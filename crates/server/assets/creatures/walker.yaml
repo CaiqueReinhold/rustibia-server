@@ -1,0 +1,69 @@
+name: Walker
+life: 3000
+speed: 150
+blood_type: poison
+armor: 47
+defense: 47
+experience: 2200
+outfit:
+  id: 605
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 175
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 17000
+    type: attack
+    element: fire
+    damage:
+      min: 125
+      max: 245
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 6
+corpse: 20992
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "?"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 99
+  - item_id: 3035  # platinum coin
+    chance: 52000
+    amount: 3
+  - item_id: 21198  # metal toe
+    chance: 20000
+  - item_id: 9057  # small topaz
+    chance: 10000
+    amount: 6
+  - item_id: 7642  # great spirit potion
+    chance: 8000
+  - item_id: 239  # great health potion
+    chance: 8000
+  - item_id: 3033  # small amethyst
+    chance: 4500
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 4500
+    amount: 3
+  - item_id: 21169  # metal spats
+    chance: 3500
+  - item_id: 21170  # gearwheel chain
+    chance: 2200
+  - item_id: 3333  # crystal mace
+    chance: 670
+  - item_id: 3554  # steel boots
+    chance: 520

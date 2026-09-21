@@ -1,0 +1,72 @@
+name: Son of Verminor
+life: 8500
+speed: 120
+blood_type: poison
+armor: 20
+defense: 20
+experience: 5900
+outfit:
+  id: 19
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 473
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 450
+      max: 450
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 350
+      max: 390
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 220
+      max: 270
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 39
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 250
+      max: 350
+corpse: 105
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Blubb

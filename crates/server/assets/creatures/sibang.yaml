@@ -1,0 +1,71 @@
+name: Sibang
+life: 225
+speed: 107
+blood_type: blood
+armor: 15
+defense: 15
+experience: 105
+outfit:
+  id: 118
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 35000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 55
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.38
+        flat: 0
+      max:
+        factor: 0.38
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6045
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Eeeeek! Eeeeek
+    - Huh! Huh! Huh!
+    - Ahhuuaaa!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 88771
+    amount: 35
+  - item_id: 3587  # banana
+    chance: 30452
+    amount: 12
+  - item_id: 1781  # small stone
+    chance: 29967
+    amount: 3
+  - item_id: 3586  # orange
+    chance: 19971
+    amount: 5
+  - item_id: 11511  # banana sash
+    chance: 4948
+  - item_id: 3589  # coconut
+    chance: 1968
+    amount: 3
+  - item_id: 3593  # melon
+    chance: 1001
+  - item_id: 5883  # ape fur
+    chance: 988

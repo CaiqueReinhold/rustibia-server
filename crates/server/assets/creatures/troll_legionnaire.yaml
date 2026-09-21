@@ -1,0 +1,55 @@
+name: Troll Legionnaire
+life: 210
+speed: 95
+blood_type: blood
+armor: 7
+defense: 9
+experience: 140
+outfit:
+  id: 53
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 18000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 130
+    target:
+      type: target
+      range: 6
+    missile_id: 8
+  - cooldown: 40
+    chance: 28000
+    type: heal
+    life:
+      min: 17
+      max: 25
+corpse: 5998
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 9000
+  sentences:
+    - Attack!
+    - Graaaaar!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 46000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 46000
+    amount: 55
+  - item_id: 3049  # stealth ring
+    chance: 560
+  - item_id: 3287  # throwing star
+    chance: 28000
+    amount: 10
+  - item_id: 9648  # frosty ear of a troll
+    chance: 5120

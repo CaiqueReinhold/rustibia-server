@@ -1,0 +1,46 @@
+name: Orc
+life: 70
+speed: 75
+blood_type: blood
+armor: 4
+defense: 4
+experience: 25
+outfit:
+  id: 5
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+corpse: 5966
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grak brrretz!
+    - Grow truk grrrrr.
+    - Prek tars, dekklep zurk.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 84724
+    amount: 14
+  - item_id: 3577  # meat
+    chance: 9613
+  - item_id: 3378  # studded armor
+    chance: 8232
+  - item_id: 3426  # studded shield
+    chance: 6685
+  - item_id: 3273  # sabre
+    chance: 5580
+  - item_id: 3274  # axe
+    chance: 5442
+  - item_id: 3376  # studded helmet
+    chance: 2873
+  - item_id: 23986  # heavy old tome
+    chance: 2238
+  - item_id: 11479  # orc leather
+    chance: 359
+  - item_id: 10196  # orc tooth
+    chance: 55

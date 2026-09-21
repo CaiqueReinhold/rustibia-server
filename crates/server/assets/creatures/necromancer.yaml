@@ -1,0 +1,87 @@
+name: Necromancer
+life: 580
+speed: 94
+blood_type: blood
+armor: 50
+defense: 50
+experience: 580
+outfit:
+  id: 9
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 120
+    target:
+      type: target
+      range: 1
+    missile_id: 11
+    effect_id: 39
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 65
+      max: 120
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 50
+      max: 80
+corpse: 18174
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Your corpse will be mine!
+    - Taste the sweetness of death!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 30050
+    amount: 90
+  - item_id: 3448  # poison arrow
+    chance: 15000
+    amount: 5
+  - item_id: 10320  # book of necromantic rituals
+    chance: 10130
+  - item_id: 3732  # green mushroom
+    chance: 1470
+  - item_id: 11475  # necromantic robe
+    chance: 1001
+  - item_id: 3574  # mystic turban
+    chance: 500
+  - item_id: 3311  # clerical mace
+    chance: 390
+  - item_id: 237  # strong mana potion
+    chance: 300
+  - item_id: 3079  # boots of haste
+    chance: 210
+  - item_id: 8073  # spellbook of warding
+    chance: 130
+  - item_id: 3324  # skull staff
+    chance: 100
+  - item_id: 7456  # noble axe
+    chance: 10

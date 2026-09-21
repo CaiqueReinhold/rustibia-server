@@ -1,0 +1,33 @@
+name: Nightfiend
+life: 2700
+speed: 105
+blood_type: blood
+armor: 11
+defense: 11
+experience: 2100
+outfit:
+  id: 556
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 5
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 9
+corpse: 3580
+say:
+  cooldown: 100
+  chance: 0

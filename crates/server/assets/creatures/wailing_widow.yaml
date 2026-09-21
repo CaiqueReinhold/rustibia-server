@@ -1,0 +1,92 @@
+name: Wailing Widow
+life: 850
+speed: 127
+blood_type: poison
+armor: 31
+defense: 31
+experience: 450
+outfit:
+  id: 347
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 40
+      max: 70
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 60
+      max: 110
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 70
+      max: 100
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.82
+        flat: 0
+      max:
+        factor: 0.82
+        flat: 0
+    duration_ticks: 100
+    effect_id: 22
+corpse: 10393
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 96855
+    amount: 140
+  - item_id: 10411  # widow's mandibles
+    chance: 19966
+  - item_id: 268  # mana potion
+    chance: 5251
+  - item_id: 266  # health potion
+    chance: 4942
+  - item_id: 3269  # halberd
+    chance: 4708
+  - item_id: 3410  # plate shield
+    chance: 3173
+  - item_id: 3732  # green mushroom
+    chance: 2986
+  - item_id: 10406  # Zaoan halberd
+    chance: 2256
+  - item_id: 10412  # wailing widow's necklace
+    chance: 683

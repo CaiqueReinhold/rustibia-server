@@ -1,0 +1,30 @@
+name: Hyaena
+life: 60
+speed: 98
+blood_type: blood
+armor: 1
+defense: 1
+experience: 20
+outfit:
+  id: 94
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+corpse: 6026
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrrrr
+    - Hou hou hou!
+loot:
+  - item_id: 3492  # worm
+    chance: 50130
+    amount: 3
+  - item_id: 3577  # meat
+    chance: 30860
+    amount: 2

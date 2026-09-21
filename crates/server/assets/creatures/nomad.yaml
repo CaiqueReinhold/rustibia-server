@@ -1,0 +1,47 @@
+name: Nomad
+life: 160
+speed: 102
+blood_type: blood
+armor: 15
+defense: 15
+experience: 60
+outfit:
+  id: 146
+  colors: [97, 39, 40, 3]
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+corpse: 18185
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - We are the true sons of the desert!
+    - I will leave your remains to the vultures!
+    - We are swift as the wind of the desert!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 56250
+    amount: 40
+  - item_id: 3274  # axe
+    chance: 2730
+  - item_id: 3286  # mace
+    chance: 2120
+  - item_id: 3353  # iron helmet
+    chance: 650
+  - item_id: 3359  # brass armor
+    chance: 2350
+  - item_id: 3409  # steel shield
+    chance: 920
+  - item_id: 7533  # nomad parchment
+    chance: 200
+  - item_id: 8010  # potato
+    chance: 4840
+    amount: 3
+  - item_id: 11456  # dirty turban
+    chance: 2160
+  - item_id: 11492  # rope belt
+    chance: 6420

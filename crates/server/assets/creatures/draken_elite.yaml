@@ -1,0 +1,132 @@
+name: Draken Elite
+life: 5550
+speed: 125
+blood_type: blood
+armor: 45
+defense: 45
+experience: 4200
+outfit:
+  id: 362
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 354
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 240
+      max: 550
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 6
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 200
+      max: 300
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 280
+      max: 410
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    effect_id: 3
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 250
+        max: 320
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 510
+      max: 600
+corpse: 11653
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - For ze emperor!
+    - You will die zhouzandz deazhz!
+loot:
+  - item_id: 3028  # small diamond
+    chance: 2440
+    amount: 4
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 50360
+    amount: 8
+  - item_id: 3577  # meat
+    chance: 30175
+  - item_id: 5904  # magic sulphur
+    chance: 2100
+  - item_id: 7404  # assassin dagger
+    chance: 980
+  - item_id: 238  # great mana potion
+    chance: 9340
+    amount: 3
+  - item_id: 7643  # ultimate health potion
+    chance: 9250
+    amount: 3
+  - item_id: 10384  # Zaoan armor
+    chance: 490
+  - item_id: 10385  # Zaoan helmet
+    chance: 150
+  - item_id: 10387  # Zaoan legs
+    chance: 770
+  - item_id: 10390  # Zaoan sword
+    chance: 490
+  - item_id: 11651  # elite draken mail
+    chance: 110
+  - item_id: 11657  # twiceslicer
+    chance: 910
+  - item_id: 11658  # draken sulphur
+    chance: 7600
+  - item_id: 11659  # draken wristbands
+    chance: 14030
+  - item_id: 11660  # broken draken mail
+    chance: 16930
+  - item_id: 11661  # broken slicer
+    chance: 24670
+  - item_id: 11674  # cobra crown
+    chance: 10
+  - item_id: 4033  # draken boots
+    chance: 600
+  - item_id: 11691  # snake god's wristguard
+    chance: 80
+  - item_id: 11693  # blade of corruption
+    chance: 20

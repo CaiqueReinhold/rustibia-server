@@ -1,0 +1,67 @@
+name: Dragon Hatchling
+life: 380
+speed: 85
+blood_type: blood
+armor: 10
+defense: 10
+experience: 185
+outfit:
+  id: 271
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 55
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 90
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 30
+      max: 55
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 8
+      max: 33
+corpse: 269
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Fchu?
+    - Rooawwrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 67500
+    amount: 55
+  - item_id: 3583  # dragon ham
+    chance: 61000
+  - item_id: 266  # health potion
+    chance: 400
+  - item_id: 11457  # dragon's tail
+    chance: 4300

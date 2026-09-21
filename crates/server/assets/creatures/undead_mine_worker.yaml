@@ -1,0 +1,46 @@
+name: Undead Mine Worker
+life: 65
+speed: 75
+blood_type: blood
+armor: 15
+defense: 15
+experience: 45
+outfit:
+  id: 33
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 7
+      max: 13
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+corpse: 5972
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 73000
+    amount: 10
+  - item_id: 3115  # bone
+    chance: 42000
+  - item_id: 3264  # sword
+    chance: 3850
+  - item_id: 3286  # mace
+    chance: 26900
+  - item_id: 3723  # white mushroom
+    chance: 15400
+    amount: 3
+  - item_id: 3725  # brown mushroom
+    chance: 3850

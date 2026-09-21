@@ -1,0 +1,38 @@
+name: Insect Swarm
+life: 50
+speed: 75
+blood_type: blood
+armor: 5
+defense: 5
+experience: 40
+outfit:
+  id: 349
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 16
+      max: 16
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 15
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+corpse: 10403
+say:
+  cooldown: 100
+  chance: 0

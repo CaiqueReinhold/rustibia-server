@@ -1,0 +1,58 @@
+name: Salamander
+life: 70
+speed: 60
+blood_type: blood
+armor: 3
+defense: 3
+experience: 25
+outfit:
+  id: 529
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 10
+      max: 10
+    interval: 80
+abilities:
+  - cooldown: 120
+    chance: 20000
+    type: heal
+    life:
+      min: 0
+      max: 4
+corpse: 17427
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chrrch!
+    - Chhh!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 71933
+    amount: 15
+  - item_id: 17457  # insectoid eggs
+    chance: 34928
+  - item_id: 3447  # arrow
+    chance: 7985
+    amount: 3
+  - item_id: 3003  # rope
+    chance: 5077
+  - item_id: 3286  # mace
+    chance: 3978
+  - item_id: 3354  # brass helmet
+    chance: 1976
+  - item_id: 266  # health potion
+    chance: 1480
+  - item_id: 3350  # bow
+    chance: 739
+  - item_id: 3307  # scimitar
+    chance: 487

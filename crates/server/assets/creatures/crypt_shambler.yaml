@@ -1,0 +1,63 @@
+name: Crypt Shambler
+life: 330
+speed: 70
+blood_type: blood
+armor: 25
+defense: 25
+experience: 195
+outfit:
+  id: 100
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 140
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 28
+      max: 55
+    target:
+      type: target
+      range: 1
+corpse: 6029
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Aaaaahhhh!
+    - Hoooohhh!
+    - Uhhhhhhh!
+    - Chhhhhhh!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 58000
+    amount: 55
+  - item_id: 3492  # worm
+    chance: 9000
+    amount: 10
+  - item_id: 10283  # half-digested piece of meat
+    chance: 5000
+  - item_id: 3115  # bone
+    chance: 5000
+  - item_id: 3353  # iron helmet
+    chance: 2000
+  - item_id: 3112  # rotten meat
+    chance: 1950
+  - item_id: 3265  # two handed sword
+    chance: 1950
+  - item_id: 3441  # bone shield
+    chance: 1000
+  - item_id: 3287  # throwing star
+    chance: 1000
+    amount: 3
+  - item_id: 3338  # bone sword
+    chance: 1000
+  - item_id: 3028  # small diamond
+    chance: 500

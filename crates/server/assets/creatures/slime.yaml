@@ -1,0 +1,21 @@
+name: Slime
+life: 150
+speed: 60
+blood_type: poison
+armor: 3
+defense: 3
+experience: 160
+outfit:
+  id: 19
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+corpse: 2121
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Blubb

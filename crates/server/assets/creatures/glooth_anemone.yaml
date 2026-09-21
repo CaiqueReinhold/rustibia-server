@@ -1,0 +1,103 @@
+name: Glooth Anemone
+life: 2400
+speed: 90
+blood_type: poison
+armor: 15
+defense: 25
+experience: 1800
+outfit:
+  id: 604
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 175
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 9000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 200
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 53
+    effect_id: 17
+  - cooldown: 40
+    chance: 7000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 15
+    effect_id: 14
+  - cooldown: 40
+    chance: 9000
+    type: heal
+    life:
+      min: 50
+      max: 100
+corpse: 20988
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - "*shglib*"
+loot:
+  - item_id: 21144  # bowl of glooth soup
+    chance: 10190
+  - item_id: 21197  # slimy leaf tentacle
+    chance: 21020
+  - item_id: 3732  # green mushroom
+    chance: 3180
+  - item_id: 21183  # glooth amulet
+    chance: 320
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 70
+  - item_id: 236  # strong health potion
+    chance: 6690
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 6690
+    amount: 2
+  - item_id: 7643  # ultimate health potion
+    chance: 960
+  - item_id: 3035  # platinum coin
+    chance: 57320
+    amount: 3
+  - item_id: 9057  # small topaz
+    chance: 9240
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 8600
+    amount: 3
+  - item_id: 3030  # small ruby
+    chance: 11150
+    amount: 3
+  - item_id: 21163  # mootant armor rack
+    chance: 640
+  - item_id: 21172  # glooth whip
+    chance: 5100
+  - item_id: 21179  # glooth blade
+    chance: 320
+  - item_id: 21178  # glooth club
+    chance: 1270
+  - item_id: 21180  # glooth axe
+    chance: 640
+  - item_id: 21158  # glooth spear
+    chance: 1270

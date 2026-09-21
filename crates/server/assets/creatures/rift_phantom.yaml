@@ -1,0 +1,21 @@
+name: Rift Phantom
+life: 100
+speed: 80
+blood_type: blood
+armor: 10
+defense: 10
+experience: 0
+outfit:
+  id: 48
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 9102
+say:
+  cooldown: 100
+  chance: 0

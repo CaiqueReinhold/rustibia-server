@@ -1,0 +1,44 @@
+name: Terramite
+life: 365
+speed: 100
+blood_type: poison
+armor: 20
+defense: 20
+experience: 160
+outfit:
+  id: 346
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 5
+      max: 16
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 10430
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zrp zrp!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97520
+    amount: 45
+  - item_id: 10452  # terramite shell
+    chance: 7730
+  - item_id: 10453  # terramite eggs
+    chance: 4680
+    amount: 3
+  - item_id: 10454  # terramite legs
+    chance: 14880

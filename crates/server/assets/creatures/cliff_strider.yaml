@@ -1,0 +1,134 @@
+name: Cliff Strider
+life: 9400
+speed: 123
+blood_type: blood
+armor: 89
+defense: 89
+experience: 5700
+outfit:
+  id: 497
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 499
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 800
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 12
+    effect_id: 45
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 1000
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 35
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 49
+corpse: 16075
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Knorrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 196
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 10
+  - item_id: 238  # great mana potion
+    chance: 33641
+    amount: 4
+  - item_id: 7643  # ultimate health potion
+    chance: 24406
+    amount: 2
+  - item_id: 16135  # vein of ore
+    chance: 17942
+    amount: 2
+  - item_id: 5944  # soul orb
+    chance: 16887
+  - item_id: 16133  # pulverized ore
+    chance: 15765
+  - item_id: 16134  # cliff strider claw
+    chance: 15369
+  - item_id: 5880  # iron ore
+    chance: 13918
+  - item_id: 10310  # shiny stone
+    chance: 12071
+  - item_id: 3027  # black pearl
+    chance: 9301
+  - item_id: 16125  # cyan crystal fragment
+    chance: 9301
+  - item_id: 16141  # prismatic bolt
+    chance: 9169
+    amount: 8
+  - item_id: 3026  # white pearl
+    chance: 8971
+    amount: 3
+  - item_id: 16124  # blue crystal splinter
+    chance: 8905
+    amount: 2
+  - item_id: 16119  # blue crystal shard
+    chance: 6728
+  - item_id: 3039  # red gem
+    chance: 5739
+  - item_id: 9028  # crystal of balance
+    chance: 2704
+  - item_id: 16096  # wand of defiance
+    chance: 1913
+  - item_id: 7437  # sapphire hammer
+    chance: 1517
+  - item_id: 5904  # magic sulphur
+    chance: 1451
+  - item_id: 16118  # glacial rod
+    chance: 1187
+  - item_id: 7452  # spiked squelcher
+    chance: 1055
+  - item_id: 16163  # crystal crossbow
+    chance: 923
+  - item_id: 3371  # knight legs
+    chance: 858
+  - item_id: 9067  # crystal of power
+    chance: 792
+  - item_id: 3041  # blue gem
+    chance: 726
+  - item_id: 3281  # giant sword
+    chance: 660
+  - item_id: 16160  # crystalline sword
+    chance: 594
+  - item_id: 3391  # crusader helmet
+    chance: 528
+  - item_id: 3381  # crown armor
+    chance: 462
+  - item_id: 3554  # steel boots
+    chance: 66

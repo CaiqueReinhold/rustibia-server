@@ -1,0 +1,66 @@
+name: Demon Skeleton
+life: 400
+speed: 90
+blood_type: blood
+armor: 25
+defense: 25
+experience: 240
+outfit:
+  id: 37
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 185
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 50
+    target:
+      type: area
+      origin: target
+      shape: single
+    effect_id: 39
+corpse: 5963
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97515
+    amount: 75
+  - item_id: 9647  # demonic skeletal hand
+    chance: 11978
+  - item_id: 3287  # throwing star
+    chance: 9982
+    amount: 3
+  - item_id: 266  # health potion
+    chance: 9693
+    amount: 2
+  - item_id: 268  # mana potion
+    chance: 5050
+  - item_id: 3413  # battle shield
+    chance: 4960
+  - item_id: 2920  # torch
+    chance: 4861
+  - item_id: 3305  # battle hammer
+    chance: 4061
+  - item_id: 3353  # iron helmet
+    chance: 3377
+  - item_id: 3027  # black pearl
+    chance: 2976
+  - item_id: 3030  # small ruby
+    chance: 1531
+  - item_id: 3078  # mysterious fetish
+    chance: 535
+  - item_id: 3062  # mind stone
+    chance: 469
+  - item_id: 3415  # guardian shield
+    chance: 113

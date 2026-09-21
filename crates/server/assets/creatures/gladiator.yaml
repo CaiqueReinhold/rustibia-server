@@ -1,0 +1,62 @@
+name: Gladiator
+life: 185
+speed: 100
+blood_type: blood
+armor: 25
+defense: 25
+experience: 90
+outfit:
+  id: 131
+  colors: [78, 3, 79, 114]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.215
+        flat: 0
+      max:
+        factor: 0.215
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 18126
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You are no match for me!
+    - Feel my prowess
+    - Fight!
+    - Take this!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 49500
+    amount: 30
+  - item_id: 3264  # sword
+    chance: 12620
+  - item_id: 3286  # mace
+    chance: 11160
+  - item_id: 3352  # chain helmet
+    chance: 5200
+  - item_id: 3353  # iron helmet
+    chance: 590
+  - item_id: 3359  # brass armor
+    chance: 2750
+  - item_id: 3409  # steel shield
+    chance: 840
+  - item_id: 3410  # plate shield
+    chance: 9950
+  - item_id: 3577  # meat
+    chance: 19000
+  - item_id: 8044  # belted cape
+    chance: 340

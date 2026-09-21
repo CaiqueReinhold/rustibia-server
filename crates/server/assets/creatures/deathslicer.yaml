@@ -1,0 +1,47 @@
+name: Deathslicer
+life: 1
+speed: 100
+blood_type: blood
+armor: 199
+defense: 199
+experience: 0
+outfit:
+  id: 102
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 500
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: energy
+    damage:
+      min: 200
+      max: 400
+    target:
+      type: area
+      origin: self
+      shape: cross1
+    effect_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 100
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    effect_id: 14
+corpse: 3138
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 0

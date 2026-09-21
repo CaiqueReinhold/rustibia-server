@@ -1,0 +1,58 @@
+name: Sandstone Scorpion
+life: 900
+speed: 115
+blood_type: blood
+armor: 40
+defense: 40
+experience: 680
+outfit:
+  id: 398
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 193
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 1000
+      max: 1000
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 60
+      max: 100
+corpse: 12512
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "*rattle*"
+    - "*tak tak*"
+    - "*tak tak tak*"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 45000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 45000
+    amount: 28
+  - item_id: 3032  # small emerald
+    chance: 9900
+    amount: 2
+  - item_id: 3035  # platinum coin
+    chance: 11111
+    amount: 2
+  - item_id: 3327  # daramian mace
+    chance: 6250
+  - item_id: 3351  # steel helmet
+    chance: 5000
+  - item_id: 3429  # black shield
+    chance: 1724
+  - item_id: 12546  # fist on a stick
+    chance: 280

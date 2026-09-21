@@ -1,0 +1,84 @@
+name: Orc Warlord
+life: 950
+speed: 117
+blood_type: blood
+armor: 28
+defense: 28
+experience: 670
+outfit:
+  id: 2
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 250
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 8
+corpse: 6008
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ranat Ulderek!
+    - Orc buta bana!
+    - Ikem rambo zambo!
+    - Futchi maruk buta!
+loot:
+  - item_id: 11453  # broken helmet
+    chance: 25259
+  - item_id: 11479  # orc leather
+    chance: 20351
+  - item_id: 3031  # gold coin
+    chance: 18998
+    amount: 45
+  - item_id: 3287  # throwing star
+    chance: 14658
+    amount: 18
+  - item_id: 3578  # fish
+    chance: 10484
+    amount: 2
+  - item_id: 10196  # orc tooth
+    chance: 10033
+  - item_id: 3357  # plate armor
+    chance: 5526
+  - item_id: 3316  # orcish axe
+    chance: 5426
+  - item_id: 11480  # skull belt
+    chance: 4958
+  - item_id: 3347  # hunting spear
+    chance: 4825
+  - item_id: 3557  # plate legs
+    chance: 3907
+  - item_id: 3307  # scimitar
+    chance: 2972
+  - item_id: 3265  # two handed sword
+    chance: 1953
+  - item_id: 3084  # protection amulet
+    chance: 1853
+  - item_id: 3384  # dark helmet
+    chance: 1285
+  - item_id: 3359  # brass armor
+    chance: 935
+  - item_id: 266  # health potion
+    chance: 384
+  - item_id: 3391  # crusader helmet
+    chance: 301
+  - item_id: 3322  # dragon hammer
+    chance: 234
+  - item_id: 818  # magma boots
+    chance: 184
+  - item_id: 7395  # orc trophy
+    chance: 134
+  - item_id: 3049  # stealth ring
+    chance: 117

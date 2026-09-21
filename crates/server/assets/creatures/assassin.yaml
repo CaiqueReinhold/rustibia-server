@@ -1,0 +1,81 @@
+name: Assassin
+life: 175
+speed: 112
+blood_type: blood
+armor: 17
+defense: 17
+experience: 105
+outfit:
+  id: 152
+  colors: [95, 95, 95, 95]
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 8
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 120
+        max: 160
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+corpse: 18046
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Die!
+    - Feel the hand of death!
+    - You are on my deathlist!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 83000
+    amount: 50
+  - item_id: 2920  # torch
+    chance: 30000
+    amount: 2
+  - item_id: 3291  # knife
+    chance: 9800
+  - item_id: 3287  # throwing star
+    chance: 7000
+    amount: 14
+  - item_id: 7366  # viper star
+    chance: 4200
+    amount: 7
+  - item_id: 3292  # combat knife
+    chance: 4000
+  - item_id: 3351  # steel helmet
+    chance: 3230
+  - item_id: 3410  # plate shield
+    chance: 1900
+  - item_id: 3413  # battle shield
+    chance: 1600
+  - item_id: 3409  # steel shield
+    chance: 970
+  - item_id: 3404  # leopard armor
+    chance: 480
+  - item_id: 3405  # horseman helmet
+    chance: 240
+  - item_id: 3028  # small diamond
+    chance: 220

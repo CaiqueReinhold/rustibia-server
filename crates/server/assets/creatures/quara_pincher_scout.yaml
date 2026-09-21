@@ -1,0 +1,58 @@
+name: Quara Pincher Scout
+life: 775
+speed: 78
+blood_type: blood
+armor: 45
+defense: 45
+experience: 600
+outfit:
+  id: 77
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 1
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 60
+    effect_id: 14
+corpse: 6063
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Clank clank!
+    - Clap!
+    - Crrrk! Crrrk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 89910
+    amount: 129
+  - item_id: 11490  # quara pincers
+    chance: 9912
+  - item_id: 3357  # plate armor
+    chance: 4965
+  - item_id: 3030  # small ruby
+    chance: 3836
+    amount: 2
+  - item_id: 3269  # halberd
+    chance: 2056
+  - item_id: 5895  # fish fin
+    chance: 808
+  - item_id: 3061  # life crystal
+    chance: 781

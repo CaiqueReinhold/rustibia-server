@@ -1,0 +1,76 @@
+name: Infected Weeper
+life: 6800
+speed: 125
+blood_type: blood
+armor: 45
+defense: 45
+experience: 4800
+outfit:
+  id: 489
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 280
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 250
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    effect_id: 14
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: fire
+    damage:
+      min: 80
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 16
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 600
+    effect_id: 4
+corpse: 15906
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Moooaaan!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 98
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 7
+  - item_id: 7920  # wood
+    chance: 1460

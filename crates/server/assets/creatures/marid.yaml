@@ -1,0 +1,124 @@
+name: Marid
+life: 550
+speed: 117
+blood_type: blood
+armor: 24
+defense: 24
+experience: 410
+outfit:
+  id: 104
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 100
+      max: 250
+    target:
+      type: target
+      range: 7
+    missile_id: 36
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 90
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 30
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 30
+      max: 90
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 80
+corpse: 6033
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Simsalabim
+    - Feel the power of my magic, tiny mortal!
+    - Wishes can come true.
+    - Djinns will soon again be the greatest!
+    - Be careful what you wish.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 49000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 49000
+    amount: 29
+  - item_id: 3588  # blueberry
+    chance: 25000
+    amount: 25
+  - item_id: 7378  # royal spear
+    chance: 15500
+    amount: 3
+  - item_id: 237  # strong mana potion
+    chance: 9800
+  - item_id: 11470  # jewelled belt
+    chance: 8000
+  - item_id: 3029  # small sapphire
+    chance: 6200
+  - item_id: 3330  # heavy machete
+    chance: 4700
+  - item_id: 5912  # blue piece of cloth
+    chance: 3750
+  - item_id: 2659  # blue tapestry
+    chance: 2560
+  - item_id: 647  # seeds
+    chance: 2400
+  - item_id: 3067  # hailstorm rod
+    chance: 770
+  - item_id: 11486  # noble turban
+    chance: 530
+  - item_id: 3574  # mystic turban
+    chance: 290
+  - item_id: 827  # magma monocle
+    chance: 260
+  - item_id: 3262  # wooden flute
+    chance: 260
+  - item_id: 2933  # small oil lamp
+    chance: 130
+  - item_id: 3041  # blue gem
+    chance: 80

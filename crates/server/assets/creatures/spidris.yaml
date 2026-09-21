@@ -1,0 +1,87 @@
+name: Spidris
+life: 3700
+speed: 130
+blood_type: poison
+armor: 30
+defense: 30
+experience: 2600
+outfit:
+  id: 457
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 298
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 310
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 15
+    effect_id: 9
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.45
+        flat: 0
+      max:
+        factor: 0.45
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 13870
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Eeeeeeyyyyh!
+    - Iiiiieeeeeh!
+loot:
+  - item_id: 3030  # small ruby
+    chance: 11900
+    amount: 5
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 45000
+    amount: 4
+  - item_id: 3036  # violet gem
+    chance: 770
+  - item_id: 6299  # death ring
+    chance: 2700
+  - item_id: 7413  # titan axe
+    chance: 920
+  - item_id: 238  # great mana potion
+    chance: 11500
+    amount: 2
+  - item_id: 281  # giant shimmering pearl
+    chance: 1700
+  - item_id: 7643  # ultimate health potion
+    chance: 6250
+    amount: 2
+  - item_id: 14082  # spidris mandible
+    chance: 14960
+  - item_id: 14083  # compound eye
+    chance: 12500
+  - item_id: 14086  # calopteryx cape
+    chance: 370
+  - item_id: 14088  # carapace shield
+    chance: 720
+  - item_id: 14089  # hive scythe
+    chance: 690

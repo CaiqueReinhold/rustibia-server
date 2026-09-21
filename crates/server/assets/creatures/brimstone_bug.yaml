@@ -1,0 +1,111 @@
+name: Brimstone Bug
+life: 1300
+speed: 100
+blood_type: poison
+armor: 25
+defense: 25
+experience: 900
+outfit:
+  id: 352
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 213
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 400
+      max: 400
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 200
+    missile_id: 11
+    effect_id: 18
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: earth
+    damage:
+      min: 140
+      max: 310
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 46
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 130
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 17
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 80
+      max: 120
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 8
+corpse: 11571
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chrrr!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3032  # small emerald
+    chance: 2702
+    amount: 4
+  - item_id: 3049  # stealth ring
+    chance: 892
+  - item_id: 3055  # platinum amulet
+    chance: 110
+  - item_id: 5904  # magic sulphur
+    chance: 1639
+  - item_id: 236  # strong health potion
+    chance: 9003
+  - item_id: 237  # strong mana potion
+    chance: 9025
+  - item_id: 9640  # poisonous slime
+    chance: 50000
+  - item_id: 10305  # lump of earth
+    chance: 20000
+  - item_id: 10315  # sulphurous stone
+    chance: 14970
+  - item_id: 11702  # brimstone fangs
+    chance: 5710
+  - item_id: 11703  # brimstone shell
+    chance: 10000

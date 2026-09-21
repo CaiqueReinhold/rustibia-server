@@ -1,0 +1,59 @@
+name: Forest Fury
+life: 480
+speed: 110
+blood_type: blood
+armor: 20
+defense: 20
+experience: 235
+outfit:
+  id: 569
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 125
+  element: physical
+abilities:
+  - cooldown: 30
+    chance: 40000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 17
+    effect_id: 15
+corpse: 19042
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - To arms, sisters!
+    - Feel the wrath of mother forest!
+    - By the power of Greenskull!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 87797
+    amount: 55
+  - item_id: 3446  # bolt
+    chance: 50567
+    amount: 15
+  - item_id: 3577  # meat
+    chance: 24975
+  - item_id: 7363  # piercing bolt
+    chance: 14846
+    amount: 5
+  - item_id: 18995  # venison
+    chance: 12036
+  - item_id: 18994  # elven hoof
+    chance: 7445
+  - item_id: 3349  # crossbow
+    chance: 2579
+  - item_id: 9057  # small topaz
+    chance: 482
+  - item_id: 7438  # elvish bow
+    chance: 79

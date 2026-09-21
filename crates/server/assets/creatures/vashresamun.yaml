@@ -1,0 +1,105 @@
+name: Vashresamun
+life: 4000
+speed: 170
+blood_type: blood
+armor: 40
+defense: 40
+experience: 2950
+outfit:
+  id: 90
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 65
+      max: 65
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 600
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 23
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 800
+    target:
+      type: target
+      range: 1
+  - cooldown: 20
+    chance: 20000
+    type: heal
+    life:
+      min: 250
+      max: 450
+  - cooldown: 20
+    chance: 12000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.37
+        flat: 0
+      max:
+        factor: 0.37
+        flat: 0
+    duration_ticks: 600
+    effect_id: 14
+corpse: 6025
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - If music is the food of death, drop dead.
+    - Are you enjoying my music?
+    - Come my maidens, we have visitors!
+    - Chakka Chakka!
+    - Heheheheee!
+loot:
+  - item_id: 3236  # blue note
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 31000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 31000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 31000
+    amount: 50
+  - item_id: 3026  # white pearl
+    chance: 10000
+  - item_id: 2950  # lute
+    chance: 9200
+  - item_id: 238  # great mana potion
+    chance: 8000
+  - item_id: 3567  # blue robe
+    chance: 1200
+  - item_id: 3333  # crystal mace
+    chance: 1000
+  - item_id: 3007  # crystal ring
+    chance: 1000
+  - item_id: 2953  # panpipes
+    chance: 330
+  - item_id: 3022  # ancient tiara
+    chance: 170
+  - item_id: 10290  # mini mummy
+    chance: 170

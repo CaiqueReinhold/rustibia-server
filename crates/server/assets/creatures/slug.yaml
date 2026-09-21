@@ -1,0 +1,38 @@
+name: Slug
+life: 255
+speed: 75
+blood_type: poison
+armor: 15
+defense: 15
+experience: 70
+outfit:
+  id: 407
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 44
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 5
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 12526
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 62000
+    amount: 40
+  - item_id: 3492  # worm
+    chance: 5000
+    amount: 3

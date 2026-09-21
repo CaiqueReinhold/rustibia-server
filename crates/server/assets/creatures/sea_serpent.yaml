@@ -1,0 +1,118 @@
+name: Sea Serpent
+life: 1950
+speed: 175
+blood_type: blood
+armor: 45
+defense: 45
+experience: 2300
+outfit:
+  id: 275
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 250
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 60
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: wave7_2
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 101
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: wave7_2
+    effect_id: 44
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 70
+      max: 273
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 949
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - CHHHRRRR
+    - HISSSS
+loot:
+  - item_id: 3029  # small sapphire
+    chance: 5600
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 38000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 36
+  - item_id: 3035  # platinum coin
+    chance: 25000
+    amount: 3
+  - item_id: 3049  # stealth ring
+    chance: 400
+  - item_id: 3098  # ring of healing
+    chance: 1100
+  - item_id: 3297  # serpent sword
+    chance: 4200
+  - item_id: 3557  # plate legs
+    chance: 7150
+  - item_id: 3583  # dragon ham
+    chance: 60000
+    amount: 2
+  - item_id: 236  # strong health potion
+    chance: 5500
+  - item_id: 237  # strong mana potion
+    chance: 3850
+  - item_id: 238  # great mana potion
+    chance: 920
+  - item_id: 815  # glacier amulet
+    chance: 880
+  - item_id: 823  # glacier kilt
+    chance: 430
+  - item_id: 8042  # spirit cloak
+    chance: 2900
+  - item_id: 8043  # focus cape
+    chance: 370
+  - item_id: 8050  # crystalline armor
+    chance: 90
+  - item_id: 8056  # oceanborn leviathan armor
+    chance: 110
+  - item_id: 8083  # northwind rod
+    chance: 930
+  - item_id: 9666  # sea serpent scale
+    chance: 10200

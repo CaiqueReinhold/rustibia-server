@@ -1,0 +1,144 @@
+name: Defiler
+life: 3650
+speed: 80
+blood_type: poison
+armor: 20
+defense: 20
+experience: 3700
+outfit:
+  id: 238
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 150
+      max: 150
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 160
+      max: 270
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 400
+        max: 640
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: radius7
+    effect_id: 17
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 120
+      max: 170
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 500
+        max: 1000
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    speed:
+      min:
+        factor: -0.7
+        flat: 0
+      max:
+        factor: -0.7
+        flat: 0
+    duration_ticks: 300
+    effect_id: 39
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 280
+      max: 350
+corpse: 6532
+flee_threshold: 85
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Blubb
+    - Blubb Blubb
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 272
+  - item_id: 3035  # platinum coin
+    chance: 96687
+    amount: 6
+  - item_id: 5944  # soul orb
+    chance: 19478
+  - item_id: 6499  # demonic essence
+    chance: 19157
+  - item_id: 9054  # glob of acid slime
+    chance: 11586
+  - item_id: 9055  # glob of tar
+    chance: 11245
+  - item_id: 3032  # small emerald
+    chance: 5723
+    amount: 3
+  - item_id: 3034  # talon
+    chance: 4357
+  - item_id: 3030  # small ruby
+    chance: 3695
+    amount: 2
+  - item_id: 6299  # death ring
+    chance: 2831
+  - item_id: 3028  # small diamond
+    chance: 2490
+    amount: 2
+  - item_id: 3037  # yellow gem
+    chance: 1787
+  - item_id: 3039  # red gem
+    chance: 1165
+  - item_id: 3041  # blue gem
+    chance: 843
+  - item_id: 3038  # green gem
+    chance: 723

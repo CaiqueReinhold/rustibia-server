@@ -1,0 +1,60 @@
+name: Wisp
+life: 115
+speed: 81
+blood_type: blood
+armor: 7
+defense: 7
+experience: 0
+outfit:
+  id: 294
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 3
+      max: 7
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.2
+        flat: 0
+      max:
+        factor: 0.2
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 15
+      max: 25
+corpse: 6323
+flee_threshold: 115
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Crackle!
+    - Tsshh
+loot:
+  - item_id: 9604  # moon backpack
+    chance: 140

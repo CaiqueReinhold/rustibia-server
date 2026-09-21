@@ -1,0 +1,42 @@
+name: Chakoya Tribewarden
+life: 68
+speed: 100
+blood_type: blood
+armor: 10
+defense: 10
+experience: 40
+outfit:
+  id: 249
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+corpse: 7320
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Quisavu tukavi!
+    - Si siyoqua jamjam!
+    - Achuq! jinuma!
+    - Si ji jusipa!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 30
+  - item_id: 3294  # short sword
+    chance: 4680
+  - item_id: 3441  # bone shield
+    chance: 1000
+  - item_id: 3578  # fish
+    chance: 20000
+  - item_id: 3580  # northern pike
+    chance: 90
+  - item_id: 7158  # rainbow trout
+    chance: 130
+  - item_id: 7159  # green perch
+    chance: 190
+  - item_id: 7381  # mammoth whopper
+    chance: 300

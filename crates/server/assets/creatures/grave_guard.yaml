@@ -1,0 +1,35 @@
+name: Grave Guard
+life: 720
+speed: 100
+blood_type: blood
+armor: 35
+defense: 35
+experience: 485
+outfit:
+  id: 234
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 147
+  element: physical
+corpse: 12840
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 95445
+    amount: 129
+  - item_id: 3661  # grave flower
+    chance: 69968
+  - item_id: 268  # mana potion
+    chance: 20318
+  - item_id: 266  # health potion
+    chance: 19920
+  - item_id: 3042  # scarab coin
+    chance: 4802
+  - item_id: 6299  # death ring
+    chance: 2181
+  - item_id: 3328  # daramian waraxe
+    chance: 933

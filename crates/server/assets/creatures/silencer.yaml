@@ -1,0 +1,103 @@
+name: Silencer
+life: 5400
+speed: 235
+blood_type: blood
+armor: 71
+defense: 71
+experience: 5100
+outfit:
+  id: 585
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 315
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 600
+      max: 600
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 40
+      max: 150
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 23
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.49
+        flat: 0
+      max:
+        factor: 0.49
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 220
+      max: 425
+corpse: 20155
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Prrrroooaaaah!!! PRROAAAH!!
+    - PRRRROOOOOAAAAAHHHH!!!
+    - HUUUSSSSSSSSH!!
+    - Hussssssh!!
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 99919
+    amount: 8
+  - item_id: 3031  # gold coin
+    chance: 99717
+    amount: 100
+  - item_id: 20200  # silencer claws
+    chance: 16350
+  - item_id: 20201  # silencer resonating chamber
+    chance: 9528
+  - item_id: 7368  # assassin star
+    chance: 8357
+    amount: 10
+  - item_id: 7454  # glorious axe
+    chance: 2584
+  - item_id: 7413  # titan axe
+    chance: 1978
+  - item_id: 7407  # haunted blade
+    chance: 1938
+  - item_id: 3049  # stealth ring
+    chance: 1534
+  - item_id: 3421  # dark shield
+    chance: 1453
+  - item_id: 7387  # diamond sceptre
+    chance: 1373
+  - item_id: 7451  # shadow sceptre
+    chance: 1090
+  - item_id: 813  # terra boots
+    chance: 929
+  - item_id: 812  # terra legs
+    chance: 888
+  - item_id: 20062  # cluster of solace
+    chance: 686
+  - item_id: 3079  # boots of haste
+    chance: 444

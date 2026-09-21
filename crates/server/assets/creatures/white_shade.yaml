@@ -1,0 +1,58 @@
+name: White Shade
+life: 260
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 120
+outfit:
+  id: 560
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 8
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 4
+      max: 6
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 66
+  - cooldown: 40
+    chance: 5000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    speed:
+      min:
+        factor: -0.4
+        flat: 0
+      max:
+        factor: -0.4
+        flat: 0
+    duration_ticks: 60
+    effect_id: 10
+corpse: 19059
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Leave this place... save yourself...
+    - The dark ones.. must be stopped... unholy, twisted, EVIL!
+    - No... don't go further stranger... danger lies in every step...
+loot:
+  - item_id: 5909  # white piece of cloth
+    chance: 3370

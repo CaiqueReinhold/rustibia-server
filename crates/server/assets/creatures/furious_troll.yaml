@@ -1,0 +1,35 @@
+name: Furious Troll
+life: 245
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 185
+outfit:
+  id: 281
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+corpse: 5960
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Slice! Slice!
+    - DIE!!!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 47000
+    amount: 46
+  - item_id: 3035  # platinum coin
+    chance: 6000
+  - item_id: 3279  # war hammer
+    chance: 750
+  - item_id: 9689  # bunch of troll hair
+    chance: 4400

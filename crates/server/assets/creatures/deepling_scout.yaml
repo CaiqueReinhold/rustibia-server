@@ -1,0 +1,59 @@
+name: Deepling Scout
+life: 240
+speed: 100
+blood_type: blood
+armor: 10
+defense: 10
+experience: 160
+outfit:
+  id: 413
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 40
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+    effect_id: 2
+corpse: 12684
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Njaaarh!!
+    - Begjone, intrjuder!!
+    - Djon't djare stjare injo the eyes of the djeep!
+    - Ljeave this sjacred pljace while you cjan
+loot:
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 50
+  - item_id: 3032  # small emerald
+    chance: 121
+  - item_id: 3052  # life ring
+    chance: 2127
+  - item_id: 3347  # hunting spear
+    chance: 14285
+    amount: 3
+  - item_id: 5895  # fish fin
+    chance: 310
+  - item_id: 8895  # rusted armor
+    chance: 925
+  - item_id: 9016  # flask of rust remover
+    chance: 111
+  - item_id: 12683  # heavy trident
+    chance: 505
+  - item_id: 12730  # eye of a deepling
+    chance: 310

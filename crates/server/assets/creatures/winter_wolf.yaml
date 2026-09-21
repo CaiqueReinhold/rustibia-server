@@ -1,0 +1,27 @@
+name: Winter Wolf
+life: 30
+speed: 85
+blood_type: blood
+armor: 2
+defense: 2
+experience: 20
+outfit:
+  id: 52
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+corpse: 5997
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Yoooohhuuuu!
+loot:
+  - item_id: 3577  # meat
+    chance: 30000
+    amount: 2
+  - item_id: 10295  # winter wolf fur
+    chance: 10000

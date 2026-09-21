@@ -1,0 +1,88 @@
+name: Dark Torturer
+life: 7350
+speed: 185
+blood_type: blood
+armor: 45
+defense: 45
+experience: 4650
+outfit:
+  id: 234
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 500
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 781
+    target:
+      type: target
+      range: 7
+    missile_id: 9
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 6327
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You like it, don't you?
+    - IahaEhheAie!
+    - It's party time!
+    - Harrr, Harrr!
+    - The torturer is in!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 199
+  - item_id: 3582  # ham
+    chance: 65733
+  - item_id: 3035  # platinum coin
+    chance: 57202
+    amount: 8
+  - item_id: 6558  # flask of demonic blood
+    chance: 35009
+  - item_id: 5944  # soul orb
+    chance: 24088
+  - item_id: 238  # great mana potion
+    chance: 15083
+    amount: 2
+  - item_id: 239  # great health potion
+    chance: 9602
+    amount: 2
+  - item_id: 6499  # demonic essence
+    chance: 8860
+  - item_id: 3461  # saw
+    chance: 5316
+  - item_id: 3554  # steel boots
+    chance: 5007
+  - item_id: 9058  # gold ingot
+    chance: 3132
+  - item_id: 5021  # orichalcum pearl
+    chance: 2823
+    amount: 2
+  - item_id: 5479  # cat's paw
+    chance: 2061
+  - item_id: 6299  # death ring
+    chance: 1958
+  - item_id: 7368  # assassin star
+    chance: 1772
+    amount: 5
+  - item_id: 5801  # jewelled backpack
+    chance: 845
+  - item_id: 7412  # butcher's axe
+    chance: 762
+  - item_id: 7388  # vile axe
+    chance: 536
+  - item_id: 3364  # golden legs
+    chance: 82

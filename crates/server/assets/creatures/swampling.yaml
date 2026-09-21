@@ -1,0 +1,67 @@
+name: Swampling
+life: 80
+speed: 95
+blood_type: poison
+armor: 10
+defense: 10
+experience: 45
+outfit:
+  id: 535
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 2
+      max: 15
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave3_2
+    speed:
+      min:
+        factor: -0.3
+        flat: 0
+      max:
+        factor: -0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 54
+corpse: 17622
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gnark!
+    - Crrrck!
+loot:
+  - item_id: 3003  # rope
+    chance: 4540
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 12
+  - item_id: 3723  # white mushroom
+    chance: 8980
+    amount: 5
+  - item_id: 17821  # rat cheese
+    chance: 18670
+  - item_id: 17822  # swampling moss
+    chance: 12610
+  - item_id: 17823  # piece of swampling wood
+    chance: 8270

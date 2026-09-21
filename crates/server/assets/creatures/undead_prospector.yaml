@@ -1,0 +1,53 @@
+name: Undead Prospector
+life: 100
+speed: 85
+blood_type: blood
+armor: 15
+defense: 15
+experience: 85
+outfit:
+  id: 18
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 5
+      max: 15
+corpse: 5976
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Our mine... leave us alone.
+    - Turn back...
+    - These mine is ours... you shall not pass.
+loot:
+  - item_id: 3492  # worm
+    chance: 80636
+    amount: 6
+  - item_id: 3031  # gold coin
+    chance: 71225
+    amount: 30
+  - item_id: 2920  # torch
+    chance: 61070
+  - item_id: 3354  # brass helmet
+    chance: 18551
+  - item_id: 3291  # knife
+    chance: 14760
+  - item_id: 3367  # viking helmet
+    chance: 5349
+  - item_id: 3377  # scale armor
+    chance: 3588
+  - item_id: 3114  # skull
+    chance: 2708
+  - item_id: 5913  # brown piece of cloth
+    chance: 948
+  - item_id: 3052  # life ring
+    chance: 135

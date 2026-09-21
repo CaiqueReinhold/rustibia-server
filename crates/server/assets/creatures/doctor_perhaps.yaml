@@ -1,0 +1,67 @@
+name: Doctor Perhaps
+life: 475
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 325
+outfit:
+  id: 133
+  colors: [95, 0, 94, 114]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 43
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 17
+      max: 55
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 39
+    effect_id: 2
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 20
+        max: 40
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 10
+      max: 30
+corpse: 18158
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - I might use some parts of you in my next creation!
+    - You're only a testsubject to me!
+    - My creations will kill you!
+    - You can't beat what you can't comprehend!
+loot:
+  - item_id: 9373  # glutton's mace
+    chance: 40000
+  - item_id: 9383  # trousers of the ancients
+    chance: 20000
+  - item_id: 9372  # meat shield
+    chance: 40000

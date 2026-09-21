@@ -1,0 +1,66 @@
+name: Lizard High Guard
+life: 1800
+speed: 119
+blood_type: blood
+armor: 40
+defense: 40
+experience: 1450
+outfit:
+  id: 337
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 306
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 25
+      max: 75
+corpse: 10355
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hizzzzzzz!
+    - To armzzzz!
+    - Engage zze aggrezzor!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 96078
+    amount: 281
+  - item_id: 236  # strong health potion
+    chance: 11938
+  - item_id: 10416  # high guard shoulderplates
+    chance: 8091
+  - item_id: 239  # great health potion
+    chance: 7075
+  - item_id: 10408  # spiked iron ball
+    chance: 6970
+  - item_id: 10328  # bunch of ripe rice
+    chance: 4932
+  - item_id: 3035  # platinum coin
+    chance: 4910
+    amount: 2
+  - item_id: 10415  # high guard flag
+    chance: 3006
+  - item_id: 3032  # small emerald
+    chance: 2487
+    amount: 4
+  - item_id: 10289  # red lantern
+    chance: 1209
+  - item_id: 3428  # tower shield
+    chance: 1032
+  - item_id: 5876  # lizard leather
+    chance: 997
+  - item_id: 5881  # lizard scale
+    chance: 957
+  - item_id: 10387  # Zaoan legs
+    chance: 734
+  - item_id: 10386  # Zaoan shoes
+    chance: 688
+  - item_id: 10384  # Zaoan armor
+    chance: 76

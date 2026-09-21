@@ -1,0 +1,121 @@
+name: Spectre
+life: 1350
+speed: 115
+blood_type: blood
+armor: 35
+defense: 35
+experience: 2100
+outfit:
+  id: 235
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 308
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 300
+      max: 300
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 400
+    target:
+      type: target
+      range: 7
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 300
+      max: 550
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 100
+      max: 250
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 370
+      max: 700
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.29
+        flat: 0
+      max:
+        factor: 0.29
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6347
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Revenge ... is so ... sweet!
+    - Life...force! Feed me your... lifeforce!
+loot:
+  - item_id: 2949  # lyre
+    chance: 9620
+  - item_id: 3017  # silver brooch
+    chance: 850
+  - item_id: 3017  # silver brooch
+    chance: 110
+  - item_id: 3019  # demonbone amulet
+    chance: 110
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33000
+    amount: 97
+  - item_id: 3035  # platinum coin
+    chance: 3850
+    amount: 7
+  - item_id: 3049  # stealth ring
+    chance: 190
+  - item_id: 3073  # wand of cosmic energy
+    chance: 9800
+  - item_id: 3147  # blank rune
+    chance: 30310
+    amount: 2
+  - item_id: 5909  # white piece of cloth
+    chance: 3800
+  - item_id: 5944  # soul orb
+    chance: 6005
+  - item_id: 6299  # death ring
+    chance: 280
+  - item_id: 6499  # demonic essence
+    chance: 6270
+  - item_id: 7383  # relic sword
+    chance: 700
+  - item_id: 238  # great mana potion
+    chance: 920
+  - item_id: 10310  # shiny stone
+    chance: 1000

@@ -1,0 +1,25 @@
+name: White Deer
+life: 195
+speed: 95
+blood_type: blood
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 400
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 12524
+flee_threshold: 195
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "*wheeze*"
+    - ROOOAAARR!!
+    - "*sniff*"
+    - "*bell*"

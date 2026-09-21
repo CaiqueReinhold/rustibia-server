@@ -1,0 +1,104 @@
+name: Vampire
+life: 475
+speed: 119
+blood_type: blood
+armor: 30
+defense: 30
+experience: 305
+outfit:
+  id: 68
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 200
+    target:
+      type: target
+      range: 1
+    effect_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 1
+    speed:
+      min:
+        factor: -0.4
+        flat: 0
+      max:
+        factor: -0.4
+        flat: 0
+    duration_ticks: 1200
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 60
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 15
+      max: 25
+corpse: 6006
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - BLOOD!
+    - Let me kiss your neck
+    - I smell warm blood!
+    - I call you, my bats! Come!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 90230
+    amount: 60
+  - item_id: 9685  # vampire teeth
+    chance: 7600
+  - item_id: 11449  # blood preservation
+    chance: 5100
+  - item_id: 3661  # grave flower
+    chance: 1910
+  - item_id: 3027  # black pearl
+    chance: 1800
+  - item_id: 236  # strong health potion
+    chance: 1500
+  - item_id: 3300  # katana
+    chance: 1560
+  - item_id: 3271  # spike sword
+    chance: 1000
+  - item_id: 3114  # skull
+    chance: 1000
+  - item_id: 3284  # ice rapier
+    chance: 470
+  - item_id: 3373  # strange helmet
+    chance: 420
+  - item_id: 3056  # bronze amulet
+    chance: 230
+  - item_id: 3010  # emerald bangle
+    chance: 210
+  - item_id: 3434  # vampire shield
+    chance: 200

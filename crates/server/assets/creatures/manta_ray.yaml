@@ -1,0 +1,45 @@
+name: Manta Ray
+life: 680
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 125
+outfit:
+  id: 449
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 99
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 120
+      max: 120
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 15
+      max: 75
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+corpse: 13849
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Flap flap flap!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 38

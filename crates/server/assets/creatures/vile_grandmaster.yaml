@@ -1,0 +1,93 @@
+name: Vile Grandmaster
+life: 1700
+speed: 105
+blood_type: blood
+armor: 27
+defense: 33
+experience: 1500
+outfit:
+  id: 268
+  colors: [59, 19, 95, 94]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 260
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 22000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 225
+    target:
+      type: target
+      range: 7
+    missile_id: 25
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 25
+      max: 125
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 35
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 220
+      max: 280
+corpse: 18137
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - You'll make a fine trophy!
+    - Is that the best, they can throw at me?
+    - I've seen orcs tougher than you!
+    - I will end this now!
+    - Your gods won't help you!
+loot:
+  - item_id: 11450  # small notebook
+    chance: 724
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 55
+  - item_id: 3035  # platinum coin
+    chance: 73188
+    amount: 2
+  - item_id: 3004  # wedding ring
+    chance: 7246
+  - item_id: 11510  # scroll of heroic deeds
+    chance: 8695
+  - item_id: 3577  # meat
+    chance: 7971
+  - item_id: 3030  # small ruby
+    chance: 2173
+  - item_id: 3029  # small sapphire
+    chance: 2173
+  - item_id: 3279  # war hammer
+    chance: 1449
+  - item_id: 5911  # red piece of cloth
+    chance: 2898
+  - item_id: 3381  # crown armor
+    chance: 1449
+  - item_id: 3385  # crown helmet
+    chance: 1449
+  - item_id: 3280  # fire sword
+    chance: 2173
+  - item_id: 239  # great health potion
+    chance: 9420
+  - item_id: 3382  # crown legs
+    chance: 724

@@ -1,0 +1,25 @@
+name: Bat
+life: 30
+speed: 100
+blood_type: blood
+armor: 1
+defense: 1
+experience: 10
+outfit:
+  id: 122
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 8
+  element: physical
+corpse: 6053
+flee_threshold: 3
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Flap! Flap!
+loot:
+  - item_id: 5894  # bat wing
+    chance: 1000

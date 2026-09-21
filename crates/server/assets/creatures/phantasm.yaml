@@ -1,0 +1,113 @@
+name: Phantasm
+life: 3950
+speed: 170
+blood_type: blood
+armor: 80
+defense: 80
+experience: 4400
+outfit:
+  id: 241
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 475
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 250
+      max: 610
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: mana
+    damage:
+      min: 5
+      max: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 8
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 228
+      max: 449
+  - cooldown: 40
+    chance: 10000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.5
+        flat: 0
+      max:
+        factor: 0.5
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+corpse: 6343
+flee_threshold: 350
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Oh my, you forgot to put your pants on!
+    - Weeheeheeheehee!
+    - Its nothing but a dream!
+    - Give in!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 87839
+    amount: 238
+  - item_id: 3035  # platinum coin
+    chance: 87839
+    amount: 4
+  - item_id: 238  # great mana potion
+    chance: 30634
+    amount: 2
+  - item_id: 3740  # shadow herb
+    chance: 25739
+  - item_id: 3147  # blank rune
+    chance: 21552
+    amount: 2
+  - item_id: 7643  # ultimate health potion
+    chance: 17518
+  - item_id: 6499  # demonic essence
+    chance: 16964
+  - item_id: 3033  # small amethyst
+    chance: 14286
+    amount: 3
+  - item_id: 9057  # small topaz
+    chance: 13147
+    amount: 3
+  - item_id: 3030  # small ruby
+    chance: 11576
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 11115
+    amount: 3
+  - item_id: 7451  # shadow sceptre
+    chance: 862
+  - item_id: 3049  # stealth ring
+    chance: 800
+  - item_id: 3381  # crown armor
+    chance: 708
+  - item_id: 7414  # abyss hammer
+    chance: 493
+  - item_id: 6299  # death ring
+    chance: 369

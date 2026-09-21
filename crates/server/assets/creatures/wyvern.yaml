@@ -1,0 +1,85 @@
+name: Wyvern
+life: 795
+speed: 93
+blood_type: blood
+armor: 25
+defense: 25
+experience: 515
+outfit:
+  id: 239
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 480
+      max: 480
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 240
+        max: 240
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 45
+      max: 65
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 15
+corpse: 6301
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Shriiiek
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99981
+    amount: 90
+  - item_id: 3583  # dragon ham
+    chance: 60229
+  - item_id: 9644  # wyvern talisman
+    chance: 11990
+  - item_id: 3029  # small sapphire
+    chance: 4949
+  - item_id: 3450  # power bolt
+    chance: 3380
+  - item_id: 236  # strong health potion
+    chance: 2473
+  - item_id: 3071  # wand of inferno
+    chance: 784
+  - item_id: 3010  # emerald bangle
+    chance: 590
+  - item_id: 7408  # wyvern fang
+    chance: 459

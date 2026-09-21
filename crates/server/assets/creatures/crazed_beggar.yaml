@@ -1,0 +1,60 @@
+name: Crazed Beggar
+life: 100
+speed: 77
+blood_type: blood
+armor: 4
+defense: 4
+experience: 35
+outfit:
+  id: 153
+  colors: [40, 19, 21, 97]
+melee:
+  damage:
+    min: 0
+    max: 25
+  element: physical
+corpse: 18070
+flee_threshold: 10
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Hehehe!
+    - Raahhh!
+    - You are one of THEM! Die!
+    - Wanna buy roses??
+    - Make it stop!
+    - They're coming! They're coming!
+    - Gimme money!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99393
+    amount: 9
+  - item_id: 3122  # dirty cape
+    chance: 60572
+  - item_id: 3601  # roll
+    chance: 19237
+  - item_id: 3577  # meat
+    chance: 9850
+  - item_id: 3470  # wooden spoon
+    chance: 9474
+  - item_id: 3459  # wooden hammer
+    chance: 6672
+  - item_id: 3658  # red rose
+    chance: 5055
+  - item_id: 3473  # rolling pin
+    chance: 4708
+  - item_id: 3738  # sling herb
+    chance: 607
+  - item_id: 2389  # small blue pillow
+    chance: 607
+  - item_id: 5552  # rum flask
+    chance: 520
+  - item_id: 6091  # very noble-looking watch
+    chance: 380
+  - item_id: 2950  # lute
+    chance: 376
+  - item_id: 8894  # heavily rusted armor
+    chance: 289
+  - item_id: 3097  # dwarven ring
+    chance: 144

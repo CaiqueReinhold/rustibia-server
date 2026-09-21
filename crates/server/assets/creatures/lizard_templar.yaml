@@ -1,0 +1,47 @@
+name: Lizard Templar
+life: 410
+speed: 87
+blood_type: blood
+armor: 26
+defense: 26
+experience: 155
+outfit:
+  id: 113
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+corpse: 4239
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hissss!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 84000
+    amount: 60
+  - item_id: 3294  # short sword
+    chance: 9500
+  - item_id: 3264  # sword
+    chance: 4800
+  - item_id: 3351  # steel helmet
+    chance: 2000
+  - item_id: 3282  # morning star
+    chance: 1990
+  - item_id: 3357  # plate armor
+    chance: 1000
+  - item_id: 5881  # lizard scale
+    chance: 990
+  - item_id: 5876  # lizard leather
+    chance: 880
+  - item_id: 266  # health potion
+    chance: 820
+  - item_id: 3345  # templar scytheblade
+    chance: 550
+  - item_id: 3032  # small emerald
+    chance: 260
+  - item_id: 3445  # salamander shield
+    chance: 110

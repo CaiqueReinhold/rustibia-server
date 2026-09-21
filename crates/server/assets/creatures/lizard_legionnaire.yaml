@@ -1,0 +1,69 @@
+name: Lizard Legionnaire
+life: 1400
+speed: 115
+blood_type: blood
+armor: 25
+defense: 25
+experience: 1100
+outfit:
+  id: 338
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 180
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 40000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 10359
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Tssss!
+loot:
+  - item_id: 3028  # small diamond
+    chance: 1001
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 44000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 54000
+    amount: 65
+  - item_id: 5876  # lizard leather
+    chance: 970
+  - item_id: 5881  # lizard scale
+    chance: 980
+    amount: 3
+  - item_id: 236  # strong health potion
+    chance: 3880
+  - item_id: 10289  # red lantern
+    chance: 530
+  - item_id: 10328  # bunch of ripe rice
+    chance: 1950
+  - item_id: 10384  # Zaoan armor
+    chance: 70
+  - item_id: 10386  # Zaoan shoes
+    chance: 460
+  - item_id: 10388  # drakinata
+    chance: 710
+  - item_id: 10406  # Zaoan halberd
+    chance: 960
+  - item_id: 10417  # legionnaire flags
+    chance: 1940
+  - item_id: 10418  # broken halberd
+    chance: 14940
+  - item_id: 10419  # lizard trophy
+    chance: 20

@@ -1,0 +1,170 @@
+name: Madareth
+life: 75000
+speed: 165
+blood_type: blood
+armor: 65
+defense: 65
+experience: 10000
+outfit:
+  id: 12
+  colors: [77, 78, 100, 79]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 2000
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 40000
+    type: attack
+    element: energy
+    damage:
+      min: 180
+      max: 660
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 38
+  - cooldown: 80
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 600
+      max: 850
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 18
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: mana
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 14
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: mana
+    damage:
+      min: 0
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: radius7
+    effect_id: 14
+  - cooldown: 60
+    chance: 35000
+    type: heal
+    life:
+      min: 300
+      max: 800
+corpse: 7893
+flee_threshold: 1000
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - I am going to play with yourself!
+    - Feel my wrath!
+    - No one matches my battle prowess!
+    - You will all die!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 8899  # slightly rusted legs
+    chance: 59259
+  - item_id: 8896  # slightly rusted armor
+    chance: 40741
+  - item_id: 7443  # bullseye potion
+    chance: 37037
+  - item_id: 239  # great health potion
+    chance: 29630
+  - item_id: 7642  # great spirit potion
+    chance: 27778
+  - item_id: 7439  # berserk potion
+    chance: 25926
+  - item_id: 7440  # mastermind potion
+    chance: 25926
+  - item_id: 238  # great mana potion
+    chance: 22222
+  - item_id: 6299  # death ring
+    chance: 20370
+  - item_id: 3035  # platinum coin
+    chance: 20370
+    amount: 26
+  - item_id: 7643  # ultimate health potion
+    chance: 20370
+  - item_id: 8084  # springsprout rod
+    chance: 18519
+  - item_id: 7404  # assassin dagger
+    chance: 16667
+  - item_id: 2950  # lute
+    chance: 16667
+  - item_id: 3265  # two handed sword
+    chance: 16667
+  - item_id: 3092  # axe ring
+    chance: 14815
+  - item_id: 3067  # hailstorm rod
+    chance: 14815
+  - item_id: 7418  # nightmare blade
+    chance: 14815
+  - item_id: 8082  # underworld rod
+    chance: 14815
+  - item_id: 3071  # wand of inferno
+    chance: 14815
+  - item_id: 7416  # bloody edge
+    chance: 12963
+  - item_id: 3093  # club ring
+    chance: 12963
+  - item_id: 7407  # haunted blade
+    chance: 12963
+  - item_id: 2949  # lyre
+    chance: 12963
+  - item_id: 3098  # ring of healing
+    chance: 12963
+  - item_id: 8094  # wand of voodoo
+    chance: 12963
+  - item_id: 6499  # demonic essence
+    chance: 11111
+  - item_id: 2966  # war drum
+    chance: 11111
+  - item_id: 2958  # war horn
+    chance: 11111
+  - item_id: 7449  # crystal sword
+    chance: 9259
+  - item_id: 3052  # life ring
+    chance: 9259
+  - item_id: 3053  # time ring
+    chance: 9259
+  - item_id: 5954  # demon horn
+    chance: 7407
+    amount: 2
+  - item_id: 2965  # didgeridoo
+    chance: 7407
+  - item_id: 7383  # relic sword
+    chance: 7407
+  - item_id: 8092  # wand of starstorm
+    chance: 7407
+  - item_id: 7386  # mercenary sword
+    chance: 5556
+  - item_id: 2948  # wooden flute
+    chance: 5556
+  - item_id: 3097  # dwarven ring
+    chance: 3704
+  - item_id: 3284  # ice rapier
+    chance: 3704
+  - item_id: 3091  # sword ring
+    chance: 3704

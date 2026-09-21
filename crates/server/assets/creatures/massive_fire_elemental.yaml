@@ -1,0 +1,72 @@
+name: Massive Fire Elemental
+life: 1200
+speed: 105
+blood_type: blood
+armor: 30
+defense: 30
+experience: 1400
+outfit:
+  id: 242
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 200
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: beam7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 6
+corpse: 6323
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3030  # small ruby
+    chance: 6100
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 25000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 25000
+    amount: 12
+  - item_id: 3056  # bronze amulet
+    chance: 15000
+  - item_id: 3071  # wand of inferno
+    chance: 2240
+  - item_id: 3280  # fire sword
+    chance: 530
+  - item_id: 817  # magma amulet
+    chance: 1300
+  - item_id: 818  # magma boots
+    chance: 560
+  - item_id: 821  # magma legs
+    chance: 210
+  - item_id: 8895  # rusted armor
+    chance: 1330

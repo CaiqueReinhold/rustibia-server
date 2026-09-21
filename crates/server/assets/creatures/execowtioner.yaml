@@ -1,0 +1,99 @@
+name: Execowtioner
+life: 3500
+speed: 135
+blood_type: blood
+armor: 40
+defense: 40
+experience: 2400
+outfit:
+  id: 609
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 8000
+    type: attack
+    element: death
+    damage:
+      min: 135
+      max: 280
+    target:
+      type: area
+      origin: target
+      shape: circle3
+    missile_id: 26
+    effect_id: 1
+  - cooldown: 40
+    chance: 8000
+    type: attack
+    element: physical
+    damage:
+      min: 90
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 26
+    effect_id: 5
+corpse: 21004
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - I'm the one who puts the cute into execute!
+    - I'm here to punish!
+    - Justice is swift and unavoidable!
+    - I'll bring justice!
+    - There is excellence in execution!
+    - Your sentence is death!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 98
+  - item_id: 3035  # platinum coin
+    chance: 67610
+    amount: 3
+  - item_id: 9058  # gold ingot
+    chance: 390
+  - item_id: 5911  # red piece of cloth
+    chance: 3230
+  - item_id: 5878  # minotaur leather
+    chance: 14710
+  - item_id: 11472  # minotaur horn
+    chance: 6580
+    amount: 2
+  - item_id: 21201  # execowtioner mask
+    chance: 13160
+  - item_id: 239  # great health potion
+    chance: 11480
+  - item_id: 238  # great mana potion
+    chance: 10060
+  - item_id: 3577  # meat
+    chance: 7230
+  - item_id: 9057  # small topaz
+    chance: 5810
+    amount: 2
+  - item_id: 3030  # small ruby
+    chance: 4520
+    amount: 2
+  - item_id: 7412  # butcher's axe
+    chance: 900
+  - item_id: 3381  # crown armor
+    chance: 770
+  - item_id: 21176  # execowtioner axe
+    chance: 1420
+  - item_id: 3318  # knight axe
+    chance: 770
+  - item_id: 7413  # titan axe
+    chance: 390
+  - item_id: 7401  # minotaur trophy
+    chance: 520

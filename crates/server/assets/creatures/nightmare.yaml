@@ -1,0 +1,110 @@
+name: Nightmare
+life: 2700
+speed: 232
+blood_type: blood
+armor: 25
+defense: 25
+experience: 1666
+outfit:
+  id: 245
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 170
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 11
+    effect_id: 39
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 350
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 60
+      max: 100
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.42
+        flat: 0
+      max:
+        factor: 0.42
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6339
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Close your eyes... I want to show you something.
+    - I will haunt you forever!
+    - Pffffrrrrrrrrrrrr.
+    - I will make you scream.
+    - Take a ride with me.
+    - Weeeheeheeeheee!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97147
+    amount: 155
+  - item_id: 3582  # ham
+    chance: 29615
+  - item_id: 6558  # flask of demonic blood
+    chance: 20577
+  - item_id: 5944  # soul orb
+    chance: 20224
+  - item_id: 10306  # essence of a bad dream
+    chance: 15577
+  - item_id: 10312  # scythe leg
+    chance: 10224
+  - item_id: 6499  # demonic essence
+    chance: 9583
+  - item_id: 3035  # platinum coin
+    chance: 2660
+    amount: 3
+  - item_id: 3432  # ancient shield
+    chance: 1122
+  - item_id: 6299  # death ring
+    chance: 1058
+  - item_id: 3450  # power bolt
+    chance: 1026
+    amount: 4
+  - item_id: 3371  # knight legs
+    chance: 833
+  - item_id: 6525  # skeleton decoration
+    chance: 545
+  - item_id: 3079  # boots of haste
+    chance: 288
+  - item_id: 5668  # mysterious voodoo skull
+    chance: 160
+  - item_id: 3342  # war axe
+    chance: 96

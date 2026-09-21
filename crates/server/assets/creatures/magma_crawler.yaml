@@ -1,0 +1,140 @@
+name: Magma Crawler
+life: 4800
+speed: 110
+blood_type: blood
+armor: 45
+defense: 45
+experience: 2700
+outfit:
+  id: 492
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 203
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 300
+      max: 1100
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 290
+      max: 800
+    target:
+      type: area
+      origin: self
+      shape: wave3_2
+    effect_id: 37
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 140
+      max: 180
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 16
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: cross1
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 400
+    effect_id: 14
+corpse: 15991
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Crrroak!
+loot:
+  - item_id: 3028  # small diamond
+    chance: 8800
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 95000
+    amount: 5
+  - item_id: 3037  # yellow gem
+    chance: 1030
+  - item_id: 3051  # energy ring
+    chance: 1650
+  - item_id: 3280  # fire sword
+    chance: 1680
+  - item_id: 3429  # black shield
+    chance: 1550
+  - item_id: 5880  # iron ore
+    chance: 4280
+  - item_id: 5909  # white piece of cloth
+    chance: 2310
+  - item_id: 5911  # red piece of cloth
+    chance: 930
+  - item_id: 5914  # yellow piece of cloth
+    chance: 2980
+  - item_id: 238  # great mana potion
+    chance: 6500
+  - item_id: 239  # great health potion
+    chance: 7270
+  - item_id: 817  # magma amulet
+    chance: 3120
+  - item_id: 818  # magma boots
+    chance: 1820
+  - item_id: 8093  # wand of draconia
+    chance: 4280
+  - item_id: 9636  # fiery heart
+    chance: 7810
+  - item_id: 12600  # coal
+    chance: 1675
+  - item_id: 15793  # crystalline arrow
+    chance: 5950
+    amount: 10
+  - item_id: 16115  # wand of everblazing
+    chance: 690
+  - item_id: 16119  # blue crystal shard
+    chance: 3930
+    amount: 2
+  - item_id: 16123  # brown crystal splinter
+    chance: 8500
+    amount: 2
+  - item_id: 16124  # blue crystal splinter
+    chance: 8500
+    amount: 2
+  - item_id: 16127  # green crystal fragment
+    chance: 7000
+  - item_id: 16130  # magma clump
+    chance: 11600
+  - item_id: 16131  # blazing bone
+    chance: 11500

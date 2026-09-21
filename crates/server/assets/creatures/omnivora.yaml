@@ -1,0 +1,105 @@
+name: Omnivora
+life: 1200
+speed: 105
+blood_type: poison
+armor: 38
+defense: 38
+experience: 750
+outfit:
+  id: 717
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 80
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.35
+        flat: 0
+      max:
+        factor: -0.35
+        flat: 0
+    duration_ticks: 240
+    missile_id: 15
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 80
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 100
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 140
+    effect_id: 14
+corpse: 21995
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 145
+  - item_id: 3578  # fish
+    chance: 10209
+  - item_id: 3723  # white mushroom
+    chance: 9612
+    amount: 3
+  - item_id: 3582  # ham
+    chance: 9347
+  - item_id: 3052  # life ring
+    chance: 1790
+  - item_id: 3069  # necrotic rod
+    chance: 1028
+  - item_id: 16123  # brown crystal splinter
+    chance: 762
+  - item_id: 16124  # blue crystal splinter
+    chance: 597
+  - item_id: 16122  # green crystal splinter
+    chance: 497
+  - item_id: 3297  # serpent sword
+    chance: 497
+  - item_id: 8072  # spellbook of enlightenment
+    chance: 431
+  - item_id: 814  # terra amulet
+    chance: 365
+  - item_id: 813  # terra boots
+    chance: 265
+  - item_id: 6299  # death ring
+    chance: 232
+  - item_id: 12311  # carrot on a stick
+    chance: 166

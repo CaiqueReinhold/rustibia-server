@@ -1,0 +1,20 @@
+name: Modified Gnarlhound
+life: 1500
+speed: 225
+blood_type: blood
+armor: 200
+defense: 200
+experience: 0
+outfit:
+  id: 515
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 12539
+flee_threshold: 1500
+say:
+  cooldown: 100
+  chance: 0

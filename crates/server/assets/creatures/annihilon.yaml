@@ -1,0 +1,182 @@
+name: Annihilon
+life: 46500
+speed: 190
+blood_type: blood
+armor: 60
+defense: 55
+experience: 15000
+outfit:
+  id: 12
+  colors: [3, 28, 115, 39]
+melee:
+  damage:
+    min: 0
+    max: 1707
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 11000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 600
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 42
+  - cooldown: 60
+    chance: 18000
+    type: attack
+    element: physical
+    damage:
+      min: 50
+      max: 255
+    target:
+      type: area
+      origin: target
+      shape: circle3
+    effect_id: 35
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 50
+      max: 600
+    target:
+      type: area
+      origin: target
+      shape: radius6
+    effect_id: 7
+    missile_id: 4
+  - cooldown: 20
+    chance: 14000
+    type: heal
+    life:
+      min: 400
+      max: 900
+  - cooldown: 20
+    chance: 4000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.5
+        flat: 0
+      max:
+        factor: 0.5
+        flat: 0
+    duration_ticks: 140
+    effect_id: 13
+corpse: 6068
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Flee as long as you can!
+    - Annihilon's might will crush you all!
+    - I am coming for you!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 8896  # slightly rusted armor
+    chance: 62097
+  - item_id: 281  # giant shimmering pearl
+    chance: 37903
+    amount: 2
+  - item_id: 3340  # heavy mace
+    chance: 28226
+  - item_id: 7368  # assassin star
+    chance: 23790
+    amount: 50
+  - item_id: 3041  # blue gem
+    chance: 22581
+  - item_id: 3315  # guardian halberd
+    chance: 22581
+  - item_id: 3037  # yellow gem
+    chance: 22581
+  - item_id: 3010  # emerald bangle
+    chance: 22177
+  - item_id: 9058  # gold ingot
+    chance: 20968
+  - item_id: 3039  # red gem
+    chance: 20968
+  - item_id: 6528  # infernal bolt
+    chance: 20565
+    amount: 46
+  - item_id: 7439  # berserk potion
+    chance: 19758
+  - item_id: 3035  # platinum coin
+    chance: 19758
+    amount: 30
+  - item_id: 3450  # power bolt
+    chance: 19758
+    amount: 99
+  - item_id: 3269  # halberd
+    chance: 19355
+  - item_id: 763  # flaming arrow
+    chance: 18952
+    amount: 96
+  - item_id: 5944  # soul orb
+    chance: 18952
+    amount: 5
+  - item_id: 3036  # violet gem
+    chance: 17742
+  - item_id: 7366  # viper star
+    chance: 16935
+    amount: 70
+  - item_id: 3038  # green gem
+    chance: 16129
+  - item_id: 7440  # mastermind potion
+    chance: 15323
+  - item_id: 239  # great health potion
+    chance: 14516
+  - item_id: 7421  # onyx flail
+    chance: 14113
+  - item_id: 7643  # ultimate health potion
+    chance: 13306
+  - item_id: 238  # great mana potion
+    chance: 12903
+  - item_id: 3419  # crown shield
+    chance: 12500
+  - item_id: 7642  # great spirit potion
+    chance: 12500
+  - item_id: 5954  # demon horn
+    chance: 11694
+    amount: 2
+  - item_id: 8063  # paladin armor
+    chance: 10484
+  - item_id: 3428  # tower shield
+    chance: 10081
+  - item_id: 3415  # guardian shield
+    chance: 8468
+  - item_id: 7387  # diamond sceptre
+    chance: 7258
+  - item_id: 3420  # demon shield
+    chance: 4032
+  - item_id: 3414  # mastermind shield
+    chance: 3629
+  - item_id: 7431  # demonbone
+    chance: 1613
+  - item_id: 8049  # lavos armor
+    chance: 1210
+  - item_id: 8100  # obsidian truncheon
+    chance: 1210
+  - item_id: 8101  # stomper
+    chance: 403

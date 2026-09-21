@@ -1,0 +1,94 @@
+name: Demodras
+life: 4500
+speed: 115
+blood_type: blood
+armor: 45
+defense: 45
+experience: 6000
+outfit:
+  id: 204
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 235
+  element: physical
+abilities:
+  - cooldown: 60
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 350
+      max: 400
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 80
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 300
+      max: 550
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 7
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 400
+      max: 600
+corpse: 5984
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I WILL SET THE WORLD ON FIRE!
+    - I WILL PROTECT MY BROOD!
+loot:
+  - item_id: 5919  # dragon claw
+    chance: 100000
+  - item_id: 3035  # platinum coin
+    chance: 99145
+    amount: 10
+  - item_id: 3583  # dragon ham
+    chance: 75214
+  - item_id: 3732  # green mushroom
+    chance: 25641
+    amount: 7
+  - item_id: 3450  # power bolt
+    chance: 19658
+    amount: 10
+  - item_id: 5948  # red dragon leather
+    chance: 13675
+  - item_id: 3029  # small sapphire
+    chance: 11966
+  - item_id: 2842  # book
+    chance: 10256
+  - item_id: 3051  # energy ring
+    chance: 10256
+  - item_id: 239  # great health potion
+    chance: 9402
+  - item_id: 238  # great mana potion
+    chance: 9402
+  - item_id: 2903  # golden mug
+    chance: 5983
+  - item_id: 7365  # onyx arrow
+    chance: 4274
+    amount: 5
+  - item_id: 3386  # dragon scale mail
+    chance: 1709
+  - item_id: 3280  # fire sword
+    chance: 1709
+  - item_id: 3061  # life crystal
+    chance: 855

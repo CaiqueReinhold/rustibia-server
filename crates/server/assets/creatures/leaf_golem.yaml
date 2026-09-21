@@ -1,0 +1,65 @@
+name: Leaf Golem
+life: 90
+speed: 70
+blood_type: blood
+armor: 10
+defense: 10
+experience: 45
+outfit:
+  id: 567
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 15
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 180
+    effect_id: 46
+corpse: 19041
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "*crackle*"
+    - "*swwwwishhhh*"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 86830
+    amount: 27
+  - item_id: 3032  # small emerald
+    chance: 1230
+  - item_id: 3723  # white mushroom
+    chance: 4940
+    amount: 3
+  - item_id: 17824  # swampling club
+    chance: 4940
+  - item_id: 19110  # dowser
+    chance: 15230
+  - item_id: 19111  # fir cone
+    chance: 14350

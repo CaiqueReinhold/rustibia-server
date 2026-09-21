@@ -1,0 +1,165 @@
+name: Guzzlemaw
+life: 6400
+speed: 200
+blood_type: blood
+armor: 74
+defense: 74
+experience: 6050
+outfit:
+  id: 584
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 550
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: physical
+      damage:
+        min: 500
+        max: 1000
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 1
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 900
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 5
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 500
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 12
+    effect_id: 45
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 120
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 14
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 250
+      max: 425
+corpse: 20151
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - "Gmmmooooh! *chomp*"
+    - "MWAAAH! *gurgle*"
+    - "*chomp* Mmmoh! *chomp*"
+loot:
+  - item_id: 3035  # platinum coin
+    chance: 87952
+    amount: 7
+  - item_id: 3031  # gold coin
+    chance: 75663
+    amount: 100
+  - item_id: 238  # great mana potion
+    chance: 15261
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 11968
+    amount: 2
+  - item_id: 20198  # frazzle tongue
+    chance: 10281
+  - item_id: 3114  # skull
+    chance: 9719
+  - item_id: 20199  # frazzle skin
+    chance: 9157
+  - item_id: 3111  # fishbone
+    chance: 8353
+  - item_id: 5951  # fish tail
+    chance: 7952
+  - item_id: 3110  # piece of iron
+    chance: 7871
+  - item_id: 3115  # bone
+    chance: 7791
+  - item_id: 3125  # remains of a fish
+    chance: 7791
+  - item_id: 3582  # ham
+    chance: 7550
+  - item_id: 16279  # crystal rubbish
+    chance: 7229
+  - item_id: 3104  # banana skin
+    chance: 7149
+  - item_id: 16123  # brown crystal splinter
+    chance: 6827
+    amount: 2
+  - item_id: 16126  # red crystal fragment
+    chance: 5542
+  - item_id: 3578  # fish
+    chance: 4498
+    amount: 3
+  - item_id: 3116  # big bone
+    chance: 4016
+  - item_id: 5895  # fish fin
+    chance: 3614
+  - item_id: 5925  # hardened bone
+    chance: 3052
+  - item_id: 3265  # two handed sword
+    chance: 2249
+  - item_id: 5880  # iron ore
+    chance: 2169
+  - item_id: 16120  # violet crystal shard
+    chance: 2088
+  - item_id: 20062  # cluster of solace
+    chance: 1526
+  - item_id: 7407  # haunted blade
+    chance: 1446
+  - item_id: 10389  # sai
+    chance: 1285
+  - item_id: 7404  # assassin dagger
+    chance: 643
+  - item_id: 7418  # nightmare blade
+    chance: 643

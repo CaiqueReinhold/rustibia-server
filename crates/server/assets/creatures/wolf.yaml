@@ -1,0 +1,29 @@
+name: Wolf
+life: 25
+speed: 82
+blood_type: blood
+armor: 1
+defense: 1
+experience: 18
+outfit:
+  id: 27
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 17
+  element: physical
+corpse: 5968
+flee_threshold: 8
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Yoooohhuuuu!
+    - Grrrrrrr
+loot:
+  - item_id: 3577  # meat
+    chance: 70000
+    amount: 2
+  - item_id: 5897  # wolf paw
+    chance: 1000

@@ -1,0 +1,128 @@
+name: Juggernaut
+life: 20000
+speed: 170
+blood_type: blood
+armor: 60
+defense: 60
+experience: 11200
+outfit:
+  id: 244
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1470
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 780
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.52
+        flat: 0
+      max:
+        factor: 0.52
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 400
+      max: 900
+corpse: 6335
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - RAAARRR!
+    - GRRRRRR!
+    - WAHHHH!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 87649
+    amount: 198
+  - item_id: 3035  # platinum coin
+    chance: 85549
+    amount: 15
+  - item_id: 3582  # ham
+    chance: 44730
+  - item_id: 6499  # demonic essence
+    chance: 30098
+  - item_id: 5944  # soul orb
+    chance: 23144
+  - item_id: 239  # great health potion
+    chance: 21152
+    amount: 3
+  - item_id: 238  # great mana potion
+    chance: 20645
+    amount: 3
+  - item_id: 6558  # flask of demonic blood
+    chance: 19775
+  - item_id: 7368  # assassin star
+    chance: 16661
+    amount: 10
+  - item_id: 3032  # small emerald
+    chance: 13654
+    amount: 5
+  - item_id: 9057  # small topaz
+    chance: 13003
+    amount: 5
+  - item_id: 3030  # small ruby
+    chance: 12821
+    amount: 5
+  - item_id: 3033  # small amethyst
+    chance: 12677
+    amount: 5
+  - item_id: 3028  # small diamond
+    chance: 12387
+    amount: 5
+  - item_id: 7365  # onyx arrow
+    chance: 10286
+    amount: 15
+  - item_id: 3039  # red gem
+    chance: 9381
+  - item_id: 281  # giant shimmering pearl
+    chance: 6918
+  - item_id: 9058  # gold ingot
+    chance: 5179
+    amount: 2
+  - item_id: 7413  # titan axe
+    chance: 4745
+  - item_id: 3370  # knight armor
+    chance: 4382
+  - item_id: 7452  # spiked squelcher
+    chance: 4020
+  - item_id: 3038  # green gem
+    chance: 2390
+  - item_id: 3342  # war axe
+    chance: 1594
+  - item_id: 3036  # violet gem
+    chance: 942
+  - item_id: 3414  # mastermind shield
+    chance: 435
+  - item_id: 3019  # demonbone amulet
+    chance: 362
+  - item_id: 3360  # golden armor
+    chance: 326
+  - item_id: 3340  # heavy mace
+    chance: 326
+  - item_id: 3481  # closed trap
+    chance: 181

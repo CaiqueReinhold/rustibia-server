@@ -1,0 +1,80 @@
+name: Chakoya Windcaller
+life: 84
+speed: 100
+blood_type: blood
+armor: 10
+defense: 10
+experience: 48
+outfit:
+  id: 260
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 22
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 16
+      max: 32
+    target:
+      type: target
+      range: 7
+    missile_id: 29
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: ice
+      damage:
+        min: 130
+        max: 160
+      interval: 200
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 42
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 9
+      max: 30
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 42
+corpse: 7320
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Mupi! Si siyoqua jinuma!
+    - Siqsiq ji jusipa!
+    - Jagura taluka taqua!
+    - Quatu nguraka!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 26
+  - item_id: 3354  # brass helmet
+    chance: 3250
+  - item_id: 3441  # bone shield
+    chance: 950
+  - item_id: 3578  # fish
+    chance: 29000
+    amount: 3
+  - item_id: 3580  # northern pike
+    chance: 60
+  - item_id: 7158  # rainbow trout
+    chance: 60
+  - item_id: 7159  # green perch
+    chance: 60

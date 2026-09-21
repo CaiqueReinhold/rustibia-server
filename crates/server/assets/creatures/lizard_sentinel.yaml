@@ -1,0 +1,61 @@
+name: Lizard Sentinel
+life: 265
+speed: 90
+blood_type: blood
+armor: 17
+defense: 17
+experience: 110
+outfit:
+  id: 114
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 70
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 6040
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Tssss!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 86497
+    amount: 54
+  - item_id: 3277  # spear
+    chance: 10100
+    amount: 3
+  - item_id: 3358  # chain armor
+    chance: 9189
+  - item_id: 3377  # scale armor
+    chance: 8069
+  - item_id: 3347  # hunting spear
+    chance: 4424
+  - item_id: 5876  # lizard leather
+    chance: 2207
+  - item_id: 5881  # lizard scale
+    chance: 2031
+  - item_id: 3269  # halberd
+    chance: 1504
+  - item_id: 3313  # obsidian lance
+    chance: 1317
+  - item_id: 266  # health potion
+    chance: 1219
+  - item_id: 3444  # sentinel shield
+    chance: 373
+  - item_id: 3028  # small diamond
+    chance: 88

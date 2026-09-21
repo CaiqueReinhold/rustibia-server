@@ -1,0 +1,135 @@
+name: Draken Spellweaver
+life: 5000
+speed: 105
+blood_type: blood
+armor: 25
+defense: 25
+experience: 3100
+outfit:
+  id: 340
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 252
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 240
+      max: 480
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 6
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 100
+      max: 250
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 150
+      max: 300
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 200
+      max: 380
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    effect_id: 3
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 280
+        max: 360
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 270
+      max: 530
+corpse: 10399
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Kazzzzuuuum!!
+    - Fissziss!
+    - Zzzzzooom!!
+loot:
+  - item_id: 3006  # ring of the sky
+    chance: 370
+  - item_id: 3030  # small ruby
+    chance: 6910
+    amount: 5
+  - item_id: 3031  # gold coin
+    chance: 41000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 58000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 25510
+    amount: 5
+  - item_id: 3038  # green gem
+    chance: 970
+  - item_id: 3071  # wand of inferno
+    chance: 1660
+  - item_id: 3577  # meat
+    chance: 30400
+  - item_id: 238  # great mana potion
+    chance: 4970
+  - item_id: 8043  # focus cape
+    chance: 1450
+  - item_id: 10386  # Zaoan shoes
+    chance: 1980
+  - item_id: 10397  # weaver's wandtip
+    chance: 19790
+  - item_id: 10398  # draken trophy
+    chance: 10
+  - item_id: 10438  # spellweaver's robe
+    chance: 620
+  - item_id: 10439  # Zaoan robe
+    chance: 770
+  - item_id: 11454  # luminous orb
+    chance: 1980
+  - item_id: 11658  # draken sulphur
+    chance: 3930
+  - item_id: 12307  # harness
+    chance: 30
+  - item_id: 12549  # bamboo leaves
+    chance: 180

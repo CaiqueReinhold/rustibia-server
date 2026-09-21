@@ -1,0 +1,49 @@
+name: Minotaur
+life: 100
+speed: 84
+blood_type: blood
+armor: 11
+defense: 11
+experience: 50
+outfit:
+  id: 25
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+corpse: 5969
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Kaplar!
+    - Hurr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 67500
+    amount: 25
+  - item_id: 3410  # plate shield
+    chance: 20020
+  - item_id: 3286  # mace
+    chance: 12840
+  - item_id: 3358  # chain armor
+    chance: 10000
+  - item_id: 3354  # brass helmet
+    chance: 7700
+  - item_id: 3264  # sword
+    chance: 5000
+  - item_id: 3577  # meat
+    chance: 5000
+  - item_id: 3274  # axe
+    chance: 4000
+  - item_id: 11472  # minotaur horn
+    chance: 2090
+    amount: 2
+  - item_id: 5878  # minotaur leather
+    chance: 990
+  - item_id: 3457  # shovel
+    chance: 310
+  - item_id: 3056  # bronze amulet
+    chance: 110

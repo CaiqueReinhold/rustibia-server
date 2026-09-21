@@ -1,0 +1,28 @@
+name: Coral Frog
+life: 60
+speed: 100
+blood_type: blood
+armor: 5
+defense: 5
+experience: 20
+outfit:
+  id: 226
+  colors: [114, 79, 78, 114]
+melee:
+  damage:
+    min: 0
+    max: 24
+  element: physical
+corpse: 6079
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit!
+    - Ribbit! Ribbit!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 76780
+    amount: 10
+  - item_id: 3492  # worm
+    chance: 13510

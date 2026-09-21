@@ -1,0 +1,85 @@
+name: Black Knight
+life: 1800
+speed: 125
+blood_type: blood
+armor: 42
+defense: 42
+experience: 1600
+outfit:
+  id: 131
+  colors: [95, 95, 95, 95]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 18074
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - MINE!
+    - NO PRISONERS!
+    - NO MERCY!
+    - By Bolg's blood!
+    - You're no match for me!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 48586
+    amount: 143
+  - item_id: 3277  # spear
+    chance: 29429
+    amount: 3
+  - item_id: 3602  # brown bread
+    chance: 20600
+    amount: 2
+  - item_id: 3003  # rope
+    chance: 14426
+  - item_id: 3372  # brass legs
+    chance: 13070
+  - item_id: 3269  # halberd
+    chance: 12522
+  - item_id: 3357  # plate armor
+    chance: 10935
+  - item_id: 3351  # steel helmet
+    chance: 10531
+  - item_id: 3265  # two handed sword
+    chance: 9608
+  - item_id: 3305  # battle hammer
+    chance: 6896
+  - item_id: 3369  # warrior helmet
+    chance: 4703
+  - item_id: 3318  # knight axe
+    chance: 2654
+  - item_id: 3384  # dark helmet
+    chance: 2424
+  - item_id: 3383  # dark armor
+    chance: 2020
+  - item_id: 3371  # knight legs
+    chance: 1039
+  - item_id: 3370  # knight armor
+    chance: 750
+  - item_id: 3016  # ruby necklace
+    chance: 750
+  - item_id: 822  # lightning legs
+    chance: 577
+  - item_id: 3079  # boots of haste
+    chance: 404
+  - item_id: 3302  # dragon lance
+    chance: 289
+  - item_id: 2995  # piggy bank
+    chance: 115

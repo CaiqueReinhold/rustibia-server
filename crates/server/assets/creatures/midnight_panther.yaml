@@ -1,0 +1,67 @@
+name: Midnight Panther
+life: 1200
+speed: 125
+blood_type: blood
+armor: 30
+defense: 30
+experience: 900
+outfit:
+  id: 385
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 75
+      max: 215
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 38
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.37
+        flat: 0
+      max:
+        factor: 0.37
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 125
+corpse: 12340
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 57
+  - item_id: 3052  # life ring
+    chance: 12500
+  - item_id: 3577  # meat
+    chance: 25000
+    amount: 4
+  - item_id: 12039  # panther head
+    chance: 12500
+  - item_id: 12040  # panther paw
+    chance: 100000

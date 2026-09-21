@@ -1,0 +1,93 @@
+name: Deepling Guard
+life: 1900
+speed: 110
+blood_type: blood
+armor: 35
+defense: 35
+experience: 2100
+outfit:
+  id: 442
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 25
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 100
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+    effect_id: 2
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 100
+      max: 200
+corpse: 13750
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - QJELL NETA NA!!
+loot:
+  - item_id: 3029  # small sapphire
+    chance: 2890
+    amount: 3
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 90
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 90
+  - item_id: 3035  # platinum coin
+    chance: 70000
+    amount: 2
+  - item_id: 238  # great mana potion
+    chance: 14285
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 14285
+    amount: 3
+  - item_id: 12683  # heavy trident
+    chance: 1694
+  - item_id: 12730  # eye of a deepling
+    chance: 10000
+  - item_id: 14010  # deepling guard belt buckle
+    chance: 12500
+  - item_id: 14011  # deepling breaktime snack
+    chance: 16666
+  - item_id: 14043  # guardian axe
+    chance: 925
+  - item_id: 14044  # deepling claw
+    chance: 9090
+  - item_id: 14142  # foxtail
+    chance: 10
+  - item_id: 14247  # ornate crossbow
+    chance: 362
+  - item_id: 14248  # deepling backpack
+    chance: 333
+  - item_id: 14250  # deepling squelcher
+    chance: 751

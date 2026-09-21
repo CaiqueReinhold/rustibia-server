@@ -1,0 +1,45 @@
+name: Dwarf
+life: 90
+speed: 85
+blood_type: blood
+armor: 8
+defense: 8
+experience: 45
+outfit:
+  id: 69
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+corpse: 6007
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hail Durin!
+loot:
+  - item_id: 3723  # white mushroom
+    chance: 50140
+  - item_id: 3031  # gold coin
+    chance: 35361
+    amount: 8
+  - item_id: 3276  # hatchet
+    chance: 24739
+  - item_id: 3274  # axe
+    chance: 14596
+  - item_id: 3456  # pick
+    chance: 10143
+  - item_id: 3430  # copper shield
+    chance: 10098
+  - item_id: 3559  # leather legs
+    chance: 9682
+  - item_id: 3378  # studded armor
+    chance: 8017
+  - item_id: 3505  # letter
+    chance: 7929
+  - item_id: 3097  # dwarven ring
+    chance: 95
+  - item_id: 5880  # iron ore
+    chance: 83

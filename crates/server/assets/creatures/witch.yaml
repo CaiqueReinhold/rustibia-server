@@ -1,0 +1,70 @@
+name: Witch
+life: 300
+speed: 102
+blood_type: blood
+armor: 8
+defense: 8
+experience: 120
+outfit:
+  id: 54
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 30
+      max: 75
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 16
+corpse: 18254
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Horax pokti!
+    - Herba budinia ex!
+    - Hihihihi!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 63913
+    amount: 40
+  - item_id: 3598  # cookie
+    chance: 30001
+    amount: 8
+  - item_id: 3012  # wolf tooth chain
+    chance: 10121
+  - item_id: 9652  # witch broom
+    chance: 10009
+  - item_id: 3736  # star herb
+    chance: 9005
+  - item_id: 3552  # leather boots
+    chance: 5017
+  - item_id: 3565  # cape
+    chance: 4958
+  - item_id: 3293  # sickle
+    chance: 3892
+  - item_id: 3083  # garlic necklace
+    chance: 2515
+  - item_id: 3562  # coat
+    chance: 2008
+  - item_id: 3069  # necrotic rod
+    chance: 1085
+  - item_id: 12548  # bag of apple slices
+    chance: 895
+  - item_id: 3290  # silver dagger
+    chance: 556
+  - item_id: 9653  # witch hat
+    chance: 90
+  - item_id: 10294  # stuffed toad
+    chance: 6

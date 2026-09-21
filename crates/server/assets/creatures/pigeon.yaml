@@ -1,0 +1,24 @@
+name: Pigeon
+life: 30
+speed: 130
+blood_type: blood
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 531
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 17429
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Coooo! Cooo!
+    - Coo! Coooo! Coo! Cooo!
+    - Coo! Coo! Coooo!

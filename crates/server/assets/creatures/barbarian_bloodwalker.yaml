@@ -1,0 +1,65 @@
+name: Barbarian Bloodwalker
+life: 305
+speed: 118
+blood_type: blood
+armor: 9
+defense: 9
+experience: 195
+outfit:
+  id: 255
+  colors: [114, 113, 132, 94]
+melee:
+  damage:
+    min: 0
+    max: 240
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.24
+        flat: 0
+      max:
+        factor: 0.24
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 18054
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - YAAAHEEE!
+    - SLAUGHTER!
+    - CARNAGE!
+    - You can run but you can't hide
+loot:
+  - item_id: 3031  # gold coin
+    chance: 55130
+    amount: 12
+  - item_id: 3352  # chain helmet
+    chance: 10639
+  - item_id: 3358  # chain armor
+    chance: 10270
+  - item_id: 2914  # lamp
+    chance: 8135
+  - item_id: 3269  # halberd
+    chance: 7013
+  - item_id: 3266  # battle axe
+    chance: 5934
+  - item_id: 3582  # ham
+    chance: 4955
+  - item_id: 266  # health potion
+    chance: 950
+  - item_id: 5911  # red piece of cloth
+    chance: 504
+  - item_id: 3344  # beastslayer axe
+    chance: 350
+  - item_id: 7290  # shard
+    chance: 317
+  - item_id: 7457  # fur boots
+    chance: 86

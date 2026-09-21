@@ -1,0 +1,33 @@
+name: Elephant
+life: 320
+speed: 95
+blood_type: blood
+armor: 20
+defense: 20
+experience: 160
+outfit:
+  id: 211
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+corpse: 6052
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hooooot-Toooooot!
+    - Tooooot!
+    - Trooooot!
+loot:
+  - item_id: 3577  # meat
+    chance: 40494
+  - item_id: 3582  # ham
+    chance: 29278
+  - item_id: 3044  # tusk
+    chance: 1089
+    amount: 2
+  - item_id: 3443  # tusk shield
+    chance: 151

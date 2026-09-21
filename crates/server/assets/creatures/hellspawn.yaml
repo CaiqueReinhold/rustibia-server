@@ -1,0 +1,103 @@
+name: Hellspawn
+life: 3500
+speed: 172
+blood_type: blood
+armor: 44
+defense: 44
+experience: 2550
+outfit:
+  id: 322
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 350
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 150
+      max: 175
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 37
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 120
+      max: 230
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.27
+        flat: 0
+      max:
+        factor: 0.27
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 9009
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Your fragile bones are like toothpicks to me.
+    - You little weasel will not live to see another day.
+    - I'm just a messenger of what's yet to come.
+    - HRAAAAAAAAAAAAAAAARRRR
+    - I'm taking you down with me!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 92683
+    amount: 236
+  - item_id: 239  # great health potion
+    chance: 30215
+  - item_id: 10304  # hellspawn tail
+    chance: 14587
+  - item_id: 3282  # morning star
+    chance: 7720
+  - item_id: 6499  # demonic essence
+    chance: 7483
+  - item_id: 7643  # ultimate health potion
+    chance: 7317
+  - item_id: 7368  # assassin star
+    chance: 7151
+    amount: 2
+  - item_id: 3413  # battle shield
+    chance: 6938
+  - item_id: 3724  # red mushroom
+    chance: 6299
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 4736
+    amount: 3
+  - item_id: 8895  # rusted armor
+    chance: 2226
+  - item_id: 3371  # knight legs
+    chance: 2202
+  - item_id: 3369  # warrior helmet
+    chance: 1397
+  - item_id: 7452  # spiked squelcher
+    chance: 521
+  - item_id: 7439  # berserk potion
+    chance: 497
+  - item_id: 9056  # black skull
+    chance: 213
+  - item_id: 8896  # slightly rusted armor
+    chance: 189
+  - item_id: 9034  # dracoyle statue
+    chance: 71
+  - item_id: 7421  # onyx flail
+    chance: 24

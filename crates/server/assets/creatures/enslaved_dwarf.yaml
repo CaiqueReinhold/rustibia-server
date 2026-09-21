@@ -1,0 +1,111 @@
+name: Enslaved Dwarf
+life: 3800
+speed: 135
+blood_type: blood
+armor: 30
+defense: 30
+experience: 2700
+outfit:
+  id: 494
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 501
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 340
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 250
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 41
+    effect_id: 6
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 396
+      max: 478
+corpse: 16063
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Bark!
+    - Blood!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 149
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 6
+  - item_id: 3725  # brown mushroom
+    chance: 14724
+    amount: 2
+  - item_id: 5880  # iron ore
+    chance: 10357
+  - item_id: 3033  # small amethyst
+    chance: 10328
+    amount: 2
+  - item_id: 3032  # small emerald
+    chance: 9826
+    amount: 2
+  - item_id: 238  # great mana potion
+    chance: 6019
+  - item_id: 239  # great health potion
+    chance: 5754
+  - item_id: 10310  # shiny stone
+    chance: 5341
+  - item_id: 16142  # drill bolt
+    chance: 5193
+    amount: 5
+  - item_id: 16123  # brown crystal splinter
+    chance: 4721
+    amount: 2
+  - item_id: 3279  # war hammer
+    chance: 3924
+  - item_id: 16126  # red crystal fragment
+    chance: 3747
+  - item_id: 3432  # ancient shield
+    chance: 3305
+  - item_id: 16122  # green crystal splinter
+    chance: 3275
+  - item_id: 3415  # guardian shield
+    chance: 2567
+  - item_id: 3092  # axe ring
+    chance: 2006
+  - item_id: 16121  # green crystal shard
+    chance: 1977
+  - item_id: 7454  # glorious axe
+    chance: 1564
+  - item_id: 12600  # coal
+    chance: 1121
+  - item_id: 7413  # titan axe
+    chance: 1121
+  - item_id: 3428  # tower shield
+    chance: 472
+  - item_id: 7437  # sapphire hammer
+    chance: 384
+  - item_id: 3369  # warrior helmet
+    chance: 325

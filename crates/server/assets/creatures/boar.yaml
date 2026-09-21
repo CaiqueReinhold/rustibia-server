@@ -1,0 +1,30 @@
+name: Boar
+life: 198
+speed: 205
+blood_type: blood
+armor: 10
+defense: 10
+experience: 60
+outfit:
+  id: 380
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+corpse: 12321
+flee_threshold: 30
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Grunt! Grunt!
+    - Grunt
+loot:
+  - item_id: 3031  # gold coin
+    chance: 25313
+    amount: 20
+  - item_id: 12310  # haunch of boar
+    chance: 19949
+    amount: 2

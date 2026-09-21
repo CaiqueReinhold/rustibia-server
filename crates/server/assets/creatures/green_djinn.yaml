@@ -1,0 +1,78 @@
+name: Green Djinn
+life: 330
+speed: 110
+blood_type: blood
+armor: 20
+defense: 20
+experience: 215
+outfit:
+  id: 51
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 45
+      max: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 105
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 32
+    effect_id: 39
+corpse: 6016
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Good wishes are for fairytales
+    - I wish you a merry trip to hell!
+    - Muhahahaha!
+    - I grant you a deathwish!
+    - Tell me your last wish!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 88234
+    amount: 115
+  - item_id: 3607  # cheese
+    chance: 24327
+  - item_id: 7378  # royal spear
+    chance: 5046
+    amount: 2
+  - item_id: 3032  # small emerald
+    chance: 2933
+    amount: 4
+  - item_id: 2831  # book
+    chance: 2295
+  - item_id: 11456  # dirty turban
+    chance: 2121
+  - item_id: 5910  # green piece of cloth
+    chance: 2005
+  - item_id: 3661  # grave flower
+    chance: 953
+  - item_id: 2933  # small oil lamp
+    chance: 870
+  - item_id: 268  # mana potion
+    chance: 481
+  - item_id: 3574  # mystic turban
+    chance: 116

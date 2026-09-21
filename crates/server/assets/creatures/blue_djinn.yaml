@@ -1,0 +1,80 @@
+name: Blue Djinn
+life: 330
+speed: 110
+blood_type: blood
+armor: 20
+defense: 20
+experience: 215
+outfit:
+  id: 80
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 45
+      max: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 105
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 32
+    effect_id: 39
+corpse: 6020
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Simsalabim
+    - Feel the power of my magic, tiny mortal!
+    - Be careful what you wish for.
+    - Wishes can come true.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 43000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 43000
+    amount: 15
+  - item_id: 3595  # carrot
+    chance: 23480
+  - item_id: 7378  # royal spear
+    chance: 4500
+    amount: 2
+  - item_id: 3029  # small sapphire
+    chance: 2560
+    amount: 4
+  - item_id: 2829  # book
+    chance: 2450
+  - item_id: 5912  # blue piece of cloth
+    chance: 1920
+  - item_id: 11456  # dirty turban
+    chance: 1890
+  - item_id: 268  # mana potion
+    chance: 860
+  - item_id: 2933  # small oil lamp
+    chance: 730
+  - item_id: 3659  # blue rose
+    chance: 440
+  - item_id: 3574  # mystic turban
+    chance: 70

@@ -1,0 +1,35 @@
+name: Fire Elemental
+life: 280
+speed: 95
+blood_type: blood
+armor: 18
+defense: 18
+experience: 220
+outfit:
+  id: 49
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 45
+      max: 160
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 4
+    effect_id: 7
+corpse: 8136
+say:
+  cooldown: 100
+  chance: 0

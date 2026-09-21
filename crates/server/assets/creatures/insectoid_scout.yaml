@@ -1,0 +1,39 @@
+name: Insectoid Scout
+life: 230
+speed: 95
+blood_type: poison
+armor: 15
+defense: 15
+experience: 150
+outfit:
+  id: 403
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 74
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 60
+      max: 60
+    interval: 80
+corpse: 12525
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chrrr! Chrr!
+    - Klk! Klk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 80
+  - item_id: 3093  # club ring
+    chance: 100
+  - item_id: 3346  # ripper lance
+    chance: 850
+  - item_id: 266  # health potion
+    chance: 280

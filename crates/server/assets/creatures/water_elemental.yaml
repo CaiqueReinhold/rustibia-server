@@ -1,0 +1,120 @@
+name: Water Elemental
+life: 550
+speed: 110
+blood_type: blood
+armor: 20
+defense: 20
+experience: 650
+outfit:
+  id: 286
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 160
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 60
+      max: 60
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 125
+      max: 235
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    effect_id: 2
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: ice
+    damage:
+      min: 88
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 37
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 225
+        max: 260
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 21
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 50
+      max: 80
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 9582
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3028  # small diamond
+    chance: 1000
+  - item_id: 3029  # small sapphire
+    chance: 1000
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3032  # small emerald
+    chance: 1000
+    amount: 2
+  - item_id: 3035  # platinum coin
+    chance: 10000
+  - item_id: 3051  # energy ring
+    chance: 950
+  - item_id: 3052  # life ring
+    chance: 930
+  - item_id: 3578  # fish
+    chance: 20000
+  - item_id: 7158  # rainbow trout
+    chance: 940
+  - item_id: 7159  # green perch
+    chance: 1050
+  - item_id: 236  # strong health potion
+    chance: 10000
+  - item_id: 237  # strong mana potion
+    chance: 10000
+  - item_id: 281  # giant shimmering pearl
+    chance: 800
+  - item_id: 282  # giant shimmering pearl
+    chance: 800
+  - item_id: 9303  # leviathan's amulet
+    chance: 260

@@ -1,0 +1,170 @@
+name: Fury
+life: 4100
+speed: 125
+blood_type: blood
+armor: 20
+defense: 20
+experience: 4500
+outfit:
+  id: 149
+  colors: [94, 77, 78, 79]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 510
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 200
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 5
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 1
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 1
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 10
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 125
+      max: 250
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 600
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.8
+        flat: 0
+      max:
+        factor: 0.8
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 18118
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ahhhhrrrr!
+    - Waaaaah!
+    - Carnage!
+    - Dieee!
+loot:
+  - item_id: 3003  # rope
+    chance: 8000
+    amount: 3
+  - item_id: 3007  # crystal ring
+    chance: 410
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 38000
+    amount: 69
+  - item_id: 3035  # platinum coin
+    chance: 2800
+    amount: 4
+  - item_id: 3065  # terra rod
+    chance: 20000
+  - item_id: 3364  # golden legs
+    chance: 130
+  - item_id: 3554  # steel boots
+    chance: 790
+  - item_id: 3577  # meat
+    chance: 25000
+  - item_id: 5021  # orichalcum pearl
+    chance: 1500
+    amount: 4
+  - item_id: 5911  # red piece of cloth
+    chance: 4000
+  - item_id: 5944  # soul orb
+    chance: 21500
+  - item_id: 5944  # soul orb
+    chance: 50
+  - item_id: 6300  # death ring
+    chance: 60
+  - item_id: 6499  # demonic essence
+    chance: 22500
+  - item_id: 6558  # flask of demonic blood
+    chance: 35000
+    amount: 3
+  - item_id: 7404  # assassin dagger
+    chance: 660
+  - item_id: 7456  # noble axe
+    chance: 2000
+  - item_id: 239  # great health potion
+    chance: 10500
+  - item_id: 8016  # jalapeno pepper
+    chance: 29280
+    amount: 4
+  - item_id: 8899  # slightly rusted legs
+    chance: 1920

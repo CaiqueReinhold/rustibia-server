@@ -1,0 +1,85 @@
+name: Giant Spider
+life: 1300
+speed: 115
+blood_type: poison
+armor: 30
+defense: 30
+experience: 900
+outfit:
+  id: 38
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 160
+      max: 160
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 40
+      max: 70
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.39
+        flat: 0
+      max:
+        factor: 0.39
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 5977
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 95
+  - item_id: 3448  # poison arrow
+    chance: 12500
+    amount: 12
+  - item_id: 3357  # plate armor
+    chance: 10000
+  - item_id: 3557  # plate legs
+    chance: 8000
+  - item_id: 3265  # two handed sword
+    chance: 5000
+  - item_id: 3351  # steel helmet
+    chance: 5000
+  - item_id: 236  # strong health potion
+    chance: 3571
+  - item_id: 5879  # spider silk
+    chance: 2000
+  - item_id: 3371  # knight legs
+    chance: 870
+  - item_id: 3053  # time ring
+    chance: 710
+  - item_id: 3370  # knight armor
+    chance: 500
+  - item_id: 3055  # platinum amulet
+    chance: 280
+  - item_id: 828  # lightning headband
+    chance: 270

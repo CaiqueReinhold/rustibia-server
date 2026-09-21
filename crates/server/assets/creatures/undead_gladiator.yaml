@@ -1,0 +1,76 @@
+name: Undead Gladiator
+life: 1000
+speed: 110
+blood_type: blood
+armor: 35
+defense: 35
+experience: 800
+outfit:
+  id: 306
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 250
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 135
+    target:
+      type: target
+      range: 7
+    missile_id: 25
+corpse: 8909
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Let's battle it out in a duel!
+    - Bring it!
+    - I'll fight here in eternity and beyond.
+    - I will not give up!
+    - Another foolish adventurer who tries to beat me.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 95314
+    amount: 149
+  - item_id: 3287  # throwing star
+    chance: 14874
+    amount: 18
+  - item_id: 3307  # scimitar
+    chance: 10743
+  - item_id: 8044  # belted cape
+    chance: 5209
+  - item_id: 9656  # broken gladiator shield
+    chance: 5201
+  - item_id: 3372  # brass legs
+    chance: 4923
+  - item_id: 3359  # brass armor
+    chance: 4820
+  - item_id: 3347  # hunting spear
+    chance: 4519
+  - item_id: 3557  # plate legs
+    chance: 2268
+  - item_id: 3357  # plate armor
+    chance: 2244
+  - item_id: 3265  # two handed sword
+    chance: 1982
+  - item_id: 3084  # protection amulet
+    chance: 1927
+  - item_id: 3384  # dark helmet
+    chance: 1395
+  - item_id: 266  # health potion
+    chance: 404
+  - item_id: 3318  # knight axe
+    chance: 246
+  - item_id: 3391  # crusader helmet
+    chance: 182
+  - item_id: 5885  # flask of warrior's sweat
+    chance: 166
+  - item_id: 3049  # stealth ring
+    chance: 48

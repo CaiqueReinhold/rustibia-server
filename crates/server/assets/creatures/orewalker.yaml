@@ -1,0 +1,148 @@
+name: Orewalker
+life: 7200
+speed: 190
+blood_type: blood
+armor: 79
+defense: 79
+experience: 4800
+outfit:
+  id: 490
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 296
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 1500
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 35
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 800
+        max: 1080
+      interval: 80
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 39
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: cross1
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 400
+    effect_id: 14
+corpse: 15911
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Sizzle!
+    - CLONK!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 198
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 10
+  - item_id: 10315  # sulphurous stone
+    chance: 20887
+  - item_id: 16133  # pulverized ore
+    chance: 20088
+  - item_id: 5880  # iron ore
+    chance: 16134
+  - item_id: 236  # strong health potion
+    chance: 15615
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 15136
+    amount: 3
+  - item_id: 268  # mana potion
+    chance: 15056
+    amount: 4
+  - item_id: 16141  # prismatic bolt
+    chance: 14936
+    amount: 5
+  - item_id: 238  # great mana potion
+    chance: 14337
+    amount: 2
+  - item_id: 16135  # vein of ore
+    chance: 14297
+  - item_id: 237  # strong mana potion
+    chance: 14257
+    amount: 2
+  - item_id: 16124  # blue crystal splinter
+    chance: 13898
+    amount: 2
+  - item_id: 16125  # cyan crystal fragment
+    chance: 13099
+  - item_id: 10310  # shiny stone
+    chance: 12660
+  - item_id: 7643  # ultimate health potion
+    chance: 9265
+    amount: 2
+  - item_id: 16121  # green crystal shard
+    chance: 8107
+  - item_id: 3097  # dwarven ring
+    chance: 4273
+  - item_id: 7413  # titan axe
+    chance: 2756
+  - item_id: 7454  # glorious axe
+    chance: 2716
+  - item_id: 5904  # magic sulphur
+    chance: 2716
+  - item_id: 3371  # knight legs
+    chance: 1877
+  - item_id: 16096  # wand of defiance
+    chance: 1398
+  - item_id: 3037  # yellow gem
+    chance: 998
+  - item_id: 3385  # crown helmet
+    chance: 958
+  - item_id: 3381  # crown armor
+    chance: 359
+  - item_id: 8050  # crystalline armor
+    chance: 359
+  - item_id: 16163  # crystal crossbow
+    chance: 240

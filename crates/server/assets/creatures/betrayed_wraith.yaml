@@ -1,0 +1,105 @@
+name: Betrayed Wraith
+life: 4200
+speed: 173
+blood_type: blood
+armor: 42
+defense: 42
+experience: 3500
+outfit:
+  id: 233
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 450
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 60
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 350
+      max: 600
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.46
+        flat: 0
+      max:
+        factor: 0.46
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6315
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Rrrah!
+    - Gnarr!
+    - Tcharrr!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 200
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 8
+  - item_id: 6558  # flask of demonic blood
+    chance: 65436
+  - item_id: 3450  # power bolt
+    chance: 49940
+    amount: 15
+  - item_id: 6499  # demonic essence
+    chance: 20426
+  - item_id: 10316  # unholy bone
+    chance: 19612
+  - item_id: 7643  # ultimate health potion
+    chance: 15177
+  - item_id: 238  # great mana potion
+    chance: 14707
+    amount: 3
+  - item_id: 3028  # small diamond
+    chance: 11835
+    amount: 4
+  - item_id: 7368  # assassin star
+    chance: 9631
+    amount: 5
+  - item_id: 5944  # soul orb
+    chance: 9412
+  - item_id: 5021  # orichalcum pearl
+    chance: 6374
+    amount: 2
+  - item_id: 7386  # mercenary sword
+    chance: 1503
+  - item_id: 6299  # death ring
+    chance: 404
+  - item_id: 5741  # skull helmet
+    chance: 377
+  - item_id: 5799  # golden figurine
+    chance: 126
+  - item_id: 7416  # bloody edge
+    chance: 99

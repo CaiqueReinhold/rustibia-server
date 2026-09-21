@@ -1,0 +1,51 @@
+name: Gazer
+life: 120
+speed: 70
+blood_type: poison
+armor: 4
+defense: 4
+experience: 90
+outfit:
+  id: 109
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 15
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 25
+      max: 35
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 10
+      max: 35
+    target:
+      type: target
+      range: 7
+corpse: 6036
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Mommy!?
+    - Buuuuhaaaahhaaaaa!
+    - Me need mana!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99000
+    amount: 24
+  - item_id: 11512  # small flask of eyedrops
+    chance: 3330

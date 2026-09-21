@@ -1,0 +1,92 @@
+name: Goblin Scavenger
+life: 60
+speed: 66
+blood_type: blood
+armor: 7
+defense: 7
+experience: 37
+outfit:
+  id: 297
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 15
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 30
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 22
+      max: 30
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 1
+      max: 30
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 10
+      max: 16
+corpse: 6002
+flee_threshold: 10
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Shiny, shiny!
+    - You mean!
+    - All mine!
+    - Uhh!
+    - Gimme gimme!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50077
+    amount: 9
+  - item_id: 1781  # small stone
+    chance: 24937
+    amount: 2
+  - item_id: 3267  # dagger
+    chance: 18190
+  - item_id: 3578  # fish
+    chance: 12982
+  - item_id: 3115  # bone
+    chance: 12643
+  - item_id: 3355  # leather helmet
+    chance: 9855
+  - item_id: 3462  # small axe
+    chance: 9448
+  - item_id: 3294  # short sword
+    chance: 8993
+  - item_id: 3361  # leather armor
+    chance: 7696
+  - item_id: 3120  # mouldy cheese
+    chance: 7018
+  - item_id: 3337  # bone club
+    chance: 5044

@@ -1,0 +1,64 @@
+name: Gargoyle
+life: 250
+speed: 100
+blood_type: blood
+armor: 26
+defense: 26
+experience: 150
+outfit:
+  id: 95
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 65
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 5
+      max: 15
+corpse: 6027
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Harrrr Harrrr!
+    - Stone sweet stone.
+    - Feel my claws, softskin.
+    - Chhhhhrrrrk!
+    - There is a stone in your shoe!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 88000
+    amount: 30
+  - item_id: 1781  # small stone
+    chance: 15800
+    amount: 10
+  - item_id: 10278  # stone wing
+    chance: 11730
+  - item_id: 8010  # potato
+    chance: 9220
+    amount: 2
+  - item_id: 3591  # strawberry
+    chance: 1910
+    amount: 5
+  - item_id: 3282  # morning star
+    chance: 1500
+  - item_id: 3413  # battle shield
+    chance: 1300
+  - item_id: 3012  # wolf tooth chain
+    chance: 1180
+  - item_id: 3351  # steel helmet
+    chance: 850
+  - item_id: 10426  # piece of marble rock
+    chance: 450
+  - item_id: 3383  # dark armor
+    chance: 300
+  - item_id: 3093  # club ring
+    chance: 260
+  - item_id: 10310  # shiny stone
+    chance: 190

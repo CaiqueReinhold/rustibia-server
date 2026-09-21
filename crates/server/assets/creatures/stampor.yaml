@@ -1,0 +1,88 @@
+name: Stampor
+life: 1200
+speed: 120
+blood_type: blood
+armor: 0
+defense: 0
+experience: 780
+outfit:
+  id: 381
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 130
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 150
+      max: 280
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 35
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 75
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 90
+      max: 120
+corpse: 12325
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - KRRRRRNG
+loot:
+  - item_id: 3031  # gold coin
+    chance: 10000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 10000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 10000
+    amount: 42
+  - item_id: 3035  # platinum coin
+    chance: 9920
+    amount: 2
+  - item_id: 3279  # war hammer
+    chance: 1010
+  - item_id: 3370  # knight armor
+    chance: 870
+  - item_id: 7452  # spiked squelcher
+    chance: 160
+  - item_id: 236  # strong health potion
+    chance: 5000
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 5000
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 7940
+    amount: 2
+  - item_id: 12312  # stampor horn
+    chance: 4920
+  - item_id: 12313  # stampor talons
+    chance: 9950
+    amount: 2
+  - item_id: 12314  # hollow stampor hoof
+    chance: 3020

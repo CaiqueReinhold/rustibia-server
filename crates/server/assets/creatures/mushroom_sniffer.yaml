@@ -1,0 +1,24 @@
+name: Mushroom Sniffer
+life: 250
+speed: 60
+blood_type: blood
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 60
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 4116
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Sniff
+    - Oink
+    - Oink oink

@@ -1,0 +1,107 @@
+name: Mutated Bat
+life: 900
+speed: 105
+blood_type: blood
+armor: 19
+defense: 19
+experience: 615
+outfit:
+  id: 307
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 168
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 120
+      max: 120
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 70
+      max: 180
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 30
+      max: 90
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 25
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 190
+        max: 240
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 80
+      max: 95
+corpse: 8915
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Shriiiiiek
+loot:
+  - item_id: 3031  # gold coin
+    chance: 92495
+    amount: 130
+  - item_id: 8894  # heavily rusted armor
+    chance: 12568
+  - item_id: 3413  # battle shield
+    chance: 8554
+  - item_id: 3313  # obsidian lance
+    chance: 6597
+  - item_id: 9662  # mutated bat ear
+    chance: 5205
+  - item_id: 3736  # star herb
+    chance: 4862
+  - item_id: 5894  # bat wing
+    chance: 4761
+    amount: 2
+  - item_id: 3051  # energy ring
+    chance: 1029
+  - item_id: 3027  # black pearl
+    chance: 908
+    amount: 3
+  - item_id: 8895  # rusted armor
+    chance: 726
+  - item_id: 3033  # small amethyst
+    chance: 625
+    amount: 2
+  - item_id: 9103  # batwing hat
+    chance: 141
+  - item_id: 3429  # black shield
+    chance: 121
+  - item_id: 7386  # mercenary sword
+    chance: 121

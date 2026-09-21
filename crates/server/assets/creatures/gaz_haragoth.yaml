@@ -1,0 +1,186 @@
+name: Gaz'haragoth
+life: 350000
+speed: 200
+blood_type: blood
+armor: 55
+defense: 65
+experience: 1000000
+outfit:
+  id: 591
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 5000
+  element: physical
+abilities:
+  - cooldown: 60
+    chance: 35000
+    type: attack
+    element: ice
+    damage:
+      min: 900
+      max: 1100
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    missile_id: 29
+    effect_id: 42
+  - cooldown: 60
+    chance: 30000
+    type: attack
+    element: fire
+    damage:
+      min: 4000
+      max: 6000
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 16
+  - cooldown: 50
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 200
+      max: 480
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 15
+  - cooldown: 60
+    chance: 35000
+    type: heal
+    life:
+      min: 2500
+      max: 3500
+  - cooldown: 80
+    chance: 80000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.5
+        flat: 0
+      max:
+        factor: 0.5
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+corpse: 20228
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - NO ONE WILL ESCAPE ME!
+    - I'LL KEEP THE ORDER UP!
+    - You puny humans will be my snacks!
+    - I've beaten tougher demons than you even know!
+    - How dare you come to this place!
+loot:
+  - item_id: 20062  # cluster of solace
+    chance: 100000
+    amount: 13
+  - item_id: 3043  # crystal coin
+    chance: 100000
+    amount: 10
+  - item_id: 20063  # dream matter
+    chance: 100000
+  - item_id: 10341  # phoenix charm
+    chance: 100000
+  - item_id: 10345  # solitude charm
+    chance: 100000
+  - item_id: 10343  # spiritual charm
+    chance: 100000
+  - item_id: 10344  # twin sun charm
+    chance: 100000
+  - item_id: 10342  # unity charm
+    chance: 100000
+  - item_id: 6499  # demonic essence
+    chance: 92857
+  - item_id: 20264  # unrealized dream
+    chance: 92857
+    amount: 3
+  - item_id: 5911  # red piece of cloth
+    chance: 71429
+  - item_id: 5914  # yellow piece of cloth
+    chance: 71429
+  - item_id: 16122  # green crystal splinter
+    chance: 50000
+    amount: 23
+  - item_id: 16119  # blue crystal shard
+    chance: 35714
+    amount: 22
+  - item_id: 7642  # great spirit potion
+    chance: 35714
+    amount: 183
+  - item_id: 7643  # ultimate health potion
+    chance: 35714
+    amount: 119
+  - item_id: 3041  # blue gem
+    chance: 28571
+  - item_id: 5954  # demon horn
+    chance: 28571
+  - item_id: 281  # giant shimmering pearl
+    chance: 28571
+  - item_id: 238  # great mana potion
+    chance: 28571
+    amount: 181
+  - item_id: 16121  # green crystal shard
+    chance: 28571
+    amount: 20
+  - item_id: 6528  # infernal bolt
+    chance: 28571
+    amount: 194
+  - item_id: 16124  # blue crystal splinter
+    chance: 21429
+    amount: 27
+  - item_id: 16123  # brown crystal splinter
+    chance: 21429
+    amount: 28
+  - item_id: 20067  # crude umbral slayer
+    chance: 21429
+  - item_id: 7368  # assassin star
+    chance: 14286
+    amount: 109
+  - item_id: 20070  # crude umbral axe
+    chance: 14286
+  - item_id: 20064  # crude umbral blade
+    chance: 14286
+  - item_id: 20280  # nightmare beacon
+    chance: 14286
+  - item_id: 3079  # boots of haste
+    chance: 7143
+  - item_id: 20085  # crude umbral crossbow
+    chance: 7143
+  - item_id: 20079  # crude umbral hammer
+    chance: 7143
+  - item_id: 20088  # crude umbral spellbook
+    chance: 7143
+  - item_id: 20276  # dream warden mask
+    chance: 7143
+  - item_id: 20279  # eye pod
+    chance: 7143
+  - item_id: 3052  # life ring
+    chance: 7143
+  - item_id: 826  # magma coat
+    chance: 7143
+  - item_id: 20282  # nightmare hook
+    chance: 7143
+  - item_id: 20274  # nightmare horn
+    chance: 7143
+  - item_id: 20277  # psychedelic tapestry
+    chance: 7143
+  - item_id: 20074  # umbral chopper
+    chance: 7143
+  - item_id: 20066  # umbral masterblade
+    chance: 7143
+  - item_id: 16120  # violet crystal shard
+    chance: 7143
+    amount: 26

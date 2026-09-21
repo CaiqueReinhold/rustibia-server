@@ -1,0 +1,70 @@
+name: Boogey
+life: 930
+speed: 200
+blood_type: blood
+armor: 50
+defense: 50
+experience: 475
+outfit:
+  id: 300
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+abilities:
+  - cooldown: 30
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 30
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 30
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 12
+      max: 20
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 1
+  - cooldown: 30
+    chance: 40000
+    type: attack
+    element: physical
+    damage:
+      min: 20
+      max: 30
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 20
+    chance: 25000
+    type: heal
+    life:
+      min: 80
+      max: 120
+corpse: 9407
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Since you didn't eat your spinach Bogey comes to get you!
+    - Too bad you did not eat your lunch, now I have to punish you!
+    - Even if you beat me, I'll hide in your closet until you one day drop your guard!
+    - You better had believe in me!
+    - I'll take you into the darkness ... forever!

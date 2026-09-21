@@ -1,0 +1,169 @@
+name: Frost Dragon
+life: 1800
+speed: 106
+blood_type: blood
+armor: 38
+defense: 38
+experience: 2100
+outfit:
+  id: 248
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 225
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 175
+      max: 380
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 3
+  - cooldown: 40
+    chance: 5000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    speed:
+      min:
+        factor: -0.7
+        flat: 0
+      max:
+        factor: -0.7
+        flat: 0
+    duration_ticks: 240
+    effect_id: 3
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave7_3
+    speed:
+      min:
+        factor: -0.85
+        flat: 0
+      max:
+        factor: -0.85
+        flat: 0
+    duration_ticks: 360
+    effect_id: 44
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: ice
+    damage:
+      min: 60
+      max: 120
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 43
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 100
+      max: 240
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    effect_id: 42
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 240
+    effect_id: 42
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 150
+      max: 200
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.29
+        flat: 0
+      max:
+        factor: 0.29
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 7091
+flee_threshold: 250
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - YOU WILL FREEZE!
+    - ZCHHHHH!
+    - I am so cool.
+    - Chill out!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 95017
+    amount: 243
+  - item_id: 3583  # dragon ham
+    chance: 79868
+  - item_id: 3732  # green mushroom
+    chance: 12151
+  - item_id: 2842  # book
+    chance: 8835
+  - item_id: 3450  # power bolt
+    chance: 5895
+    amount: 6
+  - item_id: 3029  # small sapphire
+    chance: 5092
+  - item_id: 3051  # energy ring
+    chance: 4952
+  - item_id: 7441  # ice cube
+    chance: 4089
+  - item_id: 2903  # golden mug
+    chance: 3081
+  - item_id: 3061  # life crystal
+    chance: 608
+  - item_id: 7290  # shard
+    chance: 524
+  - item_id: 3373  # strange helmet
+    chance: 453
+  - item_id: 3284  # ice rapier
+    chance: 342
+  - item_id: 3428  # tower shield
+    chance: 291
+  - item_id: 3392  # royal helmet
+    chance: 206
+  - item_id: 3386  # dragon scale mail
+    chance: 111
+  - item_id: 7402  # dragon slayer
+    chance: 97

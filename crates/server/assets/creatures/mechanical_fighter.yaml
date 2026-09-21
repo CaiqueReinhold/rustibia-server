@@ -1,0 +1,19 @@
+name: Mechanical Fighter
+life: 420
+speed: 100
+blood_type: blood
+armor: 199
+defense: 199
+experience: 255
+outfit:
+  id: 102
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 500
+  element: physical
+corpse: 3138
+say:
+  cooldown: 100
+  chance: 0

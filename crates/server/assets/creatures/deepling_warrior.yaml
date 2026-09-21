@@ -1,0 +1,76 @@
+name: Deepling Warrior
+life: 1600
+speed: 105
+blood_type: blood
+armor: 25
+defense: 25
+experience: 1500
+outfit:
+  id: 441
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 290
+    target:
+      type: target
+      range: 7
+    missile_id: 26
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 150
+corpse: 13712
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Jou wjil all djie!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 80
+  - item_id: 3032  # small emerald
+    chance: 2854
+  - item_id: 3052  # life ring
+    chance: 2941
+  - item_id: 5895  # fish fin
+    chance: 961
+  - item_id: 238  # great mana potion
+    chance: 9090
+  - item_id: 239  # great health potion
+    chance: 11111
+  - item_id: 12683  # heavy trident
+    chance: 1030
+  - item_id: 12730  # eye of a deepling
+    chance: 574
+  - item_id: 14012  # deepling warts
+    chance: 10000
+  - item_id: 14013  # deeptags
+    chance: 14285
+  - item_id: 14040  # warrior's axe
+    chance: 534
+  - item_id: 14041  # deepling ridge
+    chance: 11111
+  - item_id: 14042  # warrior's shield
+    chance: 684
+  - item_id: 14085  # deepling filet
+    chance: 14285
+  - item_id: 14252  # vortex bolt
+    chance: 3571
+    amount: 5

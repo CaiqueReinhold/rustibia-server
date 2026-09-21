@@ -1,0 +1,72 @@
+name: Dragon Lord Hatchling
+life: 750
+speed: 95
+blood_type: blood
+armor: 20
+defense: 20
+experience: 645
+outfit:
+  id: 272
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 90
+      max: 125
+    target:
+      type: area
+      origin: self
+      shape: wave5_2
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 55
+      max: 105
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 26
+      max: 48
+corpse: 270
+flee_threshold: 30
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Fchu?
+    - Rooawwrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 33750
+    amount: 90
+  - item_id: 3031  # gold coin
+    chance: 33750
+    amount: 75
+  - item_id: 3583  # dragon ham
+    chance: 80000
+  - item_id: 3732  # green mushroom
+    chance: 560
+  - item_id: 268  # mana potion
+    chance: 300
+  - item_id: 818  # magma boots
+    chance: 100

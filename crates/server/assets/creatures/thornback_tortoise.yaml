@@ -1,0 +1,52 @@
+name: Thornback Tortoise
+life: 300
+speed: 100
+blood_type: blood
+armor: 40
+defense: 40
+experience: 150
+outfit:
+  id: 198
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 40
+      max: 40
+    interval: 80
+corpse: 6073
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3026  # white pearl
+    chance: 1600
+  - item_id: 3027  # black pearl
+    chance: 800
+  - item_id: 3031  # gold coin
+    chance: 89500
+    amount: 48
+  - item_id: 3279  # war hammer
+    chance: 260
+  - item_id: 3578  # fish
+    chance: 10800
+    amount: 2
+  - item_id: 3723  # white mushroom
+    chance: 1200
+  - item_id: 3725  # brown mushroom
+    chance: 700
+  - item_id: 5678  # tortoise egg
+    chance: 790
+    amount: 3
+  - item_id: 5899  # turtle shell
+    chance: 800
+  - item_id: 266  # health potion
+    chance: 1600
+  - item_id: 9643  # thorn
+    chance: 15980

@@ -1,0 +1,88 @@
+name: Corym Vanguard
+life: 700
+speed: 105
+blood_type: blood
+armor: 29
+defense: 29
+experience: 490
+outfit:
+  id: 534
+  colors: [0, 19, 121, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 140
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 50
+      max: 100
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    effect_id: 9
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 40
+      max: 70
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 30
+      max: 60
+corpse: 17454
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Gimme! Gimme!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 20
+  - item_id: 3607  # cheese
+    chance: 20000
+  - item_id: 17809  # bola
+    chance: 10000
+  - item_id: 17810  # spike shield
+    chance: 4761
+  - item_id: 17812  # ratana
+    chance: 5000
+  - item_id: 17813  # life preserver
+    chance: 5000
+  - item_id: 17817  # cheese cutter
+    chance: 16666
+  - item_id: 17818  # cheesy figurine
+    chance: 3846
+  - item_id: 17819  # earflap
+    chance: 11111
+  - item_id: 17820  # soft cheese
+    chance: 14285
+  - item_id: 17821  # rat cheese
+    chance: 14285
+  - item_id: 17825  # rat god doll
+    chance: 14
+  - item_id: 17846  # leather harness
+    chance: 1612
+  - item_id: 17859  # spiky club
+    chance: 3225

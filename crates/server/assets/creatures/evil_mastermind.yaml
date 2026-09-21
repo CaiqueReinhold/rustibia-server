@@ -1,0 +1,105 @@
+name: Evil Mastermind
+life: 1295
+speed: 175
+blood_type: blood
+armor: 30
+defense: 30
+experience: 675
+outfit:
+  id: 256
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 77
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 50
+      max: 78
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: fire
+    damage:
+      min: 66
+      max: 72
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: energy
+    damage:
+      min: 36
+      max: 57
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 38
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: death
+    damage:
+      min: 70
+      max: 73
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: mana
+    damage:
+      min: 59
+      max: 75
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 400
+    effect_id: 14
+  - cooldown: 40
+    chance: 30000
+    type: heal
+    life:
+      min: 50
+      max: 110
+corpse: 9404
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You won't stop my masterplan to flood the world market with fake Bonelord language dictionaries!
+    - My calculations tell me you'll die!
+    - You can't stop me!
+    - Beware! My evil monolog is coming!

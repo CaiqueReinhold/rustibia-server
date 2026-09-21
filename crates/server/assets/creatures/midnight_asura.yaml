@@ -1,0 +1,172 @@
+name: Midnight Asura
+life: 3100
+speed: 105
+blood_type: blood
+armor: 55
+defense: 55
+experience: 4100
+outfit:
+  id: 150
+  colors: [0, 114, 90, 90]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 269
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 0
+      max: 70
+    target:
+      type: target
+      range: 7
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 48
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 10
+      max: 100
+    target:
+      type: target
+      range: 1
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: single
+    speed:
+      min:
+        factor: -0.1
+        flat: 0
+      max:
+        factor: -0.1
+        flat: 0
+    duration_ticks: 600
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 50
+      max: 100
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.32
+        flat: 0
+      max:
+        factor: 0.32
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 21988
+say:
+  cooldown: 40
+  chance: 7000
+  sentences:
+    - Ah, the sweet music of a beating heart!
+    - Death and Darkness
+    - Embrace the night!
+    - May night fall upon you!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 60000
+    amount: 42
+  - item_id: 3035  # platinum coin
+    chance: 18200
+    amount: 6
+  - item_id: 7368  # assassin star
+    chance: 2000
+    amount: 2
+  - item_id: 3027  # black pearl
+    chance: 2000
+  - item_id: 6558  # flask of demonic blood
+    chance: 2000
+  - item_id: 6499  # demonic essence
+    chance: 2210
+  - item_id: 3028  # small diamond
+    chance: 800
+    amount: 3
+  - item_id: 3032  # small emerald
+    chance: 900
+    amount: 3
+  - item_id: 3030  # small ruby
+    chance: 650
+    amount: 3
+  - item_id: 3029  # small sapphire
+    chance: 580
+    amount: 3
+  - item_id: 9057  # small topaz
+    chance: 580
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 700
+  - item_id: 3026  # white pearl
+    chance: 560
+  - item_id: 7404  # assassin dagger
+    chance: 130
+  - item_id: 3041  # blue gem
+    chance: 320
+  - item_id: 3567  # blue robe
+    chance: 300
+  - item_id: 9058  # gold ingot
+    chance: 300
+  - item_id: 21974  # golden lotus brooch
+    chance: 300
+  - item_id: 3070  # moonlight rod
+    chance: 300
+  - item_id: 3069  # necrotic rod
+    chance: 90
+  - item_id: 21981  # oriental shoes
+    chance: 80
+  - item_id: 21975  # peacock feather fan
+    chance: 200
+  - item_id: 8061  # skullcracker armor
+    chance: 90
+  - item_id: 3017  # silver brooch
+    chance: 100
+  - item_id: 3054  # silver amulet
+    chance: 100
+  - item_id: 5944  # soul orb
+    chance: 100
+  - item_id: 8074  # spellbook of mind control
+    chance: 100
+  - item_id: 3403  # tribal mask
+    chance: 100
+  - item_id: 8082  # underworld rod
+    chance: 70
+  - item_id: 3037  # yellow gem
+    chance: 100

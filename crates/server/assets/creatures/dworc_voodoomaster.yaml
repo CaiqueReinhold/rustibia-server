@@ -1,0 +1,108 @@
+name: Dworc Voodoomaster
+life: 80
+speed: 75
+blood_type: blood
+armor: 3
+defense: 3
+experience: 55
+outfit:
+  id: 214
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 40
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 6
+      max: 18
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 9
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 3
+      max: 9
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.2
+        flat: 0
+      max:
+        factor: 0.2
+        flat: 0
+    duration_ticks: 80
+    effect_id: 14
+corpse: 6055
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Brak brrretz!
+    - Grow truk grrrrr.
+    - Prek tars, dekklep zurk.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 74835
+    amount: 17
+  - item_id: 3361  # leather armor
+    chance: 10093
+  - item_id: 3115  # bone
+    chance: 5812
+  - item_id: 2920  # torch
+    chance: 5547
+  - item_id: 3116  # big bone
+    chance: 3066
+  - item_id: 3114  # skull
+    chance: 1973
+    amount: 3
+  - item_id: 3299  # poison dagger
+    chance: 1009
+  - item_id: 266  # health potion
+    chance: 586
+  - item_id: 3058  # strange symbol
+    chance: 503
+  - item_id: 3403  # tribal mask
+    chance: 486
+  - item_id: 3002  # voodoo doll
+    chance: 120

@@ -1,0 +1,56 @@
+name: Poacher
+life: 90
+speed: 99
+blood_type: blood
+armor: 10
+defense: 10
+experience: 70
+outfit:
+  id: 129
+  colors: [60, 118, 118, 116]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 35
+    target:
+      type: target
+      range: 7
+    missile_id: 3
+corpse: 18206
+flee_threshold: 5
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You will not live to tell anyone!
+    - You are my game today!
+    - Look what has stepped into my trap!
+loot:
+  - item_id: 3447  # arrow
+    chance: 47154
+    amount: 18
+  - item_id: 3355  # leather helmet
+    chance: 30758
+  - item_id: 3559  # leather legs
+    chance: 27912
+  - item_id: 3350  # bow
+    chance: 14901
+  - item_id: 3601  # roll
+    chance: 11049
+    amount: 2
+  - item_id: 2920  # torch
+    chance: 5082
+  - item_id: 3448  # poison arrow
+    chance: 2521
+    amount: 3
+  - item_id: 3481  # closed trap
+    chance: 1006

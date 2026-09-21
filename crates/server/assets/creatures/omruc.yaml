@@ -1,0 +1,124 @@
+name: Omruc
+life: 4300
+speed: 185
+blood_type: blood
+armor: 60
+defense: 60
+experience: 2950
+outfit:
+  id: 90
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 116
+      max: 116
+    interval: 80
+abilities:
+  - cooldown: 100
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 100
+      max: 250
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 200
+      max: 500
+    target:
+      type: target
+      range: 7
+    missile_id: 6
+  - cooldown: 20
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 120
+      max: 450
+    target:
+      type: target
+      range: 3
+    missile_id: 7
+    effect_id: 5
+  - cooldown: 20
+    chance: 25000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.9
+        flat: 0
+      max:
+        factor: -0.9
+        flat: 0
+    duration_ticks: 1000
+    effect_id: 14
+  - cooldown: 20
+    chance: 17000
+    type: heal
+    life:
+      min: 100
+      max: 200
+corpse: 6025
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Now chhhou shhhee me ... Now chhhou don't.
+    - Chhhhou are marked ashhh my prey.
+    - Psssst, I am over chhhere.
+    - Catchhhh me if chhhou can.
+    - Die!
+loot:
+  - item_id: 3239  # crystal arrow
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 85417
+    amount: 211
+  - item_id: 3585  # red apple
+    chance: 78125
+    amount: 2
+  - item_id: 3448  # poison arrow
+    chance: 57292
+    amount: 19
+  - item_id: 3449  # burst arrow
+    chance: 47917
+    amount: 15
+  - item_id: 7365  # onyx arrow
+    chance: 33333
+    amount: 6
+  - item_id: 3447  # arrow
+    chance: 22917
+    amount: 25
+  - item_id: 3450  # power bolt
+    chance: 17708
+    amount: 5
+  - item_id: 239  # great health potion
+    chance: 11458
+  - item_id: 3028  # small diamond
+    chance: 9375
+    amount: 3
+  - item_id: 3049  # stealth ring
+    chance: 3125
+  - item_id: 10290  # mini mummy
+    chance: 2083
+  - item_id: 3079  # boots of haste
+    chance: 1042

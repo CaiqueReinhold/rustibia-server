@@ -1,0 +1,67 @@
+name: Ghoul
+life: 100
+speed: 72
+blood_type: blood
+armor: 8
+defense: 8
+experience: 85
+outfit:
+  id: 18
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 70
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 15
+      max: 27
+    target:
+      type: area
+      origin: target
+      shape: single
+    effect_id: 39
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 9
+      max: 15
+corpse: 5976
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 69832
+    amount: 30
+  - item_id: 10291  # rotten piece of cloth
+    chance: 14661
+  - item_id: 3492  # worm
+    chance: 9815
+    amount: 2
+  - item_id: 2920  # torch
+    chance: 5171
+  - item_id: 11467  # ghoul snack
+    chance: 5064
+  - item_id: 23986  # heavy old tome
+    chance: 2066
+  - item_id: 11484  # pile of grave earth
+    chance: 1028
+  - item_id: 3377  # scale armor
+    chance: 1012
+  - item_id: 3367  # viking helmet
+    chance: 1012
+  - item_id: 5913  # brown piece of cloth
+    chance: 1001
+  - item_id: 3114  # skull
+    chance: 320
+  - item_id: 3052  # life ring
+    chance: 181

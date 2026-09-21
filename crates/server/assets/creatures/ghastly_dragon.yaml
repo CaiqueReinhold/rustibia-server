@@ -1,0 +1,149 @@
+name: Ghastly Dragon
+life: 7800
+speed: 160
+blood_type: blood
+armor: 35
+defense: 35
+experience: 4600
+outfit:
+  id: 351
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 603
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 920
+        max: 1280
+      interval: 80
+    target:
+      type: target
+      range: 5
+    effect_id: 39
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 80
+      max: 230
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 120
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 2
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 110
+      max: 180
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 18
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 600
+    effect_id: 39
+corpse: 10445
+flee_threshold: 366
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - EMBRACE MY GIFTS!
+    - I WILL FEAST ON YOUR SOUL!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 33725
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33725
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 33725
+    amount: 66
+  - item_id: 3035  # platinum coin
+    chance: 29840
+    amount: 2
+  - item_id: 5944  # soul orb
+    chance: 12170
+  - item_id: 6499  # demonic essence
+    chance: 8920
+  - item_id: 238  # great mana potion
+    chance: 30560
+    amount: 2
+  - item_id: 812  # terra legs
+    chance: 3130
+  - item_id: 813  # terra boots
+    chance: 9510
+  - item_id: 7642  # great spirit potion
+    chance: 29460
+    amount: 2
+  - item_id: 7643  # ultimate health potion
+    chance: 24700
+  - item_id: 8896  # slightly rusted armor
+    chance: 180
+  - item_id: 10310  # shiny stone
+    chance: 860
+  - item_id: 10323  # guardian boots
+    chance: 200
+  - item_id: 10384  # Zaoan armor
+    chance: 870
+  - item_id: 10385  # Zaoan helmet
+    chance: 150
+  - item_id: 10386  # Zaoan shoes
+    chance: 870
+  - item_id: 10387  # Zaoan legs
+    chance: 1400
+  - item_id: 10388  # drakinata
+    chance: 1470
+  - item_id: 10390  # Zaoan sword
+    chance: 100
+  - item_id: 10392  # twin hooks
+    chance: 15100
+  - item_id: 10406  # Zaoan halberd
+    chance: 15020
+  - item_id: 10438  # spellweaver's robe
+    chance: 690
+  - item_id: 10449  # ghastly dragon head
+    chance: 6650
+  - item_id: 10450  # undead heart
+    chance: 19830
+  - item_id: 10451  # jade hat
+    chance: 810

@@ -1,0 +1,70 @@
+name: Humorless Fungus
+life: 2500
+speed: 115
+blood_type: poison
+armor: 25
+defense: 25
+experience: 0
+outfit:
+  id: 517
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 475
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 40
+      max: 197
+    target:
+      type: target
+      range: 7
+    missile_id: 39
+    effect_id: 46
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 0
+      max: 525
+    target:
+      type: target
+      range: 7
+    missile_id: 13
+    effect_id: 42
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 400
+        max: 640
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 17
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 0
+      max: 230
+corpse: 16083
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Munch munch munch!
+    - Chatter

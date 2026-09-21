@@ -1,0 +1,89 @@
+name: Wilting Leaf Golem
+life: 380
+speed: 72
+blood_type: blood
+armor: 15
+defense: 15
+experience: 145
+outfit:
+  id: 573
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 300
+      max: 300
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 50
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 12
+    effect_id: 6
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 150
+        max: 200
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 9
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+corpse: 19117
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "*crackle*"
+    - "*swwwwishhhh*"
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97230
+    amount: 45
+  - item_id: 3032  # small emerald
+    chance: 830
+  - item_id: 3723  # white mushroom
+    chance: 4860
+    amount: 3
+  - item_id: 17824  # swampling club
+    chance: 4200
+  - item_id: 19110  # dowser
+    chance: 10690
+  - item_id: 19111  # fir cone
+    chance: 15630

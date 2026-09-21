@@ -1,0 +1,36 @@
+name: Dirtbeard
+life: 630
+speed: 150
+blood_type: blood
+armor: 30
+defense: 35
+experience: 375
+outfit:
+  id: 98
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 125
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 8
+corpse: 9403
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You are no match for the scourge of the seas!
+    - You move like a seasick whale!
+    - Yarr, death to all landlubbers!

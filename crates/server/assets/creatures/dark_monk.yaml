@@ -1,0 +1,85 @@
+name: Dark Monk
+life: 190
+speed: 115
+blood_type: blood
+armor: 22
+defense: 22
+experience: 145
+outfit:
+  id: 225
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 20
+      max: 50
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 25
+      max: 49
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+corpse: 18281
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You are no match to us!
+    - This is where your path will end!
+    - Your end has come!
+loot:
+  - item_id: 3600  # bread
+    chance: 20550
+  - item_id: 3031  # gold coin
+    chance: 14600
+    amount: 18
+  - item_id: 10303  # dark rosary
+    chance: 10500
+  - item_id: 11492  # rope belt
+    chance: 6666
+  - item_id: 9646  # book of prayers
+    chance: 1900
+  - item_id: 2815  # scroll
+    chance: 1790
+  - item_id: 3061  # life crystal
+    chance: 990
+  - item_id: 11493  # safety pin
+    chance: 990
+  - item_id: 3077  # ankh
+    chance: 900
+  - item_id: 268  # mana potion
+    chance: 850
+  - item_id: 3551  # sandals
+    chance: 850
+  - item_id: 2914  # lamp
+    chance: 550
+  - item_id: 2885  # brown flask
+    chance: 390
+  - item_id: 3050  # power ring
+    chance: 120

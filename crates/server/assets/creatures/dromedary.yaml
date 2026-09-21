@@ -1,0 +1,29 @@
+name: Dromedary
+life: 45
+speed: 85
+blood_type: blood
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 404
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 8
+  element: physical
+corpse: 12539
+flee_threshold: 45
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Snort
+    - Grunt!
+loot:
+  - item_id: 3577  # meat
+    chance: 36000
+    amount: 2
+  - item_id: 12802  # sugar oat
+    chance: 1000

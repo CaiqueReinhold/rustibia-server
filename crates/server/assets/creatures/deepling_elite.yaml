@@ -1,0 +1,76 @@
+name: Deepling Elite
+life: 3200
+speed: 105
+blood_type: blood
+armor: 30
+defense: 30
+experience: 3000
+outfit:
+  id: 441
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 225
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 150
+      max: 200
+corpse: 13713
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 86
+  - item_id: 3032  # small emerald
+    chance: 6290
+    amount: 2
+  - item_id: 3052  # life ring
+    chance: 5360
+  - item_id: 5895  # fish fin
+    chance: 2000
+  - item_id: 238  # great mana potion
+    chance: 24000
+  - item_id: 239  # great health potion
+    chance: 25000
+  - item_id: 12683  # heavy trident
+    chance: 3380
+  - item_id: 12730  # eye of a deepling
+    chance: 25000
+  - item_id: 14012  # deepling warts
+    chance: 25000
+  - item_id: 14013  # deeptags
+    chance: 21700
+  - item_id: 14040  # warrior's axe
+    chance: 640
+  - item_id: 14041  # deepling ridge
+    chance: 19000
+  - item_id: 14042  # warrior's shield
+    chance: 1234
+  - item_id: 14085  # deepling filet
+    chance: 25000
+  - item_id: 14252  # vortex bolt
+    chance: 24000
+    amount: 5

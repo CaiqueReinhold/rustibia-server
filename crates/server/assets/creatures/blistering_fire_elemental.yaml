@@ -1,0 +1,66 @@
+name: Blistering Fire Elemental
+life: 1500
+speed: 115
+blood_type: blood
+armor: 20
+defense: 20
+experience: 1300
+outfit:
+  id: 242
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 350
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 11000
+    type: attack
+    element: fire
+    damage:
+      min: 65
+      max: 510
+    target:
+      type: area
+      origin: self
+      shape: wave7_3
+  - cooldown: 20
+    chance: 12000
+    type: attack
+    condition:
+      type: decaying
+      element: fire
+      damage:
+        min: 50
+        max: 200
+      interval: 200
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 7
+corpse: 8136
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - FCHHHRRR
+loot:
+  - item_id: 3031  # gold coin
+    chance: 44000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 44000
+    amount: 70
+  - item_id: 9636  # fiery heart
+    chance: 10000
+  - item_id: 941  # glimmering soil
+    chance: 9500
+  - item_id: 3030  # small ruby
+    chance: 5000
+    amount: 3
+  - item_id: 8093  # wand of draconia
+    chance: 500
+  - item_id: 12600  # coal
+    chance: 500

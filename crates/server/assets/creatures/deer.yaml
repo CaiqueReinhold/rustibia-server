@@ -1,0 +1,27 @@
+name: Deer
+life: 25
+speed: 98
+blood_type: blood
+armor: 2
+defense: 2
+experience: 0
+outfit:
+  id: 31
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 1
+  element: physical
+corpse: 5970
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3577  # meat
+    chance: 80405
+  - item_id: 3582  # ham
+    chance: 51110
+  - item_id: 10297  # antlers
+    chance: 1063

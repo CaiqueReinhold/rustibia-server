@@ -1,0 +1,69 @@
+name: Pirate Marauder
+life: 210
+speed: 100
+blood_type: blood
+armor: 15
+defense: 15
+experience: 125
+outfit:
+  id: 93
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 140
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+corpse: 18202
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Plundeeeeer!
+    - Give up!
+    - Hiyaa!
+loot:
+  - item_id: 2920  # torch
+    chance: 9880
+  - item_id: 3031  # gold coin
+    chance: 77670
+    amount: 40
+  - item_id: 3277  # spear
+    chance: 5140
+    amount: 2
+  - item_id: 3358  # chain armor
+    chance: 3000
+  - item_id: 3410  # plate shield
+    chance: 5000
+  - item_id: 5090  # treasure map
+    chance: 910
+  - item_id: 5552  # rum flask
+    chance: 110
+  - item_id: 5792  # die
+    chance: 90
+  - item_id: 5917  # bandana
+    chance: 880
+  - item_id: 5927  # pirate bag
+    chance: 430
+  - item_id: 5928  # empty goldfish bowl
+    chance: 80
+  - item_id: 6097  # hook
+    chance: 520
+  - item_id: 6098  # eye patch
+    chance: 530
+  - item_id: 6126  # peg leg
+    chance: 520
+  - item_id: 10302  # compass
+    chance: 9720

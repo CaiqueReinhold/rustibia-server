@@ -1,0 +1,41 @@
+name: Shark
+life: 1200
+speed: 115
+blood_type: blood
+armor: 15
+defense: 15
+experience: 700
+outfit:
+  id: 453
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 175
+  element: physical
+corpse: 13860
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Rarr chomp chomp!
+loot:
+  - item_id: 3029  # small sapphire
+    chance: 1222
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 38
+  - item_id: 3578  # fish
+    chance: 25000
+    amount: 4
+  - item_id: 5895  # fish fin
+    chance: 161
+  - item_id: 281  # giant shimmering pearl
+    chance: 550
+  - item_id: 12730  # eye of a deepling
+    chance: 1270
+  - item_id: 14017  # deepling scales
+    chance: 9090

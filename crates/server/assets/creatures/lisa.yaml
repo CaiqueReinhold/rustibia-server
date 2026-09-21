@@ -1,0 +1,117 @@
+name: Lisa
+life: 55000
+speed: 100
+blood_type: poison
+armor: 15
+defense: 25
+experience: 18000
+outfit:
+  id: 604
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 1200
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 900
+      max: 900
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 400
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 20
+    effect_id: 18
+  - cooldown: 40
+    chance: 13000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: radius8
+    effect_id: 21
+  - cooldown: 40
+    chance: 12000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    speed:
+      min:
+        factor: -0.45
+        flat: 0
+      max:
+        factor: -0.2
+        flat: 0
+    duration_ticks: 300
+    effect_id: 10
+corpse: 20988
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 21197  # slimy leaf tentacle
+    chance: 100000
+    amount: 3
+  - item_id: 21178  # glooth club
+    chance: 44444
+  - item_id: 3032  # small emerald
+    chance: 44444
+    amount: 5
+  - item_id: 21143  # glooth sandwich
+    chance: 33333
+    amount: 5
+  - item_id: 239  # great health potion
+    chance: 33333
+    amount: 5
+  - item_id: 238  # great mana potion
+    chance: 33333
+    amount: 5
+  - item_id: 7642  # great spirit potion
+    chance: 33333
+    amount: 5
+  - item_id: 21144  # bowl of glooth soup
+    chance: 22222
+    amount: 5
+  - item_id: 21146  # glooth steak
+    chance: 22222
+    amount: 5
+  - item_id: 21179  # glooth blade
+    chance: 11111
+  - item_id: 21164  # glooth cape
+    chance: 11111
+  - item_id: 21172  # glooth whip
+    chance: 11111
+  - item_id: 3039  # red gem
+    chance: 11111
+  - item_id: 3028  # small diamond
+    chance: 11111
+    amount: 5
+  - item_id: 3030  # small ruby
+    chance: 11111
+    amount: 5
+  - item_id: 3029  # small sapphire
+    chance: 11111
+    amount: 5
+  - item_id: 9057  # small topaz
+    chance: 11111
+    amount: 5

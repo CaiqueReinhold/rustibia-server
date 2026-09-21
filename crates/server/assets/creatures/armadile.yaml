@@ -1,0 +1,103 @@
+name: Armadile
+life: 3800
+speed: 220
+blood_type: blood
+armor: 66
+defense: 66
+experience: 2900
+outfit:
+  id: 487
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 430
+      max: 550
+    target:
+      type: target
+      range: 7
+    effect_id: 13
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 200
+        max: 400
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 21
+corpse: 15868
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Creak!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 198
+  - item_id: 3035  # platinum coin
+    chance: 95297
+    amount: 7
+  - item_id: 239  # great health potion
+    chance: 15477
+    amount: 2
+  - item_id: 238  # great mana potion
+    chance: 15434
+    amount: 2
+  - item_id: 237  # strong mana potion
+    chance: 15092
+    amount: 2
+  - item_id: 268  # mana potion
+    chance: 14964
+    amount: 3
+  - item_id: 16138  # crystalline spikes
+    chance: 14579
+  - item_id: 236  # strong health potion
+    chance: 14579
+    amount: 2
+  - item_id: 11447  # battle stone
+    chance: 12527
+  - item_id: 16143  # envenomed arrow
+    chance: 11030
+    amount: 10
+  - item_id: 16142  # drill bolt
+    chance: 7781
+    amount: 5
+  - item_id: 12600  # coal
+    chance: 6456
+  - item_id: 16127  # green crystal fragment
+    chance: 5985
+    amount: 2
+  - item_id: 16122  # green crystal splinter
+    chance: 4147
+    amount: 2
+  - item_id: 813  # terra boots
+    chance: 2565
+  - item_id: 7413  # titan axe
+    chance: 1496
+  - item_id: 3053  # time ring
+    chance: 1240
+  - item_id: 7428  # bonebreaker
+    chance: 1069
+  - item_id: 3428  # tower shield
+    chance: 599
+  - item_id: 8050  # crystalline armor
+    chance: 214

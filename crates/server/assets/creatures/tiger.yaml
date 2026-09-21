@@ -1,0 +1,40 @@
+name: Tiger
+life: 75
+speed: 100
+blood_type: blood
+armor: 5
+defense: 5
+experience: 40
+outfit:
+  id: 125
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.22
+        flat: 0
+      max:
+        factor: 0.22
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6051
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3577  # meat
+    chance: 35190
+    amount: 4
+  - item_id: 10293  # striped fur
+    chance: 10830

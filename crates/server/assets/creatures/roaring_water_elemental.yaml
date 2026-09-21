@@ -1,0 +1,58 @@
+name: Roaring Water Elemental
+life: 1750
+speed: 195
+blood_type: blood
+armor: 30
+defense: 30
+experience: 1300
+outfit:
+  id: 11
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 225
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 240
+      max: 320
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    effect_id: 2
+    missile_id: 29
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 90
+      max: 150
+corpse: 8137
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3029  # small sapphire
+    chance: 4125
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 27000
+    amount: 90
+  - item_id: 3031  # gold coin
+    chance: 27000
+    amount: 87
+  - item_id: 762  # shiver arrow
+    chance: 1000
+    amount: 2
+  - item_id: 944  # iced soil
+    chance: 9000
+  - item_id: 8083  # northwind rod
+    chance: 750

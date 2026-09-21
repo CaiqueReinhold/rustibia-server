@@ -1,0 +1,69 @@
+name: Toad
+life: 135
+speed: 105
+blood_type: blood
+armor: 15
+defense: 15
+experience: 60
+outfit:
+  id: 222
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 20
+      max: 20
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 8
+      max: 17
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 9
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.2
+        flat: 0
+      max:
+        factor: 0.2
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6077
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit, ribbit!
+    - Ribbit!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 20
+  - item_id: 3279  # war hammer
+    chance: 148
+  - item_id: 3286  # mace
+    chance: 2854
+  - item_id: 3578  # fish
+    chance: 20000
+  - item_id: 9640  # poisonous slime
+    chance: 4761

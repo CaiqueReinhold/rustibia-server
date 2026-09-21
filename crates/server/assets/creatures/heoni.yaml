@@ -1,0 +1,65 @@
+name: Heoni
+life: 900
+speed: 150
+blood_type: blood
+armor: 25
+defense: 18
+experience: 515
+outfit:
+  id: 239
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 480
+      max: 480
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 20
+        max: 240
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 21
+  - cooldown: 40
+    chance: 11000
+    type: heal
+    life:
+      min: 76
+      max: 84
+  - cooldown: 40
+    chance: 10000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.29
+        flat: 0
+      max:
+        factor: 0.29
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6301
+flee_threshold: 300
+say:
+  cooldown: 40
+  chance: 10000
+  sentences:
+    - Shriiiek

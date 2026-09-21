@@ -1,0 +1,38 @@
+name: Lesser Swarmer
+life: 230
+speed: 90
+blood_type: poison
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 460
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 77
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 60
+      max: 60
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 15
+      max: 70
+    target:
+      type: target
+      range: 5
+    effect_id: 14
+corpse: 13973
+say:
+  cooldown: 100
+  chance: 0

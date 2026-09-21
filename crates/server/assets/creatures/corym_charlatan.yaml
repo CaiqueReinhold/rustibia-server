@@ -1,0 +1,48 @@
+name: Corym Charlatan
+life: 250
+speed: 90
+blood_type: blood
+armor: 17
+defense: 17
+experience: 150
+outfit:
+  id: 532
+  colors: [0, 78, 59, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+corpse: 17445
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Mehehe!
+    - Beware! Me hexing you!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 35
+  - item_id: 3607  # cheese
+    chance: 10000
+  - item_id: 17809  # bola
+    chance: 7692
+  - item_id: 17810  # spike shield
+    chance: 492
+  - item_id: 17812  # ratana
+    chance: 909
+  - item_id: 17813  # life preserver
+    chance: 854
+  - item_id: 17817  # cheese cutter
+    chance: 5882
+  - item_id: 17818  # cheesy figurine
+    chance: 518
+  - item_id: 17819  # earflap
+    chance: 7142
+  - item_id: 17820  # soft cheese
+    chance: 12500
+  - item_id: 17821  # rat cheese
+    chance: 14285
+  - item_id: 17846  # leather harness
+    chance: 537

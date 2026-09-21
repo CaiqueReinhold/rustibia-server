@@ -1,0 +1,122 @@
+name: Wiggler
+life: 1200
+speed: 110
+blood_type: poison
+armor: 15
+defense: 15
+experience: 900
+outfit:
+  id: 510
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 500
+      max: 500
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 180
+      max: 270
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 160
+        max: 200
+      interval: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 6
+    effect_id: 46
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: wave3_2
+    speed:
+      min:
+        factor: -0.7
+        flat: 0
+      max:
+        factor: -0.7
+        flat: 0
+    duration_ticks: 600
+    effect_id: 10
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.51
+        flat: 0
+      max:
+        factor: 0.51
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 16193
+flee_threshold: 359
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zzzrp!
+    - Crick! Crick!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 14790
+  - item_id: 3065  # terra rod
+    chance: 850
+  - item_id: 3297  # serpent sword
+    chance: 1360
+  - item_id: 3429  # black shield
+    chance: 1320
+  - item_id: 3723  # white mushroom
+    chance: 7142
+    amount: 5
+  - item_id: 5912  # blue piece of cloth
+    chance: 2080
+  - item_id: 5914  # yellow piece of cloth
+    chance: 2160
+  - item_id: 236  # strong health potion
+    chance: 4930
+  - item_id: 237  # strong mana potion
+    chance: 5250
+  - item_id: 15793  # crystalline arrow
+    chance: 15540
+    amount: 5
+  - item_id: 16122  # green crystal splinter
+    chance: 3600
+  - item_id: 16127  # green crystal fragment
+    chance: 2070
+  - item_id: 16142  # drill bolt
+    chance: 15260
+    amount: 5

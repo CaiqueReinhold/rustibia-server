@@ -1,0 +1,155 @@
+name: Minotaur Amazon
+life: 2600
+speed: 125
+blood_type: blood
+armor: 37
+defense: 37
+experience: 2200
+outfit:
+  id: 608
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 50
+      max: 305
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 14
+  - cooldown: 40
+    chance: 16000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 150
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 14
+  - cooldown: 40
+    chance: 22000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 17
+    effect_id: 5
+  - cooldown: 40
+    chance: 40000
+    type: attack
+    condition:
+      type: decaying
+      element: physical
+      damage:
+        min: 300
+        max: 400
+      interval: 80
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 9
+    effect_id: 1
+  - cooldown: 40
+    chance: 25000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: single
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 200
+    effect_id: 14
+corpse: 21000
+flee_threshold: 260
+say:
+  cooldown: 40
+  chance: 5000
+  sentences:
+    - I'll protect the herd!
+    - Never surrender!
+    - You won't hurt us!
+    - I will not allow your evil to continue!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 199
+  - item_id: 3035  # platinum coin
+    chance: 65302
+    amount: 3
+  - item_id: 3582  # ham
+    chance: 59419
+  - item_id: 21204  # cowbell
+    chance: 19739
+  - item_id: 5878  # minotaur leather
+    chance: 16261
+  - item_id: 238  # great mana potion
+    chance: 7272
+  - item_id: 3577  # meat
+    chance: 6756
+  - item_id: 239  # great health potion
+    chance: 6670
+  - item_id: 11472  # minotaur horn
+    chance: 5110
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 5082
+    amount: 2
+  - item_id: 3030  # small ruby
+    chance: 5024
+    amount: 2
+  - item_id: 3033  # small amethyst
+    chance: 4924
+    amount: 2
+  - item_id: 3032  # small emerald
+    chance: 4395
+    amount: 2
+  - item_id: 21175  # mino shield
+    chance: 3851
+  - item_id: 7368  # assassin star
+    chance: 3092
+    amount: 5
+  - item_id: 3098  # ring of healing
+    chance: 2376
+  - item_id: 21174  # mino lance
+    chance: 1646
+  - item_id: 3081  # stone skin amulet
+    chance: 859
+  - item_id: 7443  # bullseye potion
+    chance: 845
+  - item_id: 3369  # warrior helmet
+    chance: 701
+  - item_id: 9058  # gold ingot
+    chance: 601
+  - item_id: 5911  # red piece of cloth
+    chance: 558
+  - item_id: 3037  # yellow gem
+    chance: 558
+  - item_id: 3039  # red gem
+    chance: 415
+  - item_id: 7401  # minotaur trophy
+    chance: 243

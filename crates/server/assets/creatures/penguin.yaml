@@ -1,0 +1,28 @@
+name: Penguin
+life: 33
+speed: 90
+blood_type: blood
+armor: 5
+defense: 5
+experience: 1
+outfit:
+  id: 250
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 3
+  element: physical
+corpse: 7334
+flee_threshold: 32
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3578  # fish
+    chance: 7500
+    amount: 2
+  - item_id: 7158  # rainbow trout
+    chance: 60
+  - item_id: 7159  # green perch
+    chance: 140

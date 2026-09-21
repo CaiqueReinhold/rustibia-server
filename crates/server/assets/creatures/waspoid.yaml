@@ -1,0 +1,79 @@
+name: Waspoid
+life: 1100
+speed: 105
+blood_type: poison
+armor: 25
+defense: 25
+experience: 830
+outfit:
+  id: 462
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 248
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 400
+      max: 400
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 110
+      max: 180
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    effect_id: 21
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 80
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+corpse: 13983
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Peeex!
+loot:
+  - item_id: 3010  # emerald bangle
+    chance: 2040
+  - item_id: 3027  # black pearl
+    chance: 4230
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 35
+  - item_id: 3035  # platinum coin
+    chance: 40430
+  - item_id: 3037  # yellow gem
+    chance: 1040
+  - item_id: 14080  # waspoid claw
+    chance: 9096
+  - item_id: 14081  # waspoid wing
+    chance: 13890
+  - item_id: 14083  # compound eye
+    chance: 6060
+  - item_id: 14087  # grasshopper legs
+    chance: 230
+  - item_id: 14088  # carapace shield
+    chance: 120
+  - item_id: 14089  # hive scythe
+    chance: 330

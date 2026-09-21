@@ -1,0 +1,27 @@
+name: Crab
+life: 55
+speed: 72
+blood_type: blood
+armor: 8
+defense: 8
+experience: 30
+outfit:
+  id: 112
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+corpse: 6039
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3031  # gold coin
+    chance: 80000
+    amount: 10
+  - item_id: 10272  # crab pincers
+    chance: 20000
+  - item_id: 3578  # fish
+    chance: 20000

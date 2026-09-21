@@ -1,0 +1,52 @@
+name: Iron Servant
+life: 350
+speed: 95
+blood_type: blood
+armor: 17
+defense: 17
+experience: 210
+outfit:
+  id: 395
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 60
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+    effect_id: 5
+corpse: 12497
+flee_threshold: 50
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Error. LOAD 'PROGRAM',8,1
+    - Remain. Obedient.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82109
+    amount: 55
+  - item_id: 8775  # gear wheel
+    chance: 4825
+  - item_id: 266  # health potion
+    chance: 1964
+  - item_id: 3269  # halberd
+    chance: 1022
+  - item_id: 8894  # heavily rusted armor
+    chance: 504
+  - item_id: 12601  # slime mould
+    chance: 310

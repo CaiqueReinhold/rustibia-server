@@ -1,0 +1,78 @@
+name: Kollos
+life: 3800
+speed: 100
+blood_type: poison
+armor: 35
+defense: 35
+experience: 2400
+outfit:
+  id: 458
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 315
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 500
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 41
+    effect_id: 6
+corpse: 13937
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zopp!
+    - Flzlzlzlzlzlz!
+loot:
+  - item_id: 3030  # small ruby
+    chance: 8180
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 49000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 97
+  - item_id: 3035  # platinum coin
+    chance: 66000
+    amount: 3
+  - item_id: 3098  # ring of healing
+    chance: 3270
+  - item_id: 3554  # steel boots
+    chance: 130
+  - item_id: 238  # great mana potion
+    chance: 8950
+    amount: 4
+  - item_id: 281  # giant shimmering pearl
+    chance: 2600
+  - item_id: 7643  # ultimate health potion
+    chance: 4000
+    amount: 3
+  - item_id: 9058  # gold ingot
+    chance: 5160
+  - item_id: 14077  # kollos shell
+    chance: 15390
+  - item_id: 14083  # compound eye
+    chance: 15720
+  - item_id: 14086  # calopteryx cape
+    chance: 360
+  - item_id: 14088  # carapace shield
+    chance: 310
+  - item_id: 14089  # hive scythe
+    chance: 700
+  - item_id: 14249  # buggy backpack
+    chance: 460
+  - item_id: 14251  # tarsal arrow
+    chance: 10210
+    amount: 5

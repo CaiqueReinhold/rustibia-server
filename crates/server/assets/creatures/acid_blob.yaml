@@ -1,0 +1,49 @@
+name: Acid Blob
+life: 250
+speed: 90
+blood_type: poison
+armor: 15
+defense: 15
+experience: 250
+outfit:
+  id: 314
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: earth
+    damage:
+      min: 10
+      max: 20
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 17
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 40
+      max: 60
+    target:
+      type: area
+      origin: self
+      shape: beam5
+    effect_id: 9
+corpse: 9049
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Kzzchhh!
+loot:
+  - item_id: 9054  # glob of acid slime
+    chance: 14285

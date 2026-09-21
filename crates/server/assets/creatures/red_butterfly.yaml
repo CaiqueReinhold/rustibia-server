@@ -1,0 +1,20 @@
+name: Butterfly
+life: 2
+speed: 160
+blood_type: poison
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 228
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 4991
+flee_threshold: 2
+say:
+  cooldown: 100
+  chance: 0

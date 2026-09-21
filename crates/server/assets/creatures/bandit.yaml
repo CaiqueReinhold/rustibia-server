@@ -1,0 +1,44 @@
+name: Bandit
+life: 245
+speed: 90
+blood_type: blood
+armor: 11
+defense: 11
+experience: 65
+outfit:
+  id: 129
+  colors: [58, 40, 24, 95]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+corpse: 18050
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Your money or your life!
+    - Hand me your purse!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 48956
+    amount: 30
+  - item_id: 3274  # axe
+    chance: 29905
+  - item_id: 3411  # brass shield
+    chance: 16794
+  - item_id: 3559  # leather legs
+    chance: 14967
+  - item_id: 3286  # mace
+    chance: 10342
+  - item_id: 3596  # tomato
+    chance: 7692
+    amount: 2
+  - item_id: 3352  # chain helmet
+    chance: 4956
+  - item_id: 3359  # brass armor
+    chance: 2376
+  - item_id: 3353  # iron helmet
+    chance: 544

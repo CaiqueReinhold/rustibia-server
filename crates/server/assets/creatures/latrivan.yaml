@@ -1,0 +1,131 @@
+name: Latrivan
+life: 25000
+speed: 195
+blood_type: blood
+armor: 35
+defense: 45
+experience: 10000
+outfit:
+  id: 12
+  colors: [119, 71, 118, 34]
+melee:
+  damage:
+    min: 0
+    max: 878
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 50
+      max: 850
+    target:
+      type: area
+      origin: self
+      shape: beam7
+    effect_id: 6
+corpse: 7893
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - "I might reward you for killing my brother ~ with a swift dead!"
+    - Colateral damage is so fun!
+    - Golgordan you fool!
+    - We are the brothers of fear!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 273
+  - item_id: 239  # great health potion
+    chance: 37674
+    amount: 2
+  - item_id: 3098  # ring of healing
+    chance: 26977
+  - item_id: 3275  # double axe
+    chance: 19535
+  - item_id: 3049  # stealth ring
+    chance: 19535
+  - item_id: 3046  # magic light wand
+    chance: 17674
+  - item_id: 3033  # small amethyst
+    chance: 16744
+    amount: 19
+  - item_id: 3027  # black pearl
+    chance: 15814
+    amount: 15
+  - item_id: 3026  # white pearl
+    chance: 15814
+    amount: 13
+  - item_id: 3290  # silver dagger
+    chance: 14419
+  - item_id: 3054  # silver amulet
+    chance: 13953
+  - item_id: 6299  # death ring
+    chance: 13488
+  - item_id: 3029  # small sapphire
+    chance: 13488
+    amount: 10
+  - item_id: 3081  # stone skin amulet
+    chance: 13488
+  - item_id: 3032  # small emerald
+    chance: 12558
+    amount: 10
+  - item_id: 3420  # demon shield
+    chance: 11628
+  - item_id: 3320  # fire axe
+    chance: 10698
+  - item_id: 9058  # gold ingot
+    chance: 10698
+  - item_id: 6499  # demonic essence
+    chance: 10233
+  - item_id: 3051  # energy ring
+    chance: 9767
+  - item_id: 3028  # small diamond
+    chance: 8372
+    amount: 5
+  - item_id: 3281  # giant sword
+    chance: 6977
+  - item_id: 3284  # ice rapier
+    chance: 6977
+  - item_id: 3063  # gold ring
+    chance: 6512
+  - item_id: 3356  # devil helmet
+    chance: 5581
+  - item_id: 3048  # might ring
+    chance: 5581
+  - item_id: 7365  # onyx arrow
+    chance: 4186
+    amount: 8
+  - item_id: 3084  # protection amulet
+    chance: 4186
+  - item_id: 3066  # snakebite rod
+    chance: 4186
+  - item_id: 3324  # skull staff
+    chance: 3256
+  - item_id: 3076  # crystal ball
+    chance: 2791
+  - item_id: 3062  # mind stone
+    chance: 2791
+  - item_id: 3070  # moonlight rod
+    chance: 2791
+  - item_id: 3079  # boots of haste
+    chance: 2326
+  - item_id: 3038  # green gem
+    chance: 2326
+  - item_id: 3072  # wand of decay
+    chance: 2326
+  - item_id: 3041  # blue gem
+    chance: 1395
+  - item_id: 3069  # necrotic rod
+    chance: 1395
+  - item_id: 3364  # golden legs
+    chance: 930
+  - item_id: 3306  # golden sickle
+    chance: 930
+  - item_id: 3414  # mastermind shield
+    chance: 930
+  - item_id: 7368  # assassin star
+    chance: 465

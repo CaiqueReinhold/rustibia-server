@@ -1,0 +1,71 @@
+name: Pirate Corsair
+life: 675
+speed: 119
+blood_type: blood
+armor: 20
+defense: 20
+experience: 350
+outfit:
+  id: 98
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 170
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 8
+corpse: 18194
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Give up!
+    - Hiyaa!
+    - Plundeeeeer!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 55352
+    amount: 86
+  - item_id: 10302  # compass
+    chance: 10163
+  - item_id: 3273  # sabre
+    chance: 9816
+  - item_id: 3287  # throwing star
+    chance: 8104
+    amount: 12
+  - item_id: 3383  # dark armor
+    chance: 1874
+  - item_id: 3421  # dark shield
+    chance: 1105
+  - item_id: 6096  # pirate hat
+    chance: 1094
+  - item_id: 5926  # pirate backpack
+    chance: 1029
+  - item_id: 236  # strong health potion
+    chance: 802
+  - item_id: 6097  # hook
+    chance: 574
+  - item_id: 6126  # peg leg
+    chance: 553
+  - item_id: 6098  # eye patch
+    chance: 488
+  - item_id: 5461  # pirate boots
+    chance: 325
+  - item_id: 5813  # skull candle
+    chance: 119
+  - item_id: 5552  # rum flask
+    chance: 98
+  - item_id: 2995  # piggy bank
+    chance: 87

@@ -1,0 +1,108 @@
+name: Drillworm
+life: 1500
+speed: 110
+blood_type: blood
+armor: 41
+defense: 41
+experience: 858
+outfit:
+  id: 527
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 100
+      max: 100
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 17
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 150
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    effect_id: 21
+corpse: 17425
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Krrrk!
+    - Knarrrk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 150
+  - item_id: 10305  # lump of earth
+    chance: 15049
+  - item_id: 12600  # coal
+    chance: 12155
+  - item_id: 16123  # brown crystal splinter
+    chance: 10095
+  - item_id: 16122  # green crystal splinter
+    chance: 10029
+  - item_id: 16124  # blue crystal splinter
+    chance: 9978
+  - item_id: 16135  # vein of ore
+    chance: 7329
+  - item_id: 16133  # pulverized ore
+    chance: 5172
+  - item_id: 3456  # pick
+    chance: 5087
+  - item_id: 16142  # drill bolt
+    chance: 5000
+    amount: 2
+  - item_id: 3492  # worm
+    chance: 5000
+    amount: 5
+  - item_id: 814  # terra amulet
+    chance: 2571
+  - item_id: 3097  # dwarven ring
+    chance: 2387
+  - item_id: 5880  # iron ore
+    chance: 1537
+  - item_id: 10422  # clay lump
+    chance: 751
+  - item_id: 7452  # spiked squelcher
+    chance: 519

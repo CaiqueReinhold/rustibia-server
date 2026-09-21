@@ -1,0 +1,62 @@
+name: Minotaur Archer
+life: 100
+speed: 80
+blood_type: blood
+armor: 6
+defense: 6
+experience: 65
+outfit:
+  id: 24
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 25
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 40000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 80
+    target:
+      type: target
+      range: 7
+    missile_id: 2
+corpse: 5982
+flee_threshold: 29
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ruan Wihmpy!
+    - Kaplar!
+loot:
+  - item_id: 3446  # bolt
+    chance: 90124
+    amount: 20
+  - item_id: 3031  # gold coin
+    chance: 75036
+    amount: 30
+  - item_id: 11451  # broken crossbow
+    chance: 15323
+  - item_id: 7363  # piercing bolt
+    chance: 12190
+    amount: 4
+  - item_id: 11483  # piece of archer armor
+    chance: 8034
+  - item_id: 3577  # meat
+    chance: 4952
+  - item_id: 11472  # minotaur horn
+    chance: 1973
+    amount: 2
+  - item_id: 5878  # minotaur leather
+    chance: 1925
+  - item_id: 3349  # crossbow
+    chance: 877
+  - item_id: 3377  # scale armor
+    chance: 539
+  - item_id: 3359  # brass armor
+    chance: 519

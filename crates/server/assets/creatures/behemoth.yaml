@@ -1,0 +1,104 @@
+name: Behemoth
+life: 4000
+speed: 170
+blood_type: blood
+armor: 50
+defense: 50
+experience: 2500
+outfit:
+  id: 55
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 455
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.39
+        flat: 0
+      max:
+        factor: 0.39
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 5999
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You're so little!
+    - Human flesh - delicious!
+    - Crush the intruders!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 200
+  - item_id: 3035  # platinum coin
+    chance: 60256
+    amount: 5
+  - item_id: 3577  # meat
+    chance: 29641
+  - item_id: 11447  # battle stone
+    chance: 14968
+  - item_id: 3275  # double axe
+    chance: 10039
+  - item_id: 7368  # assassin star
+    chance: 9988
+    amount: 5
+  - item_id: 3033  # small amethyst
+    chance: 6054
+    amount: 5
+  - item_id: 3265  # two handed sword
+    chance: 6019
+  - item_id: 239  # great health potion
+    chance: 5072
+  - item_id: 3383  # dark armor
+    chance: 4174
+  - item_id: 3357  # plate armor
+    chance: 4110
+  - item_id: 3008  # crystal necklace
+    chance: 2549
+  - item_id: 5893  # perfect behemoth fang
+    chance: 999
+  - item_id: 3281  # giant sword
+    chance: 966
+  - item_id: 3058  # strange symbol
+    chance: 830
+  - item_id: 3116  # big bone
+    chance: 691
+  - item_id: 3456  # pick
+    chance: 619
+  - item_id: 5930  # behemoth claw
+    chance: 469
+  - item_id: 3554  # steel boots
+    chance: 434
+  - item_id: 3304  # crowbar
+    chance: 128
+  - item_id: 7396  # behemoth trophy
+    chance: 114
+  - item_id: 2893  # amphora
+    chance: 97
+  - item_id: 7413  # titan axe
+    chance: 75
+  - item_id: 3342  # war axe
+    chance: 70

@@ -1,0 +1,139 @@
+name: Lost Husher
+life: 1600
+speed: 125
+blood_type: blood
+armor: 55
+defense: 55
+experience: 1800
+outfit:
+  id: 537
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 150
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: beam
+    effect_id: 158
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 150
+      max: 250
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 158
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 150
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 150
+      max: 250
+    target:
+      type: area
+      origin: target
+      shape: cross1
+    missile_id: 39
+    effect_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 75
+      max: 92
+corpse: 17684
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Arr far zwar!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 59669
+    amount: 2
+  - item_id: 17855  # red hair dye
+    chance: 15336
+  - item_id: 3725  # brown mushroom
+    chance: 15105
+    amount: 2
+  - item_id: 17847  # wimp tooth chain
+    chance: 12042
+  - item_id: 12600  # coal
+    chance: 11812
+  - item_id: 17850  # holy ash
+    chance: 11608
+  - item_id: 236  # strong health potion
+    chance: 10466
+    amount: 3
+  - item_id: 238  # great mana potion
+    chance: 10377
+    amount: 2
+  - item_id: 9057  # small topaz
+    chance: 9695
+  - item_id: 17848  # lost husher's staff
+    chance: 9217
+  - item_id: 17849  # skull shatterer
+    chance: 8996
+  - item_id: 17830  # bonecarving knife
+    chance: 8465
+  - item_id: 17857  # basalt figurine
+    chance: 7739
+  - item_id: 17831  # bone fetish
+    chance: 7677
+  - item_id: 17856  # basalt fetish
+    chance: 5932
+  - item_id: 3097  # dwarven ring
+    chance: 2656
+  - item_id: 3415  # guardian shield
+    chance: 965
+  - item_id: 10422  # clay lump
+    chance: 885
+  - item_id: 3318  # knight axe
+    chance: 744
+  - item_id: 17829  # buckle
+    chance: 726
+  - item_id: 813  # terra boots
+    chance: 620
+  - item_id: 3324  # skull staff
+    chance: 469
+  - item_id: 7452  # spiked squelcher
+    chance: 283
+  - item_id: 3320  # fire axe
+    chance: 266
+  - item_id: 812  # terra legs
+    chance: 221
+  - item_id: 3428  # tower shield
+    chance: 195

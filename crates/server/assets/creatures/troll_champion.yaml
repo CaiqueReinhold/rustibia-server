@@ -1,0 +1,49 @@
+name: Troll Champion
+life: 75
+speed: 95
+blood_type: blood
+armor: 10
+defense: 10
+experience: 40
+outfit:
+  id: 281
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+corpse: 861
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Meee maity!
+    - Grrrr
+    - Whaaaz up!?
+    - Gruntz!
+    - Groar
+loot:
+  - item_id: 3031  # gold coin
+    chance: 64606
+    amount: 12
+  - item_id: 3277  # spear
+    chance: 25082
+  - item_id: 3577  # meat
+    chance: 9962
+  - item_id: 3552  # leather boots
+    chance: 9936
+  - item_id: 3412  # wooden shield
+    chance: 5322
+  - item_id: 3447  # arrow
+    chance: 5069
+    amount: 5
+  - item_id: 3336  # studded club
+    chance: 5069
+  - item_id: 9689  # bunch of troll hair
+    chance: 3075
+  - item_id: 11515  # trollroot
+    chance: 909
+  - item_id: 3054  # silver amulet
+    chance: 127

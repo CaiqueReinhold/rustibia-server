@@ -1,0 +1,85 @@
+name: Vulcongra
+life: 1600
+speed: 160
+blood_type: blood
+armor: 35
+defense: 35
+experience: 1100
+outfit:
+  id: 509
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 235
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 195
+      max: 340
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 6
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 100
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+corpse: 16186
+flee_threshold: 220
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Fuchah! Fuchah!
+    - Fuchah!
+    - Yag! Yag! Yag!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 107
+  - item_id: 3035  # platinum coin
+    chance: 14338
+  - item_id: 16130  # magma clump
+    chance: 12277
+  - item_id: 3587  # banana
+    chance: 9563
+    amount: 10
+  - item_id: 9636  # fiery heart
+    chance: 9041
+  - item_id: 16131  # blazing bone
+    chance: 7893
+  - item_id: 237  # strong mana potion
+    chance: 7319
+  - item_id: 236  # strong health potion
+    chance: 7280
+  - item_id: 16123  # brown crystal splinter
+    chance: 4945
+  - item_id: 3091  # sword ring
+    chance: 3053
+  - item_id: 16126  # red crystal fragment
+    chance: 2401
+  - item_id: 3071  # wand of inferno
+    chance: 978
+  - item_id: 817  # magma amulet
+    chance: 887
+  - item_id: 12600  # coal
+    chance: 848
+  - item_id: 3280  # fire sword
+    chance: 300
+  - item_id: 826  # magma coat
+    chance: 170

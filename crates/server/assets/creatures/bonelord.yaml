@@ -1,0 +1,127 @@
+name: Bonelord
+life: 260
+speed: 75
+blood_type: poison
+armor: 5
+defense: 5
+experience: 170
+outfit:
+  id: 17
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 5
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: energy
+    damage:
+      min: 15
+      max: 45
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: fire
+    damage:
+      min: 25
+      max: 45
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 30
+      max: 50
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 39
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: earth
+    damage:
+      min: 5
+      max: 45
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 5
+      max: 50
+    target:
+      type: target
+      range: 7
+    missile_id: 11
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 45
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 5000
+    type: attack
+    element: mana
+    damage:
+      min: 5
+      max: 35
+    target:
+      type: target
+      range: 7
+corpse: 5992
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Eye for eye!
+    - Here's looking at you!
+    - Let me take a look at you!
+    - You've got the look!
+    - I've got to look!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 99000
+    amount: 48
+  - item_id: 3285  # longsword
+    chance: 9000
+  - item_id: 3282  # morning star
+    chance: 7000
+  - item_id: 11512  # small flask of eyedrops
+    chance: 5000
+  - item_id: 3059  # spellbook
+    chance: 5000
+  - item_id: 3409  # steel shield
+    chance: 4000
+  - item_id: 3265  # two handed sword
+    chance: 3950
+  - item_id: 5898  # bonelord eye
+    chance: 1000
+  - item_id: 3065  # terra rod
+    chance: 510
+  - item_id: 268  # mana potion
+    chance: 300
+  - item_id: 3418  # bonelord shield
+    chance: 110

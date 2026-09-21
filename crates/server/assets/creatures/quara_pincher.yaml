@@ -1,0 +1,66 @@
+name: Quara Pincher
+life: 1800
+speed: 198
+blood_type: blood
+armor: 85
+defense: 85
+experience: 1200
+outfit:
+  id: 77
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 340
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: target
+      range: 1
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 60
+    effect_id: 14
+corpse: 6063
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Clank clank!
+    - Clap!
+    - Crrrk! Crrrk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 150
+  - item_id: 3035  # platinum coin
+    chance: 40655
+  - item_id: 11490  # quara pincers
+    chance: 14711
+  - item_id: 239  # great health potion
+    chance: 10371
+  - item_id: 3030  # small ruby
+    chance: 7539
+    amount: 2
+  - item_id: 3269  # halberd
+    chance: 6979
+  - item_id: 3581  # shrimp
+    chance: 4919
+  - item_id: 5895  # fish fin
+    chance: 1616
+  - item_id: 3369  # warrior helmet
+    chance: 1481
+  - item_id: 3381  # crown armor
+    chance: 270
+  - item_id: 824  # glacier robe
+    chance: 116
+  - item_id: 12318  # giant shrimp
+    chance: 45

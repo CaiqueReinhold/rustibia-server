@@ -1,0 +1,160 @@
+name: Plaguesmith
+life: 8250
+speed: 120
+blood_type: poison
+armor: 40
+defense: 40
+experience: 4500
+outfit:
+  id: 247
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 539
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 200
+      max: 200
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 60
+      max: 114
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: earth
+    damage:
+      min: 100
+      max: 350
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    effect_id: 8
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 600
+    effect_id: 21
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 200
+      max: 280
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.44
+        flat: 0
+      max:
+        factor: 0.44
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6515
+flee_threshold: 500
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - You are looking a bit feverish!
+    - You don't look that good!
+    - Hachoo!
+    - Cough Cough
+loot:
+  - item_id: 3010  # emerald bangle
+    chance: 341
+  - item_id: 3017  # silver brooch
+    chance: 2000
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 65
+  - item_id: 3033  # small amethyst
+    chance: 5000
+    amount: 3
+  - item_id: 3035  # platinum coin
+    chance: 7142
+    amount: 2
+  - item_id: 3092  # axe ring
+    chance: 4347
+  - item_id: 3093  # club ring
+    chance: 4761
+  - item_id: 3110  # piece of iron
+    chance: 20000
+  - item_id: 3120  # mouldy cheese
+    chance: 50000
+  - item_id: 3122  # dirty cape
+    chance: 60000
+  - item_id: 3265  # two handed sword
+    chance: 20000
+  - item_id: 3279  # war hammer
+    chance: 2127
+  - item_id: 3282  # morning star
+    chance: 29000
+  - item_id: 3305  # battle hammer
+    chance: 20000
+  - item_id: 3332  # hammer of wrath
+    chance: 952
+  - item_id: 3371  # knight legs
+    chance: 6250
+  - item_id: 3409  # steel shield
+    chance: 20000
+  - item_id: 3554  # steel boots
+    chance: 1123
+  - item_id: 2958  # war horn
+    chance: 100
+  - item_id: 5887  # piece of royal steel
+    chance: 1234
+  - item_id: 5888  # piece of hell steel
+    chance: 1010
+  - item_id: 5889  # piece of draconian steel
+    chance: 1030
+  - item_id: 5944  # soul orb
+    chance: 11111
+  - item_id: 6499  # demonic essence
+    chance: 9033
+  - item_id: 7365  # onyx arrow
+    chance: 7692
+    amount: 4
+  - item_id: 239  # great health potion
+    chance: 10000
+  - item_id: 8896  # slightly rusted armor
+    chance: 540

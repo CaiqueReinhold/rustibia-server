@@ -1,0 +1,20 @@
+name: Seagull
+life: 25
+speed: 130
+blood_type: blood
+armor: 5
+defense: 5
+experience: 0
+outfit:
+  id: 223
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 3
+  element: physical
+corpse: 6076
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 0

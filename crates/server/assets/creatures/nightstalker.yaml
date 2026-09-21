@@ -1,0 +1,103 @@
+name: Nightstalker
+life: 700
+speed: 130
+blood_type: blood
+armor: 15
+defense: 15
+experience: 500
+outfit:
+  id: 320
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 80
+      max: 80
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 60
+      max: 170
+    target:
+      type: target
+      range: 7
+    effect_id: 50
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    effect_id: 33
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.24
+        flat: 0
+      max:
+        factor: 0.24
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 9001
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - The sunlight is so depressing.
+    - Come with me, my child.
+    - I've been in the shadow under your bed last night.
+    - You never know what hides in the night.
+    - I remember your face - and I know where you sleep.
+    - Only the sweetest and cruelest dreams for you, my love.
+loot:
+  - item_id: 3007  # crystal ring
+    chance: 1030
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 10
+  - item_id: 3055  # platinum amulet
+    chance: 121
+  - item_id: 3079  # boots of haste
+    chance: 121
+  - item_id: 3084  # protection amulet
+    chance: 847
+  - item_id: 3740  # shadow herb
+    chance: 4761
+  - item_id: 7407  # haunted blade
+    chance: 318
+  - item_id: 7427  # chaos mace
+    chance: 121
+  - item_id: 237  # strong mana potion
+    chance: 1612
+  - item_id: 8042  # spirit cloak
+    chance: 520
+  - item_id: 9028  # crystal of balance
+    chance: 127

@@ -1,0 +1,70 @@
+name: Mutated Tiger
+life: 1100
+speed: 120
+blood_type: blood
+armor: 25
+defense: 25
+experience: 750
+outfit:
+  id: 318
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    effect_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 150
+      max: 300
+corpse: 8999
+flee_threshold: 100
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - GRAAARRRRRR
+    - CHHHHHHHHHHH
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 5
+  - item_id: 3052  # life ring
+    chance: 5580
+  - item_id: 3415  # guardian shield
+    chance: 380
+  - item_id: 3577  # meat
+    chance: 29500
+    amount: 2
+  - item_id: 7436  # angelic axe
+    chance: 440
+  - item_id: 7454  # glorious axe
+    chance: 870
+  - item_id: 236  # strong health potion
+    chance: 6000
+  - item_id: 9046  # silky tapestry
+    chance: 730
+  - item_id: 10293  # striped fur
+    chance: 20130
+  - item_id: 10311  # sabretooth
+    chance: 10600

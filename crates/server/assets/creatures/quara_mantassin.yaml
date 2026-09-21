@@ -1,0 +1,62 @@
+name: Quara Mantassin
+life: 800
+speed: 295
+blood_type: blood
+armor: 16
+defense: 16
+experience: 400
+outfit:
+  id: 72
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 140
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 6064
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zuerk Pachak!
+    - Shrrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 79873
+    amount: 130
+  - item_id: 11489  # mantassin tail
+    chance: 12746
+  - item_id: 3581  # shrimp
+    chance: 5121
+  - item_id: 3269  # halberd
+    chance: 4984
+  - item_id: 3049  # stealth ring
+    chance: 1100
+  - item_id: 3029  # small sapphire
+    chance: 1092
+  - item_id: 3565  # cape
+    chance: 1055
+  - item_id: 3265  # two handed sword
+    chance: 1017
+  - item_id: 5895  # fish fin
+    chance: 622
+  - item_id: 3373  # strange helmet
+    chance: 91
+  - item_id: 3567  # blue robe
+    chance: 83

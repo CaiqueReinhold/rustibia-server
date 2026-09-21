@@ -1,0 +1,52 @@
+name: Troll
+life: 50
+speed: 63
+blood_type: blood
+armor: 6
+defense: 6
+experience: 20
+outfit:
+  id: 15
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 15
+  element: physical
+corpse: 5960
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrr
+    - Groar
+    - Gruntz!
+    - Hmmm, bugs
+    - Hmmm, dogs
+loot:
+  - item_id: 3031  # gold coin
+    chance: 65542
+    amount: 12
+  - item_id: 3268  # hand axe
+    chance: 19690
+  - item_id: 3577  # meat
+    chance: 15431
+  - item_id: 3277  # spear
+    chance: 12998
+  - item_id: 3355  # leather helmet
+    chance: 11892
+  - item_id: 3552  # leather boots
+    chance: 9983
+  - item_id: 3003  # rope
+    chance: 8131
+  - item_id: 3336  # studded club
+    chance: 5448
+  - item_id: 3412  # wooden shield
+    chance: 5448
+  - item_id: 23986  # heavy old tome
+    chance: 2268
+  - item_id: 9689  # bunch of troll hair
+    chance: 1189
+  - item_id: 24415  # old rag
+    chance: 28

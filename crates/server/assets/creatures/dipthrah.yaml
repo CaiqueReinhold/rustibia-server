@@ -1,0 +1,99 @@
+name: Dipthrah
+life: 4200
+speed: 160
+blood_type: blood
+armor: 25
+defense: 25
+experience: 2900
+outfit:
+  id: 87
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 200
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 65
+      max: 65
+    interval: 80
+abilities:
+  - cooldown: 80
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 100
+      max: 800
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: mana
+    damage:
+      min: 100
+      max: 500
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 20
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 1000
+    effect_id: 14
+  - cooldown: 20
+    chance: 25000
+    type: heal
+    life:
+      min: 100
+      max: 200
+corpse: 6031
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Come closer to learn the final lesson.
+    - You can't escape death forever.
+    - Undeath will shatter my shackles.
+    - You don't need this magic anymore.
+loot:
+  - item_id: 3241  # ornamented ankh
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 90981
+    amount: 226
+  - item_id: 3029  # small sapphire
+    chance: 9806
+    amount: 3
+  - item_id: 238  # great mana potion
+    chance: 8927
+  - item_id: 3051  # energy ring
+    chance: 4857
+  - item_id: 3062  # mind stone
+    chance: 925
+  - item_id: 3041  # blue gem
+    chance: 833
+  - item_id: 3077  # ankh
+    chance: 601
+  - item_id: 3324  # skull staff
+    chance: 555
+  - item_id: 10290  # mini mummy
+    chance: 93
+  - item_id: 3334  # pharaoh sword
+    chance: 93

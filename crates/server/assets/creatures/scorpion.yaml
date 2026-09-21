@@ -1,0 +1,30 @@
+name: Scorpion
+life: 45
+speed: 75
+blood_type: poison
+armor: 14
+defense: 14
+experience: 45
+outfit:
+  id: 43
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 50
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 340
+      max: 340
+    interval: 80
+corpse: 5988
+flee_threshold: 5
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 9651  # scorpion tail
+    chance: 5000

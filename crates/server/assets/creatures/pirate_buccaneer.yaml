@@ -1,0 +1,73 @@
+name: Pirate Buccaneer
+life: 425
+speed: 110
+blood_type: blood
+armor: 30
+defense: 30
+experience: 250
+outfit:
+  id: 97
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 160
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: target
+      range: 4
+    missile_id: 9
+corpse: 18190
+flee_threshold: 50
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Give up!
+    - Hiyaa
+    - Plundeeeeer!
+loot:
+  - item_id: 2920  # torch
+    chance: 10190
+  - item_id: 3031  # gold coin
+    chance: 67740
+    amount: 59
+  - item_id: 3123  # worn leather boots
+    chance: 9900
+  - item_id: 3273  # sabre
+    chance: 10100
+  - item_id: 3298  # throwing knife
+    chance: 9000
+    amount: 5
+  - item_id: 3357  # plate armor
+    chance: 1130
+  - item_id: 3413  # battle shield
+    chance: 3850
+  - item_id: 5090  # treasure map
+    chance: 1000
+  - item_id: 5552  # rum flask
+    chance: 120
+  - item_id: 5792  # die
+    chance: 40
+  - item_id: 5926  # pirate backpack
+    chance: 430
+  - item_id: 6095  # pirate shirt
+    chance: 1200
+  - item_id: 6097  # hook
+    chance: 450
+  - item_id: 6098  # eye patch
+    chance: 420
+  - item_id: 6126  # peg leg
+    chance: 510
+  - item_id: 236  # strong health potion
+    chance: 670
+  - item_id: 10302  # compass
+    chance: 9780

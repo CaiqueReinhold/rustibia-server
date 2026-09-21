@@ -1,0 +1,128 @@
+name: Mahrdis
+life: 3900
+speed: 170
+blood_type: blood
+armor: 42
+defense: 42
+experience: 3050
+outfit:
+  id: 90
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 65
+      max: 65
+    interval: 80
+abilities:
+  - cooldown: 32
+    chance: 7000
+    type: attack
+    element: physical
+    damage:
+      min: 60
+      max: 600
+    target:
+      type: target
+      range: 1
+    effect_id: 14
+  - cooldown: 20
+    chance: 7000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 600
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 13000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.85
+        flat: 0
+      max:
+        factor: -0.85
+        flat: 0
+    duration_ticks: 1000
+    effect_id: 14
+  - cooldown: 40
+    chance: 34000
+    type: attack
+    element: fire
+    damage:
+      min: 80
+      max: 800
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 5
+  - cooldown: 40
+    chance: 13000
+    type: attack
+    condition:
+      type: decaying
+      element: fire
+      damage:
+        min: 50
+        max: 500
+      interval: 200
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 6
+  - cooldown: 40
+    chance: 40000
+    type: heal
+    life:
+      min: 150
+      max: 600
+corpse: 6025
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ashes to ashes!
+    - Fire, Fire!
+    - The eternal flame demands its due!
+    - Burnnnnnnnnn!
+    - May my flames engulf you!
+    - This is why I'm hot.
+loot:
+  - item_id: 3240  # burning heart
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 88738
+    amount: 230
+  - item_id: 3030  # small ruby
+    chance: 12255
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 10213
+  - item_id: 3052  # life ring
+    chance: 6752
+  - item_id: 3320  # fire axe
+    chance: 936
+  - item_id: 3039  # red gem
+    chance: 624
+  - item_id: 3024  # holy falcon
+    chance: 142
+  - item_id: 10290  # mini mummy
+    chance: 113
+  - item_id: 3439  # phoenix shield
+    chance: 113

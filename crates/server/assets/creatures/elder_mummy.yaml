@@ -1,0 +1,86 @@
+name: Elder Mummy
+life: 850
+speed: 90
+blood_type: blood
+armor: 30
+defense: 30
+experience: 560
+outfit:
+  id: 65
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 120
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 3
+      max: 3
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 130
+    target:
+      type: target
+      range: 1
+    effect_id: 18
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.3
+        flat: 0
+      max:
+        factor: -0.3
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+corpse: 6004
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3007  # crystal ring
+    chance: 1650
+  - item_id: 3017  # silver brooch
+    chance: 4000
+  - item_id: 3027  # black pearl
+    chance: 1340
+  - item_id: 3031  # gold coin
+    chance: 43000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 43000
+    amount: 60
+  - item_id: 3042  # scarab coin
+    chance: 10000
+    amount: 3
+  - item_id: 3045  # strange talisman
+    chance: 4500
+  - item_id: 3046  # magic light wand
+    chance: 6000
+  - item_id: 3299  # poison dagger
+    chance: 380
+  - item_id: 3492  # worm
+    chance: 20000
+    amount: 3
+  - item_id: 9649  # gauze bandage
+    chance: 10000
+  - item_id: 11466  # flask of embalming fluid
+    chance: 12600
+  - item_id: 12483  # pharaoh banner
+    chance: 2400

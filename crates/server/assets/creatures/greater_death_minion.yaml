@@ -1,0 +1,21 @@
+name: Greater Death Minion
+life: 1500
+speed: 75
+blood_type: blood
+armor: 30
+defense: 30
+experience: 0
+outfit:
+  id: 65
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 450
+  element: physical
+corpse: 6004
+say:
+  cooldown: 100
+  chance: 0

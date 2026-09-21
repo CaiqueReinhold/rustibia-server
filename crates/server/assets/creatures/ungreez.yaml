@@ -1,0 +1,90 @@
+name: Ungreez
+life: 8200
+speed: 165
+blood_type: blood
+armor: 55
+defense: 55
+experience: 500
+outfit:
+  id: 35
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 480
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 13000
+    type: attack
+    element: mana
+    damage:
+      min: 0
+      max: 110
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+  - cooldown: 20
+    chance: 14000
+    type: attack
+    element: fire
+    damage:
+      min: 150
+      max: 250
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
+    chance: 18000
+    type: attack
+    element: energy
+    damage:
+      min: 200
+      max: 400
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 48
+  - cooldown: 20
+    chance: 12000
+    type: attack
+    element: energy
+    damage:
+      min: 300
+      max: 380
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 48
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 90
+      max: 150
+corpse: 5995
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - I'll teach you that even heros can die
+    - You wil die Begging like the others did
+loot:
+  - item_id: 3031  # gold coin
+    chance: 21000
+    amount: 90
+  - item_id: 3731  # fire mushroom
+    chance: 10000
+    amount: 6
+  - item_id: 238  # great mana potion
+    chance: 20000
+  - item_id: 239  # great health potion
+    chance: 20000

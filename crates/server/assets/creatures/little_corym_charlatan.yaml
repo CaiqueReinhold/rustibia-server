@@ -1,0 +1,23 @@
+name: Little Corym Charlatan
+life: 90
+speed: 85
+blood_type: blood
+armor: 3
+defense: 3
+experience: 40
+outfit:
+  id: 532
+  colors: [0, 79, 80, 0]
+melee:
+  damage:
+    min: 0
+    max: 14
+  element: physical
+corpse: 17690
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Squeeeeeeak!
+    - Must have it! Must have it!
+    - Gimme! Gimme!

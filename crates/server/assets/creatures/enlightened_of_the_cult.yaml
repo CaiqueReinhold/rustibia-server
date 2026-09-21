@@ -1,0 +1,108 @@
+name: Enlightened of the Cult
+life: 700
+speed: 105
+blood_type: blood
+armor: 25
+defense: 25
+experience: 500
+outfit:
+  id: 193
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 4
+      max: 4
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 25000
+    type: attack
+    element: death
+    damage:
+      min: 70
+      max: 185
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 31
+    effect_id: 50
+  - cooldown: 40
+    chance: 10000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.36
+        flat: 0
+      max:
+        factor: -0.36
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 60
+      max: 90
+corpse: 18110
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Praise to my master Urgith!
+    - You will rise as my servant!
+    - Praise to my masters! Long live the triangle!
+    - You will die in the name of the triangle!
+loot:
+  - item_id: 2828  # book
+    chance: 910
+  - item_id: 2995  # piggy bank
+    chance: 130
+  - item_id: 3029  # small sapphire
+    chance: 550
+  - item_id: 3031  # gold coin
+    chance: 64550
+    amount: 70
+  - item_id: 3051  # energy ring
+    chance: 450
+  - item_id: 3055  # platinum amulet
+    chance: 200
+  - item_id: 3071  # wand of inferno
+    chance: 180
+  - item_id: 3084  # protection amulet
+    chance: 790
+  - item_id: 3324  # skull staff
+    chance: 350
+  - item_id: 3567  # blue robe
+    chance: 40
+  - item_id: 5669  # enigmatic voodoo skull
+    chance: 130
+  - item_id: 5801  # jewelled backpack
+    chance: 100
+  - item_id: 5810  # pirate voodoo doll
+    chance: 430
+  - item_id: 6090  # music sheet
+    chance: 490
+  - item_id: 7426  # amber staff
+    chance: 100
+  - item_id: 237  # strong mana potion
+    chance: 740
+  - item_id: 9638  # cultish mask
+    chance: 10250
+  - item_id: 11455  # cultish symbol
+    chance: 890
+  - item_id: 11652  # broken key ring
+    chance: 100

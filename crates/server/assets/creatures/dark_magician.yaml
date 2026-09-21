@@ -1,0 +1,73 @@
+name: Dark Magician
+life: 325
+speed: 105
+blood_type: blood
+armor: 15
+defense: 15
+experience: 185
+outfit:
+  id: 133
+  colors: [58, 95, 51, 131]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: fire
+    damage:
+      min: 5
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: energy
+    damage:
+      min: 20
+      max: 30
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 60
+      max: 80
+corpse: 18086
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Feel the power of my runes!
+    - Killing you is getting expensive!
+    - My secrets are mine alone!
+    - Stand Still!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 75100
+    amount: 55
+  - item_id: 3072  # wand of decay
+    chance: 280
+  - item_id: 3147  # blank rune
+    chance: 10000
+  - item_id: 236  # strong health potion
+    chance: 3000
+  - item_id: 237  # strong mana potion
+    chance: 2860
+  - item_id: 266  # health potion
+    chance: 12000
+  - item_id: 268  # mana potion
+    chance: 11900
+  - item_id: 677  # small enchanted emerald
+    chance: 510
+  - item_id: 12308  # reins
+    chance: 20

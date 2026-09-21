@@ -1,0 +1,63 @@
+name: Emerald Damselfly
+life: 90
+speed: 100
+blood_type: poison
+armor: 6
+defense: 6
+experience: 35
+outfit:
+  id: 528
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 4
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 10
+      max: 10
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: earth
+    damage:
+      min: 0
+      max: 12
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 4
+      max: 10
+corpse: 17426
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Bzzzzz!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 90901
+    amount: 18
+  - item_id: 17458  # damselfly wing
+    chance: 11824
+  - item_id: 17463  # damselfly eye
+    chance: 9986
+  - item_id: 3447  # arrow
+    chance: 7541
+    amount: 5
+  - item_id: 3003  # rope
+    chance: 5031
+  - item_id: 266  # health potion
+    chance: 3588
+  - item_id: 268  # mana potion
+    chance: 3560

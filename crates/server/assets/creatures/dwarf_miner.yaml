@@ -1,0 +1,41 @@
+name: Dwarf Miner
+life: 120
+speed: 85
+blood_type: blood
+armor: 7
+defense: 7
+experience: 60
+outfit:
+  id: 160
+  colors: [77, 100, 97, 116]
+melee:
+  damage:
+    min: 0
+    max: 35
+  element: physical
+corpse: 6007
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Work, work!
+    - Intruders in the mines!
+    - Mine, all mine!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 41358
+    amount: 10
+  - item_id: 3274  # axe
+    chance: 15123
+  - item_id: 3456  # pick
+    chance: 12037
+  - item_id: 3559  # leather legs
+    chance: 8951
+  - item_id: 3378  # studded armor
+    chance: 7099
+  - item_id: 3577  # meat
+    chance: 3704
+  - item_id: 3097  # dwarven ring
+    chance: 617
+  - item_id: 5880  # iron ore
+    chance: 617

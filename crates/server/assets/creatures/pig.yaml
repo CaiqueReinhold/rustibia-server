@@ -1,0 +1,29 @@
+name: Pig
+life: 25
+speed: 57
+blood_type: blood
+armor: 2
+defense: 2
+experience: 0
+outfit:
+  id: 60
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 6000
+flee_threshold: 25
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Oink oink
+    - Oink
+loot:
+  - item_id: 3577  # meat
+    chance: 65000
+    amount: 4
+  - item_id: 9693  # pig foot
+    chance: 1200

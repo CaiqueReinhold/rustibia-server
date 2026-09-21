@@ -1,0 +1,28 @@
+name: Rat
+life: 20
+speed: 67
+blood_type: blood
+armor: 1
+defense: 1
+experience: 5
+outfit:
+  id: 21
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 8
+  element: physical
+corpse: 5964
+flee_threshold: 5
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Meep!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 4
+  - item_id: 3607  # cheese
+    chance: 39410

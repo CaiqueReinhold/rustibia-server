@@ -1,0 +1,29 @@
+name: Lion
+life: 80
+speed: 95
+blood_type: blood
+armor: 6
+defense: 6
+experience: 30
+outfit:
+  id: 41
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 40
+  element: physical
+corpse: 5986
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Groarrr!
+loot:
+  - item_id: 3577  # meat
+    chance: 45327
+  - item_id: 3582  # ham
+    chance: 19265
+  - item_id: 9691  # lion's mane
+    chance: 1148

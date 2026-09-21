@@ -1,0 +1,54 @@
+name: Infernal Frog
+life: 655
+speed: 110
+blood_type: blood
+armor: 5
+defense: 5
+experience: 190
+outfit:
+  id: 224
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 20
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: earth
+    damage:
+      min: 16
+      max: 32
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+  - cooldown: 40
+    chance: 20000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 160
+    effect_id: 14
+corpse: 6079
+flee_threshold: 40
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ribbit!
+    - Ribbit! Ribbit!
+    - No Kisses for you!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 77000
+    amount: 65

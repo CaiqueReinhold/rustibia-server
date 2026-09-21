@@ -1,0 +1,100 @@
+name: Hive Overseer
+life: 7500
+speed: 100
+blood_type: poison
+armor: 45
+defense: 45
+experience: 5500
+outfit:
+  id: 458
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 450
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: earth
+    damage:
+      min: 60
+      max: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 21
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 600
+        max: 1000
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 9
+  - cooldown: 40
+    chance: 50000
+    type: heal
+    life:
+      min: 50
+      max: 100
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 500
+      max: 700
+corpse: 13937
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Zopp!
+    - Kropp!
+loot:
+  - item_id: 3030  # small ruby
+    chance: 16000
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 58000
+    amount: 98
+  - item_id: 3035  # platinum coin
+    chance: 84000
+    amount: 6
+  - item_id: 3554  # steel boots
+    chance: 550
+  - item_id: 238  # great mana potion
+    chance: 18000
+  - item_id: 281  # giant shimmering pearl
+    chance: 6000
+  - item_id: 7643  # ultimate health potion
+    chance: 12000
+  - item_id: 9058  # gold ingot
+    chance: 29000
+  - item_id: 14077  # kollos shell
+    chance: 28000
+  - item_id: 14083  # compound eye
+    chance: 16000
+  - item_id: 14086  # calopteryx cape
+    chance: 830
+  - item_id: 14088  # carapace shield
+    chance: 920
+  - item_id: 14089  # hive scythe
+    chance: 1650
+  - item_id: 14172  # gooey mass
+    chance: 13000
+    amount: 2
+  - item_id: 14246  # hive bow
+    chance: 830

@@ -1,0 +1,97 @@
+name: The Ravager
+life: 53500
+speed: 170
+blood_type: blood
+armor: 25
+defense: 30
+experience: 14980
+outfit:
+  id: 87
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 400
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 320
+      max: 320
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 12000
+    type: attack
+    element: death
+    damage:
+      min: 200
+      max: 750
+    target:
+      type: target
+      range: 7
+    missile_id: 11
+    effect_id: 18
+  - cooldown: 40
+    chance: 9000
+    type: attack
+    element: death
+    damage:
+      min: 700
+      max: 880
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 39
+  - cooldown: 40
+    chance: 18000
+    type: attack
+    element: death
+    damage:
+      min: 400
+      max: 500
+    target:
+      type: area
+      origin: self
+      shape: beam7
+    effect_id: 68
+  - cooldown: 40
+    chance: 20000
+    type: heal
+    life:
+      min: 200
+      max: 400
+corpse: 6031
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 3027  # black pearl
+    chance: 100000
+    amount: 5
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 15
+  - item_id: 3042  # scarab coin
+    chance: 100000
+    amount: 4
+  - item_id: 3025  # ancient amulet
+    chance: 33871
+  - item_id: 239  # great health potion
+    chance: 29032
+    amount: 4
+  - item_id: 238  # great mana potion
+    chance: 17742
+    amount: 4
+  - item_id: 3328  # daramian waraxe
+    chance: 6452
+  - item_id: 3440  # scarab shield
+    chance: 4839
+  - item_id: 3017  # silver brooch
+    chance: 4839
+  - item_id: 8894  # heavily rusted armor
+    chance: 1613

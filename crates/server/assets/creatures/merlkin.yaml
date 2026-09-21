@@ -1,0 +1,78 @@
+name: Merlkin
+life: 235
+speed: 97
+blood_type: blood
+armor: 16
+defense: 16
+experience: 145
+outfit:
+  id: 117
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 30
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 90
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+    effect_id: 16
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: energy
+    damage:
+      min: 15
+      max: 45
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 40
+    chance: 25000
+    type: heal
+    life:
+      min: 30
+      max: 40
+corpse: 6044
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ugh! Ugh! Ugh!
+    - Holy banana!
+    - Chakka! Chakka!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82947
+    amount: 45
+  - item_id: 3587  # banana
+    chance: 30430
+    amount: 12
+  - item_id: 3046  # magic light wand
+    chance: 3020
+  - item_id: 11511  # banana sash
+    chance: 1918
+  - item_id: 5883  # ape fur
+    chance: 1014
+  - item_id: 3586  # orange
+    chance: 1010
+    amount: 5
+  - item_id: 3072  # wand of decay
+    chance: 980
+  - item_id: 268  # mana potion
+    chance: 693
+  - item_id: 3033  # small amethyst
+    chance: 310
+  - item_id: 3348  # banana staff
+    chance: 102

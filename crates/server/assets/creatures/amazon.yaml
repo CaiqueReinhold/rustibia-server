@@ -1,0 +1,58 @@
+name: Amazon
+life: 110
+speed: 86
+blood_type: blood
+armor: 10
+defense: 10
+experience: 60
+outfit:
+  id: 137
+  colors: [113, 120, 95, 115]
+melee:
+  damage:
+    min: 0
+    max: 45
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 40
+    target:
+      type: target
+      range: 7
+    missile_id: 9
+corpse: 18042
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Yeeee ha!
+    - Your head shall be mine!
+    - Your head will be mine!
+loot:
+  - item_id: 3267  # dagger
+    chance: 80000
+  - item_id: 3114  # skull
+    chance: 80000
+    amount: 2
+  - item_id: 3031  # gold coin
+    chance: 40000
+    amount: 20
+  - item_id: 3602  # brown bread
+    chance: 30333
+  - item_id: 3273  # sabre
+    chance: 23000
+  - item_id: 11443  # girlish hair decoration
+    chance: 10000
+  - item_id: 11444  # protective charm
+    chance: 5000
+  - item_id: 2920  # torch
+    chance: 1005
+  - item_id: 3008  # crystal necklace
+    chance: 250
+  - item_id: 3030  # small ruby
+    chance: 120

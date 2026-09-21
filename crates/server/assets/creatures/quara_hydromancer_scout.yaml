@@ -1,0 +1,132 @@
+name: Quara Hydromancer Scout
+life: 1100
+speed: 95
+blood_type: blood
+armor: 30
+defense: 30
+experience: 800
+outfit:
+  id: 47
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 100
+      max: 100
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 100
+      max: 180
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 17
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: ice
+    damage:
+      min: 90
+      max: 150
+    target:
+      type: area
+      origin: self
+      shape: boxed
+    effect_id: 26
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 170
+      max: 240
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 26
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 0
+      max: 170
+    target:
+      type: target
+      range: 7
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: paralyse
+    target:
+      type: target
+      range: 7
+    speed:
+      min:
+        factor: -0.6
+        flat: 0
+      max:
+        factor: -0.6
+        flat: 0
+    duration_ticks: 300
+    effect_id: 14
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 100
+      max: 120
+corpse: 6066
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Qua hah tsh!
+    - Teech tsha tshul!
+    - Quara tsha Fach!
+    - Tssssha Quara!
+    - Blubber.
+    - Blup.
+loot:
+  - item_id: 3031  # gold coin
+    chance: 89950
+    amount: 140
+  - item_id: 3578  # fish
+    chance: 20252
+    amount: 3
+  - item_id: 11488  # quara eye
+    chance: 12007
+  - item_id: 3581  # shrimp
+    chance: 9993
+  - item_id: 3032  # small emerald
+    chance: 4980
+    amount: 2
+  - item_id: 3026  # white pearl
+    chance: 2880
+  - item_id: 3027  # black pearl
+    chance: 2614
+  - item_id: 5895  # fish fin
+    chance: 2076
+  - item_id: 3313  # obsidian lance
+    chance: 1528
+  - item_id: 3098  # ring of healing
+    chance: 971
+  - item_id: 3073  # wand of cosmic energy
+    chance: 890
+  - item_id: 3370  # knight armor
+    chance: 514

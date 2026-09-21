@@ -1,0 +1,42 @@
+name: Deepling Worker
+life: 190
+speed: 105
+blood_type: blood
+armor: 10
+defense: 10
+experience: 130
+outfit:
+  id: 470
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 80
+  element: physical
+corpse: 14094
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Qjell afar gou jey!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 70000
+    amount: 25
+  - item_id: 3032  # small emerald
+    chance: 110
+    amount: 3
+  - item_id: 3578  # fish
+    chance: 12020
+    amount: 3
+  - item_id: 5895  # fish fin
+    chance: 350
+  - item_id: 12683  # heavy trident
+    chance: 510
+  - item_id: 12730  # eye of a deepling
+    chance: 283
+  - item_id: 14017  # deepling scales
+    chance: 6950

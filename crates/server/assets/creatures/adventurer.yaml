@@ -1,0 +1,20 @@
+name: Adventurer
+life: 65
+speed: 53
+blood_type: blood
+armor: 0
+defense: 0
+experience: 0
+outfit:
+  id: 129
+  colors: [93, 15, 72, 80]
+melee:
+  damage:
+    min: 0
+    max: 0
+  element: physical
+corpse: 18034
+flee_threshold: 65
+say:
+  cooldown: 100
+  chance: 0

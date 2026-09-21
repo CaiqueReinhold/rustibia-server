@@ -1,0 +1,274 @@
+name: Apocalypse
+life: 125000
+speed: 190
+blood_type: blood
+armor: 188
+defense: 145
+experience: 30000
+outfit:
+  id: 12
+  colors: [58, 13, 58, 85]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 3500
+  element: physical
+abilities:
+  - cooldown: 20
+    chance: 8000
+    type: attack
+    element: death
+    damage:
+      min: 800
+      max: 1900
+    target:
+      type: area
+      origin: self
+      shape: radius8
+    effect_id: 18
+  - cooldown: 20
+    chance: 12000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    speed:
+      min:
+        factor: -0.85
+        flat: 0
+      max:
+        factor: -0.85
+        flat: 0
+    duration_ticks: 1200
+    effect_id: 21
+  - cooldown: 20
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 600
+      max: 1450
+    target:
+      type: area
+      origin: self
+      shape: circle3
+    effect_id: 10
+  - cooldown: 60
+    chance: 13000
+    type: attack
+    element: fire
+    damage:
+      min: 300
+      max: 800
+    target:
+      type: area
+      origin: target
+      shape: radius7
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 60
+    chance: 8000
+    type: attack
+    element: mana
+    damage:
+      min: 600
+      max: 700
+    target:
+      type: area
+      origin: self
+      shape: radius8
+    effect_id: 38
+  - cooldown: 40
+    chance: 9000
+    type: attack
+    element: energy
+    damage:
+      min: 400
+      max: 800
+    target:
+      type: area
+      origin: self
+      shape: beam8
+    effect_id: 14
+  - cooldown: 100
+    chance: 18000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 800
+        max: 1000
+      interval: 80
+    target:
+      type: target
+      range: 7
+    effect_id: 17
+  - cooldown: 40
+    chance: 6000
+    type: attack
+    element: death
+    damage:
+      min: 600
+      max: 1200
+    target:
+      type: area
+      origin: self
+      shape: radius8
+    effect_id: 15
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 2000
+      max: 4000
+  - cooldown: 40
+    chance: 5000
+    type: heal
+    life:
+      min: 6000
+      max: 10000
+  - cooldown: 40
+    chance: 8000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.48
+        flat: 0
+      max:
+        factor: 0.48
+        flat: 0
+    duration_ticks: 120
+    effect_id: 14
+corpse: 6068
+flee_threshold: 3000
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - BOW TO THE POWER OF THE RUTHLESS SEVEN!
+    - DESTRUCTION!
+    - CHAOS!
+    - DEATH TO ALL!
+loot:
+  - item_id: 2848  # purple tome
+    chance: 2600
+  - item_id: 2903  # golden mug
+    chance: 7500
+  - item_id: 2993  # teddy bear
+    chance: 14500
+  - item_id: 3006  # ring of the sky
+    chance: 3500
+  - item_id: 3007  # crystal ring
+    chance: 5500
+  - item_id: 3008  # crystal necklace
+    chance: 1500
+  - item_id: 3025  # ancient amulet
+    chance: 3500
+  - item_id: 3026  # white pearl
+    chance: 12500
+    amount: 15
+  - item_id: 3027  # black pearl
+    chance: 15000
+    amount: 15
+  - item_id: 3028  # small diamond
+    chance: 9500
+    amount: 5
+  - item_id: 3029  # small sapphire
+    chance: 13500
+    amount: 10
+  - item_id: 3031  # gold coin
+    chance: 99900
+    amount: 400
+  - item_id: 3032  # small emerald
+    chance: 15500
+    amount: 10
+  - item_id: 3033  # small amethyst
+    chance: 13500
+    amount: 20
+  - item_id: 3034  # talon
+    chance: 14000
+    amount: 7
+  - item_id: 3038  # green gem
+    chance: 1500
+  - item_id: 3041  # blue gem
+    chance: 1500
+  - item_id: 3046  # magic light wand
+    chance: 11500
+  - item_id: 3048  # might ring
+    chance: 5000
+  - item_id: 3049  # stealth ring
+    chance: 9500
+  - item_id: 3051  # energy ring
+    chance: 13500
+  - item_id: 3054  # silver amulet
+    chance: 13000
+  - item_id: 3055  # platinum amulet
+    chance: 4500
+  - item_id: 3058  # strange symbol
+    chance: 2500
+  - item_id: 3060  # orb
+    chance: 12000
+  - item_id: 3061  # life crystal
+    chance: 1000
+  - item_id: 3062  # mind stone
+    chance: 4000
+  - item_id: 3063  # gold ring
+    chance: 8000
+  - item_id: 3066  # snakebite rod
+    chance: 3500
+  - item_id: 3069  # necrotic rod
+    chance: 3500
+  - item_id: 3070  # moonlight rod
+    chance: 3500
+  - item_id: 3072  # wand of decay
+    chance: 2500
+  - item_id: 3076  # crystal ball
+    chance: 2500
+  - item_id: 3079  # boots of haste
+    chance: 4000
+  - item_id: 3081  # stone skin amulet
+    chance: 4000
+  - item_id: 3084  # protection amulet
+    chance: 4500
+  - item_id: 3098  # ring of healing
+    chance: 13000
+  - item_id: 3116  # big bone
+    chance: 9000
+  - item_id: 3265  # two handed sword
+    chance: 20000
+  - item_id: 3275  # double axe
+    chance: 20000
+  - item_id: 3281  # giant sword
+    chance: 12500
+  - item_id: 3284  # ice rapier
+    chance: 7500
+  - item_id: 3290  # silver dagger
+    chance: 15500
+  - item_id: 3306  # golden sickle
+    chance: 4500
+  - item_id: 3309  # thunder hammer
+    chance: 13500
+  - item_id: 3320  # fire axe
+    chance: 17000
+  - item_id: 3322  # dragon hammer
+    chance: 4500
+  - item_id: 3324  # skull staff
+    chance: 5000
+  - item_id: 3356  # devil helmet
+    chance: 11000
+  - item_id: 3364  # golden legs
+    chance: 5000
+  - item_id: 3366  # magic plate armor
+    chance: 3000
+  - item_id: 3414  # mastermind shield
+    chance: 7500
+  - item_id: 3420  # demon shield
+    chance: 15500
+  - item_id: 3002  # voodoo doll
+    chance: 100

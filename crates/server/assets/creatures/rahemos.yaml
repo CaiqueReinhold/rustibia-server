@@ -1,0 +1,123 @@
+name: Rahemos
+life: 3700
+speed: 160
+blood_type: blood
+armor: 40
+defense: 40
+experience: 3100
+outfit:
+  id: 87
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 750
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 65
+      max: 65
+    interval: 80
+abilities:
+  - cooldown: 60
+    chance: 7000
+    type: attack
+    element: death
+    damage:
+      min: 75
+      max: 750
+    target:
+      type: target
+      range: 1
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: energy
+    damage:
+      min: 60
+      max: 600
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+    effect_id: 12
+  - cooldown: 60
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 60
+      max: 600
+    target:
+      type: target
+      range: 7
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 20
+    chance: 12000
+    type: paralyse
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    speed:
+      min:
+        factor: -0.65
+        flat: 0
+      max:
+        factor: -0.65
+        flat: 0
+    duration_ticks: 1200
+    effect_id: 21
+  - cooldown: 20
+    chance: 20000
+    type: heal
+    life:
+      min: 200
+      max: 500
+corpse: 6031
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - It's a kind of magic.
+    - Abrah Kadabrah!
+    - Nothing hidden in my wrappings.
+    - It's not a trick, it's Rahemos.
+    - Meet my friend from hell!
+    - I will make you believe in magic.
+loot:
+  - item_id: 3235  # ancient rune
+    chance: 100000
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 100
+  - item_id: 3031  # gold coin
+    chance: 30000
+    amount: 42
+  - item_id: 238  # great mana potion
+    chance: 9000
+  - item_id: 3033  # small amethyst
+    chance: 8000
+    amount: 3
+  - item_id: 3098  # ring of healing
+    chance: 4000
+  - item_id: 3573  # magician hat
+    chance: 1600
+  - item_id: 3036  # violet gem
+    chance: 1100
+  - item_id: 3060  # orb
+    chance: 300
+  - item_id: 3335  # twin axe
+    chance: 200
+  - item_id: 3068  # crystal wand
+    chance: 150
+  - item_id: 10290  # mini mummy
+    chance: 150

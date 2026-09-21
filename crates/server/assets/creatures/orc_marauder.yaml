@@ -1,0 +1,71 @@
+name: Orc Marauder
+life: 235
+speed: 105
+blood_type: blood
+armor: 25
+defense: 25
+experience: 205
+outfit:
+  id: 342
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 100
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 50000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 100
+    target:
+      type: target
+      range: 7
+    missile_id: 23
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.35
+        flat: 0
+      max:
+        factor: 0.35
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 10334
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grrrrrr
+loot:
+  - item_id: 3031  # gold coin
+    chance: 55000
+    amount: 90
+  - item_id: 3313  # obsidian lance
+    chance: 1110
+  - item_id: 3316  # orcish axe
+    chance: 1320
+  - item_id: 3349  # crossbow
+    chance: 440
+  - item_id: 3350  # bow
+    chance: 5210
+  - item_id: 3577  # meat
+    chance: 24600
+  - item_id: 8029  # silkweaver bow
+    chance: 70
+  - item_id: 10196  # orc tooth
+    chance: 3890
+  - item_id: 10407  # shaggy tail
+    chance: 10090
+  - item_id: 11451  # broken crossbow
+    chance: 4830
+  - item_id: 11479  # orc leather
+    chance: 3800

@@ -1,0 +1,46 @@
+name: Orc Warrior
+life: 125
+speed: 95
+blood_type: blood
+armor: 8
+defense: 8
+experience: 50
+outfit:
+  id: 7
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+corpse: 5979
+flee_threshold: 10
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Grow truk grrrr.
+    - Trak grrrr brik.
+    - Alk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 64165
+    amount: 15
+  - item_id: 3577  # meat
+    chance: 15373
+  - item_id: 11453  # broken helmet
+    chance: 9694
+  - item_id: 3358  # chain armor
+    chance: 7516
+  - item_id: 11479  # orc leather
+    chance: 3696
+  - item_id: 23986  # heavy old tome
+    chance: 1776
+  - item_id: 11480  # skull belt
+    chance: 1001
+  - item_id: 10196  # orc tooth
+    chance: 681
+  - item_id: 3430  # copper shield
+    chance: 506
+  - item_id: 3299  # poison dagger
+    chance: 41

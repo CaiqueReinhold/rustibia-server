@@ -1,0 +1,86 @@
+name: Deepling Tyrant
+life: 4900
+speed: 130
+blood_type: blood
+armor: 45
+defense: 45
+experience: 4200
+outfit:
+  id: 442
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 501
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 375
+    target:
+      type: target
+      range: 7
+    missile_id: 25
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: ice
+    damage:
+      min: 180
+      max: 215
+    target:
+      type: target
+      range: 7
+    missile_id: 1
+    effect_id: 2
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 200
+      max: 400
+corpse: 13751
+flee_threshold: 20
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - QJELL NETA NA!!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 97
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 97
+  - item_id: 3035  # platinum coin
+    chance: 70000
+    amount: 4
+  - item_id: 238  # great mana potion
+    chance: 32640
+    amount: 3
+  - item_id: 239  # great health potion
+    chance: 33430
+    amount: 3
+  - item_id: 12730  # eye of a deepling
+    chance: 28850
+  - item_id: 14010  # deepling guard belt buckle
+    chance: 23100
+  - item_id: 14011  # deepling breaktime snack
+    chance: 34770
+  - item_id: 14043  # guardian axe
+    chance: 1420
+  - item_id: 14044  # deepling claw
+    chance: 29960
+  - item_id: 14142  # foxtail
+    chance: 80
+  - item_id: 14248  # deepling backpack
+    chance: 510
+  - item_id: 14250  # deepling squelcher
+    chance: 1540

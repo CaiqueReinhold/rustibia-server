@@ -1,0 +1,159 @@
+name: Choking Fear
+life: 5800
+speed: 130
+blood_type: blood
+armor: 35
+defense: 35
+experience: 4700
+outfit:
+  id: 586
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 499
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 600
+      max: 600
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 700
+        max: 900
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: wave5_3
+    effect_id: 17
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 300
+    target:
+      type: area
+      origin: target
+      shape: single
+    missile_id: 41
+    effect_id: 33
+  - cooldown: 40
+    chance: 20000
+    type: paralyse
+    target:
+      type: area
+      origin: target
+      shape: single
+    speed:
+      min:
+        factor: -0.8
+        flat: 0
+      max:
+        factor: -0.8
+        flat: 0
+    duration_ticks: 300
+    missile_id: 41
+    effect_id: 33
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: mana
+    damage:
+      min: 130
+      max: 300
+    target:
+      type: area
+      origin: self
+      shape: circle2
+    effect_id: 20
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 250
+      max: 500
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 32
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 80
+      max: 150
+corpse: 20159
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Ah, sweet air... don't you miss it?
+    - Murr tat muuza!
+    - kchh
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 3035  # platinum coin
+    chance: 100000
+    amount: 8
+  - item_id: 3051  # energy ring
+    chance: 3000
+  - item_id: 3052  # life ring
+    chance: 4200
+  - item_id: 3098  # ring of healing
+    chance: 3000
+  - item_id: 3415  # guardian shield
+    chance: 1540
+  - item_id: 3344  # beastslayer axe
+    chance: 3290
+  - item_id: 5913  # brown piece of cloth
+    chance: 6000
+  - item_id: 5914  # yellow piece of cloth
+    chance: 3500
+  - item_id: 238  # great mana potion
+    chance: 20000
+    amount: 3
+  - item_id: 813  # terra boots
+    chance: 720
+  - item_id: 7642  # great spirit potion
+    chance: 20000
+    amount: 3
+  - item_id: 7643  # ultimate health potion
+    chance: 19000
+    amount: 3
+  - item_id: 8074  # spellbook of mind control
+    chance: 720
+  - item_id: 8082  # underworld rod
+    chance: 720
+  - item_id: 8084  # springsprout rod
+    chance: 510
+  - item_id: 16121  # green crystal shard
+    chance: 1540
+  - item_id: 16123  # brown crystal splinter
+    chance: 52500
+    amount: 2
+  - item_id: 16124  # blue crystal splinter
+    chance: 10000
+    amount: 3
+  - item_id: 20062  # cluster of solace
+    chance: 620
+  - item_id: 20202  # dead weight
+    chance: 14180
+  - item_id: 20206  # hemp rope
+    chance: 14180

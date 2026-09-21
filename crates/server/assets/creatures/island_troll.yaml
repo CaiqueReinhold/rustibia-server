@@ -1,0 +1,52 @@
+name: Island Troll
+life: 50
+speed: 63
+blood_type: blood
+armor: 6
+defense: 6
+experience: 20
+outfit:
+  id: 282
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+corpse: 865
+flee_threshold: 15
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Hmmm, turtles
+    - Hmmm, dogs
+    - Hmmm, worms
+    - Groar
+    - Gruntz!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 59656
+    amount: 10
+  - item_id: 5901  # wood
+    chance: 30727
+  - item_id: 3277  # spear
+    chance: 20007
+  - item_id: 3268  # hand axe
+    chance: 17701
+  - item_id: 3412  # wooden shield
+    chance: 15244
+  - item_id: 3552  # leather boots
+    chance: 9794
+  - item_id: 3355  # leather helmet
+    chance: 9670
+  - item_id: 3003  # rope
+    chance: 7889
+  - item_id: 3336  # studded club
+    chance: 5182
+  - item_id: 5096  # mango
+    chance: 5102
+  - item_id: 901  # marlin
+    chance: 71
+  - item_id: 3054  # silver amulet
+    chance: 71

@@ -1,0 +1,83 @@
+name: Adept of the Cult
+life: 430
+speed: 107
+blood_type: blood
+armor: 20
+defense: 20
+experience: 400
+outfit:
+  id: 194
+  colors: [95, 94, 94, 19]
+melee:
+  damage:
+    min: 0
+    max: 90
+  element: physical
+  condition:
+    type: decaying
+    element: earth
+    damage:
+      min: 2
+      max: 2
+    interval: 80
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: death
+    damage:
+      min: 70
+      max: 150
+    target:
+      type: target
+      range: 7
+    missile_id: 15
+    effect_id: 21
+  - cooldown: 60
+    chance: 20000
+    type: heal
+    life:
+      min: 45
+      max: 60
+corpse: 18030
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Feel the power of the cult!
+    - Praise the voodoo!
+    - Power to the cult!
+loot:
+  - item_id: 2828  # book
+    chance: 940
+  - item_id: 3030  # small ruby
+    chance: 320
+  - item_id: 3031  # gold coin
+    chance: 65520
+    amount: 60
+  - item_id: 3053  # time ring
+    chance: 420
+  - item_id: 3054  # silver amulet
+    chance: 1020
+  - item_id: 3067  # hailstorm rod
+    chance: 220
+  - item_id: 3311  # clerical mace
+    chance: 1260
+  - item_id: 3566  # red robe
+    chance: 80
+  - item_id: 5810  # pirate voodoo doll
+    chance: 1730
+  - item_id: 6089  # music sheet
+    chance: 700
+  - item_id: 7424  # lunar staff
+    chance: 120
+  - item_id: 7426  # amber staff
+    chance: 680
+  - item_id: 9639  # cultish robe
+    chance: 10080
+  - item_id: 11455  # cultish symbol
+    chance: 90
+  - item_id: 11492  # rope belt
+    chance: 10000
+  - item_id: 11652  # broken key ring
+    chance: 120

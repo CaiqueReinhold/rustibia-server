@@ -1,0 +1,102 @@
+name: Werewolf
+life: 1955
+speed: 140
+blood_type: blood
+armor: 36
+defense: 36
+experience: 1900
+outfit:
+  id: 308
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 350
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: death
+    damage:
+      min: 80
+      max: 200
+    target:
+      type: area
+      origin: self
+      shape: wave4_2
+    effect_id: 20
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 120
+      max: 225
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.4
+        flat: 0
+      max:
+        factor: 0.4
+        flat: 0
+    duration_ticks: 100
+    effect_id: 23
+corpse: 18099
+flee_threshold: 300
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - BLOOD!
+    - HRAAAAAAAAAARRRRRR!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 98760
+    amount: 301
+  - item_id: 22052  # werewolf fangs
+    chance: 14788
+  - item_id: 10317  # werewolf fur
+    chance: 9757
+  - item_id: 3410  # plate shield
+    chance: 9645
+    amount: 2
+  - item_id: 8895  # rusted armor
+    chance: 7958
+  - item_id: 3725  # brown mushroom
+    chance: 6903
+  - item_id: 5897  # wolf paw
+    chance: 5211
+  - item_id: 236  # strong health potion
+    chance: 5171
+    amount: 2
+  - item_id: 3741  # troll green
+    chance: 4987
+  - item_id: 3269  # halberd
+    chance: 3072
+  - item_id: 7643  # ultimate health potion
+    chance: 2016
+  - item_id: 7439  # berserk potion
+    chance: 938
+  - item_id: 3081  # stone skin amulet
+    chance: 882
+  - item_id: 3055  # platinum amulet
+    chance: 799
+  - item_id: 22083  # moonlight crystals
+    chance: 726
+  - item_id: 3053  # time ring
+    chance: 581
+  - item_id: 3326  # epee
+    chance: 475
+  - item_id: 7383  # relic sword
+    chance: 363
+  - item_id: 7428  # bonebreaker
+    chance: 268
+  - item_id: 7419  # dreaded cleaver
+    chance: 106

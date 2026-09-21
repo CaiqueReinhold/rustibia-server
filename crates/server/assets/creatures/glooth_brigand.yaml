@@ -1,0 +1,97 @@
+name: Glooth Brigand
+life: 2400
+speed: 140
+blood_type: blood
+armor: 23
+defense: 31
+experience: 1900
+outfit:
+  id: 137
+  colors: [114, 114, 110, 114]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 20000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 200
+    target:
+      type: target
+      range: 7
+    missile_id: 3
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 200
+      max: 250
+corpse: 21888
+say:
+  cooldown: 100
+  chance: 0
+loot:
+  - item_id: 7412  # butcher's axe
+    chance: 50
+  - item_id: 7419  # dreaded cleaver
+    chance: 100
+  - item_id: 281  # giant shimmering pearl
+    chance: 1500
+  - item_id: 21183  # glooth amulet
+    chance: 960
+  - item_id: 21180  # glooth axe
+    chance: 980
+  - item_id: 21203  # glooth bag
+    chance: 9830
+    amount: 2
+  - item_id: 21179  # glooth blade
+    chance: 1000
+  - item_id: 21814  # glooth capsule
+    chance: 3100
+  - item_id: 21178  # glooth club
+    chance: 1000
+  - item_id: 21143  # glooth sandwich
+    chance: 2480
+  - item_id: 21158  # glooth spear
+    chance: 1000
+  - item_id: 21146  # glooth steak
+    chance: 2500
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 100
+  - item_id: 238  # great mana potion
+    chance: 3490
+  - item_id: 7642  # great spirit potion
+    chance: 3540
+  - item_id: 3038  # green gem
+    chance: 200
+  - item_id: 21167  # heat core
+    chance: 160
+  - item_id: 7386  # mercenary sword
+    chance: 150
+  - item_id: 3035  # platinum coin
+    chance: 79920
+    amount: 3
+  - item_id: 21165  # rubber cap
+    chance: 640
+  - item_id: 21816  # tainted glooth capsule
+    chance: 8070
+  - item_id: 814  # terra amulet
+    chance: 400
+  - item_id: 813  # terra boots
+    chance: 490
+  - item_id: 830  # terra hood
+    chance: 710
+  - item_id: 812  # terra legs
+    chance: 500
+  - item_id: 811  # terra mantle
+    chance: 600
+  - item_id: 7643  # ultimate health potion
+    chance: 3450

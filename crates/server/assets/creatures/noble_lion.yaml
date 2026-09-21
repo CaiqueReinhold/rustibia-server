@@ -1,0 +1,46 @@
+name: Noble Lion
+life: 1000
+speed: 115
+blood_type: blood
+armor: 27
+defense: 27
+experience: 400
+outfit:
+  id: 570
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 165
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.26
+        flat: 0
+      max:
+        factor: 0.26
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 19103
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Groarrrr! Rwarrrr!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 100000
+    amount: 74
+  - item_id: 3577  # meat
+    chance: 25278
+  - item_id: 3582  # ham
+    chance: 23609
+  - item_id: 9691  # lion's mane
+    chance: 20581

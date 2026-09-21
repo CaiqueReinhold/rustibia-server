@@ -1,0 +1,97 @@
+name: Vampire Viscount
+life: 1200
+speed: 110
+blood_type: blood
+armor: 42
+defense: 42
+experience: 800
+outfit:
+  id: 555
+  colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
+melee:
+  damage:
+    min: 0
+    max: 150
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: death
+    damage:
+      min: 50
+      max: 100
+    target:
+      type: area
+      origin: target
+      shape: boxed
+    missile_id: 11
+    effect_id: 18
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    condition:
+      type: decaying
+      element: physical
+      damage:
+        min: 320
+        max: 560
+      interval: 80
+    target:
+      type: area
+      origin: self
+      shape: radius6
+    effect_id: 67
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 80
+    effect_id: 14
+corpse: 18958
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Prepare to BLEED!
+    - Don't struggle. We don't want to waste a drop of blood now, do we?
+    - Ah, refreshments have arrived!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 84797
+    amount: 50
+  - item_id: 9685  # vampire teeth
+    chance: 7712
+  - item_id: 237  # strong mana potion
+    chance: 7447
+  - item_id: 236  # strong health potion
+    chance: 6103
+  - item_id: 18924  # tooth file
+    chance: 5321
+  - item_id: 18927  # vampire's cape chain
+    chance: 3922
+  - item_id: 3030  # small ruby
+    chance: 3338
+    amount: 2
+  - item_id: 11449  # blood preservation
+    chance: 2930
+  - item_id: 3027  # black pearl
+    chance: 2666
+  - item_id: 3284  # ice rapier
+    chance: 815
+  - item_id: 3039  # red gem
+    chance: 364
+  - item_id: 5911  # red piece of cloth
+    chance: 275
+  - item_id: 3434  # vampire shield
+    chance: 209

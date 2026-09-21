@@ -1,0 +1,27 @@
+name: Sandcrawler
+life: 30
+speed: 85
+blood_type: poison
+armor: 10
+defense: 10
+experience: 20
+outfit:
+  id: 350
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 3
+  element: physical
+corpse: 10440
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Chrk chrk!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 33333
+    amount: 6
+  - item_id: 10456  # sandcrawler shell
+    chance: 2173

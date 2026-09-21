@@ -1,0 +1,78 @@
+name: Frost Giant
+life: 270
+speed: 95
+blood_type: blood
+armor: 22
+defense: 22
+experience: 150
+outfit:
+  id: 257
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 110
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 90
+    target:
+      type: target
+      range: 7
+    missile_id: 12
+  - cooldown: 40
+    chance: 15000
+    type: haste
+    target:
+      type: self
+    speed:
+      min:
+        factor: 0.3
+        flat: 0
+      max:
+        factor: 0.3
+        flat: 0
+    duration_ticks: 100
+    effect_id: 14
+corpse: 7330
+say:
+  cooldown: 20
+  chance: 5000
+  sentences:
+    - Hmm Humansoup!
+    - Stand still ya tasy snack!
+    - Joh Thun!
+    - "H\u00f6rre Sjan Flan!"
+    - "Br\u00f6re Sm\u00f6de!"
+    - Forle Bramma
+loot:
+  - item_id: 3031  # gold coin
+    chance: 82076
+    amount: 40
+  - item_id: 3294  # short sword
+    chance: 8228
+  - item_id: 9658  # frost giant pelt
+    chance: 4926
+  - item_id: 3577  # meat
+    chance: 4919
+  - item_id: 7441  # ice cube
+    chance: 2204
+  - item_id: 3413  # battle shield
+    chance: 1386
+  - item_id: 266  # health potion
+    chance: 905
+  - item_id: 3269  # halberd
+    chance: 556
+  - item_id: 7460  # norse shield
+    chance: 287
+  - item_id: 3384  # dark helmet
+    chance: 169
+  - item_id: 3093  # club ring
+    chance: 119
+  - item_id: 7290  # shard
+    chance: 62

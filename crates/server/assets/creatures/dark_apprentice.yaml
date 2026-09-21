@@ -1,0 +1,83 @@
+name: Dark Apprentice
+life: 225
+speed: 95
+blood_type: blood
+armor: 15
+defense: 15
+experience: 100
+outfit:
+  id: 133
+  colors: [78, 57, 95, 115]
+melee:
+  damage:
+    min: 0
+    max: 60
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 2
+      max: 26
+    target:
+      type: target
+      range: 7
+    missile_id: 4
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: energy
+    damage:
+      min: 10
+      max: 20
+    target:
+      type: target
+      range: 7
+    missile_id: 5
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 24
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+  - cooldown: 40
+    chance: 15000
+    type: heal
+    life:
+      min: 30
+      max: 40
+corpse: 18082
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Outch!
+    - Oops, I did it again.
+    - From the spirits that I called Sir, deliver me!
+    - I must dispose of my masters enemies!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 75041
+    amount: 45
+  - item_id: 34237  # dead frog
+    chance: 11917
+  - item_id: 3147  # blank rune
+    chance: 8034
+    amount: 3
+  - item_id: 268  # mana potion
+    chance: 2995
+  - item_id: 266  # health potion
+    chance: 2884
+  - item_id: 3075  # wand of dragonbreath
+    chance: 2004
+  - item_id: 3072  # wand of decay
+    chance: 108
+  - item_id: 12308  # reins
+    chance: 7

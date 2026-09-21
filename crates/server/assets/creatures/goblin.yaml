@@ -1,0 +1,64 @@
+name: Goblin
+life: 50
+speed: 60
+blood_type: blood
+armor: 6
+defense: 6
+experience: 25
+outfit:
+  id: 61
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 10
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: physical
+    damage:
+      min: 0
+      max: 25
+    target:
+      type: target
+      range: 7
+    missile_id: 10
+corpse: 6002
+flee_threshold: 35
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Me have him!
+    - Zig Zag! Gobo attack!
+    - Help! Goblinkiller!
+    - Bugga! Bugga!
+    - Me green, me mean!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50250
+    amount: 9
+  - item_id: 1781  # small stone
+    chance: 15265
+  - item_id: 3578  # fish
+    chance: 13004
+  - item_id: 3462  # small axe
+    chance: 9863
+  - item_id: 3294  # short sword
+    chance: 8832
+  - item_id: 3337  # bone club
+    chance: 4934
+  - item_id: 3361  # leather armor
+    chance: 2514
+  - item_id: 3355  # leather helmet
+    chance: 1947
+  - item_id: 3267  # dagger
+    chance: 1795
+  - item_id: 3115  # bone
+    chance: 1065
+  - item_id: 3120  # mouldy cheese
+    chance: 999
+  - item_id: 11539  # goblin ear
+    chance: 951

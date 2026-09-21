@@ -1,0 +1,51 @@
+name: Hot Dog
+life: 505
+speed: 150
+blood_type: blood
+armor: 1
+defense: 2
+experience: 190
+outfit:
+  id: 32
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 55
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    element: fire
+    damage:
+      min: 30
+      max: 60
+    target:
+      type: area
+      origin: self
+      shape: wave8_3
+    effect_id: 16
+  - cooldown: 20
+    chance: 30000
+    type: attack
+    element: fire
+    damage:
+      min: 50
+      max: 50
+    target:
+      type: target
+      range: 7
+    effect_id: 37
+corpse: 5971
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Wuff Wuff
+    - Grrr Wuff
+    - Show me how good you are without some rolled newspaper!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 50000
+    amount: 75

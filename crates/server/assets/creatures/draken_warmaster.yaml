@@ -1,0 +1,76 @@
+name: Draken Warmaster
+life: 4150
+speed: 162
+blood_type: blood
+armor: 40
+defense: 40
+experience: 2400
+outfit:
+  id: 334
+  colors: [0, 0, 0, 0]
+melee:
+  damage:
+    min: 0
+    max: 300
+  element: physical
+abilities:
+  - cooldown: 40
+    chance: 10000
+    type: attack
+    element: fire
+    damage:
+      min: 240
+      max: 520
+    target:
+      type: area
+      origin: self
+      shape: wave4_3
+    effect_id: 6
+  - cooldown: 40
+    chance: 10000
+    type: heal
+    life:
+      min: 510
+      max: 600
+corpse: 10190
+say:
+  cooldown: 100
+  chance: 10000
+  sentences:
+    - Attack aggrezzively! Dezztroy zze intruderzz!
+    - Hizzzzz!
+loot:
+  - item_id: 3031  # gold coin
+    chance: 97355
+    amount: 200
+  - item_id: 3035  # platinum coin
+    chance: 50252
+    amount: 5
+  - item_id: 3577  # meat
+    chance: 30158
+  - item_id: 10404  # bone shoulderplate
+    chance: 12048
+  - item_id: 10406  # Zaoan halberd
+    chance: 8001
+  - item_id: 10405  # warmaster's wristguards
+    chance: 6993
+  - item_id: 239  # great health potion
+    chance: 5049
+    amount: 3
+  - item_id: 7643  # ultimate health potion
+    chance: 3981
+  - item_id: 10386  # Zaoan shoes
+    chance: 2026
+  - item_id: 3428  # tower shield
+    chance: 1991
+  - item_id: 3030  # small ruby
+    chance: 1573
+    amount: 5
+  - item_id: 10387  # Zaoan legs
+    chance: 943
+  - item_id: 10388  # drakinata
+    chance: 827
+  - item_id: 10384  # Zaoan armor
+    chance: 791
+  - item_id: 3006  # ring of the sky
+    chance: 208
