@@ -2,286 +2,636 @@
   name: poison field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 248
+      duration: 4960
       decay_to: 0
+    field:
+      type: decaying
+      element: earth
+      damage:
+        min: 100
+        max: 100
+      interval: 100
+      start: 5
 - id: 1998
   name: campfire
   article: a
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 20
+        max: 20
+      interval: 80
+      count: 2
 - id: 1999
   name: campfire
   article: a
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 20
+        max: 20
+      interval: 80
+      count: 2
 - id: 2000
   name: campfire
   article: a
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 20
+        max: 20
+      interval: 80
+      count: 2
 - id: 2118
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 2119
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 20
+        max: 20
+      interval: 200
+      count: 7
 - id: 2119
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 148
+      duration: 2960
       decay_to: 2120
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 2120
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 98
+      duration: 1960
       decay_to: 0
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 0
+        max: 0
+      interval: 20
+      count: 1
 - id: 2121
   name: poison field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: decaying
+      element: earth
+      damage:
+        min: 100
+        max: 100
+      interval: 100
+      start: 5
 - id: 2122
   name: energy field
   article: an
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 98
+      duration: 1960
       decay_to: 0
+    field:
+      type: flat
+      element: energy
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1
 - id: 2123
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 2124
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 2125
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 0
+        max: 0
+      interval: 20
+      count: 1
 - id: 2126
   name: energy field
   article: an
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: decaying
+      element: energy
+      damage:
+        min: 100
+        max: 100
+      interval: 100
+      start: 5
 - id: 2128
   name: magic wall
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 20
+      duration: 400
       decay_to: 0
 - id: 2129
   name: magic wall
   article: a
   flags:
-    - unpass
-    - unmove
+  - unpass
+  - unmove
 - id: 2130
   name: rush wood
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 20
+      duration: 400
       decay_to: 0
 - id: 2131
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 2132
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 20
+        max: 20
+      interval: 200
+      count: 7
 - id: 2132
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 2133
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 2133
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 0
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 0
+        max: 0
+      interval: 20
+      count: 1
 - id: 2134
   name: poison gas
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 0
+    field:
+      type: decaying
+      element: earth
+      damage:
+        min: 100
+        max: 100
+      interval: 100
+      start: 5
 - id: 2135
   name: energy field
   article: an
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 0
+    field:
+      type: flat
+      element: energy
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1
 - id: 2136
   name: smoke
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
 - id: 2137
   name: searing fire
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 2138
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 2138
   name: searing fire
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 2140
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 2140
   name: ashes
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 2137
 - id: 7465
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7466
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7467
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7468
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7469
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7470
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7471
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7472
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 7473
   name: searing fire
   article: a
-  flags: []
+  flags:
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 300
+        max: 300
+      interval: 20
+      count: 1
 - id: 10069
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 10070
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 10071
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
+  - unreplaceable
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 10181
   name: magic wall
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 20
+      duration: 400
       decay_to: 0
 - id: 10182
   name: rush wood
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 45
+      duration: 900
       decay_to: 0
 - id: 21465
   name: fire field
   article: a
   flags:
-    - unmove
+  - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 2132
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 10
+        max: 10
+      interval: 200
+      count: 7
 - id: 23365
   name: fire trap
   article: an
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: fire
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1
 - id: 23366
   name: energy trap
   article: an
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: energy
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1
 - id: 23367
   name: toxic trap
   article: a
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: earth
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1
 - id: 23368
   name: poison trap
   article: a
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: decaying
+      element: earth
+      damage:
+        min: 100
+        max: 100
+      interval: 100
+      start: 5
 - id: 31380
   name: energy field
   article: an
   flags:
-    - unmove
+  - unmove
+  attributes:
+    field:
+      type: flat
+      element: energy
+      damage:
+        min: 25
+        max: 25
+      interval: 200
+      count: 1

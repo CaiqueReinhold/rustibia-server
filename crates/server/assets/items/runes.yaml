@@ -26,6 +26,8 @@
   - take
   attributes:
     weight: 105
+    rune:
+      spell: 66
 - id: 3150
   name: spell rune
   article: a
@@ -186,6 +188,8 @@
   - take
   attributes:
     weight: 70
+    rune:
+      spell: 65
 - id: 3165
   name: paralyse rune
   article: a
@@ -208,6 +212,8 @@
   - take
   attributes:
     weight: 52
+    rune:
+      spell: 67
 - id: 3167
   name: spell rune
   article: a
@@ -268,6 +274,8 @@
   - take
   attributes:
     weight: 70
+    rune:
+      spell: 62
 - id: 3173
   name: poison bomb rune
   article: a
@@ -278,6 +286,8 @@
   - take
   attributes:
     weight: 105
+    rune:
+      spell: 63
 - id: 3174
   name: light magic missile rune
   article: a
@@ -312,6 +322,8 @@
   - take
   attributes:
     weight: 52
+    rune:
+      spell: 64
 - id: 3177
   name: convince creature rune
   article: a
@@ -436,6 +448,8 @@
   - take
   attributes:
     weight: 70
+    rune:
+      spell: 59
 - id: 3189
   name: fireball rune
   article: a
@@ -458,6 +472,8 @@
   - take
   attributes:
     weight: 52
+    rune:
+      spell: 61
 - id: 3191
   name: great fireball rune
   article: a
@@ -480,6 +496,8 @@
   - take
   attributes:
     weight: 105
+    rune:
+      spell: 60
 - id: 3193
   name: spell rune
   article: a

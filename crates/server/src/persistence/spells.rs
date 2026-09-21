@@ -10,9 +10,10 @@ use thiserror::Error;
 use crate::config::CONFIG;
 use crate::entities::combat::CombatElement;
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
+use crate::entities::items::ItemId;
 use crate::entities::spells::{
     ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
-    SpellGroup, SpellHealing, SpellId,
+    SpellField, SpellGroup, SpellHealing, SpellId,
 };
 use crate::entities::support::SupportCast;
 use crate::entities::targeting::TargetMode;
@@ -169,6 +170,15 @@ struct RawSupport {
     element: Option<CombatElement>,
     #[serde(default)]
     effect_id: Option<EffectId>,
+    #[serde(default)]
+    missile_id: Option<MissileId>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawField {
+    target: serde_yaml::Value,
+    item: ItemId,
     #[serde(default)]
     missile_id: Option<MissileId>,
 }
@@ -358,6 +368,14 @@ fn parse_effect(
                 )?,
             };
             Ok(SpellEffect::Healing(spell_healing))
+        }
+        "field" => {
+            let field: RawField = serde_yaml::from_value(value)?;
+            Ok(SpellEffect::Field(SpellField {
+                target: parse_target(id, name, field.target, shapes)?,
+                item: field.item,
+                missile_id: field.missile_id,
+            }))
         }
         other => {
             let Some(support_kind) = SupportKind::parse(other) else {
@@ -1081,5 +1099,63 @@ spells:
             ),
             "unexpected error: {error}"
         );
+    }
+
+    const FIELD_SPELL: &str = r#"
+spells:
+  - id: 9
+    name: Test Field Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 15
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: field
+      item: 7
+      target:
+        type: area
+        origin: target
+        shape: probe
+      missile_id: 4
+"#;
+
+    #[test]
+    fn a_field_spell_names_the_item_it_creates() {
+        let spells = load_spells_from_str(FIELD_SPELL, &shape("probe")).unwrap();
+
+        let SpellEffect::Field(field) = &spells[&SpellId(9)].effect else {
+            panic!("not a field spell");
+        };
+        assert_eq!(field.item, ItemId(7));
+        assert_eq!(field.missile_id, Some(MissileId(4)));
+        assert!(spells[&SpellId(9)].is_aimable());
+    }
+
+    #[test]
+    fn every_shipped_field_spell_creates_a_field() {
+        for spell in SPELLS.values() {
+            let SpellEffect::Field(field) = &spell.effect else {
+                continue;
+            };
+            let item = crate::persistence::items::ITEM_CONFIGS
+                .get(&field.item)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "{} creates item {}, which does not exist",
+                        spell.name, field.item
+                    )
+                });
+            assert!(
+                item.attr_field().is_some(),
+                "{} creates {} ({}), which is not a field",
+                spell.name,
+                item.name,
+                field.item
+            );
+        }
     }
 }

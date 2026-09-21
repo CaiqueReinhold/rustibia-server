@@ -2,6 +2,7 @@ use std::path::{Path, PathBuf};
 use std::{fs, io};
 
 pub mod areas;
+pub mod conditions;
 pub mod creatures;
 pub mod items;
 pub mod login;

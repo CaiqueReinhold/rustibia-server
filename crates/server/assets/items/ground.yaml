@@ -813,6 +813,13 @@
   attributes:
     tile_friction: 95
     floor_change: down
+- id: 470
+  name: nothing special
+  flags:
+  - ground
+  - unmove
+  attributes:
+    tile_friction: 95
 - id: 475
   name: closed trapdoor
   article: a
@@ -4463,6 +4470,14 @@
   - fullbank
   attributes:
     tile_friction: 100
+- id: 5404
+  name: ocean floor
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 250
 - id: 5405
   name: ocean floor
   flags:
@@ -6627,6 +6642,14 @@
   - fullbank
   attributes:
     tile_friction: 150
+- id: 9146
+  name: iron floor
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 100
 - id: 9174
   name: sand
   article: a
@@ -6661,6 +6684,14 @@
   - fullbank
   attributes:
     tile_friction: 100
+- id: 9290
+  name: iron floor
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 100
 - id: 9291
   name: ocean floor
   flags:
@@ -6669,6 +6700,14 @@
   - fullbank
   attributes:
     tile_friction: 500
+- id: 9305
+  name: tiled floor
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 100
 - id: 9481
   name: pavement
   flags:
@@ -8858,6 +8897,33 @@
   - fullbank
   attributes:
     tile_friction: 0
+- id: 12564
+  name: shallow water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 0
+- id: 12569
+  name: shallow water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 0
+- id: 12700
+  name: dirty water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 0
 - id: 12721
   name: bog water
   flags:
@@ -8876,6 +8942,14 @@
   - fullbank
   attributes:
     tile_friction: 130
+- id: 12746
+  name: pitch black gap
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 500
 - id: 12799
   name: ladder
   flags:
@@ -10801,6 +10875,54 @@
   - fullbank
   attributes:
     tile_friction: 0
+- id: 16484
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
+- id: 16485
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
+- id: 16486
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
+- id: 16487
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
+- id: 16488
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
+- id: 16489
+  name: grimy wooden plank
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 110
 - id: 16584
   name: wooden planks
   flags:
@@ -11223,6 +11345,13 @@
   - fullbank
   attributes:
     tile_friction: 100
+- id: 17970
+  name: nothing special
+  flags:
+  - ground
+  - unmove
+  attributes:
+    tile_friction: 110
 - id: 17982
   name: wooden floor
   article: a
@@ -11801,6 +11930,24 @@
   - fullbank
   attributes:
     tile_friction: 160
+- id: 19477
+  name: flowing water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 200
+- id: 19478
+  name: flowing water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 200
 - id: 19491
   name: small brook
   article: a
@@ -12397,6 +12544,15 @@
   - fullbank
   attributes:
     tile_friction: 170
+- id: 20012
+  name: flowing water
+  flags:
+  - ground
+  - unpass
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 200
 - id: 20025
   name: flowing water
   article: a
@@ -12407,6 +12563,13 @@
   - fullbank
   attributes:
     tile_friction: 200
+- id: 20028
+  name: nothing special
+  flags:
+  - ground
+  - unmove
+  attributes:
+    tile_friction: 95
 - id: 20125
   name: chalk
   article: a
@@ -12735,6 +12898,22 @@
   - fullbank
   attributes:
     tile_friction: 150
+- id: 20658
+  name: parquet floor
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 100
+- id: 20660
+  name: nothing special
+  flags:
+  - ground
+  - unpass
+  - unmove
+  attributes:
+    tile_friction: 1
 - id: 20712
   name: stone floor
   article: a
@@ -14693,6 +14872,13 @@
   attributes:
     tile_friction: 150
     floor_change: down
+- id: 23463
+  name: metal grate
+  flags:
+  - ground
+  - unmove
+  attributes:
+    tile_friction: 800
 - id: 23469
   name: vortex
   flags:
@@ -14717,6 +14903,15 @@
   - fullbank
   attributes:
     tile_friction: 110
+- id: 23472
+  name: viscous dirt
+  flags:
+  - ground
+  - unmove
+  - fullbank
+  attributes:
+    tile_friction: 1200
+
 - id: 23897
   name: stone floor
   article: a

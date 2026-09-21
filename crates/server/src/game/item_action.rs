@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use thiserror::Error;
 use tracing::{error, warn};
 
@@ -6,7 +8,7 @@ use crate::{
     entities::{
         agent::AgentKey,
         conditions::TimedCondition,
-        items::{Item, ItemAction, ItemFlag, ItemId, ItemRef},
+        items::{Item, ItemAction, ItemConfig, ItemFlag, ItemId, ItemRef},
         position::ItemPlacement,
     },
     game::{
@@ -48,11 +50,7 @@ pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {
         return;
     };
 
-    let new_item = if let Some(fluid) = item.fluid {
-        Item::new_fluid(config.clone(), fluid)
-    } else {
-        Item::new(config.clone(), 1)
-    };
+    let new_item = decayed_into(item, config.clone());
     check_decay(
         ctx.scheduled,
         &new_item,
@@ -72,6 +70,15 @@ pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {
         }
         ctx.rollback_to(mark);
     }
+}
+
+fn decayed_into(item: &Item, config: Arc<ItemConfig>) -> Item {
+    let mut next = match item.fluid {
+        Some(fluid) => Item::new_fluid(config, fluid),
+        None => Item::new(config, 1),
+    };
+    next.owner = item.owner;
+    next
 }
 
 /// Takes the raw command accumulator rather than a [`TickCtx`]: `damage::draw_blood` calls it
@@ -329,6 +336,29 @@ mod tests {
     use crate::entities::position::Position;
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
+    use std::sync::Arc;
+
+    #[test]
+    fn a_decayed_item_keeps_its_owner() {
+        let config = |id| {
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                "fire field".to_string(),
+                None,
+                None,
+                [],
+                Vec::new(),
+            ))
+        };
+        let owner = slotmap::SlotMap::<AgentKey, ()>::with_key().insert(());
+        let mut burning = Item::new(config(1), 1);
+        burning.owner = Some(owner);
+
+        let next = decayed_into(&burning, config(2));
+
+        assert_eq!(next.item_id, ItemId(2));
+        assert_eq!(next.owner, Some(owner));
+    }
 
     /// `into` comes from data -- a `transform(N)` attribute or a diggable's `id + 1` -- so
     /// an id the catalogue does not carry is reachable by editing an asset file.

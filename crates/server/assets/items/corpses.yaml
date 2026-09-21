@@ -19625,6 +19625,13 @@
     decay:
       duration: 10
       decay_to: 22108
+- id: 22117
+  name: remains of Feroxa
+  flags:
+  - container
+  - usable
+  - unmove
+
 - id: 22124
   name: remains of owin
   flags:

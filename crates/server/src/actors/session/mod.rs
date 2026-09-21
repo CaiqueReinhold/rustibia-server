@@ -287,7 +287,7 @@ impl SessionActor {
                 {
                     info!(session = self.session_id, "Player logged out cleanly");
                 } else {
-                    error!("Error on session command: {e}");
+                    error!(session = self.session_id, "Error on session command: {e}");
                 }
                 break;
             }
@@ -316,10 +316,6 @@ impl SessionActor {
     }
 
     async fn route_command(&mut self, cmd: SessionCommand) -> Result<()> {
-        info!(
-            session = self.session_id,
-            "Session received command: {:?}", cmd
-        );
         match cmd {
             SessionCommand::PlayerMessage(msg) => self.handle_client_message(msg).await,
             SessionCommand::Broadcast(msg) => self.route_broadcast(msg).await,
@@ -382,10 +378,6 @@ impl SessionActor {
     }
 
     async fn route_broadcast(&mut self, msg: BroadcastMessage) -> Result<()> {
-        info!(
-            session = self.session_id,
-            "Session received broadcast: {:?}", msg
-        );
         match msg {
             BroadcastMessage::AgentMoved {
                 agent_key,

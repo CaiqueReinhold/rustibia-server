@@ -53,7 +53,17 @@ pub enum AreasLoadError {
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct AreasFile {
-    areas: HashMap<AreaShapeId, Vec<String>>,
+    areas: HashMap<AreaShapeId, RawShape>,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum RawShape {
+    Plain(Vec<String>),
+    Directional {
+        straight: Vec<String>,
+        diagonal: Vec<String>,
+    },
 }
 
 // ── Conversion ────────────────────────────────────────────────────────────────
@@ -78,7 +88,7 @@ const ORIGIN_OUTSIDE: char = '0';
 /// that is (a burst arrow damages where it lands), `0` for one that is not (a wave leaves
 /// its caster's tile alone). Both anchor the deltas; only `@` becomes a tile. This is the
 /// one thing a mask says that its geometry cannot.
-fn parse_shape(name: &AreaShapeId, rows: &[String]) -> Result<AreaShape, AreasLoadError> {
+fn parse_mask(name: &AreaShapeId, rows: &[String]) -> Result<Box<[(i8, i8)]>, AreasLoadError> {
     let expected = rows.first().map_or(0, |row| row.chars().count());
     if expected == 0 {
         return Err(AreasLoadError::Empty { name: name.clone() });
@@ -139,7 +149,17 @@ fn parse_shape(name: &AreaShapeId, rows: &[String]) -> Result<AreaShape, AreasLo
         })
         .collect::<Result<Box<[(i8, i8)]>, AreasLoadError>>()?;
 
-    Ok(AreaShape::new(delta))
+    Ok(delta)
+}
+
+fn parse_raw(name: &AreaShapeId, raw: &RawShape) -> Result<AreaShape, AreasLoadError> {
+    match raw {
+        RawShape::Plain(rows) => Ok(AreaShape::new(parse_mask(name, rows)?)),
+        RawShape::Directional { straight, diagonal } => Ok(AreaShape::with_diagonal(
+            parse_mask(name, straight)?,
+            parse_mask(&format!("{name} diagonal"), diagonal)?,
+        )),
+    }
 }
 
 fn to_delta(name: &AreaShapeId, delta: isize) -> Result<i8, AreasLoadError> {
@@ -163,7 +183,7 @@ fn load_areas_from_str(
     let file: AreasFile = serde_yaml::from_str(contents)?;
     file.areas
         .iter()
-        .map(|(name, rows)| Ok((name.clone(), Arc::new(parse_shape(name, rows)?))))
+        .map(|(name, raw)| Ok((name.clone(), Arc::new(parse_raw(name, raw)?))))
         .collect()
 }
 
@@ -176,10 +196,42 @@ mod tests {
         load_areas_from_str(contents).unwrap()
     }
 
+    fn sorted_towards(shape: &AreaShape, offset: (i32, i32)) -> Vec<(i8, i8)> {
+        let mut delta = shape.get_delta_towards(offset, Facing::South).to_vec();
+        delta.sort_unstable();
+        delta
+    }
+
     fn sorted(shape: &AreaShape, facing: Facing) -> Vec<(i8, i8)> {
         let mut delta = shape.get_delta_facing(facing).to_vec();
         delta.sort_unstable();
         delta
+    }
+
+    /// TFS authors the diagonal mask facing north-west and rotates it like the straight one,
+    /// so a throw with both offsets non-zero reads the diagonal and a straight throw does not.
+    #[test]
+    fn a_shape_carries_a_diagonal_mask_of_its_own() {
+        let areas = load(
+            "areas:\n  wall:\n    straight:\n      - \"X@X\"\n    diagonal:\n      - \"  X\"\n      - \" @ \"\n      - \"X  \"\n",
+        );
+        let wall = &areas["wall"];
+
+        assert_eq!(
+            sorted_towards(wall, (-1, -1)),
+            [(-1, 1), (0, 0), (1, -1)],
+            "thrown north-west, the diagonal mask as authored"
+        );
+        assert_eq!(
+            sorted_towards(wall, (0, -3)),
+            [(-1, 0), (0, 0), (1, 0)],
+            "thrown north, the straight mask as authored"
+        );
+        assert_eq!(
+            sorted_towards(wall, (2, 0)),
+            [(0, -1), (0, 0), (0, 1)],
+            "thrown east, the straight mask turned a quarter"
+        );
     }
 
     #[test]

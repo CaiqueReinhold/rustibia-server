@@ -7,7 +7,9 @@ use crate::{
     constants::items::MAX_STACK_AMOUNT,
     entities::{
         Bounds,
+        agent::AgentKey,
         combat::{AmmoType, CombatElement, WeaponType},
+        conditions::ConditionSpec,
         effects::{AreaShape, EffectId, MissileId},
         inventory::InventorySlot,
         position::{ItemPlacement, Position},
@@ -77,6 +79,7 @@ pub enum ItemFlag {
     Avoid,
     AmmoContainer,
     LiquidPool,
+    Unreplaceable,
 }
 
 impl ItemFlag {
@@ -170,6 +173,7 @@ pub enum ItemAttribute {
     ExtraDef(i16),
     Armor(u16),
     Speed(i16),
+    Field(Arc<ConditionSpec>),
 }
 
 #[derive(Debug)]
@@ -252,6 +256,13 @@ impl ItemConfig {
         })
     }
 
+    pub fn attr_field(&self) -> Option<&Arc<ConditionSpec>> {
+        self.get_attributes().find_map(|attr| match attr {
+            ItemAttribute::Field(spec) => Some(spec),
+            _ => None,
+        })
+    }
+
     pub fn attr_weapon_area(&self) -> Option<(&AreaShape, EffectId)> {
         self.get_attributes().find_map(|attr| match attr {
             ItemAttribute::WeaponArea(shape, effect_id) => Some((shape.as_ref(), *effect_id)),
@@ -268,6 +279,7 @@ pub struct Item {
     pub amount: u8,
     pub fluid: Option<FluidType>,
     pub content: Option<Vec<Item>>,
+    pub owner: Option<AgentKey>,
 }
 
 impl Item {
@@ -285,6 +297,7 @@ impl Item {
             amount,
             fluid: None,
             content,
+            owner: None,
         }
     }
 
@@ -297,6 +310,7 @@ impl Item {
             amount: 1,
             fluid: Some(fluid),
             content: None,
+            owner: None,
         }
     }
 
@@ -354,6 +368,7 @@ impl Item {
             amount,
             fluid: None,
             content: None,
+            owner: None,
         }
     }
 
@@ -441,6 +456,7 @@ pub enum ItemMultiAction {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::conditions::SpecSchedule;
     use std::collections::HashSet;
     use strum::IntoEnumIterator;
 
@@ -543,6 +559,7 @@ mod tests {
         check("missile_id", c.attr_missile_id().is_some());
         check("speed", c.attr_speed().is_some());
         check("decay", c.attr_decay().is_some());
+        check("field", c.attr_field().is_some());
         found
     }
 
@@ -591,6 +608,16 @@ mod tests {
                     decay_to: ItemId(2),
                 },
                 "decay",
+            ),
+            (
+                ItemAttribute::Field(Arc::new(ConditionSpec {
+                    element: CombatElement::Fire,
+                    damage: Bounds { min: 1, max: 1 },
+                    interval: TickDelta(1),
+                    schedule: SpecSchedule::Flat { count: 1 },
+                    delayed: false,
+                })),
+                "field",
             ),
         ] {
             assert_eq!(answered(&only(attr)), vec![expected]);

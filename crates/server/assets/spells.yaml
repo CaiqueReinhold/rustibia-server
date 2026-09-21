@@ -1300,3 +1300,174 @@ spells:
         max: { factor: -1.0, flat: 40 }
       duration_ticks: 400
       effect_id: 14
+  - id: 59
+    name: Fire Field Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 15
+    magic_level: 1
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: field
+      item: 2131
+      target:
+        type: area
+        origin: target
+        shape: single
+      missile_id: 4
+  - id: 60
+    name: Fire Bomb Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 27
+    magic_level: 5
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: field
+      item: 2131
+      target:
+        type: area
+        origin: target
+        shape: boxed
+      missile_id: 4
+  - id: 61
+    name: Fire Wall Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 33
+    magic_level: 6
+    delivery: rune
+    icon: 26
+    vocations: []
+    effect:
+      type: field
+      item: 2131
+      target:
+        type: area
+        origin: target
+        shape: wall
+      missile_id: 4
+  - id: 62
+    name: Poison Field Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 14
+    magic_level: 0
+    delivery: rune
+    icon: 46
+    vocations: []
+    effect:
+      type: field
+      item: 105
+      target:
+        type: area
+        origin: target
+        shape: single
+      missile_id: 5
+  - id: 63
+    name: Poison Bomb Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 25
+    magic_level: 4
+    delivery: rune
+    icon: 46
+    vocations: []
+    effect:
+      type: field
+      item: 105
+      target:
+        type: area
+        origin: target
+        shape: boxed
+      missile_id: 5
+  - id: 64
+    name: Poison Wall Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 29
+    magic_level: 5
+    delivery: rune
+    icon: 46
+    vocations: []
+    effect:
+      type: field
+      item: 105
+      target:
+        type: area
+        origin: target
+        shape: wall
+      missile_id: 5
+  - id: 65
+    name: Energy Field Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 18
+    magic_level: 3
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: field
+      item: 2122
+      target:
+        type: area
+        origin: target
+        shape: single
+      missile_id: 36
+  - id: 66
+    name: Energy Bomb Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 37
+    magic_level: 10
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: field
+      item: 2122
+      target:
+        type: area
+        origin: target
+        shape: boxed
+      missile_id: 36
+  - id: 67
+    name: Energy Wall Rune
+    words: ""
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 41
+    magic_level: 9
+    delivery: rune
+    icon: 29
+    vocations: []
+    effect:
+      type: field
+      item: 2122
+      target:
+        type: area
+        origin: target
+        shape: wall
+      missile_id: 36

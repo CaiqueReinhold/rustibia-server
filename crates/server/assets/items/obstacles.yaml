@@ -11579,6 +11579,16 @@
   - bottom
   - unpass
   - unmove
+- id: 8527
+  name: old clock
+  flags:
+  - unpass
+  - unmove
+- id: 8528
+  name: old clock
+  flags:
+  - unpass
+  - unmove
 - id: 8550
   name: rain barrel
   article: a
@@ -12786,6 +12796,13 @@
   flags:
   - unpass
   - unmove
+- id: 9118
+  name: ore wagon
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
 - id: 9119
   name: crucible
   article: a
@@ -13246,6 +13263,11 @@
   flags:
   - unpass
   - unmove
+- id: 9426
+  name: pillar
+  flags:
+  - unpass
+  - unmove
 - id: 9427
   name: stone ledge
   article: a
@@ -13397,6 +13419,16 @@
 - id: 9517
   name: stone ledge
   article: a
+  flags:
+  - unpass
+  - unmove
+- id: 9534
+  name: coloured limestone pillar
+  flags:
+  - unpass
+  - unmove
+- id: 9536
+  name: coloured limestone pillar
   flags:
   - unpass
   - unmove
@@ -15157,6 +15189,349 @@
   - bottom
   - unpass
   - unmove
+- id: 10615
+  name: corrupted bamboo plant
+  flags:
+  - unpass
+  - unmove
+- id: 10616
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10617
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10618
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10619
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10620
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10621
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10622
+  name: giant tree
+  flags:
+  - unpass
+  - unmove
+- id: 10623
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10624
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10625
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10626
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10627
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10628
+  name: giant tree
+  flags:
+  - unpass
+  - unmove
+- id: 10629
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10630
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10631
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10632
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10633
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10634
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10635
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10636
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10637
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10638
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10639
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10640
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10641
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10642
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10643
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10644
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10645
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10646
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10647
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10648
+  name: giant tree
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10649
+  name: verminous slime
+  flags:
+  - unpass
+  - unmove
+- id: 10650
+  name: verminous slime
+  flags:
+  - unpass
+  - unmove
+- id: 10651
+  name: verminous slime
+  flags:
+  - unpass
+  - unmove
+- id: 10652
+  name: verminous slime
+  flags:
+  - unpass
+  - unmove
+- id: 10653
+  name: verminous slime
+  flags:
+  - unpass
+  - unmove
+- id: 10654
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10655
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10656
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10657
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10658
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10659
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10660
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10661
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10662
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10663
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10664
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10665
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10666
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10667
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10668
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10669
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10670
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10671
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10672
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10673
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10674
+  name: verminous liana
+  flags:
+  - unpass
+  - unmove
+- id: 10683
+  name: black blisters
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10684
+  name: black blisters
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 10694
   name: sulphur puddle
   article: a
@@ -15229,9 +15604,204 @@
   flags:
   - unpass
   - unmove
+- id: 10711
+  name: bitter calyx
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10712
+  name: bitter calyx
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10713
+  name: doomato
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10714
+  name: doomato
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10715
+  name: witherstem
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10716
+  name: carnivortex
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10717
+  name: toxic tulip
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10718
+  name: sprocketwhip
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10719
+  name: small sprocketwhip
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10720
+  name: wraithtongue
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 10721
+  name: acid foxglove
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10722
+  name: acid foxglove
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10723
+  name: dark delight
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10724
+  name: grappletackle
+  flags:
+  - unpass
+  - unmove
+- id: 10725
+  name: grappletackle
+  flags:
+  - unpass
+  - unmove
+- id: 10726
+  name: small grappletackles
+  flags:
+  - unpass
+  - unmove
 - id: 10727
   name: dreadcoil
   article: a
+  flags:
+  - unpass
+  - unmove
+- id: 10728
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10729
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10730
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10731
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10732
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10733
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10734
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10735
+  name: giant dreadcoil
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10736
+  name: giant dreadcoil
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10737
+  name: giant dreadcoil
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10738
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10739
+  name: giant verminous
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10740
+  name: giant dreadcoil
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 10741
+  name: blister tendril
+  flags:
+  - unpass
+  - unmove
+- id: 10742
+  name: blister tendril
+  flags:
+  - unpass
+  - unmove
+- id: 10743
+  name: blister tendril
+  flags:
+  - unpass
+  - unmove
+- id: 10745
+  name: dreadcoil
+  flags:
+  - unpass
+  - unmove
+- id: 10747
+  name: dreadcoil
   flags:
   - unpass
   - unmove
@@ -15270,6 +15840,21 @@
   - bottom
   - unpass
   - unmove
+- id: 10853
+  name: pillar maw
+  flags:
+  - unpass
+  - unmove
+- id: 10854
+  name: pillar leech
+  flags:
+  - unpass
+  - unmove
+- id: 10855
+  name: pillar tendril
+  flags:
+  - unpass
+  - unmove
 - id: 10856
   name: pillar vine
   article: a
@@ -15282,9 +15867,34 @@
   flags:
   - unpass
   - unmove
+- id: 10858
+  name: pillar pads
+  flags:
+  - unpass
+  - unmove
+- id: 10859
+  name: pillar mustardcup
+  flags:
+  - unpass
+  - unmove
+- id: 10860
+  name: velvet spruce
+  flags:
+  - unpass
+  - unmove
 - id: 10861
   name: tangerine tail
   article: a
+  flags:
+  - unpass
+  - unmove
+- id: 10862
+  name: buttercut
+  flags:
+  - unpass
+  - unmove
+- id: 10863
+  name: wrigglecoil
   flags:
   - unpass
   - unmove
@@ -15298,6 +15908,12 @@
   name: hairy violet
   article: a
   flags:
+  - unpass
+  - unmove
+- id: 10870
+  name: black crystal
+  flags:
+  - bottom
   - unpass
   - unmove
 - id: 10912
@@ -15750,6 +16366,26 @@
   - unmove
   attributes:
     weight: 500
+- id: 11063
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11064
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11065
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11066
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
 - id: 11067
   name: stone wall
   article: a
@@ -15758,6 +16394,66 @@
   - unmove
 - id: 11068
   name: timbers
+  flags:
+  - unpass
+  - unmove
+- id: 11069
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11070
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11072
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11073
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11074
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11076
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11077
+  name: inclosures
+  flags:
+  - unpass
+  - unmove
+- id: 11078
+  name: small crystals
+  flags:
+  - unpass
+  - unmove
+- id: 11079
+  name: small crystals
+  flags:
+  - unpass
+  - unmove
+- id: 11080
+  name: crystals
+  flags:
+  - unpass
+  - unmove
+- id: 11081
+  name: jade ornaments
+  flags:
+  - unpass
+  - unmove
+- id: 11082
+  name: crystals
   flags:
   - unpass
   - unmove
@@ -15773,6 +16469,11 @@
   article: a
   flags:
   - bottom
+  - unpass
+  - unmove
+- id: 11085
+  name: jade ornaments
+  flags:
   - unpass
   - unmove
 - id: 11086
@@ -15833,6 +16534,41 @@
   - unmove
 - id: 11100
   name: iron case
+  flags:
+  - unpass
+  - unmove
+- id: 11101
+  name: iron case
+  flags:
+  - unpass
+  - unmove
+- id: 11102
+  name: inclosures
+  flags:
+  - unpass
+  - unmove
+- id: 11103
+  name: inclosures
+  flags:
+  - unpass
+  - unmove
+- id: 11104
+  name: inclosures
+  flags:
+  - unpass
+  - unmove
+- id: 11105
+  name: inclosures
+  flags:
+  - unpass
+  - unmove
+- id: 11107
+  name: embedded emerald
+  flags:
+  - unpass
+  - unmove
+- id: 11109
+  name: embedded emerald
   flags:
   - unpass
   - unmove
@@ -15923,8 +16659,18 @@
   flags:
   - unpass
   - unmove
+- id: 11156
+  name: dragon plates
+  flags:
+  - unpass
+  - unmove
 - id: 11157
   name: timbers
+  flags:
+  - unpass
+  - unmove
+- id: 11158
+  name: dragon plates
   flags:
   - unpass
   - unmove
@@ -15972,6 +16718,36 @@
   - bottom
   - unpass
   - unmove
+- id: 11193
+  name: dragon bone table
+  flags:
+  - unpass
+  - unmove
+- id: 11194
+  name: dragon bone table
+  flags:
+  - unpass
+  - unmove
+- id: 11195
+  name: dragon bone rack
+  flags:
+  - unpass
+  - unmove
+- id: 11197
+  name: dragon bone table
+  flags:
+  - unpass
+  - unmove
+- id: 11198
+  name: dragon bone table
+  flags:
+  - unpass
+  - unmove
+- id: 11199
+  name: dragon bone table
+  flags:
+  - unpass
+  - unmove
 - id: 11209
   name: timber
   article: a
@@ -15981,6 +16757,38 @@
 - id: 11210
   name: dragon statue
   article: a
+  flags:
+  - unpass
+  - unmove
+- id: 11211
+  name: pillar
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 11212
+  name: pillar
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 11213
+  name: dragon plates
+  flags:
+  - unpass
+  - unmove
+- id: 11216
+  name: dragon standard
+  flags:
+  - unpass
+  - unmove
+- id: 11218
+  name: dragon standard
+  flags:
+  - unpass
+  - unmove
+- id: 11220
+  name: dragon plates
   flags:
   - unpass
   - unmove
@@ -16976,6 +17784,12 @@
   - bottom
   - unpass
   - unmove
+- id: 12418
+  name: strange hovering plant
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 12419
   name: young fraelofingu
   flags:
@@ -16983,6 +17797,12 @@
   - unmove
 - id: 12421
   name: greasy stone
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 12423
+  name: small greasy stone
   flags:
   - bottom
   - unpass
@@ -17354,6 +18174,13 @@
   name: unknown item
   flags:
   - bottom
+  - unpass
+  - unmove
+- id: 12745
+  name: destroy field rune
+  flags:
+  - usable
+  - multiuse
   - unpass
   - unmove
 - id: 12782
@@ -18158,6 +18985,18 @@
   - bottom
   - unpass
   - unmove
+- id: 13168
+  name: fossil shell
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13169
+  name: fossil shell
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 13170
   name: hive structure
   flags:
@@ -18614,6 +19453,55 @@
   - bottom
   - unpass
   - unmove
+- id: 13405
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13406
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13407
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13408
+  name: insectoid remains
+  flags:
+  - bottom
+  - usable
+  - unpass
+  - unmove
+- id: 13409
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13410
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13411
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13412
+  name: insectoid remains
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 13413
   name: rockboy
   article: a
@@ -18704,6 +19592,23 @@
   - bottom
   - unpass
   - unmove
+- id: 13648
+  name: underwater volcano
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13649
+  name: underwater volcano
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 13671
+  name: laminaria
+  flags:
+  - unpass
+  - unmove
 - id: 13672
   name: sponge
   article: a
@@ -18713,6 +19618,11 @@
 - id: 13674
   name: tree coral
   article: a
+  flags:
+  - unpass
+  - unmove
+- id: 13679
+  name: laminaria
   flags:
   - unpass
   - unmove
@@ -21064,6 +21974,42 @@
 - id: 16582
   name: wooden gable
   article: a
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16602
+  name: wooden gable
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16603
+  name: wooden gable
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16604
+  name: wooden gable
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16605
+  name: wooden gable
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16606
+  name: wooden gable
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 16607
+  name: wooden gable
   flags:
   - bottom
   - unpass
@@ -25204,6 +26150,11 @@
   flags:
   - unpass
   - unmove
+- id: 20659
+  name: nothing special
+  flags:
+  - unpass
+  - unmove
 - id: 20709
   name: generator
   article: a
@@ -26702,6 +27653,42 @@
   - bottom
   - unpass
   - unmove
+- id: 22328
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 22329
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 22330
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 22331
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 22332
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 22333
+  name: large totem pole
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 22338
   name: chimney
   article: a
@@ -27132,6 +28119,17 @@
   - bottom
   - unpass
   - unmove
+- id: 23467
+  name: lightning
+  flags:
+  - unpass
+  - unmove
+- id: 23468
+  name: lightning
+  flags:
+  - unpass
+  - unmove
+
 - id: 23539
   name: ornated sphere lamp
   article: an
@@ -27148,7 +28146,37 @@
   - usable
   - unpass
   - unmove
+- id: 23546
+  name: arena leaderboard
+  flags:
+  - usable
+  - unpass
+  - unmove
 - id: 23548
+  name: arena leaderboard
+  flags:
+  - usable
+  - unpass
+  - unmove
+- id: 23549
+  name: arena leaderboard
+  flags:
+  - usable
+  - unpass
+  - unmove
+- id: 23550
+  name: arena leaderboard
+  flags:
+  - usable
+  - unpass
+  - unmove
+- id: 23551
+  name: arena leaderboard
+  flags:
+  - usable
+  - unpass
+  - unmove
+- id: 23552
   name: arena leaderboard
   flags:
   - usable

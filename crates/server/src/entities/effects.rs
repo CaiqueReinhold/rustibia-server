@@ -37,9 +37,13 @@ impl AreaEffect {
 
 pub type AreaShapeId = String;
 
+/// A mask and its three quarter-turns, indexed north, east, south, west.
+type Rotations = [Box<[(i8, i8)]>; 4];
+
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct AreaShape {
-    delta: [Box<[(i8, i8)]>; 4],
+    delta: Rotations,
+    diagonal: Option<Rotations>,
 }
 
 impl AreaShape {
@@ -47,12 +51,29 @@ impl AreaShape {
         tiles.iter().map(|&(dx, dy)| (-dy, dx)).collect()
     }
 
+    fn rotations(mask: Box<[(i8, i8)]>) -> Rotations {
+        let quarter = Self::rotate_cw(&mask);
+        let half = Self::rotate_cw(&quarter);
+        let three_quarters = Self::rotate_cw(&half);
+        [mask, quarter, half, three_quarters]
+    }
+
     pub fn new(north_facing: Box<[(i8, i8)]>) -> Self {
-        let east_facing = Self::rotate_cw(&north_facing);
-        let south_facing = Self::rotate_cw(&east_facing);
-        let west_facing = Self::rotate_cw(&south_facing);
         AreaShape {
-            delta: [north_facing, east_facing, south_facing, west_facing],
+            delta: Self::rotations(north_facing),
+            diagonal: None,
+        }
+    }
+
+    /// `north_west_facing` is the mask used when a throw runs diagonally, authored for the
+    /// north-west throw the way `north_facing` is authored for the northward one.
+    pub fn with_diagonal(
+        north_facing: Box<[(i8, i8)]>,
+        north_west_facing: Box<[(i8, i8)]>,
+    ) -> Self {
+        AreaShape {
+            delta: Self::rotations(north_facing),
+            diagonal: Some(Self::rotations(north_west_facing)),
         }
     }
 
@@ -67,5 +88,27 @@ impl AreaShape {
             Facing::South => 2,
             Facing::West => 3,
         }]
+    }
+
+    pub fn get_delta_towards(&self, offset: (i32, i32), facing: Facing) -> &[(i8, i8)] {
+        let (dx, dy) = offset;
+        if let Some(diagonal) = &self.diagonal
+            && dx != 0
+            && dy != 0
+        {
+            return &diagonal[match (dx > 0, dy > 0) {
+                (false, false) => 0,
+                (true, false) => 1,
+                (true, true) => 2,
+                (false, true) => 3,
+            }];
+        }
+        self.get_delta_facing(match (dx, dy) {
+            (0, 0) => facing,
+            (dx, _) if dx < 0 => Facing::West,
+            (dx, _) if dx > 0 => Facing::East,
+            (_, dy) if dy < 0 => Facing::North,
+            _ => Facing::South,
+        })
     }
 }

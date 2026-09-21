@@ -2,8 +2,10 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::sync::Arc;
+use std::time::Instant;
 
 use thiserror::Error;
+use tracing::info;
 use uuid::Uuid;
 
 use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
@@ -20,7 +22,7 @@ const OTBM_MAP_DATA: u8 = 0x02;
 const OTBM_TILE_AREA: u8 = 0x04;
 const OTBM_TILE: u8 = 0x05;
 const OTBM_ITEM: u8 = 0x06;
-const OTBM_HOUSETILE: u8 = 0x0A;
+const OTBM_HOUSETILE: u8 = 0x0E;
 
 // ── Attribute IDs ─────────────────────────────────────────────────────────────
 const ATTR_TILE_FLAGS: u8 = 0x03; // u32
@@ -65,7 +67,14 @@ pub fn load_map(
     items: &HashMap<ItemId, Arc<ItemConfig>>,
 ) -> Result<GameMap, MapRepositoryError> {
     let data = fs::read(map_file)?;
-    parse_otbm(&data, items)
+    let started = Instant::now();
+    let map = parse_otbm(&data, items);
+    let ended = Instant::now();
+    info!(
+        "Map loading took: {} secs",
+        ended.duration_since(started).as_secs()
+    );
+    map
 }
 
 // ── Low-level parser ──────────────────────────────────────────────────────────
@@ -333,7 +342,10 @@ fn parse_tile(
 }
 
 fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> Item {
-    let config = items.get(&item_id).cloned().unwrap();
+    let config = items
+        .get(&item_id)
+        .cloned()
+        .expect(&format!("Map contains invalid item id: {item_id}"));
     let content = if config.has_flag(ItemFlag::Container) {
         Some(content)
     } else {
@@ -346,6 +358,7 @@ fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> 
         amount,
         fluid: None,
         content,
+        owner: None,
     }
 }
 
@@ -402,4 +415,101 @@ fn parse_item(p: &mut Parser, items: &Items) -> Result<Item, MapRepositoryError>
     p.expect_node_end()?;
 
     Ok(make_item(item_id, amount, content, items))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn an_item(id: u16) -> (ItemId, Arc<ItemConfig>) {
+        (
+            ItemId(id),
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                format!("item {id}"),
+                None,
+                None,
+                [],
+                Vec::new(),
+            )),
+        )
+    }
+
+    /// One tile area holding a plain tile at (101, 202, 7) and a house tile at
+    /// (103, 204, 7), each carrying a ground item. Every byte is chosen below
+    /// 0xFD so nothing needs escaping.
+    ///
+    /// The node type and attribute bytes are written as literals on purpose. A
+    /// fixture built from the constants it is meant to pin agrees with them
+    /// whatever they say, and passes just as happily when they are wrong.
+    fn a_map() -> Vec<u8> {
+        let mut out: Vec<u8> = vec![0, 0, 0, 0];
+        out.extend([NODE_START, 0x00]);
+        out.extend(0u32.to_le_bytes());
+        out.extend(100u16.to_le_bytes());
+        out.extend(100u16.to_le_bytes());
+        out.extend(3u32.to_le_bytes());
+        out.extend(60u32.to_le_bytes());
+
+        out.extend([NODE_START, 0x02, NODE_START, 0x04]);
+        out.extend(100u16.to_le_bytes());
+        out.extend(200u16.to_le_bytes());
+        out.push(7);
+
+        out.extend([NODE_START, 0x05, 1, 2, 0x09]);
+        out.extend(100u16.to_le_bytes());
+        out.push(NODE_END);
+
+        out.extend([NODE_START, 0x0E, 3, 4]);
+        out.extend(5u32.to_le_bytes());
+        out.push(0x09);
+        out.extend(101u16.to_le_bytes());
+        out.push(NODE_END);
+
+        out.extend([NODE_END, NODE_END, NODE_END]);
+        out
+    }
+
+    fn ground_of(map: &GameMap, pos: Position) -> Vec<u16> {
+        map.get_tile(&pos)
+            .expect("tile is loaded")
+            .visible_items()
+            .map(|item| item.item_id.0)
+            .collect()
+    }
+
+    /// The pin on `OTBM_HOUSETILE`. It read 0x0A for a while -- the spawn-area
+    /// type -- so every house tile fell through to `skip_node` and vanished:
+    /// 102k tiles in the shipped map, whole towns drawn as bare ground. Nothing
+    /// errors when it happens, and `assets/map.otbm` has no house tile to catch
+    /// it, which is why this builds one rather than loading a fixture file.
+    #[test]
+    fn a_house_tile_is_loaded_like_any_other_tile() {
+        let items: Items = HashMap::from([an_item(1), an_item(100), an_item(101)]);
+
+        let map = parse_otbm(&a_map(), &items).expect("the fixture parses");
+
+        assert_eq!(
+            ground_of(
+                &map,
+                Position {
+                    x: 101,
+                    y: 202,
+                    z: 7
+                }
+            ),
+            vec![100]
+        );
+        assert_eq!(
+            ground_of(
+                &map,
+                Position {
+                    x: 103,
+                    y: 204,
+                    z: 7
+                }
+            ),
+            vec![101]
+        );
+    }
 }

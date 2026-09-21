@@ -14,15 +14,16 @@ const ELECTRIFIED_BIT: u32 = 1 << 5;
 const HASTED_BIT: u32 = 1 << 6;
 const MAGIC_SHIELD_BIT: u32 = 1 << 7;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ConditionSpec {
     pub element: CombatElement,
     pub damage: Bounds,
     pub interval: TickDelta,
     pub schedule: SpecSchedule,
+    pub delayed: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SpecSchedule {
     Decaying { start: Option<u32> },
     Flat { count: u32 },

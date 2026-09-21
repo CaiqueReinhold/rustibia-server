@@ -4962,6 +4962,60 @@
   - bottom
   - unpass
   - unmove
+- id: 6858
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6859
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6860
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6861
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6862
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6863
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6864
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6865
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
+- id: 6866
+  name: stone base
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 7102
   name: stone wall
   article: a
@@ -8873,6 +8927,12 @@
   - bottom
   - unpass
   - unmove
+- id: 12403
+  name: small rocky wall
+  flags:
+  - bottom
+  - unpass
+  - unmove
 - id: 12408
   name: rocky wall
   article: a
@@ -11993,6 +12053,13 @@
   - bottom
   - unpass
   - unmove
+- id: 16007
+  name: stone wall
+  flags:
+  - bottom
+  - unpass
+  - unmove
+
 - id: 16008
   name: stone wall
   article: a

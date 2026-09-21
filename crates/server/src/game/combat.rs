@@ -813,6 +813,7 @@ mod tests {
                 damage: Bounds { min: 40, max: 40 },
                 interval: TickDelta(180),
                 schedule: SpecSchedule::Decaying { start: None },
+                delayed: true,
             }),
         };
 
@@ -856,6 +857,7 @@ mod tests {
                 damage: Bounds { min: 40, max: 40 },
                 interval: TickDelta(180),
                 schedule: SpecSchedule::Decaying { start: None },
+                delayed: true,
             }),
         };
 

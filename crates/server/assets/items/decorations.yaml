@@ -2568,6 +2568,10 @@
   flags:
   - bottom
   - unmove
+- id: 4014
+  name: thin air
+  flags:
+  - unmove
 - id: 4054
   name: red chair
   article: a
@@ -2639,6 +2643,10 @@
 - id: 4309
   name: dead dragon
   article: a
+  flags:
+  - unmove
+- id: 4653
+  name: shallow water
   flags:
   - unmove
 - id: 4854
@@ -4359,6 +4367,10 @@
   article: a
   flags:
   - bottom
+  - unmove
+- id: 7288
+  name: nothing special
+  flags:
   - unmove
 - id: 7349
   name: ashes
@@ -6506,9 +6518,17 @@
   article: a
   flags:
   - unmove
+- id: 9673
+  name: flower wreath
+  flags:
+  - unmove
 - id: 9675
   name: leaf wreath
   article: a
+  flags:
+  - unmove
+- id: 9677
+  name: moonlight flower wreath
   flags:
   - unmove
 - id: 9785
@@ -6597,6 +6617,10 @@
   name: wild wine
   flags:
   - usable
+  - unmove
+- id: 9962
+  name: flies
+  flags:
   - unmove
 - id: 10001
   name: zaoan decoration
@@ -6870,6 +6894,34 @@
   article: a
   flags:
   - unmove
+- id: 10682
+  name: black blisters
+  flags:
+  - unmove
+- id: 10685
+  name: black blisters
+  flags:
+  - unmove
+- id: 10686
+  name: black blisters
+  flags:
+  - unmove
+- id: 10687
+  name: black blisters
+  flags:
+  - unmove
+- id: 10688
+  name: black blisters
+  flags:
+  - unmove
+- id: 10689
+  name: black blisters
+  flags:
+  - unmove
+- id: 10690
+  name: black blisters
+  flags:
+  - unmove
 - id: 10707
   name: sulphur puddle
   article: a
@@ -6893,6 +6945,98 @@
 - id: 10748
   name: insectoid pore
   article: an
+  flags:
+  - unmove
+- id: 10749
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10750
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10751
+  name: acid
+  flags:
+  - unmove
+- id: 10752
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10753
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10754
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10755
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10756
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10757
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10758
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10759
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10760
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10761
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10762
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10763
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10764
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10765
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10766
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10767
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10768
+  name: blisters
+  flags:
+  - unmove
+- id: 10769
+  name: blisters
+  flags:
+  - unmove
+- id: 10771
+  name: tackleweed
+  flags:
+  - unmove
+- id: 10772
+  name: tackleweed
   flags:
   - unmove
 - id: 10803
@@ -6922,6 +7066,18 @@
 - id: 10842
   name: dimensional portal
   article: a
+  flags:
+  - unmove
+- id: 10843
+  name: black crystals
+  flags:
+  - unmove
+- id: 10844
+  name: small black crystals
+  flags:
+  - unmove
+- id: 10845
+  name: black crystals
   flags:
   - unmove
 - id: 10847
@@ -7013,6 +7169,22 @@
 - id: 10968
   name: decorative shield
   article: a
+  flags:
+  - unmove
+- id: 10969
+  name: ornament
+  flags:
+  - unmove
+- id: 10970
+  name: ornament
+  flags:
+  - unmove
+- id: 10973
+  name: dark ornament
+  flags:
+  - unmove
+- id: 10974
+  name: dark ornament
   flags:
   - unmove
 - id: 10977
@@ -7698,6 +7870,10 @@
   flags:
   - usable
   - unmove
+- id: 12072
+  name: slime fungus
+  flags:
+  - unmove
 - id: 12073
   name: slime fungus
   article: a
@@ -7770,6 +7946,18 @@
 - id: 12201
   name: skull
   article: a
+  flags:
+  - unmove
+- id: 12404
+  name: faint glow
+  flags:
+  - unmove
+- id: 12412
+  name: faint glow
+  flags:
+  - unmove
+- id: 12415
+  name: hole
   flags:
   - unmove
 - id: 12431
@@ -7948,6 +8136,14 @@
   name: small golden taboret
   article: a
   flags: []
+- id: 12480
+  name: archway
+  flags:
+  - unmove
+- id: 12481
+  name: archway
+  flags:
+  - unmove
 - id: 12485
   name: rocky archway
   article: a
@@ -7956,6 +8152,18 @@
 - id: 12486
   name: rocky archway
   article: a
+  flags:
+  - unmove
+- id: 12507
+  name: large painting
+  flags:
+  - unmove
+- id: 12508
+  name: large painting
+  flags:
+  - unmove
+- id: 12518
+  name: faint glow
   flags:
   - unmove
 - id: 12573
@@ -8062,6 +8270,14 @@
 - id: 12655
   name: corms
   article: a
+  flags:
+  - unmove
+- id: 12723
+  name: floor
+  flags:
+  - unmove
+- id: 12743
+  name: fire
   flags:
   - unmove
 - id: 12815
@@ -8396,6 +8612,14 @@
   name: small insectoid hairs
   flags:
   - unmove
+- id: 13378
+  name: small insectoid hairs
+  flags:
+  - unmove
+- id: 13379
+  name: small insectoid hairs
+  flags:
+  - unmove
 - id: 13383
   name: insectoid meatball
   article: an
@@ -8459,6 +8683,22 @@
 - id: 13396
   name: insectoid meatball
   article: an
+  flags:
+  - unmove
+- id: 13401
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13402
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13403
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13404
+  name: insectoid remains
   flags:
   - unmove
 - id: 13558
@@ -9753,6 +9993,18 @@
   flags:
   - bottom
   - unmove
+- id: 16259
+  name: floor
+  flags:
+  - unmove
+- id: 16260
+  name: floor
+  flags:
+  - unmove
+- id: 16261
+  name: floor
+  flags:
+  - unmove
 - id: 16373
   name: muddy stone wall
   article: a
@@ -10721,6 +10973,18 @@
   name: small glowing fruits
   flags:
   - unmove
+- id: 18903
+  name: icy mammoth trunk
+  flags:
+  - unmove
+- id: 18904
+  name: icy mammoth trunk
+  flags:
+  - unmove
+- id: 18905
+  name: icy mammoth trunk
+  flags:
+  - unmove
 - id: 18910
   name: wild roses
   flags:
@@ -11023,6 +11287,11 @@
   article: a
   flags:
   - unmove
+- id: 19394
+  name: floor
+  flags:
+  - unmove
+
 - id: 19405
   name: strange foundation
   article: a

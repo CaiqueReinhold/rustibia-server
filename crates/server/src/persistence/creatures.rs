@@ -8,10 +8,8 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::CONFIG;
-use crate::entities::Bounds;
 use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
-use crate::entities::conditions::{ConditionSpec, SpecSchedule};
 use crate::entities::creature::{
     AbilityEffect, BloodType, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
     CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, CreatureVoices, LootEntry,
@@ -21,6 +19,7 @@ use crate::entities::items::ItemId;
 use crate::entities::support::SupportCast;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
+use crate::persistence::conditions::{RawBounds, RawConditionSpec};
 use crate::persistence::support::{
     RawSpeedFormula, RawSupportFields, SupportError, SupportKind, build_support,
 };
@@ -69,21 +68,6 @@ struct RawOutfit {
 }
 
 #[derive(Deserialize)]
-struct RawBounds {
-    min: u32,
-    max: u32,
-}
-
-impl From<RawBounds> for Bounds {
-    fn from(raw: RawBounds) -> Self {
-        Bounds {
-            min: raw.min,
-            max: raw.max,
-        }
-    }
-}
-
-#[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawAttackDamage {
     damage: RawBounds,
@@ -97,54 +81,7 @@ impl From<RawAttackDamage> for CreatureAttackDamage {
         CreatureAttackDamage {
             element: raw.element,
             value: raw.damage.into(),
-            condition: raw.condition.map(Into::into),
-        }
-    }
-}
-
-#[derive(Deserialize)]
-#[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
-enum RawConditionSpec {
-    Decaying {
-        element: CombatElement,
-        damage: RawBounds,
-        interval: TickDelta,
-        #[serde(default)]
-        start: Option<u32>,
-    },
-    Flat {
-        element: CombatElement,
-        damage: RawBounds,
-        interval: TickDelta,
-        count: u32,
-    },
-}
-
-impl From<RawConditionSpec> for ConditionSpec {
-    fn from(raw: RawConditionSpec) -> Self {
-        match raw {
-            RawConditionSpec::Decaying {
-                element,
-                damage,
-                interval,
-                start,
-            } => ConditionSpec {
-                element,
-                damage: damage.into(),
-                interval,
-                schedule: SpecSchedule::Decaying { start },
-            },
-            RawConditionSpec::Flat {
-                element,
-                damage,
-                interval,
-                count,
-            } => ConditionSpec {
-                element,
-                damage: damage.into(),
-                interval,
-                schedule: SpecSchedule::Flat { count },
-            },
+            condition: raw.condition.map(|condition| condition.into_spec(true)),
         }
     }
 }
@@ -273,7 +210,7 @@ fn parse_ability(
                     damage: CreatureAttackDamage {
                         element,
                         value: damage.into(),
-                        condition: condition.map(Into::into),
+                        condition: condition.map(|condition| condition.into_spec(true)),
                     },
                     target,
                     effect_id: attack.effect_id,
@@ -281,7 +218,7 @@ fn parse_ability(
                 }),
                 (Some(_), None, _) => return Err(bad("deals damage of no element")),
                 (None, _, Some(condition)) => AbilityEffect::Condition(ConditionAttack {
-                    condition: condition.into(),
+                    condition: condition.into_spec(true),
                     target,
                     effect_id: attack.effect_id,
                     missile_id: attack.missile_id,
@@ -445,7 +382,9 @@ pub fn load_creatures(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::Bounds;
     use crate::entities::agent::Agent;
+    use crate::entities::conditions::SpecSchedule;
     use crate::entities::items::ItemId;
     use crate::entities::position::Position;
     use crate::entities::targeting::{AreaOrigin, TargetMode};

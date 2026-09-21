@@ -13,7 +13,7 @@ use crate::{
         skills::SkillType,
         spells::{
             ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
-            SpellGroup, SpellHealing,
+            SpellField, SpellGroup, SpellHealing,
         },
         support::SupportCast,
         targeting::{AreaOrigin, AreaTarget, TargetFilter, TargetMode},
@@ -22,12 +22,14 @@ use crate::{
         Tick, TickCtx,
         combat::{execute_attack, plan_spell_attack},
         events::BroadcastMessage,
+        fields::{can_hold_field, create_fields},
         healing::{execute_healing, plan_healing_spell},
         map_query::{can_target, can_throw},
         random::Rolls,
         skills::tick_skill,
         support::cast_support,
     },
+    persistence::items::ITEM_CONFIGS,
 };
 
 #[derive(Error, Debug, Clone)]
@@ -48,6 +50,8 @@ pub enum SpellCastingDenyReason {
     StillInCooldown,
     #[error("You need a weapon")]
     NoWeapon,
+    #[error("There is not enough room.")]
+    NotEnoughRoom,
 }
 
 impl SpellCastingDenyReason {
@@ -266,11 +270,23 @@ pub fn resolve_targets(
                 delta: Some(vec![(0, 0)]),
             })
         }
-        TargetMode::Area { origin, shape } => {
-            let origin = resolve_area_origin(map, origin, position, area_target)
+        TargetMode::Area {
+            origin: area_origin,
+            shape,
+        } => {
+            let origin = resolve_area_origin(map, area_origin, position, area_target)
                 .ok_or(SpellCastingDenyReason::InvalidTarget)?;
-            let (mut keys, delta) =
-                resolve_area(map, origin, shape.get_delta_facing(agent.facing()));
+            let delta = match area_origin {
+                AreaOrigin::Caster => shape.get_delta_facing(agent.facing()),
+                AreaOrigin::Target => shape.get_delta_towards(
+                    (
+                        origin.x as i32 - position.x as i32,
+                        origin.y as i32 - position.y as i32,
+                    ),
+                    agent.facing(),
+                ),
+            };
+            let (mut keys, delta) = resolve_area(map, origin, delta);
             keys.retain(|key| passes(map, *key, filter));
             Ok(ResolvedTargets {
                 keys,
@@ -472,6 +488,7 @@ fn execute_effect(
         SpellEffect::Attack(attack) => attack_spell(ctx, agent_key, &target, param, attack),
         SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, param, healing),
         SpellEffect::Support(support) => support_spell(ctx, agent_key, &target, param, support),
+        SpellEffect::Field(field) => field_spell(ctx, agent_key, &target, param, field),
     }?;
 
     let mut agent = ctx
@@ -549,13 +566,63 @@ fn support_spell(
     Ok(())
 }
 
+fn field_spell(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    target: &AreaTarget,
+    param: Option<&str>,
+    field: &SpellField,
+) -> Result<(), SpellCastingDenyReason> {
+    let targets = resolve_targets(
+        ctx.map,
+        agent_key,
+        &field.target,
+        target,
+        param,
+        TargetFilter::Any,
+    )?;
+    let (Some(aim), Some(delta)) = (targets.aim, targets.delta) else {
+        return Err(SpellCastingDenyReason::InvalidTarget);
+    };
+    if !can_hold_field(ctx.map, &aim) {
+        return Err(SpellCastingDenyReason::NotEnoughRoom);
+    }
+    let config = ITEM_CONFIGS
+        .get(&field.item)
+        .ok_or(SpellCastingDenyReason::InvalidState(
+            agent_key,
+            "field spell names an item not in the catalogue",
+        ))?;
+
+    let area: Vec<Position> = delta
+        .iter()
+        .filter_map(|(dx, dy)| aim.checked_offset(*dx as i32, *dy as i32))
+        .collect();
+    create_fields(ctx, agent_key, config, &area);
+
+    if let Some(missile_id) = field.missile_id
+        && let Some(from) = ctx.map.agent_position(agent_key).cloned()
+    {
+        ctx.events.push(BroadcastMessage::MissileLaunched {
+            missile: Missile {
+                missile_id,
+                from,
+                to: aim,
+            },
+        });
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use crate::entities::world_map::WorldMap;
     use std::sync::Arc;
 
     use super::*;
+    use crate::entities::agent::Facing;
     use crate::entities::effects::AreaShape;
+    use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::skills::SkillValue;
     use crate::entities::vocation::Vocation;
@@ -842,6 +909,37 @@ mod tests {
         );
     }
 
+    /// A wall rune must lie across the throw whatever way its caster happens to be facing.
+    #[test]
+    fn an_aimed_area_turns_with_the_throw_rather_than_the_caster() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let aim = Position::new(103, 100, 7);
+        for y in 98..=102 {
+            map.insert_tile(Position::new(103, y, 7), MapTile::new());
+        }
+        map.get_agent_mut(caster).unwrap().set_facing(Facing::North);
+
+        let targets = resolve_targets(
+            &map,
+            caster,
+            &TargetMode::Area {
+                origin: AreaOrigin::Target,
+                shape: Arc::new(AreaShape::new(
+                    vec![(-2, 0), (-1, 0), (0, 0), (1, 0), (2, 0)].into_boxed_slice(),
+                )),
+            },
+            &AreaTarget::Position(aim.clone()),
+            None,
+            TargetFilter::Any,
+        )
+        .unwrap();
+
+        let mut delta = targets.delta.unwrap();
+        delta.sort_unstable();
+        assert_eq!(delta, [(0, -2), (0, -1), (0, 0), (0, 1), (0, 2)]);
+    }
+
     #[test]
     fn an_aimed_tile_within_reach_centres_the_area() {
         let (map, caster) = a_caster_at(&Position::new(100, 100, 7));
@@ -880,5 +978,49 @@ mod tests {
                 "{aim:?} must not be a legal aim"
             );
         }
+    }
+
+    #[test]
+    fn a_field_aimed_where_one_cannot_go_is_refused_for_want_of_room() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let aim = Position::new(101, 100, 7);
+        let mut tile = MapTile::new();
+        for flag in [ItemFlag::Ground, ItemFlag::Unreplaceable] {
+            tile.push_item(Item::new(
+                Arc::new(ItemConfig::new(
+                    ItemId(1),
+                    "thing".to_string(),
+                    None,
+                    None,
+                    [flag],
+                    Vec::new(),
+                )),
+                1,
+            ));
+        }
+        map.insert_tile(aim.clone(), tile);
+        let mut spell = a_spell(0, 0, Vec::new());
+        spell.effect = SpellEffect::Field(SpellField {
+            target: aimed_area(),
+            item: ItemId(9),
+            missile_id: None,
+        });
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+
+        let refused = cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::Position(aim),
+            None,
+            CastSource::Words,
+        );
+
+        assert!(matches!(
+            refused,
+            Err(SpellCastingDenyReason::NotEnoughRoom)
+        ));
     }
 }

@@ -18,6 +18,7 @@ use crate::entities::items::{
 use crate::entities::spells::SpellId;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
+use crate::persistence::conditions::RawConditionSpec;
 use crate::persistence::yaml_files_in;
 
 /// The item catalogue, loaded once from `assets/items/`. Immutable after load and
@@ -79,6 +80,7 @@ fn parse_flag(s: &str) -> Option<ItemFlag> {
         "avoid" => Some(ItemFlag::Avoid),
         "ammo_container" => Some(ItemFlag::AmmoContainer),
         "liquidpool" => Some(ItemFlag::LiquidPool),
+        "unreplaceable" => Some(ItemFlag::Unreplaceable),
         _ => None,
     }
 }
@@ -163,6 +165,10 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
         "rune" => {
             let spell = SpellId(u16::try_from(value.get("spell")?.as_u64()?).ok()?);
             Some(ItemAttribute::MultiAction(ItemMultiAction::Rune { spell }))
+        }
+        "field" => {
+            let raw: RawConditionSpec = serde_yaml::from_value(value.clone()).ok()?;
+            Some(ItemAttribute::Field(Arc::new(raw.into_spec(false))))
         }
         "decay" => {
             let duration = TickDelta(value.get("duration")?.as_u64()?);
@@ -293,10 +299,50 @@ fn load_items_from_files<'a>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::conditions::{ConditionSpec, SpecSchedule};
     use crate::entities::items::ItemId;
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
         parse_attribute(key, &serde_yaml::from_str(value).unwrap())
+    }
+
+    #[test]
+    fn a_field_is_an_undelayed_condition() {
+        assert_eq!(
+            parse(
+                "field",
+                "{ type: flat, element: fire, damage: { min: 20, max: 20 }, interval: 200, count: 7 }"
+            ),
+            Some(ItemAttribute::Field(Arc::new(ConditionSpec {
+                element: CombatElement::Fire,
+                damage: Bounds { min: 20, max: 20 },
+                interval: TickDelta(200),
+                schedule: SpecSchedule::Flat { count: 7 },
+                delayed: false,
+            })))
+        );
+    }
+
+    #[test]
+    fn a_field_and_its_flag_survive_the_whole_load_path() {
+        let items = load_items_from_files([(
+            Path::new("fields.yaml"),
+            "
+- id: 1
+  name: poison field
+  flags: [unmove, unreplaceable]
+  attributes:
+    field: { type: decaying, element: earth, damage: { min: 100, max: 100 }, interval: 100, start: 5 }
+",
+        )])
+        .unwrap();
+
+        let field = &items[&ItemId(1)];
+        assert!(field.has_flag(ItemFlag::Unreplaceable));
+        assert_eq!(
+            field.attr_field().map(|spec| spec.schedule.clone()),
+            Some(SpecSchedule::Decaying { start: Some(5) })
+        );
     }
 
     #[test]

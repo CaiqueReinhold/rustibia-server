@@ -34,7 +34,7 @@ impl Default for ServerConfig {
             tick_duration: Duration::from_millis(50),
             max_queue_size: 8192,
             max_buffered_messages: 512,
-            map_file_path: "assets/map.otbm".to_string(),
+            map_file_path: "assets/map1.otbm".to_string(),
             items_dir_path: "assets/items".to_string(),
             creatures_dir_path: "assets/creatures".to_string(),
             game_config_path: "assets/game_conf.yaml".to_string(),

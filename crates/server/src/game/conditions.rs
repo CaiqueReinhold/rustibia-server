@@ -106,14 +106,18 @@ pub fn apply_condition(
     let Some(generation) = agent.conditions(|c| c.apply_damage_over_time(dot)) else {
         return;
     };
-    ctx.scheduled.push(ScheduledCommand {
-        at_tick: ctx.tick + spec.interval,
-        command: WorldCommand::DamageOverTimeTick {
-            agent_key: target,
-            element: spec.element,
-            generation,
-        },
-    });
+    if spec.delayed {
+        ctx.scheduled.push(ScheduledCommand {
+            at_tick: ctx.tick + spec.interval,
+            command: WorldCommand::DamageOverTimeTick {
+                agent_key: target,
+                element: spec.element,
+                generation,
+            },
+        });
+    } else {
+        tick_damage_over_time(ctx, target, spec.element, generation);
+    }
 }
 
 pub fn tick_damage_over_time(
@@ -159,6 +163,7 @@ pub fn tick_damage_over_time(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::Bounds;
     use crate::entities::conditions::TimedCondition;
     use crate::entities::world_map::WorldMap;
     use crate::entities::{
@@ -357,6 +362,68 @@ mod tests {
         expire_condition(&mut h.ctx(&mut map), player, TimedCondition::MagicShield);
 
         assert!(map.delta().is_empty());
+        assert!(h.scheduled.is_empty());
+    }
+
+    fn a_rat_at(position: &Position) -> (WorldMap, AgentKey) {
+        let mut map = GameMap::new();
+        map.insert_tile(position.clone(), MapTile::new());
+        let key = map
+            .insert_agent(a_test_creature("Rat", 100, (1, 2)), position)
+            .unwrap();
+        (WorldMap::new(map), key)
+    }
+
+    fn a_burn(damage: u32, delayed: bool) -> ConditionSpec {
+        ConditionSpec {
+            element: CombatElement::Fire,
+            damage: Bounds {
+                min: damage,
+                max: damage,
+            },
+            interval: TickDelta(200),
+            schedule: SpecSchedule::Flat { count: 7 },
+            delayed,
+        }
+    }
+
+    #[test]
+    fn an_undelayed_condition_hits_at_once_and_books_the_next_hit() {
+        let (mut map, rat) = a_rat_at(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(50);
+
+        apply_condition(&mut h.ctx(&mut map), rat, &a_burn(20, false), None);
+
+        assert_eq!(map.get_agent(rat).unwrap().life().current, 80);
+        assert_eq!(h.scheduled.len(), 1);
+        assert_eq!(h.scheduled[0].at_tick, Tick(250));
+    }
+
+    #[test]
+    fn a_delayed_condition_waits_an_interval_for_its_first_hit() {
+        let (mut map, rat) = a_rat_at(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(50);
+
+        apply_condition(&mut h.ctx(&mut map), rat, &a_burn(20, true), None);
+
+        assert_eq!(map.get_agent(rat).unwrap().life().current, 100);
+        assert_eq!(h.scheduled.len(), 1);
+        assert_eq!(h.scheduled[0].at_tick, Tick(250));
+    }
+
+    #[test]
+    fn a_condition_that_deals_nothing_is_not_applied() {
+        let (mut map, rat) = a_rat_at(&Position::new(10, 10, 7));
+        let status = map.get_agent(rat).unwrap().conditions().status();
+        let mut h = TestHarness::seeded(1);
+
+        apply_condition(&mut h.ctx(&mut map), rat, &a_burn(0, false), None);
+
+        let rat = map.get_agent(rat).unwrap();
+        assert_eq!(rat.life().current, 100);
+        assert_eq!(rat.conditions().status(), status);
         assert!(h.scheduled.is_empty());
     }
 }
