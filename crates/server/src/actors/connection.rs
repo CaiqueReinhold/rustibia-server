@@ -184,13 +184,10 @@ impl ConnectionActor {
                     self.upstream = Upstream::Session(session);
                 }
                 ConnectionCommand::SendPlayerMessage(msg) => {
-                    info!(session = self.session_id, "Sending player msg: {:?}", msg);
                     messages.push(msg);
                 }
             }
         }
-        // Drop the tail after a close so the buffer does not carry it into the
-        // next wake-up, which cannot happen anyway but leaves no stale state.
         commands.clear();
 
         let flushed = write_batch(&mut self.writer, messages).await;
