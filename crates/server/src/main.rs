@@ -44,7 +44,7 @@ pub struct Context<L: LoginRepository> {
     shared_ctx: SharedContext,
 }
 
-#[tokio::main(worker_threads = 4)]
+#[tokio::main(worker_threads = 8)]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 

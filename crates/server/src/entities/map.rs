@@ -69,7 +69,7 @@ fn local_index(pos: &Position) -> usize {
 
 #[derive(Debug, Clone)]
 struct Chunk {
-    tiles: Box<[Option<MapTile>]>,
+    tiles: Box<[Option<Arc<MapTile>>]>,
 }
 
 impl Chunk {
@@ -104,7 +104,7 @@ impl<'a> ChunkSlice<'a> {
         } = self;
         ly.flat_map(move |ly| {
             lx.clone().map(move |lx| {
-                let tile = chunk.and_then(|chunk| chunk.tiles[local_index_of(lx, ly)].as_ref());
+                let tile = chunk.and_then(|chunk| chunk.tiles[local_index_of(lx, ly)].as_deref());
                 (Position::new(base_x + lx, base_y + ly, z), tile)
             })
         })
@@ -116,6 +116,7 @@ pub struct GameMap {
     chunks: HashMap<ChunkCoord, Arc<Chunk>>,
     agents: SlotMap<AgentKey, Agent>,
     agent_positions: HashMap<AgentKey, Position>,
+    chunk_copies: u64,
 }
 
 impl MapTile {
@@ -141,6 +142,7 @@ impl GameMap {
             chunks: HashMap::new(),
             agents: SlotMap::with_key(),
             agent_positions: HashMap::new(),
+            chunk_copies: 0,
         }
     }
 
@@ -151,11 +153,17 @@ impl GameMap {
             .chunks
             .entry(coord)
             .or_insert_with(|| Arc::new(Chunk::new()));
-        Arc::make_mut(chunk).tiles[idx] = Some(tile);
+        Arc::make_mut(chunk).tiles[idx] = Some(Arc::new(tile));
     }
 
     pub fn contains_tile(&self, pos: &Position) -> bool {
         self.get_tile(pos).is_ok()
+    }
+
+    /// Chunks `Arc::make_mut` deep-copied since the last call. `imbl`'s own path copying of
+    /// the chunk table is a separate cost and is not counted here.
+    pub fn take_chunk_copies(&mut self) -> u64 {
+        std::mem::take(&mut self.chunk_copies)
     }
 
     fn get_tile_mut(&mut self, pos: &Position) -> Result<&mut MapTile, MapError> {
@@ -164,15 +172,19 @@ impl GameMap {
             .chunks
             .get_mut(&ChunkCoord::from_pos(pos))
             .ok_or(MapError::TileDoesNotExist)?;
-        Arc::make_mut(chunk).tiles[idx]
+        if Arc::strong_count(chunk) > 1 {
+            self.chunk_copies += 1;
+        }
+        let tile = Arc::make_mut(chunk).tiles[idx]
             .as_mut()
-            .ok_or(MapError::TileDoesNotExist)
+            .ok_or(MapError::TileDoesNotExist)?;
+        Ok(Arc::make_mut(tile))
     }
 
     pub fn get_tile(&self, pos: &Position) -> Result<&MapTile, MapError> {
         self.chunks
             .get(&ChunkCoord::from_pos(pos))
-            .and_then(|chunk| chunk.tiles[local_index(pos)].as_ref())
+            .and_then(|chunk| chunk.tiles[local_index(pos)].as_deref())
             .ok_or(MapError::TileDoesNotExist)
     }
 
@@ -515,6 +527,7 @@ impl GameMap {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::constants::view::{PLAYER_VIEWPORT_HEIGHT, PLAYER_VIEWPORT_WIDTH};
     use crate::entities::agent::Agent;
     use crate::entities::inventory::InventorySlot;
     use crate::entities::items::ItemId;
@@ -756,9 +769,9 @@ mod tests {
         }
     }
 
-    /// A ceiling, not a pin: every `MapTile` is multiplied by the map's 18.9M tile slots,
-    /// so a field added to `Item` or a larger `TILE_INLINE_ITEMS` costs gigabytes of
-    /// resident set and nothing else would report it. Raise it deliberately or not at all.
+    /// A ceiling, not a pin: a `MapTile` is allocated per populated tile, 13.3M of them on the
+    /// shipped map, so a field added to `Item` or a larger `TILE_INLINE_ITEMS` costs gigabytes
+    /// of resident set and nothing else would report it. Raise it deliberately or not at all.
     #[test]
     fn a_tile_stays_small_enough_to_hold_nineteen_million_of() {
         let size = std::mem::size_of::<MapTile>();
@@ -768,6 +781,293 @@ mod tests {
             18_887_168u64,
             (size as f64 * 18_887_168.0) / 1024.0 / 1024.0 / 1024.0
         );
+    }
+
+    /// One populated tile per chunk, which is the shape a tick of scattered walks writes.
+    fn one_tile_per_chunk(map: &GameMap) -> Vec<Position> {
+        map.chunks
+            .iter()
+            .filter_map(|(coord, chunk)| {
+                chunk.tiles.iter().position(|t| t.is_some()).map(|idx| {
+                    Position::new(
+                        coord.cx * CHUNK_SIDE + (idx % CHUNK_SIDE as usize) as u16,
+                        coord.cy * CHUNK_SIDE + (idx / CHUNK_SIDE as usize) as u16,
+                        coord.z,
+                    )
+                })
+            })
+            .collect()
+    }
+
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn tile_write_cost_on_the_shipped_map() {
+        const ROUNDS: u32 = 5;
+        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let load_start = std::time::Instant::now();
+        let base =
+            crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
+        let load_elapsed = load_start.elapsed();
+
+        let populated: usize = base
+            .chunks
+            .values()
+            .map(|c| c.tiles.iter().filter(|t| t.is_some()).count())
+            .sum();
+        let targets = one_tile_per_chunk(&base);
+        let slot = std::mem::size_of_val(&base.chunks.values().next().unwrap().tiles[0]);
+        let slots = base.chunks.len() * CHUNK_AREA;
+        println!(
+            "loaded in {load_elapsed:?} | MapTile {} bytes, slot {slot} bytes | {} chunks, \
+             {slots} slots ({:.2} GB), {populated} populated tiles",
+            std::mem::size_of::<MapTile>(),
+            base.chunks.len(),
+            (slot * slots) as f64 / 1024.0 / 1024.0 / 1024.0,
+        );
+
+        for writes in [1_000usize, 5_000, 12_000] {
+            let writes = writes.min(targets.len());
+            let mut map = base.clone();
+            let mut total = std::time::Duration::ZERO;
+            for _ in 0..ROUNDS {
+                let snapshot = map.clone();
+                let start = std::time::Instant::now();
+                for pos in &targets[..writes] {
+                    std::hint::black_box(map.get_tile_mut(pos).is_ok());
+                }
+                total += start.elapsed();
+                drop(snapshot);
+            }
+            let per_round = total / ROUNDS;
+            println!(
+                "{writes:>6} scattered writes: {:>8.2} ms/tick, {:>7.2} us/write, {} chunk copies",
+                per_round.as_secs_f64() * 1e3,
+                per_round.as_secs_f64() * 1e6 / writes as f64,
+                map.take_chunk_copies() / ROUNDS as u64,
+            );
+        }
+
+        let probes: Vec<&Position> = targets.iter().step_by(13).take(20_000).collect();
+        let start = std::time::Instant::now();
+        for pos in &probes {
+            std::hint::black_box(base.get_tile(pos).is_ok());
+        }
+        let per_read = start.elapsed().as_secs_f64() * 1e9 / probes.len() as f64;
+
+        let sweeps: Vec<(Rect, u8)> = probes
+            .iter()
+            .take(2_000)
+            .map(|p| (Rect::player_viewport(p), p.z))
+            .collect();
+        let start = std::time::Instant::now();
+        let mut seen = 0usize;
+        for (rect, floor) in &sweeps {
+            seen += base.iter_tiles_in_rect(rect, *floor).count();
+        }
+        let per_sweep = start.elapsed().as_secs_f64() * 1e6 / sweeps.len() as f64;
+        std::hint::black_box(seen);
+        println!("reads: {per_read:.1} ns/tile, {per_sweep:.2} us/viewport sweep");
+    }
+
+    /// Clone and drop, which is what a publish costs: the old snapshot is freed when the
+    /// last reader lets go of it.
+    fn clone_cost_ms<T: Clone>(rounds: u32, value: &T) -> f64 {
+        let start = std::time::Instant::now();
+        for _ in 0..rounds {
+            std::hint::black_box(value.clone());
+        }
+        start.elapsed().as_secs_f64() * 1e3 / rounds as f64
+    }
+
+    /// Sweep cost over regions that have been written many times, against untouched ones.
+    /// `Arc::make_mut` reallocates the thing it copies, so a layout that starts contiguous does
+    /// not stay that way; a benchmark that loads and measures cannot see this.
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn sweep_cost_after_churn() {
+        const REGIONS: usize = 200;
+        const ROUNDS: u32 = 20;
+        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let base =
+            crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
+        let spread = one_tile_per_chunk(&base);
+
+        let churned: Vec<Position> = spread.iter().step_by(31).take(REGIONS).cloned().collect();
+        let pristine: Vec<Position> = spread
+            .iter()
+            .rev()
+            .step_by(31)
+            .take(REGIONS)
+            .cloned()
+            .collect();
+
+        let sweep_ms = |map: &GameMap, centres: &[Position]| {
+            let start = std::time::Instant::now();
+            let mut seen = 0usize;
+            for _ in 0..ROUNDS {
+                for c in centres {
+                    seen += map
+                        .iter_tiles_in_rect(&Rect::player_viewport(c), c.z)
+                        .count();
+                }
+            }
+            std::hint::black_box(seen);
+            start.elapsed().as_secs_f64() * 1e6 / (ROUNDS as usize * centres.len()) as f64
+        };
+
+        let mut map = base.clone();
+        println!(
+            "fresh load : churned regions {:>6.2} us/sweep | pristine {:>6.2} us/sweep",
+            sweep_ms(&map, &churned),
+            sweep_ms(&map, &pristine),
+        );
+
+        // One tile per region per pass, with an unrelated allocation between passes, so the
+        // rewritten tiles land where a long-running server would scatter them rather than
+        // being repacked contiguously.
+        let mut ballast: Vec<Vec<u8>> = Vec::new();
+        for dy in 0..PLAYER_VIEWPORT_HEIGHT as u16 {
+            for dx in 0..PLAYER_VIEWPORT_WIDTH as u16 {
+                let snapshot = map.clone();
+                for c in &churned {
+                    let pos = Position::new(
+                        c.x + dx - (PLAYER_VIEWPORT_WIDTH as u16 / 2),
+                        c.y + dy - (PLAYER_VIEWPORT_HEIGHT as u16 / 2),
+                        c.z,
+                    );
+                    let _ = map.get_tile_mut(&pos);
+                }
+                ballast.push(vec![0u8; 96]);
+                drop(snapshot);
+            }
+        }
+        std::hint::black_box(&ballast);
+
+        println!(
+            "after churn: churned regions {:>6.2} us/sweep | pristine {:>6.2} us/sweep",
+            sweep_ms(&map, &churned),
+            sweep_ms(&map, &pristine),
+        );
+    }
+
+    /// Three shapes for the agent container, on the publish-then-write pattern a tick runs:
+    /// the dense `SlotMap` in use today, a HAMT holding agents by value, and a HAMT holding
+    /// them behind an `Arc`.
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn agent_container_shapes() {
+        const COUNT: usize = 63_487;
+        const WRITES: usize = 2_400;
+        const ROUNDS: u32 = 10;
+        use crate::game::Tick;
+
+        let mut slots: SlotMap<AgentKey, Agent> = SlotMap::with_key();
+        let keys: Vec<AgentKey> = (0..COUNT).map(|_| slots.insert(new_creature())).collect();
+        let ids: Vec<u64> = (0..COUNT as u64).collect();
+        let mut by_value: HashMap<u64, Agent> = HashMap::new();
+        let mut by_arc: HashMap<u64, Arc<Agent>> = HashMap::new();
+        for id in &ids {
+            by_value.insert(*id, new_creature());
+            by_arc.insert(*id, Arc::new(new_creature()));
+        }
+
+        println!("Agent is {} bytes", std::mem::size_of::<Agent>());
+
+        macro_rules! write_after_clone {
+            ($container:expr, $write:expr) => {{
+                let mut total = std::time::Duration::ZERO;
+                for _ in 0..ROUNDS {
+                    let snapshot = $container.clone();
+                    let start = std::time::Instant::now();
+                    for i in 0..WRITES {
+                        $write(i);
+                    }
+                    total += start.elapsed();
+                    drop(snapshot);
+                }
+                (total / ROUNDS).as_secs_f64() * 1e3
+            }};
+        }
+
+        let slot_write = write_after_clone!(slots, |i: usize| {
+            slots[keys[i]].next_walk_tick = Tick(i as u64);
+        });
+        let value_write = write_after_clone!(by_value, |i: usize| {
+            by_value.get_mut(&ids[i]).unwrap().next_walk_tick = Tick(i as u64);
+        });
+        let arc_write = write_after_clone!(by_arc, |i: usize| {
+            Arc::make_mut(by_arc.get_mut(&ids[i]).unwrap()).next_walk_tick = Tick(i as u64);
+        });
+
+        let scan = |iter: &dyn Fn() -> u64| {
+            let start = std::time::Instant::now();
+            for _ in 0..ROUNDS {
+                std::hint::black_box(iter());
+            }
+            start.elapsed().as_secs_f64() * 1e3 / ROUNDS as f64
+        };
+        println!(
+            "full scan  : SlotMap {:>6.3} ms | HAMT<Agent> {:>6.3} ms | HAMT<Arc> {:>6.3} ms",
+            scan(&|| slots.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
+            scan(&|| by_value.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
+            scan(&|| by_arc.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
+        );
+
+        let lookups = |get: &dyn Fn(usize) -> Tick| {
+            let start = std::time::Instant::now();
+            let mut acc = 0u64;
+            for _ in 0..ROUNDS {
+                for i in (0..COUNT).step_by(7) {
+                    acc = acc.wrapping_add(get(i).0);
+                }
+            }
+            std::hint::black_box(acc);
+            start.elapsed().as_secs_f64() * 1e9 / (ROUNDS as usize * COUNT.div_ceil(7)) as f64
+        };
+
+        println!(
+            "SlotMap    : publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
+            clone_cost_ms(ROUNDS, &slots),
+            slot_write,
+            lookups(&|i| slots[keys[i]].next_walk_tick),
+        );
+        println!(
+            "HAMT<Agent>: publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
+            clone_cost_ms(ROUNDS, &by_value),
+            value_write,
+            lookups(&|i| by_value[&ids[i]].next_walk_tick),
+        );
+        println!(
+            "HAMT<Arc>  : publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
+            clone_cost_ms(ROUNDS, &by_arc),
+            arc_write,
+            lookups(&|i| by_arc[&ids[i]].next_walk_tick),
+        );
+    }
+
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn publish_cost_by_agent_count_on_the_shipped_map() {
+        const ROUNDS: u32 = 10;
+        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let base =
+            crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
+        let targets = one_tile_per_chunk(&base);
+
+        for count in [1_000usize, 10_000, 63_487] {
+            let count = count.min(targets.len());
+            let mut map = base.clone();
+            for pos in targets.iter().take(count) {
+                map.insert_agent(new_creature(), pos).expect("tile exists");
+            }
+            println!(
+                "{count:>6} agents: whole map {:>7.3} ms | agents {:>7.3} | positions {:>7.3} | chunks {:>7.3}",
+                clone_cost_ms(ROUNDS, &map),
+                clone_cost_ms(ROUNDS, &map.agents),
+                clone_cost_ms(ROUNDS, &map.agent_positions),
+                clone_cost_ms(ROUNDS, &map.chunks),
+            );
+        }
     }
 
     #[test]

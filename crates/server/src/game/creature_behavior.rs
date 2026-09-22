@@ -1,12 +1,15 @@
+use std::collections::HashSet;
+
 use tracing::error;
 
+use crate::constants::view::AGENT_DESPAWN_RADIUS;
 use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::creature::{CreatureAbility, CreatureAbilityId, CreatureKind};
 use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, Position, Rect};
 use crate::game::Tick;
 use crate::game::config::GAME_CONFIG;
-use crate::game::map_query::can_throw;
+use crate::game::map_query::{can_throw, iter_visible_floors};
 use crate::game::pathfinding::{self, Goal};
 use crate::game::random::Rolls;
 
@@ -69,6 +72,42 @@ pub struct CreatureBehaviourContext<'a> {
     pub roll: Rolls,
     pub world_tick: Tick,
     pub state: &'a mut CreatureState,
+}
+
+/// The creatures worth deciding for: those within `AGENT_DESPAWN_RADIUS` of a player on any
+/// floor that player's client draws, plus any creature still holding a target, so a chase does
+/// not stop the moment it leaves the box.
+///
+/// The box is the despawn radius rather than the drawn viewport, and it is applied unshifted to
+/// every visible floor. A floor slides one tile per level ([`floor_viewport_rect`]), at most
+/// seven on the surface, which the wider box absorbs — so this owes the renderer a floor range
+/// and nothing else.
+pub fn active_creatures(map: &GameMap) -> HashSet<AgentKey> {
+    let mut active = HashSet::new();
+    let mut players: Vec<Position> = Vec::new();
+    for (key, agent) in map.iter_agents() {
+        if !agent.is_creature() {
+            if let Some(position) = map.agent_position(key) {
+                players.push(position.clone());
+            }
+        } else if agent.target().is_some() {
+            active.insert(key);
+        }
+    }
+
+    for position in players {
+        let near = Rect::radius(&position, AGENT_DESPAWN_RADIUS);
+        for floor in
+            iter_visible_floors(position.z).chain([8 as u8].into_iter().filter(|_| position.z == 7))
+        {
+            for (creature, _) in map.iter_agents_in_rect(&near, floor) {
+                if map.get_agent(creature).is_some_and(Agent::is_creature) {
+                    active.insert(creature);
+                }
+            }
+        }
+    }
+    active
 }
 
 pub fn decide_action(ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
@@ -673,6 +712,134 @@ mod tests {
             Rect::player_viewport(&Position::new(15, 10, 7)).contains(&Position::new(24, 10, 7)),
             "one tile nearer is inside, so the case is testing the edge and not a typo"
         );
+    }
+
+    /// The term the inversion removes, measured against the term it adds, on the shipped map.
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn target_search_cost_on_the_shipped_map() {
+        const PLAYERS: usize = 5;
+        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let mut map =
+            crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
+        let spawns =
+            crate::persistence::spawns::load_spawns("assets/spawns.yaml").expect("spawns load");
+
+        let mut creatures: Vec<(AgentKey, Position)> = Vec::new();
+        for spawn in &spawns {
+            let Some(kind) = crate::persistence::creatures::CREATURE_KINDS
+                .get(&spawn.kind)
+                .cloned()
+            else {
+                continue;
+            };
+            let agent = Agent::respawning(kind, spawn.position.clone(), spawn.respawn_ticks);
+            if let Ok(key) = map.insert_agent(agent, &spawn.position) {
+                creatures.push((key, spawn.position.clone()));
+            }
+        }
+        for (_, pos) in creatures
+            .iter()
+            .step_by(creatures.len() / PLAYERS)
+            .take(PLAYERS)
+            .cloned()
+            .collect::<Vec<_>>()
+        {
+            let _ = map.insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &pos);
+        }
+        println!("{} creatures, {PLAYERS} players", creatures.len());
+
+        let start = std::time::Instant::now();
+        let mut seen = 0usize;
+        for (_, pos) in &creatures {
+            seen += map
+                .iter_agents_in_rect(&Rect::player_viewport(pos), pos.z)
+                .filter(|(key, _)| {
+                    map.get_agent(*key)
+                        .is_some_and(|agent| !agent.is_creature())
+                })
+                .count();
+        }
+        std::hint::black_box(seen);
+        println!(
+            "ungated sweep    : {:>9.1?}  (every creature searches)",
+            start.elapsed()
+        );
+
+        let start = std::time::Instant::now();
+        let active = active_creatures(&map);
+        println!(
+            "active_creatures : {:>9.1?}  ({} of {} creatures)",
+            start.elapsed(),
+            active.len(),
+            creatures.len()
+        );
+
+        let mut states: std::collections::HashMap<AgentKey, CreatureState> =
+            std::collections::HashMap::new();
+        let start = std::time::Instant::now();
+        for key in &active {
+            let state = states.entry(*key).or_default();
+            std::hint::black_box(decide_action(CreatureBehaviourContext {
+                creature: *key,
+                map: &map,
+                roll: Rolls::new(1),
+                world_tick: Tick(100),
+                state,
+            }));
+        }
+        println!("gated decide pass: {:>9.1?}", start.elapsed());
+    }
+
+    /// The mountain case: the client draws the floor above, so a creature standing on it has to
+    /// keep moving — but it is still not something to attack from down here.
+    #[test]
+    fn a_creature_one_floor_up_is_active_but_not_a_target() {
+        let mut map = a_field(5..=25, 5..=15);
+        for x in 5..=25u16 {
+            for y in 5..=15u16 {
+                map.insert_tile(Position::new(x, y, 6), a_ground_tile());
+            }
+        }
+        let upstairs = map
+            .insert_agent(
+                a_test_creature("Rat", 10, (1, 2)),
+                &Position::new(15, 10, 6),
+            )
+            .unwrap();
+        map.insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(15, 10))
+            .unwrap();
+
+        assert!(
+            active_creatures(&map).contains(&upstairs),
+            "a creature the player can see must keep deciding"
+        );
+        assert_eq!(search_target(upstairs, &map), None);
+    }
+
+    /// Without this a creature stops mid-chase the moment it leaves the box, which reads as the
+    /// same freeze as the floor bug and is not one.
+    #[test]
+    fn a_creature_holding_a_target_stays_active_with_no_player_near() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_creature(&mut map, 15);
+        let far_away = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(25, 15))
+            .unwrap();
+        map.get_agent_mut(rat)
+            .unwrap()
+            .set_target(Some(far_away), 1);
+        map.remove_agent(far_away);
+
+        assert!(active_creatures(&map).contains(&rat));
+    }
+
+    #[test]
+    fn a_creature_with_no_player_anywhere_is_not_active() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_creature(&mut map, 15);
+
+        assert!(!active_creatures(&map).contains(&rat));
     }
 
     // fleeing

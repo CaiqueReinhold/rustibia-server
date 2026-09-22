@@ -292,21 +292,28 @@ impl WorldActor {
 
     pub async fn run(mut self) {
         let mut ticker = time::interval(self.tick_duration);
+        ticker.set_missed_tick_behavior(time::MissedTickBehavior::Delay);
 
         info!("Starting world loop");
         loop {
             loop {
+                let mut scheduled = Vec::new();
                 select! {
                     biased;
                     _ = ticker.tick() => {
                         break
                     },
-                    Some((command, after)) = self.rx.recv() => {
-                        if let Some(after) = after {
-                            self.command_queue.push(ScheduledCommand { at_tick: self.tick + after, command });
-                        } else {
-                            self.command_queue.push(ScheduledCommand { at_tick: self.tick + TickDelta(1), command });
+                    amount_read = self.rx.recv_many(&mut scheduled, 1000) => {
+                        if amount_read > 0 {
+                            for (command, after) in scheduled.drain(..) {
+                                if let Some(after) = after {
+                                    self.command_queue.push(ScheduledCommand { at_tick: self.tick + after, command });
+                                } else {
+                                    self.command_queue.push(ScheduledCommand { at_tick: self.tick + TickDelta(1), command });
+                                }
+                            }
                         }
+
 
                     }
                 }
@@ -326,21 +333,52 @@ impl WorldActor {
                 );
             }
 
+            let drain_start = time::Instant::now();
+            let mut drained: u32 = 0;
             while let Some(scheduled) = self.command_queue.peek() {
                 if scheduled.at_tick <= self.tick {
                     let scheduled = self.command_queue.pop().unwrap();
                     self.handle_command(scheduled.command, &mut broadcast_messages);
+                    drained += 1;
                 } else {
                     break;
                 }
             }
+            let drain_elapsed = drain_start.elapsed();
 
+            let systems_start = time::Instant::now();
             self.run_systems(&mut broadcast_messages);
+            let systems_elapsed = systems_start.elapsed();
 
+            let chunk_copies = self.map.take_chunk_copies();
+
+            let publish_start = time::Instant::now();
             self.end_tick(broadcast_messages).await;
+            let publish_elapsed = publish_start.elapsed();
 
             let elapsed = tick_start.elapsed();
-            debug!("Tick {} took {} ms", self.tick, elapsed.as_millis());
+            debug!(
+                "Tick {} took {:?}: drain {:?} ({} commands, {} chunk copies), systems {:?}, publish {:?}",
+                self.tick,
+                elapsed,
+                drain_elapsed,
+                drained,
+                chunk_copies,
+                systems_elapsed,
+                publish_elapsed
+            );
+            if elapsed > self.tick_duration {
+                info!(
+                    "Tick {} took {:?}: drain {:?} ({} commands, {} chunk copies), systems {:?}, publish {:?}",
+                    self.tick,
+                    elapsed,
+                    drain_elapsed,
+                    drained,
+                    chunk_copies,
+                    systems_elapsed,
+                    publish_elapsed
+                );
+            }
             if elapsed > self.tick_duration {
                 warn!(
                     "Tick {} overran budget by {:?}",

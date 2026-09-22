@@ -44,6 +44,10 @@ impl WorldMap {
         std::mem::take(&mut self.delta)
     }
 
+    pub fn take_chunk_copies(&mut self) -> u64 {
+        self.map.take_chunk_copies()
+    }
+
     #[cfg(test)]
     pub fn delta(&self) -> &WorldDelta {
         &self.delta
