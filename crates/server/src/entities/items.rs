@@ -433,7 +433,7 @@ pub struct ItemRef {
     pub placement: ItemPlacement,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ClientItemRef {
     pub position: Position,
     pub item_id: ItemId,

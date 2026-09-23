@@ -1,0 +1,15 @@
+routes:
+  - name: badger-clearing
+    waypoints:
+      - { x: 32070, y: 31083, z: 7 }
+      - { x: 32075, y: 31087, z: 7 }
+behaviour:
+  engage_radius: 5
+  health_potion_pct: 45
+  heal_spell_pct: 70
+  mana_potion_pct: 35
+  attack_spell: exori flam
+  heal_spell: exura
+  loot_items_max: 4
+  decision_interval_ms: [180, 320]
+  ping_interval_ms: [4000, 6000]

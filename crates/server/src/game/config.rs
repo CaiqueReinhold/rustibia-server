@@ -116,7 +116,7 @@ pub struct EffectsConfig {
     pub mana_hit: EffectId,
 }
 
-#[derive(Deserialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Debug, Clone, Copy, PartialEq)]
 pub struct Color(pub u8, pub u8, pub u8);
 
 #[derive(Deserialize)]

@@ -7,42 +7,22 @@ use anyhow::{Context as _, Result};
 use sqlx::postgres::PgPoolOptions;
 use tracing::info;
 
-mod actors;
-mod config;
-mod constants;
-mod entities;
-mod game;
-mod local_id;
-mod messages;
-mod network;
-mod online_registry;
-mod persistence;
-
-use config::CONFIG;
-use persistence::items::ITEM_CONFIGS;
-
 use arc_swap::ArcSwap;
 
-use crate::{
+use rustibia_server::{
     actors::{
         SharedContext, chat::ChatActor, creature_behavior::CreatureBehaviorActor,
         message_router::MessageRouterActor, persistence::PersistenceActor, world::WorldActor,
     },
+    config::CONFIG,
     game::config::GAME_CONFIG,
+    network::{Context, Listener},
     online_registry::OnlineRegistry,
     persistence::{
-        login::{HttpLoginRepository, LoginRepository},
-        player::PlayerRepository,
-        spells::SPELLS,
+        items::ITEM_CONFIGS, login::HttpLoginRepository, map::load_map, online::OnlineRepository,
+        player::PlayerRepository, spawns::load_spawns, spells::SPELLS,
     },
 };
-
-/// Generic over the login repository so the HTTP implementation can be swapped for the
-/// SQL one without touching the listener; see `persistence::login`.
-pub struct Context<L: LoginRepository> {
-    login_repo: Arc<L>,
-    shared_ctx: SharedContext,
-}
 
 #[tokio::main(worker_threads = 8)]
 async fn main() -> Result<()> {
@@ -54,8 +34,8 @@ async fn main() -> Result<()> {
 
     let seed = RandomState::new().build_hasher().finish();
 
-    let map = persistence::map::load_map(&CONFIG.map_file_path, &ITEM_CONFIGS).unwrap();
-    let spawns = persistence::spawns::load_spawns(&CONFIG.spawns_file_path).unwrap();
+    let map = load_map(&CONFIG.map_file_path, &ITEM_CONFIGS).unwrap();
+    let spawns = load_spawns(&CONFIG.spawns_file_path).unwrap();
 
     let shared_map = Arc::new(ArcSwap::from_pointee(map.clone()));
 
@@ -86,7 +66,7 @@ async fn main() -> Result<()> {
         .connect(&CONFIG.database_url)
         .await?;
 
-    let online_repo = Arc::new(persistence::online::OnlineRepository::new(pool.clone()));
+    let online_repo = Arc::new(OnlineRepository::new(pool.clone()));
     online_repo
         .clear_all()
         .await
@@ -113,7 +93,7 @@ async fn main() -> Result<()> {
         },
     };
 
-    let listener = network::Listener::bind(CONFIG.bind_address).await?;
+    let listener = Listener::bind(CONFIG.bind_address).await?;
     info!("Listening on {}", CONFIG.bind_address);
     listener.listen(context).await;
 

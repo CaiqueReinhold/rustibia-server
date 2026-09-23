@@ -75,7 +75,7 @@ impl From<(u8, u8, u8, u8)> for OutfitColors {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Pool {
     pub current: u32,
     pub maximum: u32,
@@ -159,6 +159,22 @@ pub struct Agent {
     target: Option<AgentKey>,
     target_seq: u32,
     participation: Participation,
+}
+
+pub fn walk_ticks(speed: u16, tile_friction: u16, diagonal: bool) -> TickDelta {
+    let move_speed = (SPEED_PARAM_A * ((speed as f32) + SPEED_PARAM_B).ln() + SPEED_PARAM_C)
+        .round()
+        .max(1.0);
+
+    let tile_speed = (1000.0 * (tile_friction as f32) / move_speed).floor();
+    let ticks =
+        TickDelta((tile_speed / (config::CONFIG.tick_duration.as_millis() as f32)).ceil() as u64);
+
+    if diagonal {
+        ticks * DIAGONAL_STEP_FACTOR
+    } else {
+        ticks
+    }
 }
 
 impl Agent {
@@ -383,21 +399,7 @@ impl Agent {
     }
 
     pub fn calculate_walk_ticks(&self, tile_friction: u16, diagonal: bool) -> TickDelta {
-        let move_speed = (SPEED_PARAM_A * ((self.speed() as f32) + SPEED_PARAM_B).ln()
-            + SPEED_PARAM_C)
-            .round()
-            .max(1.0);
-
-        let tile_speed = (1000.0 * (tile_friction as f32) / move_speed).floor();
-        let ticks = TickDelta(
-            (tile_speed / (config::CONFIG.tick_duration.as_millis() as f32)).ceil() as u64,
-        );
-
-        if diagonal {
-            ticks * DIAGONAL_STEP_FACTOR
-        } else {
-            ticks
-        }
+        walk_ticks(self.speed(), tile_friction, diagonal)
     }
 
     pub fn can_logout(&self, current_tick: Tick) -> bool {

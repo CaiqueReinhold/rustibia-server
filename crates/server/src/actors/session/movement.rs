@@ -90,10 +90,7 @@ impl SessionActor {
                 self.introduce_agent(key, pos, &map).await?;
             }
 
-            let tiles = {
-                let from_pos = to_position.clone() - direction;
-                get_map_expansion(&map, &from_pos, &direction)
-            };
+            let tiles = get_map_expansion(&map, &to_position, &direction);
             self.connection
                 .send_message(ServerMessage::PlayerWalkAck {
                     position: to_position.clone(),
@@ -199,7 +196,7 @@ mod tests {
     use super::*;
     use crate::actors::session::test_support::seat_player;
     use crate::actors::world::WorldCommand;
-    use crate::entities::map::GameMap;
+    use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::game::Tick;
     use std::sync::Arc;
@@ -333,5 +330,76 @@ mod tests {
             "however early it is, it waits rather than being refused"
         );
         assert!(matches!(session.queued_walk, Some(Direction::North)));
+    }
+
+    /// The regression: `PlayerWalkAck`'s tile strip must come from `to_position`, the
+    /// same position `get_agents_in_expansion` already uses, not from the position the
+    /// step started at. A step north from y=100 to y=99 uncovers row y=99-7=92; the
+    /// pre-step position would instead re-describe row y=100-7=93, which the client
+    /// already had.
+    #[tokio::test]
+    async fn agent_moved_acks_the_row_that_just_came_into_view() {
+        use crate::actors::connection::ConnectionCommand;
+        use crate::entities::items::{Item, ItemConfig, ItemId};
+
+        let mut map = GameMap::new();
+        let key = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+
+        let config = |id: u16| {
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                "marker".to_string(),
+                None,
+                None,
+                [],
+                [],
+            ))
+        };
+        // Distinct ids so the strip's contents, not just its length, tell the two
+        // rows apart.
+        let new_row_marker = ItemId(1);
+        let mut new_row_tile = MapTile::new();
+        new_row_tile.push_item(Item::new(config(new_row_marker.0), 1));
+        map.insert_tile(Position::new(100, 92, 7), new_row_tile);
+
+        let old_row_marker = ItemId(2);
+        let mut old_row_tile = MapTile::new();
+        old_row_tile.push_item(Item::new(config(old_row_marker.0), 1));
+        map.insert_tile(Position::new(100, 93, 7), old_row_tile);
+
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(key, map);
+
+        session
+            .agent_moved(key, Direction::North, Position::new(100, 99, 7))
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        let tiles = sent
+            .iter()
+            .find_map(|c| match c {
+                ConnectionCommand::SendPlayerMessage(ServerMessage::PlayerWalkAck {
+                    tiles,
+                    ..
+                }) => Some(tiles),
+                _ => None,
+            })
+            .expect("a walk ack was sent");
+
+        let (_, strip) = tiles
+            .iter()
+            .find(|(floor, _)| *floor == 7)
+            .expect("a marker item made floor 7 part of the strip");
+        let ids: Vec<_> = strip
+            .iter()
+            .filter_map(|stack| stack[0].map(|(id, _)| id))
+            .collect();
+        assert_eq!(
+            ids,
+            vec![new_row_marker],
+            "the strip must hold the row that just came into view (y=92), not the \
+             one already visible before the step (y=93)"
+        );
     }
 }

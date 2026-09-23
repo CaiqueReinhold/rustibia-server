@@ -16,8 +16,9 @@ use crate::{
         skills::SkillType,
         spells::{SpellGroup, SpellId, SpellTarget},
     },
-    game::config::Color,
 };
+
+pub use crate::game::config::Color;
 
 pub type ItemStack = [Option<(ItemId, u8)>; MAX_VISIBLE_ITEMS];
 
@@ -42,7 +43,7 @@ const CLI_OPEN_PM_CHAT: u8 = 16;
 const CLI_SET_TARGET: u8 = 17;
 const CLI_CAST_SPELL: u8 = 18;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ClientMessage {
     Ping,
     Login {
@@ -141,25 +142,25 @@ const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
 const SRV_DAMAGED_BY: u8 = 35;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TextMessageType {
     ActionDenied,
     Look,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SkillProgress {
     pub level: u16,
     pub percent_bp: u16,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum FloatingTextType {
     HitPoints,
     CreatureSay,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SpellListEntry {
     pub id: SpellId,
     pub name: String,
@@ -170,7 +171,7 @@ pub struct SpellListEntry {
     pub group: SpellGroup,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ServerMessage {
     Pong,
     LoginError,

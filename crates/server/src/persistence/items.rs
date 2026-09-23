@@ -10,7 +10,7 @@ use thiserror::Error;
 use crate::config::CONFIG;
 use crate::entities::Bounds;
 use crate::entities::combat::{AmmoType, CombatElement, WeaponType};
-use crate::entities::effects::{EffectId, MissileId};
+use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::inventory::InventorySlot;
 use crate::entities::items::{
     FloorChangeDirection, ItemAction, ItemAttribute, ItemConfig, ItemFlag, ItemId, ItemMultiAction,
@@ -24,7 +24,7 @@ use crate::persistence::yaml_files_in;
 /// The item catalogue, loaded once from `assets/items/`. Immutable after load and
 /// read by every subsystem, so it is a global for the same reason `GAME_CONFIG` is.
 pub static ITEM_CONFIGS: Lazy<Arc<HashMap<ItemId, Arc<ItemConfig>>>> = Lazy::new(|| {
-    Arc::new(load_items(&CONFIG.items_dir_path).expect("failed to load item configs"))
+    Arc::new(load_items(&CONFIG.items_dir_path, &AREA_SHAPES).expect("failed to load item configs"))
 });
 
 #[derive(Error, Debug)]
@@ -101,7 +101,11 @@ fn parse_bounds(value: &serde_yaml::Value) -> Option<Bounds> {
     Some(Bounds { min, max })
 }
 
-fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute> {
+fn parse_attribute(
+    key: &str,
+    value: &serde_yaml::Value,
+    shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
+) -> Option<ItemAttribute> {
     match key {
         "slot" => {
             let slot = parse_inventory_slot(value.as_u64()?)?;
@@ -207,7 +211,7 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
         "mana_cost" => Some(ItemAttribute::ManaCost(value.as_i64()? as u32)),
         "missile_id" => Some(ItemAttribute::MissileId(MissileId(value.as_i64()? as u16))),
         "area" => Some(ItemAttribute::WeaponArea(
-            AREA_SHAPES.get(value.get("shape")?.as_str()?).cloned()?,
+            shapes.get(value.get("shape")?.as_str()?).cloned()?,
             EffectId(value.get("effect_id")?.as_u64()? as u16),
         )),
         "speed" => Some(ItemAttribute::Speed(value.as_i64()? as i16)),
@@ -225,11 +229,11 @@ fn parse_attribute(key: &str, value: &serde_yaml::Value) -> Option<ItemAttribute
     }
 }
 
-fn convert(raw: RawItemConfig) -> ItemConfig {
+fn convert(raw: RawItemConfig, shapes: &HashMap<AreaShapeId, Arc<AreaShape>>) -> ItemConfig {
     let attributes = raw
         .attributes
         .iter()
-        .filter_map(|(k, v)| parse_attribute(k, v))
+        .filter_map(|(k, v)| parse_attribute(k, v, shapes))
         .collect::<Vec<_>>();
 
     ItemConfig::new(
@@ -246,8 +250,13 @@ fn convert(raw: RawItemConfig) -> ItemConfig {
 
 /// Each `.yaml` file in `dir` is a list of items. Which file an item is in means
 /// nothing to the server.
+///
+/// `shapes` is a parameter rather than a read of `AREA_SHAPES` so that the dependency
+/// between the two catalogues is stated at the single site that forces both, and so a test
+/// can hand this a shape of its own.
 pub fn load_items(
     dir: impl AsRef<Path>,
+    shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
 ) -> Result<HashMap<ItemId, Arc<ItemConfig>>, ItemsLoadError> {
     let dir = dir.as_ref();
     let paths = yaml_files_in(dir).map_err(|source| ItemsLoadError::ReadError {
@@ -265,6 +274,7 @@ pub fn load_items(
         files
             .iter()
             .map(|(path, contents)| (path.as_path(), contents.as_str())),
+        shapes,
     )
 }
 
@@ -273,6 +283,7 @@ pub fn load_items(
 /// exercised over documents the caller owns rather than over the shipped files.
 fn load_items_from_files<'a>(
     files: impl IntoIterator<Item = (&'a Path, &'a str)>,
+    shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
 ) -> Result<HashMap<ItemId, Arc<ItemConfig>>, ItemsLoadError> {
     let mut sources: HashMap<ItemId, &Path> = HashMap::new();
     let mut items = HashMap::new();
@@ -290,7 +301,7 @@ fn load_items_from_files<'a>(
                     second: path.to_path_buf(),
                 });
             }
-            items.insert(raw.id, Arc::new(convert(raw)));
+            items.insert(raw.id, Arc::new(convert(raw, shapes)));
         }
     }
     Ok(items)
@@ -303,7 +314,7 @@ mod tests {
     use crate::entities::items::ItemId;
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
-        parse_attribute(key, &serde_yaml::from_str(value).unwrap())
+        parse_attribute(key, &serde_yaml::from_str(value).unwrap(), &HashMap::new())
     }
 
     #[test]
@@ -334,7 +345,7 @@ mod tests {
   attributes:
     field: { type: decaying, element: earth, damage: { min: 100, max: 100 }, interval: 100, start: 5 }
 ",
-        )])
+        )], &HashMap::new())
         .unwrap();
 
         let field = &items[&ItemId(1)];
@@ -370,9 +381,10 @@ mod tests {
     /// drops a misread silently, so they are carried through the whole read path as well.
     #[test]
     fn armour_defence_and_hit_chances_survive_the_whole_load_path() {
-        let items = load_items_from_files([(
-            Path::new("gear.yaml"),
-            "
+        let items = load_items_from_files(
+            [(
+                Path::new("gear.yaml"),
+                "
 - id: 1
   name: a cursed shield
   attributes:
@@ -382,7 +394,9 @@ mod tests {
     hit_chance: -20
     max_hit_chance: 91
 ",
-        )])
+            )],
+            &HashMap::new(),
+        )
         .unwrap();
         let shield = &items[&ItemId(1)];
 
@@ -551,10 +565,11 @@ mod tests {
     /// config, and pinning it here would make it a constant.
     #[test]
     fn a_potion_survives_the_whole_load_path() {
-        let items = load_items_from_files([
-            (
-                Path::new("potions.yaml"),
-                "
+        let items = load_items_from_files(
+            [
+                (
+                    Path::new("potions.yaml"),
+                    "
 - id: 1
   name: a health potion
   flags: [usable, multiuse]
@@ -577,10 +592,10 @@ mod tests {
         max: 200
       flask: 284
 ",
-            ),
-            (
-                Path::new("other.yaml"),
-                "
+                ),
+                (
+                    Path::new("other.yaml"),
+                    "
 - id: 3
   name: a broken potion
   attributes:
@@ -588,8 +603,10 @@ mod tests {
       health:
         min: 125
 ",
-            ),
-        ])
+                ),
+            ],
+            &HashMap::new(),
+        )
         .unwrap();
 
         assert_eq!(
@@ -616,10 +633,13 @@ mod tests {
 
     #[test]
     fn an_id_defined_in_two_files_is_refused() {
-        let error = load_items_from_files([
-            (Path::new("weapons.yaml"), "- id: 7\n  name: a sword"),
-            (Path::new("other.yaml"), "- id: 7\n  name: a rusty sword"),
-        ])
+        let error = load_items_from_files(
+            [
+                (Path::new("weapons.yaml"), "- id: 7\n  name: a sword"),
+                (Path::new("other.yaml"), "- id: 7\n  name: a rusty sword"),
+            ],
+            &HashMap::new(),
+        )
         .unwrap_err();
 
         assert!(

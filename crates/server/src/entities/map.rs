@@ -803,7 +803,11 @@ mod tests {
     #[ignore = "timing, not a pass/fail assertion"]
     fn tile_write_cost_on_the_shipped_map() {
         const ROUNDS: u32 = 5;
-        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let items = crate::persistence::items::load_items(
+            "assets/items",
+            &crate::persistence::areas::AREA_SHAPES,
+        )
+        .expect("items load");
         let load_start = std::time::Instant::now();
         let base =
             crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
@@ -887,7 +891,11 @@ mod tests {
     fn sweep_cost_after_churn() {
         const REGIONS: usize = 200;
         const ROUNDS: u32 = 20;
-        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let items = crate::persistence::items::load_items(
+            "assets/items",
+            &crate::persistence::areas::AREA_SHAPES,
+        )
+        .expect("items load");
         let base =
             crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
         let spread = one_tile_per_chunk(&base);
@@ -1049,7 +1057,11 @@ mod tests {
     #[ignore = "timing, not a pass/fail assertion"]
     fn publish_cost_by_agent_count_on_the_shipped_map() {
         const ROUNDS: u32 = 10;
-        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let items = crate::persistence::items::load_items(
+            "assets/items",
+            &crate::persistence::areas::AREA_SHAPES,
+        )
+        .expect("items load");
         let base =
             crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
         let targets = one_tile_per_chunk(&base);

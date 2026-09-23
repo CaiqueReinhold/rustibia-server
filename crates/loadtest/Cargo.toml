@@ -1,45 +1,30 @@
 [package]
-name = "rustibia-server"
+name = "rustibia-loadtest"
 version = "0.1.0"
 edition = "2024"
 
-[lib]
-name = "rustibia_server"
-path = "src/lib.rs"
-
 [[bin]]
-name = "server"
+name = "loadtest"
 path = "src/main.rs"
 
 [dependencies]
+rustibia-server = { path = "../server" }
+rustibia-contract = { path = "../contract" }
 anyhow = { workspace = true }
 futures = { workspace = true }
 rand = { workspace = true }
+clap = { version = "4", features = ["derive", "env"] }
+hdrhistogram = "7"
 reqwest = { workspace = true }
-rustibia-contract = { path = "../contract" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 serde_yaml = { workspace = true }
-sha2 = { workspace = true }
 sqlx = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
-uuid = { workspace = true }
-
-arc-swap = "1"
-once_cell = "1.21.4"
-pathfinding = "4"
-rstar = "0.12" # Spatial indexing
-slotmap = "1.1.1"
-smallvec = "1.15.1"
-tokio-stream = "0.1.18"
-rand_distr = "0.6.0"
-strum = { version = "0.28.0", features = ["derive"] }
-imbl = "7.0.2"
 
 [dev-dependencies]
-rustibia-certgen = { path = "../certgen" }
 wiremock = { workspace = true }

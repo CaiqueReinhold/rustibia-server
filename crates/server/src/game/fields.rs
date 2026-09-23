@@ -142,10 +142,7 @@ mod tests {
     }
 
     fn ids_at(map: &WorldMap, pos: &Position) -> Vec<ItemId> {
-        map.iter_items(pos)
-            .unwrap()
-            .map(|item| item.id())
-            .collect()
+        map.iter_items(pos).unwrap().map(|item| item.id()).collect()
     }
 
     #[test]

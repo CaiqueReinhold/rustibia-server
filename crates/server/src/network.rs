@@ -8,11 +8,18 @@ use tokio::{
 };
 use uuid::{NoContext, Timestamp};
 
+use std::sync::Arc;
+
 use crate::{
-    Context,
-    actors::{auth::AuthActor, connection::ConnectionActor},
+    actors::{SharedContext, auth::AuthActor, connection::ConnectionActor},
     persistence::login::LoginRepository,
 };
+
+/// See `persistence::login`.
+pub struct Context<L: LoginRepository> {
+    pub login_repo: Arc<L>,
+    pub shared_ctx: SharedContext,
+}
 
 pub struct Listener {
     inner: tokio::net::TcpListener,

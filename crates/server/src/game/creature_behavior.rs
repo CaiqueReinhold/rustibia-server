@@ -719,7 +719,11 @@ mod tests {
     #[ignore = "timing, not a pass/fail assertion"]
     fn target_search_cost_on_the_shipped_map() {
         const PLAYERS: usize = 5;
-        let items = crate::persistence::items::load_items("assets/items").expect("items load");
+        let items = crate::persistence::items::load_items(
+            "assets/items",
+            &crate::persistence::areas::AREA_SHAPES,
+        )
+        .expect("items load");
         let mut map =
             crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
         let spawns =

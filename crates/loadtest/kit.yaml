@@ -1,0 +1,14 @@
+character:
+  vocation: sorcerer
+  level: 20
+  life: 500
+  mana: 400
+  capacity: 60000
+  start: { x: 32070, y: 31083, z: 7 }
+  skills: { axe: 30, club: 30, sword: 50, distance: 30, magic: 40, shielding: 40 }
+kit:
+  backpack: 2854
+  weapon: 3264
+  contents:
+    - { item: 266, stacks: 2, amount: 20 }
+    - { item: 268, stacks: 2, amount: 20 }

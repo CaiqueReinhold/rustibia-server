@@ -808,10 +808,7 @@ mod tests {
     fn removing_a_nested_item_marks_the_container_it_came_out_of() {
         let (mut map, key) = a_player_with_a_backpack();
         let pouch = &backpack(&map, key).content.as_ref().unwrap()[0];
-        let (pouch_guid, coin_guid) = (
-            pouch.guid,
-            pouch.content.as_ref().unwrap()[0].guid,
-        );
+        let (pouch_guid, coin_guid) = (pouch.guid, pouch.content.as_ref().unwrap()[0].guid);
 
         map.player_mut(key)
             .unwrap()
@@ -904,8 +901,7 @@ mod tests {
     #[test]
     fn stacking_into_a_carried_container_marks_it_and_carries_the_weight() {
         let (mut map, key) = a_player_with_a_backpack();
-        let pouch_guid = backpack(&map, key).content.as_ref().unwrap()[0]
-            .guid;
+        let pouch_guid = backpack(&map, key).content.as_ref().unwrap()[0].guid;
         let weight = map.get_player(key).unwrap().inventory().carried_weight();
         let placement = ItemPlacement::Container {
             guid: pouch_guid,

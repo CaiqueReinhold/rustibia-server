@@ -14,14 +14,14 @@ pub struct Channel {
     pub members: Vec<AgentKey>,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ChatMessageType {
     Local,
     Channel,
     Private,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SayTarget {
     Local,
     Channel(ChannelId),

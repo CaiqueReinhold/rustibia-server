@@ -158,7 +158,7 @@ pub struct SpellField {
     pub missile_id: Option<MissileId>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SpellTarget {
     None,
     Agent(AgentId),

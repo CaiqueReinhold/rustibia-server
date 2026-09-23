@@ -6,7 +6,8 @@ pub struct SkillValue {
     pub current_ticks: u64,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, EnumIter, FromRepr)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, EnumIter, FromRepr, serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
 #[repr(u8)]
 pub enum SkillType {
     Level = 0,
