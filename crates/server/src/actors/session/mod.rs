@@ -104,6 +104,10 @@ impl SessionActorHandle {
         Ok(())
     }
 
+    pub fn queue_depth(&self) -> usize {
+        self.tx.max_capacity() - self.tx.capacity()
+    }
+
     pub fn receive_delta(
         &self,
         delta: Arc<WorldDelta>,

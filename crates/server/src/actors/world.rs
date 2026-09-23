@@ -2,15 +2,18 @@ use anyhow::{Result, anyhow};
 use arc_swap::ArcSwap;
 use std::collections::binary_heap::BinaryHeap;
 
-use std::{sync::Arc, time::Duration};
-use strum::Display;
+use std::{
+    sync::Arc,
+    time::{Duration, Instant},
+};
+use strum::{Display, IntoStaticStr};
 use tokio::{
     select,
     sync::mpsc,
     sync::{oneshot, watch},
     time,
 };
-use tracing::{debug, error, info, warn};
+use tracing::{Instrument, Span, error, field, info, info_span, warn};
 
 use crate::actors::{
     message_router::{MessageRouterActorHandle, MessageRouterGuard},
@@ -37,8 +40,9 @@ use crate::game::{
 };
 use crate::online_registry::RegistryGuard;
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
+use crate::telemetry::{self, CommandRecord, CommandSink, TickTimings};
 
-#[derive(Debug, Display)]
+#[derive(Debug, Display, IntoStaticStr)]
 pub enum WorldCommand {
     SpawnPlayer {
         player: Box<Agent>,
@@ -238,6 +242,7 @@ pub struct WorldActor {
     tick_duration: Duration,
     tick_tx: watch::Sender<Tick>,
     roll: Rolls,
+    command_sink: CommandSink,
 }
 
 impl WorldActor {
@@ -249,6 +254,7 @@ impl WorldActor {
         spawns: &[SpawnPoint],
     ) -> (WorldActorHandle, watch::Receiver<Tick>) {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
+        telemetry::observe_channel("rustibia.world.inbox.depth", &tx);
         let (tick_tx, tick_rx) = watch::channel(Tick(0));
 
         let mut actor = Self {
@@ -261,6 +267,7 @@ impl WorldActor {
             tick_duration: CONFIG.tick_duration,
             tick_tx,
             roll: Rolls::new(seed),
+            command_sink: CommandSink::start(),
         };
         actor.seed_spawn_points(spawns);
 
@@ -318,83 +325,110 @@ impl WorldActor {
                     }
                 }
             }
+            self.run_tick().await;
+        }
+    }
 
-            let tick_start = time::Instant::now();
-            self.tick += TickDelta(1);
-            debug!("World: starting tick {}", self.tick);
+    async fn run_tick(&mut self) {
+        let tick_start = Instant::now();
+        self.tick += TickDelta(1);
+        let tick_span = info_span!(
+            "tick",
+            tick = self.tick.0 as i64,
+            drained = field::Empty,
+            queue_future = field::Empty,
+            chunk_copies = field::Empty,
+            overran = field::Empty,
+        );
+        let mut broadcast_messages = Vec::new();
 
-            let mut broadcast_messages: Vec<BroadcastMessage> = Vec::new();
+        let records = info_span!(parent: &tick_span, "drain")
+            .in_scope(|| self.drain_due(&mut broadcast_messages));
+        let drain_elapsed = tick_start.elapsed();
 
-            if !self.command_queue.is_empty() {
-                info!(
-                    "Starting tick {} with {} commands",
-                    self.tick,
-                    self.command_queue.len()
-                );
-            }
+        let systems_start = Instant::now();
+        info_span!(parent: &tick_span, "systems")
+            .in_scope(|| self.run_systems(&mut broadcast_messages));
+        let systems_elapsed = systems_start.elapsed();
 
-            let drain_start = time::Instant::now();
-            let mut drained: u32 = 0;
-            while let Some(scheduled) = self.command_queue.peek() {
-                if scheduled.at_tick <= self.tick {
-                    let scheduled = self.command_queue.pop().unwrap();
-                    self.handle_command(scheduled.command, &mut broadcast_messages);
-                    drained += 1;
-                } else {
-                    break;
-                }
-            }
-            let drain_elapsed = drain_start.elapsed();
+        let chunk_copies = self.map.take_chunk_copies();
+        let (snapshot_elapsed, publish_elapsed) =
+            self.end_tick(broadcast_messages, &tick_span).await;
 
-            let systems_start = time::Instant::now();
-            self.run_systems(&mut broadcast_messages);
-            let systems_elapsed = systems_start.elapsed();
+        let elapsed = tick_start.elapsed();
+        let overran = elapsed > self.tick_duration;
+        let drained = records.len() as u64;
+        let queue_future = self.command_queue.len() as u64;
+        tick_span.record("drained", drained as i64);
+        tick_span.record("queue_future", queue_future as i64);
+        tick_span.record("chunk_copies", chunk_copies as i64);
+        tick_span.record("overran", overran);
+        telemetry::metrics().record_tick(&TickTimings {
+            total: elapsed,
+            drain: drain_elapsed,
+            systems: systems_elapsed,
+            snapshot: snapshot_elapsed,
+            publish: publish_elapsed,
+            budget: self.tick_duration,
+            drained,
+            queue_future,
+            chunk_copies,
+        });
 
-            let chunk_copies = self.map.take_chunk_copies();
+        self.command_sink.submit(records);
 
-            let publish_start = time::Instant::now();
-            self.end_tick(broadcast_messages).await;
-            let publish_elapsed = publish_start.elapsed();
-
-            let elapsed = tick_start.elapsed();
-            debug!(
-                "Tick {} took {:?}: drain {:?} ({} commands, {} chunk copies), systems {:?}, publish {:?}",
-                self.tick,
-                elapsed,
-                drain_elapsed,
-                drained,
-                chunk_copies,
-                systems_elapsed,
-                publish_elapsed
-            );
-            if elapsed > self.tick_duration {
-                info!(
-                    "Tick {} took {:?}: drain {:?} ({} commands, {} chunk copies), systems {:?}, publish {:?}",
-                    self.tick,
-                    elapsed,
-                    drain_elapsed,
-                    drained,
-                    chunk_copies,
-                    systems_elapsed,
-                    publish_elapsed
-                );
-            }
-            if elapsed > self.tick_duration {
+        if overran {
+            tick_span.in_scope(|| {
                 warn!(
                     "Tick {} overran budget by {:?}",
                     self.tick,
                     elapsed - self.tick_duration
-                );
-            }
+                )
+            });
         }
     }
 
-    async fn end_tick(&mut self, broadcast_messages: Vec<BroadcastMessage>) {
-        let delta = Arc::new(self.map.take_delta());
+    fn drain_due(&mut self, broadcast_messages: &mut Vec<BroadcastMessage>) -> Vec<CommandRecord> {
+        let mut records = Vec::new();
+        while self
+            .command_queue
+            .peek()
+            .is_some_and(|scheduled| scheduled.at_tick <= self.tick)
+        {
+            let scheduled = self.command_queue.pop().unwrap();
+            let command: &'static str = (&scheduled.command).into();
+            let start = Instant::now();
+            self.handle_command(scheduled.command, broadcast_messages);
+            records.push(CommandRecord {
+                command,
+                start,
+                end: Instant::now(),
+            });
+        }
+        records
+    }
 
-        self.shared_map.store(Arc::new(self.map.snapshot()));
-        let _ = self.tick_tx.send(self.tick);
-        self.message_router.tick(broadcast_messages, delta).await;
+    async fn end_tick(
+        &mut self,
+        broadcast_messages: Vec<BroadcastMessage>,
+        tick_span: &Span,
+    ) -> (Duration, Duration) {
+        let snapshot_start = Instant::now();
+        let delta = info_span!(parent: tick_span, "snapshot").in_scope(|| {
+            let delta = Arc::new(self.map.take_delta());
+            self.shared_map.store(Arc::new(self.map.snapshot()));
+            delta
+        });
+        let snapshot_elapsed = snapshot_start.elapsed();
+
+        let publish_start = Instant::now();
+        let publish = info_span!(parent: tick_span, "publish");
+        let _ = publish.in_scope(|| self.tick_tx.send(self.tick));
+        self.message_router
+            .tick(broadcast_messages, delta, self.tick)
+            .instrument(publish)
+            .await;
+        (snapshot_elapsed, publish_start.elapsed())
     }
 
     /// Lends the tick's five writable things to `game/` functions as one `TickCtx`, then queues
@@ -705,6 +739,7 @@ mod tests {
     use crate::persistence::test_fixtures::{
         a_creature_kind, a_player_with_a_full_backpack, a_test_creature, a_test_snapshot,
     };
+    use crate::telemetry::{CommandSink, testing::capture_spans};
     use std::collections::HashSet;
 
     /// Builds a `WorldActor` from bare fields, the same way `SessionActorHandle::for_test`
@@ -725,7 +760,102 @@ mod tests {
             tick_duration: Duration::from_millis(50),
             tick_tx,
             roll: Rolls::new(1),
+            command_sink: CommandSink::for_test().0,
         }
+    }
+
+    fn a_walk_for_nobody() -> WorldCommand {
+        WorldCommand::Walk {
+            agent_key: AgentKey::default(),
+            direction: Direction::North,
+        }
+    }
+
+    #[test]
+    #[ignore]
+    fn command_recording_cost_per_command() {
+        const N: usize = 100_000;
+        let mut actor = a_test_world_actor(GameMap::new());
+        let mut events = Vec::new();
+        let fill = |actor: &mut WorldActor| {
+            for _ in 0..N {
+                actor.command_queue.push(ScheduledCommand {
+                    at_tick: Tick(0),
+                    command: a_walk_for_nobody(),
+                });
+            }
+        };
+
+        fill(&mut actor);
+        let start = Instant::now();
+        while let Some(queued) = actor.command_queue.pop() {
+            actor.handle_command(queued.command, &mut events);
+        }
+        let bare = start.elapsed();
+
+        fill(&mut actor);
+        let start = Instant::now();
+        let records = actor.drain_due(&mut events);
+        let recorded = start.elapsed();
+
+        assert_eq!(records.len(), N);
+        println!(
+            "per command: bare {:?}, recorded {:?}, recording costs {:?}",
+            bare / N as u32,
+            recorded / N as u32,
+            recorded.saturating_sub(bare) / N as u32
+        );
+    }
+
+    #[tokio::test]
+    async fn a_tick_span_closes_with_the_tick_and_the_router_is_handed_its_number() {
+        let captured = capture_spans();
+        let mut actor = a_test_world_actor(GameMap::new());
+        let (message_router, mut router_rx) = MessageRouterActorHandle::for_test();
+        actor.message_router = message_router;
+
+        actor.run_tick().await;
+
+        let spans = captured.finished();
+        let Some(MessageRouterCommand::Tick { tick, .. }) = router_rx.recv().await else {
+            panic!("the tick did not reach the router");
+        };
+        assert_eq!(tick, Tick(1));
+        let tick = spans
+            .iter()
+            .find(|s| s.name == "tick")
+            .expect("the tick span closed");
+        let children: HashSet<&str> = spans
+            .iter()
+            .filter(|s| s.parent_span_id == tick.span_context.span_id())
+            .map(|s| s.name.as_ref())
+            .collect();
+        assert_eq!(
+            children,
+            HashSet::from(["drain", "systems", "snapshot", "publish"])
+        );
+        assert!(
+            tick.attributes
+                .contains(&opentelemetry::KeyValue::new("drained", 0_i64)),
+            "numeric fields reach the trace as numbers, not strings"
+        );
+    }
+
+    #[tokio::test]
+    async fn a_tick_hands_each_drained_command_to_the_sink_by_name() {
+        let mut actor = a_test_world_actor(GameMap::new());
+        let (sink, sink_rx) = CommandSink::for_test();
+        actor.command_sink = sink;
+        actor.command_queue.push(ScheduledCommand {
+            at_tick: Tick(1),
+            command: a_walk_for_nobody(),
+        });
+
+        actor.run_tick().await;
+
+        let records = sink_rx.try_recv().expect("the tick submitted its commands");
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].command, "Walk");
     }
 
     fn a_spawn_point(kind: &str, position: Position, respawn_ticks: TickDelta) -> SpawnPoint {
@@ -842,7 +972,7 @@ mod tests {
             },
             &mut events,
         );
-        actor.end_tick(events).await;
+        actor.end_tick(events, &tracing::Span::none()).await;
 
         let Some(MessageRouterCommand::Tick { delta, .. }) = router_rx.recv().await else {
             panic!("the tick did not reach the router");

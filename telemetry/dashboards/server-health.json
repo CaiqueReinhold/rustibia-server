@@ -1,0 +1,340 @@
+{
+  "uid": "rustibia-server-health",
+  "title": "Server health",
+  "schemaVersion": 39,
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Tick duration p99 by phase",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "{{phase}}",
+          "expr": "histogram_quantile(0.99, sum by (le, phase) (rate(rustibia_tick_duration_seconds_bucket[1m])))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tick duration avg by phase",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "{{phase}}",
+          "expr": "sum by (phase) (rate(rustibia_tick_duration_seconds_sum[1m])) / sum by (phase) (rate(rustibia_tick_duration_seconds_count[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tick overruns per second",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "overruns/s",
+          "expr": "rate(rustibia_tick_overrun_total[1m])"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "p99 overrun (s)",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(rustibia_tick_overrun_duration_seconds_bucket[1m])))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "World time per second by command",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "{{command}}",
+          "expr": "sum by (command) (rate(rustibia_world_command_duration_seconds_sum[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Command duration p99 by command",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "{{command}}",
+          "expr": "histogram_quantile(0.99, sum by (le, command) (rate(rustibia_world_command_duration_seconds_bucket[1m])))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Commands per tick",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "drained p99",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(rustibia_tick_commands_drained_bucket[1m])))"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "chunk copies avg",
+          "expr": "sum(rate(rustibia_tick_chunk_copies_sum[1m])) / sum(rate(rustibia_tick_chunk_copies_count[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Inbox depth",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "world",
+          "expr": "rustibia_world_inbox_depth"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "router",
+          "expr": "rustibia_router_inbox_depth"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Session queues and evictions",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "queue depth p99",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(rustibia_session_queue_depth_bucket[1m])))"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "evicted/s {{reason}}",
+          "expr": "sum by (reason) (rate(rustibia_session_evicted_total[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Population",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "sessions",
+          "expr": "rustibia_sessions_active"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "{{kind}}",
+          "expr": "rustibia_agents"
+        },
+        {
+          "refId": "C",
+          "legendFormat": "active creatures",
+          "expr": "rustibia_creatures_active"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Network and logins",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "bytes/s {{direction}}",
+          "expr": "sum by (direction) (rate(rustibia_net_bytes_total[1m]))"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "logins/s {{outcome}}",
+          "expr": "sum by (outcome) (rate(rustibia_login_total[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Runtime and process",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "legendFormat": "worker busy ratio",
+          "expr": "sum(rate(rustibia_tokio_worker_busy_time_seconds_total[1m])) / max(rustibia_tokio_workers)"
+        },
+        {
+          "refId": "B",
+          "legendFormat": "CPU cores used",
+          "expr": "rate(rustibia_process_cpu_time_seconds_total[1m])"
+        },
+        {
+          "refId": "C",
+          "legendFormat": "global queue",
+          "expr": "rustibia_tokio_global_queue_depth"
+        },
+        {
+          "refId": "D",
+          "legendFormat": "behaviour decide p99 (s)",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(rustibia_behaviour_decide_duration_seconds_bucket[1m])))"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Slow ticks",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "limit": 50,
+          "query": "{ name = \"tick\" && duration > 40ms }"
+        }
+      ]
+    }
+  ]
+}

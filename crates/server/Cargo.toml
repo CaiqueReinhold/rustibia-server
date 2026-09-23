@@ -27,6 +27,11 @@ tokio = { workspace = true }
 tokio-util = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
+opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-otlp = { workspace = true }
+opentelemetry-appender-tracing = { workspace = true }
+tracing-opentelemetry = { workspace = true }
 uuid = { workspace = true }
 
 arc-swap = "1"
@@ -41,5 +46,6 @@ strum = { version = "0.28.0", features = ["derive"] }
 imbl = "7.0.2"
 
 [dev-dependencies]
+opentelemetry_sdk = { workspace = true, features = ["testing"] }
 rustibia-certgen = { path = "../certgen" }
 wiremock = { workspace = true }

@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::time::Instant;
 
 use anyhow::Result;
 use tokio::sync::{mpsc, oneshot};
@@ -6,6 +7,7 @@ use tracing::{error, info};
 
 use super::{SharedContext, connection::ConnectionError, session::SessionActor};
 use crate::actors::connection::ConnectionActorHandle;
+use crate::telemetry;
 use crate::{
     config::CONFIG,
     entities::agent::Agent,
@@ -91,18 +93,24 @@ impl<L: LoginRepository + 'static> AuthActor<L> {
             }
         };
 
+        let redeem_start = Instant::now();
         let player = match self.login_repo.redeem(&auth_token).await {
             Ok(p) => p,
             Err(e) => {
-                match &e {
+                let outcome = match &e {
                     LoginError::Rejected => {
-                        info!(session = self.session_id, "Login rejected: {e}")
+                        info!(session = self.session_id, "Login rejected: {e}");
+                        "rejected"
                     }
-                    LoginError::Unavailable(detail) => error!(
-                        session = self.session_id,
-                        "Login service unavailable, refusing the login: {detail}"
-                    ),
-                }
+                    LoginError::Unavailable(detail) => {
+                        error!(
+                            session = self.session_id,
+                            "Login service unavailable, refusing the login: {detail}"
+                        );
+                        "unavailable"
+                    }
+                };
+                telemetry::metrics().record_login(outcome, redeem_start.elapsed());
                 let _ = connection.send_message(ServerMessage::LoginError).await;
                 return Err(e.into());
             }
@@ -111,6 +119,7 @@ impl<L: LoginRepository + 'static> AuthActor<L> {
         let registry_guard = match self.world_ctx.online_registry.try_register(player.id) {
             Some(guard) => guard,
             None => {
+                telemetry::metrics().record_login("already_online", redeem_start.elapsed());
                 info!(
                     session = self.session_id,
                     "Character {} is already online.", player.name
@@ -119,6 +128,7 @@ impl<L: LoginRepository + 'static> AuthActor<L> {
                 return Err(anyhow::anyhow!("Character {} is already online", player.id));
             }
         };
+        telemetry::metrics().record_login("ok", redeem_start.elapsed());
 
         let session = SessionActor::start(
             self.session_id.clone(),

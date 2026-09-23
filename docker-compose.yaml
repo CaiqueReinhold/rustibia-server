@@ -15,6 +15,15 @@ services:
       timeout: 5s
       retries: 5
 
+  lgtm:
+    image: grafana/otel-lgtm:0.33.1
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+    volumes:
+      - ./telemetry/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/rustibia.yaml:ro
+      - ./telemetry/dashboards:/otel-lgtm/rustibia-dashboards:ro
+
   site:
     build:
       context: .
@@ -53,6 +62,7 @@ services:
       # `site` matches a SAN on the site's leaf certificate, so this name must stay in
       # step with `SITE_SANS` in crates/certgen.
       SITE_INTERNAL_URL: https://site:8443
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4317
       INTERNAL_TLS_CERT: /certs/server.crt
       INTERNAL_TLS_KEY: /certs/server.key
       INTERNAL_TLS_CA: /certs/ca.crt

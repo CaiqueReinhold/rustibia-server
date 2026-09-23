@@ -22,11 +22,12 @@ use rustibia_server::{
         items::ITEM_CONFIGS, login::HttpLoginRepository, map::load_map, online::OnlineRepository,
         player::PlayerRepository, spawns::load_spawns, spells::SPELLS,
     },
+    telemetry,
 };
 
 #[tokio::main(worker_threads = 8)]
 async fn main() -> Result<()> {
-    tracing_subscriber::fmt::init();
+    let _telemetry = telemetry::init();
 
     // access lazy config to make sure it loaded correctly
     let _ = &GAME_CONFIG.action;
@@ -38,6 +39,7 @@ async fn main() -> Result<()> {
     let spawns = load_spawns(&CONFIG.spawns_file_path).unwrap();
 
     let shared_map = Arc::new(ArcSwap::from_pointee(map.clone()));
+    telemetry::observe_map(shared_map.clone());
 
     let message_router = MessageRouterActor::start(shared_map.clone());
     let (world, tick_rx) = WorldActor::start(

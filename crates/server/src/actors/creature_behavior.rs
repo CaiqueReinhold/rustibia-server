@@ -5,7 +5,7 @@ use std::time::Instant;
 use arc_swap::ArcSwap;
 use slotmap::Key;
 use tokio::sync::watch;
-use tracing::{debug, error, info};
+use tracing::{Instrument, Span, error, field, info, info_span};
 
 use crate::actors::world::{WorldActorHandle, WorldCommand};
 use crate::entities::agent::AgentKey;
@@ -15,6 +15,7 @@ use crate::game::creature_behavior::{
     CreatureAction, CreatureBehaviourContext, CreatureState, active_creatures, decide_action,
 };
 use crate::game::random::Rolls;
+use crate::telemetry;
 
 /// Creatures are split across this many buckets, one decided per tick, so a creature is
 /// revisited every `BEHAVIOUR_BUCKETS` ticks.
@@ -54,15 +55,28 @@ impl CreatureBehaviorActor {
     }
 
     async fn process_tick(&mut self, tick: Tick) {
+        let bucket = tick.0 % BEHAVIOUR_BUCKETS;
+        let span = info_span!(
+            "behaviour",
+            tick = tick.0 as i64,
+            bucket = bucket as i64,
+            considered = field::Empty,
+            actions = field::Empty,
+        );
+        self.decide_and_send(tick, bucket).instrument(span).await;
+    }
+
+    async fn decide_and_send(&mut self, tick: Tick, bucket: u64) {
         let map = self.shared_map.load_full();
         let global_seed = self.seed;
         let states = self.states.clone();
-        let bucket = tick.0 % BEHAVIOUR_BUCKETS;
+        let decide_span = info_span!("decide");
 
         let decide_start = Instant::now();
         let decided = tokio::task::spawn_blocking(move || {
+            let _entered = decide_span.enter();
             let Ok(mut states) = states.lock() else {
-                return (0usize, Vec::new());
+                return (0usize, 0usize, Vec::new());
             };
             let active = active_creatures(&map);
             let mut considered = 0usize;
@@ -87,29 +101,29 @@ impl CreatureBehaviorActor {
             if bucket == 0 {
                 states.retain(|agent_key, _| map.get_agent(*agent_key).is_some());
             }
-            (considered, actions)
+            (active.len(), considered, actions)
         })
         .await;
         match decided {
-            Ok((considered, actions)) => {
-                let decide_elapsed = decide_start.elapsed();
-                let send_start = Instant::now();
-                let sent = actions.len();
-                for action in actions {
-                    self.world
-                        .send(WorldCommand::from_creature_action(action))
-                        .await;
-                }
-                debug!(
-                    "Tick {} bucket {}/{}: {} creatures decided in {:?}, {} actions sent in {:?}",
-                    tick,
-                    bucket,
-                    BEHAVIOUR_BUCKETS,
-                    considered,
-                    decide_elapsed,
-                    sent,
-                    send_start.elapsed()
+            Ok((active, considered, actions)) => {
+                let span = Span::current();
+                span.record("considered", considered as i64);
+                span.record("actions", actions.len() as i64);
+                telemetry::metrics().record_behaviour(
+                    decide_start.elapsed(),
+                    considered as u64,
+                    active as u64,
+                    actions.len() as u64,
                 );
+                async {
+                    for action in actions {
+                        self.world
+                            .send(WorldCommand::from_creature_action(action))
+                            .await;
+                    }
+                }
+                .instrument(info_span!("send"))
+                .await;
             }
             Err(e) => {
                 error!(

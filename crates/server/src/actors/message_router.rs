@@ -1,23 +1,26 @@
 use anyhow::Result;
 use arc_swap::ArcSwap;
-use std::{
-    collections::{HashMap, HashSet},
-    sync::Arc,
-};
+use std::{collections::HashMap, sync::Arc};
 use tokio::sync::mpsc::{self, error::TrySendError};
 use tokio::sync::oneshot;
-use tracing::{info, warn};
+use tracing::{Instrument, info, info_span, warn};
 
 use crate::{
     actors::session::{SessionActorHandle, SessionCommand},
     config::CONFIG,
     entities::{
-        agent::AgentKey, chat::ChannelId, map::GameMap, position::Rect, world_delta::WorldDelta,
+        agent::AgentKey,
+        chat::ChannelId,
+        map::GameMap,
+        position::{Position, Rect},
+        world_delta::WorldDelta,
     },
     game::{
+        Tick,
         events::{BroadcastMessage, Routing},
         map_query::iter_visible_floors,
     },
+    telemetry,
 };
 
 #[derive(Debug)]
@@ -32,6 +35,7 @@ pub enum MessageRouterCommand {
     Tick {
         events: Vec<BroadcastMessage>,
         delta: Arc<WorldDelta>,
+        tick: Tick,
     },
     DeliverPrivateMessage {
         author: AgentKey,
@@ -99,10 +103,14 @@ impl MessageRouterActorHandle {
             .try_send(MessageRouterCommand::Unsubscribe { agent_key });
     }
 
-    pub async fn tick(&self, events: Vec<BroadcastMessage>, delta: Arc<WorldDelta>) {
+    pub async fn tick(&self, events: Vec<BroadcastMessage>, delta: Arc<WorldDelta>, tick: Tick) {
         let _ = self
             .tx
-            .send(MessageRouterCommand::Tick { events, delta })
+            .send(MessageRouterCommand::Tick {
+                events,
+                delta,
+                tick,
+            })
             .await;
     }
 
@@ -168,6 +176,7 @@ impl MessageRouterActorHandle {
 impl MessageRouterActor {
     pub fn start(shared_map: Arc<ArcSwap<GameMap>>) -> MessageRouterActorHandle {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
+        telemetry::observe_channel("rustibia.router.inbox.depth", &tx);
 
         tokio::spawn(async move {
             let actor = Self {
@@ -198,7 +207,15 @@ impl MessageRouterActor {
                 self.subscribe(agent_key, session)
             }
             MessageRouterCommand::Unsubscribe { agent_key } => self.unsubscribe(agent_key),
-            MessageRouterCommand::Tick { events, delta } => self.tick(events, delta).await,
+            MessageRouterCommand::Tick {
+                events,
+                delta,
+                tick,
+            } => {
+                self.tick(events, delta)
+                    .instrument(info_span!(parent: None, "route", tick = tick.0 as i64))
+                    .await
+            }
             MessageRouterCommand::DeliverPrivateMessage {
                 author,
                 recipient,
@@ -230,7 +247,11 @@ impl MessageRouterActor {
     }
 
     async fn tick(&mut self, events: Vec<BroadcastMessage>, delta: Arc<WorldDelta>) {
-        self.broadcast(events).await;
+        let event_count = events.len();
+        self.broadcast(events)
+            .instrument(info_span!("broadcast", events = event_count as i64))
+            .await;
+        telemetry::metrics().record_sessions_active(self.session_map.len() as u64);
         if delta.is_empty() {
             return;
         }
@@ -239,7 +260,9 @@ impl MessageRouterActor {
             .iter()
             .map(|(key, session)| (*key, session.clone()))
             .collect();
+        let _deltas = info_span!("deltas", sessions = sessions.len() as i64).entered();
         for (agent_key, session) in sessions {
+            telemetry::metrics().record_session_queue_depth(session.queue_depth() as u64);
             let result = session.receive_delta(delta.clone());
             self.handle_send_result(agent_key, &session, result);
         }
@@ -247,18 +270,30 @@ impl MessageRouterActor {
 
     async fn broadcast(&mut self, messages: Vec<BroadcastMessage>) {
         let map = self.shared_map.load();
+        let players = self.player_positions(&map);
         for message in messages {
-            self.route_to_recipients(&message, &map);
+            self.route_to_recipients(&message, &players);
         }
     }
 
-    fn route_to_recipients(&mut self, message: &BroadcastMessage, map: &GameMap) {
+    fn player_positions(&self, map: &GameMap) -> Vec<(AgentKey, Position)> {
+        self.session_map
+            .keys()
+            .filter_map(|key| Some((*key, map.agent_position(*key)?.clone())))
+            .collect()
+    }
+
+    fn route_to_recipients(
+        &mut self,
+        message: &BroadcastMessage,
+        players: &[(AgentKey, Position)],
+    ) {
         match message.routing() {
             Routing::Agent(agent_key) => self.send_to(message, &agent_key),
             Routing::Viewport { at, same_floor } => {
                 self.send_to_rect(
                     message,
-                    map,
+                    players,
                     Rect::player_viewport(at),
                     at.z,
                     same_floor,
@@ -267,17 +302,24 @@ impl MessageRouterActor {
             }
             Routing::EitherViewport(positions) => {
                 let regions = positions.map(|at| (Rect::player_viewport(at), at.z));
-                self.send_to_rects(message, map, &regions);
+                self.send_to_rects(message, players, &regions);
             }
             Routing::ViewportAndAgent { at, agent } => {
-                self.send_to_rect(message, map, Rect::player_viewport(at), at.z, false, None);
+                self.send_to_rect(
+                    message,
+                    players,
+                    Rect::player_viewport(at),
+                    at.z,
+                    false,
+                    None,
+                );
                 self.send_to(message, &agent);
             }
             Routing::Move { from, to, mover } => {
                 let (a, b) = (Rect::player_viewport(from), Rect::player_viewport(to));
                 self.send_to_rect(
                     message,
-                    map,
+                    players,
                     Rect::new(
                         u16::min(a.min_x(), b.min_x()),
                         u16::min(a.min_y(), b.min_y()),
@@ -296,35 +338,31 @@ impl MessageRouterActor {
     fn send_to_rect(
         &mut self,
         message: &BroadcastMessage,
-        map: &GameMap,
+        players: &[(AgentKey, Position)],
         rect: Rect,
         floor: u8,
         same_floor: bool,
         originator: Option<AgentKey>,
     ) {
-        iter_visible_floors(floor)
-            .filter(|z| !same_floor || floor == *z)
-            .flat_map(|floor| map.iter_agents_in_rect(&rect, floor))
-            .for_each(|(agent_key, _)| {
-                if Some(agent_key) != originator {
-                    self.send_to(message, &agent_key)
-                }
-            });
+        for (agent_key, position) in players {
+            if Some(*agent_key) != originator && sees(position, &rect, floor, same_floor) {
+                self.send_to(message, agent_key);
+            }
+        }
     }
 
-    /// Deliver `message` once to every agent whose viewport intersects any of
-    /// `regions`. A single rect (or the per-floor expansion of one) can never
-    /// yield a duplicate — tiles and floors partition space — so dups only
-    /// arise where two regions overlap; the `seen` set collapses those.
-    fn send_to_rects(&mut self, message: &BroadcastMessage, map: &GameMap, regions: &[(Rect, u8)]) {
-        let mut seen: HashSet<AgentKey> = HashSet::new();
-        for (rect, z) in regions {
-            for floor in iter_visible_floors(*z) {
-                for (agent_key, _) in map.iter_agents_in_rect(rect, floor) {
-                    if seen.insert(agent_key) {
-                        self.send_to(message, &agent_key);
-                    }
-                }
+    fn send_to_rects(
+        &mut self,
+        message: &BroadcastMessage,
+        players: &[(AgentKey, Position)],
+        regions: &[(Rect, u8)],
+    ) {
+        for (agent_key, position) in players {
+            if regions
+                .iter()
+                .any(|(rect, floor)| sees(position, rect, *floor, false))
+            {
+                self.send_to(message, agent_key);
             }
         }
     }
@@ -340,10 +378,12 @@ impl MessageRouterActor {
         match result {
             Ok(()) => true,
             Err(TrySendError::Closed(..)) => {
+                telemetry::metrics().record_session_evicted("closed");
                 self.unsubscribe(agent_key);
                 false
             }
             Err(TrySendError::Full(..)) => {
+                telemetry::metrics().record_session_evicted("full");
                 session.close();
                 self.unsubscribe(agent_key);
                 false
@@ -390,15 +430,52 @@ impl MessageRouterActor {
     }
 }
 
+/// Whether a player standing at `at` sees an event in `rect` on `floor`: the same rect on every
+/// floor visible from `floor`, or on `floor` alone when `same_floor`.
+fn sees(at: &Position, rect: &Rect, floor: u8, same_floor: bool) -> bool {
+    rect.contains(at)
+        && if same_floor {
+            at.z == floor
+        } else {
+            iter_visible_floors(floor).any(|z| z == at.z)
+        }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::entities::agent::Agent;
     use crate::entities::map::MapTile;
+    use crate::entities::position::Direction;
     use crate::entities::position::Position;
     use crate::entities::world_delta::WorldDelta;
     use crate::entities::world_map::WorldMap;
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::game::Tick;
+    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::telemetry::testing::capture_spans;
+    use opentelemetry::{KeyValue, trace::SpanId};
+
+    #[tokio::test]
+    async fn routing_a_tick_is_its_own_trace_tagged_with_the_tick() {
+        let captured = capture_spans();
+        let mut router = a_router();
+        let _world = tracing::info_span!("tick").entered();
+
+        router
+            .handle_command(MessageRouterCommand::Tick {
+                events: Vec::new(),
+                delta: Arc::new(WorldDelta::default()),
+                tick: Tick(7),
+            })
+            .await;
+
+        let spans = captured.finished();
+        let find = |name: &str| spans.iter().find(|s| s.name == name).unwrap();
+        let (route, broadcast) = (find("route"), find("broadcast"));
+        assert_eq!(route.parent_span_id, SpanId::INVALID);
+        assert!(route.attributes.contains(&KeyValue::new("tick", 7_i64)));
+        assert_eq!(broadcast.parent_span_id, route.span_context.span_id());
+    }
 
     fn a_router() -> MessageRouterActor {
         let (_tx, rx) = mpsc::channel(64);
@@ -416,6 +493,188 @@ mod tests {
         let agent = Agent::from_player(a_test_snapshot(1, 1));
         let key = map.insert_agent(agent, at).unwrap();
         (map, key)
+    }
+
+    /// Seats a subscribed player at each position and returns their keys and inboxes, in order.
+    fn seat_watchers(
+        router: &mut MessageRouterActor,
+        map: &mut GameMap,
+        at: &[Position],
+    ) -> (Vec<AgentKey>, Vec<mpsc::Receiver<SessionCommand>>) {
+        at.iter()
+            .enumerate()
+            .map(|(i, position)| {
+                map.insert_tile(position.clone(), MapTile::new());
+                let player = Agent::from_player(a_test_snapshot(100 + i as u32, 1));
+                let key = map.insert_agent(player, position).unwrap();
+                let (handle, rx) = SessionActorHandle::for_test();
+                router.session_map.insert(key, handle);
+                (key, rx)
+            })
+            .unzip()
+    }
+
+    fn received(inboxes: &mut [mpsc::Receiver<SessionCommand>]) -> Vec<usize> {
+        inboxes
+            .iter_mut()
+            .map(|rx| std::iter::from_fn(|| rx.try_recv().ok()).count())
+            .collect()
+    }
+
+    fn route(router: &mut MessageRouterActor, map: &GameMap, message: &BroadcastMessage) {
+        let players = router.player_positions(map);
+        router.route_to_recipients(message, &players);
+    }
+
+    #[test]
+    fn a_viewport_event_reaches_players_in_its_rect_on_every_floor_it_is_seen_from() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (_, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[
+                Position::new(109, 107, 7),
+                Position::new(110, 100, 7),
+                Position::new(100, 100, 5),
+                Position::new(100, 100, 8),
+            ],
+        );
+        let lair = Position::new(101, 101, 7);
+        map.insert_tile(lair.clone(), MapTile::new());
+        map.insert_agent(a_test_creature("rat", 10, (0, 0)), &lair)
+            .unwrap();
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AttackMissed {
+                position: Position::new(100, 100, 7),
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 0, 1, 0]);
+    }
+
+    #[test]
+    fn a_same_floor_event_skips_players_on_the_floors_above() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (_, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[Position::new(101, 100, 7), Position::new(101, 100, 6)],
+        );
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AgentSaid {
+                agent_key: AgentKey::default(),
+                position: Position::new(100, 100, 7),
+                message: "hi".to_owned(),
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 0]);
+    }
+
+    #[test]
+    fn a_move_reaches_both_viewports_once_and_the_mover_once() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (from, to) = (Position::new(100, 100, 7), Position::new(101, 100, 7));
+        let (keys, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[
+                to.clone(),
+                Position::new(91, 100, 7),
+                Position::new(110, 100, 7),
+                Position::new(130, 100, 7),
+            ],
+        );
+        let mover = keys[0];
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AgentMoved {
+                agent_key: mover,
+                direction: Direction::East,
+                from_position: from,
+                to_position: to,
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 1, 1, 0]);
+    }
+
+    #[test]
+    fn a_teleport_seen_from_both_ends_arrives_once() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (_, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[
+                Position::new(103, 100, 7),
+                Position::new(112, 100, 7),
+                Position::new(130, 100, 7),
+            ],
+        );
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AgentTeleported {
+                agent_key: AgentKey::default(),
+                from_position: Position::new(100, 100, 7),
+                to_position: Position::new(105, 100, 7),
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 1, 0]);
+    }
+
+    #[test]
+    #[ignore = "timing, not a pass/fail assertion"]
+    fn routing_the_startup_spawn_burst_on_the_shipped_map() {
+        let items = crate::persistence::items::load_items(
+            "assets/items",
+            &crate::persistence::areas::AREA_SHAPES,
+        )
+        .expect("items load");
+        let mut map =
+            crate::persistence::map::load_map("assets/map1.otbm", &items).expect("map loads");
+        let spawns =
+            crate::persistence::spawns::load_spawns("assets/spawns.yaml").expect("spawns load");
+        let events: Vec<BroadcastMessage> = spawns
+            .iter()
+            .filter_map(|spawn| {
+                let agent_key = map
+                    .insert_agent(a_test_creature("rat", 10, (0, 0)), &spawn.position)
+                    .ok()?;
+                Some(BroadcastMessage::PlayerSpawned {
+                    agent_key,
+                    position: spawn.position.clone(),
+                })
+            })
+            .collect();
+        let mut router = a_router();
+        let (_, _inboxes) = seat_watchers(&mut router, &mut map, &[spawns[0].position.clone()]);
+
+        let start = std::time::Instant::now();
+        let players = router.player_positions(&map);
+        for event in &events {
+            router.route_to_recipients(event, &players);
+        }
+
+        println!(
+            "{} spawn events routed in {:?}",
+            events.len(),
+            start.elapsed()
+        );
     }
 
     #[test]
@@ -440,7 +699,7 @@ mod tests {
             position: pos.clone(),
             message: "hello".to_owned(),
         };
-        router.route_to_recipients(&message, &map);
+        route(&mut router, &map, &message);
 
         assert!(
             speaker_rx.try_recv().is_ok(),
@@ -472,7 +731,7 @@ mod tests {
             position: spoken_at,
             message: "bye".to_owned(),
         };
-        router.route_to_recipients(&message, &map);
+        route(&mut router, &map, &message);
 
         assert!(rx.try_recv().is_ok());
     }

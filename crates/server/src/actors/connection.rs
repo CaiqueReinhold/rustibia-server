@@ -145,10 +145,6 @@ impl ConnectionActor {
         message: Option<Result<ClientMessage, MessageDecodeError>>,
     ) -> Result<(), ConnectionError> {
         let msg = message.ok_or(ConnectionError::ConnectionClosed)??;
-        debug!(
-            session = self.session_id,
-            "Connection received message: {:?}", msg
-        );
         let send_result = match &self.upstream {
             Upstream::Auth(auth) => auth.receive_message(msg).await.is_err(),
             Upstream::Session(session) => session.receive_message(msg).await.is_err(),

@@ -16,6 +16,7 @@ use crate::{
         skills::SkillType,
         spells::{SpellGroup, SpellId, SpellTarget},
     },
+    telemetry::metrics,
 };
 
 pub use crate::game::config::Color;
@@ -366,6 +367,7 @@ impl Decoder for GameMessageCodec {
             return Err(MessageDecodeError::WrongSequence);
         }
 
+        metrics().record_frame("in", (2 + payload_len) as u64);
         buf.advance(2);
 
         match buf.get_u8() {
@@ -888,6 +890,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
 
         let payload_len = (dst.len() - len_offset - 2) as u16;
         dst[len_offset..len_offset + 2].copy_from_slice(&payload_len.to_le_bytes());
+        metrics().record_frame("out", (dst.len() - len_offset) as u64);
 
         Ok(())
     }
