@@ -12,15 +12,16 @@
           Commit first, or pass -e allow_dirty=true to build it tagged {{ image_tag }}.
       when: git_dirty and not (allow_dirty | bool)
 
-    - name: Read the head of the map file
-      ansible.builtin.command: head -c 32 {{ repo_root }}/crates/server/assets/map1.otbm
-      register: map_head
-      changed_when: false
+    - name: Stat the map file
+      ansible.builtin.stat:
+        path: "{{ repo_root }}/crates/server/assets/map1.otbm"
+        get_checksum: false
+      register: map_file
 
     - name: Refuse to ship a Git LFS pointer as the map
       ansible.builtin.fail:
         msg: map1.otbm is an LFS pointer, not the map. Run `git lfs pull` first.
-      when: map_head.stdout.startswith('version https://git-lfs')
+      when: map_file.stat.size < 1024
 
     - name: Log in to GHCR
       ansible.builtin.command:
