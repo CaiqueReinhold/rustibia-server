@@ -1,0 +1,2 @@
+#!/bin/sh
+exec docker compose -f {{ app_dir }}/compose.yaml exec -T nginx nginx -s reload

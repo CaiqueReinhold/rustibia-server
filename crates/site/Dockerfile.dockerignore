@@ -8,3 +8,4 @@ graphify-out/
 certs/
 deploy/
 telemetry/
+crates/server/assets/

@@ -1,0 +1,8 @@
+- name: Build
+  ansible.builtin.import_playbook: build.yml
+
+- name: Provision
+  ansible.builtin.import_playbook: provision.yml
+
+- name: Deploy
+  ansible.builtin.import_playbook: deploy.yml

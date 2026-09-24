@@ -1,0 +1,54 @@
+- name: Provision the host
+  hosts: prod
+  become: true
+  tasks:
+    - name: Install base packages
+      ansible.builtin.apt:
+        name: [ca-certificates, curl, certbot, ufw]
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Add Docker's apt repository
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: deb
+        uris: https://download.docker.com/linux/{{ ansible_distribution | lower }}
+        suites: "{{ ansible_distribution_release }}"
+        components: stable
+        architectures: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+        signed_by: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+        update_cache: true
+
+    - name: Start Docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Allow inbound ports
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ["{{ ssh_port }}", "80", "443", "{{ game_port }}"]
+
+    - name: Enable the firewall
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ app_dir }}"
+        - "{{ app_dir }}/nginx"
+        - /var/www/certbot
+        - /etc/letsencrypt/renewal-hooks/deploy

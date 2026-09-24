@@ -25,6 +25,9 @@ use rustibia_server::{
     telemetry,
 };
 
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 #[tokio::main(worker_threads = 8)]
 async fn main() -> Result<()> {
     let _telemetry = telemetry::init();

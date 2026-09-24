@@ -1,0 +1,50 @@
+- name: Build and push the production images
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    allow_dirty: false
+  tasks:
+    - name: Refuse to build an image that does not match a commit
+      ansible.builtin.fail:
+        msg: >-
+          The working tree has uncommitted changes, so the image would not match {{ git_sha }}.
+          Commit first, or pass -e allow_dirty=true to build it tagged {{ image_tag }}.
+      when: git_dirty and not (allow_dirty | bool)
+
+    - name: Read the head of the map file
+      ansible.builtin.command: head -c 32 {{ repo_root }}/crates/server/assets/map1.otbm
+      register: map_head
+      changed_when: false
+
+    - name: Refuse to ship a Git LFS pointer as the map
+      ansible.builtin.fail:
+        msg: map1.otbm is an LFS pointer, not the map. Run `git lfs pull` first.
+      when: map_head.stdout.startswith('version https://git-lfs')
+
+    - name: Log in to GHCR
+      ansible.builtin.command:
+        cmd: docker login ghcr.io -u {{ ghcr_user }} --password-stdin
+        stdin: "{{ ghcr_push_token }}"
+      no_log: true
+      changed_when: false
+
+    - name: Build and push {{ item.name }}
+      ansible.builtin.command:
+        chdir: "{{ repo_root }}"
+        argv:
+          - docker
+          - buildx
+          - build
+          - --platform={{ image_platform }}
+          - --file={{ item.dockerfile }}
+          - --tag={{ item.image }}:{{ image_tag }}
+          - --label=org.opencontainers.image.source=https://github.com/{{ ghcr_owner }}/rustibia-server
+          - --label=org.opencontainers.image.revision={{ git_sha }}
+          - --push
+          - .
+      loop:
+        - { name: site, dockerfile: crates/site/Dockerfile, image: "{{ site_image }}" }
+        - { name: server, dockerfile: crates/server/Dockerfile, image: "{{ server_image }}" }
+      loop_control:
+        label: "{{ item.image }}:{{ image_tag }}"

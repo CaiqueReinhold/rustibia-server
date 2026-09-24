@@ -15,7 +15,9 @@ use std::sync::Arc;
 use anyhow::Context;
 use axum::{Router, routing::get};
 use sqlx::postgres::PgPoolOptions;
-use tower_governor::{GovernorLayer, governor::GovernorConfigBuilder};
+use tower_governor::{
+    GovernorLayer, governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor,
+};
 use tracing::info;
 
 use crate::{config::SiteConfig, state::AppState};
@@ -53,9 +55,12 @@ async fn main() -> anyhow::Result<()> {
 
     let state = AppState { pool, config };
 
-    // 5 requests burst, refilling one every 2 seconds, keyed by peer IP.
+    // 5 requests burst, refilling one every 2 seconds, keyed by client IP.
+    // `X-Forwarded-For` is trusted: in production only nginx can reach this listener, and
+    // it overwrites the header rather than appending (deploy/ansible/templates/nginx.conf.j2).
     let governor_config = Arc::new(
         GovernorConfigBuilder::default()
+            .key_extractor(SmartIpKeyExtractor)
             .per_second(2)
             .burst_size(5)
             .finish()

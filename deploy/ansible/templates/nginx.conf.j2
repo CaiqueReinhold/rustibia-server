@@ -1,0 +1,46 @@
+server_tokens off;
+
+server {
+    listen 80;
+    server_name {{ domain }};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+{% if tls_ready %}
+        return 301 https://$host$request_uri;
+{% else %}
+        return 503;
+{% endif %}
+    }
+}
+{% if tls_ready %}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name {{ domain }};
+
+    ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:SSL:10m;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    client_max_body_size 1m;
+
+    # Docker's DNS, re-resolved so a recreated site container is found at its new address.
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $site http://site:8080;
+
+    location / {
+        proxy_pass $site;
+        proxy_set_header Host $host;
+        # Overwritten, never appended: the site's rate limiter trusts this header's first entry.
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+{% endif %}

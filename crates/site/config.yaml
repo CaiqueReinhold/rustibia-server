@@ -2,10 +2,10 @@ session_ttl_days: 7
 auth_token_ttl_seconds: 60
 min_password_length: 8
 new_character:
-  pos_x: 1028
-  pos_y: 1028
+  pos_x: 32369
+  pos_y: 32241
   pos_z: 7
-  facing: 2
+  facing: 1
   life: 150
   mana: 100
   capacity: 40000

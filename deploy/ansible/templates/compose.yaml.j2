@@ -1,0 +1,105 @@
+name: rustibia
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "5"
+
+x-database-url: &database_url "postgres://rustibia:{{ postgres_password | urlencode }}@db/rustibia?sslmode=disable"
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rustibia
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+      POSTGRES_DB: rustibia
+    volumes:
+      - db_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rustibia -d rustibia"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    logging: *logging
+
+  site:
+    image: {{ site_image }}:{{ image_tag }}
+    restart: unless-stopped
+    init: true
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NO_COLOR: "1"
+      DATABASE_URL: *database_url
+      INTERNAL_TLS_CERT: /certs/site.crt
+      INTERNAL_TLS_KEY: /certs/site.key
+      INTERNAL_TLS_CLIENT_CA: /certs/ca.crt
+    volumes:
+      - {{ app_dir }}/certs/site:/certs:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+    logging: *logging
+
+  server:
+    image: {{ server_image }}:{{ image_tag }}
+    restart: unless-stopped
+    init: true
+    depends_on:
+      site:
+        condition: service_healthy
+    environment:
+      NO_COLOR: "1"
+      DATABASE_URL: *database_url
+      SITE_INTERNAL_URL: https://site:8443
+      INTERNAL_TLS_CERT: /certs/server.crt
+      INTERNAL_TLS_KEY: /certs/server.key
+      INTERNAL_TLS_CA: /certs/ca.crt
+{% if telemetry_enabled %}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4317
+{% endif %}
+    volumes:
+      - {{ app_dir }}/certs/server:/certs:ro
+    ports:
+      - "{{ game_port }}:5555"
+    logging: *logging
+
+  nginx:
+    image: nginx:1.30-alpine
+    restart: unless-stopped
+    depends_on:
+      - site
+    volumes:
+      - {{ app_dir }}/nginx:/etc/nginx/conf.d:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    logging: *logging
+{% if telemetry_enabled %}
+
+  lgtm:
+    image: grafana/otel-lgtm:0.33.1
+    restart: unless-stopped
+    volumes:
+      - {{ app_dir }}/telemetry/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/rustibia.yaml:ro
+      - {{ app_dir }}/telemetry/dashboards:/otel-lgtm/rustibia-dashboards:ro
+      - lgtm_data:/data
+    ports:
+      - "127.0.0.1:3000:3000"
+    logging: *logging
+{% endif %}
+
+volumes:
+  db_data:
+{% if telemetry_enabled %}
+  lgtm_data:
+{% endif %}

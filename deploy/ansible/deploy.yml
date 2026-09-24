@@ -1,0 +1,134 @@
+- name: Generate the internal mTLS certificates
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Check for an existing bundle
+      ansible.builtin.stat:
+        path: "{{ certs_dir }}/ca.crt"
+      register: ca_cert
+
+    - name: Run certgen
+      ansible.builtin.command:
+        chdir: "{{ repo_root }}"
+        cmd: cargo run --quiet -p rustibia-certgen -- {{ certs_dir }}
+      when: not ca_cert.stat.exists
+
+- name: Deploy the stack
+  hosts: prod
+  become: true
+  vars:
+    tls_cert: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
+    compose: docker compose -f {{ app_dir }}/compose.yaml
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.command: "{{ compose }} exec -T nginx nginx -s reload"
+      changed_when: true
+
+    - name: Restart lgtm
+      ansible.builtin.command: "{{ compose }} restart lgtm"
+      changed_when: true
+
+  tasks:
+    - name: Log in to GHCR
+      ansible.builtin.command:
+        cmd: docker login ghcr.io -u {{ ghcr_user }} --password-stdin
+        stdin: "{{ ghcr_pull_token }}"
+      no_log: true
+      changed_when: false
+
+    - name: Create certificate directories
+      ansible.builtin.file:
+        path: "{{ app_dir }}/certs/{{ item }}"
+        state: directory
+        owner: "{{ app_uid }}"
+        mode: "0500"
+      loop: [site, server]
+
+    - name: Copy the mTLS certificates
+      ansible.builtin.copy:
+        src: "{{ certs_dir }}/{{ item.file }}"
+        dest: "{{ app_dir }}/certs/{{ item.to }}/{{ item.file }}"
+        owner: "{{ app_uid }}"
+        mode: "0400"
+      loop:
+        - { to: site, file: ca.crt }
+        - { to: site, file: site.crt }
+        - { to: site, file: site.key }
+        - { to: server, file: ca.crt }
+        - { to: server, file: server.crt }
+        - { to: server, file: server.key }
+      loop_control:
+        label: "{{ item.to }}/{{ item.file }}"
+
+    - name: Copy the Grafana dashboards
+      ansible.builtin.copy:
+        src: "{{ repo_root }}/telemetry/"
+        dest: "{{ app_dir }}/telemetry/"
+        mode: "0644"
+        directory_mode: "0755"
+      when: telemetry_enabled
+      notify: Restart lgtm
+
+    - name: Install the certbot renewal hook
+      ansible.builtin.template:
+        src: reload-nginx.sh.j2
+        dest: /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+        mode: "0755"
+
+    - name: Check for a TLS certificate
+      ansible.builtin.stat:
+        path: "{{ tls_cert }}"
+      register: tls
+
+    - name: Write the nginx configuration
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: "{{ app_dir }}/nginx/default.conf"
+        mode: "0644"
+      vars:
+        tls_ready: "{{ tls.stat.exists }}"
+      notify: Reload nginx
+
+    - name: Write the compose file
+      ansible.builtin.template:
+        src: compose.yaml.j2
+        dest: "{{ app_dir }}/compose.yaml"
+        mode: "0600"
+      diff: false
+
+    - name: Start the stack
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_dir }}"
+        pull: missing
+        remove_orphans: true
+        wait: true
+        wait_timeout: 300
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+    - name: Issue the TLS certificate
+      when: not tls.stat.exists
+      block:
+        - name: Request a certificate from Let's Encrypt
+          ansible.builtin.command: >-
+            certbot certonly --webroot -w /var/www/certbot
+            -d {{ domain }} --email {{ letsencrypt_email }}
+            --agree-tos --non-interactive
+          args:
+            creates: "{{ tls_cert }}"
+
+        - name: Enable HTTPS in nginx
+          ansible.builtin.template:
+            src: nginx.conf.j2
+            dest: "{{ app_dir }}/nginx/default.conf"
+            mode: "0644"
+          vars:
+            tls_ready: true
+          notify: Reload nginx
+
+    - name: Remove images unused for a week
+      ansible.builtin.command: docker image prune --all --force --filter until=168h
+      register: prune
+      changed_when: "'Total reclaimed space: 0B' not in prune.stdout"
