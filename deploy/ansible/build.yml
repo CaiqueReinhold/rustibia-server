@@ -30,7 +30,7 @@
       no_log: true
       changed_when: false
 
-    - name: Build and push {{ item.name }}
+    - name: Build and push the images
       ansible.builtin.command:
         chdir: "{{ repo_root }}"
         argv:

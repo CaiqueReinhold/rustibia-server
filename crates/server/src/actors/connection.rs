@@ -17,7 +17,7 @@ use tokio::select;
 use tokio::{net::TcpStream, sync::mpsc};
 use tokio_stream::StreamExt;
 use tokio_util::codec::{FramedRead, FramedWrite};
-use tracing::{debug, error, info};
+use tracing::{error, info};
 
 use crate::actors::auth::AuthActorHandle;
 use crate::actors::session::SessionActorHandle;
