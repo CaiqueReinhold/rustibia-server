@@ -1,8 +1,23 @@
-- name: Generate the internal mTLS certificates
+- name: Check images and certificates on this machine
   hosts: localhost
   connection: local
   gather_facts: false
   tasks:
+    - name: Check the images exist in GHCR
+      ansible.builtin.command: docker buildx imagetools inspect {{ item }}:{{ image_tag }}
+      loop: ["{{ site_image }}", "{{ server_image }}"]
+      register: image_check
+      changed_when: false
+      failed_when: false
+
+    - name: Refuse to deploy images that were never pushed
+      ansible.builtin.fail:
+        msg: >-
+          {{ image_check.results | selectattr('rc', 'ne', 0) | map(attribute='item') | join(', ') }}
+          has no tag {{ image_tag }}. Run build.yml first (a commit that touches only deploy/ is
+          a cache hit and builds in seconds), or pass -e image_tag=<sha> to deploy a pushed build.
+      when: image_check.results | selectattr('rc', 'ne', 0) | list | length > 0
+
     - name: Check for an existing bundle
       ansible.builtin.stat:
         path: "{{ certs_dir }}/ca.crt"
