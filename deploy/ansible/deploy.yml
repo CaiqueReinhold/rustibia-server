@@ -108,6 +108,18 @@
     - name: Flush handlers
       ansible.builtin.meta: flush_handlers
 
+    - name: Set the Grafana admin password
+      ansible.builtin.command:
+        cmd: >-
+          {{ compose }} exec -T lgtm /otel-lgtm/grafana/bin/grafana cli
+          --homepath /otel-lgtm/grafana
+          --configOverrides cfg:default.paths.data=/data/grafana/data
+          admin reset-admin-password --password-from-stdin
+        stdin: "{{ grafana_admin_password }}"
+      when: telemetry_enabled
+      no_log: true
+      changed_when: false
+
     - name: Issue the TLS certificate
       when: not tls.stat.exists
       block:

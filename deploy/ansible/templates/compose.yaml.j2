@@ -89,6 +89,8 @@ services:
   lgtm:
     image: grafana/otel-lgtm:0.33.1
     restart: unless-stopped
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
     volumes:
       - {{ app_dir }}/telemetry/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/rustibia.yaml:ro
       - {{ app_dir }}/telemetry/dashboards:/otel-lgtm/rustibia-dashboards:ro

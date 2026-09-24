@@ -32,6 +32,7 @@ internet ─┤                                      ├─► db (postgres, not
    - `ghcr_pull_token` — a classic PAT with `read:packages` only, stored on the host to pull.
    - `postgres_password` — alphanumeric only (`openssl rand -hex 32`); it is embedded in a
      connection URL.
+   - `grafana_admin_password` — Grafana's `admin` login, re-applied on every deploy.
 6. Point the domain's DNS A record at the host. Let's Encrypt validates over port 80 on the
    first deploy, so the record must resolve before then.
 
@@ -48,15 +49,17 @@ ansible-playbook deploy.yml -e image_tag=<sha>   # roll back to a pushed tag
 Images are tagged with the 12-character commit sha. `-e allow_dirty=true` builds an
 uncommitted tree anyway, tagged `<sha>-dirty`.
 
-Grafana: `ssh -L 3000:127.0.0.1:3000 <host>`, then http://localhost:3000 (admin/admin on first
-login — change it).
+Grafana: `ssh -L 3000:127.0.0.1:3000 <host>`, then http://localhost:3000 as `admin` with
+`grafana_admin_password`. Change the password in 1Password, not in Grafana: every deploy resets
+it to the 1Password value.
 
 ## Things to know
 
 - **Docker-published ports bypass UFW.** The firewall only governs what runs on the host
   itself; what the internet can reach in a container is exactly the `ports:` in
   `templates/compose.yaml.j2`. Postgres and the site's 8080/8443 are deliberately unpublished,
-  and Grafana is bound to loopback.
+  and Grafana is bound to loopback. The otel-lgtm image turns on anonymous **Admin** access by
+  default; the compose file turns it off, because loopback does not keep out the other containers.
 - **The site trusts `X-Forwarded-For`** for rate limiting, which is safe only while nginx is
   its sole way in and overwrites that header. Do not publish the site's port.
 - **`deploy/certs/` holds the internal CA key.** It is git-ignored and never copied to the
