@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Post News — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Post News</div>
-  <div class="panel-body">
-    {% if let Some(error) = error %}<p class="error">{{ error }}</p>{% endif %}
-    {% if posted %}<p>Your post has been published.</p>{% endif %}
-    <form method="post" action="/admin/news">
-      <label for="title">Title</label>
-      <input type="text" id="title" name="title" value="{{ title }}" required>
-      <label for="body">Body</label>
-      <textarea id="body" name="body" rows="10" cols="60" required>{{ body }}</textarea>
-      <p><button type="submit">Publish</button></p>
-    </form>
+<section class="page-heading">
+  <div class="eyebrow">Admin</div>
+  <h1 class="page-title">Post News</h1>
+  <p class="lede">Publish an announcement.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    {% if let Some(error) = error %}<p class="notice notice-error">{{ error }}</p>{% endif %}
+    {% if posted %}<p class="notice notice-success">Your post has been published.</p>{% endif %}
+    <div class="card">
+      <form class="form" method="post" action="/admin/news">
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="{{ title }}" required>
+        </div>
+        <div class="field">
+          <label for="body">Body</label>
+          <textarea id="body" name="body" rows="10" required>{{ body }}</textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Publish</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

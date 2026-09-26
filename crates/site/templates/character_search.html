@@ -1,15 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Characters — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Search Characters</div>
-  <div class="panel-body">
-    {% if let Some(error) = error %}<p class="error">{{ error }}</p>{% endif %}
-    <form method="get" action="/characters">
-      <label for="name">Character Name</label>
-      <input type="text" id="name" name="name" value="{{ name }}" required>
-      <p><button type="submit">Search</button></p>
-    </form>
+<section class="page-heading">
+  <div class="eyebrow">Community</div>
+  <h1 class="page-title">Characters</h1>
+  <p class="lede">Look up any adventurer by name.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    {% if let Some(error) = error %}<p class="notice notice-error">{{ error }}</p>{% endif %}
+    <div class="card">
+      <form class="inline-form" method="get" action="/characters">
+        <div class="field">
+          <label for="name">Character Name</label>
+          <input type="text" id="name" name="name" value="{{ name }}" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

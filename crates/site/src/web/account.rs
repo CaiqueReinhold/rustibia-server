@@ -13,13 +13,14 @@ use crate::{
     domain::{character_name, sex::Sex, vocation::Vocation},
     error::{AppError, Surface, SurfacedError},
     state::AppState,
-    template::HtmlTemplate,
+    template::{HtmlTemplate, Nav},
 };
 
 #[derive(Template)]
 #[template(path = "account.html")]
 pub struct AccountPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub email: String,
     pub characters: Vec<Character>,
     pub error: Option<String>,
@@ -52,6 +53,7 @@ pub(super) async fn render_account(
 
     Ok(HtmlTemplate(AccountPage {
         viewer,
+        active: Nav::None,
         email,
         characters,
         error,
@@ -62,6 +64,7 @@ pub(super) async fn render_account(
 #[template(path = "character_new.html")]
 pub struct CharacterNewPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub error: Option<String>,
     pub name: String,
     pub sexes: Vec<Sex>,
@@ -72,6 +75,7 @@ impl CharacterNewPage {
     fn new(viewer: Viewer, error: Option<String>, name: String) -> Self {
         Self {
             viewer,
+            active: Nav::None,
             error,
             name,
             sexes: Sex::ALL.to_vec(),
@@ -206,6 +210,7 @@ pub async fn post_character_delete(
 #[template(path = "password.html")]
 pub struct PasswordPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub error: Option<String>,
     pub changed: bool,
 }
@@ -220,6 +225,7 @@ pub struct ChangePasswordForm {
 pub async fn get_password(viewer: Viewer, _account: CurrentAccount) -> impl IntoResponse {
     HtmlTemplate(PasswordPage {
         viewer,
+        active: Nav::None,
         error: None,
         changed: false,
     })
@@ -236,6 +242,7 @@ pub async fn post_password(
             StatusCode::UNPROCESSABLE_ENTITY,
             HtmlTemplate(PasswordPage {
                 viewer,
+                active: Nav::None,
                 error: Some(message.to_string()),
                 changed: false,
             }),
@@ -273,6 +280,7 @@ pub async fn post_password(
     {
         Ok(()) => HtmlTemplate(PasswordPage {
             viewer,
+            active: Nav::None,
             error: None,
             changed: true,
         })
@@ -472,6 +480,10 @@ mod tests {
         );
         assert!(html.contains("Druid"), "and show its vocation");
         assert!(html.contains("player@example.com"), "and the account email");
+        assert!(
+            html.contains(r#"href="/account/password""#),
+            "the dashboard must link to the password page"
+        );
     }
 
     async fn post_delete(app: Router, token: &str, character_id: i32) -> Response {

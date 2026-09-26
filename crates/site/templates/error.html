@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Error — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Error</div>
-  <div class="panel-body">
-    <p>{{ message }}</p>
+<section class="auth">
+  <div class="framed auth-card">
+    <span class="corner corner-tl" aria-hidden="true"></span><span class="corner corner-tr" aria-hidden="true"></span><span class="corner corner-bl" aria-hidden="true"></span><span class="corner corner-br" aria-hidden="true"></span>
+    <div class="auth-head">
+      <svg class="shield" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z"/><path d="M16 9 V23"/><path d="M11.5 13.5 H20.5"/></svg>
+      <h1>Error</h1>
+      <p>{{ message }}</p>
+    </div>
+    <div class="auth-foot"><a href="/">Back to News</a></div>
   </div>
-</div>
+</section>
 {% endblock %}

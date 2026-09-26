@@ -12,13 +12,14 @@ use crate::{
     db::news,
     error::AppError,
     state::AppState,
-    template::HtmlTemplate,
+    template::{HtmlTemplate, Nav},
 };
 
 #[derive(Template)]
 #[template(path = "admin_news.html")]
 pub struct AdminNewsPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub error: Option<String>,
     pub posted: bool,
     pub title: String,
@@ -33,6 +34,7 @@ impl AdminNewsPage {
                 logged_in: true,
                 is_admin: true,
             },
+            active: Nav::None,
             error: None,
             posted: false,
             title: String::new(),

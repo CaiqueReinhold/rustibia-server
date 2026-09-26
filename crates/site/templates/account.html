@@ -1,39 +1,52 @@
 {% extends "base.html" %}
 {% block title %}Account — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Account Information</div>
-  <table>
-    <tr><td><strong>Email</strong></td><td>{{ email }}</td></tr>
-    <tr><td><strong>Characters</strong></td><td>{{ characters.len() }}</td></tr>
-  </table>
-</div>
+<section class="page-heading">
+  <div class="eyebrow">Account</div>
+  <h1 class="page-title">Your Account</h1>
+  <p class="lede">{{ email }}</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    <div class="card">
+      <dl class="facts">
+        <dt>Email</dt><dd>{{ email }}</dd>
+        <dt>Characters</dt><dd>{{ characters.len() }}</dd>
+      </dl>
+    </div>
 
-<div class="panel">
-  <div class="panel-header">Characters</div>
-  {% if characters.is_empty() %}
-  <div class="panel-body"><p>You have no characters yet.</p></div>
-  {% else %}
-  <table>
-    <tr><th>Name</th><th>Vocation</th><th>Level</th><th>Status</th><th></th></tr>
-    {% for character in characters %}
-    <tr>
-      <td>{{ character.name }}</td>
-      <td>{{ character.vocation.name() }}</td>
-      <td>{{ character.level }}</td>
-      <td>{% if character.online %}Online{% else %}Offline{% endif %}</td>
-      <td>
-        <form method="post" action="/account/characters/{{ character.id }}/delete">
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
-  <div class="panel-body">
-    {% if let Some(error) = error %}<p class="error">{{ error }}</p>{% endif %}
-    <a href="/account/characters/new"><button type="button">Create Character</button></a>
+    {% if let Some(error) = error %}<p class="notice notice-error">{{ error }}</p>{% endif %}
+
+    <div class="table-card">
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Vocation</th><th class="num">Level</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {% if characters.is_empty() %}
+          <tr><td class="empty-row" colspan="5">You have no characters yet.</td></tr>
+          {% else %}
+          {% for character in characters %}
+          <tr>
+            <td><a class="name-link" href="/characters/{{ character.name }}">{{ character.name }}</a></td>
+            <td class="soft">{{ character.vocation.name() }}</td>
+            <td class="num">{{ character.level }}</td>
+            <td>{% if character.online %}<span class="online-state"><span class="dot" aria-hidden="true"></span>Online</span>{% else %}<span class="soft">Offline</span>{% endif %}</td>
+            <td class="num">
+              <form class="row-action" method="post" action="/account/characters/{{ character.id }}/delete">
+                <button class="btn btn-outline btn-small" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="/account/characters/new">Create Character</a>
+      <a class="btn btn-outline" href="/account/password">Change Password</a>
+    </div>
   </div>
 </div>
 {% endblock %}

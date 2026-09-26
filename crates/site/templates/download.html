@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Download — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Download the Client</div>
-  <div class="panel-body">
-    <p>Rustibia's client is built from source. Clone the repository and run it with Cargo:</p>
-    <p><code>cargo run --release</code></p>
-    <p>The client connects to <code>127.0.0.1:5555</code> by default.</p>
+<section class="page-heading">
+  <div class="eyebrow">Game</div>
+  <h1 class="page-title">Download</h1>
+  <p class="lede">Build the client and step into the realm.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    <div class="card prose">
+      <p>Rustibia's client is built from source. Clone the repository and run it with Cargo:</p>
+      <p><code>cargo run --release</code></p>
+      <p>The client connects to <code>127.0.0.1:5555</code> by default.</p>
+    </div>
   </div>
 </div>
 {% endblock %}

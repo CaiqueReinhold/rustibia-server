@@ -1,20 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Who Is Online — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Who Is Online</div>
-  <div class="panel-body"><p><strong>{{ characters.len() }}</strong> player(s) currently online.</p></div>
-  {% if !characters.is_empty() %}
-  <table>
-    <tr><th>Name</th><th>Vocation</th><th>Level</th></tr>
-    {% for character in characters %}
-    <tr>
-      <td><a href="/characters/{{ character.name }}">{{ character.name }}</a></td>
-      <td>{{ character.vocation.name() }}</td>
-      <td>{{ character.level }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
+<section class="page-heading">
+  <div class="eyebrow">Community</div>
+  <h1 class="page-title">Who Is Online</h1>
+  <p class="lede">Adventurers in the realm right now.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    <p class="online-state"><span class="dot" aria-hidden="true"></span><span><strong>{{ characters.len() }}</strong> {% if characters.len() == 1 %}player{% else %}players{% endif %} online</span></p>
+    {% if !characters.is_empty() %}
+    <div class="table-card">
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Vocation</th><th class="num">Level</th></tr></thead>
+        <tbody>
+          {% for character in characters %}
+          <tr>
+            <td><a class="name-link" href="/characters/{{ character.name }}">{{ character.name }}</a></td>
+            <td class="soft">{{ character.vocation.name() }}</td>
+            <td class="num">{{ character.level }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

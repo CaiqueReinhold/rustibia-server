@@ -11,13 +11,14 @@ use crate::{
     auth::{password::verify_password, viewer::Viewer},
     db::{accounts, sessions},
     state::AppState,
-    template::HtmlTemplate,
+    template::{HtmlTemplate, Nav},
 };
 
 #[derive(Template)]
 #[template(path = "register.html")]
 pub struct RegisterPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub error: Option<String>,
     pub email: String,
 }
@@ -26,6 +27,7 @@ pub struct RegisterPage {
 #[template(path = "login.html")]
 pub struct LoginPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub error: Option<String>,
     pub email: String,
 }
@@ -46,6 +48,7 @@ pub struct LoginForm {
 pub async fn get_register(viewer: Viewer) -> impl IntoResponse {
     HtmlTemplate(RegisterPage {
         viewer,
+        active: Nav::None,
         error: None,
         email: String::new(),
     })
@@ -54,6 +57,7 @@ pub async fn get_register(viewer: Viewer) -> impl IntoResponse {
 pub async fn get_login(viewer: Viewer) -> impl IntoResponse {
     HtmlTemplate(LoginPage {
         viewer,
+        active: Nav::None,
         error: None,
         email: String::new(),
     })
@@ -83,6 +87,7 @@ pub async fn post_register(
                 // A failed registration is by definition not authenticated, so the
                 // anonymous nav is correct here regardless of what cookie was sent.
                 viewer: Viewer::ANONYMOUS,
+                active: Nav::None,
                 error: Some(error.to_string()),
                 email: email.to_string(),
             }),
@@ -139,6 +144,7 @@ pub async fn post_login(State(state): State<AppState>, Form(form): Form<LoginFor
             StatusCode::UNAUTHORIZED,
             HtmlTemplate(LoginPage {
                 viewer: Viewer::ANONYMOUS,
+                active: Nav::None,
                 error: Some("Invalid email or password.".to_string()),
                 email: form.email.clone(),
             }),

@@ -2,44 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Rustibia{% endblock %}</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="page">
-    <div class="banner">RUSTIBIA</div>
-    <div class="layout">
-      <nav class="sidebar">
-        <div class="navgroup">GAME</div>
-        <a class="navitem" href="/">News</a>
-        <a class="navitem" href="/download">Download Client</a>
-        <a class="navitem" href="/rules">Rules</a>
-        <a class="navitem" href="/support">Support</a>
-
-        <div class="navgroup">COMMUNITY</div>
-        <a class="navitem" href="/characters">Characters</a>
-        <a class="navitem" href="/online">Who Is Online</a>
-        <a class="navitem" href="/highscores">Highscores</a>
-
-        <div class="navgroup">ACCOUNT</div>
+  <header class="site-header">
+    <a class="brand" href="/">
+      <svg class="shield" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z"/><path d="M16 9 V23"/><path d="M11.5 13.5 H20.5"/></svg>
+      <span>Rustibia</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      {% for link in active.game() %}<a href="{{ link.href|safe }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.label }}</a>{% endfor %}
+      <span class="nav-sep" aria-hidden="true"></span>
+      {% for link in active.community() %}<a href="{{ link.href|safe }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.label }}</a>{% endfor %}
+    </nav>
+    <div class="account-links">
+      {% if viewer.is_admin %}<a class="text-link" href="/admin/news">Post News</a>{% endif %}
+      {% if viewer.logged_in %}
+      <a class="text-link" href="/logout">Log Out</a>
+      <a class="btn btn-primary btn-compact" href="/account">Account</a>
+      {% else %}
+      <a class="text-link" href="/login">Log In</a>
+      <a class="btn btn-primary btn-compact" href="/register">Create Account</a>
+      {% endif %}
+    </div>
+    <details class="menu">
+      <summary aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 6 H17"/><path d="M3 10 H17"/><path d="M3 14 H17"/></svg></summary>
+      <nav class="menu-panel" aria-label="Menu">
+        {% for link in active.game() %}<a class="menu-link" href="{{ link.href|safe }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.label }}</a>{% endfor %}
+        {% for link in active.community() %}<a class="menu-link" href="{{ link.href|safe }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.label }}</a>{% endfor %}
+        {% if viewer.is_admin %}<a class="menu-link" href="/admin/news">Post News</a>{% endif %}
         {% if viewer.logged_in %}
-        <a class="navitem" href="/account">Account Dashboard</a>
-        <a class="navitem" href="/logout">Log Out</a>
+        <a class="menu-link" href="/logout">Log Out</a>
+        <a class="btn btn-primary" href="/account">Account</a>
         {% else %}
-        <a class="navitem" href="/login">Log In</a>
-        <a class="navitem" href="/register">Create Account</a>
-        {% endif %}
-
-        {% if viewer.is_admin %}
-        <div class="navgroup">ADMIN</div>
-        <a class="navitem" href="/admin/news">Post News</a>
+        <a class="menu-link" href="/login">Log In</a>
+        <a class="btn btn-primary" href="/register">Create Account</a>
         {% endif %}
       </nav>
-      <main class="content">
-        {% block content %}{% endblock %}
-      </main>
+    </details>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/">
+          <svg class="shield" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z"/><path d="M16 9 V23"/><path d="M11.5 13.5 H20.5"/></svg>
+          <span>Rustibia</span>
+        </a>
+        <p>A medieval MMORPG with its game server written from scratch in Rust.</p>
+      </div>
+      <nav class="footer-col" aria-label="Game">
+        <h2>Game</h2>
+        <a href="/">News</a>
+        <a href="/download">Download Client</a>
+        <a href="/rules">Rules</a>
+        <a href="/support">Support</a>
+      </nav>
+      <nav class="footer-col" aria-label="Community">
+        <h2>Community</h2>
+        <a href="/characters">Characters</a>
+        <a href="/online">Who Is Online</a>
+        <a href="/highscores">Highscores</a>
+      </nav>
+      <nav class="footer-col" aria-label="Account">
+        <h2>Account</h2>
+        {% if viewer.logged_in %}
+        <a href="/account">Account</a>
+        <a href="/logout">Log Out</a>
+        {% else %}
+        <a href="/login">Log In</a>
+        <a href="/register">Create Account</a>
+        {% endif %}
+        {% if viewer.is_admin %}<a href="/admin/news">Post News</a>{% endif %}
+      </nav>
     </div>
-    <div class="footer">Rustibia is a non-commercial fan project.</div>
-  </div>
+    <div class="footer-note">Rustibia is a non-commercial fan project.</div>
+  </footer>
 </body>
 </html>

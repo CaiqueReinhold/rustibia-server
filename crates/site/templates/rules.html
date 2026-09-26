@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Rules — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Rules</div>
-  <div class="panel-body">
-    <p>One account per player. Do not share your password.</p>
-    <p>Do not use software that plays the game for you.</p>
-    <p>Be civil in public chat.</p>
+<section class="page-heading">
+  <div class="eyebrow">Game</div>
+  <h1 class="page-title">Rules</h1>
+  <p class="lede">Four short rules keep the realm fair.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    <div class="card">
+      <ol class="steps">
+        <li><span class="step-num" aria-hidden="true">1</span><div class="step-text"><strong class="step-title">One account per player.</strong></div></li>
+        <li><span class="step-num" aria-hidden="true">2</span><div class="step-text"><strong class="step-title">Do not share your password.</strong></div></li>
+        <li><span class="step-num" aria-hidden="true">3</span><div class="step-text"><strong class="step-title">Do not use software that plays the game for you.</strong></div></li>
+        <li><span class="step-num" aria-hidden="true">4</span><div class="step-text"><strong class="step-title">Be civil in public chat.</strong></div></li>
+      </ol>
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -1,22 +1,33 @@
 {% extends "base.html" %}
 {% block title %}Highscores — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Highscores</div>
-  {% if entries.is_empty() %}
-  <div class="panel-body"><p>No characters yet.</p></div>
-  {% else %}
-  <table>
-    <tr><th>Rank</th><th>Name</th><th>Vocation</th><th>Level</th></tr>
-    {% for entry in entries %}
-    <tr>
-      <td>{{ entry.rank }}</td>
-      <td><a href="/characters/{{ entry.name }}">{{ entry.name }}</a></td>
-      <td>{{ entry.vocation.name() }}</td>
-      <td>{{ entry.level }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
+<section class="page-heading">
+  <div class="eyebrow">Community</div>
+  <h1 class="page-title">Highscores</h1>
+  <p class="lede">The most seasoned adventurers of the realm.</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    <div class="table-card">
+      <table class="data-table">
+        <thead><tr><th>Rank</th><th>Name</th><th>Vocation</th><th class="num">Level</th></tr></thead>
+        <tbody>
+          {% if entries.is_empty() %}
+          <tr><td class="empty-row" colspan="4">No characters yet.</td></tr>
+          {% else %}
+          {% for entry in entries %}
+          <tr>
+            <td class="rank">{{ entry.rank }}</td>
+            <td><a class="name-link" href="/characters/{{ entry.name }}">{{ entry.name }}</a></td>
+            <td class="soft">{{ entry.vocation.name() }}</td>
+            <td class="num">{{ entry.level }}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

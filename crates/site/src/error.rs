@@ -6,12 +6,16 @@ use axum::{
 };
 use serde_json::json;
 
-use crate::{auth::viewer::Viewer, template::HtmlTemplate};
+use crate::{
+    auth::viewer::Viewer,
+    template::{HtmlTemplate, Nav},
+};
 
 #[derive(Template)]
 #[template(path = "error.html")]
 pub struct ErrorPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub message: String,
 }
 
@@ -83,6 +87,7 @@ impl IntoResponse for SurfacedError {
                 status,
                 HtmlTemplate(ErrorPage {
                     viewer: Viewer::ANONYMOUS,
+                    active: Nav::None,
                     message,
                 }),
             )

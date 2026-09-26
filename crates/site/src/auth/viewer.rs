@@ -4,7 +4,7 @@ use axum::{extract::FromRequestParts, http::request::Parts};
 
 use crate::{auth::extractor::CurrentAccount, db::accounts, state::AppState};
 
-/// Everything the sidebar needs to know about the caller.
+/// Everything the header needs to know about the caller.
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Viewer {
     pub logged_in: bool,

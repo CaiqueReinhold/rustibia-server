@@ -17,11 +17,12 @@ use crate::{
     },
     error::{AppError, Surface, SurfacedError},
     state::AppState,
-    template::HtmlTemplate,
+    template::{HtmlTemplate, Nav},
 };
 
 const NEWS_ON_HOMEPAGE: i64 = 10;
 const HIGHSCORE_LIMIT: i64 = 100;
+const TOP_PLAYERS_ON_HOMEPAGE: i64 = 5;
 
 pub struct NewsItem {
     pub title: String,
@@ -43,13 +44,17 @@ fn format_posted_at(at: time::OffsetDateTime) -> String {
 #[template(path = "news.html")]
 pub struct NewsPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub posts: Vec<NewsItem>,
+    pub online: usize,
+    pub top_players: Vec<HighscoreEntry>,
 }
 
 #[derive(Template)]
 #[template(path = "character_search.html")]
 pub struct CharacterSearchPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub name: String,
     pub error: Option<String>,
 }
@@ -58,6 +63,7 @@ pub struct CharacterSearchPage {
 #[template(path = "character_detail.html")]
 pub struct CharacterDetailPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub character: Character,
     pub created: String,
 }
@@ -66,6 +72,7 @@ pub struct CharacterDetailPage {
 #[template(path = "online.html")]
 pub struct OnlinePage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub characters: Vec<OnlineCharacter>,
 }
 
@@ -73,6 +80,7 @@ pub struct OnlinePage {
 #[template(path = "highscores.html")]
 pub struct HighscoresPage {
     pub viewer: Viewer,
+    pub active: Nav,
     pub entries: Vec<HighscoreEntry>,
 }
 
@@ -80,18 +88,21 @@ pub struct HighscoresPage {
 #[template(path = "download.html")]
 pub struct DownloadPage {
     pub viewer: Viewer,
+    pub active: Nav,
 }
 
 #[derive(Template)]
 #[template(path = "rules.html")]
 pub struct RulesPage {
     pub viewer: Viewer,
+    pub active: Nav,
 }
 
 #[derive(Template)]
 #[template(path = "support.html")]
 pub struct SupportPage {
     pub viewer: Viewer,
+    pub active: Nav,
 }
 
 fn page_error(err: AppError) -> SurfacedError {
@@ -113,7 +124,18 @@ pub async fn get_news(
         })
         .collect();
 
-    Ok(HtmlTemplate(NewsPage { viewer, posts }))
+    let online = who_is_online(&state.pool).await.map_err(page_error)?.len();
+    let top_players = highscores(&state.pool, TOP_PLAYERS_ON_HOMEPAGE)
+        .await
+        .map_err(page_error)?;
+
+    Ok(HtmlTemplate(NewsPage {
+        viewer,
+        active: Nav::News,
+        posts,
+        online,
+        top_players,
+    }))
 }
 
 #[derive(Debug, Deserialize)]
@@ -135,6 +157,7 @@ pub async fn get_character_search(
     else {
         return Ok(HtmlTemplate(CharacterSearchPage {
             viewer,
+            active: Nav::Characters,
             name: String::new(),
             error: None,
         })
@@ -152,6 +175,7 @@ pub async fn get_character_search(
             StatusCode::NOT_FOUND,
             HtmlTemplate(CharacterSearchPage {
                 viewer,
+                active: Nav::Characters,
                 name: name.to_string(),
                 error: Some("Character not found.".to_string()),
             }),
@@ -173,6 +197,7 @@ pub async fn get_character_detail(
             StatusCode::NOT_FOUND,
             HtmlTemplate(CharacterSearchPage {
                 viewer,
+                active: Nav::Characters,
                 name,
                 error: Some("Character not found.".to_string()),
             }),
@@ -187,6 +212,7 @@ pub async fn get_character_detail(
 
     Ok(HtmlTemplate(CharacterDetailPage {
         viewer,
+        active: Nav::Characters,
         character,
         created,
     })
@@ -198,7 +224,11 @@ pub async fn get_online(
     viewer: Viewer,
 ) -> Result<impl IntoResponse, SurfacedError> {
     let characters = who_is_online(&state.pool).await.map_err(page_error)?;
-    Ok(HtmlTemplate(OnlinePage { viewer, characters }))
+    Ok(HtmlTemplate(OnlinePage {
+        viewer,
+        active: Nav::Online,
+        characters,
+    }))
 }
 
 pub async fn get_highscores(
@@ -208,19 +238,32 @@ pub async fn get_highscores(
     let entries = highscores(&state.pool, HIGHSCORE_LIMIT)
         .await
         .map_err(page_error)?;
-    Ok(HtmlTemplate(HighscoresPage { viewer, entries }))
+    Ok(HtmlTemplate(HighscoresPage {
+        viewer,
+        active: Nav::Highscores,
+        entries,
+    }))
 }
 
 pub async fn get_download(viewer: Viewer) -> impl IntoResponse {
-    HtmlTemplate(DownloadPage { viewer })
+    HtmlTemplate(DownloadPage {
+        viewer,
+        active: Nav::Download,
+    })
 }
 
 pub async fn get_rules(viewer: Viewer) -> impl IntoResponse {
-    HtmlTemplate(RulesPage { viewer })
+    HtmlTemplate(RulesPage {
+        viewer,
+        active: Nav::Rules,
+    })
 }
 
 pub async fn get_support(viewer: Viewer) -> impl IntoResponse {
-    HtmlTemplate(SupportPage { viewer })
+    HtmlTemplate(SupportPage {
+        viewer,
+        active: Nav::Support,
+    })
 }
 
 #[cfg(test)]
@@ -320,7 +363,62 @@ mod tests {
         let (status, body, _) = fetch(test_app(pool), "/").await;
         assert_eq!(status, StatusCode::OK);
         assert!(body.contains("No news yet"));
-        assert!(body.contains("RUSTIBIA"), "the retro frame must render");
+        assert!(
+            body.contains(r#"aria-label="Main""#),
+            "the header nav must render"
+        );
+        assert!(body.contains("Rustibia is a non-commercial fan project."));
+    }
+
+    async fn set_level(pool: &PgPool, character_id: i32, level: i16) {
+        sqlx::query("UPDATE player_skills SET value = $1 WHERE player_id = $2 AND skill_type = 0")
+            .bind(level)
+            .bind(character_id)
+            .execute(pool)
+            .await
+            .unwrap();
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_homepage_counts_players_online(pool: PgPool) {
+        let online = a_character(&pool, "a@example.com", "Rizael").await;
+        a_character(&pool, "b@example.com", "Brisa").await;
+        sqlx::query("INSERT INTO online_players (character_id) VALUES ($1)")
+            .bind(online)
+            .execute(&pool)
+            .await
+            .unwrap();
+
+        let (_, body, _) = fetch(test_app(pool), "/").await;
+
+        assert!(body.contains("<strong>1</strong> player online"));
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_homepage_lists_the_five_highest_players(pool: PgPool) {
+        for (i, name) in ["Aldor", "Brisa", "Cedric", "Dorian", "Elowen", "Fenwick"]
+            .into_iter()
+            .enumerate()
+        {
+            let id = a_character(&pool, &format!("p{i}@example.com"), name).await;
+            set_level(&pool, id, 60 - 10 * i as i16).await;
+        }
+
+        let (_, body, _) = fetch(test_app(pool), "/").await;
+
+        let positions: Vec<usize> = ["Aldor", "Brisa", "Cedric", "Dorian", "Elowen"]
+            .iter()
+            .map(|name| body.find(&format!(">{name}</a>")).expect(name))
+            .collect();
+        assert!(positions.is_sorted(), "highest level first");
+        assert!(!body.contains(">Fenwick</a>"), "only five are shown");
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_homepage_says_when_there_are_no_players(pool: PgPool) {
+        let (_, body, _) = fetch(test_app(pool), "/").await;
+        assert!(body.contains("No adventurers yet."));
+        assert!(body.contains("<strong>0</strong> players online"));
     }
 
     #[sqlx::test(migrations = "./migrations")]
@@ -366,7 +464,7 @@ mod tests {
     async fn the_search_page_renders_empty(pool: PgPool) {
         let (status, body, _) = fetch(test_app(pool), "/characters").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(body.contains("Search Characters"));
+        assert!(body.contains("Look up any adventurer by name."));
     }
 
     #[sqlx::test(migrations = "./migrations")]
@@ -437,7 +535,7 @@ mod tests {
 
         assert_eq!(status, StatusCode::OK);
         assert!(body.contains("Rizael"));
-        assert!(body.contains("1</strong> player(s)"));
+        assert!(body.contains("<strong>1</strong> player online"));
     }
 
     #[sqlx::test(migrations = "./migrations")]
@@ -455,7 +553,34 @@ mod tests {
         for uri in ["/download", "/rules", "/support"] {
             let (status, body, _) = fetch(test_app(pool.clone()), uri).await;
             assert_eq!(status, StatusCode::OK, "{uri} must render");
-            assert!(body.contains("RUSTIBIA"), "{uri} must use the retro frame");
+            assert!(
+                body.contains("Rustibia is a non-commercial fan project."),
+                "{uri} must use the site shell"
+            );
+        }
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_nav_marks_the_page_being_viewed(pool: PgPool) {
+        for uri in [
+            "/",
+            "/download",
+            "/rules",
+            "/support",
+            "/characters",
+            "/online",
+            "/highscores",
+        ] {
+            let (_, body, _) = fetch(test_app(pool.clone()), uri).await;
+            assert!(
+                body.contains(&format!(r#"href="{uri}" aria-current="page""#)),
+                "{uri} must be marked current"
+            );
+            assert_eq!(
+                body.matches(r#"aria-current="page""#).count(),
+                2,
+                "{uri}: once in the header, once in the mobile menu, nowhere else"
+            );
         }
     }
 
@@ -510,6 +635,10 @@ mod tests {
             assert!(
                 body.contains(r#"href="/logout""#),
                 "{uri} must offer Log Out to a logged-in player"
+            );
+            assert!(
+                body.contains(r#"href="/account""#),
+                "{uri} must link a logged-in player to their account"
             );
             assert!(
                 !body.contains(r#"href="/login""#),

@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 {% block title %}{{ character.name }} — Rustibia{% endblock %}
 {% block content %}
-<div class="panel">
-  <div class="panel-header">Character Information</div>
-  {% if character.deleted %}
-  <div class="panel-body"><p class="error">This character has been deleted.</p></div>
-  {% endif %}
-  <table>
-    <tr><td><strong>Name</strong></td><td>{{ character.name }}</td></tr>
-    <tr><td><strong>Sex</strong></td><td>{{ character.sex.name() }}</td></tr>
-    <tr><td><strong>Vocation</strong></td><td>{{ character.vocation.name() }}</td></tr>
-    <tr><td><strong>Level</strong></td><td>{{ character.level }}</td></tr>
-    <tr><td><strong>Status</strong></td><td>{% if character.online %}Online{% else %}Offline{% endif %}</td></tr>
-    <tr><td><strong>Created</strong></td><td>{{ created }}</td></tr>
-  </table>
+<section class="page-heading">
+  <div class="eyebrow">Character</div>
+  <h1 class="page-title">{{ character.name }}</h1>
+  <p class="lede">{{ character.vocation.name() }}, level {{ character.level }}</p>
+</section>
+<div class="column">
+  <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
+  <div class="column-body">
+    {% if character.deleted %}<p class="notice notice-error">This character has been deleted.</p>{% endif %}
+    <div class="card">
+      <dl class="facts">
+        <dt>Sex</dt><dd>{{ character.sex.name() }}</dd>
+        <dt>Vocation</dt><dd>{{ character.vocation.name() }}</dd>
+        <dt>Level</dt><dd>{{ character.level }}</dd>
+        <dt>Status</dt><dd>{% if character.online %}<span class="online-state"><span class="dot" aria-hidden="true"></span>Online</span>{% else %}Offline{% endif %}</dd>
+        <dt>Created</dt><dd>{{ created }}</dd>
+      </dl>
+    </div>
+  </div>
 </div>
 {% endblock %}
