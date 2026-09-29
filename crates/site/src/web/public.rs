@@ -368,6 +368,7 @@ mod tests {
             "the header nav must render"
         );
         assert!(body.contains("Rustibia is a non-commercial fan project."));
+        assert!(body.contains(r#"<link rel="icon" href="/static/favicon.svg""#));
     }
 
     async fn set_level(pool: &PgPool, character_id: i32, level: i16) {

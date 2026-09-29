@@ -15,6 +15,7 @@ use tokio::{
 };
 use tracing::{Instrument, Span, error, field, info, info_span, warn};
 
+use crate::actors::persistence::PersistenceActorHandle;
 use crate::actors::{
     message_router::{MessageRouterActorHandle, MessageRouterGuard},
     session::SessionActorHandle,
@@ -32,13 +33,13 @@ use crate::entities::{
     targeting::AreaTarget,
     world_map::WorldMap,
 };
+use crate::game::config::GAME_CONFIG;
 use crate::game::{
-    Tick, TickCtx, TickDelta, chat, conditions, config::GAME_CONFIG, creature_abilities,
+    Tick, TickCtx, TickDelta, chat, conditions, creature_abilities,
     creature_behavior::CreatureAction, events::BroadcastMessage, item_action, item_movement,
     item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, spells, support,
     systems, targeting,
 };
-use crate::online_registry::RegistryGuard;
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
 use crate::telemetry::{self, CommandRecord, CommandSink, TickTimings};
 
@@ -74,16 +75,12 @@ pub enum WorldCommand {
     },
     DespawnPlayer {
         agent_key: AgentKey,
-        registry: Option<RegistryGuard>,
-        give_up_at: Option<Tick>,
+        disconnect: Option<(Tick, oneshot::Sender<()>)>,
     },
     SpawnCreature {
         kind: Arc<CreatureKind>,
         position: Position,
         respawn_ticks: Option<TickDelta>,
-    },
-    RequestLogout {
-        agent_key: AgentKey,
     },
     DecayItem {
         item: ItemRef,
@@ -243,6 +240,7 @@ pub struct WorldActor {
     tick_tx: watch::Sender<Tick>,
     roll: Rolls,
     command_sink: CommandSink,
+    persistence: PersistenceActorHandle,
 }
 
 impl WorldActor {
@@ -252,6 +250,7 @@ impl WorldActor {
         message_router: MessageRouterActorHandle,
         seed: u64,
         spawns: &[SpawnPoint],
+        persistence: PersistenceActorHandle,
     ) -> (WorldActorHandle, watch::Receiver<Tick>) {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
         telemetry::observe_channel("rustibia.world.inbox.depth", &tx);
@@ -268,6 +267,7 @@ impl WorldActor {
             tick_tx,
             roll: Rolls::new(seed),
             command_sink: CommandSink::start(),
+            persistence,
         };
         actor.seed_spawn_points(spawns);
 
@@ -431,8 +431,6 @@ impl WorldActor {
         (snapshot_elapsed, publish_start.elapsed())
     }
 
-    /// Lends the tick's five writable things to `game/` functions as one `TickCtx`, then queues
-    /// whatever they scheduled.
     fn with_ctx<T>(
         &mut self,
         broadcast_messages: &mut Vec<BroadcastMessage>,
@@ -521,34 +519,8 @@ impl WorldActor {
             }
             WorldCommand::DespawnPlayer {
                 agent_key,
-                registry,
-                give_up_at,
-            } => {
-                let give_up_at =
-                    give_up_at.unwrap_or(self.tick + GAME_CONFIG.disconnect_linger_cap_ticks);
-                let blocked = self
-                    .map
-                    .get_agent(agent_key)
-                    .is_some_and(|agent| agent.conditions().is_logout_blocked(self.tick));
-
-                if blocked && self.tick < give_up_at {
-                    self.command_queue.push(ScheduledCommand {
-                        at_tick: self.tick + TickDelta(1),
-                        command: WorldCommand::DespawnPlayer {
-                            agent_key,
-                            registry,
-                            give_up_at: Some(give_up_at),
-                        },
-                    });
-                } else if let Some((_, position)) = self.map.remove_agent(agent_key) {
-                    info!("Player {:?} despawned after disconnect", agent_key);
-                    broadcast_messages.push(BroadcastMessage::AgentDespawned {
-                        agent_key,
-                        snapshot: None,
-                        position,
-                    });
-                }
-            }
+                disconnect,
+            } => self.despawn_player(agent_key, disconnect, broadcast_messages),
             WorldCommand::SpawnCreature {
                 kind,
                 position,
@@ -569,11 +541,6 @@ impl WorldActor {
                         error!("Failed to spawn creature at {:?}: {:?}", position, e);
                     }
                 };
-            }
-            WorldCommand::RequestLogout { agent_key } => {
-                if let Err(e) = self.handle_request_logout(agent_key, broadcast_messages) {
-                    error!("Failed to logout player {agent_key:?}: {e}");
-                }
             }
             WorldCommand::DecayItem { item } => {
                 self.with_ctx(broadcast_messages, |ctx| item_action::decay_item(ctx, item));
@@ -655,39 +622,47 @@ impl WorldActor {
         };
     }
 
-    fn handle_request_logout(
+    fn despawn_player(
         &mut self,
         agent_key: AgentKey,
+        disconnect: Option<(Tick, oneshot::Sender<()>)>,
         broadcast_messages: &mut Vec<BroadcastMessage>,
-    ) -> Result<()> {
-        let Some(agent) = self.map.get_agent(agent_key) else {
-            return Ok(());
-        };
+    ) {
+        let blocked = self
+            .map
+            .get_agent(agent_key)
+            .is_some_and(|agent| !agent.can_logout(self.tick));
 
-        if agent.conditions().is_logout_blocked(self.tick) {
-            broadcast_messages.push(BroadcastMessage::LogoutDenied { agent_key });
-            return Ok(());
+        if blocked {
+            let Some((requested_at, _)) = &disconnect else {
+                broadcast_messages.push(BroadcastMessage::LogoutDenied { agent_key });
+                return;
+            };
+            if *requested_at + GAME_CONFIG.disconnect_linger_cap_ticks > self.tick {
+                self.command_queue.push(ScheduledCommand {
+                    at_tick: self.tick + TickDelta(1),
+                    command: WorldCommand::DespawnPlayer {
+                        agent_key,
+                        disconnect,
+                    },
+                });
+                return;
+            }
         }
 
-        if !agent.can_logout(self.tick) {
-            let next_tick = agent.next_walk_tick;
-            self.command_queue.push(ScheduledCommand {
-                at_tick: next_tick,
-                command: WorldCommand::RequestLogout { agent_key },
+        if let Some((agent, position)) = self.map.remove_agent(agent_key) {
+            if let Some(snapshot) = agent.to_snapshot(position.clone()) {
+                self.persistence.save_player(snapshot);
+            }
+            broadcast_messages.push(BroadcastMessage::AgentDespawned {
+                agent_key,
+                position,
             });
-            broadcast_messages.push(BroadcastMessage::LogoutDenied { agent_key });
-            return Ok(());
         }
 
-        let position = self.map.agent_position(agent_key).cloned();
-        let snapshot = position.clone().and_then(|pos| agent.to_snapshot(pos));
-        self.map.remove_agent(agent_key);
-        broadcast_messages.push(BroadcastMessage::AgentDespawned {
-            agent_key,
-            snapshot,
-            position: position.unwrap_or_default(),
-        });
-        Ok(())
+        if let Some((_, despawned)) = disconnect {
+            let _ = despawned.send(());
+        }
     }
 
     fn spawn_player(
@@ -750,6 +725,7 @@ mod tests {
         let (_tx, rx) = mpsc::channel(1);
         let (message_router, _router_rx) = MessageRouterActorHandle::for_test();
         let (tick_tx, _tick_rx) = watch::channel(Tick(0));
+        let (persistence, _) = PersistenceActorHandle::for_test();
         WorldActor {
             rx,
             message_router,
@@ -761,6 +737,7 @@ mod tests {
             tick_tx,
             roll: Rolls::new(1),
             command_sink: CommandSink::for_test().0,
+            persistence,
         }
     }
 
@@ -985,8 +962,7 @@ mod tests {
     /// hand: gutting the dispatch arm to a no-op `Ok(())` makes this test fail on
     /// `assert_eq!(actor.map.get_agent(attacker).unwrap().target(), Some(victim))`
     /// (left: `None`, right: `Some(victim)`); restoring the arm makes it pass again.
-    #[test]
-    fn a_blocked_disconnect_re_queues_instead_of_despawning() {
+    fn a_logout_blocked_player_at(tick: Tick) -> (GameMap, AgentKey) {
         let mut map = GameMap::new();
         let position = Position::new(5, 5, 7);
         map.insert_tile(position.clone(), MapTile::new());
@@ -996,15 +972,41 @@ mod tests {
         map.get_agent_mut(agent_key)
             .unwrap()
             .conditions_mut()
-            .reset_logout_block(Tick(0));
+            .reset_logout_block(tick);
+        (map, agent_key)
+    }
 
+    #[test]
+    fn a_blocked_logout_is_denied_and_keeps_the_player() {
+        let (map, agent_key) = a_logout_blocked_player_at(Tick(0));
         let mut actor = a_test_world_actor(map);
         let mut broadcasts = Vec::new();
         actor.handle_command(
             WorldCommand::DespawnPlayer {
                 agent_key,
-                registry: None,
-                give_up_at: None,
+                disconnect: None,
+            },
+            &mut broadcasts,
+        );
+
+        assert!(actor.map.get_agent(agent_key).is_some());
+        assert!(actor.command_queue.is_empty());
+        assert!(matches!(
+            broadcasts.as_slice(),
+            [BroadcastMessage::LogoutDenied { .. }]
+        ));
+    }
+
+    #[test]
+    fn a_blocked_disconnect_re_queues_instead_of_despawning() {
+        let (map, agent_key) = a_logout_blocked_player_at(Tick(0));
+        let mut actor = a_test_world_actor(map);
+        let mut broadcasts = Vec::new();
+        let (despawned, mut removed) = oneshot::channel();
+        actor.handle_command(
+            WorldCommand::DespawnPlayer {
+                agent_key,
+                disconnect: Some((Tick(0), despawned)),
             },
             &mut broadcasts,
         );
@@ -1012,34 +1014,28 @@ mod tests {
         assert!(actor.map.get_agent(agent_key).is_some());
         assert_eq!(actor.command_queue.len(), 1);
         assert!(broadcasts.is_empty());
+        assert!(removed.try_recv().is_err());
     }
 
     #[test]
     fn the_linger_cap_despawns_a_still_blocked_player() {
-        let mut map = GameMap::new();
-        let position = Position::new(5, 5, 7);
-        map.insert_tile(position.clone(), MapTile::new());
-        let agent_key = map
-            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &position)
-            .unwrap();
-        map.get_agent_mut(agent_key)
-            .unwrap()
-            .conditions_mut()
-            .reset_logout_block(Tick(0));
-
+        let cap = Tick(0) + GAME_CONFIG.disconnect_linger_cap_ticks;
+        let (map, agent_key) = a_logout_blocked_player_at(cap);
         let mut actor = a_test_world_actor(map);
+        actor.tick = cap;
         let mut broadcasts = Vec::new();
+        let (despawned, mut removed) = oneshot::channel();
         actor.handle_command(
             WorldCommand::DespawnPlayer {
                 agent_key,
-                registry: None,
-                give_up_at: Some(Tick(0)),
+                disconnect: Some((Tick(0), despawned)),
             },
             &mut broadcasts,
         );
 
         assert!(actor.map.get_agent(agent_key).is_none());
         assert!(actor.command_queue.is_empty());
+        assert!(removed.try_recv().is_ok());
     }
 
     #[tokio::test]

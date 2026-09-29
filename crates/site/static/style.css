@@ -81,7 +81,7 @@ code {
 }
 .brand:hover { color: var(--text); }
 .brand svg { width: 32px; height: 32px; flex-shrink: 0; }
-.shield { color: var(--gold); }
+.icon-gold { color: var(--gold); }
 .nav { display: flex; align-items: center; gap: 30px; font-size: 16px; font-weight: 500; }
 .nav a { color: var(--text-soft); text-decoration: none; padding: 6px 0; border-bottom: 1px solid transparent; }
 .nav a:hover { color: var(--gold-hover); }
@@ -356,8 +356,9 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold); outl
 .auth { flex-grow: 1; padding: 88px var(--gutter) 104px; display: flex; justify-content: center; align-items: flex-start; }
 .auth-card { width: 100%; max-width: 480px; padding: 48px 48px 40px; display: flex; flex-direction: column; gap: 28px; }
 .auth-head { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
-.auth-head svg { width: 40px; height: 40px; }
-.auth-head h1 { font-size: 40px; line-height: 1.1; }
+.auth-head .brand { margin-bottom: 10px; font-size: 34px; }
+.auth-head .brand svg { width: 38px; height: 38px; }
+.auth-head h1 { font-size: 30px; line-height: 1.1; }
 .auth-head p { margin: 0; color: var(--muted); }
 .auth-foot { padding-top: 22px; border-top: 1px solid var(--rule); text-align: center; color: var(--muted); font-size: 15px; }
 .auth-foot a { font-weight: 500; }

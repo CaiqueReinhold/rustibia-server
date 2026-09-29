@@ -16,6 +16,7 @@ use arc_swap::ArcSwap;
 use thiserror::Error;
 use tokio::select;
 use tokio::sync::mpsc;
+use tokio::sync::oneshot;
 use tokio::sync::watch;
 use tokio_util::sync::CancellationToken;
 use tracing::error;
@@ -24,7 +25,6 @@ use tracing::info;
 use crate::actors::SharedContext;
 use crate::actors::chat::ChatActorHandle;
 use crate::actors::connection::ConnectionActorHandle;
-use crate::actors::persistence::PersistenceActorHandle;
 use crate::actors::world::WorldActorHandle;
 use crate::actors::world::WorldCommand;
 use crate::config::CONFIG;
@@ -38,8 +38,8 @@ use crate::entities::items::ItemGuid;
 use crate::entities::map::GameMap;
 use crate::entities::position::Direction;
 use crate::entities::world_delta::WorldDelta;
+use crate::game::Tick;
 use crate::game::events::BroadcastMessage;
-use crate::game::{Tick, TickDelta};
 use crate::local_id::LocalIdMap;
 use crate::messages::TextMessageType;
 use crate::messages::{ClientMessage, ServerMessage};
@@ -163,14 +163,15 @@ pub struct SessionActor {
     shared_map: Arc<ArcSwap<GameMap>>,
     containers: LocalIdMap<ItemGuid, ContainerId>,
     agents: LocalIdMap<AgentKey, AgentId>,
-    persistence: PersistenceActorHandle,
     chat: ChatActorHandle,
     tick_rx: watch::Receiver<Tick>,
     next_chat_tick: Tick,
     queued_walk: Option<Direction>,
-    logout_pending: bool,
-    registry_guard: Option<RegistryGuard>,
+    _registry: RegistryGuard,
 }
+
+#[cfg(test)]
+use crate::game::TickDelta;
 
 #[cfg(test)]
 type TestSession = (
@@ -186,7 +187,7 @@ impl SessionActor {
         connection: ConnectionActorHandle,
         context: SharedContext,
         agent: Agent,
-        registry_guard: RegistryGuard,
+        registry: RegistryGuard,
     ) -> SessionActorHandle {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
         let token = CancellationToken::new();
@@ -215,12 +216,10 @@ impl SessionActor {
                         shared_map: context.shared_map.clone(),
                         containers: LocalIdMap::new(),
                         agents: LocalIdMap::new(),
-                        persistence: context.persistence.clone(),
                         tick_rx: context.tick_rx.clone(),
                         next_chat_tick: Tick(0),
                         queued_walk: None,
-                        logout_pending: false,
-                        registry_guard: Some(registry_guard),
+                        _registry: registry,
                     };
                     actor.run().await;
                 }
@@ -234,31 +233,10 @@ impl SessionActor {
         self_handle
     }
 
-    async fn save_player(&self) {
-        let map = self.shared_map.load();
-        let Some(agent) = map.get_agent(self.player_key) else {
-            return;
-        };
-        let Some(position) = map.agent_position(self.player_key) else {
-            return;
-        };
-        let Some(snapshot) = agent.to_snapshot(position.clone()) else {
-            return;
-        };
-        if let Err(e) = self.persistence.save_player(snapshot).await {
-            error!(
-                session = self.session_id,
-                "Failed to queue player save: {e}"
-            );
-        }
-    }
-
     async fn run(mut self) {
         info!(session = self.session_id, "Session actor started");
 
-        let mut save_timer = tokio::time::interval(CONFIG.save_interval);
-        save_timer.tick().await; // skip the immediate first tick
-
+        let mut clean_logout = false;
         loop {
             let result = select! { biased;
                 _ = self.token.cancelled() => {
@@ -280,15 +258,12 @@ impl SessionActor {
                     } else {
                         Err(SessionError::ConnectionClosed.into())
                     },
-                _ = save_timer.tick() => {
-                    self.save_player().await;
-                    Ok(())
-                }
             };
             if let Err(e) = result {
                 if e.downcast_ref::<SessionError>()
                     .is_some_and(|e| matches!(e, SessionError::Logout))
                 {
+                    clean_logout = true;
                     info!(session = self.session_id, "Player logged out cleanly");
                 } else {
                     error!(session = self.session_id, "Error on session command: {e}");
@@ -297,22 +272,18 @@ impl SessionActor {
             }
         }
 
-        self.save_player().await;
         let _ = self.connection.close().await;
-
-        let delay_ticks =
-            (CONFIG.player_despawn_delay.as_millis() / CONFIG.tick_duration.as_millis()) as u64;
-        let _ = self
-            .world
-            .send_delayed(
-                WorldCommand::DespawnPlayer {
+        if !clean_logout {
+            let requested_at = *self.tick_rx.borrow();
+            let (despawned, removed) = oneshot::channel();
+            self.world
+                .send(WorldCommand::DespawnPlayer {
                     agent_key: self.player_key,
-                    registry: self.registry_guard.take(),
-                    give_up_at: None,
-                },
-                TickDelta(delay_ticks),
-            )
-            .await;
+                    disconnect: Some((requested_at, despawned)),
+                })
+                .await;
+            let _ = removed.await;
+        }
     }
 
     async fn close_connection(&self) {
@@ -397,11 +368,9 @@ impl SessionActor {
             BroadcastMessage::UseItemDenied { message, .. } => self.deny(&message).await,
             BroadcastMessage::OpenContainer { item, .. } => self.open_container(item).await,
             BroadcastMessage::AgentWalkDenied { .. } => self.walk_denied().await,
-            BroadcastMessage::AgentDespawned {
-                agent_key,
-                snapshot,
-                ..
-            } => self.agent_despawned(agent_key, snapshot).await,
+            BroadcastMessage::AgentDespawned { agent_key, .. } => {
+                self.agent_despawned(agent_key).await
+            }
             BroadcastMessage::AgentTeleported {
                 agent_key,
                 to_position,
@@ -501,19 +470,38 @@ impl SessionActor {
     }
 
     async fn handle_logout(&mut self) -> Result<()> {
-        if !self.logout_pending {
-            self.logout_pending = true;
-            self.world
-                .send(WorldCommand::RequestLogout {
-                    agent_key: self.player_key,
-                })
-                .await;
+        self.world
+            .send(WorldCommand::DespawnPlayer {
+                agent_key: self.player_key,
+                disconnect: None,
+            })
+            .await;
+        Ok(())
+    }
+
+    async fn agent_despawned(&mut self, agent_key: AgentKey) -> Result<()> {
+        if self.player_key == agent_key {
+            self.token.cancel();
+            return Err(SessionError::Logout.into());
         }
+
+        self.forget_agent(agent_key).await?;
         Ok(())
     }
 
     async fn logout_denied(&self) -> Result<()> {
-        self.deny("You may not logout during an action.").await
+        let current_tick = *self.tick_rx.borrow();
+        let battle_locked = {
+            let map = self.shared_map.load();
+            map.get_agent(self.player_key)
+                .is_some_and(|a| a.conditions().is_logout_blocked(current_tick))
+        };
+        if battle_locked {
+            self.deny("You may not logout during a battle.").await?;
+        } else {
+            self.deny("You may not logout during an action.").await?;
+        }
+        Ok(())
     }
 
     #[cfg(test)]
@@ -525,8 +513,8 @@ impl SessionActor {
         let (connection, connection_rx) = ConnectionActorHandle::for_test();
         let (world, world_rx) = WorldActorHandle::for_test();
         let (chat, _chat_rx) = ChatActorHandle::for_test();
-        let (persistence, _persistence_rx) = PersistenceActorHandle::for_test(16);
         let (tick_tx, tick_rx) = watch::channel(Tick(0));
+        let registry = RegistryGuard::for_test(crate::entities::player::PlayerId(1));
 
         (
             Self {
@@ -540,12 +528,10 @@ impl SessionActor {
                 shared_map: Arc::new(ArcSwap::from_pointee(map)),
                 containers: LocalIdMap::new(),
                 agents: LocalIdMap::new(),
-                persistence,
                 tick_rx,
                 next_chat_tick: Tick(0),
                 queued_walk: None,
-                logout_pending: false,
-                registry_guard: None,
+                _registry: registry,
             },
             connection_rx,
             world_rx,
