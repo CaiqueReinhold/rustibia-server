@@ -53,14 +53,26 @@ impl Drop for RegistryGuard {
     }
 }
 
+impl RegistryGuard {
+    #[cfg(test)]
+    pub fn for_test(character_id: PlayerId) -> Self {
+        let (persistence, _) = PersistenceActorHandle::for_test();
+        Self {
+            inner: Arc::new(Mutex::new(HashSet::new())),
+            persistence,
+            character_id,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::actors::persistence::PersistenceCommand;
     use tokio::sync::mpsc;
 
-    fn a_registry() -> (OnlineRegistry, mpsc::Receiver<PersistenceCommand>) {
-        let (handle, rx) = PersistenceActorHandle::for_test(16);
+    fn a_registry() -> (OnlineRegistry, mpsc::UnboundedReceiver<PersistenceCommand>) {
+        let (handle, rx) = PersistenceActorHandle::for_test();
         (OnlineRegistry::new(handle), rx)
     }
 

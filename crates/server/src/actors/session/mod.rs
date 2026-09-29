@@ -202,6 +202,7 @@ impl SessionActor {
                 .world
                 .spawn_player(agent, self_handle_clone.clone())
                 .await;
+            drop(self_handle_clone);
             match spawn_result {
                 Ok((agent_key, message_router_guard)) => {
                     let _router_guard = message_router_guard;
@@ -274,6 +275,7 @@ impl SessionActor {
 
         let _ = self.connection.close().await;
         if !clean_logout {
+            self.rx.close();
             let requested_at = *self.tick_rx.borrow();
             let (despawned, removed) = oneshot::channel();
             self.world

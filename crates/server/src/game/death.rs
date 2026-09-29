@@ -48,7 +48,6 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey, source: Option<AgentKey>) {
     ctx.events.push(BroadcastMessage::AgentDespawned {
         agent_key,
         position: position.clone(),
-        snapshot: None,
     });
     schedule_respawn(ctx, &agent);
 

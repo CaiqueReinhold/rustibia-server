@@ -2,7 +2,6 @@
 //! id map and its recycling, spawn/despawn, and the current target.
 
 use anyhow::Result;
-use tracing::error;
 
 use crate::actors::player_query::{
     get_agent_desc, get_player_desc, get_player_skills, get_spell_list,
@@ -19,7 +18,6 @@ use crate::game::map_query::get_agents_in_viewport;
 use crate::game::map_query::get_map_desc_on_viewport;
 use crate::game::skills::{progress_bp, total_experience};
 use crate::messages::{FloatingTextType, ServerMessage, SkillProgress, TextMessageType};
-use crate::persistence::player::PlayerSnapshot;
 
 impl SessionActor {
     pub(super) async fn player_spawned(
@@ -145,28 +143,6 @@ impl SessionActor {
             .send_message(ServerMessage::RemoveAgent { agent_id })
             .await?;
 
-        Ok(())
-    }
-
-    pub(super) async fn agent_despawned(
-        &mut self,
-        agent_key: AgentKey,
-        snapshot: Option<Box<PlayerSnapshot>>,
-    ) -> Result<()> {
-        if self.player_key == agent_key {
-            if let Some(snapshot) = snapshot {
-                if let Err(e) = self.persistence.save_player(snapshot).await {
-                    error!(
-                        session = self.session_id,
-                        "Failed to save player on logout: {e}"
-                    );
-                }
-                return Err(SessionError::Logout.into());
-            }
-            return Ok(());
-        }
-
-        self.forget_agent(agent_key).await?;
         Ok(())
     }
 

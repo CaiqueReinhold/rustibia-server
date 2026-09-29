@@ -164,6 +164,7 @@ mod tests {
     use arc_swap::ArcSwap;
     use std::time::Duration;
     use tokio::sync::mpsc::Receiver;
+    use tokio::sync::mpsc::UnboundedReceiver;
 
     /// A `LoginRepository` that answers from a script. No database, no network — the
     /// point of the seam is that this actor can be tested without either.
@@ -200,10 +201,10 @@ mod tests {
     fn a_context() -> (
         SharedContext,
         Receiver<(crate::actors::world::WorldCommand, Option<TickDelta>)>,
-        Receiver<crate::actors::persistence::PersistenceCommand>,
+        UnboundedReceiver<crate::actors::persistence::PersistenceCommand>,
     ) {
         let (world, world_rx) = WorldActorHandle::for_test();
-        let (persistence, persistence_rx) = PersistenceActorHandle::for_test(16);
+        let (persistence, persistence_rx) = PersistenceActorHandle::for_test();
         let (chat, _chat_rx) = ChatActorHandle::for_test();
         let (_tick_tx, tick_rx) = tokio::sync::watch::channel(Tick(0));
 

@@ -3,7 +3,6 @@ use std::sync::Arc;
 use tokio::sync::mpsc;
 use tracing::{error, info};
 
-use crate::config::CONFIG;
 use crate::entities::player::PlayerId;
 use crate::persistence::online::OnlineRepository;
 use crate::persistence::player::{PlayerRepository, PlayerSnapshot};
@@ -17,26 +16,19 @@ pub enum PersistenceCommand {
 
 #[derive(Clone, Debug)]
 pub struct PersistenceActorHandle {
-    tx: mpsc::Sender<PersistenceCommand>,
+    tx: mpsc::UnboundedSender<PersistenceCommand>,
 }
 
 impl PersistenceActorHandle {
-    pub async fn save_player(
-        &self,
-        player: Box<PlayerSnapshot>,
-    ) -> Result<(), mpsc::error::SendError<PersistenceCommand>> {
-        self.tx.send(PersistenceCommand::SavePlayer(player)).await?;
-        Ok(())
+    pub fn save_player(&self, player: Box<PlayerSnapshot>) {
+        // If this actor stops world stops too, so error can be swallowed
+        let _ = self.tx.send(PersistenceCommand::SavePlayer(player));
     }
 
-    /// Non-blocking, synchronous — callable from `Drop`, which cannot `.await`.
-    ///
-    /// Uses `try_send`, so a full channel drops the update rather than blocking the
-    /// game loop. This is presentational data; a log line is the right response.
     pub fn mark_online(&self, character_id: PlayerId) {
         if self
             .tx
-            .try_send(PersistenceCommand::MarkOnline(character_id))
+            .send(PersistenceCommand::MarkOnline(character_id))
             .is_err()
         {
             tracing::warn!(
@@ -49,7 +41,7 @@ impl PersistenceActorHandle {
     pub fn mark_offline(&self, character_id: PlayerId) {
         if self
             .tx
-            .try_send(PersistenceCommand::MarkOffline(character_id))
+            .send(PersistenceCommand::MarkOffline(character_id))
             .is_err()
         {
             tracing::warn!(
@@ -64,14 +56,14 @@ impl PersistenceActorHandle {
     /// spinning up a real `PersistenceActor` would drag a database into what are
     /// otherwise pure in-memory tests.
     #[cfg(test)]
-    pub fn for_test(buffer: usize) -> (Self, mpsc::Receiver<PersistenceCommand>) {
-        let (tx, rx) = mpsc::channel(buffer);
+    pub fn for_test() -> (Self, mpsc::UnboundedReceiver<PersistenceCommand>) {
+        let (tx, rx) = mpsc::unbounded_channel();
         (PersistenceActorHandle { tx }, rx)
     }
 }
 
 pub struct PersistenceActor {
-    rx: mpsc::Receiver<PersistenceCommand>,
+    rx: mpsc::UnboundedReceiver<PersistenceCommand>,
     repo: Arc<PlayerRepository>,
     online: Arc<OnlineRepository>,
 }
@@ -81,7 +73,7 @@ impl PersistenceActor {
         repo: Arc<PlayerRepository>,
         online: Arc<OnlineRepository>,
     ) -> PersistenceActorHandle {
-        let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
+        let (tx, rx) = mpsc::unbounded_channel();
         tokio::spawn(async move {
             let actor = Self { rx, repo, online };
             actor.run().await;

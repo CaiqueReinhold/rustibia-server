@@ -1,5 +1,4 @@
 use crate::entities::healing::RestoreType;
-use crate::persistence::player::PlayerSnapshot;
 use crate::{
     entities::{
         agent::AgentKey,
@@ -14,7 +13,7 @@ use crate::{
     game::spells::SpellCastingDenyReason,
 };
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Clone)]
 pub enum BroadcastMessage {
     PlayerSpawned {
         agent_key: AgentKey,
@@ -49,7 +48,6 @@ pub enum BroadcastMessage {
     AgentDespawned {
         agent_key: AgentKey,
         position: Position,
-        snapshot: Option<Box<PlayerSnapshot>>,
     },
     LogoutDenied {
         agent_key: AgentKey,
@@ -163,7 +161,7 @@ impl BroadcastMessage {
             | Self::AgentWalkDenied { agent_key }
             | Self::AgentLostTarget { agent_key, .. }
             | Self::UseItemDenied { agent_key, .. }
-            | Self::LogoutDenied { agent_key }
+            | Self::LogoutDenied { agent_key, .. }
             | Self::ExperienceGained { agent_key, .. }
             | Self::SkillUpgraded { agent_key, .. } => Routing::Agent(*agent_key),
 
@@ -303,7 +301,6 @@ mod tests {
         let message = BroadcastMessage::AgentDespawned {
             agent_key: key(1),
             position: at(),
-            snapshot: None,
         };
 
         assert!(matches!(
