@@ -12,12 +12,12 @@ use std::sync::Arc;
 
 use crate::{
     actors::{SharedContext, auth::AuthActor, connection::ConnectionActor},
-    persistence::login::LoginRepository,
+    persistence::login::Login,
 };
 
 /// See `persistence::login`.
-pub struct Context<L: LoginRepository> {
-    pub login_repo: Arc<L>,
+pub struct Context {
+    pub login: Arc<Login>,
     pub shared_ctx: SharedContext,
 }
 
@@ -31,7 +31,7 @@ impl Listener {
         Ok(Self { inner })
     }
 
-    pub async fn listen<L: LoginRepository + 'static>(&self, context: Context<L>) {
+    pub async fn listen(&self, context: Context) {
         loop {
             match self.inner.accept().await {
                 Ok((stream, addr)) => {
@@ -53,9 +53,9 @@ impl Listener {
         }
     }
 
-    async fn accept_connection<L: LoginRepository + 'static>(
+    async fn accept_connection(
         stream: TcpStream,
-        context: &Context<L>,
+        context: &Context,
     ) -> Result<()> {
         let session_id = uuid::Uuid::new_v7(Timestamp::now(NoContext)).to_string();
         let (conn_tx, conn_rx) = oneshot::channel();
@@ -63,7 +63,7 @@ impl Listener {
         let auth = AuthActor::start(
             session_id.clone(),
             conn_rx,
-            context.login_repo.clone(),
+            context.login.clone(),
             context.shared_ctx.clone(),
         );
         let connection = ConnectionActor::start(session_id, stream, auth);

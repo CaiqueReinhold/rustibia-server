@@ -35,22 +35,23 @@ pub struct CharacterRecord {
     pub skills: Vec<SkillRow>,
     /// Keyed by inventory slot index, matching `players.inventory`'s JSONB shape.
     pub inventory: std::collections::HashMap<String, StoredItemRecord>,
+    pub save_version: i64,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Coords {
     pub x: i32,
     pub y: i32,
     pub z: i16,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PoolValue {
     pub current: i32,
     pub maximum: i32,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Outfit {
     pub id: i16,
     pub head: i16,
@@ -59,7 +60,7 @@ pub struct Outfit {
     pub feet: i16,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SkillRow {
     pub skill_type: i16,
     pub value: i16,
@@ -70,12 +71,56 @@ pub struct SkillRow {
 ///
 /// `content` is the one optional field in this crate, because the JSONB it mirrors
 /// omits it for non-containers rather than writing `null`.
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StoredItemRecord {
     pub item_id: u16,
     pub amount: u8,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content: Option<Vec<StoredItemRecord>>,
+}
+
+pub const MAX_SAVE_BATCH: usize = 100;
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CharacterSave {
+    pub id: i32,
+    pub save_version: i64,
+    pub position: Coords,
+    pub origin: Coords,
+    pub facing: i16,
+    pub life: PoolValue,
+    pub mana: PoolValue,
+    pub capacity: i32,
+    pub speed: i32,
+    pub outfit: Outfit,
+    pub skills: Vec<SkillRow>,
+    /// Keyed by inventory slot index, matching `players.inventory`'s JSONB shape.
+    pub inventory: std::collections::HashMap<String, StoredItemRecord>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SaveBatch {
+    pub characters: Vec<CharacterSave>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SaveResults {
+    pub results: Vec<SaveResult>,
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct SaveResult {
+    pub id: i32,
+    pub outcome: SaveOutcome,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SaveOutcome {
+    Applied,
+    /// An equal or newer `save_version` is already stored.
+    Stale,
+    Gone,
 }
 
 #[cfg(test)]
@@ -142,6 +187,7 @@ mod tests {
                     }]),
                 },
             )]),
+            save_version: 0,
         }
     }
 
@@ -241,5 +287,10 @@ mod tests {
         let back: RedeemRequest = serde_json::from_str(&json).unwrap();
 
         assert_eq!(back.auth_token, "abc");
+    }
+
+    #[test]
+    fn an_outcome_is_a_lowercase_string() {
+        assert_eq!(serde_json::to_string(&SaveOutcome::Stale).unwrap(), r#""stale""#);
     }
 }

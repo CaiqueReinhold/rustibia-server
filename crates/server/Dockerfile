@@ -14,6 +14,7 @@ RUN useradd --system --uid 10001 --no-create-home rustibia
 WORKDIR /app
 COPY --from=builder /server ./server
 COPY crates/server/assets/ assets/
+RUN mkdir journal && chown rustibia journal
 USER rustibia
 EXPOSE 5555
 CMD ["./server"]

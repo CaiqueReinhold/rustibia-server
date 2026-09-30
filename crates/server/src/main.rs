@@ -4,7 +4,6 @@ use std::{
 };
 
 use anyhow::{Context as _, Result};
-use sqlx::postgres::PgPoolOptions;
 use tracing::info;
 
 use arc_swap::ArcSwap;
@@ -19,8 +18,8 @@ use rustibia_server::{
     network::{Context, Listener},
     online_registry::OnlineRegistry,
     persistence::{
-        items::ITEM_CONFIGS, login::HttpLoginRepository, map::load_map, online::OnlineRepository,
-        player::PlayerRepository, spawns::load_spawns, spells::SPELLS,
+        items::ITEM_CONFIGS, journal::Journal, login::Login, map::load_map,
+        site_client::SiteClient, spawns::load_spawns, spells::SPELLS,
     },
     telemetry,
 };
@@ -36,11 +35,7 @@ async fn main() -> Result<()> {
     let _ = &GAME_CONFIG.action;
     let _ = &SPELLS.is_empty();
 
-    let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&CONFIG.database_url)
-        .await?;
-    let internal_client = HttpLoginRepository::build_client(
+    let internal_client = SiteClient::build_client(
         CONFIG.internal_tls_cert.as_str(),
         CONFIG.internal_tls_key.as_str(),
         CONFIG.internal_tls_ca.as_str(),
@@ -49,20 +44,22 @@ async fn main() -> Result<()> {
         "building the internal mTLS client — run `cargo run -p rustibia-certgen` to \
          generate certs/, or point INTERNAL_TLS_CERT/_KEY/_CA at existing ones",
     )?;
-    let online_repo = Arc::new(OnlineRepository::new(pool.clone()));
-    online_repo
-        .clear_all()
-        .await
-        .context("clearing stale online_players rows")?;
+    let site = Arc::new(SiteClient::new(&CONFIG.site_internal_url, internal_client));
 
-    // The pool remains only for saving and online tracking. Login no longer touches it.
-    let player_repo = Arc::new(PlayerRepository::new(pool));
-    let login_repo = Arc::new(HttpLoginRepository::new(
-        &CONFIG.site_internal_url,
-        internal_client,
+    let journal = Journal::open(&CONFIG.journal_dir)
+        .with_context(|| format!("opening the save journal at {}", CONFIG.journal_dir))?;
+    let recovered = journal.pending().context("reading the save journal")?;
+    info!("{} undelivered saves in the journal", recovered.len());
+    let persistence = PersistenceActor::start(Arc::clone(&site), journal, recovered);
+    persistence.reset_online();
+    persistence.drain().await;
+    info!("Save journal drained and online list reset");
+
+    let login = Arc::new(Login::new(
+        Arc::clone(&site),
         Arc::clone(&ITEM_CONFIGS),
+        persistence.clone(),
     ));
-    let persistence = PersistenceActor::start(Arc::clone(&player_repo), Arc::clone(&online_repo));
 
     let seed = RandomState::new().build_hasher().finish();
 
@@ -86,7 +83,7 @@ async fn main() -> Result<()> {
     CreatureBehaviorActor::start(world.clone(), shared_map.clone(), tick_rx.clone(), seed);
 
     let context = Context {
-        login_repo,
+        login,
         shared_ctx: SharedContext {
             world,
             shared_map,

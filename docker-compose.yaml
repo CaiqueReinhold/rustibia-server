@@ -55,10 +55,8 @@ services:
     command: [ "cargo", "run", "--release" ]
     working_dir: /app/crates/server
     depends_on:
-      db:
-        condition: service_healthy
+      - site
     environment:
-      DATABASE_URL: postgres://rustibia:rustibia@db/rustibia?sslmode=disable
       # `site` matches a SAN on the site's leaf certificate, so this name must stay in
       # step with `SITE_SANS` in crates/certgen.
       SITE_INTERNAL_URL: https://site:8443

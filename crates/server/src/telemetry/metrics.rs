@@ -59,6 +59,8 @@ pub struct Metrics {
     net_frames: Counter<u64>,
     net_bytes: Counter<u64>,
     login: Counter<u64>,
+    saves_pending: Gauge<u64>,
+    saves_journal_failures: Counter<u64>,
     login_duration: Histogram<f64>,
     records_dropped: Counter<u64>,
 }
@@ -99,6 +101,10 @@ impl Metrics {
                 .with_unit("By")
                 .build(),
             login: meter.u64_counter("rustibia.login").build(),
+            saves_pending: meter.u64_gauge("rustibia.saves.pending").build(),
+            saves_journal_failures: meter
+                .u64_counter("rustibia.saves.journal_failures")
+                .build(),
             login_duration: seconds("rustibia.login.duration", &LOGIN_SECONDS),
             records_dropped: meter
                 .u64_counter("rustibia.telemetry.records.dropped")
@@ -167,6 +173,14 @@ impl Metrics {
         self.login.add(1, &attributes);
         self.login_duration
             .record(duration.as_secs_f64(), &attributes);
+    }
+
+    pub fn record_saves_pending(&self, pending: u64) {
+        self.saves_pending.record(pending, &[]);
+    }
+
+    pub fn record_journal_failure(&self) {
+        self.saves_journal_failures.add(1, &[]);
     }
 
     pub(super) fn record_dropped_batch(&self) {

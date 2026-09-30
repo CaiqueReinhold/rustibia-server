@@ -12,7 +12,7 @@ use crate::{
     config::CONFIG,
     entities::agent::Agent,
     messages::{ClientMessage, ServerMessage},
-    persistence::login::{LoginError, LoginRepository},
+    persistence::login::{Login, LoginError},
 };
 
 #[derive(Clone, Debug)]
@@ -35,18 +35,18 @@ impl AuthActorHandle {
     }
 }
 
-pub struct AuthActor<L: LoginRepository> {
+pub struct AuthActor {
     session_id: String,
     rx: mpsc::Receiver<AuthCommand>,
     world_ctx: SharedContext,
-    login_repo: Arc<L>,
+    login: Arc<Login>,
 }
 
-impl<L: LoginRepository + 'static> AuthActor<L> {
+impl AuthActor {
     pub fn start(
         session_id: String,
         conn_rx: oneshot::Receiver<ConnectionActorHandle>,
-        login_repo: Arc<L>,
+        login: Arc<Login>,
         world_ctx: SharedContext,
     ) -> AuthActorHandle {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
@@ -56,7 +56,7 @@ impl<L: LoginRepository + 'static> AuthActor<L> {
                 session_id,
                 rx,
                 world_ctx,
-                login_repo,
+                login,
             };
             actor.run(conn_rx).await;
         });
@@ -94,7 +94,7 @@ impl<L: LoginRepository + 'static> AuthActor<L> {
         };
 
         let redeem_start = Instant::now();
-        let player = match self.login_repo.redeem(&auth_token).await {
+        let player = match self.login.redeem(&auth_token).await {
             Ok(p) => p,
             Err(e) => {
                 let outcome = match &e {
@@ -159,42 +159,37 @@ mod tests {
     use crate::entities::player::PlayerId;
     use crate::game::{Tick, TickDelta};
     use crate::online_registry::OnlineRegistry;
-    use crate::persistence::player::PlayerSnapshot;
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::persistence::site_client::SiteClient;
+    use crate::persistence::test_fixtures::{a_character_record_json, no_items};
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
     use arc_swap::ArcSwap;
     use std::time::Duration;
     use tokio::sync::mpsc::Receiver;
     use tokio::sync::mpsc::UnboundedReceiver;
 
-    /// A `LoginRepository` that answers from a script. No database, no network — the
-    /// point of the seam is that this actor can be tested without either.
-    struct FakeLogin {
-        answer: Result<Box<PlayerSnapshot>, LoginError>,
+    /// A `Login` against a mocked site whose redemption answers `status` with `body`, and a
+    /// courier with nothing journaled.
+    async fn a_site_answering(status: u16, body: serde_json::Value) -> (Login, MockServer) {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/internal/game-tokens/redeem"))
+            .respond_with(ResponseTemplate::new(status).set_body_json(body))
+            .mount(&server)
+            .await;
+        let login = Login::new(
+            Arc::new(SiteClient::new(&server.uri(), reqwest::Client::new())),
+            no_items(),
+            PersistenceActorHandle::nothing_pending(),
+        );
+        (login, server)
     }
 
-    impl FakeLogin {
-        fn accepting(character_id: u32) -> Self {
-            Self {
-                answer: Ok(Box::new(a_test_snapshot(character_id, 1))),
-            }
-        }
-
-        fn failing(error: LoginError) -> Self {
-            Self { answer: Err(error) }
-        }
+    async fn accepting_character_7() -> (Login, MockServer) {
+        a_site_answering(200, a_character_record_json()).await
     }
 
-    impl LoginRepository for FakeLogin {
-        async fn redeem(&self, _auth_token: &str) -> Result<Box<PlayerSnapshot>, LoginError> {
-            match &self.answer {
-                Ok(snapshot) => Ok(snapshot.clone()),
-                Err(LoginError::Rejected) => Err(LoginError::Rejected),
-                Err(LoginError::Unavailable(d)) => Err(LoginError::Unavailable(d.clone())),
-            }
-        }
-    }
-
-    /// Everything `AuthActor` needs besides the login repository. The receivers come back
+    /// Everything `AuthActor` needs besides the login. The receivers come back
     /// so the caller can keep them alive; a dropped receiver turns every send into a
     /// silent no-op and would make these tests pass regardless of behaviour.
     #[allow(clippy::type_complexity)]
@@ -223,8 +218,8 @@ mod tests {
     }
 
     /// Runs the handshake with `first_message` and returns what the connection was told.
-    async fn authenticate_with<L: LoginRepository + 'static>(
-        login: L,
+    async fn authenticate_with(
+        login: Login,
         ctx: SharedContext,
         first_message: ClientMessage,
     ) -> Vec<ConnectionCommand> {
@@ -260,7 +255,9 @@ mod tests {
     async fn a_successful_login_hands_the_connection_a_session() {
         let (ctx, _world_rx, _persistence_rx) = a_context();
 
-        let commands = authenticate_with(FakeLogin::accepting(7), ctx, a_login()).await;
+        let (login, _site) = accepting_character_7().await;
+
+        let commands = authenticate_with(login, ctx, a_login()).await;
 
         assert!(
             commands
@@ -281,8 +278,9 @@ mod tests {
     async fn a_rejected_login_sends_login_error_and_no_session() {
         let (ctx, _world_rx, _persistence_rx) = a_context();
 
-        let commands =
-            authenticate_with(FakeLogin::failing(LoginError::Rejected), ctx, a_login()).await;
+        let (login, _site) = a_site_answering(404, serde_json::json!({})).await;
+
+        let commands = authenticate_with(login, ctx, a_login()).await;
 
         assert!(
             commands.iter().any(|c| matches!(
@@ -306,12 +304,9 @@ mod tests {
     async fn an_unavailable_login_service_also_refuses_the_login() {
         let (ctx, _world_rx, _persistence_rx) = a_context();
 
-        let commands = authenticate_with(
-            FakeLogin::failing(LoginError::Unavailable("connection refused".into())),
-            ctx,
-            a_login(),
-        )
-        .await;
+        let (login, _site) = a_site_answering(500, serde_json::json!({})).await;
+
+        let commands = authenticate_with(login, ctx, a_login()).await;
 
         assert!(
             commands.iter().any(|c| matches!(
@@ -332,7 +327,9 @@ mod tests {
     async fn a_first_message_that_is_not_login_is_refused() {
         let (ctx, _world_rx, _persistence_rx) = a_context();
 
-        let commands = authenticate_with(FakeLogin::accepting(7), ctx, ClientMessage::Ping).await;
+        let (login, _site) = accepting_character_7().await;
+
+        let commands = authenticate_with(login, ctx, ClientMessage::Ping).await;
 
         assert!(
             commands.iter().any(|c| matches!(
@@ -353,7 +350,9 @@ mod tests {
             .try_register(PlayerId(7))
             .expect("the first registration must succeed");
 
-        let commands = authenticate_with(FakeLogin::accepting(7), ctx.clone(), a_login()).await;
+        let (login, _site) = accepting_character_7().await;
+
+        let commands = authenticate_with(login, ctx.clone(), a_login()).await;
 
         assert!(
             commands.iter().any(|c| matches!(
@@ -383,7 +382,9 @@ mod tests {
             .try_register(PlayerId(7))
             .expect("the slot must start free");
 
-        let commands = authenticate_with(FakeLogin::accepting(7), ctx, a_login()).await;
+        let (login, _site) = accepting_character_7().await;
+
+        let commands = authenticate_with(login, ctx, a_login()).await;
 
         assert!(
             commands.iter().any(|c| matches!(

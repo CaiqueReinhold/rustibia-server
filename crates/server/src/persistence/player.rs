@@ -1,28 +1,18 @@
-//! Writing a player back to the database.
+//! A player's saved state, and the shape it travels to the site in.
 
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
-use sqlx::PgPool;
-use thiserror::Error;
+use rustibia_contract::{CharacterSave, Coords, Outfit, PoolValue, SkillRow, StoredItemRecord};
 
 use crate::entities::vocation::Vocation;
 use crate::entities::{
     agent::{Facing, OutfitColors, OutfitId, Pool},
     inventory::InventorySlot,
-    items::{Item, ItemId},
+    items::Item,
     player::PlayerId,
     position::Position,
     skills::{SkillType, SkillValue},
 };
-
-#[derive(Error, Debug)]
-pub enum PlayerRepositoryError {
-    #[error("Player not found")]
-    NotFound,
-    #[error("Database error: {0}")]
-    DatabaseError(#[from] sqlx::Error),
-}
 
 #[derive(Debug, Clone)]
 pub struct PlayerSnapshot {
@@ -41,240 +31,136 @@ pub struct PlayerSnapshot {
     pub outfit: (OutfitId, OutfitColors),
     pub skills: HashMap<SkillType, SkillValue>,
     pub inventory: HashMap<InventorySlot, Item>,
+    pub save_version: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-struct StoredItem {
-    item_id: ItemId,
-    amount: u8,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    content: Option<Vec<StoredItem>>,
-}
-
-pub struct PlayerRepository {
-    pool: PgPool,
-}
-
-impl PlayerRepository {
-    pub fn new(pool: PgPool) -> Self {
-        Self { pool }
-    }
-
-    pub async fn save(&self, snapshot: &PlayerSnapshot) -> Result<(), PlayerRepositoryError> {
-        let inventory = serialize_inventory(&snapshot.inventory);
-        let facing = snapshot.facing.as_id() as i16;
-        let (outfit_id, colors) = snapshot.outfit;
-
-        let mut tx = self.pool.begin().await?;
-
-        let result = sqlx::query(
-            "UPDATE players SET \
-             pos_x = $2, pos_y = $3, pos_z = $4, \
-             origin_x = $5, origin_y = $6, origin_z = $7, \
-             facing = $8, \
-             life_cur = $9, life_max = $10, mana_cur = $11, mana_max = $12, \
-             capacity = $13, speed = $14, \
-             outfit_id = $15, outfit_head = $16, outfit_body = $17, \
-             outfit_legs = $18, outfit_feet = $19, \
-             inventory = $20 \
-             WHERE id = $1",
-        )
-        .bind(snapshot.id.0 as i32)
-        .bind(snapshot.position.x as i32)
-        .bind(snapshot.position.y as i32)
-        .bind(snapshot.position.z as i16)
-        .bind(snapshot.origin.x as i32)
-        .bind(snapshot.origin.y as i32)
-        .bind(snapshot.origin.z as i16)
-        .bind(facing)
-        .bind(snapshot.life.current as i32)
-        .bind(snapshot.life.maximum as i32)
-        .bind(snapshot.mana.current as i32)
-        .bind(snapshot.mana.maximum as i32)
-        .bind(snapshot.capacity as i32)
-        .bind(snapshot.speed as i32)
-        .bind(outfit_id.0 as i16)
-        .bind(colors.head as i16)
-        .bind(colors.body as i16)
-        .bind(colors.legs as i16)
-        .bind(colors.feet as i16)
-        .bind(sqlx::types::Json(&inventory))
-        .execute(&mut *tx)
-        .await?;
-
-        if result.rows_affected() == 0 {
-            return Err(PlayerRepositoryError::NotFound);
-        }
-
-        sqlx::query("DELETE FROM player_skills WHERE player_id = $1")
-            .bind(snapshot.id.0 as i32)
-            .execute(&mut *tx)
-            .await?;
-
-        for (skill_type, skill_value) in &snapshot.skills {
-            sqlx::query(
-                "INSERT INTO player_skills (player_id, skill_type, value, current_ticks) \
-                 VALUES ($1, $2, $3, $4)",
-            )
-            .bind(snapshot.id.0 as i32)
-            .bind(skill_type.as_id() as i16)
-            .bind(skill_value.value as i16)
-            .bind(skill_value.current_ticks as i64)
-            .execute(&mut *tx)
-            .await?;
-        }
-
-        tx.commit().await?;
-        Ok(())
+pub fn to_character_save(snapshot: &PlayerSnapshot) -> CharacterSave {
+    let (outfit_id, colors) = snapshot.outfit;
+    CharacterSave {
+        id: snapshot.id.0 as i32,
+        save_version: snapshot.save_version,
+        position: coords(&snapshot.position),
+        origin: coords(&snapshot.origin),
+        facing: snapshot.facing.as_id() as i16,
+        life: PoolValue {
+            current: snapshot.life.current as i32,
+            maximum: snapshot.life.maximum as i32,
+        },
+        mana: PoolValue {
+            current: snapshot.mana.current as i32,
+            maximum: snapshot.mana.maximum as i32,
+        },
+        capacity: snapshot.capacity as i32,
+        speed: snapshot.speed as i32,
+        outfit: Outfit {
+            id: outfit_id.0 as i16,
+            head: colors.head as i16,
+            body: colors.body as i16,
+            legs: colors.legs as i16,
+            feet: colors.feet as i16,
+        },
+        skills: snapshot
+            .skills
+            .iter()
+            .map(|(skill_type, skill)| SkillRow {
+                skill_type: skill_type.as_id() as i16,
+                value: skill.value as i16,
+                current_ticks: skill.current_ticks as i64,
+            })
+            .collect(),
+        inventory: snapshot
+            .inventory
+            .iter()
+            .map(|(slot, item)| (slot.as_id().to_string(), stored_item(item)))
+            .collect(),
     }
 }
 
-fn serialize_inventory(inventory: &HashMap<InventorySlot, Item>) -> HashMap<String, StoredItem> {
-    inventory
-        .iter()
-        .map(|(slot, item)| (slot.as_id().to_string(), serialize_item(item)))
-        .collect()
+fn coords(position: &Position) -> Coords {
+    Coords {
+        x: position.x as i32,
+        y: position.y as i32,
+        z: position.z as i16,
+    }
 }
 
-fn serialize_item(item: &Item) -> StoredItem {
-    StoredItem {
-        item_id: item.id(),
+fn stored_item(item: &Item) -> StoredItemRecord {
+    StoredItemRecord {
+        item_id: item.id().0,
         amount: item.amount,
         content: item
             .content
             .as_ref()
-            .map(|children| children.iter().map(serialize_item).collect()),
+            .map(|children| children.iter().map(stored_item).collect()),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::items::Item;
-    use crate::persistence::test_fixtures::{a_test_snapshot, insert_account, insert_character};
 
     #[test]
-    fn stored_item_omits_content_when_none() {
-        let item = StoredItem {
-            item_id: ItemId(2360),
-            amount: 5,
-            content: None,
-        };
-        let json = serde_json::to_string(&item).unwrap();
-        assert!(
-            !json.contains("content"),
-            "content field should be absent: {json}"
-        );
-    }
-
-    #[test]
-    fn stored_item_roundtrips_with_nested_content() {
-        let item = StoredItem {
-            item_id: ItemId(2148),
-            amount: 1,
-            content: Some(vec![StoredItem {
-                item_id: ItemId(2360),
-                amount: 10,
-                content: None,
-            }]),
-        };
-        let json = serde_json::to_string(&item).unwrap();
-        let back: StoredItem = serde_json::from_str(&json).unwrap();
-        assert_eq!(back.item_id, ItemId(2148));
-        assert_eq!(back.amount, 1);
-        let children = back.content.unwrap();
-        assert_eq!(children.len(), 1);
-        assert_eq!(children[0].item_id, ItemId(2360));
-        assert_eq!(children[0].amount, 10);
-    }
-
-    /// The site reads this column back through `rustibia_contract::StoredItemRecord`, so
-    /// what `save` writes has to satisfy that type. Asserting it here is the compile-time
-    /// half of the agreement the contract crate exists to enforce.
-    #[test]
-    fn what_save_writes_deserializes_as_the_contract_type() {
-        let json = serde_json::to_string(&StoredItem {
-            item_id: ItemId(2148),
-            amount: 1,
-            content: Some(vec![StoredItem {
-                item_id: ItemId(2360),
-                amount: 10,
-                content: None,
-            }]),
-        })
-        .unwrap();
-
-        let record: rustibia_contract::StoredItemRecord = serde_json::from_str(&json)
-            .expect("the site must be able to read what this module writes");
-
-        assert_eq!(record.item_id, 2148);
-        assert_eq!(record.content.unwrap()[0].item_id, 2360);
-    }
-
-    #[test]
-    fn serialize_inventory_uses_slot_id_as_key() {
-        use crate::entities::items::ItemConfig;
-        use std::collections::HashSet;
+    fn what_a_save_carries_login_reads_back() {
+        use std::collections::{HashMap, HashSet};
         use std::sync::Arc;
 
-        let config = Arc::new(ItemConfig::new(
-            ItemId(2360),
-            "sword".to_string(),
-            None,
-            None,
-            HashSet::new(),
-            Vec::new(),
-        ));
-        let item = Item::new(config, 1);
-        let mut inv: HashMap<InventorySlot, Item> = HashMap::new();
-        inv.insert(InventorySlot::RightHand, item);
+        use rustibia_contract::CharacterRecord;
 
-        let stored = serialize_inventory(&inv);
-        // RightHand::as_id() == 5
-        assert!(
-            stored.contains_key("5"),
-            "expected key '5', got: {stored:?}"
-        );
-        assert_eq!(stored["5"].item_id, ItemId(2360));
-        assert_eq!(stored["5"].amount, 1);
-    }
+        use crate::entities::inventory::InventorySlot;
+        use crate::entities::items::{ItemAttribute, ItemConfig, ItemFlag, ItemId};
+        use crate::entities::skills::SkillType;
+        use crate::persistence::login::snapshot_from_record;
+        use crate::persistence::test_fixtures::a_test_snapshot;
 
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn save_returns_not_found_when_the_character_does_not_exist(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let repo = PlayerRepository::new(pool);
+        let config = |id: u16, flags: HashSet<ItemFlag>, attributes: Vec<ItemAttribute>| {
+            Arc::new(ItemConfig::new(ItemId(id), format!("item {id}"), None, None, flags, attributes))
+        };
+        let bag = config(1987, HashSet::from([ItemFlag::Container]), vec![ItemAttribute::Capacity(8)]);
+        let coin = config(3031, HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]), Vec::new());
+        let mut backpack = Item::new(Arc::clone(&bag), 1);
+        backpack.content = Some(Box::new(vec![Item::new(Arc::clone(&coin), 12)]));
+        let mut snapshot = a_test_snapshot(7, 3);
+        snapshot.save_version = 4;
+        snapshot.life.current = 37;
+        snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
 
-        let result = repo.save(&a_test_snapshot(999_999, account_id)).await;
+        let save = to_character_save(&snapshot);
+        let record = CharacterRecord {
+            id: save.id,
+            account_id: 3,
+            admin: false,
+            name: snapshot.name.clone(),
+            vocation: 0,
+            position: save.position,
+            origin: save.origin,
+            facing: save.facing,
+            life: save.life,
+            mana: save.mana,
+            capacity: save.capacity,
+            speed: save.speed,
+            outfit: save.outfit,
+            skills: save.skills,
+            inventory: save.inventory,
+            save_version: save.save_version,
+        };
+        let configs = HashMap::from([(ItemId(1987), bag), (ItemId(3031), coin)]);
+        let restored = snapshot_from_record(record, &configs).unwrap();
 
-        assert!(
-            matches!(result, Err(PlayerRepositoryError::NotFound)),
-            "saving an absent character must not silently succeed, got {result:?}"
-        );
-    }
-
-    /// Skills are deleted and reinserted on every save, so a save that drops one has to
-    /// leave the table consistent rather than half-written.
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn save_replaces_the_skill_rows_rather_than_accumulating_them(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        let repo = PlayerRepository::new(pool.clone());
-
-        let snapshot = a_test_snapshot(character_id as u32, account_id);
-        repo.save(&snapshot).await.unwrap();
-        repo.save(&snapshot).await.unwrap();
-
-        let count: i64 =
-            sqlx::query_scalar("SELECT count(*) FROM player_skills WHERE player_id = $1")
-                .bind(character_id)
-                .fetch_one(&pool)
-                .await
-                .unwrap();
-
+        assert_eq!(restored.id, snapshot.id);
+        assert_eq!(restored.save_version, 4);
+        assert_eq!(restored.position, snapshot.position);
+        assert_eq!(restored.origin, snapshot.origin);
+        assert_eq!(restored.facing, snapshot.facing);
+        assert_eq!(restored.life, snapshot.life);
+        assert_eq!(restored.mana, snapshot.mana);
+        assert_eq!((restored.capacity, restored.speed), (snapshot.capacity, snapshot.speed));
         assert_eq!(
-            count,
-            snapshot.skills.len() as i64,
-            "two saves of the same skills must leave one row each, not two"
+            restored.skills[&SkillType::Level].current_ticks,
+            snapshot.skills[&SkillType::Level].current_ticks
         );
+        let restored_bag = &restored.inventory[&InventorySlot::Backpack];
+        assert_eq!(restored_bag.id(), ItemId(1987));
+        let content = restored_bag.content.as_ref().unwrap();
+        assert_eq!((content[0].id(), content[0].amount), (ItemId(3031), 12));
     }
 }

@@ -57,7 +57,6 @@ services:
         condition: service_healthy
     environment:
       NO_COLOR: "1"
-      DATABASE_URL: *database_url
       SITE_INTERNAL_URL: https://site:8443
       INTERNAL_TLS_CERT: /certs/server.crt
       INTERNAL_TLS_KEY: /certs/server.key
@@ -67,6 +66,7 @@ services:
 {% endif %}
     volumes:
       - {{ app_dir }}/certs/server:/certs:ro
+      - server_journal:/app/journal
     ports:
       - "{{ game_port }}:5555"
     logging: *logging
@@ -102,6 +102,7 @@ services:
 
 volumes:
   db_data:
+  server_journal:
 {% if telemetry_enabled %}
   lgtm_data:
 {% endif %}

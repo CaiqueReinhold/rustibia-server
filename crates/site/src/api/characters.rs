@@ -53,7 +53,7 @@ pub async fn post_character_token(
         return Err(AppError::NotFound);
     }
 
-    let token = generate_token();
+    let token = format!("{character_id}.{}", generate_token());
     let valid_until =
         OffsetDateTime::now_utc() + Duration::seconds(state.config.auth_token_ttl_seconds);
 
@@ -230,7 +230,9 @@ mod tests {
 
         assert_eq!(status, StatusCode::OK);
         let auth_token = body["auth_token"].as_str().unwrap();
-        assert_eq!(auth_token.len(), 64);
+        let (id, random) = auth_token.split_once('.').unwrap();
+        assert_eq!(id, character_id.to_string());
+        assert_eq!(random.len(), 64);
 
         // The lookup `db::login::redeem` performs: by digest, and returning the
         // character rather than the account.
@@ -484,5 +486,21 @@ mod tests {
     async fn no_session_is_401(pool: PgPool) {
         let (status, _) = send(test_app(pool), post_token_req(1, None)).await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_token_whose_character_id_was_edited_does_not_redeem(pool: PgPool) {
+        let (account_id, session) = account_with_session(&pool, "player@example.com").await;
+        let character_id = a_character(&pool, account_id, "Rizael").await;
+        let (_, body) = send(
+            test_app(pool.clone()),
+            post_token_req(character_id, Some(&session)),
+        )
+        .await;
+        let (_, random) = body["auth_token"].as_str().unwrap().split_once('.').unwrap();
+
+        let edited = format!("{}.{random}", character_id + 1);
+
+        assert!(crate::db::login::redeem(&pool, &edited).await.unwrap().is_none());
     }
 }

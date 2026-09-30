@@ -33,6 +33,7 @@ pub struct Player {
     capacity: u32,
     inventory: Arc<Inventory>,
     skills: HashMap<SkillType, SkillValue>,
+    save_version: i64,
 }
 
 impl Player {
@@ -47,6 +48,7 @@ impl Player {
         capacity: u32,
         inventory: Inventory,
         skills: HashMap<SkillType, SkillValue>,
+        save_version: i64,
     ) -> Self {
         Self {
             id,
@@ -58,7 +60,17 @@ impl Player {
             capacity,
             inventory: Arc::new(inventory),
             skills,
+            save_version,
         }
+    }
+
+    pub fn save_version(&self) -> i64 {
+        self.save_version
+    }
+
+    pub fn next_save_version(&mut self) -> i64 {
+        self.save_version += 1;
+        self.save_version
     }
 
     pub fn id(&self) -> PlayerId {

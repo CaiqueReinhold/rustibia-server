@@ -1,9 +1,17 @@
 //! The API the game server calls, and nobody else.
 
-use axum::{Json, extract::State};
-use rustibia_contract::{CharacterRecord, RedeemRequest};
+use axum::{
+    Json,
+    extract::{Path, State},
+    http::StatusCode,
+};
+use rustibia_contract::{CharacterRecord, MAX_SAVE_BATCH, RedeemRequest, SaveBatch, SaveResults};
 
-use crate::{db::login, error::AppError, state::AppState};
+use crate::{
+    db::{login, online, saves},
+    error::AppError,
+    state::AppState,
+};
 
 /// Spends an auth token and returns the character the game server should load.
 pub async fn post_redeem(
@@ -16,8 +24,48 @@ pub async fn post_redeem(
     }
 }
 
+pub async fn post_saves(
+    State(state): State<AppState>,
+    Json(batch): Json<SaveBatch>,
+) -> Result<Json<SaveResults>, AppError> {
+    if batch.characters.len() > MAX_SAVE_BATCH {
+        return Err(AppError::Validation(format!(
+            "a save batch holds at most {MAX_SAVE_BATCH} characters"
+        )));
+    }
+    Ok(Json(saves::apply(&state.pool, &batch.characters).await?))
+}
+
+pub async fn post_online(
+    State(state): State<AppState>,
+    Path(character_id): Path<i32>,
+) -> Result<StatusCode, AppError> {
+    online::mark_online(&state.pool, character_id).await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+pub async fn delete_online(
+    State(state): State<AppState>,
+    Path(character_id): Path<i32>,
+) -> Result<StatusCode, AppError> {
+    online::mark_offline(&state.pool, character_id).await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+pub async fn post_online_reset(State(state): State<AppState>) -> Result<StatusCode, AppError> {
+    online::reset(&state.pool).await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
 pub fn router() -> axum::Router<AppState> {
-    axum::Router::new().route("/game-tokens/redeem", axum::routing::post(post_redeem))
+    axum::Router::new()
+        .route("/game-tokens/redeem", axum::routing::post(post_redeem))
+        .route("/saves", axum::routing::post(post_saves))
+        .route("/online/reset", axum::routing::post(post_online_reset))
+        .route(
+            "/online/{id}",
+            axum::routing::post(post_online).delete(delete_online),
+        )
 }
 
 #[cfg(test)]
@@ -191,5 +239,111 @@ mod tests {
             StatusCode::UNPROCESSABLE_ENTITY,
             "a request missing auth_token must not be treated as the empty token"
         );
+    }
+
+    fn saves_req(batch: &rustibia_contract::SaveBatch) -> Request<Body> {
+        Request::builder()
+            .method("POST")
+            .uri("/internal/saves")
+            .header(header::CONTENT_TYPE, "application/json")
+            .body(Body::from(serde_json::to_vec(batch).unwrap()))
+            .unwrap()
+    }
+
+    fn a_save_for(id: i32) -> rustibia_contract::CharacterSave {
+        use rustibia_contract::{Coords, Outfit, PoolValue};
+        rustibia_contract::CharacterSave {
+            id,
+            save_version: 1,
+            position: Coords { x: 1030, y: 1031, z: 7 },
+            origin: Coords { x: 1028, y: 1028, z: 7 },
+            facing: 1,
+            life: PoolValue { current: 37, maximum: 150 },
+            mana: PoolValue { current: 5, maximum: 20 },
+            capacity: 390,
+            speed: 220,
+            outfit: Outfit { id: 128, head: 1, body: 2, legs: 3, feet: 4 },
+            skills: Vec::new(),
+            inventory: std::collections::HashMap::new(),
+        }
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_save_batch_answers_with_the_contract_type(pool: PgPool) {
+        let account_id = an_account(&pool, "player@example.com").await;
+        let character_id = a_character(&pool, account_id, "Rizael").await;
+        let batch = rustibia_contract::SaveBatch { characters: vec![a_save_for(character_id)] };
+
+        let (status, body) = send(test_app(pool), saves_req(&batch)).await;
+
+        assert_eq!(status, StatusCode::OK);
+        let results: rustibia_contract::SaveResults = serde_json::from_value(body).unwrap();
+        assert_eq!(
+            results.results,
+            vec![rustibia_contract::SaveResult {
+                id: character_id,
+                outcome: rustibia_contract::SaveOutcome::Applied,
+            }]
+        );
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn an_oversized_batch_is_refused(pool: PgPool) {
+        let characters = (0..=rustibia_contract::MAX_SAVE_BATCH as i32).map(a_save_for).collect();
+
+        let (status, _) = send(
+            test_app(pool),
+            saves_req(&rustibia_contract::SaveBatch { characters }),
+        )
+        .await;
+
+        assert_eq!(status, StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    fn bare(method: &str, uri: &str) -> Request<Body> {
+        Request::builder().method(method).uri(uri).body(Body::empty()).unwrap()
+    }
+
+    async fn online_ids(pool: &PgPool) -> Vec<i32> {
+        sqlx::query_scalar("SELECT character_id FROM online_players ORDER BY character_id")
+            .fetch_all(pool)
+            .await
+            .unwrap()
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn marking_online_twice_then_offline_leaves_nobody(pool: PgPool) {
+        let account_id = an_account(&pool, "player@example.com").await;
+        let id = a_character(&pool, account_id, "Rizael").await;
+        let online = format!("/internal/online/{id}");
+
+        let (first, _) = send(test_app(pool.clone()), bare("POST", &online)).await;
+        let (second, _) = send(test_app(pool.clone()), bare("POST", &online)).await;
+        assert_eq!((first, second), (StatusCode::NO_CONTENT, StatusCode::NO_CONTENT));
+        assert_eq!(online_ids(&pool).await, vec![id]);
+
+        let (offline, _) = send(test_app(pool.clone()), bare("DELETE", &online)).await;
+        assert_eq!(offline, StatusCode::NO_CONTENT);
+        assert!(online_ids(&pool).await.is_empty());
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn marking_an_unknown_character_online_is_harmless(pool: PgPool) {
+        let (status, _) = send(test_app(pool.clone()), bare("POST", "/internal/online/999999")).await;
+
+        assert_eq!(status, StatusCode::NO_CONTENT);
+        assert!(online_ids(&pool).await.is_empty());
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_reset_empties_the_online_list(pool: PgPool) {
+        let account_id = an_account(&pool, "player@example.com").await;
+        let id = a_character(&pool, account_id, "Rizael").await;
+        send(test_app(pool.clone()), bare("POST", &format!("/internal/online/{id}"))).await;
+
+        let (status, _) = send(test_app(pool.clone()), bare("POST", "/internal/online/reset")).await;
+
+        assert_eq!(status, StatusCode::NO_CONTENT);
+        assert!(online_ids(&pool).await.is_empty());
     }
 }

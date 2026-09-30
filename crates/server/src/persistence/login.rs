@@ -4,8 +4,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 
-use rustibia_contract::{CharacterRecord, RedeemRequest, StoredItemRecord};
-use sqlx::PgPool;
+use rustibia_contract::{CharacterRecord, StoredItemRecord};
 use thiserror::Error;
 use tracing::warn;
 
@@ -19,7 +18,11 @@ use crate::entities::{
     position::Position,
     skills::{SkillType, SkillValue},
 };
+use crate::actors::persistence::PersistenceActorHandle;
 use crate::persistence::player::PlayerSnapshot;
+use crate::persistence::site_client::{SiteClient, SiteError};
+
+const DELIVERY_BEFORE_LOGIN: Duration = Duration::from_secs(5);
 
 #[derive(Debug, Error)]
 pub enum LoginError {
@@ -31,16 +34,6 @@ pub enum LoginError {
     /// the player does will help.
     #[error("login service unavailable: {0}")]
     Unavailable(String),
-}
-
-pub trait LoginRepository: Send + Sync {
-    /// Spends `auth_token` and returns the character it names.
-    /// Returns `Rejected` for every refusal without distinguishing them — the caller has
-    /// no use for the difference and the site deliberately does not report it.
-    fn redeem(
-        &self,
-        auth_token: &str,
-    ) -> impl Future<Output = Result<Box<PlayerSnapshot>, LoginError>> + Send;
 }
 
 pub fn snapshot_from_record(
@@ -119,6 +112,7 @@ pub fn snapshot_from_record(
         ),
         skills,
         inventory,
+        save_version: record.save_version,
     }))
 }
 
@@ -145,33 +139,6 @@ fn colour(value: i16, what: &str) -> Result<u8, LoginError> {
 
 fn malformed(detail: impl std::fmt::Display) -> LoginError {
     LoginError::Unavailable(format!("unusable character record: {detail}"))
-}
-
-/// The value stored in `game_tokens.token_hash`: SHA-256 of the token, hex-encoded.
-///
-/// Used only by `SqlLoginRepository`, which is the only part of this process that still
-/// looks a token up in the database — the HTTP path sends the token to the site and the
-/// site hashes it there.
-///
-/// This **must** match `hash_token` in `crates/site/src/auth/token.rs`. Duplicated rather
-/// than shared because the only crate both processes link is `rustibia-contract`, whose
-/// entire dependency list is `serde` and which holds no logic; adding a hash function
-/// there would give both processes a transitive `sha2` for the sake of six lines. The
-/// duplication is pinned instead: both sides assert the same known digest below, so a
-/// change on either side fails that side's tests rather than silently rejecting logins.
-fn hash_token(token: &str) -> String {
-    use sha2::{Digest, Sha256};
-    Sha256::digest(token.as_bytes())
-        .iter()
-        .map(|b| format!("{b:02x}"))
-        .collect()
-}
-
-/// So `test_fixtures` can mint a token the way the site does. Deliberately not `pub`
-/// beyond tests: nothing outside this module should be hashing tokens.
-#[cfg(test)]
-pub fn hash_token_for_tests(token: &str) -> String {
-    hash_token(token)
 }
 
 /// Rebuilds an `Item` tree, dropping anything whose id this build has no configuration
@@ -204,269 +171,73 @@ fn restore_item(
     Some(item)
 }
 
-/// Login straight against the database, bypassing the site.
-///
-/// Retained as the rollback path if the REST hop has to be backed out, and as the way
-/// tests exercise a real login without standing up an HTTP server. It duplicates the
-/// site's transaction on purpose: the two implementations of this trait have to make the
-/// same promises about the token, or the seam is not a seam.
-///
-/// Unused by `main` on purpose — that is what "rollback path" means. Deleting it would
-/// leave `LoginRepository` with one implementation and no evidence that the trait
-/// abstracts anything.
-pub struct SqlLoginRepository {
-    pool: PgPool,
+/// Login by calling the site over mutual TLS.
+pub struct Login {
+    site: Arc<SiteClient>,
     items: Arc<HashMap<ItemId, Arc<ItemConfig>>>,
+    persistence: PersistenceActorHandle,
 }
 
-#[allow(dead_code)]
-impl SqlLoginRepository {
-    pub fn new(pool: PgPool, items: Arc<HashMap<ItemId, Arc<ItemConfig>>>) -> Self {
-        Self { pool, items }
+impl Login {
+    pub fn new(
+        site: Arc<SiteClient>,
+        items: Arc<HashMap<ItemId, Arc<ItemConfig>>>,
+        persistence: PersistenceActorHandle,
+    ) -> Self {
+        Self {
+            site,
+            items,
+            persistence,
+        }
     }
 
-    async fn redeem_inner(&self, auth_token: &str) -> Result<Box<PlayerSnapshot>, LoginError> {
-        use sqlx::Row;
-
-        let mut tx = self
-            .pool
-            .begin()
+    /// Spends `auth_token` and returns the character it names, refusing with `Unavailable`
+    /// while that character has a save the site has not acknowledged.
+    /// Returns `Rejected` for every refusal without distinguishing them — the caller has
+    /// no use for the difference and the site deliberately does not report it.
+    pub async fn redeem(&self, auth_token: &str) -> Result<Box<PlayerSnapshot>, LoginError> {
+        if let Some(character_id) = character_id_of(auth_token) {
+            let delivered = tokio::time::timeout(
+                DELIVERY_BEFORE_LOGIN,
+                self.persistence.deliver_for(character_id),
+            )
             .await
-            .map_err(|e| LoginError::Unavailable(e.to_string()))?;
+            .unwrap_or(false);
+            if !delivered {
+                return Err(LoginError::Unavailable(format!(
+                    "the pending save for character {character_id} could not be delivered"
+                )));
+            }
+        }
 
-        let character_id: Option<i32> = sqlx::query_scalar(
-            "DELETE FROM game_tokens WHERE token_hash = $1 AND valid_until > NOW() \
-             RETURNING character_id",
-        )
-        .bind(hash_token(auth_token))
-        .fetch_optional(&mut *tx)
-        .await
-        .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
-        let Some(character_id) = character_id else {
-            return Err(LoginError::Rejected);
+        let snapshot = match self.site.redeem(auth_token).await {
+            Ok(record) => snapshot_from_record(record, &self.items)?,
+            Err(SiteError::NotFound) => return Err(LoginError::Rejected),
+            Err(SiteError::Unavailable(detail)) => return Err(LoginError::Unavailable(detail)),
         };
 
-        let row = sqlx::query(
-            "SELECT id, account_id, name, vocation, pos_x, pos_y, pos_z, origin_x, origin_y, origin_z, \
-             facing, life_cur, life_max, mana_cur, mana_max, capacity, speed, \
-             outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory \
-             FROM players WHERE id = $1 AND deleted_at IS NULL",
-        )
-        .bind(character_id)
-        .fetch_optional(&mut *tx)
-        .await
-        .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
-        // Dropping `tx` without committing rolls back, so the token survives a failed
-        // load exactly as it does on the site's path.
-        let Some(row) = row else {
-            return Err(LoginError::Rejected);
-        };
-
-        let skill_rows = sqlx::query(
-            "SELECT skill_type, value, current_ticks FROM player_skills \
-             WHERE player_id = $1",
-        )
-        .bind(character_id)
-        .fetch_all(&mut *tx)
-        .await
-        .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
-        let record = (|| -> Result<CharacterRecord, sqlx::Error> {
-            let inventory: sqlx::types::Json<HashMap<String, StoredItemRecord>> =
-                row.try_get("inventory")?;
-
-            Ok(CharacterRecord {
-                vocation: row.try_get("vocation")?,
-                id: row.try_get("id")?,
-                account_id: row.try_get("account_id")?,
-                admin: false,
-                name: row.try_get("name")?,
-                position: rustibia_contract::Coords {
-                    x: row.try_get("pos_x")?,
-                    y: row.try_get("pos_y")?,
-                    z: row.try_get("pos_z")?,
-                },
-                origin: rustibia_contract::Coords {
-                    x: row.try_get("origin_x")?,
-                    y: row.try_get("origin_y")?,
-                    z: row.try_get("origin_z")?,
-                },
-                facing: row.try_get("facing")?,
-                life: rustibia_contract::PoolValue {
-                    current: row.try_get("life_cur")?,
-                    maximum: row.try_get("life_max")?,
-                },
-                mana: rustibia_contract::PoolValue {
-                    current: row.try_get("mana_cur")?,
-                    maximum: row.try_get("mana_max")?,
-                },
-                capacity: row.try_get("capacity")?,
-                speed: row.try_get("speed")?,
-                outfit: rustibia_contract::Outfit {
-                    id: row.try_get("outfit_id")?,
-                    head: row.try_get("outfit_head")?,
-                    body: row.try_get("outfit_body")?,
-                    legs: row.try_get("outfit_legs")?,
-                    feet: row.try_get("outfit_feet")?,
-                },
-                skills: skill_rows
-                    .iter()
-                    .map(|r| {
-                        Ok(rustibia_contract::SkillRow {
-                            skill_type: r.try_get("skill_type")?,
-                            value: r.try_get("value")?,
-                            current_ticks: r.try_get("current_ticks")?,
-                        })
-                    })
-                    .collect::<Result<Vec<_>, sqlx::Error>>()?,
-                inventory: inventory.0,
-            })
-        })()
-        .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
-        let snapshot = snapshot_from_record(record, &self.items)?;
-
-        tx.commit()
-            .await
-            .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
+        if let Some(journaled) = self.persistence.pending_version(snapshot.id).await
+            && journaled > snapshot.save_version
+        {
+            return Err(LoginError::Unavailable(format!(
+                "character {} has save {journaled} journaled but the site returned {}",
+                snapshot.id, snapshot.save_version
+            )));
+        }
         Ok(snapshot)
     }
 }
 
-impl LoginRepository for SqlLoginRepository {
-    fn redeem(
-        &self,
-        auth_token: &str,
-    ) -> impl Future<Output = Result<Box<PlayerSnapshot>, LoginError>> + Send {
-        self.redeem_inner(auth_token)
-    }
-}
-
-/// How long to wait on the site before treating login as unavailable.
-///
-/// Short on purpose: the player is sitting on a connecting screen, and a login that is
-/// going to fail should fail while they are still watching rather than after they have
-/// given up and retried.
-const REQUEST_TIMEOUT: Duration = Duration::from_secs(5);
-
-/// Login by calling the site over mutual TLS.
-pub struct HttpLoginRepository {
-    client: reqwest::Client,
-    redeem_url: String,
-    items: Arc<HashMap<ItemId, Arc<ItemConfig>>>,
-}
-
-impl HttpLoginRepository {
-    /// `base_url` is the site's internal origin, e.g. `https://localhost:8443`.
-    pub fn new(
-        base_url: &str,
-        client: reqwest::Client,
-        items: Arc<HashMap<ItemId, Arc<ItemConfig>>>,
-    ) -> Self {
-        Self {
-            client,
-            redeem_url: format!(
-                "{}/internal/game-tokens/redeem",
-                base_url.trim_end_matches('/')
-            ),
-            items,
-        }
-    }
-
-    /// Builds the mutual-TLS client, or fails.
-    ///
-    /// `add_root_certificate` with our CA and nothing else is deliberate — this client
-    /// talks to exactly one host, and trusting the public root store would mean any CA on
-    /// earth could impersonate the site. The identity is the other half: without it the
-    /// site's verifier closes the connection.
-    pub fn build_client(cert: &str, key: &str, ca: &str) -> Result<reqwest::Client, ClientError> {
-        let mut identity = read(cert)?;
-        identity.extend_from_slice(b"\n");
-        identity.extend_from_slice(&read(key)?);
-
-        let identity = reqwest::Identity::from_pem(&identity)
-            .map_err(|e| ClientError::Identity(format!("{cert} + {key}"), e))?;
-        let ca_cert = reqwest::Certificate::from_pem(&read(ca)?)
-            .map_err(|e| ClientError::Certificate(ca.to_string(), e))?;
-
-        reqwest::Client::builder()
-            .use_rustls_tls()
-            .tls_built_in_root_certs(false)
-            .add_root_certificate(ca_cert)
-            .identity(identity)
-            .timeout(REQUEST_TIMEOUT)
-            .build()
-            .map_err(ClientError::Build)
-    }
-
-    async fn redeem_inner(&self, auth_token: &str) -> Result<Box<PlayerSnapshot>, LoginError> {
-        let request = RedeemRequest {
-            auth_token: auth_token.to_string(),
-        };
-
-        let response = self
-            .client
-            .post(&self.redeem_url)
-            .json(&request)
-            .send()
-            .await
-            .map_err(|e| LoginError::Unavailable(e.to_string()))?;
-
-        match response.status() {
-            reqwest::StatusCode::OK => {
-                let record: CharacterRecord = response.json().await.map_err(|e| {
-                    // A 200 whose body will not parse means the two sides disagree about
-                    // the contract, which is a deployment mismatch and not the player's
-                    // problem — hence Unavailable rather than Rejected.
-                    LoginError::Unavailable(format!("unparseable character record: {e}"))
-                })?;
-                snapshot_from_record(record, &self.items)
-            }
-            reqwest::StatusCode::NOT_FOUND => Err(LoginError::Rejected),
-            status => Err(LoginError::Unavailable(format!(
-                "the site answered {status}"
-            ))),
-        }
-    }
-}
-
-impl LoginRepository for HttpLoginRepository {
-    fn redeem(
-        &self,
-        auth_token: &str,
-    ) -> impl Future<Output = Result<Box<PlayerSnapshot>, LoginError>> + Send {
-        self.redeem_inner(auth_token)
-    }
-}
-
-#[derive(Debug, Error)]
-pub enum ClientError {
-    #[error("cannot read {0}: {1}")]
-    Read(String, std::io::Error),
-    #[error("{0} is not a usable client identity: {1}")]
-    Identity(String, reqwest::Error),
-    #[error("{0} is not a usable certificate authority: {1}")]
-    Certificate(String, reqwest::Error),
-    #[error("building the internal HTTP client failed: {0}")]
-    Build(reqwest::Error),
-}
-
-fn read(path: &str) -> Result<Vec<u8>, ClientError> {
-    std::fs::read(path).map_err(|e| ClientError::Read(path.to_string(), e))
+pub fn character_id_of(auth_token: &str) -> Option<PlayerId> {
+    let (id, _) = auth_token.split_once('.')?;
+    id.parse().ok().map(PlayerId)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::entities::agent::Facing;
-    use crate::persistence::player::PlayerRepository;
-    use crate::persistence::test_fixtures::{
-        a_test_snapshot, insert_account, insert_character, insert_token, insert_token_valid_for,
-        no_items, token_count,
-    };
+    use crate::persistence::test_fixtures::no_items;
     use rustibia_contract::{Coords, Outfit, PoolValue, SkillRow};
 
     fn a_record() -> CharacterRecord {
@@ -510,19 +281,18 @@ mod tests {
                 current_ticks: 0,
             }],
             inventory: HashMap::new(),
+            save_version: 0,
         }
     }
 
-    /// The same constant `crates/site/src/auth/token.rs` asserts. These two tests are the
-    /// only thing tying the two hash implementations together — nothing here fails to
-    /// compile if they diverge, it just stops accepting every token.
     #[test]
-    fn hash_token_matches_the_sites_digest() {
-        assert_eq!(
-            hash_token("abc"),
-            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-            "this must equal site::auth::token::hash_token for the same input"
-        );
+    fn a_record_s_save_version_reaches_the_snapshot() {
+        let mut record = a_record();
+        record.save_version = 11;
+
+        let snapshot = snapshot_from_record(record, &HashMap::new()).unwrap();
+
+        assert_eq!(snapshot.save_version, 11);
     }
 
     #[test]
@@ -653,215 +423,32 @@ mod tests {
                 .is_empty()
         );
     }
-
-    // ---- SqlLoginRepository -------------------------------------------------------
-
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_loads_the_character(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        let token = insert_token(&pool, character_id).await;
-
-        let repo = SqlLoginRepository::new(pool, no_items());
-        let snapshot = repo.redeem(&token).await.unwrap();
-
-        assert_eq!(snapshot.id, PlayerId(character_id as u32));
-        assert_eq!(snapshot.account_id, account_id);
-        assert_eq!(
-            snapshot.position,
-            Position {
-                x: 1028,
-                y: 1028,
-                z: 7
-            }
-        );
-        assert_eq!(snapshot.facing, Facing::South);
-        assert_eq!(snapshot.life.maximum, 150);
-    }
-
-    /// The seam's half of "the token decides". The site proves this against its own
-    /// query; the rollback path has to make the same promise or it is not a rollback
-    /// path.
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_loads_the_token_s_character_and_no_other(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let first_id = insert_character(&pool, account_id).await;
-        let second_id = insert_character(&pool, account_id).await;
-        let second_token = insert_token(&pool, second_id).await;
-        insert_token(&pool, first_id).await;
-
-        let repo = SqlLoginRepository::new(pool, no_items());
-        let snapshot = repo.redeem(&second_token).await.unwrap();
-
-        assert_eq!(snapshot.id, PlayerId(second_id as u32));
-        assert_ne!(snapshot.id, PlayerId(first_id as u32));
-    }
-
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_spends_the_token(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        let token = insert_token(&pool, character_id).await;
-
-        let repo = SqlLoginRepository::new(pool.clone(), no_items());
-        repo.redeem(&token).await.unwrap();
-
-        assert_eq!(token_count(&pool).await, 0);
-        assert!(
-            matches!(repo.redeem(&token).await, Err(LoginError::Rejected)),
-            "a redeemed token must not work twice"
-        );
-    }
-
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_rejects_an_unknown_token(pool: PgPool) {
-        let repo = SqlLoginRepository::new(pool, no_items());
-
-        assert!(matches!(
-            repo.redeem("never-issued").await,
-            Err(LoginError::Rejected)
-        ));
-    }
-
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_rejects_an_expired_token(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        let token = insert_token_valid_for(&pool, character_id, "-1 hour").await;
-
-        let repo = SqlLoginRepository::new(pool, no_items());
-
-        assert!(matches!(
-            repo.redeem(&token).await,
-            Err(LoginError::Rejected)
-        ));
-    }
-
-    /// The property that makes single use safe. Both implementations of the trait must
-    /// have it, which is why the SQL one runs the same transaction as the site.
-    ///
-    /// A soft delete is the only way in now: the foreign key means a token cannot exist
-    /// for a character that was never there, and a hard delete would cascade the token
-    /// away with it.
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_leaves_the_token_unspent_when_the_load_fails(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        let token = insert_token(&pool, character_id).await;
-        sqlx::query("UPDATE players SET deleted_at = NOW() WHERE id = $1")
-            .bind(character_id)
-            .execute(&pool)
-            .await
-            .unwrap();
-
-        let repo = SqlLoginRepository::new(pool.clone(), no_items());
-
-        assert!(matches!(
-            repo.redeem(&token).await,
-            Err(LoginError::Rejected)
-        ));
-        assert_eq!(
-            token_count(&pool).await,
-            1,
-            "a character that cannot be loaded must not cost the player their token"
-        );
-    }
-
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn sql_redeem_rejects_a_soft_deleted_character(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-        sqlx::query("UPDATE players SET deleted_at = NOW() WHERE id = $1")
-            .bind(character_id)
-            .execute(&pool)
-            .await
-            .unwrap();
-        let token = insert_token(&pool, character_id).await;
-
-        let repo = SqlLoginRepository::new(pool, no_items());
-
-        assert!(
-            matches!(repo.redeem(&token).await, Err(LoginError::Rejected)),
-            "a deleted character must not be able to log in"
-        );
-    }
-
-    /// The round trip that matters: what `save` writes, `redeem` must read back.
-    #[sqlx::test(migrations = "../site/migrations")]
-    async fn what_save_writes_redeem_reads_back(pool: PgPool) {
-        let account_id = insert_account(&pool).await;
-        let character_id = insert_character(&pool, account_id).await;
-
-        let mut snapshot = a_test_snapshot(character_id as u32, account_id);
-        snapshot.position = Position {
-            x: 200,
-            y: 300,
-            z: 5,
-        };
-        snapshot.life.current = 60;
-        snapshot.facing = Facing::West;
-
-        PlayerRepository::new(pool.clone())
-            .save(&snapshot)
-            .await
-            .unwrap();
-
-        let token = insert_token(&pool, character_id).await;
-        let loaded = SqlLoginRepository::new(pool, no_items())
-            .redeem(&token)
-            .await
-            .unwrap();
-
-        assert_eq!(
-            loaded.position,
-            Position {
-                x: 200,
-                y: 300,
-                z: 5
-            }
-        );
-        assert_eq!(loaded.life.current, 60);
-        assert_eq!(loaded.facing, Facing::West);
-        assert_eq!(loaded.skills.len(), snapshot.skills.len());
-    }
 }
 
-/// `HttpLoginRepository` against a mock site. These prove the status-code mapping and
-/// nothing else — a mock will happily return a body the real site would never produce,
+/// `Login` against a mock site. These prove the status-code mapping and the journal gate,
+/// and nothing else — a mock will happily return a body the real site would never produce,
 /// which is exactly why `rustibia-contract` exists and why `internal_tls` on the site
 /// side runs against the real router.
 #[cfg(test)]
 mod http_tests {
     use super::*;
     use crate::entities::agent::Facing;
-    use crate::persistence::test_fixtures::no_items;
+    use crate::persistence::test_fixtures::{a_character_record_json as a_record_json, no_items};
     use wiremock::matchers::{body_json, method, path};
     use wiremock::{Mock, MockServer, ResponseTemplate};
 
-    fn a_record_json() -> serde_json::Value {
-        serde_json::json!({
-            "id": 7,
-            "account_id": 3,
-            "admin": false,
-            "name": "Rizael",
-            "vocation": 0,
-            "position": { "x": 1028, "y": 1029, "z": 7 },
-            "origin": { "x": 1028, "y": 1028, "z": 7 },
-            "facing": 2,
-            "life": { "current": 140, "maximum": 150 },
-            "mana": { "current": 0, "maximum": 0 },
-            "capacity": 400,
-            "speed": 120,
-            "outfit": { "id": 128, "head": 78, "body": 69, "legs": 58, "feet": 76 },
-            "skills": [{ "skill_type": 1, "value": 220, "current_ticks": 0 }],
-            "inventory": {}
-        })
-    }
-
     /// Plain HTTP: TLS is the site's to prove, and mixing it in here would make every
     /// status-mapping test depend on a handshake.
-    fn repo(server: &MockServer) -> HttpLoginRepository {
-        HttpLoginRepository::new(&server.uri(), reqwest::Client::new(), no_items())
+    fn repo(server: &MockServer) -> Login {
+        login_with(server, PersistenceActorHandle::nothing_pending())
+    }
+
+    fn login_with(server: &MockServer, persistence: PersistenceActorHandle) -> Login {
+        Login::new(
+            Arc::new(SiteClient::new(&server.uri(), reqwest::Client::new())),
+            no_items(),
+            persistence,
+        )
     }
 
     async fn responding(status: u16, body: serde_json::Value) -> MockServer {
@@ -979,10 +566,13 @@ mod http_tests {
             listener.local_addr().unwrap().port()
         };
 
-        let repo = HttpLoginRepository::new(
-            &format!("http://127.0.0.1:{closed_port}"),
-            reqwest::Client::new(),
+        let repo = Login::new(
+            Arc::new(SiteClient::new(
+                &format!("http://127.0.0.1:{closed_port}"),
+                reqwest::Client::new(),
+            )),
             no_items(),
+            PersistenceActorHandle::nothing_pending(),
         );
 
         assert!(matches!(
@@ -991,102 +581,93 @@ mod http_tests {
         ));
     }
 
-    #[test]
-    fn the_url_is_built_without_a_double_slash() {
-        let repo = HttpLoginRepository::new(
-            "https://localhost:8443/",
-            reqwest::Client::new(),
-            no_items(),
-        );
+    /// Each delivery the courier was asked for: the character, and how many redemptions the
+    /// site had already seen at that moment.
+    type Deliveries = Arc<std::sync::Mutex<Vec<(u32, usize)>>>;
 
-        assert_eq!(
-            repo.redeem_url,
-            "https://localhost:8443/internal/game-tokens/redeem"
-        );
+    fn a_courier(
+        server: Arc<MockServer>,
+        delivered: bool,
+        journaled: Option<i64>,
+    ) -> (PersistenceActorHandle, Deliveries) {
+        use crate::actors::persistence::PersistenceCommand;
+
+        let deliveries = Arc::new(std::sync::Mutex::new(Vec::new()));
+        let (persistence, mut rx) = PersistenceActorHandle::for_test();
+        let log = Arc::clone(&deliveries);
+        tokio::spawn(async move {
+            while let Some(command) = rx.recv().await {
+                match command {
+                    PersistenceCommand::DeliverFor(id, reply) => {
+                        let seen = server.received_requests().await.map_or(0, |r| r.len());
+                        log.lock().unwrap().push((id.0, seen));
+                        let _ = reply.send(delivered);
+                    }
+                    PersistenceCommand::PendingVersion(_, reply) => {
+                        let _ = reply.send(journaled);
+                    }
+                    _ => {}
+                }
+            }
+        });
+        (persistence, deliveries)
     }
 
-    // ---- build_client ---------------------------------------------------------------
-
-    struct Certs {
-        dir: std::path::PathBuf,
+    async fn redemptions(server: &MockServer) -> usize {
+        server.received_requests().await.map_or(0, |r| r.len())
     }
 
-    impl Certs {
-        fn generate(name: &str) -> Self {
-            let dir = std::env::temp_dir()
-                .join(format!("rustibia-server-tls-{name}-{}", std::process::id()));
-            let _ = std::fs::remove_dir_all(&dir);
-            rustibia_certgen::generate_bundle(&dir).unwrap();
-            Self { dir }
-        }
+    #[tokio::test]
+    async fn the_pending_save_is_delivered_before_the_token_is_redeemed() {
+        let server = Arc::new(responding(200, a_record_json()).await);
+        let (courier, deliveries) = a_courier(Arc::clone(&server), true, None);
 
-        fn path(&self, name: &str) -> String {
-            self.dir.join(name).display().to_string()
-        }
+        assert!(login_with(&server, courier).redeem("7.abc").await.is_ok());
+
+        assert_eq!(*deliveries.lock().unwrap(), vec![(7, 0)]);
+        assert_eq!(redemptions(&server).await, 1);
     }
 
-    impl Drop for Certs {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.dir);
-        }
+    #[tokio::test]
+    async fn an_undeliverable_save_refuses_the_login_without_spending_the_token() {
+        let server = Arc::new(responding(200, a_record_json()).await);
+        let (courier, _) = a_courier(Arc::clone(&server), false, Some(4));
+
+        let result = login_with(&server, courier).redeem("7.abc").await;
+
+        assert!(matches!(result, Err(LoginError::Unavailable(_))));
+        assert_eq!(redemptions(&server).await, 0);
     }
 
-    #[test]
-    fn build_client_accepts_a_generated_bundle() {
-        let certs = Certs::generate("ok");
+    #[tokio::test]
+    async fn a_journaled_version_newer_than_the_record_refuses_the_login() {
+        let mut record = a_record_json();
+        record["save_version"] = 3.into();
+        let server = Arc::new(responding(200, record).await);
+        let (courier, _) = a_courier(Arc::clone(&server), true, Some(5));
 
-        assert!(
-            HttpLoginRepository::build_client(
-                &certs.path("server.crt"),
-                &certs.path("server.key"),
-                &certs.path("ca.crt"),
-            )
-            .is_ok()
-        );
+        let result = login_with(&server, courier).redeem("7.abc").await;
+
+        assert!(matches!(result, Err(LoginError::Unavailable(_))));
     }
 
-    #[test]
-    fn build_client_fails_on_a_missing_identity() {
-        let certs = Certs::generate("missing-identity");
+    #[tokio::test]
+    async fn a_token_that_names_no_character_goes_straight_to_redemption() {
+        let server = Arc::new(responding(200, a_record_json()).await);
+        let (courier, deliveries) = a_courier(Arc::clone(&server), true, None);
 
-        let err = HttpLoginRepository::build_client(
-            &certs.path("nope.crt"),
-            &certs.path("server.key"),
-            &certs.path("ca.crt"),
-        )
-        .expect_err("a missing client certificate must stop the process at boot");
+        assert!(login_with(&server, courier).redeem("abc").await.is_ok());
 
-        assert!(matches!(err, ClientError::Read(_, _)), "got {err:?}");
-    }
-
-    #[test]
-    fn build_client_fails_on_a_missing_ca() {
-        let certs = Certs::generate("missing-ca");
-
-        assert!(
-            HttpLoginRepository::build_client(
-                &certs.path("server.crt"),
-                &certs.path("server.key"),
-                &certs.path("nope.crt"),
-            )
-            .is_err(),
-            "without the CA this client would have to trust anything claiming to be the site"
-        );
+        assert!(deliveries.lock().unwrap().is_empty());
+        assert_eq!(redemptions(&server).await, 1);
     }
 
     #[test]
-    fn build_client_fails_on_a_key_that_is_not_pem() {
-        let certs = Certs::generate("garbage-key");
-        let garbage = certs.path("garbage.key");
-        std::fs::write(&garbage, b"not a key").unwrap();
-
-        assert!(
-            HttpLoginRepository::build_client(
-                &certs.path("server.crt"),
-                &garbage,
-                &certs.path("ca.crt"),
-            )
-            .is_err()
-        );
+    fn a_character_id_is_read_from_before_the_first_dot() {
+        assert_eq!(character_id_of("12.abc"), Some(PlayerId(12)));
+        assert_eq!(character_id_of("12.abc.def"), Some(PlayerId(12)));
+        assert_eq!(character_id_of("abc"), None);
+        assert_eq!(character_id_of("x.abc"), None);
+        assert_eq!(character_id_of(".abc"), None);
     }
 }

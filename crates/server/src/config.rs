@@ -19,7 +19,7 @@ pub struct ServerConfig {
     pub areas_file_path: String,
     pub spells_file_path: String,
     pub player_despawn_delay: Duration,
-    pub database_url: String,
+    pub journal_dir: String,
     pub save_interval: Duration,
     pub site_internal_url: String,
     pub internal_tls_cert: String,
@@ -42,8 +42,7 @@ impl Default for ServerConfig {
             areas_file_path: "assets/areas.yaml".to_string(),
             spells_file_path: "assets/spells.yaml".to_string(),
             player_despawn_delay: Duration::from_secs(2), // TODO: move to game config
-            database_url: std::env::var("DATABASE_URL")
-                .unwrap_or_else(|_| "postgres://localhost/rustibia".to_string()),
+            journal_dir: std::env::var("JOURNAL_DIR").unwrap_or_else(|_| "journal".to_string()),
             save_interval: Duration::from_secs(60),
             site_internal_url: std::env::var("SITE_INTERNAL_URL")
                 .unwrap_or_else(|_| "https://localhost:8443".to_string()),

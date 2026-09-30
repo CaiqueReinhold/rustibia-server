@@ -20,8 +20,6 @@ rustibia-contract = { path = "../contract" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 serde_yaml = { workspace = true }
-sha2 = { workspace = true }
-sqlx = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
@@ -47,6 +45,7 @@ imbl = "7.0.2"
 mimalloc = "0.1"
 
 [dev-dependencies]
+tempfile = "3"
 opentelemetry_sdk = { workspace = true, features = ["testing"] }
 rustibia-certgen = { path = "../certgen" }
 wiremock = { workspace = true }

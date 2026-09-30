@@ -650,7 +650,7 @@ impl WorldActor {
             }
         }
 
-        if let Some((agent, position)) = self.map.remove_agent(agent_key) {
+        if let Some((mut agent, position)) = self.map.remove_agent(agent_key) {
             if let Some(snapshot) = agent.to_snapshot(position.clone()) {
                 self.persistence.save_player(snapshot);
             }
