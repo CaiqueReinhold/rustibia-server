@@ -43,7 +43,7 @@ impl Default for ServerConfig {
             spells_file_path: "assets/spells.yaml".to_string(),
             player_despawn_delay: Duration::from_secs(2), // TODO: move to game config
             journal_dir: std::env::var("JOURNAL_DIR").unwrap_or_else(|_| "journal".to_string()),
-            save_interval: Duration::from_secs(60),
+            save_interval: Duration::from_secs(3600),
             site_internal_url: std::env::var("SITE_INTERNAL_URL")
                 .unwrap_or_else(|_| "https://localhost:8443".to_string()),
             internal_tls_cert: std::env::var("INTERNAL_TLS_CERT")

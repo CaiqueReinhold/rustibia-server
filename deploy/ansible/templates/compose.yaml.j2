@@ -52,6 +52,7 @@ services:
     image: {{ server_image }}:{{ image_tag }}
     restart: unless-stopped
     init: true
+    stop_grace_period: 30s
     depends_on:
       site:
         condition: service_healthy

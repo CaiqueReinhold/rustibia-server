@@ -79,8 +79,7 @@ pub fn a_character_record_json() -> serde_json::Value {
         "speed": 120,
         "outfit": { "id": 128, "head": 78, "body": 69, "legs": 58, "feet": 76 },
         "skills": [{ "skill_type": 1, "value": 220, "current_ticks": 0 }],
-        "inventory": {},
-        "save_version": 0
+        "inventory": {}
     })
 }
 
@@ -121,7 +120,6 @@ pub fn a_test_snapshot(id: u32, account_id: i32) -> PlayerSnapshot {
             },
         )]),
         inventory: HashMap::new(),
-        save_version: 0,
     }
 }
 

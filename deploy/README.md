@@ -68,8 +68,12 @@ it to the 1Password value.
 - **Rotating a secret** is an edit in 1Password followed by `ansible-playbook deploy.yml`.
   The exception is `postgres_password`, which only takes effect when the volume is first
   created: change it with `ALTER USER` inside the database first, then in 1Password.
-- **Neither process handles SIGTERM.** A deploy that recreates the server kills it outright, so
-  players lose progress since their last periodic save (up to `save_interval`, 60 s).
+- **Only world saves write player and map state.** The server saves the whole world every
+  `save_interval` (an hour) and once more on SIGTERM, within `SHUTDOWN_DEADLINE` (20 s) —
+  Compose's `stop_grace_period` (30 s) must stay above it. A logout only journals, in the
+  `server_journal` volume. If the server is killed with logouts journaled since the last world
+  save, the next start refuses and names the characters: delete their `journal/<id>.json` to roll
+  them back to the last world save.
 - **The server holds about 2.5 GB resident** with the full spawn table loaded, before any
   player connects; lgtm adds roughly another gigabyte. Size the host for both.
 - Certificates renew via the certbot package's own systemd timer; the deploy hook in

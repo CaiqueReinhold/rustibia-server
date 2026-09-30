@@ -161,12 +161,12 @@ mod tests {
     use crate::online_registry::OnlineRegistry;
     use crate::persistence::site_client::SiteClient;
     use crate::persistence::test_fixtures::{a_character_record_json, no_items};
-    use wiremock::matchers::{method, path};
-    use wiremock::{Mock, MockServer, ResponseTemplate};
     use arc_swap::ArcSwap;
     use std::time::Duration;
     use tokio::sync::mpsc::Receiver;
     use tokio::sync::mpsc::UnboundedReceiver;
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
 
     /// A `Login` against a mocked site whose redemption answers `status` with `body`, and a
     /// courier with nothing journaled.

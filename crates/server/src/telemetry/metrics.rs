@@ -14,6 +14,7 @@ const TICK_SECONDS: [f64; 16] = [
 ];
 const COMMAND_SECONDS: [f64; 10] = [1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 5e-2];
 const LOGIN_SECONDS: [f64; 10] = [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0];
+const WORLD_SAVE_SECONDS: [f64; 9] = [0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0, 30.0];
 const COUNTS: [f64; 10] = [
     0.0, 10.0, 50.0, 100.0, 500.0, 1000.0, 5000.0, 10000.0, 50000.0, 100000.0,
 ];
@@ -61,6 +62,8 @@ pub struct Metrics {
     login: Counter<u64>,
     saves_pending: Gauge<u64>,
     saves_journal_failures: Counter<u64>,
+    world_save_duration: Histogram<f64>,
+    world_save_chunks: Histogram<u64>,
     login_duration: Histogram<f64>,
     records_dropped: Counter<u64>,
 }
@@ -102,9 +105,9 @@ impl Metrics {
                 .build(),
             login: meter.u64_counter("rustibia.login").build(),
             saves_pending: meter.u64_gauge("rustibia.saves.pending").build(),
-            saves_journal_failures: meter
-                .u64_counter("rustibia.saves.journal_failures")
-                .build(),
+            saves_journal_failures: meter.u64_counter("rustibia.saves.journal_failures").build(),
+            world_save_duration: seconds("rustibia.world_save.duration", &WORLD_SAVE_SECONDS),
+            world_save_chunks: histogram("rustibia.world_save.chunks", &COUNTS),
             login_duration: seconds("rustibia.login.duration", &LOGIN_SECONDS),
             records_dropped: meter
                 .u64_counter("rustibia.telemetry.records.dropped")
@@ -181,6 +184,11 @@ impl Metrics {
 
     pub fn record_journal_failure(&self) {
         self.saves_journal_failures.add(1, &[]);
+    }
+
+    pub fn record_world_save(&self, duration: Duration, chunks: u64) {
+        self.world_save_duration.record(duration.as_secs_f64(), &[]);
+        self.world_save_chunks.record(chunks, &[]);
     }
 
     pub(super) fn record_dropped_batch(&self) {

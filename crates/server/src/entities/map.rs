@@ -12,6 +12,7 @@ use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::items::{FloorChangeDirection, Item, ItemFlag, ItemGuid};
 use crate::entities::player::Player;
 use crate::entities::position::{Position, Rect};
+use crate::game::Tick;
 
 pub type RemovedItem = (Item, Option<usize>, Option<(ItemGuid, usize)>);
 
@@ -70,6 +71,7 @@ fn local_index(pos: &Position) -> usize {
 #[derive(Debug, Clone)]
 struct Chunk {
     tiles: Box<[Option<Arc<MapTile>>]>,
+    items_changed_at: Tick,
 }
 
 impl Chunk {
@@ -78,7 +80,10 @@ impl Chunk {
             .map(|_| None)
             .collect::<Vec<_>>()
             .into_boxed_slice();
-        Chunk { tiles }
+        Chunk {
+            tiles,
+            items_changed_at: Tick(0),
+        }
     }
 }
 
@@ -117,6 +122,7 @@ pub struct GameMap {
     agents: SlotMap<AgentKey, Agent>,
     agent_positions: HashMap<AgentKey, Position>,
     chunk_copies: u64,
+    tick: Tick,
 }
 
 impl MapTile {
@@ -134,6 +140,10 @@ impl MapTile {
     pub fn visible_items(&self) -> impl Iterator<Item = &Item> {
         self.items.iter().take(MAX_VISIBLE_ITEMS)
     }
+
+    pub fn items(&self) -> impl Iterator<Item = &Item> {
+        self.items.iter()
+    }
 }
 
 impl GameMap {
@@ -143,6 +153,7 @@ impl GameMap {
             agents: SlotMap::with_key(),
             agent_positions: HashMap::new(),
             chunk_copies: 0,
+            tick: Tick(0),
         }
     }
 
@@ -164,6 +175,64 @@ impl GameMap {
     /// the chunk table is a separate cost and is not counted here.
     pub fn take_chunk_copies(&mut self) -> u64 {
         std::mem::take(&mut self.chunk_copies)
+    }
+
+    /// The tick this map describes; set by the world at the start of each tick.
+    pub fn tick(&self) -> Tick {
+        self.tick
+    }
+
+    pub(in crate::entities) fn set_tick(&mut self, tick: Tick) {
+        self.tick = tick;
+    }
+
+    pub(in crate::entities) fn mark_items_changed(&mut self, pos: &Position) {
+        if let Some(chunk) = self.chunks.get_mut(&ChunkCoord::from_pos(pos)) {
+            Arc::make_mut(chunk).items_changed_at = self.tick;
+        }
+    }
+
+    /// Replaces every tile's movable items in the chunk; `tiles` pairs a tile index with its
+    /// items and their stack indexes. Chunk stamps are left alone.
+    pub fn restore_chunk(
+        &mut self,
+        cx: u16,
+        cy: u16,
+        z: u8,
+        tiles: Vec<(u16, Vec<(u16, Item)>)>,
+    ) -> Result<(), MapError> {
+        let chunk = self
+            .chunks
+            .get_mut(&ChunkCoord { cx, cy, z })
+            .ok_or(MapError::TileDoesNotExist)?;
+        let chunk = Arc::make_mut(chunk);
+        for tile in chunk.tiles.iter_mut().flatten() {
+            Arc::make_mut(tile)
+                .items
+                .retain(|item| item.config.has_flag(ItemFlag::Unmove));
+        }
+        for (index, mut placed) in tiles {
+            let Some(tile) = chunk.tiles.get_mut(index as usize).and_then(Option::as_mut) else {
+                continue;
+            };
+            let tile = Arc::make_mut(tile);
+            placed.sort_by_key(|(stack_index, _)| *stack_index);
+            for (stack_index, item) in placed {
+                let at = (stack_index as usize).min(tile.items.len());
+                tile.items.insert(at, item);
+            }
+        }
+        Ok(())
+    }
+
+    pub fn chunks_changed_since(&self, tick: Tick) -> impl Iterator<Item = ChangedChunk<'_>> {
+        self.chunks
+            .iter()
+            .filter(move |(_, chunk)| chunk.items_changed_at > tick)
+            .map(|(coord, chunk)| ChangedChunk {
+                coord: *coord,
+                chunk,
+            })
     }
 
     fn get_tile_mut(&mut self, pos: &Position) -> Result<&mut MapTile, MapError> {
@@ -521,6 +590,34 @@ impl GameMap {
             }
         }
         None
+    }
+}
+
+pub struct ChangedChunk<'a> {
+    coord: ChunkCoord,
+    chunk: &'a Chunk,
+}
+
+impl<'a> ChangedChunk<'a> {
+    pub fn cx(&self) -> u16 {
+        self.coord.cx
+    }
+
+    pub fn cy(&self) -> u16 {
+        self.coord.cy
+    }
+
+    pub fn z(&self) -> u8 {
+        self.coord.z
+    }
+
+    /// Existing tiles with their `ly * 16 + lx` index.
+    pub fn tiles(&self) -> impl Iterator<Item = (u16, &'a MapTile)> {
+        self.chunk
+            .tiles
+            .iter()
+            .enumerate()
+            .filter_map(|(index, tile)| tile.as_deref().map(|tile| (index as u16, tile)))
     }
 }
 
@@ -1306,5 +1403,82 @@ mod tests {
         let rect = Rect::new(0, 0, 10, 10);
         let found: Vec<_> = map.iter_agents_in_rect(&rect, 7).map(|(k, _)| k).collect();
         assert_eq!(found, vec![ki]);
+    }
+
+    fn an_item(id: u16, flags: &[ItemFlag]) -> Item {
+        Item::new(
+            Arc::new(crate::entities::items::ItemConfig::new(
+                crate::entities::items::ItemId(id),
+                format!("item {id}"),
+                None,
+                None,
+                flags.iter().copied(),
+                Vec::<crate::entities::items::ItemAttribute>::new(),
+            )),
+            1,
+        )
+    }
+
+    fn ids(map: &GameMap, pos: &Position) -> Vec<u16> {
+        map.iter_items(pos)
+            .unwrap()
+            .map(|item| item.id().0)
+            .collect()
+    }
+
+    #[test]
+    fn restoring_a_chunk_replaces_its_movables_at_their_stack_indexes() {
+        let a = Position::new(16, 32, 7);
+        let b = Position::new(17, 32, 7);
+        let mut map = GameMap::new();
+        let mut tile = MapTile::new();
+        tile.push_item(an_item(100, &[ItemFlag::Ground, ItemFlag::Unmove]));
+        tile.push_item(an_item(900, &[ItemFlag::Take]));
+        tile.push_item(an_item(101, &[ItemFlag::Unmove]));
+        map.insert_tile(a.clone(), tile);
+        let mut other = MapTile::new();
+        other.push_item(an_item(901, &[ItemFlag::Take]));
+        map.insert_tile(b.clone(), other);
+
+        map.restore_chunk(
+            1,
+            2,
+            7,
+            vec![(
+                0,
+                vec![
+                    (1, an_item(500, &[ItemFlag::Take])),
+                    (3, an_item(501, &[ItemFlag::Take])),
+                ],
+            )],
+        )
+        .unwrap();
+
+        assert_eq!(ids(&map, &a), vec![100, 500, 101, 501]);
+        assert!(ids(&map, &b).is_empty());
+    }
+
+    #[test]
+    fn a_stack_index_past_the_end_appends() {
+        let a = Position::new(16, 32, 7);
+        let mut map = GameMap::new();
+        let mut tile = MapTile::new();
+        tile.push_item(an_item(100, &[ItemFlag::Unmove]));
+        map.insert_tile(a.clone(), tile);
+
+        map.restore_chunk(
+            1,
+            2,
+            7,
+            vec![(0, vec![(40, an_item(500, &[ItemFlag::Take]))])],
+        )
+        .unwrap();
+
+        assert_eq!(ids(&map, &a), vec![100, 500]);
+    }
+
+    #[test]
+    fn restoring_a_chunk_the_map_does_not_have_is_an_error() {
+        assert!(GameMap::new().restore_chunk(9, 9, 7, Vec::new()).is_err());
     }
 }

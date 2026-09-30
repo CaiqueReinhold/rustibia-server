@@ -497,10 +497,19 @@ mod tests {
             post_token_req(character_id, Some(&session)),
         )
         .await;
-        let (_, random) = body["auth_token"].as_str().unwrap().split_once('.').unwrap();
+        let (_, random) = body["auth_token"]
+            .as_str()
+            .unwrap()
+            .split_once('.')
+            .unwrap();
 
         let edited = format!("{}.{random}", character_id + 1);
 
-        assert!(crate::db::login::redeem(&pool, &edited).await.unwrap().is_none());
+        assert!(
+            crate::db::login::redeem(&pool, &edited)
+                .await
+                .unwrap()
+                .is_none()
+        );
     }
 }

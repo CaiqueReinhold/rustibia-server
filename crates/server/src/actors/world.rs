@@ -127,6 +127,9 @@ pub enum WorldCommand {
         agent_key: AgentKey,
         kind: TimedCondition,
     },
+    Shutdown {
+        done: oneshot::Sender<()>,
+    },
 }
 
 impl WorldCommand {
@@ -208,6 +211,14 @@ impl WorldActorHandle {
         let _ = self.tx.send((command, Some(after))).await;
     }
 
+    pub async fn shutdown(&self) -> Result<()> {
+        let (done, stopped) = oneshot::channel();
+        self.send(WorldCommand::Shutdown { done }).await;
+        stopped
+            .await
+            .map_err(|_| anyhow!("the world actor is gone"))
+    }
+
     pub async fn spawn_player(
         &self,
         player: Agent,
@@ -241,6 +252,7 @@ pub struct WorldActor {
     roll: Rolls,
     command_sink: CommandSink,
     persistence: PersistenceActorHandle,
+    stopping: Option<oneshot::Sender<()>>,
 }
 
 impl WorldActor {
@@ -268,6 +280,7 @@ impl WorldActor {
             roll: Rolls::new(seed),
             command_sink: CommandSink::start(),
             persistence,
+            stopping: None,
         };
         actor.seed_spawn_points(spawns);
 
@@ -326,12 +339,18 @@ impl WorldActor {
                 }
             }
             self.run_tick().await;
+            if let Some(done) = self.stopping.take() {
+                info!("World stopped");
+                let _ = done.send(());
+                return;
+            }
         }
     }
 
     async fn run_tick(&mut self) {
         let tick_start = Instant::now();
         self.tick += TickDelta(1);
+        self.map.begin_tick(self.tick);
         let tick_span = info_span!(
             "tick",
             tick = self.tick.0 as i64,
@@ -521,6 +540,7 @@ impl WorldActor {
                 agent_key,
                 disconnect,
             } => self.despawn_player(agent_key, disconnect, broadcast_messages),
+            WorldCommand::Shutdown { done } => self.shutdown(done, broadcast_messages),
             WorldCommand::SpawnCreature {
                 kind,
                 position,
@@ -650,19 +670,44 @@ impl WorldActor {
             }
         }
 
-        if let Some((mut agent, position)) = self.map.remove_agent(agent_key) {
+        self.remove_player(agent_key, broadcast_messages);
+
+        if let Some((_, despawned)) = disconnect {
+            let _ = despawned.send(());
+        }
+    }
+
+    fn remove_player(
+        &mut self,
+        agent_key: AgentKey,
+        broadcast_messages: &mut Vec<BroadcastMessage>,
+    ) {
+        if let Some((agent, position)) = self.map.remove_agent(agent_key) {
             if let Some(snapshot) = agent.to_snapshot(position.clone()) {
-                self.persistence.save_player(snapshot);
+                self.persistence.save_player(snapshot, self.tick);
             }
             broadcast_messages.push(BroadcastMessage::AgentDespawned {
                 agent_key,
                 position,
             });
         }
+    }
 
-        if let Some((_, despawned)) = disconnect {
-            let _ = despawned.send(());
+    fn shutdown(
+        &mut self,
+        done: oneshot::Sender<()>,
+        broadcast_messages: &mut Vec<BroadcastMessage>,
+    ) {
+        let players: Vec<AgentKey> = self
+            .map
+            .iter_agents()
+            .filter(|(_, agent)| agent.get_player().is_some())
+            .map(|(agent_key, _)| agent_key)
+            .collect();
+        for agent_key in players {
+            self.remove_player(agent_key, broadcast_messages);
         }
+        self.stopping = Some(done);
     }
 
     fn spawn_player(
@@ -708,6 +753,7 @@ impl WorldActor {
 mod tests {
     use super::*;
     use crate::actors::message_router::MessageRouterCommand;
+    use crate::actors::persistence::PersistenceCommand;
     use crate::entities::inventory::InventorySlot;
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
@@ -738,6 +784,7 @@ mod tests {
             roll: Rolls::new(1),
             command_sink: CommandSink::for_test().0,
             persistence,
+            stopping: None,
         }
     }
 
@@ -1213,5 +1260,76 @@ mod tests {
                 .get(&InventorySlot::Backpack)
                 .is_none()
         );
+    }
+
+    fn a_player_and_a_creature() -> (GameMap, AgentKey, AgentKey) {
+        let mut map = GameMap::new();
+        let player_at = Position::new(5, 5, 7);
+        let creature_at = Position::new(6, 5, 7);
+        map.insert_tile(player_at.clone(), MapTile::new());
+        map.insert_tile(creature_at.clone(), MapTile::new());
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &player_at)
+            .unwrap();
+        let creature = map
+            .insert_agent(a_test_creature("rat", 20, (0, 0)), &creature_at)
+            .unwrap();
+        (map, player, creature)
+    }
+
+    #[test]
+    fn shutdown_removes_every_player_as_a_logout_and_keeps_creatures() {
+        let (map, player, creature) = a_player_and_a_creature();
+        let mut actor = a_test_world_actor(map);
+        let (persistence, mut saved) = PersistenceActorHandle::for_test();
+        actor.persistence = persistence;
+        actor.tick = Tick(12);
+        let mut broadcasts = Vec::new();
+        let (done, _stopped) = oneshot::channel();
+
+        actor.handle_command(WorldCommand::Shutdown { done }, &mut broadcasts);
+
+        assert!(actor.map.get_agent(player).is_none());
+        assert!(actor.map.get_agent(creature).is_some());
+        assert!(actor.stopping.is_some());
+        assert!(matches!(
+            broadcasts.as_slice(),
+            [BroadcastMessage::AgentDespawned { agent_key, .. }] if *agent_key == player
+        ));
+        assert!(matches!(
+            saved.try_recv(),
+            Ok(PersistenceCommand::SavePlayer(_, Tick(12)))
+        ));
+    }
+
+    #[test]
+    fn shutdown_ignores_a_logout_block() {
+        let (map, agent_key) = a_logout_blocked_player_at(Tick(0));
+        let mut actor = a_test_world_actor(map);
+        let (done, _stopped) = oneshot::channel();
+
+        actor.handle_command(WorldCommand::Shutdown { done }, &mut Vec::new());
+
+        assert!(actor.map.get_agent(agent_key).is_none());
+    }
+
+    #[test]
+    fn nothing_queued_behind_a_shutdown_is_run() {
+        let mut actor = a_test_world_actor(GameMap::new());
+        let (done, _stopped) = oneshot::channel();
+        actor.command_queue.push(ScheduledCommand {
+            at_tick: Tick(0),
+            command: WorldCommand::Shutdown { done },
+        });
+        actor.command_queue.push(ScheduledCommand {
+            at_tick: Tick(1),
+            command: a_walk_for_nobody(),
+        });
+        actor.tick = Tick(1);
+
+        let records = actor.drain_due(&mut Vec::new());
+
+        assert_eq!(records.len(), 1);
+        assert_eq!(actor.command_queue.len(), 1);
     }
 }

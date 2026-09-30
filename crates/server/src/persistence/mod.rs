@@ -9,11 +9,13 @@ pub mod journal;
 pub mod login;
 pub mod map;
 pub mod player;
+pub mod recovery;
 pub mod site_client;
 pub mod spawns;
 pub mod spells;
 pub mod support;
 pub mod target_mode;
+pub mod world_save;
 
 #[cfg(test)]
 pub mod test_fixtures;

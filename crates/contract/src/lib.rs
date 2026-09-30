@@ -35,7 +35,6 @@ pub struct CharacterRecord {
     pub skills: Vec<SkillRow>,
     /// Keyed by inventory slot index, matching `players.inventory`'s JSONB shape.
     pub inventory: std::collections::HashMap<String, StoredItemRecord>,
-    pub save_version: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -79,12 +78,9 @@ pub struct StoredItemRecord {
     pub content: Option<Vec<StoredItemRecord>>,
 }
 
-pub const MAX_SAVE_BATCH: usize = 100;
-
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CharacterSave {
     pub id: i32,
-    pub save_version: i64,
     pub position: Coords,
     pub origin: Coords,
     pub facing: i16,
@@ -98,29 +94,37 @@ pub struct CharacterSave {
     pub inventory: std::collections::HashMap<String, StoredItemRecord>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SaveBatch {
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct WorldSave {
+    pub tick: u64,
     pub characters: Vec<CharacterSave>,
+    pub chunks: Vec<ChunkRow>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SaveResults {
-    pub results: Vec<SaveResult>,
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ChunkRow {
+    pub cx: i32,
+    pub cy: i32,
+    pub z: i16,
+    pub tiles: Vec<TileRow>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct TileRow {
+    /// `ly * 16 + lx` within the chunk; the 16 is `CHUNK_SIDE` in the game server's `map.rs`.
+    pub index: u16,
+    pub items: Vec<PlacedItem>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct PlacedItem {
+    pub stack_index: u16,
+    pub item: StoredItemRecord,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct SaveResult {
-    pub id: i32,
-    pub outcome: SaveOutcome,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum SaveOutcome {
-    Applied,
-    /// An equal or newer `save_version` is already stored.
-    Stale,
-    Gone,
+pub struct WorldSaveResult {
+    pub skipped: Vec<i32>,
 }
 
 #[cfg(test)]
@@ -187,7 +191,6 @@ mod tests {
                     }]),
                 },
             )]),
-            save_version: 0,
         }
     }
 
@@ -287,10 +290,5 @@ mod tests {
         let back: RedeemRequest = serde_json::from_str(&json).unwrap();
 
         assert_eq!(back.auth_token, "abc");
-    }
-
-    #[test]
-    fn an_outcome_is_a_lowercase_string() {
-        assert_eq!(serde_json::to_string(&SaveOutcome::Stale).unwrap(), r#""stale""#);
     }
 }

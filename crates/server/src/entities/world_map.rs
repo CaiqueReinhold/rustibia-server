@@ -48,6 +48,10 @@ impl WorldMap {
         self.map.take_chunk_copies()
     }
 
+    pub fn begin_tick(&mut self, tick: Tick) {
+        self.map.set_tick(tick);
+    }
+
     #[cfg(test)]
     pub fn delta(&self) -> &WorldDelta {
         &self.delta
@@ -72,6 +76,9 @@ impl WorldMap {
         container: Option<(&ItemGuid, usize)>,
         item: Item,
     ) -> Result<&Item, MapError> {
+        if self.map.contains_tile(pos) {
+            self.map.mark_items_changed(pos);
+        }
         let placed = self.map.place_item(pos, index, container, item)?;
         match container {
             Some((guid, _)) => self.delta.mark_container(guid),
@@ -91,6 +98,7 @@ impl WorldMap {
             Some((parent, _)) => self.delta.mark_container(parent),
             None => self.delta.mark_tile(pos),
         }
+        self.map.mark_items_changed(pos);
         Some(removed)
     }
 
@@ -128,22 +136,25 @@ impl WorldMap {
         let container = placement.container().map(|(guid, _)| guid);
         match placement.site() {
             PlacementSite::Tile(pos) => {
-                let Ok(mut items) = self.map.iter_items_mut(pos) else {
-                    return 0;
+                let moved = {
+                    let Ok(mut items) = self.map.iter_items_mut(pos) else {
+                        return 0;
+                    };
+                    let stack = match container {
+                        Some(guid) => items
+                            .find_map(|it| it.find_by_guid_mut(guid))
+                            .and_then(|found| found.content.as_mut())
+                            .and_then(|content| content.iter_mut().find(|it| it.stacks_with(item))),
+                        None => items.find(|it| it.stacks_with(item)),
+                    };
+                    stack.map_or(0, |stack| stack.top_up_from(item))
                 };
-                let stack = match container {
-                    Some(guid) => items
-                        .find_map(|it| it.find_by_guid_mut(guid))
-                        .and_then(|found| found.content.as_mut())
-                        .and_then(|content| content.iter_mut().find(|it| it.stacks_with(item))),
-                    None => items.find(|it| it.stacks_with(item)),
-                };
-                let moved = stack.map_or(0, |stack| stack.top_up_from(item));
                 if moved > 0 {
                     match container {
                         Some(guid) => self.delta.mark_container(guid),
                         None => self.delta.mark_tile(pos),
                     }
+                    self.map.mark_items_changed(pos);
                 }
                 moved
             }
@@ -939,5 +950,75 @@ mod tests {
         assert_eq!(stack.top_up_from(&mut incoming), 2);
         assert_eq!((stack.amount, incoming.amount), (100, 3));
         assert!(!stack.stacks_with(&incoming));
+    }
+
+    fn stamped(map: &WorldMap) -> usize {
+        map.chunks_changed_since(Tick(0)).count()
+    }
+
+    #[test]
+    fn an_item_write_stamps_its_chunk_with_the_current_tick() {
+        let (mut map, pos) = one_tile();
+        map.begin_tick(Tick(7));
+
+        map.place_item(&pos, None, None, coins(1)).unwrap();
+
+        assert_eq!(stamped(&map), 1);
+        assert_eq!(map.chunks_changed_since(Tick(7)).count(), 0);
+        assert_eq!(map.tick(), Tick(7));
+    }
+
+    #[test]
+    fn topping_up_a_stack_stamps() {
+        let (mut map, pos) = one_tile();
+        map.inner_mut()
+            .place_item(&pos, None, None, coins(1))
+            .unwrap();
+        map.begin_tick(Tick(3));
+
+        map.stack_onto(&ItemPlacement::Map(pos.clone()), &mut coins(1));
+
+        assert_eq!(stamped(&map), 1);
+    }
+
+    #[test]
+    fn removing_an_item_stamps() {
+        let (mut map, pos) = one_tile();
+        let coin = coins(1);
+        let guid = coin.guid;
+        map.inner_mut().place_item(&pos, None, None, coin).unwrap();
+        map.begin_tick(Tick(3));
+
+        map.remove_item_from_tile(&pos, &guid, 1).unwrap();
+
+        assert_eq!(stamped(&map), 1);
+    }
+
+    #[test]
+    fn moving_an_agent_does_not_stamp() {
+        let from = Position::new(10, 10, 7);
+        let to = Position::new(11, 10, 7);
+        let mut game = GameMap::new();
+        game.insert_tile(from.clone(), MapTile::new());
+        game.insert_tile(to.clone(), MapTile::new());
+        let key = game
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &from)
+            .unwrap();
+        let mut map = WorldMap::new(game);
+        map.begin_tick(Tick(5));
+
+        map.move_agent(key, &to).unwrap();
+
+        assert_eq!(stamped(&map), 0);
+    }
+
+    #[test]
+    fn a_failed_write_does_not_stamp() {
+        let (mut map, _) = one_tile();
+        map.begin_tick(Tick(5));
+
+        let _ = map.place_item(&Position::new(50, 50, 7), None, None, coins(1));
+
+        assert_eq!(stamped(&map), 0);
     }
 }

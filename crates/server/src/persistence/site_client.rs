@@ -2,7 +2,7 @@
 
 use std::time::Duration;
 
-use rustibia_contract::{CharacterRecord, RedeemRequest, SaveBatch, SaveResults};
+use rustibia_contract::{CharacterRecord, ChunkRow, RedeemRequest, WorldSave, WorldSaveResult};
 use thiserror::Error;
 
 /// How long to wait on the site before treating it as unavailable.
@@ -11,6 +11,9 @@ use thiserror::Error;
 /// going to fail should fail while they are still watching rather than after they have
 /// given up and retried.
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(5);
+
+/// A world save is one transaction over every online player and every changed chunk.
+const WORLD_SAVE_TIMEOUT: Duration = Duration::from_secs(120);
 
 #[derive(Debug, Error)]
 pub enum SiteError {
@@ -73,11 +76,22 @@ impl SiteClient {
         parse(accept(response).await?).await
     }
 
-    pub async fn save(&self, batch: &SaveBatch) -> Result<SaveResults, SiteError> {
+    pub async fn world_save(&self, save: &WorldSave) -> Result<WorldSaveResult, SiteError> {
         let response = self
             .client
-            .post(self.url("/internal/saves"))
-            .json(batch)
+            .post(self.url("/internal/world-saves"))
+            .timeout(WORLD_SAVE_TIMEOUT)
+            .json(save)
+            .send()
+            .await;
+        parse(accept(response).await?).await
+    }
+
+    pub async fn map_chunks(&self) -> Result<Vec<ChunkRow>, SiteError> {
+        let response = self
+            .client
+            .get(self.url("/internal/map-chunks"))
+            .timeout(WORLD_SAVE_TIMEOUT)
             .send()
             .await;
         parse(accept(response).await?).await
@@ -127,10 +141,14 @@ async fn accept(
         return Err(SiteError::NotFound);
     }
     let body = response.text().await.unwrap_or_default();
-    Err(SiteError::Unavailable(format!("the site answered {status}: {body}")))
+    Err(SiteError::Unavailable(format!(
+        "the site answered {status}: {body}"
+    )))
 }
 
-async fn parse<T: serde::de::DeserializeOwned>(response: reqwest::Response) -> Result<T, SiteError> {
+async fn parse<T: serde::de::DeserializeOwned>(
+    response: reqwest::Response,
+) -> Result<T, SiteError> {
     response
         .json()
         .await
@@ -155,7 +173,7 @@ fn read(path: &str) -> Result<Vec<u8>, ClientError> {
 
 #[cfg(test)]
 mod tests {
-    use rustibia_contract::{SaveOutcome, SaveResult};
+    use rustibia_contract::{ChunkRow, WorldSave};
     use wiremock::matchers::{method, path};
     use wiremock::{Mock, MockServer, ResponseTemplate};
 
@@ -169,47 +187,9 @@ mod tests {
     fn urls_are_built_without_a_double_slash() {
         let site = SiteClient::new("https://site:8443/", reqwest::Client::new());
 
-        assert_eq!(site.url("/internal/saves"), "https://site:8443/internal/saves");
-    }
-
-    #[tokio::test]
-    async fn a_save_batch_returns_the_sites_outcomes() {
-        let server = MockServer::start().await;
-        Mock::given(method("POST"))
-            .and(path("/internal/saves"))
-            .respond_with(ResponseTemplate::new(200).set_body_json(serde_json::json!({
-                "results": [{ "id": 7, "outcome": "stale" }]
-            })))
-            .mount(&server)
-            .await;
-
-        let results = a_site(&server)
-            .save(&SaveBatch { characters: Vec::new() })
-            .await
-            .unwrap();
-
         assert_eq!(
-            results.results,
-            vec![SaveResult { id: 7, outcome: SaveOutcome::Stale }]
-        );
-    }
-
-    #[tokio::test]
-    async fn a_failed_save_is_unavailable_and_carries_the_status() {
-        let server = MockServer::start().await;
-        Mock::given(method("POST"))
-            .and(path("/internal/saves"))
-            .respond_with(ResponseTemplate::new(422).set_body_string("bad batch"))
-            .mount(&server)
-            .await;
-
-        let error = a_site(&server)
-            .save(&SaveBatch { characters: Vec::new() })
-            .await
-            .unwrap_err();
-
-        assert!(
-            matches!(&error, SiteError::Unavailable(detail) if detail.contains("422") && detail.contains("bad batch"))
+            site.url("/internal/saves"),
+            "https://site:8443/internal/saves"
         );
     }
 
@@ -244,9 +224,11 @@ mod tests {
             .mount(&server)
             .await;
 
-        assert!(matches!(a_site(&server).redeem("t").await, Err(SiteError::NotFound)));
+        assert!(matches!(
+            a_site(&server).redeem("t").await,
+            Err(SiteError::NotFound)
+        ));
     }
-
 
     struct Certs {
         dir: std::path::PathBuf,
@@ -322,12 +304,55 @@ mod tests {
         std::fs::write(&garbage, b"not a key").unwrap();
 
         assert!(
-            SiteClient::build_client(
-                &certs.path("server.crt"),
-                &garbage,
-                &certs.path("ca.crt"),
+            SiteClient::build_client(&certs.path("server.crt"), &garbage, &certs.path("ca.crt"),)
+                .is_err()
+        );
+    }
+
+    #[tokio::test]
+    async fn a_world_save_returns_the_skipped_characters() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/internal/world-saves"))
+            .respond_with(
+                ResponseTemplate::new(200).set_body_json(serde_json::json!({ "skipped": [9] })),
             )
-            .is_err()
+            .mount(&server)
+            .await;
+
+        let result = a_site(&server)
+            .world_save(&WorldSave {
+                tick: 1,
+                characters: Vec::new(),
+                chunks: Vec::new(),
+            })
+            .await
+            .unwrap();
+
+        assert_eq!(result.skipped, vec![9]);
+    }
+
+    #[tokio::test]
+    async fn map_chunks_come_back_as_rows() {
+        let server = MockServer::start().await;
+        Mock::given(method("GET"))
+            .and(path("/internal/map-chunks"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(serde_json::json!([
+                { "cx": 1, "cy": 2, "z": 7, "tiles": [] }
+            ])))
+            .mount(&server)
+            .await;
+
+        let chunks = a_site(&server).map_chunks().await.unwrap();
+
+        assert_eq!(
+            chunks,
+            vec![ChunkRow {
+                cx: 1,
+                cy: 2,
+                z: 7,
+                tiles: Vec::new()
+            }]
         );
     }
 }

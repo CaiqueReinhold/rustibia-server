@@ -5,10 +5,10 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
 };
-use rustibia_contract::{CharacterRecord, MAX_SAVE_BATCH, RedeemRequest, SaveBatch, SaveResults};
+use rustibia_contract::{CharacterRecord, ChunkRow, RedeemRequest, WorldSave, WorldSaveResult};
 
 use crate::{
-    db::{login, online, saves},
+    db::{login, online, world_saves},
     error::AppError,
     state::AppState,
 };
@@ -22,18 +22,6 @@ pub async fn post_redeem(
         Some(record) => Ok(Json(record)),
         None => Err(AppError::NotFound),
     }
-}
-
-pub async fn post_saves(
-    State(state): State<AppState>,
-    Json(batch): Json<SaveBatch>,
-) -> Result<Json<SaveResults>, AppError> {
-    if batch.characters.len() > MAX_SAVE_BATCH {
-        return Err(AppError::Validation(format!(
-            "a save batch holds at most {MAX_SAVE_BATCH} characters"
-        )));
-    }
-    Ok(Json(saves::apply(&state.pool, &batch.characters).await?))
 }
 
 pub async fn post_online(
@@ -57,10 +45,32 @@ pub async fn post_online_reset(State(state): State<AppState>) -> Result<StatusCo
     Ok(StatusCode::NO_CONTENT)
 }
 
+pub async fn post_world_save(
+    State(state): State<AppState>,
+    Json(save): Json<WorldSave>,
+) -> Result<Json<WorldSaveResult>, AppError> {
+    Ok(Json(world_saves::apply(&state.pool, &save).await?))
+}
+
+pub async fn get_map_chunks(
+    State(state): State<AppState>,
+) -> Result<Json<Vec<ChunkRow>>, AppError> {
+    Ok(Json(world_saves::load_chunks(&state.pool).await?))
+}
+
+/// A world save carries every online player and every changed chunk; axum's 2 MB default would
+/// refuse a busy one.
+const WORLD_SAVE_BODY_LIMIT: usize = 256 * 1024 * 1024;
+
 pub fn router() -> axum::Router<AppState> {
     axum::Router::new()
         .route("/game-tokens/redeem", axum::routing::post(post_redeem))
-        .route("/saves", axum::routing::post(post_saves))
+        .route(
+            "/world-saves",
+            axum::routing::post(post_world_save)
+                .layer(axum::extract::DefaultBodyLimit::max(WORLD_SAVE_BODY_LIMIT)),
+        )
+        .route("/map-chunks", axum::routing::get(get_map_chunks))
         .route("/online/reset", axum::routing::post(post_online_reset))
         .route(
             "/online/{id}",
@@ -241,67 +251,12 @@ mod tests {
         );
     }
 
-    fn saves_req(batch: &rustibia_contract::SaveBatch) -> Request<Body> {
-        Request::builder()
-            .method("POST")
-            .uri("/internal/saves")
-            .header(header::CONTENT_TYPE, "application/json")
-            .body(Body::from(serde_json::to_vec(batch).unwrap()))
-            .unwrap()
-    }
-
-    fn a_save_for(id: i32) -> rustibia_contract::CharacterSave {
-        use rustibia_contract::{Coords, Outfit, PoolValue};
-        rustibia_contract::CharacterSave {
-            id,
-            save_version: 1,
-            position: Coords { x: 1030, y: 1031, z: 7 },
-            origin: Coords { x: 1028, y: 1028, z: 7 },
-            facing: 1,
-            life: PoolValue { current: 37, maximum: 150 },
-            mana: PoolValue { current: 5, maximum: 20 },
-            capacity: 390,
-            speed: 220,
-            outfit: Outfit { id: 128, head: 1, body: 2, legs: 3, feet: 4 },
-            skills: Vec::new(),
-            inventory: std::collections::HashMap::new(),
-        }
-    }
-
-    #[sqlx::test(migrations = "./migrations")]
-    async fn a_save_batch_answers_with_the_contract_type(pool: PgPool) {
-        let account_id = an_account(&pool, "player@example.com").await;
-        let character_id = a_character(&pool, account_id, "Rizael").await;
-        let batch = rustibia_contract::SaveBatch { characters: vec![a_save_for(character_id)] };
-
-        let (status, body) = send(test_app(pool), saves_req(&batch)).await;
-
-        assert_eq!(status, StatusCode::OK);
-        let results: rustibia_contract::SaveResults = serde_json::from_value(body).unwrap();
-        assert_eq!(
-            results.results,
-            vec![rustibia_contract::SaveResult {
-                id: character_id,
-                outcome: rustibia_contract::SaveOutcome::Applied,
-            }]
-        );
-    }
-
-    #[sqlx::test(migrations = "./migrations")]
-    async fn an_oversized_batch_is_refused(pool: PgPool) {
-        let characters = (0..=rustibia_contract::MAX_SAVE_BATCH as i32).map(a_save_for).collect();
-
-        let (status, _) = send(
-            test_app(pool),
-            saves_req(&rustibia_contract::SaveBatch { characters }),
-        )
-        .await;
-
-        assert_eq!(status, StatusCode::UNPROCESSABLE_ENTITY);
-    }
-
     fn bare(method: &str, uri: &str) -> Request<Body> {
-        Request::builder().method(method).uri(uri).body(Body::empty()).unwrap()
+        Request::builder()
+            .method(method)
+            .uri(uri)
+            .body(Body::empty())
+            .unwrap()
     }
 
     async fn online_ids(pool: &PgPool) -> Vec<i32> {
@@ -319,7 +274,10 @@ mod tests {
 
         let (first, _) = send(test_app(pool.clone()), bare("POST", &online)).await;
         let (second, _) = send(test_app(pool.clone()), bare("POST", &online)).await;
-        assert_eq!((first, second), (StatusCode::NO_CONTENT, StatusCode::NO_CONTENT));
+        assert_eq!(
+            (first, second),
+            (StatusCode::NO_CONTENT, StatusCode::NO_CONTENT)
+        );
         assert_eq!(online_ids(&pool).await, vec![id]);
 
         let (offline, _) = send(test_app(pool.clone()), bare("DELETE", &online)).await;
@@ -329,7 +287,11 @@ mod tests {
 
     #[sqlx::test(migrations = "./migrations")]
     async fn marking_an_unknown_character_online_is_harmless(pool: PgPool) {
-        let (status, _) = send(test_app(pool.clone()), bare("POST", "/internal/online/999999")).await;
+        let (status, _) = send(
+            test_app(pool.clone()),
+            bare("POST", "/internal/online/999999"),
+        )
+        .await;
 
         assert_eq!(status, StatusCode::NO_CONTENT);
         assert!(online_ids(&pool).await.is_empty());
@@ -339,11 +301,85 @@ mod tests {
     async fn a_reset_empties_the_online_list(pool: PgPool) {
         let account_id = an_account(&pool, "player@example.com").await;
         let id = a_character(&pool, account_id, "Rizael").await;
-        send(test_app(pool.clone()), bare("POST", &format!("/internal/online/{id}"))).await;
+        send(
+            test_app(pool.clone()),
+            bare("POST", &format!("/internal/online/{id}")),
+        )
+        .await;
 
-        let (status, _) = send(test_app(pool.clone()), bare("POST", "/internal/online/reset")).await;
+        let (status, _) = send(
+            test_app(pool.clone()),
+            bare("POST", "/internal/online/reset"),
+        )
+        .await;
 
         assert_eq!(status, StatusCode::NO_CONTENT);
         assert!(online_ids(&pool).await.is_empty());
+    }
+
+    fn world_save_req(save: &rustibia_contract::WorldSave) -> Request<Body> {
+        Request::builder()
+            .method("POST")
+            .uri("/internal/world-saves")
+            .header(header::CONTENT_TYPE, "application/json")
+            .body(Body::from(serde_json::to_vec(save).unwrap()))
+            .unwrap()
+    }
+
+    fn chunks_with_padding(count: i32) -> Vec<rustibia_contract::ChunkRow> {
+        use rustibia_contract::{ChunkRow, PlacedItem, StoredItemRecord, TileRow};
+        (0..count)
+            .map(|cx| ChunkRow {
+                cx,
+                cy: 0,
+                z: 7,
+                tiles: (0..256)
+                    .map(|index| TileRow {
+                        index,
+                        items: vec![PlacedItem {
+                            stack_index: 1,
+                            item: StoredItemRecord {
+                                item_id: 3031,
+                                amount: 1,
+                                content: None,
+                            },
+                        }],
+                    })
+                    .collect(),
+            })
+            .collect()
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_world_save_larger_than_axums_default_limit_is_accepted(pool: PgPool) {
+        let save = rustibia_contract::WorldSave {
+            tick: 1,
+            characters: Vec::new(),
+            chunks: chunks_with_padding(150),
+        };
+        assert!(serde_json::to_vec(&save).unwrap().len() > 2 * 1024 * 1024);
+
+        let (status, body) = send(test_app(pool.clone()), world_save_req(&save)).await;
+
+        assert_eq!(status, StatusCode::OK);
+        let result: rustibia_contract::WorldSaveResult = serde_json::from_value(body).unwrap();
+        assert!(result.skipped.is_empty());
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_map_chunks_route_returns_what_was_saved(pool: PgPool) {
+        let save = rustibia_contract::WorldSave {
+            tick: 1,
+            characters: Vec::new(),
+            chunks: chunks_with_padding(2),
+        };
+        send(test_app(pool.clone()), world_save_req(&save)).await;
+
+        let (status, body) = send(test_app(pool), bare("GET", "/internal/map-chunks")).await;
+
+        assert_eq!(status, StatusCode::OK);
+        let mut chunks: Vec<rustibia_contract::ChunkRow> = serde_json::from_value(body).unwrap();
+        chunks.sort_by_key(|chunk| chunk.cx);
+        assert_eq!(chunks, save.chunks);
     }
 }

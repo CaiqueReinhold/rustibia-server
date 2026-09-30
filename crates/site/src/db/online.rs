@@ -23,6 +23,8 @@ pub async fn mark_offline(pool: &PgPool, character_id: i32) -> Result<(), sqlx::
 }
 
 pub async fn reset(pool: &PgPool) -> Result<(), sqlx::Error> {
-    sqlx::query("DELETE FROM online_players").execute(pool).await?;
+    sqlx::query("DELETE FROM online_players")
+        .execute(pool)
+        .await?;
     Ok(())
 }

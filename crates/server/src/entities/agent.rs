@@ -218,7 +218,6 @@ impl Agent {
             player.capacity,
             Inventory::from_snapshot(player.inventory),
             player.skills,
-            player.save_version,
         );
         Self {
             inner: AgentInner::Player(Arc::new(p)),
@@ -497,8 +496,7 @@ impl Agent {
         self.next_auto_attack_tick = current_tick + GAME_CONFIG.combat.auto_attack_ticks;
     }
 
-    pub fn to_snapshot(&mut self, position: Position) -> Option<Box<PlayerSnapshot>> {
-        let save_version = self.get_player_mut()?.next_save_version();
+    pub fn to_snapshot(&self, position: Position) -> Option<Box<PlayerSnapshot>> {
         let player = self.get_player()?;
         Some(Box::new(PlayerSnapshot {
             id: player.id(),
@@ -516,7 +514,6 @@ impl Agent {
             outfit: self.outfit,
             skills: player.skills().clone(),
             inventory: player.inventory().slots().clone(),
-            save_version,
         }))
     }
 }
@@ -576,7 +573,6 @@ mod tests {
                 m
             },
             inventory: HashMap::new(),
-            save_version: 0,
         }
     }
 
@@ -605,7 +601,7 @@ mod tests {
 
     #[test]
     fn to_snapshot_returns_none_for_creature() {
-        let mut creature = Agent::from_creature_kind(
+        let creature = Agent::from_creature_kind(
             Arc::new(a_creature_kind("Creature")),
             Position::new(1028, 128, 7),
         );
@@ -618,21 +614,8 @@ mod tests {
     }
 
     #[test]
-    fn each_snapshot_takes_the_next_save_version() {
-        let mut snapshot = make_snapshot(1);
-        snapshot.save_version = 4;
-        let mut agent = Agent::from_player(snapshot);
-        let position = Position::new(1, 1, 7);
-
-        let first = agent.to_snapshot(position.clone()).unwrap();
-        let second = agent.to_snapshot(position).unwrap();
-
-        assert_eq!((first.save_version, second.save_version), (5, 6));
-    }
-
-    #[test]
     fn to_snapshot_uses_passed_position_not_stored() {
-        let mut agent = Agent::from_player(make_snapshot(1));
+        let agent = Agent::from_player(make_snapshot(1));
         let new_pos = Position {
             x: 999,
             y: 888,

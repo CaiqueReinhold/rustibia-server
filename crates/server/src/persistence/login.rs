@@ -2,27 +2,24 @@
 
 use std::collections::HashMap;
 use std::sync::Arc;
-use std::time::Duration;
 
-use rustibia_contract::{CharacterRecord, StoredItemRecord};
+use rustibia_contract::{CharacterRecord, CharacterSave, StoredItemRecord};
 use thiserror::Error;
 use tracing::warn;
 
+use crate::actors::persistence::PersistenceActorHandle;
 use crate::entities::agent::{Facing, OutfitColors, OutfitId};
 use crate::entities::player::PlayerId;
 use crate::entities::vocation::Vocation;
 use crate::entities::{
     agent::Pool,
     inventory::InventorySlot,
-    items::{Item, ItemConfig, ItemId},
+    items::{FluidType, Item, ItemConfig, ItemFlag, ItemId},
     position::Position,
     skills::{SkillType, SkillValue},
 };
-use crate::actors::persistence::PersistenceActorHandle;
 use crate::persistence::player::PlayerSnapshot;
 use crate::persistence::site_client::{SiteClient, SiteError};
-
-const DELIVERY_BEFORE_LOGIN: Duration = Duration::from_secs(5);
 
 #[derive(Debug, Error)]
 pub enum LoginError {
@@ -112,7 +109,6 @@ pub fn snapshot_from_record(
         ),
         skills,
         inventory,
-        save_version: record.save_version,
     }))
 }
 
@@ -144,7 +140,7 @@ fn malformed(detail: impl std::fmt::Display) -> LoginError {
 /// Rebuilds an `Item` tree, dropping anything whose id this build has no configuration
 /// for. Same tolerance the old load path had: an item removed from `assets/items/` should
 /// cost the player that item, not their character.
-fn restore_item(
+pub(crate) fn restore_item(
     items: &HashMap<ItemId, Arc<ItemConfig>>,
     stored: StoredItemRecord,
 ) -> Option<Item> {
@@ -159,7 +155,20 @@ fn restore_item(
         }
     };
 
-    let mut item = Item::new(config, stored.amount);
+    let mut item = match config.has_flag(ItemFlag::LiquidPool) {
+        true => match FluidType::from_u8(stored.amount) {
+            Some(fluid) => Item::new_fluid(config, fluid),
+            None => {
+                warn!(
+                    item_id = stored.item_id,
+                    fluid = stored.amount,
+                    "skipping an unknown fluid"
+                );
+                return None;
+            }
+        },
+        false => Item::new(config, stored.amount),
+    };
     if let Some(children) = stored.content {
         item.content = Some(Box::new(
             children
@@ -191,46 +200,34 @@ impl Login {
         }
     }
 
-    /// Spends `auth_token` and returns the character it names, refusing with `Unavailable`
-    /// while that character has a save the site has not acknowledged.
+    /// Spends `auth_token` and returns the character it names, in its journaled state when
+    /// the character logged out since the last world save.
     /// Returns `Rejected` for every refusal without distinguishing them — the caller has
     /// no use for the difference and the site deliberately does not report it.
     pub async fn redeem(&self, auth_token: &str) -> Result<Box<PlayerSnapshot>, LoginError> {
-        if let Some(character_id) = character_id_of(auth_token) {
-            let delivered = tokio::time::timeout(
-                DELIVERY_BEFORE_LOGIN,
-                self.persistence.deliver_for(character_id),
-            )
-            .await
-            .unwrap_or(false);
-            if !delivered {
-                return Err(LoginError::Unavailable(format!(
-                    "the pending save for character {character_id} could not be delivered"
-                )));
-            }
-        }
-
-        let snapshot = match self.site.redeem(auth_token).await {
-            Ok(record) => snapshot_from_record(record, &self.items)?,
+        let mut record = match self.site.redeem(auth_token).await {
+            Ok(record) => record,
             Err(SiteError::NotFound) => return Err(LoginError::Rejected),
             Err(SiteError::Unavailable(detail)) => return Err(LoginError::Unavailable(detail)),
         };
-
-        if let Some(journaled) = self.persistence.pending_version(snapshot.id).await
-            && journaled > snapshot.save_version
-        {
-            return Err(LoginError::Unavailable(format!(
-                "character {} has save {journaled} journaled but the site returned {}",
-                snapshot.id, snapshot.save_version
-            )));
+        if let Some(save) = self.persistence.journaled_state(record.id).await {
+            overlay(&mut record, save);
         }
-        Ok(snapshot)
+        snapshot_from_record(record, &self.items)
     }
 }
 
-pub fn character_id_of(auth_token: &str) -> Option<PlayerId> {
-    let (id, _) = auth_token.split_once('.')?;
-    id.parse().ok().map(PlayerId)
+fn overlay(record: &mut CharacterRecord, save: CharacterSave) {
+    record.position = save.position;
+    record.origin = save.origin;
+    record.facing = save.facing;
+    record.life = save.life;
+    record.mana = save.mana;
+    record.capacity = save.capacity;
+    record.speed = save.speed;
+    record.outfit = save.outfit;
+    record.skills = save.skills;
+    record.inventory = save.inventory;
 }
 
 #[cfg(test)]
@@ -239,6 +236,56 @@ mod tests {
     use crate::entities::agent::Facing;
     use crate::persistence::test_fixtures::no_items;
     use rustibia_contract::{Coords, Outfit, PoolValue, SkillRow};
+
+    #[test]
+    fn a_liquid_pool_round_trips_its_fluid_through_the_amount() {
+        use crate::entities::items::{FluidType, ItemFlag};
+        use crate::persistence::player::to_character_save;
+        use crate::persistence::test_fixtures::a_test_snapshot;
+
+        let pool_config = Arc::new(ItemConfig::new(
+            ItemId(2886),
+            "pool".to_string(),
+            None,
+            None,
+            [ItemFlag::LiquidPool],
+            Vec::new(),
+        ));
+        let mut snapshot = a_test_snapshot(7, 3);
+        snapshot.inventory = HashMap::from([(
+            InventorySlot::Backpack,
+            Item::new_fluid(Arc::clone(&pool_config), FluidType::Slime),
+        )]);
+        let stored = to_character_save(&snapshot).inventory.remove("3").unwrap();
+
+        let restored = restore_item(&HashMap::from([(ItemId(2886), pool_config)]), stored).unwrap();
+
+        assert_eq!(
+            (restored.fluid, restored.amount),
+            (Some(FluidType::Slime), 1)
+        );
+    }
+
+    #[test]
+    fn a_stack_round_trips_its_count_through_the_amount() {
+        let coin = Arc::new(ItemConfig::new(
+            ItemId(3031),
+            "coin".to_string(),
+            None,
+            None,
+            Vec::<crate::entities::items::ItemFlag>::new(),
+            Vec::new(),
+        ));
+        let stored = StoredItemRecord {
+            item_id: 3031,
+            amount: 42,
+            content: None,
+        };
+
+        let restored = restore_item(&HashMap::from([(ItemId(3031), coin)]), stored).unwrap();
+
+        assert_eq!((restored.fluid, restored.amount), (None, 42));
+    }
 
     fn a_record() -> CharacterRecord {
         CharacterRecord {
@@ -281,18 +328,7 @@ mod tests {
                 current_ticks: 0,
             }],
             inventory: HashMap::new(),
-            save_version: 0,
         }
-    }
-
-    #[test]
-    fn a_record_s_save_version_reaches_the_snapshot() {
-        let mut record = a_record();
-        record.save_version = 11;
-
-        let snapshot = snapshot_from_record(record, &HashMap::new()).unwrap();
-
-        assert_eq!(snapshot.save_version, 11);
     }
 
     #[test]
@@ -581,93 +617,57 @@ mod http_tests {
         ));
     }
 
-    /// Each delivery the courier was asked for: the character, and how many redemptions the
-    /// site had already seen at that moment.
-    type Deliveries = Arc<std::sync::Mutex<Vec<(u32, usize)>>>;
-
-    fn a_courier(
-        server: Arc<MockServer>,
-        delivered: bool,
-        journaled: Option<i64>,
-    ) -> (PersistenceActorHandle, Deliveries) {
+    fn a_courier_holding(save: Option<rustibia_contract::CharacterSave>) -> PersistenceActorHandle {
         use crate::actors::persistence::PersistenceCommand;
 
-        let deliveries = Arc::new(std::sync::Mutex::new(Vec::new()));
         let (persistence, mut rx) = PersistenceActorHandle::for_test();
-        let log = Arc::clone(&deliveries);
         tokio::spawn(async move {
             while let Some(command) = rx.recv().await {
-                match command {
-                    PersistenceCommand::DeliverFor(id, reply) => {
-                        let seen = server.received_requests().await.map_or(0, |r| r.len());
-                        log.lock().unwrap().push((id.0, seen));
-                        let _ = reply.send(delivered);
-                    }
-                    PersistenceCommand::PendingVersion(_, reply) => {
-                        let _ = reply.send(journaled);
-                    }
-                    _ => {}
+                if let PersistenceCommand::JournaledState(_, reply) = command {
+                    let _ = reply.send(save.clone());
                 }
             }
         });
-        (persistence, deliveries)
-    }
-
-    async fn redemptions(server: &MockServer) -> usize {
-        server.received_requests().await.map_or(0, |r| r.len())
+        persistence
     }
 
     #[tokio::test]
-    async fn the_pending_save_is_delivered_before_the_token_is_redeemed() {
-        let server = Arc::new(responding(200, a_record_json()).await);
-        let (courier, deliveries) = a_courier(Arc::clone(&server), true, None);
+    async fn a_journaled_state_replaces_the_records_but_not_its_name() {
+        let server = responding(200, a_record_json()).await;
+        let mut journaled = crate::persistence::player::to_character_save(
+            &crate::persistence::test_fixtures::a_test_snapshot(7, 3),
+        );
+        journaled.position = rustibia_contract::Coords {
+            x: 500,
+            y: 600,
+            z: 6,
+        };
 
-        assert!(login_with(&server, courier).redeem("7.abc").await.is_ok());
+        let snapshot = login_with(&server, a_courier_holding(Some(journaled)))
+            .redeem("a-token")
+            .await
+            .unwrap();
 
-        assert_eq!(*deliveries.lock().unwrap(), vec![(7, 0)]);
-        assert_eq!(redemptions(&server).await, 1);
+        assert_eq!(
+            (
+                snapshot.position.x,
+                snapshot.position.y,
+                snapshot.position.z
+            ),
+            (500, 600, 6)
+        );
+        assert_eq!(snapshot.name, "Rizael");
     }
 
     #[tokio::test]
-    async fn an_undeliverable_save_refuses_the_login_without_spending_the_token() {
-        let server = Arc::new(responding(200, a_record_json()).await);
-        let (courier, _) = a_courier(Arc::clone(&server), false, Some(4));
+    async fn without_a_journaled_state_the_record_is_used() {
+        let server = responding(200, a_record_json()).await;
 
-        let result = login_with(&server, courier).redeem("7.abc").await;
+        let snapshot = login_with(&server, a_courier_holding(None))
+            .redeem("a-token")
+            .await
+            .unwrap();
 
-        assert!(matches!(result, Err(LoginError::Unavailable(_))));
-        assert_eq!(redemptions(&server).await, 0);
-    }
-
-    #[tokio::test]
-    async fn a_journaled_version_newer_than_the_record_refuses_the_login() {
-        let mut record = a_record_json();
-        record["save_version"] = 3.into();
-        let server = Arc::new(responding(200, record).await);
-        let (courier, _) = a_courier(Arc::clone(&server), true, Some(5));
-
-        let result = login_with(&server, courier).redeem("7.abc").await;
-
-        assert!(matches!(result, Err(LoginError::Unavailable(_))));
-    }
-
-    #[tokio::test]
-    async fn a_token_that_names_no_character_goes_straight_to_redemption() {
-        let server = Arc::new(responding(200, a_record_json()).await);
-        let (courier, deliveries) = a_courier(Arc::clone(&server), true, None);
-
-        assert!(login_with(&server, courier).redeem("abc").await.is_ok());
-
-        assert!(deliveries.lock().unwrap().is_empty());
-        assert_eq!(redemptions(&server).await, 1);
-    }
-
-    #[test]
-    fn a_character_id_is_read_from_before_the_first_dot() {
-        assert_eq!(character_id_of("12.abc"), Some(PlayerId(12)));
-        assert_eq!(character_id_of("12.abc.def"), Some(PlayerId(12)));
-        assert_eq!(character_id_of("abc"), None);
-        assert_eq!(character_id_of("x.abc"), None);
-        assert_eq!(character_id_of(".abc"), None);
+        assert_eq!((snapshot.position.x, snapshot.position.y), (1028, 1029));
     }
 }

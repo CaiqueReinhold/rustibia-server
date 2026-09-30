@@ -149,6 +149,36 @@ pub enum FluidType {
     Chocolate = 20,
 }
 
+impl FluidType {
+    pub fn from_u8(value: u8) -> Option<Self> {
+        use FluidType::*;
+        const ALL: [FluidType; 21] = [
+            None,
+            Water,
+            Mana,
+            Beer,
+            Oil,
+            Blood,
+            Slime,
+            Mud,
+            Lemonade,
+            Milk,
+            Wine,
+            Health,
+            Urine,
+            Rum,
+            FruitJuice,
+            CoconutMilk,
+            Tea,
+            Mead,
+            Ink,
+            Candy,
+            Chocolate,
+        ];
+        ALL.get(value as usize).copied()
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub enum FloorChangeDirection {
     Up,
@@ -471,6 +501,19 @@ pub enum ItemMultiAction {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_fluid_byte_reads_back_as_its_fluid() {
+        assert_eq!(
+            FluidType::from_u8(FluidType::Blood as u8),
+            Some(FluidType::Blood)
+        );
+        assert_eq!(
+            FluidType::from_u8(FluidType::Chocolate as u8),
+            Some(FluidType::Chocolate)
+        );
+        assert_eq!(FluidType::from_u8(FluidType::Chocolate as u8 + 1), None);
+    }
     use crate::entities::conditions::SpecSchedule;
     use std::collections::HashSet;
     use strum::IntoEnumIterator;

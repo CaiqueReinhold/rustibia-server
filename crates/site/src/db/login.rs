@@ -38,7 +38,7 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
     let row = sqlx::query(
         "SELECT id, account_id, name, vocation, pos_x, pos_y, pos_z, origin_x, origin_y, origin_z, \
          facing, life_cur, life_max, mana_cur, mana_max, capacity, speed, \
-         outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory, admin, save_version \
+         outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory, admin \
          FROM players WHERE id = $1 AND deleted_at IS NULL",
     )
     .bind(character_id)
@@ -116,7 +116,6 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
         },
         skills,
         inventory: inventory.0,
-        save_version: row.try_get("save_version")?,
     };
 
     tx.commit().await?;
@@ -306,30 +305,5 @@ mod tests {
         assert_eq!(bag.len(), 1);
         assert_eq!(bag[0].item_id, 2360);
         assert_eq!(bag[0].amount, 10);
-    }
-
-    #[sqlx::test(migrations = "./migrations")]
-    async fn redemption_carries_the_save_version(pool: PgPool) {
-        let account_id = an_account(&pool, "player@example.com").await;
-        let character_id = a_character(&pool, account_id, "Rizael").await;
-        sqlx::query("UPDATE players SET save_version = 9 WHERE id = $1")
-            .bind(character_id)
-            .execute(&pool)
-            .await
-            .unwrap();
-        let token = "a-token";
-        sqlx::query(
-            "INSERT INTO game_tokens (token_hash, character_id, valid_until) \
-             VALUES ($1, $2, NOW() + INTERVAL '1 minute')",
-        )
-        .bind(crate::auth::token::hash_token(token))
-        .bind(character_id)
-        .execute(&pool)
-        .await
-        .unwrap();
-
-        let record = redeem(&pool, token).await.unwrap().unwrap();
-
-        assert_eq!(record.save_version, 9);
     }
 }

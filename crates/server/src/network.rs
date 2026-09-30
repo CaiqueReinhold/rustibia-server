@@ -53,10 +53,7 @@ impl Listener {
         }
     }
 
-    async fn accept_connection(
-        stream: TcpStream,
-        context: &Context,
-    ) -> Result<()> {
+    async fn accept_connection(stream: TcpStream, context: &Context) -> Result<()> {
         let session_id = uuid::Uuid::new_v7(Timestamp::now(NoContext)).to_string();
         let (conn_tx, conn_rx) = oneshot::channel();
 

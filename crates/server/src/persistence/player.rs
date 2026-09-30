@@ -31,14 +31,12 @@ pub struct PlayerSnapshot {
     pub outfit: (OutfitId, OutfitColors),
     pub skills: HashMap<SkillType, SkillValue>,
     pub inventory: HashMap<InventorySlot, Item>,
-    pub save_version: i64,
 }
 
 pub fn to_character_save(snapshot: &PlayerSnapshot) -> CharacterSave {
     let (outfit_id, colors) = snapshot.outfit;
     CharacterSave {
         id: snapshot.id.0 as i32,
-        save_version: snapshot.save_version,
         position: coords(&snapshot.position),
         origin: coords(&snapshot.origin),
         facing: snapshot.facing.as_id() as i16,
@@ -87,7 +85,7 @@ fn coords(position: &Position) -> Coords {
 fn stored_item(item: &Item) -> StoredItemRecord {
     StoredItemRecord {
         item_id: item.id().0,
-        amount: item.amount,
+        amount: item.wire_subtype(),
         content: item
             .content
             .as_ref()
@@ -113,14 +111,28 @@ mod tests {
         use crate::persistence::test_fixtures::a_test_snapshot;
 
         let config = |id: u16, flags: HashSet<ItemFlag>, attributes: Vec<ItemAttribute>| {
-            Arc::new(ItemConfig::new(ItemId(id), format!("item {id}"), None, None, flags, attributes))
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                format!("item {id}"),
+                None,
+                None,
+                flags,
+                attributes,
+            ))
         };
-        let bag = config(1987, HashSet::from([ItemFlag::Container]), vec![ItemAttribute::Capacity(8)]);
-        let coin = config(3031, HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]), Vec::new());
+        let bag = config(
+            1987,
+            HashSet::from([ItemFlag::Container]),
+            vec![ItemAttribute::Capacity(8)],
+        );
+        let coin = config(
+            3031,
+            HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
+            Vec::new(),
+        );
         let mut backpack = Item::new(Arc::clone(&bag), 1);
         backpack.content = Some(Box::new(vec![Item::new(Arc::clone(&coin), 12)]));
         let mut snapshot = a_test_snapshot(7, 3);
-        snapshot.save_version = 4;
         snapshot.life.current = 37;
         snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
 
@@ -141,19 +153,20 @@ mod tests {
             outfit: save.outfit,
             skills: save.skills,
             inventory: save.inventory,
-            save_version: save.save_version,
         };
         let configs = HashMap::from([(ItemId(1987), bag), (ItemId(3031), coin)]);
         let restored = snapshot_from_record(record, &configs).unwrap();
 
         assert_eq!(restored.id, snapshot.id);
-        assert_eq!(restored.save_version, 4);
         assert_eq!(restored.position, snapshot.position);
         assert_eq!(restored.origin, snapshot.origin);
         assert_eq!(restored.facing, snapshot.facing);
         assert_eq!(restored.life, snapshot.life);
         assert_eq!(restored.mana, snapshot.mana);
-        assert_eq!((restored.capacity, restored.speed), (snapshot.capacity, snapshot.speed));
+        assert_eq!(
+            (restored.capacity, restored.speed),
+            (snapshot.capacity, snapshot.speed)
+        );
         assert_eq!(
             restored.skills[&SkillType::Level].current_ticks,
             snapshot.skills[&SkillType::Level].current_ticks
