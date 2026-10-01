@@ -25,6 +25,8 @@ pub struct ServerConfig {
     pub internal_tls_cert: String,
     pub internal_tls_key: String,
     pub internal_tls_ca: String,
+    pub game_tls_cert: String,
+    pub game_tls_key: String,
 }
 
 impl Default for ServerConfig {
@@ -52,6 +54,10 @@ impl Default for ServerConfig {
                 .unwrap_or_else(|_| "certs/server.key".to_string()),
             internal_tls_ca: std::env::var("INTERNAL_TLS_CA")
                 .unwrap_or_else(|_| "certs/ca.crt".to_string()),
+            game_tls_cert: std::env::var("GAME_TLS_CERT")
+                .unwrap_or_else(|_| "certs/game.crt".to_string()),
+            game_tls_key: std::env::var("GAME_TLS_KEY")
+                .unwrap_or_else(|_| "certs/game.key".to_string()),
         }
     }
 }

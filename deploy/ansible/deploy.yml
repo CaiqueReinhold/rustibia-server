@@ -58,7 +58,7 @@
         state: directory
         owner: "{{ app_uid }}"
         mode: "0500"
-      loop: [site, server]
+      loop: [site, server, game]
 
     - name: Copy the mTLS certificates
       ansible.builtin.copy:
@@ -85,11 +85,18 @@
       when: telemetry_enabled
       notify: Restart lgtm
 
-    - name: Install the certbot renewal hook
+    - name: Install the game certificate installer
       ansible.builtin.template:
-        src: reload-nginx.sh.j2
-        dest: /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+        src: install-game-cert.sh.j2
+        dest: /usr/local/sbin/rustibia-install-game-cert
         mode: "0755"
+
+    - name: Install the certbot renewal hooks
+      ansible.builtin.template:
+        src: "{{ item }}.j2"
+        dest: /etc/letsencrypt/renewal-hooks/deploy/{{ item }}
+        mode: "0755"
+      loop: [reload-nginx.sh, reload-game-cert.sh]
 
     - name: Check for a TLS certificate
       ansible.builtin.stat:
@@ -111,6 +118,38 @@
         dest: "{{ app_dir }}/compose.yaml"
         mode: "0600"
       diff: false
+
+    - name: Issue the TLS certificate
+      when: not tls.stat.exists
+      block:
+        - name: Start nginx without the game server to answer the ACME challenge
+          community.docker.docker_compose_v2:
+            project_src: "{{ app_dir }}"
+            services: [nginx]
+            pull: missing
+            wait: true
+            wait_timeout: 300
+
+        - name: Request a certificate from Let's Encrypt
+          ansible.builtin.command: >-
+            certbot certonly --webroot -w /var/www/certbot
+            -d {{ domain }} --email {{ letsencrypt_email }}
+            --agree-tos --non-interactive
+          args:
+            creates: "{{ tls_cert }}"
+
+        - name: Enable HTTPS in nginx
+          ansible.builtin.template:
+            src: nginx.conf.j2
+            dest: "{{ app_dir }}/nginx/default.conf"
+            mode: "0644"
+          vars:
+            tls_ready: true
+          notify: Reload nginx
+
+    - name: Install the game certificate
+      ansible.builtin.command: /usr/local/sbin/rustibia-install-game-cert
+      changed_when: false
 
     - name: Start the stack
       community.docker.docker_compose_v2:
@@ -134,26 +173,6 @@
       when: telemetry_enabled
       no_log: true
       changed_when: false
-
-    - name: Issue the TLS certificate
-      when: not tls.stat.exists
-      block:
-        - name: Request a certificate from Let's Encrypt
-          ansible.builtin.command: >-
-            certbot certonly --webroot -w /var/www/certbot
-            -d {{ domain }} --email {{ letsencrypt_email }}
-            --agree-tos --non-interactive
-          args:
-            creates: "{{ tls_cert }}"
-
-        - name: Enable HTTPS in nginx
-          ansible.builtin.template:
-            src: nginx.conf.j2
-            dest: "{{ app_dir }}/nginx/default.conf"
-            mode: "0644"
-          vars:
-            tls_ready: true
-          notify: Reload nginx
 
     - name: Remove images unused for a week
       ansible.builtin.command: docker image prune --all --force --filter until=168h

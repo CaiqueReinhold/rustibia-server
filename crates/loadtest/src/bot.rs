@@ -1,4 +1,3 @@
-use std::net::SocketAddr;
 use std::time::{Duration, Instant};
 
 use rustibia_server::constants::items::INVENTORY_COORD_FLAG;
@@ -14,7 +13,7 @@ use crate::brain::Brain;
 use crate::config::Behaviour;
 use crate::metrics::{Counter, Event, Probe};
 use crate::probes::Probes;
-use crate::wire::{Connection, WireError};
+use crate::wire::{Connection, Dialer, WireError};
 use crate::world::{ItemCatalogue, World};
 
 const LOGOUT_GRACE: Duration = Duration::from_secs(2);
@@ -44,7 +43,7 @@ fn jitter((low, high): (u64, u64)) -> Duration {
 }
 
 pub struct Bot {
-    addr: SocketAddr,
+    dialer: Dialer,
     token: String,
     brain: Brain,
     world: World,
@@ -59,7 +58,7 @@ pub struct Bot {
 
 impl Bot {
     pub fn new(
-        addr: SocketAddr,
+        dialer: Dialer,
         token: String,
         brain: Brain,
         catalogue: ItemCatalogue,
@@ -67,7 +66,7 @@ impl Bot {
     ) -> Self {
         let behaviour = brain.behaviour().clone();
         Self {
-            addr,
+            dialer,
             token,
             brain,
             world: World::new(catalogue),
@@ -120,7 +119,7 @@ impl Bot {
     pub async fn run_until(mut self, deadline: Instant) -> Result<(), BotError> {
         self.probes.count(Counter::LoginAttempted, 1).await;
 
-        let mut connection = match Connection::connect(self.addr).await {
+        let mut connection = match Connection::connect(&self.dialer).await {
             Ok(connection) => connection,
             Err(error) => {
                 self.probes.count(Counter::ConnectFailed, 1).await;
@@ -392,6 +391,7 @@ impl Bot {
 mod tests {
     use super::*;
     use crate::config::{Coords, Route};
+    use crate::testing::TestListener;
     use crate::testing::*;
     use futures::{SinkExt, StreamExt};
     use rustibia_server::entities::agent::{AgentId, Facing, OutfitColors, OutfitId};
@@ -400,7 +400,6 @@ mod tests {
     use rustibia_server::entities::spells::SpellId;
     use rustibia_server::messages::{GameMessageCodec as ServerCodec, SpellListEntry};
     use tokio::io::AsyncWriteExt;
-    use tokio::net::TcpListener;
     use tokio::sync::mpsc;
     use tokio_util::codec::Framed;
 
@@ -426,18 +425,18 @@ mod tests {
     /// A stand-in server: reads the `Login`, answers with the real login
     /// burst, then answers every later message with `Pong` so the bot's loop
     /// keeps running.
-    async fn a_server_that_logs_in() -> std::net::SocketAddr {
+    async fn a_server_that_logs_in() -> Dialer {
         spawn_server(true).await
     }
 
     /// The same, except the login is refused the way the real server refuses one.
-    async fn a_server_that_refuses_login() -> std::net::SocketAddr {
+    async fn a_server_that_refuses_login() -> Dialer {
         spawn_server(false).await
     }
 
-    async fn spawn_server(accept: bool) -> std::net::SocketAddr {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+    async fn spawn_server(accept: bool) -> Dialer {
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -523,8 +522,8 @@ mod tests {
     /// "the first frame after `Login`".
     #[tokio::test]
     async fn the_first_command_after_login_opens_the_equipped_backpack() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
         let (record_tx, mut commands) = mpsc::unbounded_channel();
 
         tokio::spawn(async move {
@@ -573,8 +572,8 @@ mod tests {
     /// must go to `brain.corpse_opened`, not `world.mark_carried`.
     #[tokio::test]
     async fn a_refused_backpack_open_does_not_mark_the_next_container_carried() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -610,12 +609,18 @@ mod tests {
         });
 
         let (tx, _rx) = tokio::sync::mpsc::channel(256);
-        let mut bot = Bot::new(addr, "game-token".into(), a_brain(), catalogue(), tx);
+        let mut bot = Bot::new(
+            addr.clone(),
+            "game-token".into(),
+            a_brain(),
+            catalogue(),
+            tx,
+        );
 
         // Drive the handshake and the denial by hand so the test can inspect
         // `awaiting_backpack` directly rather than depend on the loot loop's
         // own timing to produce a corpse `OpenContainer`.
-        let mut connection = Connection::connect(addr).await.unwrap();
+        let mut connection = Connection::connect(&addr).await.unwrap();
         connection
             .send(ClientMessage::Login {
                 auth_token: "game-token".into(),
@@ -668,8 +673,8 @@ mod tests {
     /// login failure, not vanish from the report uncounted.
     #[tokio::test]
     async fn a_login_burst_that_never_arrives_times_out_as_a_login_failure() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (_socket, _) = listener.accept().await.unwrap();
@@ -677,10 +682,16 @@ mod tests {
         });
 
         let (tx, mut rx) = tokio::sync::mpsc::channel(64);
-        let mut bot = Bot::new(addr, "game-token".into(), a_brain(), catalogue(), tx);
+        let mut bot = Bot::new(
+            addr.clone(),
+            "game-token".into(),
+            a_brain(),
+            catalogue(),
+            tx,
+        );
         // A real run would wait `LOGIN_BURST_TIMEOUT`; exercise the timeout
         // mechanism directly against a short deadline instead of a 30 s test.
-        let mut connection = Connection::connect(addr).await.unwrap();
+        let mut connection = Connection::connect(&addr).await.unwrap();
         connection
             .send(ClientMessage::Login {
                 auth_token: "game-token".into(),
@@ -709,8 +720,8 @@ mod tests {
     /// the moment the server fell over.
     #[tokio::test]
     async fn a_dropped_connection_counts_as_disconnected_not_a_decode_error() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -739,8 +750,8 @@ mod tests {
 
     #[tokio::test]
     async fn an_unknown_opcode_counts_as_a_decode_error_and_ends_the_bot() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -782,8 +793,8 @@ mod tests {
 
     #[tokio::test]
     async fn a_dry_health_potion_is_counted() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -821,8 +832,8 @@ mod tests {
 
     #[tokio::test]
     async fn a_strip_mismatch_is_counted_from_the_worlds_delta() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -863,8 +874,8 @@ mod tests {
     /// the cast and the brain resends it on every decision tick.
     #[tokio::test]
     async fn a_spell_cast_replys_cooldown_suppresses_further_casts() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
         let (record_tx, mut commands) = mpsc::unbounded_channel();
         let spell_id = SpellId(9);
 
@@ -961,8 +972,8 @@ mod tests {
         const PING_DELAY: Duration = Duration::from_millis(120);
         const WALK_DELAY: Duration = Duration::from_millis(10);
 
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -1041,8 +1052,8 @@ mod tests {
     /// must reflect only the second send.
     #[tokio::test]
     async fn a_walk_denial_does_not_leave_a_stale_probe_for_the_next_ack() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
 
         tokio::spawn(async move {
             let (socket, _) = listener.accept().await.unwrap();
@@ -1108,8 +1119,8 @@ mod tests {
     /// A bot sends `Logout` when its deadline arrives.
     #[tokio::test]
     async fn a_bot_sends_logout_at_its_deadline() {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
+        let listener = TestListener::bind().await;
+        let addr = listener.dialer();
         let (record_tx, mut commands) = mpsc::unbounded_channel();
 
         tokio::spawn(async move {

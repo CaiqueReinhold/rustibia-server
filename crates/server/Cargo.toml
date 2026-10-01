@@ -16,6 +16,8 @@ anyhow = { workspace = true }
 futures = { workspace = true }
 rand = { workspace = true }
 reqwest = { workspace = true }
+rustls = { workspace = true }
+rustls-pemfile = { workspace = true }
 rustibia-contract = { path = "../contract" }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -23,6 +25,7 @@ serde_yaml = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
+tokio-rustls = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 opentelemetry = { workspace = true }

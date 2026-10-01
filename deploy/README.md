@@ -76,5 +76,11 @@ it to the 1Password value.
   them back to the last world save.
 - **The server holds about 2.5 GB resident** with the full spawn table loaded, before any
   player connects; lgtm adds roughly another gigabyte. Size the host for both.
-- Certificates renew via the certbot package's own systemd timer; the deploy hook in
-  `/etc/letsencrypt/renewal-hooks/deploy/` reloads nginx.
+- Certificates renew via the certbot package's own systemd timer. Two deploy hooks in
+  `/etc/letsencrypt/renewal-hooks/deploy/` run after each renewal: one reloads nginx, the other
+  copies the certificate and key to `/opt/rustibia/certs/game/` (owned by uid 10001, which cannot
+  read `/etc/letsencrypt/live`) and sends the server SIGHUP. The server swaps certificates for
+  new connections only; nobody is disconnected.
+- **The game server will not start without that certificate**, so on a fresh host `deploy.yml`
+  brings up nginx alone, issues the certificate, installs the game copy, and only then starts
+  the server.

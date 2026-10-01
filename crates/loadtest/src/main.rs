@@ -59,6 +59,8 @@ enum Command {
         #[arg(long, default_value = "127.0.0.1:5555")]
         server: String,
         #[arg(long)]
+        extra_ca: Option<String>,
+        #[arg(long)]
         items: String,
         #[arg(long, default_value = "../server/assets/areas.yaml")]
         areas: String,
@@ -137,6 +139,7 @@ async fn main() -> Result<()> {
             email,
             password,
             server,
+            extra_ca,
             items,
             areas,
             config,
@@ -151,6 +154,7 @@ async fn main() -> Result<()> {
                 email,
                 password,
                 server,
+                extra_ca,
                 items,
                 areas,
                 config,

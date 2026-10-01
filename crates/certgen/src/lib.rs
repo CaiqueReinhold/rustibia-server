@@ -1,19 +1,21 @@
-//! Generates the private CA and the two leaf certificates that protect
-//! `POST /internal/game-tokens/redeem`.
+//! Generates the private CA and the leaf certificates it signs.
 //!
-//! Three certificates, one job each:
+//! Four certificates, one job each:
 //!
-//! - **`ca`** — signs the other two, and is the only thing either process trusts. It is
+//! - **`ca`** — signs the others, and is the only thing either process trusts. It is
 //!   what makes the mutual authentication mean something: the site accepts a client
 //!   because this CA vouched for it, not because it presented *some* certificate.
 //! - **`site`** — the server's leaf, presented by the internal listener. Its SANs must
 //!   cover whatever host name the game server dials, or the client rejects it.
 //! - **`server`** — the client's leaf, presented by the game server.
+//! - **`game`** — the game socket's leaf, for development only. Production presents a
+//!   Let's Encrypt certificate there, and a player's client trusts this CA only when its
+//!   `extra_ca` names it.
 //!
 //! Self-signed and long-lived, per the design: there is one host, no rotation tooling,
 //! and no public trust store involved. Everything written here is a secret except the
-//! three `.crt` files, which is why `certs/` is git-ignored and this generates rather
-//! than ships.
+//! `.crt` files, which is why `certs/` is git-ignored and this generates rather than
+//! ships.
 
 use std::fs;
 use std::net::{IpAddr, Ipv4Addr};
@@ -31,6 +33,10 @@ use rcgen::{
 /// confusing error to debug from the client side.
 const SITE_SANS: &[&str] = &["localhost", "rustibia-site", "site"];
 
+/// The names a development game server is dialled by: the client's and the load-test
+/// bots' local addresses.
+const GAME_SANS: &[&str] = &["localhost"];
+
 /// PEM file names inside the target directory. The defaults in both processes'
 /// configuration point at exactly these.
 pub const CA_CERT: &str = "ca.crt";
@@ -39,6 +45,8 @@ pub const SITE_CERT: &str = "site.crt";
 pub const SITE_KEY: &str = "site.key";
 pub const SERVER_CERT: &str = "server.crt";
 pub const SERVER_KEY: &str = "server.key";
+pub const GAME_CERT: &str = "game.crt";
+pub const GAME_KEY: &str = "game.key";
 
 /// The PEM contents of a generated bundle, returned so a caller (a test, usually) can
 /// use them without reading the files back.
@@ -49,6 +57,8 @@ pub struct Bundle {
     pub site_key_pem: String,
     pub server_cert_pem: String,
     pub server_key_pem: String,
+    pub game_cert_pem: String,
+    pub game_key_pem: String,
 }
 
 /// Generates a fresh CA and both leaves into `dir`, creating it if absent.
@@ -66,15 +76,20 @@ pub fn generate_bundle(dir: impl AsRef<Path>) -> Result<Bundle> {
         .context("self-signing the CA certificate")?;
     let ca_issuer = Issuer::new(ca_params, &ca_key);
 
-    let (site_params, site_key) = leaf("rustibia-site internal", true)?;
+    let (site_params, site_key) = leaf("rustibia-site internal", Some(SITE_SANS))?;
     let site_cert = site_params
         .signed_by(&site_key, &ca_issuer)
         .context("signing the site certificate")?;
 
-    let (server_params, server_key) = leaf("rustibia-server internal client", false)?;
+    let (server_params, server_key) = leaf("rustibia-server internal client", None)?;
     let server_cert = server_params
         .signed_by(&server_key, &ca_issuer)
         .context("signing the game server certificate")?;
+
+    let (game_params, game_key) = leaf("rustibia game socket (development)", Some(GAME_SANS))?;
+    let game_cert = game_params
+        .signed_by(&game_key, &ca_issuer)
+        .context("signing the game socket certificate")?;
 
     let bundle = Bundle {
         ca_cert_pem: ca_cert.pem(),
@@ -82,6 +97,8 @@ pub fn generate_bundle(dir: impl AsRef<Path>) -> Result<Bundle> {
         site_key_pem: site_key.serialize_pem(),
         server_cert_pem: server_cert.pem(),
         server_key_pem: server_key.serialize_pem(),
+        game_cert_pem: game_cert.pem(),
+        game_key_pem: game_key.serialize_pem(),
     };
 
     write(dir, CA_CERT, &bundle.ca_cert_pem)?;
@@ -90,6 +107,8 @@ pub fn generate_bundle(dir: impl AsRef<Path>) -> Result<Bundle> {
     write(dir, SITE_KEY, &bundle.site_key_pem)?;
     write(dir, SERVER_CERT, &bundle.server_cert_pem)?;
     write(dir, SERVER_KEY, &bundle.server_key_pem)?;
+    write(dir, GAME_CERT, &bundle.game_cert_pem)?;
+    write(dir, GAME_KEY, &bundle.game_key_pem)?;
 
     Ok(bundle)
 }
@@ -110,11 +129,11 @@ fn ca() -> Result<(CertificateParams, KeyPair)> {
     Ok((params, key))
 }
 
-/// A leaf certificate. `for_server` decides between `serverAuth` and `clientAuth`:
-/// giving both to both would let the game server's certificate also be used to *host*
-/// an internal listener, which is the kind of latitude that makes a stolen key worse
-/// than it needs to be.
-fn leaf(common_name: &str, for_server: bool) -> Result<(CertificateParams, KeyPair)> {
+/// A leaf certificate: `serverAuth` for `server_names` plus 127.0.0.1, or `clientAuth`
+/// when there are none. Giving both to one leaf would let the game server's client
+/// certificate also *host* an internal listener, which is the kind of latitude that makes
+/// a stolen key worse than it needs to be.
+fn leaf(common_name: &str, server_names: Option<&[&str]>) -> Result<(CertificateParams, KeyPair)> {
     let mut params = CertificateParams::default();
     params.distinguished_name = distinguished_name(common_name);
     params.is_ca = IsCa::NoCa;
@@ -125,20 +144,21 @@ fn leaf(common_name: &str, for_server: bool) -> Result<(CertificateParams, KeyPa
     params.not_before = date_time_ymd(2020, 1, 1);
     params.not_after = date_time_ymd(2050, 1, 1);
 
-    if for_server {
-        params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ServerAuth];
-        for name in SITE_SANS {
-            params.subject_alt_names.push(SanType::DnsName(
-                (*name)
-                    .try_into()
-                    .with_context(|| format!("{name} is not a valid DNS name"))?,
-            ));
+    match server_names {
+        Some(names) => {
+            params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ServerAuth];
+            for name in names {
+                params.subject_alt_names.push(SanType::DnsName(
+                    (*name)
+                        .try_into()
+                        .with_context(|| format!("{name} is not a valid DNS name"))?,
+                ));
+            }
+            params
+                .subject_alt_names
+                .push(SanType::IpAddress(IpAddr::V4(Ipv4Addr::LOCALHOST)));
         }
-        params
-            .subject_alt_names
-            .push(SanType::IpAddress(IpAddr::V4(Ipv4Addr::LOCALHOST)));
-    } else {
-        params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ClientAuth];
+        None => params.extended_key_usages = vec![ExtendedKeyUsagePurpose::ClientAuth],
     }
 
     let key =
@@ -172,8 +192,8 @@ mod tests {
     }
 
     #[test]
-    fn generates_all_six_files() {
-        let dir = a_temp_dir("all-six");
+    fn generates_every_file() {
+        let dir = a_temp_dir("every-file");
         generate_bundle(&dir).unwrap();
 
         for name in [
@@ -183,6 +203,8 @@ mod tests {
             SITE_KEY,
             SERVER_CERT,
             SERVER_KEY,
+            GAME_CERT,
+            GAME_KEY,
         ] {
             let path = dir.join(name);
             assert!(path.exists(), "{name} was not written");
@@ -196,43 +218,48 @@ mod tests {
         fs::remove_dir_all(&dir).unwrap();
     }
 
-    /// The site's leaf must be usable as a server certificate for the names the game
-    /// server actually dials. Getting this wrong produces a handshake failure whose
-    /// message mentions neither the certificate nor the SAN list.
+    /// Both server leaves must be usable for the names a local peer dials. Getting this
+    /// wrong produces a handshake failure whose message mentions neither the certificate
+    /// nor the SAN list.
     #[test]
-    fn the_site_leaf_covers_localhost() {
+    fn the_server_leaves_cover_localhost() {
         let dir = a_temp_dir("sans");
         let bundle = generate_bundle(&dir).unwrap();
 
-        let der = pem_to_der(&bundle.site_cert_pem);
-        let (_, cert) = x509_parser::parse_x509_certificate(&der).unwrap();
-        let names = &cert
-            .subject_alternative_name()
-            .unwrap()
-            .expect("the site leaf must carry a SAN extension")
-            .value
-            .general_names;
+        for (leaf, pem) in [
+            ("site", &bundle.site_cert_pem),
+            ("game", &bundle.game_cert_pem),
+        ] {
+            let der = pem_to_der(pem);
+            let (_, cert) = x509_parser::parse_x509_certificate(&der).unwrap();
+            let names = &cert
+                .subject_alternative_name()
+                .unwrap()
+                .expect("a server leaf must carry a SAN extension")
+                .value
+                .general_names;
 
-        assert!(
-            names
-                .iter()
-                .any(|n| matches!(n, GeneralName::DNSName("localhost"))),
-            "the DNS name the game server dials by default is missing: {names:?}"
-        );
-        assert!(
-            names
-                .iter()
-                .any(|n| matches!(n, GeneralName::IPAddress([127, 0, 0, 1]))),
-            "127.0.0.1 is missing, so tests dialling by address would fail: {names:?}"
-        );
+            assert!(
+                names
+                    .iter()
+                    .any(|n| matches!(n, GeneralName::DNSName("localhost"))),
+                "the {leaf} leaf is missing localhost: {names:?}"
+            );
+            assert!(
+                names
+                    .iter()
+                    .any(|n| matches!(n, GeneralName::IPAddress([127, 0, 0, 1]))),
+                "the {leaf} leaf is missing 127.0.0.1: {names:?}"
+            );
+        }
 
         fs::remove_dir_all(&dir).unwrap();
     }
 
-    /// The property the whole scheme rests on: both leaves chain to the CA, and each
+    /// The property the whole scheme rests on: every leaf chains to the CA, and each
     /// carries only the extended key usage matching its role.
     #[test]
-    fn both_leaves_are_signed_by_the_ca_with_their_own_role() {
+    fn every_leaf_is_signed_by_the_ca_with_its_own_role() {
         let dir = a_temp_dir("chain");
         let bundle = generate_bundle(&dir).unwrap();
 
@@ -242,6 +269,7 @@ mod tests {
         for (pem, expect_server_auth) in [
             (&bundle.site_cert_pem, true),
             (&bundle.server_cert_pem, false),
+            (&bundle.game_cert_pem, true),
         ] {
             let der = pem_to_der(pem);
             let (_, leaf) = x509_parser::parse_x509_certificate(&der).unwrap();

@@ -1,4 +1,3 @@
-use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
@@ -10,6 +9,7 @@ use crate::bot::Bot;
 use crate::brain::Brain;
 use crate::config::{Route, load_run_config};
 use crate::metrics::{Bucket, Counter, Event, Meta, Metrics, PROBES, Probe, Report};
+use crate::wire::Dialer;
 use crate::world::ItemCatalogue;
 
 pub struct RunArgs {
@@ -17,6 +17,7 @@ pub struct RunArgs {
     pub email: String,
     pub password: String,
     pub server: String,
+    pub extra_ca: Option<String>,
     pub items: String,
     pub areas: String,
     pub config: String,
@@ -125,10 +126,8 @@ fn format_status(
 }
 
 pub async fn run(args: RunArgs) -> Result<()> {
-    let server: SocketAddr = args
-        .server
-        .parse()
-        .with_context(|| format!("parsing --server {}", args.server))?;
+    let server = Dialer::new(&args.server, args.extra_ca.as_deref())
+        .with_context(|| format!("--server {}", args.server))?;
 
     let run_config = load_run_config(&args.config)?;
     if run_config.routes.is_empty() {
@@ -185,6 +184,7 @@ pub async fn run(args: RunArgs) -> Result<()> {
         let tx = tx.clone();
         let start_at = run_start + starts[index];
         let spell_check = spell_tx.clone();
+        let server = server.clone();
 
         handles.push(tokio::spawn(async move {
             tokio::time::sleep_until(start_at.into()).await;

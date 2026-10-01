@@ -21,6 +21,7 @@ use rustibia_server::{
     },
     config::CONFIG,
     game::config::GAME_CONFIG,
+    game_tls::{self, GameCertResolver},
     network::{Context, Listener},
     online_registry::OnlineRegistry,
     persistence::{
@@ -46,6 +47,8 @@ const SHUTDOWN_DEADLINE: Duration = Duration::from_secs(20);
 
 #[tokio::main(worker_threads = 8)]
 async fn main() -> Result<()> {
+    // Before anything slow: SIGHUP's default action would kill a server still booting.
+    let hangup = signal(SignalKind::hangup()).context("installing the SIGHUP handler")?;
     let _telemetry = telemetry::init();
 
     // access lazy config to make sure it loaded correctly
@@ -62,6 +65,16 @@ async fn main() -> Result<()> {
          generate certs/, or point INTERNAL_TLS_CERT/_KEY/_CA at existing ones",
     )?;
     let site = Arc::new(SiteClient::new(&CONFIG.site_internal_url, internal_client));
+
+    let game_cert = Arc::new(
+        GameCertResolver::load(&CONFIG.game_tls_cert, &CONFIG.game_tls_key).context(
+            "loading the game certificate — run `cargo run -p rustibia-certgen` to generate \
+             certs/, or point GAME_TLS_CERT/_KEY at existing ones",
+        )?,
+    );
+    let acceptor =
+        game_tls::acceptor(Arc::clone(&game_cert)).context("building the game TLS config")?;
+    game_tls::reload_on(hangup, game_cert);
 
     let journal = Journal::open(&CONFIG.journal_dir)
         .with_context(|| format!("opening the save journal at {}", CONFIG.journal_dir))?;
@@ -131,7 +144,7 @@ async fn main() -> Result<()> {
         },
     };
 
-    let listener = Listener::bind(CONFIG.bind_address).await?;
+    let listener = Listener::bind(CONFIG.bind_address, acceptor).await?;
     info!("Listening on {}", CONFIG.bind_address);
     tokio::select! {
         () = listener.listen(context) => {}

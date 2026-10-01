@@ -21,7 +21,7 @@ fn main() -> Result<()> {
 
     rustibia_certgen::generate_bundle(&dir)?;
 
-    println!("wrote the CA, site and server certificates to {dir}/");
+    println!("wrote the CA, site, server and game certificates to {dir}/");
     println!("keys are secrets: {dir}/ is git-ignored and must stay that way");
     Ok(())
 }

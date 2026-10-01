@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+live=/etc/letsencrypt/live/{{ domain }}
+dest={{ app_dir }}/certs/game
+install -o {{ app_uid }} -m 0400 "$live/fullchain.pem" "$dest/game.crt"
+install -o {{ app_uid }} -m 0400 "$live/privkey.pem" "$dest/game.key"

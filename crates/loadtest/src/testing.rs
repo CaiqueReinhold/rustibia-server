@@ -196,3 +196,65 @@ pub fn engaged_world() -> World {
     world.see_creature(AgentId(3), Position::new(101, 100, 7));
     world
 }
+
+/// A local listener speaking TLS with a throwaway certificate, and a `Dialer` that trusts it.
+pub struct TestListener {
+    listener: tokio::net::TcpListener,
+    acceptor: tokio_rustls::TlsAcceptor,
+    dialer: crate::wire::Dialer,
+}
+
+impl TestListener {
+    pub async fn bind() -> Self {
+        let certs = tempfile::tempdir().unwrap();
+        let bundle = rustibia_certgen::generate_bundle(certs.path()).unwrap();
+        let ca = certs
+            .path()
+            .join(rustibia_certgen::CA_CERT)
+            .display()
+            .to_string();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let dialer =
+            crate::wire::Dialer::new(&listener.local_addr().unwrap().to_string(), Some(&ca))
+                .unwrap();
+
+        let chain = rustls_pemfile::certs(&mut bundle.game_cert_pem.as_bytes())
+            .collect::<Result<Vec<_>, _>>()
+            .unwrap();
+        let key = rustls_pemfile::private_key(&mut bundle.game_key_pem.as_bytes())
+            .unwrap()
+            .unwrap();
+        let config = rustls::ServerConfig::builder_with_provider(Arc::new(
+            rustls::crypto::ring::default_provider(),
+        ))
+        .with_safe_default_protocol_versions()
+        .unwrap()
+        .with_no_client_auth()
+        .with_single_cert(chain, key)
+        .unwrap();
+
+        Self {
+            listener,
+            acceptor: tokio_rustls::TlsAcceptor::from(Arc::new(config)),
+            dialer,
+        }
+    }
+
+    pub fn dialer(&self) -> crate::wire::Dialer {
+        self.dialer.clone()
+    }
+
+    pub fn address(&self) -> String {
+        self.listener.local_addr().unwrap().to_string()
+    }
+
+    pub async fn accept(
+        &self,
+    ) -> std::io::Result<(
+        tokio_rustls::server::TlsStream<tokio::net::TcpStream>,
+        std::net::SocketAddr,
+    )> {
+        let (socket, addr) = self.listener.accept().await?;
+        Ok((self.acceptor.accept(socket).await?, addr))
+    }
+}

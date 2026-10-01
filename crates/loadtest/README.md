@@ -76,6 +76,7 @@ From `crates/loadtest`:
 cargo run -p rustibia-loadtest -- run \
   --site http://127.0.0.1:8080 \
   --email you@example.com \
+  --extra-ca ../../certs/ca.crt \
   --items ../server/assets/items \
   --areas ../server/assets/areas.yaml \
   --config run.yaml \
@@ -90,6 +91,10 @@ caps how many of the seeded `<prefix> *` characters take part. The run ramps log
 across `--ramp-secs`, holds for `--duration-secs`, then logs everyone out and writes a JSON
 report to `--out`, printing a status line every ten seconds and a final one at
 the end.
+
+The game socket is TLS. `--server` is `host:port` and the certificate is checked against
+`host`; against a local server, `--extra-ca ../../certs/ca.crt` trusts certgen's development
+CA. Against production, leave it out.
 
 **Keep every waypoint well below x and y = 32767.** Above that the server's walk-strip
 arithmetic wraps and it sends some 32,000 tiles per step instead of one row; the shipped
@@ -145,7 +150,7 @@ Badger and a Frost Troll in a 30-second run, and a wooden shield and gold coins 
 dropped landed in its backpack alongside its starting potions.
 
 1. Seed one character: `cargo run -p rustibia-loadtest -- seed --site http://127.0.0.1:8080 --email you@example.com --count 1`.
-2. Run it: `cargo run -p rustibia-loadtest -- run --site http://127.0.0.1:8080 --email you@example.com --items ../server/assets/items --max-bots 1 --ramp-secs 0 --duration-secs 30`.
+2. Run it: `cargo run -p rustibia-loadtest -- run --site http://127.0.0.1:8080 --email you@example.com --items ../server/assets/items --max-bots 1 --ramp-secs 0 --duration-secs 30 --extra-ca ../../certs/ca.crt`.
 3. Check:
    - the bot appears in `online_players` while the run is in progress (`SELECT * FROM online_players;`);
    - the server's tick log shows the extra session (`grep "killed\|Starting tick" ` — a nonzero

@@ -1,5 +1,5 @@
 //! The connection actor is responsible for framing and message
-//! serialization/deserialization. It owns the raw [`TcpStream`] and translates
+//! serialization/deserialization. It owns the client's stream and translates
 //! between bytes on the wire and typed commands.
 //!
 //! Incoming client messages are routed to whichever upstream actor is currently
@@ -11,10 +11,9 @@
 use anyhow::Result;
 use futures::sink::SinkExt;
 use thiserror::Error;
-use tokio::io::AsyncWrite;
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
+use tokio::io::{AsyncRead, AsyncWrite, ReadHalf, WriteHalf};
 use tokio::select;
-use tokio::{net::TcpStream, sync::mpsc};
+use tokio::sync::mpsc;
 use tokio_stream::StreamExt;
 use tokio_util::codec::{FramedRead, FramedWrite};
 use tracing::{error, info};
@@ -86,22 +85,21 @@ impl ConnectionActorHandle {
     }
 }
 
-pub struct ConnectionActor {
+pub struct ConnectionActor<S> {
     session_id: String,
     rx: mpsc::Receiver<ConnectionCommand>,
-    reader: FramedRead<OwnedReadHalf, GameMessageCodec>,
-    writer: FramedWrite<OwnedWriteHalf, GameMessageCodec>,
+    reader: FramedRead<ReadHalf<S>, GameMessageCodec>,
+    writer: FramedWrite<WriteHalf<S>, GameMessageCodec>,
     upstream: Upstream,
 }
 
-impl ConnectionActor {
-    pub fn start(
-        session_id: String,
-        stream: TcpStream,
-        auth: AuthActorHandle,
-    ) -> ConnectionActorHandle {
+impl<S> ConnectionActor<S>
+where
+    S: AsyncRead + AsyncWrite + Send + Sync + 'static,
+{
+    pub fn start(session_id: String, stream: S, auth: AuthActorHandle) -> ConnectionActorHandle {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
-        let (read, write) = stream.into_split();
+        let (read, write) = tokio::io::split(stream);
 
         let actor = Self {
             session_id,
@@ -202,8 +200,8 @@ impl ConnectionActor {
 /// cannot grow without bound.
 ///
 /// Generic over the sink so the batching can be tested against a writer that
-/// counts its writes; the actor itself owns a `TcpStream` half that cannot be
-/// stood up in a unit test.
+/// counts its writes; the actor itself owns a socket half that cannot be stood
+/// up in a unit test.
 async fn write_batch<W>(
     writer: &mut FramedWrite<W, GameMessageCodec>,
     messages: impl IntoIterator<Item = ServerMessage>,

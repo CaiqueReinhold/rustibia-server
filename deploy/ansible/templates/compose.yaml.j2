@@ -62,11 +62,14 @@ services:
       INTERNAL_TLS_CERT: /certs/server.crt
       INTERNAL_TLS_KEY: /certs/server.key
       INTERNAL_TLS_CA: /certs/ca.crt
+      GAME_TLS_CERT: /game-certs/game.crt
+      GAME_TLS_KEY: /game-certs/game.key
 {% if telemetry_enabled %}
       OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4317
 {% endif %}
     volumes:
       - {{ app_dir }}/certs/server:/certs:ro
+      - {{ app_dir }}/certs/game:/game-certs:ro
       - server_journal:/app/journal
     ports:
       - "{{ game_port }}:5555"

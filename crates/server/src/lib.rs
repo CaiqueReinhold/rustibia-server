@@ -3,6 +3,7 @@ pub mod config;
 pub mod constants;
 pub mod entities;
 pub mod game;
+pub mod game_tls;
 pub(crate) mod local_id;
 pub mod messages;
 pub mod network;
