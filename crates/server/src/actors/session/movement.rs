@@ -334,8 +334,8 @@ mod tests {
 
     /// The regression: `PlayerWalkAck`'s tile strip must come from `to_position`, the
     /// same position `get_agents_in_expansion` already uses, not from the position the
-    /// step started at. A step north from y=100 to y=99 uncovers row y=99-7=92; the
-    /// pre-step position would instead re-describe row y=100-7=93, which the client
+    /// step started at. A step north from y=100 to y=99 uncovers row y=99-6=93; the
+    /// pre-step position would instead re-describe row y=100-6=94, which the client
     /// already had.
     #[tokio::test]
     async fn agent_moved_acks_the_row_that_just_came_into_view() {
@@ -360,12 +360,12 @@ mod tests {
         let new_row_marker = ItemId(1);
         let mut new_row_tile = MapTile::new();
         new_row_tile.push_item(Item::new(config(new_row_marker.0), 1));
-        map.insert_tile(Position::new(100, 92, 7), new_row_tile);
+        map.insert_tile(Position::new(100, 93, 7), new_row_tile);
 
         let old_row_marker = ItemId(2);
         let mut old_row_tile = MapTile::new();
         old_row_tile.push_item(Item::new(config(old_row_marker.0), 1));
-        map.insert_tile(Position::new(100, 93, 7), old_row_tile);
+        map.insert_tile(Position::new(100, 94, 7), old_row_tile);
 
         let (mut session, mut connection_rx, _world_rx, _tick_tx) =
             SessionActor::for_test(key, map);
@@ -398,8 +398,8 @@ mod tests {
         assert_eq!(
             ids,
             vec![new_row_marker],
-            "the strip must hold the row that just came into view (y=92), not the \
-             one already visible before the step (y=93)"
+            "the strip must hold the row that just came into view (y=93), not the \
+             one already visible before the step (y=94)"
         );
     }
 }

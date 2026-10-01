@@ -1,7 +1,8 @@
 use crate::{
     constants::view::{
         BASE_FLOOR, MAX_FLOOR, MAX_VISIBLE_ITEMS, MIN_FLOOR, PLAYER_VIEWPORT_HEIGHT,
-        PLAYER_VIEWPORT_WIDTH, UNDERGROUND_REACH, VIEWPORT_SIZE,
+        PLAYER_VIEWPORT_WIDTH, SIGHT_RANGE, UNDERGROUND_REACH, VIEW_BOTTOM, VIEW_LEFT, VIEW_RIGHT,
+        VIEW_TOP, VIEWPORT_SIZE,
     },
     entities::{
         agent::AgentKey,
@@ -31,18 +32,38 @@ pub fn iter_visible_floors(z: u8) -> impl Iterator<Item = u8> {
 /// covers slide down-right by the same amount. Items and agents must sweep the
 /// same rectangle or they disagree by a tile per floor.
 pub fn floor_viewport_rect(viewport_center: &Position, floor: u8) -> Rect {
-    let half_w = (PLAYER_VIEWPORT_WIDTH / 2) as i32;
-    let half_h = (PLAYER_VIEWPORT_HEIGHT / 2) as i32;
     let floor_offset = viewport_center.z as i32 - floor as i32;
     let cx = viewport_center.x as i32 + floor_offset;
     let cy = viewport_center.y as i32 + floor_offset;
 
     Rect::new(
-        (cx - half_w).max(0) as u16,
-        (cy - half_h).max(0) as u16,
-        (cx + half_w).max(0) as u16,
-        (cy + half_h).max(0) as u16,
+        (cx - VIEW_LEFT as i32).max(0) as u16,
+        (cy - VIEW_TOP as i32).max(0) as u16,
+        (cx + VIEW_RIGHT as i32).max(0) as u16,
+        (cy + VIEW_BOTTOM as i32).max(0) as u16,
     )
+}
+
+/// Whether `tile` is in the window the server describes to a player standing at `viewer`.
+/// The client's `map::viewport::in_viewport` must agree.
+pub fn sees_tile(viewer: &Position, tile: &Position) -> bool {
+    iter_visible_floors(viewer.z).any(|z| z == tile.z)
+        && floor_viewport_rect(viewer, tile.z).contains(tile)
+}
+
+/// The smallest rect holding every visible floor's window around `center`.
+pub fn viewport_bounds(center: &Position) -> Rect {
+    iter_visible_floors(center.z)
+        .map(|floor| floor_viewport_rect(center, floor))
+        .reduce(|a, b| {
+            Rect::new(
+                a.min_x().min(b.min_x()),
+                a.min_y().min(b.min_y()),
+                a.max_x().max(b.max_x()),
+                a.max_y().max(b.max_y()),
+            )
+        })
+        .expect("a viewer always sees its own floor")
 }
 
 /// A tile as the wire draws it: its visible items, then `None` for the rest of the stack.
@@ -88,16 +109,13 @@ pub fn get_map_desc_on_viewport(
 }
 
 fn expansion_rects(pos: &Position, direction: &Direction, floor: u8) -> (Rect, Option<Rect>) {
-    let floor_offset = pos.z as i16 - floor as i16;
-    let half_w = (PLAYER_VIEWPORT_WIDTH / 2) as i16;
-    let half_h = (PLAYER_VIEWPORT_HEIGHT / 2) as i16;
-    let x = pos.x as i16;
-    let y = pos.y as i16;
-
-    let x_start = (x - half_w + floor_offset).max(0) as u16;
-    let x_end = (x + half_w + floor_offset) as u16;
-    let y_start = (y - half_h + floor_offset).max(0) as u16;
-    let y_end = (y + half_h + floor_offset) as u16;
+    let window = floor_viewport_rect(pos, floor);
+    let (x_start, y_start, x_end, y_end) = (
+        window.min_x(),
+        window.min_y(),
+        window.max_x(),
+        window.max_y(),
+    );
 
     match direction {
         Direction::North => (Rect::new(x_start, y_start, x_end, y_start), None),
@@ -413,7 +431,7 @@ pub fn is_sight_clear(map: &GameMap, from: &Position, to: &Position, z: u8) -> b
 
 /// Weather a target is within bounds
 pub fn can_target(from: &Position, to: &Position) -> bool {
-    from.z == to.z && Rect::player_viewport(from).contains(to)
+    from.z == to.z && Rect::radius(from, SIGHT_RANGE).contains(to)
 }
 
 /// Weather a missile can travel wihout being blocked
@@ -541,20 +559,20 @@ mod tests {
     }
 
     #[test]
-    fn can_target_accepts_the_same_tile_and_the_viewport_edge() {
+    fn can_target_accepts_the_same_tile_and_the_edge_of_sight() {
         let from = Position::new(100, 100, 7);
 
         assert!(can_target(&from, &Position::new(100, 100, 7)));
-        assert!(can_target(&from, &Position::new(109, 107, 7)));
-        assert!(can_target(&from, &Position::new(91, 93, 7)));
+        assert!(can_target(&from, &Position::new(108, 106, 7)));
+        assert!(can_target(&from, &Position::new(92, 94, 7)));
     }
 
     #[test]
-    fn can_target_rejects_beyond_the_viewport() {
+    fn can_target_rejects_beyond_sight() {
         let from = Position::new(100, 100, 7);
 
-        assert!(!can_target(&from, &Position::new(110, 100, 7)));
-        assert!(!can_target(&from, &Position::new(100, 108, 7)));
+        assert!(!can_target(&from, &Position::new(109, 100, 7)));
+        assert!(!can_target(&from, &Position::new(100, 107, 7)));
     }
 
     /// Still drawn on screen — the client viewport spans several floors — but
@@ -606,26 +624,60 @@ mod tests {
         );
     }
 
-    /// The window slides a tile per floor, in the direction that floor is drawn.
-    /// `get_agents_in_viewport` and `get_map_desc_on_viewport` both go through
-    /// here, so an agent standing on a described tile is always described with it.
+    fn rect_of(rect: &Rect) -> (u16, u16, u16, u16) {
+        (rect.min_x(), rect.min_y(), rect.max_x(), rect.max_y())
+    }
+
+    /// The table every implementation of the window carries: the loadtest's
+    /// `world/viewport.rs` and the client's `map/viewport.rs` assert the same four rects.
     #[test]
-    fn every_floors_window_slides_with_the_floor() {
-        let center = Position::new(100, 100, 9);
+    fn the_window_is_eight_left_nine_right_six_up_seven_down() {
+        let cases = [
+            (Position::new(100, 100, 7), 7, (92, 94, 109, 107)),
+            (Position::new(100, 100, 7), 5, (94, 96, 111, 109)),
+            (Position::new(100, 100, 9), 10, (91, 93, 108, 106)),
+            (Position::new(3, 2, 7), 7, (0, 0, 12, 9)),
+        ];
+        for (center, floor, expected) in cases {
+            assert_eq!(
+                rect_of(&floor_viewport_rect(&center, floor)),
+                expected,
+                "{center} floor {floor}"
+            );
+        }
+    }
 
-        let own = floor_viewport_rect(&center, 9);
-        assert_eq!((own.min_x(), own.min_y()), (91, 93));
-        assert_eq!((own.max_x(), own.max_y()), (109, 107));
+    #[test]
+    fn a_viewer_sees_to_its_windows_edge_and_no_further() {
+        let viewer = Position::new(100, 100, 7);
 
-        // One floor up is drawn one tile up-left, so it covers the tiles one
-        // down-right.
-        let above = floor_viewport_rect(&center, 8);
-        assert_eq!((above.min_x(), above.min_y()), (92, 94));
-        assert_eq!((above.max_x(), above.max_y()), (110, 108));
+        for edge in [(92, 100), (109, 100), (100, 94), (100, 107)] {
+            assert!(
+                sees_tile(&viewer, &Position::new(edge.0, edge.1, 7)),
+                "{edge:?}"
+            );
+        }
+        for beyond in [(91, 100), (110, 100), (100, 93), (100, 108)] {
+            assert!(
+                !sees_tile(&viewer, &Position::new(beyond.0, beyond.1, 7)),
+                "{beyond:?}"
+            );
+        }
+    }
 
-        let below = floor_viewport_rect(&center, 11);
-        assert_eq!((below.min_x(), below.min_y()), (89, 91));
-        assert_eq!((below.max_x(), below.max_y()), (107, 105));
+    #[test]
+    fn a_higher_floor_is_seen_through_its_shifted_window() {
+        let viewer = Position::new(100, 100, 7);
+
+        assert!(sees_tile(&viewer, &Position::new(111, 100, 5)));
+        assert!(!sees_tile(&viewer, &Position::new(93, 100, 5)));
+    }
+
+    #[test]
+    fn a_floor_out_of_reach_is_not_seen_even_inside_the_rect() {
+        let viewer = Position::new(100, 100, 7);
+
+        assert!(!sees_tile(&viewer, &Position::new(100, 100, 8)));
     }
 
     /// At the map's north-west corner the window clamps rather than wrapping
@@ -636,6 +688,92 @@ mod tests {
 
         assert_eq!((rect.min_x(), rect.min_y()), (0, 0));
         assert_eq!((rect.max_x(), rect.max_y()), (13, 12));
+    }
+
+    #[test]
+    fn the_bounds_hold_every_visible_floors_window() {
+        for center in [Position::new(100, 100, 7), Position::new(100, 100, 10)] {
+            let bounds = viewport_bounds(&center);
+            for floor in iter_visible_floors(center.z) {
+                let window = floor_viewport_rect(&center, floor);
+                for corner in [
+                    Position::new(window.min_x(), window.min_y(), floor),
+                    Position::new(window.max_x(), window.max_y(), floor),
+                ] {
+                    assert!(bounds.contains(&corner), "{center} {corner}");
+                }
+            }
+        }
+    }
+
+    fn strip(center: &Position, direction: Direction) -> Vec<Position> {
+        let (first, second) = expansion_rects(center, &direction, center.z);
+        [Some(first), second]
+            .into_iter()
+            .flatten()
+            .flat_map(|rect| {
+                (rect.min_y()..=rect.max_y()).flat_map(move |y| {
+                    (rect.min_x()..=rect.max_x()).map(move |x| Position::new(x, y, center.z))
+                })
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_straight_step_uncovers_the_windows_leading_edge() {
+        let center = Position::new(100, 100, 7);
+        let window = floor_viewport_rect(&center, 7);
+
+        let east = strip(&center, Direction::East);
+        assert_eq!(east.len(), PLAYER_VIEWPORT_HEIGHT);
+        assert!(east.iter().all(|p| p.x == window.max_x()));
+
+        let west = strip(&center, Direction::West);
+        assert_eq!(west.len(), PLAYER_VIEWPORT_HEIGHT);
+        assert!(west.iter().all(|p| p.x == window.min_x()));
+
+        let north = strip(&center, Direction::North);
+        assert_eq!(north.len(), PLAYER_VIEWPORT_WIDTH);
+        assert!(north.iter().all(|p| p.y == window.min_y()));
+
+        let south = strip(&center, Direction::South);
+        assert_eq!(south.len(), PLAYER_VIEWPORT_WIDTH);
+        assert!(south.iter().all(|p| p.y == window.max_y()));
+    }
+
+    #[test]
+    fn a_diagonal_step_uncovers_a_row_and_a_column_sharing_one_corner() {
+        let center = Position::new(100, 100, 7);
+        for direction in [
+            Direction::NorthEast,
+            Direction::NorthWest,
+            Direction::SouthEast,
+            Direction::SouthWest,
+        ] {
+            let mut tiles = strip(&center, direction);
+            assert_eq!(
+                tiles.len(),
+                PLAYER_VIEWPORT_WIDTH + PLAYER_VIEWPORT_HEIGHT - 1,
+                "{direction:?}"
+            );
+            tiles.sort();
+            tiles.dedup();
+            assert_eq!(
+                tiles.len(),
+                PLAYER_VIEWPORT_WIDTH + PLAYER_VIEWPORT_HEIGHT - 1,
+                "{direction:?} repeats a tile"
+            );
+        }
+    }
+
+    #[test]
+    fn a_strip_above_32767_does_not_wrap() {
+        let center = Position::new(40000, 40000, 7);
+
+        let north = strip(&center, Direction::North);
+
+        assert_eq!(north.len(), PLAYER_VIEWPORT_WIDTH);
+        assert_eq!(north[0], Position::new(39992, 39994, 7));
     }
 
     fn carrying(snapshot: crate::persistence::player::PlayerSnapshot) -> (GameMap, AgentKey) {

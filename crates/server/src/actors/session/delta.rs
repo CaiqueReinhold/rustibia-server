@@ -2,9 +2,9 @@ use anyhow::Result;
 
 use crate::entities::inventory::InventorySlot;
 use crate::entities::items::ItemGuid;
-use crate::entities::position::{Position, Rect};
+use crate::entities::position::Position;
 use crate::entities::world_delta::WorldDelta;
-use crate::game::map_query::iter_visible_floors;
+use crate::game::map_query::{iter_visible_floors, sees_tile, viewport_bounds};
 
 use super::SessionActor;
 
@@ -18,9 +18,12 @@ impl SessionActor {
         else {
             return Ok(());
         };
-        let viewport = Rect::player_viewport(&player_pos);
         let floors: Vec<u8> = iter_visible_floors(player_pos.z).collect();
-        let tiles: Vec<Position> = delta.tiles_in(&viewport, &floors).cloned().collect();
+        let tiles: Vec<Position> = delta
+            .tiles_in(&viewport_bounds(&player_pos), &floors)
+            .filter(|tile| sees_tile(&player_pos, tile))
+            .cloned()
+            .collect();
         let slots: Vec<InventorySlot> = delta.slots_of(self.player_key).collect();
 
         if !tiles.is_empty() || !slots.is_empty() {
@@ -151,6 +154,23 @@ mod tests {
     #[tokio::test]
     async fn a_tile_change_outside_the_viewport_is_not_sent() {
         let sent = tiles_sent(Position::new(100, 100, 7), Position::new(140, 100, 7)).await;
+
+        assert!(sent.is_empty(), "{sent:?}");
+    }
+
+    /// Floor 5 is drawn two tiles up-left of floor 7, so its window covers 94..=111.
+    #[tokio::test]
+    async fn a_tile_change_at_the_shifted_edge_of_a_higher_floor_is_sent() {
+        let changed = Position::new(111, 100, 5);
+
+        let sent = tiles_sent(Position::new(100, 100, 7), changed.clone()).await;
+
+        assert_eq!(sent, vec![changed]);
+    }
+
+    #[tokio::test]
+    async fn a_tile_change_past_the_shifted_window_of_a_higher_floor_is_not_sent() {
+        let sent = tiles_sent(Position::new(100, 100, 7), Position::new(93, 100, 5)).await;
 
         assert!(sent.is_empty(), "{sent:?}");
     }

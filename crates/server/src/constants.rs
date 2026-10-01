@@ -1,13 +1,35 @@
 pub mod view {
     pub const MAX_VISIBLE_ITEMS: usize = 8;
-    pub const PLAYER_VIEWPORT_WIDTH: usize = 19;
-    pub const PLAYER_VIEWPORT_HEIGHT: usize = 15;
+    pub const VIEW_LEFT: u16 = 8;
+    pub const VIEW_RIGHT: u16 = 9;
+    pub const VIEW_TOP: u16 = 6;
+    pub const VIEW_BOTTOM: u16 = 7;
+    pub const PLAYER_VIEWPORT_WIDTH: usize = (VIEW_LEFT + VIEW_RIGHT + 1) as usize;
+    pub const PLAYER_VIEWPORT_HEIGHT: usize = (VIEW_TOP + VIEW_BOTTOM + 1) as usize;
     pub const VIEWPORT_SIZE: usize = PLAYER_VIEWPORT_HEIGHT * PLAYER_VIEWPORT_WIDTH;
+    pub const SIGHT_RANGE: (u16, u16) = (8, 6);
     pub const MIN_FLOOR: u8 = 0;
     pub const MAX_FLOOR: u8 = 15;
     pub const BASE_FLOOR: u8 = 7;
     pub const UNDERGROUND_REACH: u8 = 2;
     pub const AGENT_DESPAWN_RADIUS: (u16, u16) = (38, 30);
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        /// The pin. Its twin is `the_viewport_extents_match_the_server` in the client's
+        /// `conf.rs`. A split that differs but sums to the same width still decodes, and the
+        /// client draws every tile a column off.
+        #[test]
+        fn the_viewport_extents_match_the_client() {
+            assert_eq!(
+                (VIEW_LEFT, VIEW_RIGHT, VIEW_TOP, VIEW_BOTTOM),
+                (8, 9, 6, 7),
+                "must equal conf::map::VIEW_* in the client"
+            );
+        }
+    }
 }
 
 pub mod movement {

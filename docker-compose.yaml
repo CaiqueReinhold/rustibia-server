@@ -43,8 +43,6 @@ services:
     volumes:
       - ./certs:/certs:ro
       - ./crates/site:/app/crates/site
-    # 8443 is deliberately not published to the host: the internal API is reachable only
-    # from the compose network, and mTLS is the second lock rather than the only one.
     ports:
       - "8080:8080"
 
@@ -64,6 +62,8 @@ services:
       INTERNAL_TLS_CERT: /certs/server.crt
       INTERNAL_TLS_KEY: /certs/server.key
       INTERNAL_TLS_CA: /certs/ca.crt
+      GAME_TLS_CERT: /certs/game.crt
+      GAME_TLS_KEY: /certs/game.key
     volumes:
       - ./certs:/certs:ro
       - ./crates/server:/app/crates/server

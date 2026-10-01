@@ -2,6 +2,7 @@ use thiserror::Error;
 use tracing::error;
 
 use crate::{
+    constants::view::SIGHT_RANGE,
     entities::{
         agent::AgentKey,
         combat::WeaponType,
@@ -169,7 +170,7 @@ pub fn move_item(
     match (to.site(), to.container()) {
         (PlacementSite::Tile(pos), None) => {
             if !ctx.map.can_drop_item(pos)
-                || !Rect::player_viewport(&player_pos).contains(pos)
+                || !Rect::radius(&player_pos, SIGHT_RANGE).contains(pos)
                 || !can_throw(ctx.map, &player_pos, pos, false)
             {
                 ctx.events.push(BroadcastMessage::MoveItemDenied {

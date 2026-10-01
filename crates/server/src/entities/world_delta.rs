@@ -162,7 +162,7 @@ mod tests {
         delta.mark_tile(&pos);
         delta.mark_tile(&pos);
 
-        let rect = Rect::player_viewport(&pos);
+        let rect = Rect::radius(&pos, (9, 7));
         assert_eq!(delta.tiles_in(&rect, &[7]).count(), 1);
     }
 
@@ -177,7 +177,7 @@ mod tests {
             delta.mark_tile(pos);
         }
 
-        let rect = Rect::player_viewport(&centre);
+        let rect = Rect::radius(&centre, (9, 7));
         let found: Vec<&Position> = delta.tiles_in(&rect, &[7]).collect();
 
         assert_eq!(found, vec![&inside]);

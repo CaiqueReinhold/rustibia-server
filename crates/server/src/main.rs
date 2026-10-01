@@ -41,11 +41,9 @@ use rustibia_server::{
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-/// Must stay below the server's `stop_grace_period` in deploy/ansible/templates/compose.yaml.j2,
-/// or Docker kills the process mid-save.
 const SHUTDOWN_DEADLINE: Duration = Duration::from_secs(20);
 
-#[tokio::main(worker_threads = 8)]
+#[tokio::main]
 async fn main() -> Result<()> {
     // Before anything slow: SIGHUP's default action would kill a server still booting.
     let hangup = signal(SignalKind::hangup()).context("installing the SIGHUP handler")?;

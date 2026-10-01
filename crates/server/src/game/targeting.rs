@@ -244,11 +244,11 @@ mod tests {
     }
 
     #[test]
-    fn a_target_just_inside_the_viewport_is_kept() {
+    fn a_target_just_inside_sight_is_kept() {
         let mut h = TestHarness::new();
         let mut map = GameMap::new();
         let attacker = seat(&mut map, &Position::new(100, 100, 7), 1);
-        let victim = seat(&mut map, &Position::new(109, 107, 7), 2);
+        let victim = seat(&mut map, &Position::new(108, 106, 7), 2);
         let mut map = WorldMap::new(map);
         set_target(&mut h.ctx(&mut map), attacker, Some(victim), 5);
 

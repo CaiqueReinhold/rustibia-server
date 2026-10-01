@@ -4,10 +4,7 @@ use std::{
 };
 
 use crate::{
-    constants::{
-        items::{CARRIED_SEARCH_FLAG, CONTAINER_COORD_FLAG, INVENTORY_COORD_FLAG},
-        view::{PLAYER_VIEWPORT_HEIGHT, PLAYER_VIEWPORT_WIDTH},
-    },
+    constants::items::{CARRIED_SEARCH_FLAG, CONTAINER_COORD_FLAG, INVENTORY_COORD_FLAG},
     entities::{agent::AgentKey, inventory::InventorySlot, items::ItemGuid},
 };
 
@@ -214,12 +211,6 @@ impl Rect {
         }
     }
 
-    pub fn player_viewport(pos: &Position) -> Self {
-        let half_w = (PLAYER_VIEWPORT_WIDTH / 2) as u16;
-        let half_h = (PLAYER_VIEWPORT_HEIGHT / 2) as u16;
-        Self::radius(pos, (half_w, half_h))
-    }
-
     pub fn radius(pos: &Position, radius: (u16, u16)) -> Self {
         Rect {
             min: Point {
@@ -292,13 +283,13 @@ mod tests {
     }
 
     #[test]
-    fn a_player_viewport_at_the_map_edge_clamps_instead_of_overflowing() {
-        let rect = Rect::player_viewport(&Position::new(u16::MAX, u16::MAX, 7));
+    fn a_radius_at_the_map_edge_clamps_instead_of_overflowing() {
+        let rect = Rect::radius(&Position::new(u16::MAX, u16::MAX, 7), (9, 7));
 
         assert_eq!((rect.max_x(), rect.max_y()), (u16::MAX, u16::MAX));
         assert!(rect.contains(&Position::new(u16::MAX, u16::MAX, 7)));
 
-        let origin = Rect::player_viewport(&Position::new(0, 0, 7));
+        let origin = Rect::radius(&Position::new(0, 0, 7), (9, 7));
 
         assert_eq!((origin.min_x(), origin.min_y()), (0, 0));
         assert!(origin.contains(&Position::new(0, 0, 7)));

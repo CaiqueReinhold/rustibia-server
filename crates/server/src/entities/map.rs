@@ -631,6 +631,7 @@ mod tests {
     use crate::entities::items::{ItemAttribute, ItemConfig};
     use crate::entities::position::Position;
     use crate::entities::skills::{SkillType, SkillValue};
+    use crate::game::map_query::floor_viewport_rect;
     use crate::persistence::test_fixtures::{a_creature_kind, a_player_with_a_full_backpack};
     use std::collections::HashSet;
 
@@ -958,7 +959,7 @@ mod tests {
         let sweeps: Vec<(Rect, u8)> = probes
             .iter()
             .take(2_000)
-            .map(|p| (Rect::player_viewport(p), p.z))
+            .map(|p| (floor_viewport_rect(p, p.z), p.z))
             .collect();
         let start = std::time::Instant::now();
         let mut seen = 0usize;
@@ -1012,7 +1013,7 @@ mod tests {
             for _ in 0..ROUNDS {
                 for c in centres {
                     seen += map
-                        .iter_tiles_in_rect(&Rect::player_viewport(c), c.z)
+                        .iter_tiles_in_rect(&floor_viewport_rect(c, c.z), c.z)
                         .count();
                 }
             }

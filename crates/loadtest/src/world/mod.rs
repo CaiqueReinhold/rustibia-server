@@ -518,7 +518,9 @@ impl World {
 mod tests {
     use super::*;
     use crate::testing::*;
-    use rustibia_server::constants::view::{PLAYER_VIEWPORT_HEIGHT, VIEWPORT_SIZE};
+    use rustibia_server::constants::view::{
+        PLAYER_VIEWPORT_HEIGHT, VIEW_LEFT, VIEW_RIGHT, VIEW_TOP, VIEWPORT_SIZE,
+    };
     use rustibia_server::entities::agent::{Facing, OutfitColors, OutfitId};
     use rustibia_server::messages::SpellListEntry;
 
@@ -709,8 +711,7 @@ mod tests {
     fn a_describe_map_for_one_floor_does_not_erase_another() {
         let mut world = a_world();
         let center = Position::new(200, 200, 6); // the bot stands at z=6
-        let center_index = ((PLAYER_VIEWPORT_HEIGHT / 2) * PLAYER_VIEWPORT_WIDTH
-            + PLAYER_VIEWPORT_WIDTH / 2) as u16;
+        let center_index = (VIEW_TOP as usize * PLAYER_VIEWPORT_WIDTH + VIEW_LEFT as usize) as u16;
 
         for floor in [5_u8, 6, 7] {
             world.apply(&a_describe_map(center.clone(), floor));
@@ -746,8 +747,8 @@ mod tests {
 
         // The strip is centred on the ack's new position (101, 100), not the one
         // the bot walked from — the east step moves x_end with it.
-        let x_end = 101 + (PLAYER_VIEWPORT_WIDTH / 2) as u16;
-        let y_start = 100 - (PLAYER_VIEWPORT_HEIGHT / 2) as u16;
+        let x_end = 101 + VIEW_RIGHT;
+        let y_start = 100 - VIEW_TOP;
         assert_eq!(item_at(&world, Position::new(x_end, y_start, 7)), 0);
     }
 
@@ -758,7 +759,7 @@ mod tests {
 
         world.apply(&ServerMessage::PlayerWalkAck {
             position: Position::new(101, 100, 7),
-            tiles: an_expansion_strip(7, 3), // East expects PLAYER_VIEWPORT_HEIGHT (15)
+            tiles: an_expansion_strip(7, 3), // East expects PLAYER_VIEWPORT_HEIGHT (14)
         });
 
         assert_eq!(world.strip_mismatches, 1);

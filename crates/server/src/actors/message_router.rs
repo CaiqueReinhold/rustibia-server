@@ -9,16 +9,12 @@ use crate::{
     actors::session::{SessionActorHandle, SessionCommand},
     config::CONFIG,
     entities::{
-        agent::AgentKey,
-        chat::ChannelId,
-        map::GameMap,
-        position::{Position, Rect},
-        world_delta::WorldDelta,
+        agent::AgentKey, chat::ChannelId, map::GameMap, position::Position, world_delta::WorldDelta,
     },
     game::{
         Tick,
         events::{BroadcastMessage, Routing},
-        map_query::iter_visible_floors,
+        map_query::sees_tile,
     },
     telemetry,
 };
@@ -291,77 +287,37 @@ impl MessageRouterActor {
         match message.routing() {
             Routing::Agent(agent_key) => self.send_to(message, &agent_key),
             Routing::Viewport { at, same_floor } => {
-                self.send_to_rect(
-                    message,
-                    players,
-                    Rect::player_viewport(at),
-                    at.z,
-                    same_floor,
-                    None,
-                );
+                self.send_to_viewers(message, players, None, |viewer| {
+                    sees_tile(viewer, at) && (!same_floor || viewer.z == at.z)
+                });
             }
             Routing::EitherViewport(positions) => {
-                let regions = positions.map(|at| (Rect::player_viewport(at), at.z));
-                self.send_to_rects(message, players, &regions);
+                self.send_to_viewers(message, players, None, |viewer| {
+                    positions.iter().any(|at| sees_tile(viewer, at))
+                });
             }
             Routing::ViewportAndAgent { at, agent } => {
-                self.send_to_rect(
-                    message,
-                    players,
-                    Rect::player_viewport(at),
-                    at.z,
-                    false,
-                    None,
-                );
+                self.send_to_viewers(message, players, None, |viewer| sees_tile(viewer, at));
                 self.send_to(message, &agent);
             }
             Routing::Move { from, to, mover } => {
-                let (a, b) = (Rect::player_viewport(from), Rect::player_viewport(to));
-                self.send_to_rect(
-                    message,
-                    players,
-                    Rect::new(
-                        u16::min(a.min_x(), b.min_x()),
-                        u16::min(a.min_y(), b.min_y()),
-                        u16::max(a.max_x(), b.max_x()),
-                        u16::max(a.max_y(), b.max_y()),
-                    ),
-                    to.z,
-                    false,
-                    Some(mover),
-                );
+                self.send_to_viewers(message, players, Some(mover), |viewer| {
+                    sees_tile(viewer, from) || sees_tile(viewer, to)
+                });
                 self.send_to(message, &mover);
             }
         }
     }
 
-    fn send_to_rect(
+    fn send_to_viewers(
         &mut self,
         message: &BroadcastMessage,
         players: &[(AgentKey, Position)],
-        rect: Rect,
-        floor: u8,
-        same_floor: bool,
         originator: Option<AgentKey>,
+        sees: impl Fn(&Position) -> bool,
     ) {
         for (agent_key, position) in players {
-            if Some(*agent_key) != originator && sees(position, &rect, floor, same_floor) {
-                self.send_to(message, agent_key);
-            }
-        }
-    }
-
-    fn send_to_rects(
-        &mut self,
-        message: &BroadcastMessage,
-        players: &[(AgentKey, Position)],
-        regions: &[(Rect, u8)],
-    ) {
-        for (agent_key, position) in players {
-            if regions
-                .iter()
-                .any(|(rect, floor)| sees(position, rect, *floor, false))
-            {
+            if Some(*agent_key) != originator && sees(position) {
                 self.send_to(message, agent_key);
             }
         }
@@ -432,15 +388,6 @@ impl MessageRouterActor {
 
 /// Whether a player standing at `at` sees an event in `rect` on `floor`: the same rect on every
 /// floor visible from `floor`, or on `floor` alone when `same_floor`.
-fn sees(at: &Position, rect: &Rect, floor: u8, same_floor: bool) -> bool {
-    rect.contains(at)
-        && if same_floor {
-            at.z == floor
-        } else {
-            iter_visible_floors(floor).any(|z| z == at.z)
-        }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -526,24 +473,23 @@ mod tests {
         router.route_to_recipients(message, &players);
     }
 
+    /// The window is −8..+9, so a viewer is told about an event at its own +9 and not about one
+    /// at its −9.
     #[test]
-    fn a_viewport_event_reaches_players_in_its_rect_on_every_floor_it_is_seen_from() {
+    fn a_viewport_event_reaches_every_viewer_whose_window_holds_it() {
         let mut map = GameMap::new();
         let mut router = a_router();
         let (_, mut inboxes) = seat_watchers(
             &mut router,
             &mut map,
             &[
+                Position::new(91, 93, 7),
                 Position::new(109, 107, 7),
                 Position::new(110, 100, 7),
                 Position::new(100, 100, 5),
                 Position::new(100, 100, 8),
             ],
         );
-        let lair = Position::new(101, 101, 7);
-        map.insert_tile(lair.clone(), MapTile::new());
-        map.insert_agent(a_test_creature("rat", 10, (0, 0)), &lair)
-            .unwrap();
 
         route(
             &mut router,
@@ -553,7 +499,28 @@ mod tests {
             },
         );
 
-        assert_eq!(received(&mut inboxes), [1, 0, 1, 0]);
+        assert_eq!(received(&mut inboxes), [1, 0, 0, 1, 0]);
+    }
+
+    #[test]
+    fn a_viewer_on_a_higher_floor_is_told_by_its_shifted_window() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (_, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[Position::new(109, 100, 6), Position::new(91, 100, 6)],
+        );
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AttackMissed {
+                position: Position::new(100, 100, 7),
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 0]);
     }
 
     #[test]
@@ -590,7 +557,7 @@ mod tests {
             &[
                 to.clone(),
                 Position::new(91, 100, 7),
-                Position::new(110, 100, 7),
+                Position::new(109, 100, 7),
                 Position::new(130, 100, 7),
             ],
         );
@@ -608,6 +575,31 @@ mod tests {
         );
 
         assert_eq!(received(&mut inboxes), [1, 1, 1, 0]);
+    }
+
+    #[test]
+    fn a_diagonal_move_does_not_reach_a_viewer_who_sees_neither_end() {
+        let mut map = GameMap::new();
+        let mut router = a_router();
+        let (from, to) = (Position::new(100, 100, 7), Position::new(101, 101, 7));
+        let (keys, mut inboxes) = seat_watchers(
+            &mut router,
+            &mut map,
+            &[to.clone(), Position::new(109, 93, 7)],
+        );
+
+        route(
+            &mut router,
+            &map,
+            &BroadcastMessage::AgentMoved {
+                agent_key: keys[0],
+                direction: Direction::SouthEast,
+                from_position: from,
+                to_position: to,
+            },
+        );
+
+        assert_eq!(received(&mut inboxes), [1, 0]);
     }
 
     #[test]

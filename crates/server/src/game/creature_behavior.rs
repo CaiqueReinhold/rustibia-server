@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use tracing::error;
 
-use crate::constants::view::AGENT_DESPAWN_RADIUS;
+use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
 use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::creature::{CreatureAbility, CreatureAbilityId, CreatureKind};
 use crate::entities::map::GameMap;
@@ -202,7 +202,7 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
             ctx.map,
             ctx.creature,
             &Goal::adjacent(target_position.clone()),
-            &Rect::player_viewport(postion),
+            &Rect::radius(postion, SIGHT_RANGE),
         ) {
             pathfinding::Step::Move(direction) => {
                 return Some(CreatureAction::Walk {
@@ -298,7 +298,7 @@ fn returning(ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
             agent.get_origin().clone(),
             GAME_CONFIG.movement.wander_distance,
         ),
-        &Rect::player_viewport(position),
+        &Rect::radius(position, SIGHT_RANGE),
     ) {
         pathfinding::Step::Arrived => {}
         pathfinding::Step::Move(direction) => {
@@ -356,7 +356,7 @@ fn say(ctx: &mut CreatureBehaviourContext) -> Option<String> {
 
 fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
     let from = map.agent_position(creature)?;
-    let viewport = Rect::player_viewport(from);
+    let viewport = Rect::radius(from, SIGHT_RANGE);
     let candidates: Vec<(AgentKey, Position)> = map
         .iter_agents_in_rect(&viewport, from.z)
         .filter(|(key, _)| {
@@ -700,16 +700,17 @@ mod tests {
         assert_eq!(search_target(rat, &map), Some(visible));
     }
 
-    /// The viewport is 19 wide, so x = 25 is one tile past its edge from x = 15.
+    /// Sight reaches 8 tiles, so x = 24 is one past it from x = 15.
     #[test]
-    fn a_player_outside_the_viewport_is_not_a_target() {
+    fn a_player_out_of_sight_is_not_a_target() {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15);
-        put_player(&mut map, 25, 1);
+        put_player(&mut map, 24, 1);
 
         assert_eq!(search_target(rat, &map), None);
         assert!(
-            Rect::player_viewport(&Position::new(15, 10, 7)).contains(&Position::new(24, 10, 7)),
+            Rect::radius(&Position::new(15, 10, 7), SIGHT_RANGE)
+                .contains(&Position::new(23, 10, 7)),
             "one tile nearer is inside, so the case is testing the edge and not a typo"
         );
     }
@@ -757,7 +758,7 @@ mod tests {
         let mut seen = 0usize;
         for (_, pos) in &creatures {
             seen += map
-                .iter_agents_in_rect(&Rect::player_viewport(pos), pos.z)
+                .iter_agents_in_rect(&Rect::radius(pos, SIGHT_RANGE), pos.z)
                 .filter(|(key, _)| {
                     map.get_agent(*key)
                         .is_some_and(|agent| !agent.is_creature())
