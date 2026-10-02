@@ -107,7 +107,7 @@ pub fn apply_damage(
         .get_agent(target)
         .is_some_and(|agent| agent.life().current == 0)
     {
-        death::reap(ctx, target, source);
+        death::reap(ctx, target);
     }
 }
 

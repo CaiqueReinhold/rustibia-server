@@ -8,26 +8,18 @@ use crate::entities::items::{Item, ItemFlag, ItemId};
 use crate::entities::position::ItemPlacement;
 use crate::game::TickCtx;
 use crate::game::events::BroadcastMessage;
+use crate::game::item_action::check_decay;
 use crate::game::item_movement::insert_item_at;
 use crate::game::random::Rolls;
 use crate::game::{experience, targeting};
 use crate::persistence::items::ITEM_CONFIGS;
 
-pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey, source: Option<AgentKey>) {
+pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
     let Some(dead) = ctx.map.get_agent(agent_key) else {
         return;
     };
     if !dead.is_creature() || dead.life().current > 0 {
         return;
-    }
-
-    let victim = dead.name();
-    match source
-        .and_then(|key| ctx.map.get_agent(key))
-        .map(|a| a.name())
-    {
-        Some(killer) => info!("{killer} killed {victim}"),
-        None => info!("{victim} died"),
     }
 
     experience::award(ctx, agent_key);
@@ -60,7 +52,9 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey, source: Option<AgentKey>) {
     if let Some(creature) = agent.get_creature_kind() {
         roll_creature_loot(&mut corpse, creature, ctx.roll);
     }
-    if let Err(e) = insert_item_at(ctx, corpse, &ItemPlacement::Map(position.clone()), None) {
+    let placement = ItemPlacement::Map(position.clone());
+    check_decay(ctx.scheduled, &corpse, placement.clone(), ctx.tick);
+    if let Err(e) = insert_item_at(ctx, corpse, &placement, None) {
         error!(
             "Error inserting creature corpse at tile {}: {}",
             position, e
@@ -181,7 +175,7 @@ mod tests {
         h.tick = Tick(50);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, None);
+        reap(&mut h.ctx(&mut map), rat);
 
         assert!(
             matches!(
@@ -213,7 +207,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, None);
+        reap(&mut h.ctx(&mut map), rat);
 
         assert!(map.get_agent(rat).is_none(), "it should still be reaped");
         assert!(h.scheduled.is_empty());
@@ -230,7 +224,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, None);
+        reap(&mut h.ctx(&mut map), rat);
 
         assert!(map.get_agent(rat).is_none());
         assert!(matches!(
@@ -251,36 +245,10 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, None);
+        reap(&mut h.ctx(&mut map), rat);
 
         assert!(map.get_agent(rat).is_some());
         assert!(h.events.is_empty());
-    }
-
-    #[test]
-    fn clears_a_target_that_named_the_dead() {
-        let rat_pos = Position::new(10, 10, 7);
-        let hunter_pos = Position::new(11, 10, 7);
-        let mut map = GameMap::new();
-        map.insert_tile(rat_pos.clone(), MapTile::new());
-        map.insert_tile(hunter_pos.clone(), MapTile::new());
-        let rat = map
-            .insert_agent(a_test_creature("Rat", 0, (1, 2)), &rat_pos)
-            .unwrap();
-        let hunter = map
-            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &hunter_pos)
-            .unwrap();
-        map.get_agent_mut(hunter).unwrap().set_target(Some(rat), 0);
-        let mut h = TestHarness::seeded(1);
-
-        let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, Some(hunter));
-
-        assert_eq!(map.get_agent(hunter).unwrap().target(), None);
-        assert!(h.events.iter().any(|m| matches!(
-            m,
-            BroadcastMessage::AgentLostTarget { agent_key, .. } if *agent_key == hunter
-        )));
     }
 
     #[test]
@@ -313,7 +281,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, Some(hunter));
+        reap(&mut h.ctx(&mut map), rat);
 
         assert_eq!(map.get_agent(hunter).unwrap().target(), None);
         assert_eq!(map.get_agent(bystander).unwrap().target(), Some(third));
@@ -334,7 +302,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), player, None);
+        reap(&mut h.ctx(&mut map), player);
 
         assert!(map.get_agent(player).is_some());
         assert!(h.events.is_empty());
@@ -357,7 +325,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, Some(hunter));
+        reap(&mut h.ctx(&mut map), rat);
 
         assert!(map.get_agent(rat).is_none());
         assert_eq!(
@@ -387,7 +355,7 @@ mod tests {
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
-        reap(&mut h.ctx(&mut map), rat, Some(hunter));
+        reap(&mut h.ctx(&mut map), rat);
 
         assert_eq!(
             map.get_player(hunter)

@@ -413,23 +413,29 @@ impl GameMap {
             return false;
         }
 
-        if !tile.agents.is_empty() {
-            return false;
-        }
+        if let Some(agent) = self.get_agent(agent_key) {
+            if agent.is_creature() {
+                if !tile.agents.is_empty() {
+                    return false;
+                }
 
-        if let Some(agent) = self.get_agent(agent_key)
-            && agent.is_creature()
-        {
-            if self.get_floor_change(pos).is_some() || self.teleport_destination(pos).is_some() {
-                return false;
-            }
+                if self.get_floor_change(pos).is_some() || self.teleport_destination(pos).is_some()
+                {
+                    return false;
+                }
 
-            let avoid = tile
-                .items
-                .iter()
-                .any(|i| i.config.has_flag(ItemFlag::Avoid));
-            if avoid {
-                return false;
+                let avoid = tile
+                    .items
+                    .iter()
+                    .any(|i| i.config.has_flag(ItemFlag::Avoid));
+                if avoid {
+                    return false;
+                }
+            } else {
+                let player = agent.get_player().unwrap();
+                if !player.admin() && !tile.agents.is_empty() {
+                    return false;
+                }
             }
         }
 
