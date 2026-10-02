@@ -15,6 +15,7 @@ melee:
   element: physical
 corpse: 4993
 flee_threshold: 2
+target_distance: 6
 say:
   cooldown: 100
   chance: 0

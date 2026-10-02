@@ -235,6 +235,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
         corpse: ItemId(1),
         loot_table: vec![],
         flee_threshold: None,
+        target_distance: 1,
         say: CreatureVoices {
             cooldown: TickDelta(100),
             chance: 10000,

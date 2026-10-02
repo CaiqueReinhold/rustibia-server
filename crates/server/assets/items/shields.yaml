@@ -445,7 +445,7 @@
     weight: 6900
     slot: 5
     decay:
-      duration: 1200
+      duration: 24000
       decay_to: 8077
     defense: 36
 - id: 8079
@@ -457,7 +457,7 @@
     weight: 6900
     slot: 5
     decay:
-      duration: 1200
+      duration: 24000
       decay_to: 8077
     defense: 39
 - id: 8080
@@ -469,7 +469,7 @@
     weight: 6900
     slot: 5
     decay:
-      duration: 1200
+      duration: 24000
       decay_to: 8077
     defense: 36
 - id: 8081
@@ -481,7 +481,7 @@
     weight: 6900
     slot: 5
     decay:
-      duration: 1200
+      duration: 24000
       decay_to: 8077
     defense: 37
 - id: 8090
@@ -541,7 +541,7 @@
     weight: 5200
     slot: 5
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 9401
     defense: 25
 - id: 11688
@@ -823,7 +823,7 @@
     weight: 6800
     slot: 5
     decay:
-      duration: 3
+      duration: 60
       decay_to: 22889
 - id: 24508
   name: old tibia item
@@ -1003,7 +1003,7 @@
     weight: 9100
     slot: 5
     decay:
-      duration: 3
+      duration: 60
       decay_to: 28917
 - id: 28917
   name: adamant shield
@@ -1023,7 +1023,7 @@
     weight: 9100
     slot: 5
     decay:
-      duration: 3
+      duration: 60
       decay_to: 28915
 - id: 29420
   name: shoulder plate

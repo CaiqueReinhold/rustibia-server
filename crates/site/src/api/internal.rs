@@ -342,6 +342,7 @@ mod tests {
                                 item_id: 3031,
                                 amount: 1,
                                 content: None,
+                                action_id: None,
                             },
                         }],
                     })

@@ -168,9 +168,15 @@ struct RawCreature {
     loot: Vec<RawLootEntry>,
     #[serde(default)]
     flee_threshold: Option<u32>,
+    #[serde(default = "melee_distance")]
+    target_distance: u16,
     say: RawCreatureVoices,
     #[serde(default)]
     flags: Vec<CreatureFlag>,
+}
+
+fn melee_distance() -> u16 {
+    1
 }
 
 fn parse_ability(
@@ -320,6 +326,7 @@ impl RawCreature {
                 })
                 .collect(),
             flee_threshold: self.flee_threshold,
+            target_distance: self.target_distance,
             say: CreatureVoices {
                 cooldown: self.say.cooldown,
                 chance: self.say.chance,
@@ -596,6 +603,19 @@ say:
             + "corpse: 5973\nsay:\n  cooldown: 100\n  chance: 10000\n  sentences: []\n";
 
         assert!(a_creature(&contents).abilities.is_empty());
+    }
+
+    #[test]
+    fn a_creature_without_a_target_distance_closes_to_melee() {
+        assert_eq!(a_creature(A_CREATURE).target_distance, 1);
+    }
+
+    #[test]
+    fn a_target_distance_is_read_from_the_document() {
+        let kind =
+            a_creature(&A_CREATURE.replace("corpse: 5973", "target_distance: 4\ncorpse: 5973"));
+
+        assert_eq!(kind.target_distance, 4);
     }
 
     /// The loader must refuse an ability it cannot run rather than drop it: a creature that

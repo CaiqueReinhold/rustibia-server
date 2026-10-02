@@ -96,6 +96,7 @@ abilities:
     duration_ticks: 400
     effect_id: 14
 corpse: 6037
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

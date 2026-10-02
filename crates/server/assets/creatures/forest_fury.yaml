@@ -28,6 +28,7 @@ abilities:
     missile_id: 17
     effect_id: 15
 corpse: 19042
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

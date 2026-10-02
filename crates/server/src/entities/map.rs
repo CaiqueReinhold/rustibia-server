@@ -121,6 +121,7 @@ pub struct GameMap {
     chunks: HashMap<ChunkCoord, Arc<Chunk>>,
     agents: SlotMap<AgentKey, Agent>,
     agent_positions: HashMap<AgentKey, Position>,
+    teleports: HashMap<Position, Position>,
     chunk_copies: u64,
     tick: Tick,
 }
@@ -152,6 +153,7 @@ impl GameMap {
             chunks: HashMap::new(),
             agents: SlotMap::with_key(),
             agent_positions: HashMap::new(),
+            teleports: HashMap::new(),
             chunk_copies: 0,
             tick: Tick(0),
         }
@@ -418,7 +420,7 @@ impl GameMap {
         if let Some(agent) = self.get_agent(agent_key)
             && agent.is_creature()
         {
-            if self.get_floor_change(pos).is_some() {
+            if self.get_floor_change(pos).is_some() || self.teleport_destination(pos).is_some() {
                 return false;
             }
 
@@ -453,6 +455,24 @@ impl GameMap {
         tile.items
             .iter()
             .find_map(|i| i.config.attr_tile_friction())
+    }
+
+    pub fn insert_teleport(&mut self, at: Position, destination: Position) {
+        self.teleports.insert(at, destination);
+    }
+
+    pub fn teleport_count(&self) -> usize {
+        self.teleports.len()
+    }
+
+    pub fn teleport_destination(&self, pos: &Position) -> Option<Position> {
+        let destination = self.teleports.get(pos)?;
+        self.get_tile(pos)
+            .ok()?
+            .items
+            .iter()
+            .any(|item| item.config.has_flag(ItemFlag::Teleport))
+            .then(|| destination.clone())
     }
 
     pub fn get_floor_change(&self, pos: &Position) -> Option<FloorChangeDirection> {
@@ -1418,6 +1438,52 @@ mod tests {
             )),
             1,
         )
+    }
+
+    fn a_teleport_tile(teleport: bool) -> MapTile {
+        let mut tile = MapTile::new();
+        tile.push_item(an_item(1, &[ItemFlag::Ground]));
+        if teleport {
+            tile.push_item(an_item(2, &[ItemFlag::Teleport]));
+        }
+        tile
+    }
+
+    #[test]
+    fn a_teleport_tile_names_its_destination() {
+        let (at, to) = (Position::new(10, 10, 7), Position::new(50, 50, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(at.clone(), a_teleport_tile(true));
+        map.insert_teleport(at.clone(), to.clone());
+
+        assert_eq!(map.teleport_destination(&at), Some(to));
+    }
+
+    #[test]
+    fn a_destination_without_a_teleport_on_the_tile_is_ignored() {
+        let (at, to) = (Position::new(10, 10, 7), Position::new(50, 50, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(at.clone(), a_teleport_tile(false));
+        map.insert_teleport(at.clone(), to);
+
+        assert_eq!(map.teleport_destination(&at), None);
+    }
+
+    #[test]
+    fn a_creature_will_not_step_onto_a_teleport() {
+        let (here, at) = (Position::new(9, 10, 7), Position::new(10, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_teleport_tile(false));
+        map.insert_tile(at.clone(), a_teleport_tile(true));
+        map.insert_teleport(at.clone(), Position::new(50, 50, 7));
+        let creature = map
+            .insert_agent(
+                crate::persistence::test_fixtures::a_test_creature("rat", 20, (0, 0)),
+                &here,
+            )
+            .unwrap();
+
+        assert!(!map.can_move(&at, creature));
     }
 
     fn ids(map: &GameMap, pos: &Position) -> Vec<u16> {

@@ -28,6 +28,7 @@ abilities:
       range: 7
     missile_id: 9
 corpse: 3580
+target_distance: 4
 say:
   cooldown: 100
   chance: 0

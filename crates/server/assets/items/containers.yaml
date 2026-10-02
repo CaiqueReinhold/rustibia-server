@@ -1049,7 +1049,7 @@
   attributes:
     weight: 1000
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 4073
   name: treasure chest
@@ -1083,7 +1083,7 @@
     capacity: 10
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 3987
 - id: 4250
   name: dead spider
@@ -1096,7 +1096,7 @@
     weight: 1000
     capacity: 6
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4003
 - id: 4251
   name: dead cyclops
@@ -1108,7 +1108,7 @@
     capacity: 30
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 3989
 - id: 4255
   name: dead rat
@@ -1122,7 +1122,7 @@
     capacity: 10
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 3994
 - id: 4262
   name: dead orc
@@ -1136,7 +1136,7 @@
     capacity: 10
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4002
 - id: 4266
   name: dead rotworm
@@ -1149,7 +1149,7 @@
     capacity: 10
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4267
 - id: 4268
   name: dead wolf
@@ -1163,7 +1163,7 @@
     capacity: 6
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4269
 - id: 4269
   name: dead wolf
@@ -1176,7 +1176,7 @@
     weight: 11500
     capacity: 6
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4270
 - id: 4272
   name: dead minotaur
@@ -1189,7 +1189,7 @@
     weight: 130000
     capacity: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4273
 - id: 4273
   name: dead minotaur
@@ -1202,7 +1202,7 @@
     weight: 105000
     capacity: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4274
 - id: 4274
   name: dead minotaur
@@ -1215,7 +1215,7 @@
     weight: 85000
     capacity: 10
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4277
   name: dead deer
@@ -1229,7 +1229,7 @@
     capacity: 5
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4278
 - id: 4278
   name: dead deer
@@ -1242,7 +1242,7 @@
     weight: 58000
     capacity: 5
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4279
 - id: 4279
   name: dead deer
@@ -1254,7 +1254,7 @@
   attributes:
     weight: 18000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4281
   name: dead dog
@@ -1268,7 +1268,7 @@
     capacity: 5
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4021
 - id: 4282
   name: dead dog
@@ -1299,7 +1299,7 @@
     capacity: 52
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4287
 - id: 4287
   name: dead dragon
@@ -1310,7 +1310,7 @@
   attributes:
     capacity: 52
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4288
 - id: 4288
   name: dead dragon
@@ -1320,7 +1320,7 @@
   - usable
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4290
   name: remains of a ghost
@@ -1332,7 +1332,7 @@
     weight: 1000
     capacity: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4158
 - id: 4291
   name: dead bear
@@ -1344,7 +1344,7 @@
     capacity: 20
     fluid_source: blood
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4292
 - id: 4295
   name: slain ghoul
@@ -1357,7 +1357,7 @@
     weight: 60000
     capacity: 8
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4296
 - id: 4301
   name: dead rabbit
@@ -1370,7 +1370,7 @@
     weight: 1000
     capacity: 5
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4302
 - id: 4310
   name: dead elephant
@@ -2986,7 +2986,7 @@
   attributes:
     capacity: 10
     decay:
-      duration: 100
+      duration: 2000
       decay_to: 0
 - id: 25762
   name: tree container

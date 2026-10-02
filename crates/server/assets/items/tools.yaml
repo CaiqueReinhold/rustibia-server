@@ -519,7 +519,7 @@
   attributes:
     weight: 300
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 9594
 - id: 9596
   name: squeezing gear of girlpower
@@ -540,7 +540,7 @@
   attributes:
     weight: 300
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 9596
 - id: 9598
   name: whacking driller of fate
@@ -561,7 +561,7 @@
   attributes:
     weight: 300
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 9598
 - id: 21755
   name: bronze gear wheel

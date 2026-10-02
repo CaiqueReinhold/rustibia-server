@@ -5,6 +5,7 @@ use crate::{
     entities::{
         Bounds,
         agent::AgentKey,
+        effects::AreaEffect,
         healing::{HealPlan, Restore},
         items::{Item, ItemFlag, ItemId, ItemMultiAction, ItemRef},
         map::GameMap,
@@ -14,12 +15,12 @@ use crate::{
     },
     game::{
         Mark, TickCtx,
-        config::GAME_CONFIG,
+        config::{GAME_CONFIG, MultiActionConfig},
         events::BroadcastMessage,
         healing::execute_healing,
         item_action::{ItemActionError, transform},
         item_movement::{insert_item_at, remove_item_at, return_item},
-        map_query::find_item,
+        map_query::{find_item, find_landing},
         spells::{CastSource, cast_spell},
     },
     persistence::{items::ITEM_CONFIGS, spells::SPELLS},
@@ -116,6 +117,14 @@ fn route_multi_action(
             let tool_target = tool_target(ctx.map, target)?;
             rope(ctx, agent_key, tool_target)
         }
+        ItemMultiAction::Machete => {
+            let tool_target = tool_target(ctx.map, target)?;
+            machete(ctx, tool_target, &GAME_CONFIG.multi_action)
+        }
+        ItemMultiAction::Pick => {
+            let tool_target = tool_target(ctx.map, target)?;
+            pick(ctx, tool_target, &GAME_CONFIG.multi_action)
+        }
         ItemMultiAction::Potion {
             health,
             mana,
@@ -192,20 +201,53 @@ fn shovel(ctx: &mut TickCtx, target: &ItemRef) -> Result<(), ItemActionError> {
     transform(ctx, target, ItemId(target_item_id.0 + 1))
 }
 
-fn first_available_position_up(
-    map: &GameMap,
-    pos: &Position,
-    agent_key: AgentKey,
-) -> Option<Position> {
-    [
-        Position::new(pos.x, pos.y.saturating_sub(1), pos.z - 1),
-        Position::new(pos.x, pos.y.saturating_add(1), pos.z - 1),
-        Position::new(pos.x.saturating_sub(1), pos.y, pos.z - 1),
-        Position::new(pos.x.saturating_add(1), pos.y, pos.z - 1),
-    ]
-    .iter()
-    .find(|try_pos| map.can_move(try_pos, agent_key))
-    .cloned()
+fn machete(
+    ctx: &mut TickCtx,
+    target: &ItemRef,
+    config: &MultiActionConfig,
+) -> Result<(), ItemActionError> {
+    let target_id = find_item(ctx.map, &target.placement, &target.guid)
+        .ok_or(ItemActionError::ActionFailed)?
+        .id();
+    if let Some(into) = config.machete_cuts.get(&target_id) {
+        return transform(ctx, target, *into);
+    }
+    if !config.machete_clears.contains(&target_id) {
+        return Err(ItemActionError::ActionFailed);
+    }
+    remove_item_at(ctx, target, 1).map_err(|_| ItemActionError::ActionFailed)?;
+    if let ItemPlacement::Map(pos) = &target.placement {
+        ctx.events.push(BroadcastMessage::AreaEffectAppeared {
+            area_effect: AreaEffect::single(GAME_CONFIG.effect_ids.puff, pos.clone()),
+        });
+    }
+    Ok(())
+}
+
+fn pick(
+    ctx: &mut TickCtx,
+    target: &ItemRef,
+    config: &MultiActionConfig,
+) -> Result<(), ItemActionError> {
+    let ItemPlacement::Map(pos) = &target.placement else {
+        return Err(ItemActionError::ActionFailed);
+    };
+    let (guid, into) = ctx
+        .map
+        .iter_items(pos)
+        .map_err(|_| ItemActionError::ActionFailed)?
+        .find(|item| item.config.has_flag(ItemFlag::Ground))
+        .filter(|ground| ground.action_id.is_some())
+        .and_then(|ground| Some((ground.guid, *config.pick_grounds.get(&ground.id())?)))
+        .ok_or(ItemActionError::ActionFailed)?;
+    transform(
+        ctx,
+        &ItemRef {
+            guid,
+            placement: target.placement.clone(),
+        },
+        into,
+    )
 }
 
 fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), ItemActionError> {
@@ -215,7 +257,12 @@ fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), 
     let ItemPlacement::Map(pos) = &target.placement else {
         return Err(ItemActionError::ActionFailed);
     };
-    let Some(target_pos) = first_available_position_up(ctx.map, pos, agent_key) else {
+    let above = pos
+        .z
+        .checked_sub(1)
+        .map(|z| Position::new(pos.x, pos.y, z))
+        .ok_or(ItemActionError::ActionFailed)?;
+    let Some(target_pos) = find_landing(ctx.map, agent_key, &above, false) else {
         return Err(ItemActionError::InvalidState);
     };
 
@@ -349,6 +396,116 @@ mod tests {
     use std::collections::{HashMap, HashSet};
     use std::sync::Arc;
 
+    use crate::game::config::MultiActionConfig;
+
+    fn a_catalogue_id() -> ItemId {
+        *ITEM_CONFIGS.keys().min().expect("the catalogue is empty")
+    }
+
+    /// `item` on its own tile at (10, 10, 7), over a ground, and a reference to it.
+    fn a_target(item: Item) -> (WorldMap, ItemRef) {
+        let pos = Position::new(10, 10, 7);
+        let mut tile = a_tile_with(a_built_item(ItemId(64000), [ItemFlag::Ground]));
+        let target = ItemRef {
+            guid: item.guid,
+            placement: ItemPlacement::Map(pos.clone()),
+        };
+        tile.push_item(item);
+        let mut map = GameMap::new();
+        map.insert_tile(pos, tile);
+        (WorldMap::new(map), target)
+    }
+
+    fn ids_on(map: &WorldMap) -> Vec<ItemId> {
+        map.iter_items(&Position::new(10, 10, 7))
+            .unwrap()
+            .map(|item| item.id())
+            .collect()
+    }
+
+    #[test]
+    fn a_machete_cuts_grass_into_its_cut_form() {
+        let into = a_catalogue_id();
+        let config = MultiActionConfig {
+            machete_cuts: HashMap::from([(ItemId(64001), into)]),
+            ..Default::default()
+        };
+        let (mut map, grass) = a_target(a_built_item(ItemId(64001), [ItemFlag::Unpass]));
+        let mut h = TestHarness::new();
+
+        machete(&mut h.ctx(&mut map), &grass, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64000), into]);
+    }
+
+    #[test]
+    fn a_machete_clears_wild_growth_with_a_puff() {
+        let config = MultiActionConfig {
+            machete_clears: vec![ItemId(64002)],
+            ..Default::default()
+        };
+        let (mut map, growth) = a_target(a_built_item(ItemId(64002), [ItemFlag::Unpass]));
+        let mut h = TestHarness::new();
+
+        machete(&mut h.ctx(&mut map), &growth, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64000)]);
+        assert!(
+            h.events
+                .iter()
+                .any(|e| matches!(e, BroadcastMessage::AreaEffectAppeared { .. }))
+        );
+    }
+
+    #[test]
+    fn a_machete_refuses_anything_else() {
+        let (mut map, rock) = a_target(a_built_item(ItemId(64003), [ItemFlag::Unpass]));
+        let mut h = TestHarness::new();
+
+        assert!(machete(&mut h.ctx(&mut map), &rock, &MultiActionConfig::default()).is_err());
+    }
+
+    fn a_dirt_floor(action_id: Option<u16>) -> (WorldMap, ItemRef) {
+        let pos = Position::new(10, 10, 7);
+        let mut dirt = a_built_item(ItemId(64004), [ItemFlag::Ground]);
+        dirt.action_id = action_id.and_then(std::num::NonZeroU16::new);
+        let target = ItemRef {
+            guid: dirt.guid,
+            placement: ItemPlacement::Map(pos.clone()),
+        };
+        let mut map = GameMap::new();
+        map.insert_tile(pos, a_tile_with(dirt));
+        (WorldMap::new(map), target)
+    }
+
+    #[test]
+    fn a_pick_opens_a_marked_dirt_floor() {
+        let into = a_catalogue_id();
+        let config = MultiActionConfig {
+            pick_grounds: HashMap::from([(ItemId(64004), into)]),
+            ..Default::default()
+        };
+        let (mut map, dirt) = a_dirt_floor(Some(105));
+        let mut h = TestHarness::new();
+
+        pick(&mut h.ctx(&mut map), &dirt, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![into]);
+    }
+
+    #[test]
+    fn a_pick_refuses_an_unmarked_dirt_floor() {
+        let config = MultiActionConfig {
+            pick_grounds: HashMap::from([(ItemId(64004), a_catalogue_id())]),
+            ..Default::default()
+        };
+        let (mut map, dirt) = a_dirt_floor(None);
+        let mut h = TestHarness::new();
+
+        assert!(pick(&mut h.ctx(&mut map), &dirt, &config).is_err());
+        assert_eq!(ids_on(&map), vec![ItemId(64004)]);
+    }
+
     fn an_item(id: ItemId) -> Item {
         Item::new(
             ITEM_CONFIGS
@@ -403,6 +560,8 @@ mod tests {
         for (ids, expected) in [
             (&config.shovel_ids, ItemMultiAction::Shovel),
             (&config.rope_ids, ItemMultiAction::Rope),
+            (&config.machete_ids, ItemMultiAction::Machete),
+            (&config.pick_ids, ItemMultiAction::Pick),
         ] {
             for id in ids {
                 let item = ITEM_CONFIGS
@@ -438,6 +597,25 @@ mod tests {
             unconfigured.is_empty(),
             "usable multiuse tools missing from game_conf.yaml: {unconfigured:?}"
         );
+    }
+
+    #[test]
+    fn every_tool_target_and_result_is_in_the_catalogue() {
+        let config = &GAME_CONFIG.multi_action;
+        let named = config
+            .machete_cuts
+            .iter()
+            .chain(config.pick_grounds.iter())
+            .flat_map(|(from, into)| [from, into])
+            .chain(&config.machete_clears)
+            .chain(&config.rope_spot_ids)
+            .chain(&config.opened_hole_ids);
+        for id in named {
+            assert!(
+                ITEM_CONFIGS.contains_key(id),
+                "{id:?} is not in the catalogue"
+            );
+        }
     }
 
     /// `shovel` digs into `item_id + 1`, and `transform` refuses an id the catalogue does

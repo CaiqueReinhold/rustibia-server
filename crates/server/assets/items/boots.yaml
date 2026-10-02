@@ -54,7 +54,7 @@
     weight: 800
     slot: 8
     decay:
-      duration: 14400
+      duration: 288000
       decay_to: 6530
 - id: 3550
   name: patched boots
@@ -169,7 +169,7 @@
     weight: 950
     slot: 8
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 9020
     armor: 2
 - id: 9019
@@ -323,7 +323,7 @@
     weight: 1500
     slot: 8
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
     armor: 2
 - id: 23477

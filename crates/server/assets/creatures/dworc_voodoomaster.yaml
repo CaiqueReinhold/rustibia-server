@@ -74,6 +74,7 @@ abilities:
     effect_id: 14
 corpse: 6055
 flee_threshold: 15
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

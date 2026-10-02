@@ -48,6 +48,7 @@ abilities:
       min: 0
       max: 0
 corpse: 22139
+target_distance: 5
 say:
   cooldown: 40
   chance: 5000

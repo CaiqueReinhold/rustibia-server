@@ -184,6 +184,7 @@ mod tests {
                         item_id,
                         amount: 3,
                         content: None,
+                        action_id: None,
                     },
                 }],
             }],

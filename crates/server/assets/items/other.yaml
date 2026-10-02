@@ -273,7 +273,7 @@
   attributes:
     weight: 400
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 3120
 - id: 170
   name: fake dwarven beard
@@ -363,7 +363,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 0
 - id: 235
   name: bag
@@ -388,7 +388,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 329
 - id: 324
   name: flower pot
@@ -398,7 +398,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 330
 - id: 325
   name: withered plant
@@ -408,7 +408,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 326
   name: withered plant
@@ -418,7 +418,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 327
   name: withered plant
@@ -428,7 +428,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 328
   name: withered plant
@@ -438,7 +438,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 329
   name: flower pot
@@ -448,7 +448,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 330
   name: flower pot
@@ -465,7 +465,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 332
 - id: 332
   name: flower pot
@@ -482,7 +482,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 334
 - id: 334
   name: flower pot
@@ -499,7 +499,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 336
 - id: 336
   name: flower pot
@@ -516,7 +516,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 338
 - id: 338
   name: flower pot
@@ -533,7 +533,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 340
 - id: 340
   name: flower pot
@@ -543,7 +543,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 259200
+      duration: 5184000
       decay_to: 325
 - id: 341
   name: flower pot
@@ -553,7 +553,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 342
 - id: 342
   name: flower pot
@@ -563,7 +563,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 259200
+      duration: 5184000
       decay_to: 326
 - id: 343
   name: flower pot
@@ -573,7 +573,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 344
 - id: 344
   name: flower pot
@@ -583,7 +583,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 259200
+      duration: 5184000
       decay_to: 327
 - id: 345
   name: flower pot
@@ -593,7 +593,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 346
 - id: 346
   name: flower pot
@@ -603,7 +603,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 259200
+      duration: 5184000
       decay_to: 328
 - id: 347
   name: scroll
@@ -1228,7 +1228,7 @@
   attributes:
     weight: 5000
     decay:
-      duration: 180
+      duration: 3600
       decay_to: 2913
 - id: 2913
   name: used candelabrum
@@ -1715,7 +1715,7 @@
   attributes:
     weight: 300
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3236
   name: blue note
@@ -1725,7 +1725,7 @@
   attributes:
     weight: 250
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3237
   name: sword hilt
@@ -1735,7 +1735,7 @@
   attributes:
     weight: 900
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3238
   name: cobrafang dagger
@@ -1745,7 +1745,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3239
   name: crystal arrow
@@ -1755,7 +1755,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3240
   name: burning heart
@@ -1765,7 +1765,7 @@
   attributes:
     weight: 400
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3241
   name: ornamented ankh
@@ -1775,7 +1775,7 @@
   attributes:
     weight: 500
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
 - id: 3251
   name: blood orb
@@ -1951,7 +1951,7 @@
   attributes:
     weight: 4200
     decay:
-      duration: 2
+      duration: 40
       decay_to: 3997
 - id: 4049
   name: magical measurement device
@@ -2003,7 +2003,7 @@
     weight: 50000
     capacity: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4253
 - id: 4253
   name: dead troll
@@ -2013,7 +2013,7 @@
   attributes:
     weight: 20040
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4254
   name: pile of bones
@@ -2022,7 +2022,7 @@
   - take
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4256
   name: dead rat
@@ -2032,7 +2032,7 @@
   attributes:
     weight: 4400
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4257
 - id: 4257
   name: dead rat
@@ -2042,7 +2042,7 @@
   attributes:
     weight: 3000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4258
   name: dead rat
@@ -2052,7 +2052,7 @@
   attributes:
     weight: 3000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4259
   name: dead snake
@@ -2062,7 +2062,7 @@
   attributes:
     weight: 1200
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4260
 - id: 4260
   name: dead snake
@@ -2072,7 +2072,7 @@
   attributes:
     weight: 1200
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4261
 - id: 4261
   name: dead snake
@@ -2082,7 +2082,7 @@
   attributes:
     weight: 1200
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4263
   name: dead orc
@@ -2093,7 +2093,7 @@
     weight: 16740
     fluid_source: blood
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4264
   name: dead spider
@@ -2117,7 +2117,7 @@
     weight: 8000
     capacity: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4145
 - id: 4270
   name: dead wolf
@@ -2127,7 +2127,7 @@
   attributes:
     weight: 8000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4271
   name: pile of bones
@@ -2137,7 +2137,7 @@
   attributes:
     weight: 8000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4275
   name: dead minotaur
@@ -2147,7 +2147,7 @@
   attributes:
     weight: 60000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4276
   name: pile of bones
@@ -2157,7 +2157,7 @@
   attributes:
     weight: 60000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4280
   name: pile of bones
@@ -2167,7 +2167,7 @@
   attributes:
     weight: 18000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4283
   name: pile of bones
@@ -2191,7 +2191,7 @@
   attributes:
     weight: 60000
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4297
 - id: 4297
   name: slain ghoul
@@ -2201,7 +2201,7 @@
   attributes:
     weight: 60000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4298
   name: pile of bones
@@ -2211,7 +2211,7 @@
   attributes:
     weight: 60000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4302
   name: dead rabbit
@@ -2221,7 +2221,7 @@
   attributes:
     weight: 1000
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4303
 - id: 4303
   name: dead rabbit
@@ -2231,7 +2231,7 @@
   attributes:
     weight: 1000
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4827
   name: whisper moss
@@ -2277,7 +2277,7 @@
   attributes:
     weight: 1900
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 4838
   name: strange powder
@@ -2455,7 +2455,7 @@
   attributes:
     weight: 1400
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 5668
 - id: 5706
   name: treasure map
@@ -2696,7 +2696,7 @@
   attributes:
     weight: 50
     decay:
-      duration: 259200
+      duration: 5184000
       decay_to: 6092
 - id: 6092
   name: very noble-looking watch
@@ -3428,7 +3428,7 @@
   attributes:
     weight: 1000
     decay:
-      duration: 3
+      duration: 60
       decay_to: 8982
 - id: 8174
   name: Tibiacity Encyclopedia
@@ -3439,7 +3439,7 @@
   attributes:
     weight: 1337
     decay:
-      duration: 5
+      duration: 100
       decay_to: 8149
 - id: 8175
   name: golden falcon
@@ -3456,7 +3456,7 @@
   attributes:
     weight: 2400
     decay:
-      duration: 5
+      duration: 100
       decay_to: 8153
 - id: 8194
   name: garlic bread
@@ -3520,7 +3520,7 @@
   attributes:
     weight: 890
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 8453
 - id: 8275
   name: torn book
@@ -3817,7 +3817,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9070
 - id: 9070
   name: flower pot
@@ -3834,7 +3834,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 9072
   name: withered plant
@@ -3844,7 +3844,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 9073
   name: flower pot
@@ -3854,7 +3854,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9074
 - id: 9074
   name: flower pot
@@ -3871,7 +3871,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9076
 - id: 9076
   name: flower pot
@@ -3881,7 +3881,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9072
 - id: 9077
   name: flower pot
@@ -3891,7 +3891,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9078
 - id: 9078
   name: flower pot
@@ -3901,7 +3901,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 9071
 - id: 9093
   name: Jean Pierre's Cookbook I
@@ -3918,7 +3918,7 @@
   attributes:
     weight: 2200
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 9104
   name: football
@@ -4241,7 +4241,7 @@
   attributes:
     weight: 5
     decay:
-      duration: 2
+      duration: 40
       decay_to: 9189
 - id: 9191
   name: bundle of rags
@@ -4261,7 +4261,7 @@
   attributes:
     weight: 6450
     decay:
-      duration: 10
+      duration: 200
       decay_to: 9234
 - id: 9204
   name: old pirate poem
@@ -4839,7 +4839,7 @@
   attributes:
     weight: 1700
     decay:
-      duration: 2
+      duration: 40
       decay_to: 11754
 - id: 10800
   name: orc's jaw shredder
@@ -4857,7 +4857,7 @@
   attributes:
     weight: 2500
     decay:
-      duration: 2
+      duration: 40
       decay_to: 10800
 - id: 10817
   name: bag of oriental spices
@@ -4875,7 +4875,7 @@
   attributes:
     weight: 1508
     decay:
-      duration: 2
+      duration: 40
       decay_to: 10817
 - id: 11328
   name: marked crate
@@ -5617,9 +5617,6 @@
   name: leaves
 - id: 12634
   name: leaves
-- id: 12635
-  name: leaves
-
 - id: 12656
   name: root vegetable dish
 - id: 12671
@@ -5736,7 +5733,7 @@
   attributes:
     weight: 500
     decay:
-      duration: 36000
+      duration: 720000
       decay_to: 0
 - id: 12811
   name: imortus
@@ -5894,7 +5891,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 14032
 - id: 14031
   name: flower pot
@@ -5904,7 +5901,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 14030
 - id: 14032
   name: withered plant
@@ -5914,7 +5911,7 @@
   attributes:
     weight: 150
     decay:
-      duration: 72000
+      duration: 1440000
       decay_to: 0
 - id: 14051
   name: gooey substance
@@ -6341,7 +6338,7 @@
   attributes:
     weight: 200
     decay:
-      duration: 20
+      duration: 400
       decay_to: 15795
 - id: 15795
   name: stale mushroom beer
@@ -6475,7 +6472,7 @@
   attributes:
     weight: 280
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
 - id: 15828
   name: little pig
@@ -6487,7 +6484,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
 - id: 15832
   name: bell
@@ -6508,7 +6505,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
 - id: 16101
   name: muck remover
@@ -7349,7 +7346,7 @@
   - take
   attributes:
     decay:
-      duration: 30
+      duration: 600
       decay_to: 0
 - id: 20131
   name: remains of a crude dream
@@ -7564,7 +7561,7 @@
   attributes:
     weight: 200
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 21214
 - id: 21141
   name: bundle of letters
@@ -7617,7 +7614,7 @@
   attributes:
     weight: 400
     decay:
-      duration: 1
+      duration: 20
       decay_to: 23187
 - id: 21187
   name: cup of cowcoa
@@ -7629,7 +7626,7 @@
   attributes:
     weight: 400
     decay:
-      duration: 180
+      duration: 3600
       decay_to: 0
 - id: 21188
   name: vial of coloured glooth
@@ -7645,7 +7642,7 @@
   - take
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 0
 - id: 21192
   name: mono detector
@@ -7706,7 +7703,7 @@
   attributes:
     weight: 200
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 21215
 - id: 21215
   name: pint of glooth
@@ -7792,7 +7789,7 @@
   - take
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 21397
   name: piece of a shell
@@ -7801,7 +7798,7 @@
   - take
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 21402
   name: Old Nasty
@@ -7835,7 +7832,7 @@
   attributes:
     weight: 1800
     decay:
-      duration: 3
+      duration: 60
       decay_to: 21435
 - id: 21445
   name: war backpack
@@ -8319,7 +8316,7 @@
   attributes:
     weight: 2504
     decay:
-      duration: 3
+      duration: 60
       decay_to: 21962
 - id: 22008
   name: antler talisman
@@ -11813,7 +11810,7 @@
   attributes:
     weight: 750
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 29287
   name: blue crystal
@@ -12134,7 +12131,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30083
   name: green ectoplasm
@@ -12144,7 +12141,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30084
   name: red ectoplasm
@@ -12154,7 +12151,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30085
   name: blue ectoplasmic residue
@@ -12218,7 +12215,7 @@
   attributes:
     weight: 700
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 30183
 - id: 30185
   name: broken bell
@@ -12265,7 +12262,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30204
   name: green ectoplasm
@@ -12275,7 +12272,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30205
   name: red ectoplasm
@@ -12285,7 +12282,7 @@
   attributes:
     weight: 100
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 30206
   name: golden idol of tukh
@@ -12868,7 +12865,7 @@
   attributes:
     weight: 910
     decay:
-      duration: 5
+      duration: 100
       decay_to: 31674
 - id: 31714
   name: Shimun's list
@@ -13331,7 +13328,7 @@
   attributes:
     weight: 6000
     decay:
-      duration: 2
+      duration: 40
       decay_to: 32761
 - id: 32759
   name: mini NabBot
@@ -13341,7 +13338,7 @@
   attributes:
     weight: 6000
     decay:
-      duration: 2
+      duration: 40
       decay_to: 32760
 - id: 32760
   name: mini NabBot
@@ -13444,7 +13441,7 @@
   attributes:
     weight: 850
     decay:
-      duration: 1
+      duration: 20
       decay_to: 33333
 - id: 33333
   name: bard doll
@@ -13462,7 +13459,7 @@
   attributes:
     weight: 850
     decay:
-      duration: 1
+      duration: 20
       decay_to: 33331
 - id: 33776
   name: bard doll
@@ -13648,7 +13645,7 @@
   attributes:
     weight: 250
     decay:
-      duration: 2
+      duration: 40
       decay_to: 34266
 - id: 34266
   name: Tibiapedia
@@ -13665,7 +13662,7 @@
   attributes:
     weight: 250
     decay:
-      duration: 2
+      duration: 40
       decay_to: 34264
 - id: 34326
   name: wicked witch
@@ -13681,7 +13678,7 @@
   attributes:
     weight: 1989
     decay:
-      duration: 4
+      duration: 80
       decay_to: 34326
 - id: 35226
   name: rascoohan rat revealer
@@ -13877,7 +13874,7 @@
   attributes:
     weight: 40
     decay:
-      duration: 5
+      duration: 100
       decay_to: 35909
 - id: 36019
   name: white lion doll
@@ -13896,7 +13893,7 @@
   attributes:
     weight: 1700
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36019
 - id: 36478
   name: banor doll
@@ -13914,7 +13911,7 @@
   attributes:
     weight: 3800
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36480
 - id: 36480
   name: banor doll
@@ -13932,7 +13929,7 @@
   attributes:
     weight: 3800
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36478
 - id: 36586
   name: old parchment
@@ -14154,7 +14151,7 @@
   attributes:
     weight: 200
     decay:
-      duration: 4
+      duration: 80
       decay_to: 36998
 - id: 36998
   name: Luna
@@ -14172,7 +14169,7 @@
   attributes:
     weight: 200
     decay:
-      duration: 1
+      duration: 20
       decay_to: 36996
 - id: 37052
   name: bonelord tome
@@ -14204,7 +14201,7 @@
   attributes:
     weight: 420
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37056
 - id: 37056
   name: Bella Bonecrusher's doll
@@ -14220,7 +14217,7 @@
   attributes:
     weight: 420
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37054
 - id: 37061
   name: Evora
@@ -14236,7 +14233,7 @@
   attributes:
     weight: 6659
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37063
 - id: 37063
   name: Evora
@@ -14252,7 +14249,7 @@
   attributes:
     weight: 6659
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37061
 - id: 37109
   name: sliver
@@ -14700,7 +14697,7 @@
   attributes:
     weight: 1116
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37745
 - id: 37745
   name: draptor doll
@@ -14718,7 +14715,7 @@
   attributes:
     weight: 1116
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37743
 - id: 37749
   name: dark oracle
@@ -14798,7 +14795,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3
+      duration: 60
       decay_to: 38704
 - id: 38704
   name: beaver of wisdom
@@ -14816,7 +14813,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 4
+      duration: 80
       decay_to: 38677
 - id: 38843
   name: silver and a golden hand
@@ -14915,7 +14912,7 @@
   attributes:
     weight: 85
     decay:
-      duration: 10
+      duration: 200
       decay_to: 0
 - id: 39240
   name: foam stalker spume
@@ -15010,7 +15007,7 @@
   attributes:
     weight: 50
     decay:
-      duration: 7200
+      duration: 144000
       decay_to: 36539
 - id: 39546
   name: primal bag
@@ -15124,7 +15121,7 @@
   - take
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 39757
 - id: 39759
   name: the gods' twilight doll
@@ -15139,7 +15136,7 @@
   - take
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 39761
 - id: 39761
   name: the gods' twilight doll
@@ -15154,7 +15151,7 @@
   - take
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 39759
 - id: 40578
   name: the living idol of tukh
@@ -15206,3 +15203,5 @@
   - take
   attributes:
     weight: 1000
+- id: 12635
+  name: leaves

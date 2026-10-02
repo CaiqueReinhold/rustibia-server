@@ -192,17 +192,19 @@ fn idle(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
 
 fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let agent = ctx.map.get_agent(ctx.creature)?;
-    let postion = ctx.map.agent_position(ctx.creature)?;
+    let position = ctx.map.agent_position(ctx.creature)?;
     let target_key = agent.target()?;
     let target_position = ctx.map.agent_position(target_key)?;
+    let target_distance = agent.get_creature_kind()?.target_distance;
 
-    // TODO: ajust for ranged creatures
-    if !postion.is_within(target_position, 1) && agent.next_walk_tick <= ctx.world_tick {
-        match pathfinding::next_step(
+    if agent.next_walk_tick <= ctx.world_tick {
+        match approach(
             ctx.map,
             ctx.creature,
-            &Goal::adjacent(target_position.clone()),
-            &Rect::radius(postion, SIGHT_RANGE),
+            position,
+            target_position,
+            target_distance,
+            &mut ctx.roll,
         ) {
             pathfinding::Step::Move(direction) => {
                 return Some(CreatureAction::Walk {
@@ -218,7 +220,7 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
                             agent_key: ctx.creature,
                             target: Some(new_target),
                         });
-                    } else if !can_throw(ctx.map, postion, target_position, true) {
+                    } else if !can_throw(ctx.map, position, target_position, true) {
                         return Some(CreatureAction::SetTarget {
                             agent_key: ctx.creature,
                             target: None,
@@ -257,6 +259,35 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     None
 }
 
+fn approach(
+    map: &GameMap,
+    creature: AgentKey,
+    from: &Position,
+    target: &Position,
+    target_distance: u16,
+    roll: &mut Rolls,
+) -> pathfinding::Step {
+    let bounds = Rect::radius(from, SIGHT_RANGE);
+    if target_distance <= 1 {
+        return pathfinding::next_step(map, creature, &Goal::adjacent(target.clone()), &bounds);
+    }
+
+    if from.distance(target) < target_distance && can_throw(map, from, target, true) {
+        return escape_step(map, creature, from, target, false, roll)
+            .map_or(pathfinding::Step::Arrived, pathfinding::Step::Move);
+    }
+
+    pathfinding::next_step(
+        map,
+        creature,
+        &Goal::InSight {
+            of: target.clone(),
+            range: target_distance,
+        },
+        &bounds,
+    )
+}
+
 fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let map = ctx.map;
     let agent = map.get_agent(ctx.creature)?;
@@ -264,7 +295,7 @@ fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let to = map.agent_position(agent.target()?)?;
 
     if agent.next_walk_tick <= ctx.world_tick {
-        let direction = escape_step(map, ctx.creature, from, to, &mut ctx.roll)?;
+        let direction = escape_step(map, ctx.creature, from, to, true, &mut ctx.roll)?;
         return Some(CreatureAction::Walk {
             agent_key: ctx.creature,
             direction,
@@ -374,7 +405,7 @@ fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
     candidates
         .iter()
         .filter_map(|(key, pos)| {
-            let ticks = reachable.cost_to(&Goal::adjacent(pos.clone()))?;
+            let ticks = reachable.cost_to(map, &Goal::adjacent(pos.clone()))?;
             Some((*key, ticks, from.distance(pos)))
         })
         .min_by_key(|(_, ticks, distance)| (*ticks, *distance))
@@ -419,17 +450,24 @@ type Rung = [(i32, i32); 4];
 const NO_STEP: (i32, i32) = (0, 0);
 const NO_RUNG: Rung = [NO_STEP; 4];
 
+/// The `escape_ladder` rungs that give ground to the target; only a fleeing creature takes them.
+const FLEE_ONLY_RUNGS: [usize; 2] = [2, 4];
+
 fn escape_step(
     map: &GameMap,
     creature: AgentKey,
     from: &Position,
     to: &Position,
+    flee: bool,
     roll: &mut Rolls,
 ) -> Option<Direction> {
     let offset_x = from.x as i32 - to.x as i32;
     let offset_y = from.y as i32 - to.y as i32;
 
-    for rung in escape_ladder(offset_x, offset_y) {
+    for (index, rung) in escape_ladder(offset_x, offset_y).into_iter().enumerate() {
+        if !flee && FLEE_ONLY_RUNGS.contains(&index) {
+            continue;
+        }
         let options: Vec<Direction> = rung
             .into_iter()
             .filter_map(|(dx, dy)| Direction::from_step(dx, dy))
@@ -882,7 +920,7 @@ mod tests {
 
     fn escape_from(map: &GameMap, creature: AgentKey, target: &Position) -> Option<Direction> {
         let from = map.agent_position(creature).unwrap().clone();
-        escape_step(map, creature, &from, target, &mut Rolls::new(7))
+        escape_step(map, creature, &from, target, true, &mut Rolls::new(7))
     }
 
     #[test]
@@ -951,7 +989,7 @@ mod tests {
         // Target to the north-west, so south and east are the two cardinals away.
         for seed in 0..32 {
             let from = at(15, 10);
-            let step = escape_step(&map, rat, &from, &at(14, 9), &mut Rolls::new(seed));
+            let step = escape_step(&map, rat, &from, &at(14, 9), true, &mut Rolls::new(seed));
             assert!(
                 matches!(step, Some(South | East)),
                 "expected a cardinal, got {step:?}"
@@ -976,6 +1014,63 @@ mod tests {
 
         assert_eq!(first, [(0, -1), (0, 1), (1, 0), (-1, 0)]);
         assert!(rest.iter().all(|rung| rung == &NO_RUNG));
+    }
+
+    fn keep_distance_from(
+        map: &GameMap,
+        creature: AgentKey,
+        target: &Position,
+    ) -> Option<Direction> {
+        let from = map.agent_position(creature).unwrap().clone();
+        escape_step(map, creature, &from, target, false, &mut Rolls::new(7))
+    }
+
+    #[test]
+    fn a_creature_keeping_its_distance_never_walks_into_its_target() {
+        let mut map = a_field(5..=25, 10..=10);
+        let rat = put_frightened_creature(&mut map, 15, 10);
+        wall(&mut map, 14, 10);
+
+        assert_eq!(keep_distance_from(&map, rat, &at(16, 10)), None);
+        assert_eq!(escape_from(&map, rat, &at(16, 10)), Some(East));
+    }
+
+    /// The target is north and one tile east, with south and west walled: a fleeing creature
+    /// gives ground eastward, one keeping its distance takes a diagonal away.
+    #[test]
+    fn a_creature_keeping_its_distance_does_not_give_ground_sideways() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_frightened_creature(&mut map, 15, 10);
+        wall(&mut map, 15, 11);
+        wall(&mut map, 14, 10);
+
+        for seed in 0..32 {
+            let step = escape_step(
+                &map,
+                rat,
+                &at(15, 10),
+                &at(16, 7),
+                false,
+                &mut Rolls::new(seed),
+            );
+            assert!(matches!(step, Some(SouthEast | SouthWest)), "got {step:?}");
+        }
+        assert_eq!(escape_from(&map, rat, &at(16, 7)), Some(East));
+    }
+
+    #[test]
+    fn a_diagonal_target_is_not_approached_by_a_creature_keeping_its_distance() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_frightened_creature(&mut map, 15, 10);
+        wall(&mut map, 15, 11);
+        wall(&mut map, 16, 10);
+        wall(&mut map, 16, 11);
+
+        assert_eq!(keep_distance_from(&map, rat, &at(14, 9)), None);
+        assert!(matches!(
+            escape_from(&map, rat, &at(14, 9)),
+            Some(North | West)
+        ));
     }
 
     #[test]
@@ -1157,5 +1252,98 @@ mod tests {
             "the attack group is still on cooldown, got {action:?}"
         );
         assert_eq!(state.next_ability_tick(CreatureAbilityId(0)), Tick(0));
+    }
+
+    // keeping distance
+
+    const ARCHER_DISTANCE: u16 = 4;
+
+    fn put_archer_and_target(map: &mut GameMap, archer: Position, target: Position) -> AgentKey {
+        let key = map
+            .insert_agent(
+                Agent::from_creature_kind(
+                    Arc::new(CreatureKind {
+                        target_distance: ARCHER_DISTANCE,
+                        ..a_creature_kind("Archer")
+                    }),
+                    archer.clone(),
+                ),
+                &archer,
+            )
+            .unwrap();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &target)
+            .unwrap();
+        map.get_agent_mut(key).unwrap().set_target(Some(player), 1);
+        key
+    }
+
+    fn walked(map: &GameMap, creature: AgentKey) -> Option<Direction> {
+        let action = decide_action(CreatureBehaviourContext {
+            creature,
+            map,
+            roll: Rolls::new(7),
+            world_tick: Tick(100),
+            state: &mut CreatureState::default(),
+        });
+        match action {
+            Some(CreatureAction::Walk { direction, .. }) => Some(direction),
+            _ => None,
+        }
+    }
+
+    #[test]
+    fn a_ranged_creature_out_of_range_closes_in() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(21, 10));
+
+        assert_eq!(walked(&map, archer), Some(East));
+    }
+
+    #[test]
+    fn a_ranged_creature_at_its_distance_holds() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(19, 10));
+
+        assert_eq!(walked(&map, archer), None);
+    }
+
+    #[test]
+    fn a_ranged_creature_too_close_backs_off() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(17, 10));
+
+        assert_eq!(walked(&map, archer), Some(West));
+    }
+
+    #[test]
+    fn a_cornered_ranged_creature_holds() {
+        let mut map = a_field(15..=17, 10..=10);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(17, 10));
+
+        assert_eq!(walked(&map, archer), None);
+    }
+
+    #[test]
+    fn a_ranged_creature_at_its_distance_behind_a_wall_moves() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(19, 10), at(15, 10));
+        block_sight(&mut map, 17);
+
+        assert!(walked(&map, archer).is_some());
+    }
+
+    #[test]
+    fn a_melee_creature_two_tiles_away_closes_in() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = map
+            .insert_agent(a_test_creature("Rat", 10, (1, 2)), &at(15, 10))
+            .unwrap();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(17, 10))
+            .unwrap();
+        map.get_agent_mut(rat).unwrap().set_target(Some(player), 1);
+
+        assert_eq!(walked(&map, rat), Some(East));
     }
 }

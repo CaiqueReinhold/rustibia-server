@@ -1,6 +1,7 @@
 //! A player's saved state, and the shape it travels to the site in.
 
 use std::collections::HashMap;
+use std::num::NonZeroU16;
 
 use rustibia_contract::{CharacterSave, Coords, Outfit, PoolValue, SkillRow, StoredItemRecord};
 
@@ -90,12 +91,37 @@ fn stored_item(item: &Item) -> StoredItemRecord {
             .content
             .as_ref()
             .map(|children| children.iter().map(stored_item).collect()),
+        action_id: item.action_id.map(NonZeroU16::get),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_key_keeps_its_action_id_through_a_save() {
+        use std::sync::Arc;
+
+        use crate::entities::items::{ItemConfig, ItemFlag, ItemId};
+        use crate::persistence::login::restore_item;
+
+        let key = Arc::new(ItemConfig::new(
+            ItemId(2970),
+            "key".to_string(),
+            None,
+            None,
+            [ItemFlag::Take],
+            Vec::new(),
+        ));
+        let mut item = Item::new(Arc::clone(&key), 1);
+        item.action_id = NonZeroU16::new(3001);
+
+        let restored = restore_item(&HashMap::from([(ItemId(2970), key)]), stored_item(&item))
+            .expect("the key restores");
+
+        assert_eq!(restored.action_id, NonZeroU16::new(3001));
+    }
 
     #[test]
     fn what_a_save_carries_login_reads_back() {

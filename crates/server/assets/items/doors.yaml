@@ -5,6 +5,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1630
 - id: 1629
   name: closed door
   article: a
@@ -12,12 +15,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1630
 - id: 1630
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1629
 - id: 1631
   name: closed door
   article: a
@@ -25,6 +34,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1633
 - id: 1632
   name: closed door
   article: a
@@ -32,12 +44,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1633
 - id: 1633
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1632
 - id: 1638
   name: closed door
   article: a
@@ -45,12 +63,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1639
 - id: 1639
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1638
 - id: 1640
   name: closed door
   article: a
@@ -58,12 +82,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1641
 - id: 1641
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1640
 - id: 1642
   name: closed door
   article: a
@@ -71,12 +101,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1643
 - id: 1643
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1642
 - id: 1644
   name: closed door
   article: a
@@ -84,12 +120,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1645
 - id: 1645
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1644
 - id: 1646
   name: gate of expertise
   article: a
@@ -97,12 +139,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1647
 - id: 1647
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1646
 - id: 1648
   name: gate of expertise
   article: a
@@ -110,12 +158,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1649
 - id: 1649
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1648
 - id: 1650
   name: closed door
   article: a
@@ -123,6 +177,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1652
 - id: 1651
   name: closed door
   article: a
@@ -130,12 +187,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1652
 - id: 1652
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1651
 - id: 1653
   name: closed door
   article: a
@@ -143,6 +206,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1655
 - id: 1654
   name: closed door
   article: a
@@ -150,12 +216,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1655
 - id: 1655
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1654
 - id: 1656
   name: closed door
   article: a
@@ -163,12 +235,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1657
 - id: 1657
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1656
 - id: 1658
   name: closed door
   article: a
@@ -176,12 +254,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1659
 - id: 1659
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1658
 - id: 1660
   name: closed door
   article: a
@@ -189,12 +273,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1661
 - id: 1661
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1660
 - id: 1662
   name: closed door
   article: a
@@ -202,12 +292,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1663
 - id: 1663
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1662
 - id: 1664
   name: gate of expertise
   article: a
@@ -215,12 +311,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1665
 - id: 1665
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1664
 - id: 1666
   name: gate of expertise
   article: a
@@ -228,12 +330,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1667
 - id: 1667
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1666
 - id: 1668
   name: closed door
   article: a
@@ -241,6 +349,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1670
 - id: 1669
   name: closed door
   article: a
@@ -248,12 +359,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1670
 - id: 1670
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1669
 - id: 1671
   name: closed door
   article: a
@@ -261,6 +378,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1673
 - id: 1672
   name: closed door
   article: a
@@ -268,12 +388,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1673
 - id: 1673
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1672
 - id: 1674
   name: closed door
   article: a
@@ -281,12 +407,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1675
 - id: 1675
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1674
 - id: 1676
   name: closed door
   article: a
@@ -294,12 +426,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1677
 - id: 1677
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1676
 - id: 1678
   name: gate of expertise
   article: a
@@ -307,12 +445,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1679
 - id: 1679
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1678
 - id: 1680
   name: gate of expertise
   article: a
@@ -320,12 +464,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1681
 - id: 1681
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1680
 - id: 1682
   name: closed door
   article: a
@@ -333,6 +483,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1684
 - id: 1683
   name: closed door
   article: a
@@ -340,12 +493,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1684
 - id: 1684
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1683
 - id: 1685
   name: closed door
   article: a
@@ -353,12 +512,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1686
 - id: 1686
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1685
 - id: 1687
   name: gate of expertise
   article: a
@@ -366,12 +531,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1688
 - id: 1688
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1687
 - id: 1689
   name: closed door
   article: a
@@ -379,12 +550,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1690
 - id: 1690
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1689
 - id: 1691
   name: closed door
   article: a
@@ -392,6 +569,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1693
 - id: 1692
   name: closed door
   article: a
@@ -399,12 +579,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1693
 - id: 1693
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1692
 - id: 1694
   name: closed door
   article: a
@@ -412,12 +598,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1695
 - id: 1695
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1694
 - id: 1696
   name: gate of expertise
   article: a
@@ -425,12 +617,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1697
 - id: 1697
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1696
 - id: 1698
   name: closed door
   article: a
@@ -438,12 +636,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 1699
 - id: 1699
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 1698
 - id: 2177
   name: closed fence gate
   article: a
@@ -451,12 +655,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 2178
 - id: 2178
   name: open fence gate
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 2177
 - id: 2179
   name: closed fence gate
   article: a
@@ -464,12 +674,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 2180
 - id: 2180
   name: open fence gate
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 2179
 - id: 2334
   name: table
   article: a
@@ -532,6 +748,9 @@
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5007
 - id: 4912
   name: closed door
   article: a
@@ -539,6 +758,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 4911
 - id: 4913
   name: closed door
   article: a
@@ -546,12 +768,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 4914
 - id: 4914
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5006
 - id: 5006
   name: closed door
   article: a
@@ -559,6 +787,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 4914
 - id: 5007
   name: closed door
   article: a
@@ -566,6 +797,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 4911
 - id: 5082
   name: closed door
   article: a
@@ -573,12 +807,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5083
 - id: 5083
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5082
 - id: 5084
   name: closed door
   article: a
@@ -586,12 +826,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5085
 - id: 5085
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5084
 - id: 5097
   name: closed door
   article: a
@@ -599,6 +845,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5099
 - id: 5098
   name: closed door
   article: a
@@ -606,12 +855,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5099
 - id: 5099
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5098
 - id: 5100
   name: closed door
   article: a
@@ -619,12 +874,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5101
 - id: 5101
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5100
 - id: 5102
   name: gate of expertise
   article: a
@@ -632,12 +893,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5103
 - id: 5103
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5102
 - id: 5104
   name: closed door
   article: a
@@ -645,12 +912,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5105
 - id: 5105
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5104
 - id: 5106
   name: closed door
   article: a
@@ -658,6 +931,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5108
 - id: 5107
   name: closed door
   article: a
@@ -665,12 +941,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5108
 - id: 5108
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5107
 - id: 5109
   name: closed door
   article: a
@@ -678,12 +960,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5110
 - id: 5110
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5109
 - id: 5111
   name: gate of expertise
   article: a
@@ -691,12 +979,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5112
 - id: 5112
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5111
 - id: 5113
   name: closed door
   article: a
@@ -704,12 +998,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5114
 - id: 5114
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5113
 - id: 5115
   name: closed door
   article: a
@@ -717,6 +1017,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5117
 - id: 5116
   name: closed door
   article: a
@@ -724,12 +1027,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5117
 - id: 5117
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5116
 - id: 5118
   name: closed door
   article: a
@@ -737,12 +1046,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5119
 - id: 5119
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5118
 - id: 5120
   name: gate of expertise
   article: a
@@ -750,12 +1065,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5121
 - id: 5121
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5120
 - id: 5122
   name: closed door
   article: a
@@ -763,12 +1084,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5123
 - id: 5123
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5122
 - id: 5124
   name: closed door
   article: a
@@ -776,6 +1103,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5126
 - id: 5125
   name: closed door
   article: a
@@ -783,12 +1113,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5126
 - id: 5126
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5125
 - id: 5127
   name: closed door
   article: a
@@ -796,12 +1132,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5128
 - id: 5128
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5127
 - id: 5129
   name: gate of expertise
   article: a
@@ -809,12 +1151,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5130
 - id: 5130
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5129
 - id: 5131
   name: closed door
   article: a
@@ -822,12 +1170,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5132
 - id: 5132
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5131
 - id: 5133
   name: closed door
   article: a
@@ -835,6 +1189,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5135
 - id: 5134
   name: closed door
   article: a
@@ -842,12 +1199,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5135
 - id: 5135
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5134
 - id: 5136
   name: closed door
   article: a
@@ -855,6 +1218,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5138
 - id: 5137
   name: closed door
   article: a
@@ -862,12 +1228,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5138
 - id: 5138
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5137
 - id: 5139
   name: closed door
   article: a
@@ -875,6 +1247,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5141
 - id: 5140
   name: closed door
   article: a
@@ -882,12 +1257,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5141
 - id: 5141
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5140
 - id: 5142
   name: closed door
   article: a
@@ -895,6 +1276,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5144
 - id: 5143
   name: closed door
   article: a
@@ -902,12 +1286,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5144
 - id: 5144
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5143
 - id: 5277
   name: closed door
   article: a
@@ -915,6 +1305,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5279
 - id: 5278
   name: closed door
   article: a
@@ -922,12 +1315,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5279
 - id: 5279
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5278
 - id: 5280
   name: closed door
   article: a
@@ -935,6 +1334,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5282
 - id: 5281
   name: closed door
   article: a
@@ -942,12 +1344,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5282
 - id: 5282
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5281
 - id: 5283
   name: closed door
   article: a
@@ -955,12 +1363,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5284
 - id: 5284
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5283
 - id: 5285
   name: closed door
   article: a
@@ -968,12 +1382,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5286
 - id: 5286
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5285
 - id: 5287
   name: closed door
   article: a
@@ -981,12 +1401,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5288
 - id: 5288
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5287
 - id: 5289
   name: closed door
   article: a
@@ -994,12 +1420,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5290
 - id: 5290
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5289
 - id: 5291
   name: gate of expertise
   article: a
@@ -1007,12 +1439,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5292
 - id: 5292
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5291
 - id: 5293
   name: gate of expertise
   article: a
@@ -1020,12 +1458,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5294
 - id: 5294
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5293
 - id: 5302
   name: white stone wall window
   article: a
@@ -1049,12 +1493,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5515
 - id: 5515
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5514
 - id: 5516
   name: closed door
   article: a
@@ -1062,12 +1512,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5517
 - id: 5517
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5516
 - id: 5732
   name: closed door
   article: a
@@ -1075,6 +1531,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5734
 - id: 5733
   name: closed door
   article: a
@@ -1082,12 +1541,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5734
 - id: 5734
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5733
 - id: 5735
   name: closed door
   article: a
@@ -1095,6 +1560,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5737
 - id: 5736
   name: closed door
   article: a
@@ -1102,12 +1570,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5737
 - id: 5737
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5736
 - id: 5745
   name: closed door
   article: a
@@ -1127,6 +1601,9 @@
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 5749
 - id: 5749
   name: closed door
   article: a
@@ -1134,6 +1611,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 5748
 - id: 6191
   name: closed door
   article: a
@@ -1141,6 +1621,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6193
 - id: 6192
   name: closed door
   article: a
@@ -1148,12 +1631,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6193
 - id: 6193
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6192
 - id: 6194
   name: closed door
   article: a
@@ -1161,6 +1650,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6196
 - id: 6195
   name: closed door
   article: a
@@ -1168,12 +1660,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6196
 - id: 6196
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6195
 - id: 6197
   name: closed door
   article: a
@@ -1181,12 +1679,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6198
 - id: 6198
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6197
 - id: 6199
   name: closed door
   article: a
@@ -1194,12 +1698,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6200
 - id: 6200
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6199
 - id: 6201
   name: closed door
   article: a
@@ -1207,12 +1717,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6202
 - id: 6202
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6201
 - id: 6203
   name: closed door
   article: a
@@ -1220,12 +1736,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6204
 - id: 6204
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6203
 - id: 6205
   name: gate of expertise
   article: a
@@ -1233,12 +1755,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6206
 - id: 6206
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6205
 - id: 6207
   name: gate of expertise
   article: a
@@ -1246,12 +1774,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6208
 - id: 6208
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6207
 - id: 6248
   name: closed door
   article: a
@@ -1259,6 +1793,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6250
 - id: 6249
   name: closed door
   article: a
@@ -1266,12 +1803,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6250
 - id: 6250
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6249
 - id: 6251
   name: closed door
   article: a
@@ -1279,6 +1822,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6253
 - id: 6252
   name: closed door
   article: a
@@ -1286,12 +1832,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6253
 - id: 6253
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6252
 - id: 6254
   name: closed door
   article: a
@@ -1299,12 +1851,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6255
 - id: 6255
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6254
 - id: 6256
   name: closed door
   article: a
@@ -1312,12 +1870,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6257
 - id: 6257
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6256
 - id: 6258
   name: closed door
   article: a
@@ -1325,12 +1889,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6259
 - id: 6259
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6258
 - id: 6260
   name: closed door
   article: a
@@ -1338,12 +1908,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6261
 - id: 6261
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6260
 - id: 6262
   name: gate of expertise
   article: a
@@ -1351,12 +1927,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6263
 - id: 6263
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6262
 - id: 6264
   name: gate of expertise
   article: a
@@ -1364,12 +1946,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6265
 - id: 6265
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6264
 - id: 6435
   name: framework window
   article: a
@@ -1697,11 +2285,17 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6796
 - id: 6796
   name: entrance
   article: an
   flags:
   - unmove
+  attributes:
+    door:
+      into: 6795
 - id: 6797
   name: entrance
   article: an
@@ -1709,11 +2303,17 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6798
 - id: 6798
   name: entrance
   article: an
   flags:
   - unmove
+  attributes:
+    door:
+      into: 6797
 - id: 6799
   name: entrance
   article: an
@@ -1721,6 +2321,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6796
 - id: 6800
   name: entrance
   article: an
@@ -1734,6 +2337,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6798
 - id: 6802
   name: entrance
   article: an
@@ -1747,6 +2353,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6893
 - id: 6892
   name: closed door
   article: a
@@ -1754,12 +2363,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6893
 - id: 6893
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6892
 - id: 6894
   name: closed door
   article: a
@@ -1767,12 +2382,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6895
 - id: 6895
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6894
 - id: 6896
   name: gate of expertise
   article: a
@@ -1780,12 +2401,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6897
 - id: 6897
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6896
 - id: 6898
   name: closed door
   article: a
@@ -1793,12 +2420,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6899
 - id: 6899
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6898
 - id: 6900
   name: closed door
   article: a
@@ -1806,6 +2439,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6902
 - id: 6901
   name: closed door
   article: a
@@ -1813,12 +2449,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6902
 - id: 6902
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6901
 - id: 6903
   name: closed door
   article: a
@@ -1826,12 +2468,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6904
 - id: 6904
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6903
 - id: 6905
   name: gate of expertise
   article: a
@@ -1839,12 +2487,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6906
 - id: 6906
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6905
 - id: 6907
   name: closed door
   article: a
@@ -1852,12 +2506,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 6908
 - id: 6908
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 6907
 - id: 7025
   name: nordic wall window
   article: a
@@ -1913,6 +2573,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7035
 - id: 7034
   name: closed door
   article: a
@@ -1920,12 +2583,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7035
 - id: 7035
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7034
 - id: 7036
   name: closed door
   article: a
@@ -1933,12 +2602,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7037
 - id: 7037
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7036
 - id: 7038
   name: gate of expertise
   article: a
@@ -1946,12 +2621,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7039
 - id: 7039
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7038
 - id: 7040
   name: closed door
   article: a
@@ -1959,12 +2640,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7041
 - id: 7041
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7040
 - id: 7042
   name: closed door
   article: a
@@ -1972,6 +2659,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7044
 - id: 7043
   name: closed door
   article: a
@@ -1979,12 +2669,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7044
 - id: 7044
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7043
 - id: 7045
   name: closed door
   article: a
@@ -1992,12 +2688,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7046
 - id: 7046
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7045
 - id: 7047
   name: gate of expertise
   article: a
@@ -2005,12 +2707,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7048
 - id: 7048
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7047
 - id: 7049
   name: closed door
   article: a
@@ -2018,12 +2726,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7050
 - id: 7050
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7049
 - id: 7051
   name: ice wall window
   article: an
@@ -2047,12 +2761,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7055
 - id: 7055
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7054
 - id: 7056
   name: closed door
   article: a
@@ -2060,12 +2780,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7057
 - id: 7057
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7056
 - id: 7711
   name: closed door
   article: a
@@ -2073,6 +2799,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7713
 - id: 7712
   name: closed door
   article: a
@@ -2080,12 +2809,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7713
 - id: 7713
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7712
 - id: 7714
   name: closed door
   article: a
@@ -2093,6 +2828,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7716
 - id: 7715
   name: closed door
   article: a
@@ -2100,12 +2838,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7716
 - id: 7716
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7715
 - id: 7717
   name: closed door
   article: a
@@ -2113,12 +2857,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7718
 - id: 7718
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7717
 - id: 7719
   name: closed door
   article: a
@@ -2126,12 +2876,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7720
 - id: 7720
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7719
 - id: 7721
   name: closed door
   article: a
@@ -2139,12 +2895,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7722
 - id: 7722
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7721
 - id: 7723
   name: closed door
   article: a
@@ -2152,12 +2914,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7724
 - id: 7724
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7723
 - id: 7725
   name: gate of expertise
   article: a
@@ -2165,12 +2933,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7726
 - id: 7726
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7725
 - id: 7727
   name: gate of expertise
   article: a
@@ -2178,12 +2952,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 7728
 - id: 7728
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 7727
 - id: 7868
   name: closed door
   article: a
@@ -2209,6 +2989,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8251
 - id: 8250
   name: closed door
   article: a
@@ -2216,12 +2999,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8251
 - id: 8251
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8250
 - id: 8252
   name: closed door
   article: a
@@ -2229,6 +3018,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8254
 - id: 8253
   name: closed door
   article: a
@@ -2236,12 +3028,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8254
 - id: 8254
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8253
 - id: 8255
   name: closed door
   article: a
@@ -2249,12 +3047,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8256
 - id: 8256
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8255
 - id: 8257
   name: closed door
   article: a
@@ -2262,12 +3066,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8258
 - id: 8258
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8257
 - id: 8259
   name: closed door
   article: a
@@ -2275,12 +3085,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8260
 - id: 8260
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8259
 - id: 8261
   name: closed door
   article: a
@@ -2288,12 +3104,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8262
 - id: 8262
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8261
 - id: 8263
   name: gate of expertise
   article: a
@@ -2301,12 +3123,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8264
 - id: 8264
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8263
 - id: 8265
   name: gate of expertise
   article: a
@@ -2314,12 +3142,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8266
 - id: 8266
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8265
 - id: 8351
   name: closed door
   article: a
@@ -2327,6 +3161,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8353
 - id: 8352
   name: closed door
   article: a
@@ -2334,12 +3171,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8353
 - id: 8353
   name: closed door
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8352
 - id: 8354
   name: closed door
   article: a
@@ -2347,6 +3190,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8356
 - id: 8355
   name: closed door
   article: a
@@ -2354,12 +3200,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8356
 - id: 8356
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8355
 - id: 8357
   name: closed door
   article: a
@@ -2367,12 +3219,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8358
 - id: 8358
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8357
 - id: 8359
   name: closed door
   article: a
@@ -2380,12 +3238,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8360
 - id: 8360
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8359
 - id: 8361
   name: closed door
   article: a
@@ -2393,12 +3257,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8362
 - id: 8362
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8361
 - id: 8363
   name: closed door
   article: a
@@ -2406,12 +3276,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8364
 - id: 8364
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8363
 - id: 8365
   name: gate of expertise
   article: a
@@ -2419,12 +3295,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8366
 - id: 8366
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8365
 - id: 8367
   name: gate of expertise
   article: a
@@ -2432,12 +3314,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 8368
 - id: 8368
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 8367
 - id: 9347
   name: framework window
   article: a
@@ -2477,6 +3365,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9353
 - id: 9352
   name: closed door
   article: a
@@ -2484,12 +3375,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9353
 - id: 9353
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9352
 - id: 9354
   name: closed door
   article: a
@@ -2497,6 +3394,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9356
 - id: 9355
   name: closed door
   article: a
@@ -2504,12 +3404,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9356
 - id: 9356
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9355
 - id: 9357
   name: closed door
   article: a
@@ -2517,12 +3423,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9358
 - id: 9358
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9357
 - id: 9359
   name: closed door
   article: a
@@ -2530,12 +3442,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9360
 - id: 9360
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9359
 - id: 9361
   name: closed door
   article: a
@@ -2543,12 +3461,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9362
 - id: 9362
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9361
 - id: 9363
   name: closed door
   article: a
@@ -2556,12 +3480,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9364
 - id: 9364
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9363
 - id: 9365
   name: gate of expertise
   article: a
@@ -2569,12 +3499,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9366
 - id: 9366
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9365
 - id: 9367
   name: gate of expertise
   article: a
@@ -2582,12 +3518,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9368
 - id: 9368
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9367
 - id: 9551
   name: closed door
   article: a
@@ -2595,6 +3537,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9553
 - id: 9552
   name: closed door
   article: a
@@ -2602,12 +3547,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9553
 - id: 9553
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9552
 - id: 9554
   name: closed door
   article: a
@@ -2615,12 +3566,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9555
 - id: 9555
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9554
 - id: 9556
   name: gate of expertise
   article: a
@@ -2628,12 +3585,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9557
 - id: 9557
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9556
 - id: 9558
   name: closed door
   article: a
@@ -2641,12 +3604,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9559
 - id: 9559
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9558
 - id: 9560
   name: closed door
   article: a
@@ -2654,6 +3623,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9562
 - id: 9561
   name: closed door
   article: a
@@ -2661,12 +3633,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9562
 - id: 9562
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9561
 - id: 9563
   name: closed door
   article: a
@@ -2674,12 +3652,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9564
 - id: 9564
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9563
 - id: 9565
   name: gate of expertise
   article: a
@@ -2687,12 +3671,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9566
 - id: 9566
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9565
 - id: 9567
   name: closed door
   article: a
@@ -2700,12 +3690,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9568
 - id: 9568
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9567
 - id: 9571
   name: limestone window
   article: a
@@ -2745,6 +3741,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9860
 - id: 9859
   name: closed door
   article: a
@@ -2752,12 +3751,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9860
 - id: 9860
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9859
 - id: 9863
   name: gate of expertise
   article: a
@@ -2765,12 +3770,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9864
 - id: 9864
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9863
 - id: 9865
   name: closed door
   article: a
@@ -2778,12 +3789,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9866
 - id: 9866
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9865
 - id: 9867
   name: closed door
   article: a
@@ -2791,6 +3808,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9869
 - id: 9868
   name: closed door
   article: a
@@ -2798,12 +3818,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9869
 - id: 9869
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9868
 - id: 9872
   name: gate of expertise
   article: a
@@ -2811,12 +3837,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9873
 - id: 9873
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9872
 - id: 9874
   name: closed door
   article: a
@@ -2824,12 +3856,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 9875
 - id: 9875
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 9874
 - id: 11136
   name: closed door
   article: a
@@ -2837,6 +3875,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11138
 - id: 11137
   name: closed door
   article: a
@@ -2844,12 +3885,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11138
 - id: 11138
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11137
 - id: 11139
   name: gate of expertise
   article: a
@@ -2857,12 +3904,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11140
 - id: 11140
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11139
 - id: 11141
   name: closed door
   article: a
@@ -2883,6 +3936,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11145
 - id: 11144
   name: closed door
   article: a
@@ -2890,12 +3946,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11145
 - id: 11145
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11144
 - id: 11146
   name: gate of expertise
   article: a
@@ -2903,12 +3965,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11147
 - id: 11147
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11146
 - id: 11148
   name: closed door
   article: a
@@ -2916,12 +3984,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11149
 - id: 11149
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11148
 - id: 11232
   name: closed door
   article: a
@@ -2929,6 +4003,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11234
 - id: 11233
   name: closed door
   article: a
@@ -2936,12 +4013,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11234
 - id: 11234
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11233
 - id: 11237
   name: gate of expertise
   article: a
@@ -2949,12 +4032,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11238
 - id: 11238
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11237
 - id: 11239
   name: closed door
   article: a
@@ -2962,12 +4051,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11240
 - id: 11240
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11239
 - id: 11241
   name: closed door
   article: a
@@ -2975,6 +4070,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11243
 - id: 11242
   name: closed door
   article: a
@@ -2982,12 +4080,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11243
 - id: 11243
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11242
 - id: 11246
   name: gate of expertise
   article: a
@@ -2995,12 +4099,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11247
 - id: 11247
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11246
 - id: 11248
   name: closed door
   article: a
@@ -3008,12 +4118,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11249
 - id: 11249
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11248
 - id: 11705
   name: closed door
   article: a
@@ -3021,12 +4137,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11708
 - id: 11708
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11705
 - id: 11714
   name: closed door
   article: a
@@ -3034,12 +4156,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 11716
 - id: 11716
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 11714
 - id: 12033
   name: closed door
   article: a
@@ -3047,12 +4175,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 12034
 - id: 12034
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 12033
 - id: 12035
   name: closed door
   article: a
@@ -3060,12 +4194,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 12036
 - id: 12036
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 12035
 - id: 12249
   name: closed door
   article: a
@@ -3073,6 +4213,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 12250
 - id: 12250
   name: open door
   article: an
@@ -3080,6 +4223,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 12249
 - id: 13135
   name: closed door
   article: a
@@ -3087,6 +4233,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 13137
 - id: 13136
   name: closed door
   article: a
@@ -3094,12 +4243,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 13137
 - id: 13137
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 13136
 - id: 13142
   name: closed door
   article: a
@@ -3127,12 +4282,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 15688
 - id: 15688
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 15687
 - id: 15890
   name: closed door
   article: a
@@ -3140,12 +4301,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 15891
 - id: 15891
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 15890
 - id: 15892
   name: closed door
   article: a
@@ -3153,12 +4320,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 15893
 - id: 15893
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 15892
 - id: 17383
   name: counter
   article: a
@@ -3182,6 +4355,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17562
 - id: 17561
   name: closed door
   article: a
@@ -3189,12 +4365,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17562
 - id: 17562
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17561
 - id: 17563
   name: closed door
   article: a
@@ -3202,12 +4384,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17564
 - id: 17564
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17563
 - id: 17565
   name: gate of expertise
   article: a
@@ -3215,12 +4403,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17566
 - id: 17566
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17565
 - id: 17567
   name: closed door
   article: a
@@ -3228,12 +4422,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17568
 - id: 17568
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17567
 - id: 17569
   name: closed door
   article: a
@@ -3241,6 +4441,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17571
 - id: 17570
   name: closed door
   article: a
@@ -3248,12 +4451,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17571
 - id: 17571
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17570
 - id: 17572
   name: closed door
   article: a
@@ -3261,12 +4470,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17573
 - id: 17573
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17572
 - id: 17574
   name: gate of expertise
   article: a
@@ -3274,12 +4489,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17575
 - id: 17575
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17574
 - id: 17576
   name: closed door
   article: a
@@ -3287,12 +4508,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17577
 - id: 17577
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17576
 - id: 17700
   name: closed door
   article: a
@@ -3300,6 +4527,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17702
 - id: 17701
   name: closed door
   article: a
@@ -3307,12 +4537,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17702
 - id: 17702
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17701
 - id: 17703
   name: closed door
   article: a
@@ -3320,12 +4556,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17704
 - id: 17704
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17703
 - id: 17705
   name: gate of expertise
   article: a
@@ -3333,12 +4575,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17706
 - id: 17706
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17705
 - id: 17707
   name: closed door
   article: a
@@ -3346,12 +4594,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17708
 - id: 17708
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17707
 - id: 17709
   name: closed door
   article: a
@@ -3359,6 +4613,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17711
 - id: 17710
   name: closed door
   article: a
@@ -3366,12 +4623,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17711
 - id: 17711
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17710
 - id: 17712
   name: closed door
   article: a
@@ -3379,12 +4642,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17713
 - id: 17713
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17712
 - id: 17714
   name: gate of expertise
   article: a
@@ -3392,12 +4661,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17715
 - id: 17715
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17714
 - id: 17716
   name: closed door
   article: a
@@ -3405,12 +4680,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17717
 - id: 17717
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17716
 - id: 17993
   name: closed door
   article: a
@@ -3418,6 +4699,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17995
 - id: 17994
   name: closed door
   article: a
@@ -3425,12 +4709,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17995
 - id: 17995
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17994
 - id: 17996
   name: closed door
   article: a
@@ -3438,12 +4728,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17997
 - id: 17997
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17996
 - id: 17998
   name: gate of expertise
   article: a
@@ -3451,12 +4747,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 17999
 - id: 17999
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 17998
 - id: 18000
   name: closed door
   article: a
@@ -3464,12 +4766,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18001
 - id: 18001
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18000
 - id: 18002
   name: closed door
   article: a
@@ -3477,6 +4785,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18004
 - id: 18003
   name: closed door
   article: a
@@ -3484,12 +4795,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18004
 - id: 18004
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18003
 - id: 18005
   name: closed door
   article: a
@@ -3497,12 +4814,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18006
 - id: 18006
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18005
 - id: 18007
   name: gate of expertise
   article: a
@@ -3510,12 +4833,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18008
 - id: 18008
   name: gate of expertise
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18007
 - id: 18009
   name: closed door
   article: a
@@ -3523,24 +4852,36 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 18010
 - id: 18010
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18009
 - id: 18025
   name: counter
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18026
 - id: 18026
   name: counter
   article: a
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 18025
 - id: 20443
   name: closed door
   article: a
@@ -3548,6 +4889,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20445
 - id: 20444
   name: closed door
   article: a
@@ -3555,12 +4899,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20445
 - id: 20445
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20443
 - id: 20446
   name: closed door
   article: a
@@ -3568,12 +4918,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20447
 - id: 20447
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20446
 - id: 20448
   name: gate of expertise
   article: a
@@ -3581,12 +4937,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20449
 - id: 20449
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20448
 - id: 20450
   name: closed door
   article: a
@@ -3594,12 +4956,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20451
 - id: 20451
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20450
 - id: 20452
   name: closed door
   article: a
@@ -3607,6 +4975,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20454
 - id: 20453
   name: closed door
   article: a
@@ -3614,12 +4985,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20454
 - id: 20454
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20452
 - id: 20455
   name: closed door
   article: a
@@ -3627,12 +5004,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20456
 - id: 20456
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20455
 - id: 20457
   name: gate of expertise
   article: a
@@ -3640,12 +5023,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20458
 - id: 20458
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20457
 - id: 20459
   name: closed door
   article: a
@@ -3653,12 +5042,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 20460
 - id: 20460
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 20459
 - id: 21970
   name: closed door
   article: a
@@ -3673,12 +5068,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 22503
 - id: 22503
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 22502
 - id: 22504
   name: gate of expertise
   article: a
@@ -3686,12 +5087,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 22505
 - id: 22505
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 22504
 - id: 22506
   name: closed door
   article: a
@@ -3699,12 +5106,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 22507
 - id: 22507
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 22506
 - id: 22508
   name: closed door
   article: a
@@ -3712,12 +5125,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 22509
 - id: 22509
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 22508
 - id: 23873
   name: closed door
   article: a
@@ -3725,6 +5144,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 23877
 - id: 23874
   name: closed door
   article: a
@@ -3732,6 +5154,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 23877
 - id: 23875
   name: closed door
   article: a
@@ -3739,6 +5164,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 23878
 - id: 23876
   name: closed door
   article: a
@@ -3746,16 +5174,25 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 23878
 - id: 23877
   name: open door
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 23874
 - id: 23878
   name: open door
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 23876
 - id: 24541
   name: closed door
   article: a
@@ -3763,12 +5200,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 24542
 - id: 24542
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 24541
 - id: 24543
   name: closed door
   article: a
@@ -3776,12 +5219,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 24544
 - id: 24544
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 24543
 - id: 24903
   name: closed door
   article: a
@@ -3789,6 +5238,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28520
 - id: 28364
   name: closed door
   article: a
@@ -3796,6 +5248,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28368
 - id: 28365
   name: closed door
   article: a
@@ -3803,6 +5258,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28368
 - id: 28366
   name: closed door
   article: a
@@ -3810,6 +5268,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28369
 - id: 28367
   name: closed door
   article: a
@@ -3817,18 +5278,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28369
 - id: 28368
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 28365
 - id: 28369
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 28367
 - id: 28519
   name: closed door
   article: a
@@ -3842,6 +5312,9 @@
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 24903
 - id: 28658
   name: closed door
   article: a
@@ -3849,6 +5322,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28885
 - id: 28659
   name: closed door
   article: a
@@ -3856,18 +5332,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 28886
 - id: 28885
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 28658
 - id: 28886
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 28659
 - id: 29327
   name: closed door
   article: a
@@ -3890,6 +5375,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30035
 - id: 30034
   name: gate of expertise
   article: a
@@ -3897,18 +5385,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30036
 - id: 30035
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30049
 - id: 30036
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30050
 - id: 30037
   name: gate of expertise
   article: a
@@ -3916,6 +5413,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30039
 - id: 30038
   name: gate of expertise
   article: a
@@ -3923,18 +5423,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30040
 - id: 30039
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30051
 - id: 30040
   name: gate of expertise
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30052
 - id: 30041
   name: closed door
   article: a
@@ -3942,12 +5451,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30042
 - id: 30042
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30041
 - id: 30043
   name: closed door
   article: a
@@ -3955,12 +5470,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30044
 - id: 30044
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30043
 - id: 30045
   name: closed door
   article: a
@@ -3968,12 +5489,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30046
 - id: 30046
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30045
 - id: 30047
   name: closed door
   article: a
@@ -3981,12 +5508,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30048
 - id: 30048
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30047
 - id: 30049
   name: closed door
   article: a
@@ -3994,6 +5527,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30035
 - id: 30050
   name: closed door
   article: a
@@ -4001,6 +5537,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30036
 - id: 30051
   name: closed door
   article: a
@@ -4008,6 +5547,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30039
 - id: 30052
   name: closed door
   article: a
@@ -4015,6 +5557,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30040
 - id: 30057
   name: closed door
   article: a
@@ -4030,12 +5575,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30776
 - id: 30773
   name: closed door
   article: a
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30776
 - id: 30774
   name: closed door
   article: a
@@ -4043,24 +5594,36 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30777
 - id: 30775
   name: closed door
   article: a
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30777
 - id: 30776
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30773
 - id: 30777
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30775
 - id: 30833
   name: closed door
   article: a
@@ -4068,6 +5631,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30837
 - id: 30834
   name: closed door
   article: a
@@ -4075,6 +5641,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30837
 - id: 30835
   name: closed door
   article: a
@@ -4082,6 +5651,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30838
 - id: 30836
   name: closed door
   article: a
@@ -4089,18 +5661,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30838
 - id: 30837
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30833
 - id: 30838
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30835
 - id: 30849
   name: closed drawn curtain
   article: a
@@ -4108,6 +5689,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30853
 - id: 30850
   name: closed drawn curtain
   article: a
@@ -4115,6 +5699,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30854
 - id: 30851
   name: closed drawn curtain
   article: a
@@ -4122,6 +5709,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30855
 - id: 30852
   name: closed drawn curtain
   article: a
@@ -4129,30 +5719,45 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 30856
 - id: 30853
   name: open drawn curtain
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30849
 - id: 30854
   name: open drawn curtain
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30850
 - id: 30855
   name: open drawn curtain
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30851
 - id: 30856
   name: open drawn curtain
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 30852
 - id: 31494
   name: closed door
   article: a
@@ -4160,6 +5765,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31496
 - id: 31495
   name: closed door
   article: a
@@ -4167,18 +5775,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31497
 - id: 31496
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31494
 - id: 31497
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31495
 - id: 31568
   name: closed door
   article: a
@@ -4186,12 +5803,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31569
 - id: 31569
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31568
 - id: 31570
   name: closed door
   article: a
@@ -4199,12 +5822,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31571
 - id: 31571
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31570
 - id: 31663
   name: closed door
   article: a
@@ -4212,12 +5841,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31664
 - id: 31664
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31663
 - id: 31665
   name: closed door
   article: a
@@ -4225,12 +5860,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 31666
 - id: 31666
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 31665
 - id: 33271
   name: closed door
   article: a
@@ -4238,12 +5879,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 33272
 - id: 33272
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 33271
 - id: 33273
   name: closed door
   article: a
@@ -4251,12 +5898,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 33274
 - id: 33274
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 33273
 - id: 33335
   name: closed door
   article: a
@@ -4314,6 +5967,9 @@
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 33636
 - id: 33634
   name: closed door
   article: a
@@ -4327,18 +5983,27 @@
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 33637
 - id: 33636
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 33633
 - id: 33637
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 33635
 - id: 33638
   name: wall window
   article: a
@@ -4427,12 +6092,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 34222
 - id: 34222
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 34221
 - id: 34223
   name: closed door
   article: a
@@ -4440,12 +6111,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 34224
 - id: 34224
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 34223
 - id: 37981
   name: closed door
   article: a
@@ -4453,12 +6130,18 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 37985
 - id: 37982
   name: closed door
   article: a
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 37985
 - id: 37983
   name: closed door
   article: a
@@ -4466,24 +6149,36 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 37986
 - id: 37984
   name: closed door
   article: a
   flags:
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 37986
 - id: 37985
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 37981
 - id: 37986
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 37983
 - id: 38851
   name: closed door
   article: a
@@ -4498,6 +6193,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 39353
 - id: 39352
   name: closed door
   article: a
@@ -4505,18 +6203,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 39354
 - id: 39353
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 39351
 - id: 39354
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 39352
 - id: 39660
   name: closed door
   article: a
@@ -4524,6 +6231,9 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 39666
 - id: 39661
   name: closed door
   article: a
@@ -4531,18 +6241,27 @@
   - usable
   - unpass
   - unmove
+  attributes:
+    door:
+      into: 39667
 - id: 39666
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 39660
 - id: 39667
   name: open door
   article: an
   flags:
   - usable
   - unmove
+  attributes:
+    door:
+      into: 39661
 - id: 42624
   name: closed door
   article: a

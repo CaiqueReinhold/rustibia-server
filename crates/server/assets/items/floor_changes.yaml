@@ -34,7 +34,7 @@
   attributes:
     floor_change: down
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 867
 - id: 874
   name: large hole
@@ -67,7 +67,7 @@
   attributes:
     floor_change: down
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 1066
 - id: 1080
   name: pitfall
@@ -91,6 +91,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 1950
   name: ramp
   article: a
@@ -169,6 +171,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 1969
   name: ramp
   article: a
@@ -311,6 +315,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 6754
   name: ice hut
   article: an
@@ -549,6 +555,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 10206
   name: stone stairs
   article: a
@@ -1070,12 +1078,16 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 20475
   name: ladder rung
   flags:
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 20491
   name: stairs
   flags:
@@ -1169,7 +1181,7 @@
   attributes:
     floor_change: down
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 1080
 - id: 21972
   name: pitfall
@@ -1180,7 +1192,7 @@
   attributes:
     floor_change: down
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 1080
 - id: 21973
   name: some cracks
@@ -1381,6 +1393,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 29109
   name: ramp
   article: a
@@ -1598,6 +1612,7 @@
   - unmove
   attributes:
     floor_change: north
+    climb: up
 - id: 31130
   name: wooden ladder
   article: a
@@ -1607,6 +1622,7 @@
   - unmove
   attributes:
     floor_change: west
+    climb: up
 - id: 31262
   name: ladder
   article: a
@@ -1614,6 +1630,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 31907
   name: strange stairs
   flags:
@@ -1764,6 +1782,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 34165
   name: ramp
   article: a
@@ -1779,6 +1799,8 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up
 - id: 36444
   name: ramp
   article: a
@@ -2012,3 +2034,5 @@
   - bottom
   - usable
   - unmove
+  attributes:
+    climb: up

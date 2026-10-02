@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
@@ -59,18 +60,28 @@ pub struct ItemActionConfig {
     pub use_item_cooldown_ticks: TickDelta,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Default)]
 pub struct MultiActionConfig {
     #[serde(default)]
     pub shovel_ids: Vec<ItemId>,
     #[serde(default)]
     pub rope_ids: Vec<ItemId>,
     #[serde(default)]
+    pub machete_ids: Vec<ItemId>,
+    #[serde(default)]
+    pub pick_ids: Vec<ItemId>,
+    #[serde(default)]
     pub diggable_ids: Vec<ItemId>,
     #[serde(default)]
     pub opened_hole_ids: Vec<ItemId>,
     #[serde(default)]
     pub rope_spot_ids: Vec<ItemId>,
+    #[serde(default)]
+    pub machete_cuts: HashMap<ItemId, ItemId>,
+    #[serde(default)]
+    pub machete_clears: Vec<ItemId>,
+    #[serde(default)]
+    pub pick_grounds: HashMap<ItemId, ItemId>,
 }
 
 impl MultiActionConfig {
@@ -79,6 +90,10 @@ impl MultiActionConfig {
             Some(ItemMultiAction::Shovel)
         } else if self.rope_ids.contains(&item_id) {
             Some(ItemMultiAction::Rope)
+        } else if self.machete_ids.contains(&item_id) {
+            Some(ItemMultiAction::Machete)
+        } else if self.pick_ids.contains(&item_id) {
+            Some(ItemMultiAction::Pick)
         } else {
             None
         }

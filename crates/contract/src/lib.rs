@@ -68,14 +68,16 @@ pub struct SkillRow {
 
 /// One item in a stored inventory, possibly a container with `content`.
 ///
-/// `content` is the one optional field in this crate, because the JSONB it mirrors
-/// omits it for non-containers rather than writing `null`.
+/// `content` and `action_id` are the optional fields in this crate, because the JSONB they
+/// mirror omits them rather than writing `null`.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StoredItemRecord {
     pub item_id: u16,
     pub amount: u8,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content: Option<Vec<StoredItemRecord>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub action_id: Option<u16>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -188,7 +190,9 @@ mod tests {
                         item_id: 2360,
                         amount: 10,
                         content: None,
+                        action_id: None,
                     }]),
+                    action_id: None,
                 },
             )]),
         }
@@ -255,6 +259,7 @@ mod tests {
             item_id: 2360,
             amount: 5,
             content: None,
+            action_id: None,
         })
         .unwrap();
 
@@ -276,9 +281,34 @@ mod tests {
             StoredItemRecord {
                 item_id: 2360,
                 amount: 5,
-                content: None
+                content: None,
+                action_id: None,
             }
         );
+    }
+
+    #[test]
+    fn stored_item_omits_action_id_when_absent() {
+        let json = serde_json::to_string(&StoredItemRecord {
+            item_id: 2970,
+            amount: 1,
+            content: None,
+            action_id: None,
+        })
+        .unwrap();
+
+        assert!(
+            !json.contains("action_id"),
+            "action_id must be omitted: {json}"
+        );
+    }
+
+    #[test]
+    fn stored_item_written_before_action_ids_still_reads() {
+        let item: StoredItemRecord =
+            serde_json::from_str(r#"{"item_id":2970,"amount":1}"#).unwrap();
+
+        assert_eq!(item.action_id, None);
     }
 
     #[test]

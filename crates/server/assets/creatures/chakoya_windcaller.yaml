@@ -53,6 +53,7 @@ abilities:
       shape: wave5_2
     effect_id: 42
 corpse: 7320
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

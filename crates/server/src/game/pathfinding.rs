@@ -6,6 +6,7 @@ use crate::entities::agent::AgentKey;
 use crate::entities::map::GameMap;
 use crate::entities::position::{ALL_DIRECTIONS, Direction, Position, Rect};
 use crate::game::TickDelta;
+use crate::game::map_query::can_throw;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Goal {
@@ -13,6 +14,8 @@ pub enum Goal {
     Tile(Position),
     /// `range` is Chebyshev, as `Agent::attack_range` is.
     Within { of: Position, range: u16 },
+    /// `Within`, from a tile with a missile's line of sight to `of`.
+    InSight { of: Position, range: u16 },
 }
 
 impl Goal {
@@ -37,7 +40,7 @@ pub fn next_step(map: &GameMap, walker: AgentKey, goal: &Goal, bounds: &Rect) ->
     let Some(from) = map.agent_position(walker) else {
         return Step::Unreachable;
     };
-    if goal_is_met(goal, from) {
+    if goal_is_met(map, goal, from) {
         return Step::Arrived;
     }
     if goal_floor(goal) != from.z {
@@ -48,7 +51,7 @@ pub fn next_step(map: &GameMap, walker: AgentKey, goal: &Goal, bounds: &Rect) ->
         from,
         |pos| successors(map, walker, pos, bounds),
         |pos| heuristic(goal, pos),
-        |pos| goal_is_met(goal, pos),
+        |pos| goal_is_met(map, goal, pos),
     );
 
     match found {
@@ -87,15 +90,17 @@ pub struct Reachable {
 }
 
 impl Reachable {
-    pub fn cost_to(&self, goal: &Goal) -> Option<TickDelta> {
+    pub fn cost_to(&self, map: &GameMap, goal: &Goal) -> Option<TickDelta> {
         match goal {
             Goal::Tile(tile) => self.costs.get(tile).copied(),
-            Goal::Within { of, range } => {
+            Goal::Within { of, range } | Goal::InSight { of, range } => {
                 let range = *range as i32;
                 (-range..=range)
                     .flat_map(|dy| (-range..=range).map(move |dx| (dx, dy)))
                     .filter_map(|(dx, dy)| of.checked_offset(dx, dy))
-                    .filter_map(|pos| self.costs.get(&pos).copied())
+                    .filter_map(|pos| Some((self.costs.get(&pos).copied()?, pos)))
+                    .filter(|(_, pos)| goal_is_met(map, goal, pos))
+                    .map(|(cost, _)| cost)
                     .min()
             }
         }
@@ -154,22 +159,25 @@ impl pathfinding::num_traits::Zero for TickDelta {
 fn heuristic(goal: &Goal, from: &Position) -> TickDelta {
     let tiles = match goal {
         Goal::Tile(tile) => from.distance(tile),
-        Goal::Within { of, range } => from.distance(of).saturating_sub(*range),
+        Goal::Within { of, range } | Goal::InSight { of, range } => {
+            from.distance(of).saturating_sub(*range)
+        }
     };
     TickDelta(tiles as u64)
 }
 
-fn goal_is_met(goal: &Goal, pos: &Position) -> bool {
+fn goal_is_met(map: &GameMap, goal: &Goal, pos: &Position) -> bool {
     match goal {
         Goal::Tile(tile) => pos == tile,
         Goal::Within { of, range } => pos.is_within(of, *range),
+        Goal::InSight { of, range } => pos.is_within(of, *range) && can_throw(map, pos, of, true),
     }
 }
 
 fn goal_floor(goal: &Goal) -> u8 {
     match goal {
         Goal::Tile(tile) => tile.z,
-        Goal::Within { of, .. } => of.z,
+        Goal::Within { of, .. } | Goal::InSight { of, .. } => of.z,
     }
 }
 
@@ -468,7 +476,7 @@ mod tests {
         let reachable = reachable_from(&map, rat, &everywhere());
 
         assert_eq!(
-            reachable.cost_to(&Goal::Tile(at(15, 10))),
+            reachable.cost_to(&map, &Goal::Tile(at(15, 10))),
             Some(TickDelta(0))
         );
     }
@@ -481,9 +489,12 @@ mod tests {
 
         let reachable = reachable_from(&map, rat, &everywhere());
 
-        assert_eq!(reachable.cost_to(&Goal::Tile(at(16, 10))), Some(cardinal));
         assert_eq!(
-            reachable.cost_to(&Goal::Tile(at(18, 10))),
+            reachable.cost_to(&map, &Goal::Tile(at(16, 10))),
+            Some(cardinal)
+        );
+        assert_eq!(
+            reachable.cost_to(&map, &Goal::Tile(at(18, 10))),
             Some(cardinal * 3)
         );
         assert!(
@@ -500,8 +511,8 @@ mod tests {
 
         let reachable = reachable_from(&map, rat, &everywhere());
 
-        assert_eq!(reachable.cost_to(&Goal::Tile(at(18, 10))), None);
-        assert!(reachable.cost_to(&Goal::Tile(at(16, 10))).is_some());
+        assert_eq!(reachable.cost_to(&map, &Goal::Tile(at(18, 10))), None);
+        assert!(reachable.cost_to(&map, &Goal::Tile(at(16, 10))).is_some());
     }
 
     #[test]
@@ -514,7 +525,7 @@ mod tests {
         let reachable = reachable_from(&map, rat, &everywhere());
 
         assert_eq!(
-            reachable.cost_to(&Goal::adjacent(at(20, 10))),
+            reachable.cost_to(&map, &Goal::adjacent(at(20, 10))),
             Some(cardinal * 4),
             "x = 19 is the attacking tile, four steps out"
         );
@@ -529,7 +540,7 @@ mod tests {
         let reachable = reachable_from(&map, rat, &everywhere());
 
         assert_eq!(
-            reachable.cost_to(&Goal::adjacent(at(16, 10))),
+            reachable.cost_to(&map, &Goal::adjacent(at(16, 10))),
             Some(TickDelta(0))
         );
     }
@@ -544,8 +555,59 @@ mod tests {
             Step::Unreachable
         );
         assert_eq!(
-            reachable_from(&map, orphan, &everywhere()).cost_to(&Goal::Tile(at(16, 10))),
+            reachable_from(&map, orphan, &everywhere()).cost_to(&map, &Goal::Tile(at(16, 10))),
             None
         );
+    }
+
+    fn around_the_wall() -> (Goal, Goal) {
+        let of = at(19, 10);
+        (
+            Goal::Within {
+                of: of.clone(),
+                range: 4,
+            },
+            Goal::InSight { of, range: 4 },
+        )
+    }
+
+    #[test]
+    fn a_tile_in_range_behind_a_wall_does_not_meet_a_sight_goal() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15, 10);
+        block(&mut map, 17, 10, ItemFlag::Unpass);
+        let (within, in_sight) = around_the_wall();
+
+        assert_eq!(next_step(&map, rat, &within, &everywhere()), Step::Arrived);
+        assert_eq!(
+            next_step(&map, rat, &in_sight, &everywhere()),
+            Step::Unreachable,
+            "no tile this side of the wall sees past it"
+        );
+    }
+
+    #[test]
+    fn a_sight_goal_walks_out_from_behind_a_wall() {
+        let mut map = a_room(5..=25, 5..=15);
+        let rat = put_creature(&mut map, 15, 10);
+        block(&mut map, 17, 10, ItemFlag::Unpass);
+        let (_, in_sight) = around_the_wall();
+
+        let step = next_step(&map, rat, &in_sight, &everywhere());
+
+        assert!(matches!(step, Step::Move(_)), "got {step:?}");
+    }
+
+    #[test]
+    fn a_sight_goal_costs_only_the_tiles_that_see_its_target() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15, 10);
+        block(&mut map, 17, 10, ItemFlag::Unpass);
+        let (within, in_sight) = around_the_wall();
+
+        let reachable = reachable_from(&map, rat, &everywhere());
+
+        assert_eq!(reachable.cost_to(&map, &within), Some(TickDelta(0)));
+        assert_eq!(reachable.cost_to(&map, &in_sight), None);
     }
 }

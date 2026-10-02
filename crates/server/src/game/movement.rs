@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use smallvec::SmallVec;
-use tracing::error;
+use tracing::{error, warn};
 
 use crate::entities::{
     agent::{AgentKey, Facing},
@@ -23,6 +23,7 @@ enum StepEffect {
         owner: Option<AgentKey>,
     },
     FloorChange(FloorChangeDirection),
+    Teleport(Position),
 }
 
 pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
@@ -86,6 +87,37 @@ pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
     on_step(ctx, agent_key, &new_pos);
 }
 
+/// Moves an agent one tile without its say: a step that ignores its walk cooldown, stamps a new
+/// one, and leaves its facing alone.
+pub fn push(ctx: &mut TickCtx, agent_key: AgentKey, direction: Direction) {
+    let Some(from) = ctx.map.agent_position(agent_key).cloned() else {
+        return;
+    };
+    let to = from.clone() + direction;
+    let (Some(agent), Some(friction)) = (ctx.map.get_agent(agent_key), ctx.map.tile_friction(&to))
+    else {
+        return;
+    };
+    let facing = agent.facing();
+    let walk_ticks = agent.calculate_walk_ticks(friction, direction.is_diagonal());
+
+    ctx.map
+        .agent_mut(agent_key)
+        .unwrap()
+        .stamp_walk(ctx.tick + walk_ticks);
+    if let Err(e) = ctx.map.step_agent(agent_key, &to, facing) {
+        error!("agent {agent_key:?} could not be pushed to {to}: {e:?}");
+        return;
+    }
+    ctx.events.push(BroadcastMessage::AgentMoved {
+        agent_key,
+        direction,
+        from_position: from,
+        to_position: to.clone(),
+    });
+    on_step(ctx, agent_key, &to);
+}
+
 pub fn on_step(ctx: &mut TickCtx, agent_key: AgentKey, pos: &Position) {
     step_onto(ctx, agent_key, pos, 0);
 }
@@ -100,26 +132,35 @@ fn step_onto(ctx: &mut TickCtx, agent_key: AgentKey, pos: &Position, depth: u8) 
                 apply_condition(ctx, agent_key, &spec, owner);
             }
             StepEffect::FloorChange(direction) => {
-                if depth >= MAX_STEP_CHAIN {
-                    error!("agent {agent_key:?} is caught in a floor-change loop at {pos}");
-                    return;
-                }
                 let destination = floor_change_destination(ctx.map, pos, direction);
-                if let Err(e) = ctx.map.move_agent(agent_key, &destination) {
-                    error!(
-                        "agent {agent_key:?} could not take the floor change to {destination}: {e:?}"
-                    );
-                    return;
-                }
-                ctx.events.push(BroadcastMessage::AgentTeleported {
-                    agent_key,
-                    from_position: pos.clone(),
-                    to_position: destination.clone(),
-                });
-                return step_onto(ctx, agent_key, &destination, depth + 1);
+                return relocate(ctx, agent_key, pos, &destination, depth);
+            }
+            StepEffect::Teleport(destination) => {
+                return relocate(ctx, agent_key, pos, &destination, depth);
             }
         }
     }
+}
+
+fn relocate(ctx: &mut TickCtx, agent_key: AgentKey, from: &Position, to: &Position, depth: u8) {
+    if depth >= MAX_STEP_CHAIN {
+        error!("agent {agent_key:?} is caught in a floor-change loop at {from}");
+        return;
+    }
+    if ctx.map.get_tile(to).is_err() {
+        warn!("agent {agent_key:?} cannot be moved from {from} to {to}: there is no tile");
+        return;
+    }
+    if let Err(e) = ctx.map.move_agent(agent_key, to) {
+        error!("agent {agent_key:?} could not be moved from {from} to {to}: {e:?}");
+        return;
+    }
+    ctx.events.push(BroadcastMessage::AgentTeleported {
+        agent_key,
+        from_position: from.clone(),
+        to_position: to.clone(),
+    });
+    step_onto(ctx, agent_key, to, depth + 1);
 }
 
 fn step_effects(map: &GameMap, pos: &Position) -> SmallVec<[StepEffect; 2]> {
@@ -138,7 +179,11 @@ fn step_effects(map: &GameMap, pos: &Position) -> SmallVec<[StepEffect; 2]> {
             }
         }
     }
-    effects.extend(movement);
+    effects.extend(
+        map.teleport_destination(pos)
+            .map(StepEffect::Teleport)
+            .or(movement),
+    );
     effects
 }
 
@@ -147,29 +192,41 @@ fn floor_change_destination(
     pos: &Position,
     direction: FloorChangeDirection,
 ) -> Position {
+    let (x, y, z) = (pos.x, pos.y, pos.z);
     match direction {
-        FloorChangeDirection::Up => Position::new(pos.x, pos.y, pos.z - 1),
-        FloorChangeDirection::Down => {
-            if let Some(downstairs_change) =
-                map.get_floor_change(&Position::new(pos.x, pos.y, pos.z + 1))
-            {
-                let (x, y) = match downstairs_change {
-                    FloorChangeDirection::Up | FloorChangeDirection::Down => (pos.x, pos.y),
-                    FloorChangeDirection::North => (pos.x, pos.y + 1),
-                    FloorChangeDirection::East => (pos.x - 1, pos.y),
-                    FloorChangeDirection::South => (pos.x, pos.y - 1),
-                    FloorChangeDirection::West => (pos.x + 1, pos.y),
-                };
-                Position::new(x, y, pos.z + 1)
-            } else {
-                Position::new(pos.x, pos.y, pos.z + 1)
-            }
-        }
-        FloorChangeDirection::North => Position::new(pos.x, pos.y - 1, pos.z - 1),
-        FloorChangeDirection::East => Position::new(pos.x + 1, pos.y, pos.z - 1),
-        FloorChangeDirection::South => Position::new(pos.x, pos.y + 1, pos.z - 1),
-        FloorChangeDirection::West => Position::new(pos.x - 1, pos.y, pos.z - 1),
+        FloorChangeDirection::Up => Position::new(x, y, z - 1),
+        FloorChangeDirection::Down => down_destination(map, pos),
+        FloorChangeDirection::North => Position::new(x, y.saturating_sub(1), z - 1),
+        FloorChangeDirection::East => Position::new(x.saturating_add(1), y, z - 1),
+        FloorChangeDirection::South => Position::new(x, y.saturating_add(1), z - 1),
+        FloorChangeDirection::West => Position::new(x.saturating_sub(1), y, z - 1),
+        FloorChangeDirection::EastAlt => Position::new(x.saturating_add(2), y, z - 1),
+        FloorChangeDirection::SouthAlt => Position::new(x, y.saturating_add(2), z - 1),
     }
+}
+
+/// Where a hole or a downward stair at `pos` lands, which depends on the ramp below it: Canary's
+/// `Tile::queryDestination`.
+fn down_destination(map: &GameMap, pos: &Position) -> Position {
+    let (x, y, z) = (pos.x, pos.y, pos.z + 1);
+    let below = |x: u16, y: u16| map.get_floor_change(&Position::new(x, y, z));
+
+    if below(x, y.saturating_sub(1)) == Some(FloorChangeDirection::SouthAlt) {
+        return Position::new(x, y.saturating_sub(2), z);
+    }
+    if below(x.saturating_sub(1), y) == Some(FloorChangeDirection::EastAlt) {
+        return Position::new(x.saturating_sub(2), y, z);
+    }
+    let (x, y) = match below(x, y) {
+        Some(FloorChangeDirection::North) => (x, y.saturating_add(1)),
+        Some(FloorChangeDirection::South) => (x, y.saturating_sub(1)),
+        Some(FloorChangeDirection::SouthAlt) => (x, y.saturating_sub(2)),
+        Some(FloorChangeDirection::East) => (x.saturating_sub(1), y),
+        Some(FloorChangeDirection::EastAlt) => (x.saturating_sub(2), y),
+        Some(FloorChangeDirection::West) => (x.saturating_add(1), y),
+        _ => (x, y),
+    };
+    Position::new(x, y, z)
 }
 
 fn direction_to_facing(direction: &Direction) -> Facing {
@@ -355,6 +412,159 @@ mod tests {
 
         assert_eq!(life(&map, player), before);
         assert!(h.scheduled.is_empty());
+    }
+
+    #[test]
+    fn a_push_is_a_walk_that_keeps_the_facing() {
+        let (map, player) = a_walk(&[], vec![(EAST, a_field(20))]);
+        let mut map = WorldMap::new(map);
+        let facing = map.get_agent(player).unwrap().facing();
+        let before = life(&map, player);
+        let mut h = TestHarness::seeded(1);
+
+        push(&mut h.ctx(&mut map), player, Direction::East);
+
+        assert_eq!(map.agent_position(player), Some(&EAST));
+        assert_eq!(map.get_agent(player).unwrap().facing(), facing);
+        assert!(map.get_agent(player).unwrap().next_walk_tick > Tick(0));
+        assert_eq!(life(&map, player), before - 20, "the landing effects run");
+        assert!(h.events.iter().any(|e| matches!(
+            e,
+            BroadcastMessage::AgentMoved {
+                direction: Direction::East,
+                ..
+            }
+        )));
+    }
+
+    fn a_teleport() -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3),
+                "teleport".to_string(),
+                None,
+                None,
+                [ItemFlag::Teleport],
+                Vec::new(),
+            )),
+            1,
+        )
+    }
+
+    #[test]
+    fn a_teleport_moves_the_walker_and_reports_it() {
+        let destination = Position::new(50, 50, 7);
+        let (mut map, player) = a_walk(
+            std::slice::from_ref(&destination),
+            vec![(EAST, a_teleport())],
+        );
+        map.insert_teleport(EAST, destination.clone());
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&destination));
+        assert_eq!(teleports(&h), 1);
+    }
+
+    #[test]
+    fn a_teleport_without_a_destination_does_nothing() {
+        let (map, player) = a_walk(&[], vec![(EAST, a_teleport())]);
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&EAST));
+        assert_eq!(teleports(&h), 0);
+    }
+
+    #[test]
+    fn a_teleport_to_a_missing_tile_leaves_the_walker_where_it_stepped() {
+        let (mut map, player) = a_walk(&[], vec![(EAST, a_teleport())]);
+        map.insert_teleport(EAST, Position::new(50, 50, 7));
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&EAST));
+        assert!(map.iter_agents_at(&EAST).unwrap().any(|k| *k == player));
+        assert_eq!(teleports(&h), 0);
+    }
+
+    #[test]
+    fn a_teleport_onto_a_stair_takes_the_stair_too() {
+        let (stair, below) = (Position::new(50, 50, 7), Position::new(50, 50, 8));
+        let (mut map, player) = a_walk(
+            &[stair.clone(), below.clone()],
+            vec![
+                (EAST, a_teleport()),
+                (stair.clone(), a_floor_change(FloorChangeDirection::Down)),
+            ],
+        );
+        map.insert_teleport(EAST, stair);
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&below));
+        assert_eq!(teleports(&h), 2);
+    }
+
+    #[test]
+    fn an_east_alt_ramp_lands_two_tiles_east_on_the_floor_above() {
+        let landing = Position::new(13, 10, 6);
+        let (map, player) = a_walk(
+            std::slice::from_ref(&landing),
+            vec![(EAST, a_floor_change(FloorChangeDirection::EastAlt))],
+        );
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&landing));
+    }
+
+    #[test]
+    fn going_down_beside_an_east_alt_ramp_lands_two_tiles_west() {
+        let ramp = Position::new(10, 10, 8);
+        let landing = Position::new(9, 10, 8);
+        let (map, player) = a_walk(
+            &[ramp.clone(), landing.clone()],
+            vec![
+                (EAST, a_floor_change(FloorChangeDirection::Down)),
+                (ramp, a_floor_change(FloorChangeDirection::EastAlt)),
+            ],
+        );
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&landing));
+    }
+
+    #[test]
+    fn going_down_beside_a_south_alt_ramp_lands_two_tiles_north() {
+        let ramp = Position::new(11, 9, 8);
+        let landing = Position::new(11, 8, 8);
+        let (map, player) = a_walk(
+            &[ramp.clone(), landing.clone()],
+            vec![
+                (EAST, a_floor_change(FloorChangeDirection::Down)),
+                (ramp, a_floor_change(FloorChangeDirection::SouthAlt)),
+            ],
+        );
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert_eq!(map.agent_position(player), Some(&landing));
     }
 
     #[test]

@@ -325,7 +325,7 @@
     weight: 520
     slot: 2
     decay:
-      duration: 2
+      duration: 40
       decay_to: 9802
 - id: 10412
   name: wailing widow's necklace
@@ -485,7 +485,7 @@
     weight: 550
     slot: 2
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22060
     armor: 3
 - id: 22195
@@ -534,7 +534,7 @@
     weight: 500
     slot: 2
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 23527
   name: collar of green plasma
@@ -545,7 +545,7 @@
     weight: 500
     slot: 2
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 23528
   name: collar of red plasma
@@ -556,7 +556,7 @@
     weight: 500
     slot: 2
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 23542
   name: collar of blue plasma
@@ -657,7 +657,7 @@
     weight: 430
     slot: 2
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 29428
     armor: 3
 - id: 30344
@@ -677,7 +677,7 @@
     weight: 650
     slot: 2
     decay:
-      duration: 7200
+      duration: 144000
       decay_to: 29429
     armor: 2
 - id: 30401
@@ -695,7 +695,7 @@
     weight: 500
     slot: 2
     decay:
-      duration: 7200
+      duration: 144000
       decay_to: 30401
     armor: 2
 - id: 30403
@@ -842,7 +842,7 @@
     weight: 480
     slot: 2
     decay:
-      duration: 7200
+      duration: 144000
       decay_to: 39235
 - id: 39235
   name: turtle amulet

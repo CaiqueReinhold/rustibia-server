@@ -13,7 +13,8 @@ use crate::entities::combat::{AmmoType, CombatElement, WeaponType};
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::inventory::InventorySlot;
 use crate::entities::items::{
-    FloorChangeDirection, ItemAction, ItemAttribute, ItemConfig, ItemFlag, ItemId, ItemMultiAction,
+    ClimbDirection, FloorChangeDirection, ItemAction, ItemAttribute, ItemConfig, ItemFlag, ItemId,
+    ItemMultiAction,
 };
 use crate::entities::spells::SpellId;
 use crate::game::TickDelta;
@@ -81,6 +82,7 @@ fn parse_flag(s: &str) -> Option<ItemFlag> {
         "ammo_container" => Some(ItemFlag::AmmoContainer),
         "liquidpool" => Some(ItemFlag::LiquidPool),
         "unreplaceable" => Some(ItemFlag::Unreplaceable),
+        "teleport" => Some(ItemFlag::Teleport),
         _ => None,
     }
 }
@@ -119,6 +121,8 @@ fn parse_attribute(
                 "east" => FloorChangeDirection::East,
                 "south" => FloorChangeDirection::South,
                 "west" => FloorChangeDirection::West,
+                "eastalt" => FloorChangeDirection::EastAlt,
+                "southalt" => FloorChangeDirection::SouthAlt,
                 _ => return None,
             };
             Some(ItemAttribute::FloorChange(dir))
@@ -135,6 +139,17 @@ fn parse_attribute(
                 _ => return None,
             };
             Some(ItemAttribute::Action(action))
+        }
+        "door" => Some(ItemAttribute::Action(ItemAction::Door {
+            new: ItemId(u16::try_from(value.get("into")?.as_u64()?).ok()?),
+        })),
+        "climb" => {
+            let direction = match value.as_str()? {
+                "up" => ClimbDirection::Up,
+                "down" => ClimbDirection::Down,
+                _ => return None,
+            };
+            Some(ItemAttribute::Action(ItemAction::Climb(direction)))
         }
         "food" => {
             let duration = TickDelta(value.get("duration")?.as_u64()?);
@@ -315,6 +330,48 @@ mod tests {
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
         parse_attribute(key, &serde_yaml::from_str(value).unwrap(), &HashMap::new())
+    }
+
+    #[test]
+    fn a_door_turns_into_the_item_it_names() {
+        assert_eq!(
+            parse("door", "{ into: 1630 }"),
+            Some(ItemAttribute::Action(ItemAction::Door {
+                new: ItemId(1630)
+            }))
+        );
+    }
+
+    #[test]
+    fn a_ladder_climbs_up_and_a_grate_climbs_down() {
+        assert_eq!(
+            parse("climb", "up"),
+            Some(ItemAttribute::Action(ItemAction::Climb(ClimbDirection::Up)))
+        );
+        assert_eq!(
+            parse("climb", "down"),
+            Some(ItemAttribute::Action(ItemAction::Climb(
+                ClimbDirection::Down
+            )))
+        );
+        assert_eq!(parse("climb", "sideways"), None);
+    }
+
+    #[test]
+    fn alt_floor_changes_are_read() {
+        assert_eq!(
+            parse("floor_change", "eastalt"),
+            Some(ItemAttribute::FloorChange(FloorChangeDirection::EastAlt))
+        );
+        assert_eq!(
+            parse("floor_change", "southalt"),
+            Some(ItemAttribute::FloorChange(FloorChangeDirection::SouthAlt))
+        );
+    }
+
+    #[test]
+    fn the_teleport_flag_is_read() {
+        assert_eq!(parse_flag("teleport"), Some(ItemFlag::Teleport));
     }
 
     #[test]

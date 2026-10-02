@@ -411,7 +411,7 @@ fn walk_axis(a0: i32, b0: i32, a1: i32, b1: i32) -> impl Iterator<Item = (u16, u
 
 pub fn is_sight_clear(map: &GameMap, from: &Position, to: &Position, z: u8) -> bool {
     let (dx, dy) = (to.x as i32 - from.x as i32, to.y as i32 - from.y as i32);
-    if dx <= 1 && dy <= 1 {
+    if dx.abs() <= 1 && dy.abs() <= 1 {
         return true;
     }
 
@@ -430,6 +430,38 @@ pub fn is_sight_clear(map: &GameMap, from: &Position, to: &Position, z: u8) -> b
 }
 
 /// Weather a target is within bounds
+/// South, north, east, west, then the diagonals: Canary's `Position:moveUpstairs`.
+const LANDING_ORDER: [(i32, i32); 8] = [
+    (0, 1),
+    (0, -1),
+    (1, 0),
+    (-1, 0),
+    (-1, 1),
+    (1, 1),
+    (-1, -1),
+    (1, -1),
+];
+
+pub fn find_landing(
+    map: &GameMap,
+    agent_key: AgentKey,
+    center: &Position,
+    center_first: bool,
+) -> Option<Position> {
+    let around = LANDING_ORDER.iter().filter_map(|(dx, dy)| {
+        Some(Position::new(
+            u16::try_from(i32::from(center.x) + dx).ok()?,
+            u16::try_from(i32::from(center.y) + dy).ok()?,
+            center.z,
+        ))
+    });
+    center_first
+        .then(|| center.clone())
+        .into_iter()
+        .chain(around)
+        .find(|pos| map.can_move(pos, agent_key))
+}
+
 pub fn can_target(from: &Position, to: &Position) -> bool {
     from.z == to.z && Rect::radius(from, SIGHT_RANGE).contains(to)
 }
@@ -462,6 +494,80 @@ pub fn can_throw(map: &GameMap, from: &Position, to: &Position, same_floor: bool
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn a_floor() -> MapTile {
+        let mut tile = MapTile::new();
+        tile.push_item(Item::new(
+            std::sync::Arc::new(crate::entities::items::ItemConfig::new(
+                ItemId(1),
+                "ground".to_string(),
+                None,
+                None,
+                [crate::entities::items::ItemFlag::Ground],
+                Vec::new(),
+            )),
+            1,
+        ));
+        tile
+    }
+
+    fn a_climber_and(floors: &[Position]) -> (GameMap, AgentKey) {
+        let mut map = GameMap::new();
+        let start = Position::new(1, 1, 7);
+        map.insert_tile(start.clone(), a_floor());
+        for pos in floors {
+            map.insert_tile(pos.clone(), a_floor());
+        }
+        let key = map
+            .insert_agent(
+                crate::entities::agent::Agent::from_player(
+                    crate::persistence::test_fixtures::a_test_snapshot(1, 1),
+                ),
+                &start,
+            )
+            .unwrap();
+        (map, key)
+    }
+
+    #[test]
+    fn a_landing_prefers_the_south() {
+        let center = Position::new(10, 10, 6);
+        let (map, key) = a_climber_and(&[Position::new(10, 9, 6), Position::new(10, 11, 6)]);
+
+        assert_eq!(
+            find_landing(&map, key, &center, false),
+            Some(Position::new(10, 11, 6))
+        );
+    }
+
+    #[test]
+    fn a_landing_falls_back_through_the_order() {
+        let center = Position::new(10, 10, 6);
+        let (map, key) = a_climber_and(&[Position::new(9, 9, 6)]);
+
+        assert_eq!(
+            find_landing(&map, key, &center, false),
+            Some(Position::new(9, 9, 6))
+        );
+    }
+
+    #[test]
+    fn a_landing_can_be_the_center_first() {
+        let center = Position::new(10, 10, 8);
+        let (map, key) = a_climber_and(&[center.clone(), Position::new(10, 11, 8)]);
+
+        assert_eq!(find_landing(&map, key, &center, true), Some(center));
+    }
+
+    #[test]
+    fn nowhere_to_land_is_none() {
+        let (map, key) = a_climber_and(&[]);
+
+        assert_eq!(
+            find_landing(&map, key, &Position::new(10, 10, 6), false),
+            None
+        );
+    }
 
     /// The wire packs three different addresses into one `Position`, distinguished only by a
     /// flag in `x`, and every item command the client sends arrives as one. Nothing else covers
@@ -573,6 +679,39 @@ mod tests {
 
         assert!(!can_target(&from, &Position::new(109, 100, 7)));
         assert!(!can_target(&from, &Position::new(100, 107, 7)));
+    }
+
+    #[test]
+    fn a_wall_blocks_sight_whichever_side_the_target_is_on() {
+        use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemId};
+        use crate::entities::map::MapTile;
+        use std::collections::HashSet;
+        use std::sync::Arc;
+
+        let from = Position::new(100, 100, 7);
+        for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
+            let wall = Position::new((100 + 2 * dx) as u16, (100 + 2 * dy) as u16, 7);
+            let target = Position::new((100 + 4 * dx) as u16, (100 + 4 * dy) as u16, 7);
+            let mut tile = MapTile::new();
+            tile.push_item(Item::new(
+                Arc::new(ItemConfig::new(
+                    ItemId(1),
+                    "wall".to_string(),
+                    None,
+                    None,
+                    HashSet::from([ItemFlag::Unpass]),
+                    Vec::new(),
+                )),
+                1,
+            ));
+            let mut map = GameMap::new();
+            map.insert_tile(wall, tile);
+
+            assert!(
+                !can_throw(&map, &from, &target, true),
+                "a wall two tiles towards ({dx}, {dy}) let the line through"
+            );
+        }
     }
 
     /// Still drawn on screen — the client viewport spans several floors — but

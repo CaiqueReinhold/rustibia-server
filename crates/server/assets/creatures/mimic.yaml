@@ -14,6 +14,7 @@ melee:
     max: 0
   element: physical
 corpse: 2472
+target_distance: 5
 say:
   cooldown: 100
   chance: 0

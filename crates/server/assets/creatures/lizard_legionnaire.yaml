@@ -27,6 +27,7 @@ abilities:
     missile_id: 1
 corpse: 10359
 flee_threshold: 10
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

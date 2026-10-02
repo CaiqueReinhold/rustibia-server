@@ -5,82 +5,96 @@
   - ground
   - unmove
   - fullbank
+  - teleport
   attributes:
     tile_friction: 100
 - id: 628
   name: wooden floor
   flags:
   - unmove
+  - teleport
 - id: 775
   name: mystic flame
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 878
   name: wooden floor
   flags:
   - unmove
+  - teleport
 - id: 1756
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1757
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1758
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1761
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1762
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1763
   name: small boat
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1949
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 1959
   name: mystic flame
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 5022
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 5023
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 5756
   name: turtle
   article: a
@@ -88,6 +102,7 @@
   - ground
   - unmove
   - fullbank
+  - teleport
   attributes:
     tile_friction: 160
 - id: 8193
@@ -96,6 +111,7 @@
   flags:
   - ground
   - unmove
+  - teleport
   attributes:
     tile_friction: 95
 - id: 11552
@@ -103,6 +119,7 @@
   article: a
   flags:
   - take
+  - teleport
   attributes:
     weight: 140
 - id: 11553
@@ -110,44 +127,52 @@
   article: a
   flags:
   - unmove
+  - teleport
 - id: 11554
   name: magic portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 12796
   name: energy portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 15320
   name: large crystal teleporter
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 19243
   name: large crystal teleporter
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 20142
   name: ruined stairs
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 20143
   name: ruined stairs
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 21739
   name: water vortex
   article: a
   flags:
   - usable
   - unmove
+  - teleport
 - id: 21740
   name: water vortex
   article: a
@@ -156,12 +181,14 @@
   - usable
   - multiuse
   - unmove
+  - teleport
 - id: 21741
   name: hot geyser
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 21743
   name: strange machine
   article: a
@@ -169,6 +196,7 @@
   - usable
   - unpass
   - unmove
+  - teleport
 - id: 22106
   name: water vortex
   article: a
@@ -177,181 +205,218 @@
   - usable
   - multiuse
   - unmove
+  - teleport
 - id: 22747
   name: water vortex
   article: a
   flags:
   - unmove
+  - teleport
 - id: 22761
   name: vortex
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 23482
   name: vortex
   flags:
   - unmove
+  - teleport
 - id: 23483
   name: vortex
   flags:
   - unmove
+  - teleport
 - id: 23484
   name: vortex
   flags:
   - unmove
+  - teleport
 - id: 25047
   name: death portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25048
   name: death portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25049
   name: earth portal
   article: an
   flags:
   - unmove
+  - teleport
 - id: 25050
   name: earth portal
   article: an
   flags:
   - unmove
+  - teleport
 - id: 25051
   name: energy portal
   article: an
   flags:
   - unmove
+  - teleport
 - id: 25052
   name: energy portal
   article: an
   flags:
   - unmove
+  - teleport
 - id: 25053
   name: fire portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25054
   name: fire portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25055
   name: holy portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25056
   name: holy portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25057
   name: ice portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 25058
   name: ice portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 27589
   name: teleport
   article: a
   flags:
   - unmove
+  - teleport
 - id: 27590
   name: teleport
   article: a
   flags:
   - unmove
+  - teleport
 - id: 27658
   name: energy portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 28672
   name: vortex
   article: a
   flags:
   - unmove
+  - teleport
 - id: 28673
   name: vortex
   article: a
   flags:
   - unmove
+  - teleport
 - id: 29979
   name: portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 29980
   name: portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 32979
   name: fog portal
   flags:
   - unmove
+  - teleport
 - id: 33004
   name: fog portal
   flags:
   - unmove
+  - teleport
 - id: 33005
   name: fog portal
   flags:
   - unmove
+  - teleport
 - id: 33006
   name: fog portal
   flags:
   - unmove
+  - teleport
 - id: 33007
   name: fog portal
   flags:
   - unmove
+  - teleport
 - id: 33790
   name: large crystal teleporter
   article: a
   flags:
   - unmove
+  - teleport
 - id: 34111
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 35502
   name: magic portal
   article: a
   flags:
   - unmove
+  - teleport
 - id: 36973
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 37000
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 37001
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport
 - id: 37065
   name: magic forcefield
   article: a
   flags:
   - bottom
   - unmove
+  - teleport

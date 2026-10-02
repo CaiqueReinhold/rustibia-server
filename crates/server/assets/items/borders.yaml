@@ -250,10 +250,6 @@
   name: dirt
   flags:
   - unmove
-- id: 879
-  name: floor
-  flags:
-  - unmove
 - id: 979
   name: sand
   flags:
@@ -2080,10 +2076,6 @@
   name: swamp
   flags:
   - unmove
-- id: 4880
-  name: waterway
-  flags:
-  - unmove
 - id: 5426
   name: ocean floor
   flags:
@@ -3527,10 +3519,6 @@
   - unmove
 - id: 8035
   name: shallow water
-  flags:
-  - unmove
-- id: 8065
-  name: floor
   flags:
   - unmove
 - id: 8158
@@ -5037,30 +5025,6 @@
   name: ground
   flags:
   - unmove
-- id: 10823
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10824
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10825
-  name: blisters
-  flags:
-  - unmove
-- id: 10826
-  name: blisters
-  flags:
-  - unmove
-- id: 10827
-  name: tackleweed
-  flags:
-  - unmove
-- id: 10828
-  name: tackleweed
-  flags:
-  - unmove
 - id: 10829
   name: muddy floor
   flags:
@@ -5091,26 +5055,6 @@
   - unmove
 - id: 10836
   name: muddy floor
-  flags:
-  - unmove
-- id: 10848
-  name: some tentacles
-  flags:
-  - unmove
-- id: 10849
-  name: some tentacles
-  flags:
-  - unmove
-- id: 10850
-  name: some tentacles
-  flags:
-  - unmove
-- id: 10851
-  name: some tentacles
-  flags:
-  - unmove
-- id: 10852
-  name: some tentacles
   flags:
   - unmove
 - id: 10908
@@ -5219,14 +5163,6 @@
   - unmove
 - id: 11037
   name: floor
-  flags:
-  - unmove
-- id: 11106
-  name: emerald
-  flags:
-  - unmove
-- id: 11108
-  name: emerald
   flags:
   - unmove
 - id: 11169
@@ -6314,30 +6250,6 @@
   name: magic wolf trap
   flags:
   - unmove
-- id: 12370
-  name: floating stones
-  flags:
-  - unmove
-- id: 12371
-  name: floating stones
-  flags:
-  - unmove
-- id: 12417
-  name: strange sand
-  flags:
-  - unmove
-- id: 12422
-  name: strange sand
-  flags:
-  - unmove
-- id: 12427
-  name: strange sand
-  flags:
-  - unmove
-- id: 12484
-  name: strange sand
-  flags:
-  - unmove
 - id: 12516
   name: sand
   flags:
@@ -6861,22 +6773,6 @@
   article: a
   flags:
   - unmove
-- id: 13425
-  name: mountain
-  flags:
-  - unmove
-- id: 13426
-  name: mountain
-  flags:
-  - unmove
-- id: 13427
-  name: mountain
-  flags:
-  - unmove
-- id: 13428
-  name: mountain
-  flags:
-  - unmove
 - id: 13466
   name: cracked temple floor
   flags:
@@ -7161,54 +7057,6 @@
   name: deepling spawn
   flags:
   - unmove
-- id: 13539
-  name: sea floor
-  flags:
-  - unmove
-- id: 13540
-  name: sea floor
-  flags:
-  - unmove
-- id: 13541
-  name: sea floor
-  flags:
-  - unmove
-- id: 13542
-  name: sea floor
-  flags:
-  - unmove
-- id: 13543
-  name: sea floor
-  flags:
-  - unmove
-- id: 13544
-  name: sea floor
-  flags:
-  - unmove
-- id: 13545
-  name: sea floor
-  flags:
-  - unmove
-- id: 13546
-  name: sea floor
-  flags:
-  - unmove
-- id: 13547
-  name: sea floor
-  flags:
-  - unmove
-- id: 13548
-  name: sea floor
-  flags:
-  - unmove
-- id: 13549
-  name: sea floor
-  flags:
-  - unmove
-- id: 13550
-  name: sea floor
-  flags:
-  - unmove
 - id: 13551
   name: hoard of gold
   article: a
@@ -7227,18 +7075,6 @@
 - id: 13554
   name: hoard of gold
   article: a
-  flags:
-  - unmove
-- id: 13557
-  name: water
-  flags:
-  - unmove
-- id: 13646
-  name: particles
-  flags:
-  - unmove
-- id: 13650
-  name: steam
   flags:
   - unmove
 - id: 13667
@@ -7367,58 +7203,6 @@
   - unmove
 - id: 13769
   name: leaves
-  flags:
-  - unmove
-- id: 13811
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13812
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13813
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13814
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13815
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13816
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13817
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13818
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13819
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13820
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13821
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13822
-  name: brown sea floor
-  flags:
-  - unmove
-- id: 13841
-  name: god rays
   flags:
   - unmove
 - id: 13943
@@ -7827,62 +7611,6 @@
   name: crystal floor
   flags:
   - unmove
-- id: 14899
-  name: basalt
-  flags:
-  - unmove
-- id: 14900
-  name: basalt
-  flags:
-  - unmove
-- id: 14901
-  name: basalt
-  flags:
-  - unmove
-- id: 14902
-  name: basalt
-  flags:
-  - unmove
-- id: 14903
-  name: basalt
-  flags:
-  - unmove
-- id: 14904
-  name: basalt
-  flags:
-  - unmove
-- id: 14905
-  name: basalt
-  flags:
-  - unmove
-- id: 14906
-  name: crystals
-  flags:
-  - unmove
-- id: 14907
-  name: crystals
-  flags:
-  - unmove
-- id: 14908
-  name: crystals
-  flags:
-  - unmove
-- id: 14909
-  name: crystals
-  flags:
-  - unmove
-- id: 14910
-  name: crystals
-  flags:
-  - unmove
-- id: 14911
-  name: crystals
-  flags:
-  - unmove
-- id: 14912
-  name: crystals
-  flags:
-  - unmove
 - id: 14913
   name: small stream
   article: a
@@ -7941,54 +7669,6 @@
 - id: 14924
   name: small stream
   article: a
-  flags:
-  - unmove
-- id: 15004
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15005
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15006
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15007
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15008
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15009
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15010
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15011
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15012
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15013
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15014
-  name: basalt floor
-  flags:
-  - unmove
-- id: 15015
-  name: basalt floor
   flags:
   - unmove
 - id: 15016
@@ -8131,34 +7811,6 @@
   - unmove
 - id: 15150
   name: mushroom corkscrew stairs
-  flags:
-  - unmove
-- id: 15158
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15159
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15160
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15161
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15162
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15163
-  name: mossy wall
-  flags:
-  - unmove
-- id: 15164
-  name: mossy wall
   flags:
   - unmove
 - id: 15205
@@ -8885,7 +8537,7 @@
   - unmove
   attributes:
     decay:
-      duration: 40
+      duration: 800
       decay_to: 15829
 - id: 15822
   name: strange stone
@@ -8895,7 +8547,7 @@
   - unmove
   attributes:
     decay:
-      duration: 25
+      duration: 500
       decay_to: 15823
 - id: 15823
   name: strange stone
@@ -8905,7 +8557,7 @@
   - unmove
   attributes:
     decay:
-      duration: 25
+      duration: 500
       decay_to: 15824
 - id: 15824
   name: strange stone
@@ -8915,7 +8567,7 @@
   - unmove
   attributes:
     decay:
-      duration: 25
+      duration: 500
       decay_to: 15825
 - id: 15825
   name: strange stone
@@ -8926,7 +8578,7 @@
   - unmove
   attributes:
     decay:
-      duration: 17
+      duration: 340
       decay_to: 15822
 - id: 15829
   name: mold floor
@@ -8940,7 +8592,7 @@
   - unmove
   attributes:
     decay:
-      duration: 12
+      duration: 240
       decay_to: 15829
 - id: 15834
   name: ice stone floor
@@ -9094,10 +8746,6 @@
   flags:
   - unpass
   - unmove
-- id: 16249
-  name: dropping water
-  flags:
-  - unmove
 - id: 16288
   name: muddy floor
   flags:
@@ -9204,38 +8852,6 @@
 - id: 16324
   name: bog wart
   article: a
-  flags:
-  - unmove
-- id: 16490
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16491
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16492
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16493
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16494
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16495
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16496
-  name: grimy wooden plank
-  flags:
-  - unmove
-- id: 16497
-  name: grimy wooden plank
   flags:
   - unmove
 - id: 16576
@@ -11719,12 +11335,6 @@
   article: a
   flags:
   - unmove
-- id: 20661
-  name: nothing special
-  flags:
-  - unpass
-  - unmove
-
 - id: 20715
   name: parquet floor
   article: a
@@ -19094,7 +18704,7 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 0
 - id: 39484
   name: some crystals
@@ -19170,4 +18780,393 @@
   name: crack
   article: a
   flags:
+  - unmove
+- id: 879
+  name: floor
+  flags:
+  - unmove
+- id: 4880
+  name: waterway
+  flags:
+  - unmove
+- id: 8065
+  name: floor
+  flags:
+  - unmove
+- id: 10823
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10824
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10825
+  name: blisters
+  flags:
+  - unmove
+- id: 10826
+  name: blisters
+  flags:
+  - unmove
+- id: 10827
+  name: tackleweed
+  flags:
+  - unmove
+- id: 10828
+  name: tackleweed
+  flags:
+  - unmove
+- id: 10848
+  name: some tentacles
+  flags:
+  - unmove
+- id: 10849
+  name: some tentacles
+  flags:
+  - unmove
+- id: 10850
+  name: some tentacles
+  flags:
+  - unmove
+- id: 10851
+  name: some tentacles
+  flags:
+  - unmove
+- id: 10852
+  name: some tentacles
+  flags:
+  - unmove
+- id: 11106
+  name: emerald
+  flags:
+  - unmove
+- id: 11108
+  name: emerald
+  flags:
+  - unmove
+- id: 12370
+  name: floating stones
+  flags:
+  - unmove
+- id: 12371
+  name: floating stones
+  flags:
+  - unmove
+- id: 12417
+  name: strange sand
+  flags:
+  - unmove
+- id: 12422
+  name: strange sand
+  flags:
+  - unmove
+- id: 12427
+  name: strange sand
+  flags:
+  - unmove
+- id: 12484
+  name: strange sand
+  flags:
+  - unmove
+- id: 13425
+  name: mountain
+  flags:
+  - unmove
+- id: 13426
+  name: mountain
+  flags:
+  - unmove
+- id: 13427
+  name: mountain
+  flags:
+  - unmove
+- id: 13428
+  name: mountain
+  flags:
+  - unmove
+- id: 13539
+  name: sea floor
+  flags:
+  - unmove
+- id: 13540
+  name: sea floor
+  flags:
+  - unmove
+- id: 13541
+  name: sea floor
+  flags:
+  - unmove
+- id: 13542
+  name: sea floor
+  flags:
+  - unmove
+- id: 13543
+  name: sea floor
+  flags:
+  - unmove
+- id: 13544
+  name: sea floor
+  flags:
+  - unmove
+- id: 13545
+  name: sea floor
+  flags:
+  - unmove
+- id: 13546
+  name: sea floor
+  flags:
+  - unmove
+- id: 13547
+  name: sea floor
+  flags:
+  - unmove
+- id: 13548
+  name: sea floor
+  flags:
+  - unmove
+- id: 13549
+  name: sea floor
+  flags:
+  - unmove
+- id: 13550
+  name: sea floor
+  flags:
+  - unmove
+- id: 13557
+  name: water
+  flags:
+  - unmove
+- id: 13646
+  name: particles
+  flags:
+  - unmove
+- id: 13650
+  name: steam
+  flags:
+  - unmove
+- id: 13811
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13812
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13813
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13814
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13815
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13816
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13817
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13818
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13819
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13820
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13821
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13822
+  name: brown sea floor
+  flags:
+  - unmove
+- id: 13841
+  name: god rays
+  flags:
+  - unmove
+- id: 14899
+  name: basalt
+  flags:
+  - unmove
+- id: 14900
+  name: basalt
+  flags:
+  - unmove
+- id: 14901
+  name: basalt
+  flags:
+  - unmove
+- id: 14902
+  name: basalt
+  flags:
+  - unmove
+- id: 14903
+  name: basalt
+  flags:
+  - unmove
+- id: 14904
+  name: basalt
+  flags:
+  - unmove
+- id: 14905
+  name: basalt
+  flags:
+  - unmove
+- id: 14906
+  name: crystals
+  flags:
+  - unmove
+- id: 14907
+  name: crystals
+  flags:
+  - unmove
+- id: 14908
+  name: crystals
+  flags:
+  - unmove
+- id: 14909
+  name: crystals
+  flags:
+  - unmove
+- id: 14910
+  name: crystals
+  flags:
+  - unmove
+- id: 14911
+  name: crystals
+  flags:
+  - unmove
+- id: 14912
+  name: crystals
+  flags:
+  - unmove
+- id: 15004
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15005
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15006
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15007
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15008
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15009
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15010
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15011
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15012
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15013
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15014
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15015
+  name: basalt floor
+  flags:
+  - unmove
+- id: 15158
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15159
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15160
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15161
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15162
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15163
+  name: mossy wall
+  flags:
+  - unmove
+- id: 15164
+  name: mossy wall
+  flags:
+  - unmove
+- id: 16249
+  name: dropping water
+  flags:
+  - unmove
+- id: 16490
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16491
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16492
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16493
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16494
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16495
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16496
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 16497
+  name: grimy wooden plank
+  flags:
+  - unmove
+- id: 20661
+  name: nothing special
+  flags:
+  - unpass
   - unmove

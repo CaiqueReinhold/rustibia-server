@@ -1,6 +1,7 @@
 //! Turning an auth token into a loaded player.
 
 use std::collections::HashMap;
+use std::num::NonZeroU16;
 use std::sync::Arc;
 
 use rustibia_contract::{CharacterRecord, CharacterSave, StoredItemRecord};
@@ -169,6 +170,7 @@ pub(crate) fn restore_item(
         },
         false => Item::new(config, stored.amount),
     };
+    item.action_id = stored.action_id.and_then(NonZeroU16::new);
     if let Some(children) = stored.content {
         item.content = Some(Box::new(
             children
@@ -280,6 +282,7 @@ mod tests {
             item_id: 3031,
             amount: 42,
             content: None,
+            action_id: None,
         };
 
         let restored = restore_item(&HashMap::from([(ItemId(3031), coin)]), stored).unwrap();
@@ -429,6 +432,7 @@ mod tests {
                 item_id: 9999,
                 amount: 1,
                 content: None,
+                action_id: None,
             },
         );
 
@@ -449,6 +453,7 @@ mod tests {
                 item_id: 2360,
                 amount: 1,
                 content: None,
+                action_id: None,
             },
         );
 

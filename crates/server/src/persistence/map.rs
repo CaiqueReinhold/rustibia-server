@@ -1,11 +1,12 @@
 use std::collections::HashMap;
 use std::fs;
+use std::num::NonZeroU16;
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Instant;
 
 use thiserror::Error;
-use tracing::info;
+use tracing::{info, warn};
 
 use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
 use crate::entities::map::{GameMap, MapTile};
@@ -73,6 +74,9 @@ pub fn load_map(
         "Map loading took: {} secs",
         ended.duration_since(started).as_secs()
     );
+    if let Ok(map) = &map {
+        info!("Loaded {} teleports", map.teleport_count());
+    }
     map
 }
 
@@ -331,7 +335,17 @@ fn parse_tile(
     while p.peek_raw() == Some(NODE_START) {
         p.pos += 1;
         match p.read_raw()? {
-            OTBM_ITEM => tile.push_item(parse_item(p, items)?),
+            OTBM_ITEM => {
+                let (item, teleport) = parse_item(p, items)?;
+                if let Some(destination) = teleport {
+                    if item.config.has_flag(ItemFlag::Teleport) {
+                        map.insert_teleport(pos.clone(), destination);
+                    } else {
+                        warn!(item = item.id().0, %pos, "a teleport destination on an item that is not a teleport");
+                    }
+                }
+                tile.push_item(item);
+            }
             _ => p.skip_node()?,
         }
     }
@@ -357,12 +371,18 @@ fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> 
         fluid: None,
         content,
         owner: None,
+        action_id: None,
     }
 }
 
-fn parse_item(p: &mut Parser, items: &Items) -> Result<Item, MapRepositoryError> {
+fn parse_item(
+    p: &mut Parser,
+    items: &Items,
+) -> Result<(Item, Option<Position>), MapRepositoryError> {
     let item_id = ItemId(p.read_u16()?);
     let mut amount: u8 = 1;
+    let mut action_id = None;
+    let mut teleport = None;
 
     // Item attributes
     loop {
@@ -375,16 +395,24 @@ fn parse_item(p: &mut Parser, items: &Items) -> Result<Item, MapRepositoryError>
                 // wand/weapon charges stored as u16 in TFS format
                 p.read_u16()?;
             }
-            Some(ATTR_ACTION_ID) | Some(ATTR_UNIQUE_ID) | Some(ATTR_DEPOT_ID) => {
+            Some(ATTR_ACTION_ID) => {
+                action_id = NonZeroU16::new(p.read_u16()?);
+            }
+            Some(ATTR_UNIQUE_ID) | Some(ATTR_DEPOT_ID) => {
                 p.read_u16()?;
             }
             Some(ATTR_TEXT) | Some(ATTR_DESC) | Some(ATTR_WRITTENBY) => {
                 p.read_string()?;
             }
             Some(ATTR_TELE_DEST) => {
-                p.read_u16()?; // x
-                p.read_u16()?; // y
-                p.read_u8()?; // z
+                let destination = Position {
+                    x: p.read_u16()?,
+                    y: p.read_u16()?,
+                    z: p.read_u8()?,
+                };
+                if destination != Position::default() {
+                    teleport = Some(destination);
+                }
             }
             Some(ATTR_DURATION)
             | Some(ATTR_WRITTENDATE)
@@ -405,14 +433,16 @@ fn parse_item(p: &mut Parser, items: &Items) -> Result<Item, MapRepositoryError>
     while p.peek_raw() == Some(NODE_START) {
         p.pos += 1;
         match p.read_raw()? {
-            OTBM_ITEM => content.push(parse_item(p, items)?),
+            OTBM_ITEM => content.push(parse_item(p, items)?.0),
             _ => p.skip_node()?,
         }
     }
 
     p.expect_node_end()?;
 
-    Ok(make_item(item_id, amount, content, items))
+    let mut item = make_item(item_id, amount, content, items);
+    item.action_id = action_id;
+    Ok((item, teleport))
 }
 
 #[cfg(test)]
@@ -466,6 +496,118 @@ mod tests {
 
         out.extend([NODE_END, NODE_END, NODE_END]);
         out
+    }
+
+    fn a_config(id: u16, flags: &[ItemFlag]) -> (ItemId, Arc<ItemConfig>) {
+        (
+            ItemId(id),
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                format!("item {id}"),
+                None,
+                None,
+                flags.iter().copied(),
+                Vec::new(),
+            )),
+        )
+    }
+
+    /// One tile at (101, 202, 7) with ground 100 and `item_nodes` stacked on it, each an item
+    /// node's bytes between its `NODE_START` and `NODE_END`.
+    fn a_map_with(item_nodes: &[Vec<u8>]) -> Vec<u8> {
+        let mut out: Vec<u8> = vec![0, 0, 0, 0];
+        out.extend([NODE_START, 0x00]);
+        out.extend(0u32.to_le_bytes());
+        out.extend(100u16.to_le_bytes());
+        out.extend(100u16.to_le_bytes());
+        out.extend(3u32.to_le_bytes());
+        out.extend(60u32.to_le_bytes());
+
+        out.extend([NODE_START, 0x02, NODE_START, 0x04]);
+        out.extend(100u16.to_le_bytes());
+        out.extend(200u16.to_le_bytes());
+        out.push(7);
+
+        out.extend([NODE_START, 0x05, 1, 2, 0x09]);
+        out.extend(100u16.to_le_bytes());
+        for node in item_nodes {
+            out.extend([NODE_START, 0x06]);
+            out.extend(node);
+            out.push(NODE_END);
+        }
+        out.push(NODE_END);
+
+        out.extend([NODE_END, NODE_END, NODE_END]);
+        out
+    }
+
+    const TILE: Position = Position {
+        x: 101,
+        y: 202,
+        z: 7,
+    };
+
+    fn a_teleport_node(id: u16, x: u16, y: u16, z: u8) -> Vec<u8> {
+        let mut node = id.to_le_bytes().to_vec();
+        node.push(0x08);
+        node.extend(x.to_le_bytes());
+        node.extend(y.to_le_bytes());
+        node.push(z);
+        node
+    }
+
+    #[test]
+    fn a_teleport_keeps_its_destination() {
+        let items: Items = HashMap::from([an_item(100), a_config(1949, &[ItemFlag::Teleport])]);
+
+        let map = parse_otbm(&a_map_with(&[a_teleport_node(1949, 300, 400, 6)]), &items)
+            .expect("the fixture parses");
+
+        assert_eq!(
+            map.teleport_destination(&TILE),
+            Some(Position {
+                x: 300,
+                y: 400,
+                z: 6
+            })
+        );
+    }
+
+    #[test]
+    fn a_teleport_to_nowhere_is_not_recorded() {
+        let items: Items = HashMap::from([an_item(100), a_config(1949, &[ItemFlag::Teleport])]);
+
+        let map = parse_otbm(&a_map_with(&[a_teleport_node(1949, 0, 0, 0)]), &items)
+            .expect("the fixture parses");
+
+        assert_eq!(map.teleport_count(), 0);
+    }
+
+    #[test]
+    fn a_destination_on_an_item_that_is_not_a_teleport_is_not_recorded() {
+        let items: Items = HashMap::from([an_item(100), an_item(1949)]);
+
+        let map = parse_otbm(&a_map_with(&[a_teleport_node(1949, 300, 400, 6)]), &items)
+            .expect("the fixture parses");
+
+        assert_eq!(map.teleport_count(), 0);
+    }
+
+    #[test]
+    fn an_action_id_reaches_the_item() {
+        let items: Items = HashMap::from([an_item(100), an_item(200)]);
+        let mut node = 200u16.to_le_bytes().to_vec();
+        node.push(0x04);
+        node.extend(1234u16.to_le_bytes());
+
+        let map = parse_otbm(&a_map_with(&[node]), &items).expect("the fixture parses");
+
+        let ids: Vec<_> = map
+            .iter_items(&TILE)
+            .unwrap()
+            .map(|item| (item.id().0, item.action_id.map(|a| a.get())))
+            .collect();
+        assert_eq!(ids, vec![(100, None), (200, Some(1234))]);
     }
 
     fn ground_of(map: &GameMap, pos: Position) -> Vec<u16> {

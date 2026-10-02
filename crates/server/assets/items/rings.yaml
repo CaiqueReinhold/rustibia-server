@@ -121,7 +121,7 @@
     weight: 100
     slot: 9
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 3087
   name: power ring
@@ -132,7 +132,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 3088
   name: energy ring
@@ -143,7 +143,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 3089
   name: life ring
@@ -154,7 +154,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 1200
+      duration: 24000
       decay_to: 0
 - id: 3090
   name: time ring
@@ -165,7 +165,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 3091
   name: sword ring
@@ -200,7 +200,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 3095
   name: axe ring
@@ -211,7 +211,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 3096
   name: club ring
@@ -222,7 +222,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 3097
   name: dwarven ring
@@ -249,7 +249,7 @@
     weight: 110
     slot: 9
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
 - id: 3100
   name: ring of healing
@@ -260,7 +260,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 450
+      duration: 9000
       decay_to: 0
 - id: 3245
   name: ring of wishes
@@ -288,7 +288,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 480
+      duration: 9600
       decay_to: 0
     armor: 1
 - id: 9392
@@ -317,7 +317,7 @@
     weight: 500
     slot: 9
     decay:
-      duration: 10
+      duration: 200
       decay_to: 9392
 - id: 9395
   name: claw of 'The Noxious Spawn'
@@ -328,7 +328,7 @@
     weight: 500
     slot: 9
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 9393
 - id: 9397
   name: claw of 'The Noxious Spawn'
@@ -347,7 +347,7 @@
     weight: 500
     slot: 9
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 9392
 - id: 9585
   name: engraved wedding ring
@@ -382,7 +382,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 12737
   name: broken ring of ending
@@ -409,7 +409,7 @@
     weight: 105
     slot: 9
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
 - id: 18935
   name: vampire's signet ring
@@ -479,7 +479,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 23531
   name: ring of green plasma
@@ -497,7 +497,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 23533
   name: ring of red plasma
@@ -515,7 +515,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 25698
   name: butterfly ring
@@ -575,7 +575,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 31621
 - id: 31621
   name: blister ring
@@ -602,7 +602,7 @@
     weight: 80
     slot: 9
     decay:
-      duration: 7200
+      duration: 144000
       decay_to: 32636
 - id: 32636
   name: ring of souls
@@ -637,7 +637,7 @@
     weight: 95
     slot: 9
     decay:
-      duration: 10800
+      duration: 216000
       decay_to: 39179
     armor: 2
 - id: 39179
@@ -665,7 +665,7 @@
     weight: 85
     slot: 9
     decay:
-      duration: 10800
+      duration: 216000
       decay_to: 39182
 - id: 39182
   name: alicorn ring
@@ -692,7 +692,7 @@
     weight: 90
     slot: 9
     decay:
-      duration: 10800
+      duration: 216000
       decay_to: 39185
 - id: 39185
   name: arcanomancer sigil
@@ -718,7 +718,7 @@
   attributes:
     slot: 9
     decay:
-      duration: 10800
+      duration: 216000
       decay_to: 39188
 - id: 39188
   name: arboreal ring

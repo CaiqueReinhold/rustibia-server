@@ -1,6 +1,7 @@
 //! A world save's map half: the changed chunks' movable items, and putting them back at boot.
 
 use std::collections::HashMap;
+use std::num::NonZeroU16;
 use std::sync::Arc;
 
 use rustibia_contract::{ChunkRow, PlacedItem, StoredItemRecord, TileRow};
@@ -83,6 +84,7 @@ fn persistent(item: &Item) -> Option<StoredItemRecord> {
             .content
             .as_ref()
             .map(|children| children.iter().filter_map(persistent).collect()),
+        action_id: item.action_id.map(NonZeroU16::get),
     })
 }
 
@@ -166,6 +168,7 @@ mod tests {
             item_id: id,
             amount: 1,
             content: None,
+            action_id: None,
         };
         assert_eq!(
             rows,
@@ -180,7 +183,8 @@ mod tests {
                         item: StoredItemRecord {
                             item_id: 400,
                             amount: 1,
-                            content: Some(vec![stored(200)])
+                            content: Some(vec![stored(200)]),
+                            action_id: None,
                         },
                     }],
                 }],

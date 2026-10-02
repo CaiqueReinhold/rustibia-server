@@ -2114,7 +2114,7 @@
   attributes:
     weight: 850
     decay:
-      duration: 3
+      duration: 60
       decay_to: 5791
 - id: 6567
   name: santa doll
@@ -2124,7 +2124,7 @@
   attributes:
     weight: 750
     decay:
-      duration: 3
+      duration: 60
       decay_to: 6511
 - id: 6568
   name: panda teddy
@@ -2134,7 +2134,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3
+      duration: 60
       decay_to: 5080
 - id: 6572
   name: party trumpet
@@ -2152,7 +2152,7 @@
   attributes:
     weight: 50
     decay:
-      duration: 4
+      duration: 80
       decay_to: 6572
 - id: 6575
   name: red balloons
@@ -2320,7 +2320,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 3
+      duration: 60
       decay_to: 8146
 - id: 8178
   name: toy spider
@@ -2338,7 +2338,7 @@
   attributes:
     weight: 20
     decay:
-      duration: 3
+      duration: 60
       decay_to: 8178
 - id: 8191
   name: vampire doll
@@ -2973,7 +2973,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3
+      duration: 60
       decay_to: 0
 - id: 17825
   name: rat god doll
@@ -3429,7 +3429,7 @@
   - unpass
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 23442
 - id: 23444
   name: hamster in a wheel
@@ -3532,7 +3532,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 23703
 - id: 23698
   name: rustic table
@@ -3549,7 +3549,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 23708
 - id: 23707
   name: rolled-up crimson carpet
@@ -3569,7 +3569,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 23697
 - id: 23710
   name: rolled-up azure carpet
@@ -3772,7 +3772,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 24435
 - id: 24525
   name: old tibia item
@@ -4056,7 +4056,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26080
 - id: 26080
   name: spider in a terrarium
@@ -4065,7 +4065,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26078
 - id: 26081
   name: hrodmiran weapons rack
@@ -4324,7 +4324,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26172
 - id: 26170
   name: terrarium
@@ -4334,7 +4334,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26171
 - id: 26171
   name: terrarium
@@ -4368,7 +4368,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26179
 - id: 26176
   name: demon
@@ -4378,7 +4378,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26180
 - id: 26179
   name: demon
@@ -4388,7 +4388,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26173
 - id: 26180
   name: demon
@@ -4398,7 +4398,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 26174
 - id: 26191
   name: your magical tree
@@ -4529,7 +4529,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 27684
 - id: 27686
   name: alchemistic scales
@@ -4537,7 +4537,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 27683
 - id: 27687
   name: pile of alchemistic books
@@ -4719,7 +4719,7 @@
   attributes:
     weight: 45
     decay:
-      duration: 1
+      duration: 20
       decay_to: 28692
 - id: 28692
   name: baby rotworm
@@ -4738,7 +4738,7 @@
   attributes:
     weight: 45
     decay:
-      duration: 1
+      duration: 20
       decay_to: 28690
 - id: 28694
   name: fennec
@@ -4752,7 +4752,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 28694
 - id: 28697
   name: bellflower
@@ -5049,7 +5049,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 30362
 - id: 30366
   name: Tearesa
@@ -5058,7 +5058,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 30363
 - id: 30367
   name: Cryana
@@ -5067,7 +5067,7 @@
   attributes:
     weight: 600
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 30364
 - id: 30368
   name: black raven
@@ -5278,7 +5278,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 31462
 - id: 31464
   name: cerberus champion puppy
@@ -5294,7 +5294,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 31464
 - id: 31466
   name: rolled-up tournament carpet
@@ -5441,7 +5441,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 31681
 - id: 31681
   name: baby hedgehog
@@ -5456,7 +5456,7 @@
   - unpass
   attributes:
     decay:
-      duration: 6
+      duration: 120
       decay_to: 31680
 - id: 31683
   name: exalted sarcophagus
@@ -5524,7 +5524,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 31703
 - id: 31723
   name: sulphur blossom lamp
@@ -6517,7 +6517,7 @@
   - unpass
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 32788
 - id: 32790
   name: baby polar bear
@@ -6532,7 +6532,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 32792
 - id: 32792
   name: baby polar bear
@@ -6548,7 +6548,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 32790
 - id: 32795
   name: bone headboard
@@ -6662,7 +6662,7 @@
   - unpass
   attributes:
     decay:
-      duration: 6
+      duration: 120
       decay_to: 32907
 - id: 32911
   name: Baby Vulcongra
@@ -6672,7 +6672,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 32908
 - id: 32912
   name: Baby Brain Squid
@@ -6682,7 +6682,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 32909
 - id: 32914
   name: papyrus deed
@@ -6907,7 +6907,7 @@
   - unpass
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 33040
 - id: 33042
   name: bat
@@ -6915,7 +6915,7 @@
   - unpass
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 33041
 - id: 33047
   name: heart lamp
@@ -6923,7 +6923,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 33027
 - id: 33048
   name: heart lamp
@@ -6931,7 +6931,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 33029
 - id: 33049
   name: heart lamp
@@ -6939,7 +6939,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 33031
 - id: 33319
   name: old lute
@@ -6978,7 +6978,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 34028
 - id: 34028
   name: baby bonelord
@@ -6986,7 +6986,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 34029
 - id: 34029
   name: baby bonelord
@@ -6994,7 +6994,7 @@
   - unpass
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 34026
 - id: 34030
   name: artist shelf
@@ -7362,7 +7362,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 35153
 - id: 35155
   name: forge
@@ -8016,7 +8016,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 35950
 - id: 35950
   name: portable aqueduct
@@ -8025,7 +8025,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 35951
 - id: 35951
   name: portable aqueduct
@@ -8035,7 +8035,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 35952
 - id: 35952
   name: portable aqueduct
@@ -8044,7 +8044,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 35949
 - id: 35954
   name: grandiose couch
@@ -8098,7 +8098,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 35970
 - id: 35970
   name: portable aqueduct
@@ -8107,7 +8107,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 35971
 - id: 35971
   name: portable aqueduct
@@ -8117,7 +8117,7 @@
   - unpass
   attributes:
     decay:
-      duration: 200
+      duration: 4000
       decay_to: 35972
 - id: 35972
   name: portable aqueduct
@@ -8126,7 +8126,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 35969
 - id: 35973
   name: podium of renown
@@ -8306,7 +8306,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36647
 - id: 36650
   name: demon baller
@@ -8316,7 +8316,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36648
 - id: 36651
   name: demon baller
@@ -8326,7 +8326,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36653
 - id: 36652
   name: demon baller
@@ -8336,7 +8336,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 36654
 - id: 36653
   name: demon baller
@@ -8372,7 +8372,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 36756
 - id: 36752
   name: falcon pet
@@ -8381,7 +8381,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 36750
 - id: 36753
   name: falcon pet
@@ -8390,7 +8390,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 36754
 - id: 36754
   name: falcon pet
@@ -8589,7 +8589,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 36958
 - id: 36991
   name: bronze cup
@@ -8688,7 +8688,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37021
 - id: 37023
   name: log bed
@@ -10196,7 +10196,7 @@
   - unpass
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 37812
 - id: 37814
   name: sculpture of a fox
@@ -10205,7 +10205,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37811
 - id: 37815
   name: Zaoan divider
@@ -10437,7 +10437,7 @@
   - unpass
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 39668
 - id: 39510
   name: knightly guard
@@ -10446,7 +10446,7 @@
   - unpass
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 39508
 - id: 39517
   name: knightly bench
@@ -10893,7 +10893,7 @@
   - unpass
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 39807
 - id: 39807
   name: water nymph
@@ -10906,7 +10906,7 @@
   - unpass
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 39810
 - id: 39809
   name: water nymph
@@ -10914,7 +10914,7 @@
   - unpass
   attributes:
     decay:
-      duration: 3
+      duration: 60
       decay_to: 39805
 - id: 39810
   name: water nymph
@@ -11263,7 +11263,7 @@
   - unpass
   attributes:
     decay:
-      duration: 1
+      duration: 20
       decay_to: 42365
 - id: 42365
   name: djinn lamp
@@ -11276,7 +11276,7 @@
   - unpass
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 42363
 - id: 42367
   name: podium of tenacity

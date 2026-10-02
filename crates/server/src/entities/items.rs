@@ -1,5 +1,6 @@
 use std::{
     fmt::Display,
+    num::NonZeroU16,
     sync::{
         Arc,
         atomic::{AtomicU64, Ordering},
@@ -93,6 +94,7 @@ pub enum ItemFlag {
     AmmoContainer,
     LiquidPool,
     Unreplaceable,
+    Teleport,
 }
 
 impl ItemFlag {
@@ -187,6 +189,8 @@ pub enum FloorChangeDirection {
     East,
     South,
     West,
+    EastAlt,
+    SouthAlt,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -326,6 +330,7 @@ pub struct Item {
     #[allow(clippy::box_collection)]
     pub content: Option<Box<Vec<Item>>>,
     pub owner: Option<AgentKey>,
+    pub action_id: Option<NonZeroU16>,
 }
 
 impl Item {
@@ -342,6 +347,7 @@ impl Item {
             fluid: None,
             content,
             owner: None,
+            action_id: None,
         }
     }
 
@@ -353,6 +359,7 @@ impl Item {
             fluid: Some(fluid),
             content: None,
             owner: None,
+            action_id: None,
         }
     }
 
@@ -414,11 +421,13 @@ impl Item {
             fluid: None,
             content: None,
             owner: None,
+            action_id: self.action_id,
         }
     }
 
     pub fn stacks_with(&self, other: &Item) -> bool {
         self.id() == other.id()
+            && self.action_id == other.action_id
             && self.config.has_flag(ItemFlag::Cumulative)
             && self.amount < MAX_STACK_AMOUNT
     }
@@ -471,6 +480,12 @@ pub struct ClientItemRef {
 }
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug, Copy)]
+pub enum ClimbDirection {
+    Up,
+    Down,
+}
+
+#[derive(Clone, PartialEq, Eq, Hash, Debug, Copy)]
 pub enum ItemAction {
     Transform {
         into: ItemId,
@@ -482,12 +497,15 @@ pub enum ItemAction {
         duration: TickDelta,
         message_index: usize,
     },
+    Climb(ClimbDirection),
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum ItemMultiAction {
     Shovel,
     Rope,
+    Machete,
+    Pick,
     Potion {
         health: Option<Bounds>,
         mana: Option<Bounds>,
@@ -564,6 +582,31 @@ mod tests {
     /// Two variants sharing a bit is the one failure a bitfield has that a `HashSet`
     /// does not, and it would not look like a bug: an item would simply answer `true`
     /// to a flag nobody gave it. Set each flag alone and check every other one.
+    #[test]
+    fn a_split_keeps_the_action_id() {
+        let mut stack = a_stack(10);
+        stack.action_id = NonZeroU16::new(1234);
+
+        let split = stack.split_off(4);
+
+        assert_eq!(split.action_id, NonZeroU16::new(1234));
+    }
+
+    #[test]
+    fn stacks_with_different_action_ids_do_not_merge() {
+        let mut marked = a_stack(10);
+        marked.action_id = NonZeroU16::new(1234);
+
+        assert!(!a_stack(10).stacks_with(&marked));
+        assert!(a_stack(10).stacks_with(&a_stack(10)));
+    }
+
+    /// 17.7M items sit inside the shipped map's tiles, two of them inline in every `MapTile`.
+    #[test]
+    fn an_item_stays_forty_bytes() {
+        assert_eq!(std::mem::size_of::<Item>(), 40);
+    }
+
     #[test]
     fn every_flag_owns_a_bit_of_its_own() {
         for set in ItemFlag::iter() {

@@ -122,6 +122,7 @@ pub struct CreatureKind {
     pub corpse: ItemId,
     pub loot_table: Vec<LootEntry>,
     pub flee_threshold: Option<u32>,
+    pub target_distance: u16,
     pub say: CreatureVoices,
     pub flags: Vec<CreatureFlag>,
 }

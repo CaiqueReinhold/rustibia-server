@@ -1986,7 +1986,7 @@
     weight: 3800
     slot: 0
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 3289
     defense: 45
     attack: 39
@@ -2454,6 +2454,7 @@
     max_hit_chance: 76
     weapon_type: distance
     missile_id: 20
+    break_chance: 9
 - id: 7367
   name: enchanted spear
   article: an
@@ -3923,7 +3924,7 @@
     weight: 5200
     slot: 6
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 0
     defense: 20
     attack: 42
@@ -3937,7 +3938,7 @@
     weight: 3100
     slot: 6
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 0
     range: 4
     mana_cost: 13
@@ -3953,7 +3954,7 @@
     weight: 4800
     slot: 0
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 0
     attack: 1
     range: 6
@@ -3969,7 +3970,7 @@
     weight: 3100
     slot: 6
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 0
     range: 4
     mana_cost: 13
@@ -5003,7 +5004,7 @@
     weight: 2900
     slot: 6
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 22764
     range: 3
     mana_cost: 17
@@ -5019,7 +5020,7 @@
     weight: 2250
     slot: 6
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 22764
     range: 4
     mana_cost: 19
@@ -5066,6 +5067,7 @@
     max_hit_chance: 100
     weapon_type: distance
     missile_id: 31
+    break_chance: 10
 - id: 25700
   name: dream blossom staff
   article: a
@@ -5123,7 +5125,7 @@
     weight: 3200
     slot: 6
     decay:
-      duration: 900
+      duration: 18000
       decay_to: 0
     range: 4
     mana_cost: 15

@@ -115,7 +115,7 @@
     weight: 2760
     slot: 1
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 3229
     armor: 11
 - id: 3351
@@ -630,7 +630,7 @@
     weight: 21000
     slot: 1
     decay:
-      duration: 21600
+      duration: 432000
       decay_to: 5460
     armor: 2
 - id: 11674
@@ -819,7 +819,7 @@
     weight: 2500
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22062
     armor: 9
 - id: 22128
@@ -831,7 +831,7 @@
     weight: 2500
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22062
     armor: 9
 - id: 22129
@@ -843,7 +843,7 @@
     weight: 2500
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22062
     armor: 9
 - id: 22130
@@ -855,7 +855,7 @@
     weight: 2500
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22062
     armor: 9
 - id: 22132
@@ -867,7 +867,7 @@
     weight: 2500
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 22062
     armor: 9
 - id: 22153
@@ -930,7 +930,7 @@
     weight: 1150
     slot: 1
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 0
     armor: 7
 - id: 24397

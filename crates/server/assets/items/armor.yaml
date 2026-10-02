@@ -647,7 +647,7 @@
     weight: 3200
     slot: 4
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 9400
     armor: 1
 - id: 10384

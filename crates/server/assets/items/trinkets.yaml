@@ -17,7 +17,7 @@
     weight: 3000
     slot: 10
     decay:
-      duration: 180
+      duration: 3600
       decay_to: 2916
 - id: 2916
   name: used lamp
@@ -48,7 +48,7 @@
     weight: 300
     slot: 10
     decay:
-      duration: 240
+      duration: 4800
       decay_to: 2919
 - id: 2919
   name: used candlestick
@@ -59,7 +59,7 @@
     weight: 250
     slot: 10
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 2920
   name: torch
@@ -80,7 +80,7 @@
     weight: 500
     slot: 10
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 2923
 - id: 2922
   name: torch
@@ -101,7 +101,7 @@
     weight: 450
     slot: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 2925
 - id: 2924
   name: torch
@@ -122,7 +122,7 @@
     weight: 400
     slot: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 2926
 - id: 2926
   name: burnt down torch
@@ -133,7 +133,7 @@
     weight: 350
     slot: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 0
 - id: 2977
   name: pumpkinhead
@@ -172,7 +172,7 @@
     weight: 1500
     slot: 10
     decay:
-      duration: 3000
+      duration: 60000
       decay_to: 0
 - id: 3114
   name: skull
@@ -221,7 +221,7 @@
     weight: 2200
     slot: 10
     decay:
-      duration: 3000
+      duration: 60000
       decay_to: 3114
 - id: 5813
   name: skull candle
@@ -241,7 +241,7 @@
     weight: 1500
     slot: 10
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 9035
 - id: 9035
   name: dracoyle statue
@@ -260,7 +260,7 @@
     weight: 1500
     slot: 10
     decay:
-      duration: 604800
+      duration: 12096000
       decay_to: 9040
 - id: 9040
   name: dracoyle statue
@@ -281,7 +281,7 @@
     weight: 1800
     slot: 10
     decay:
-      duration: 86400
+      duration: 1728000
       decay_to: 0
     defense: 25
 - id: 9056
@@ -319,7 +319,7 @@
     weight: 2200
     slot: 10
     decay:
-      duration: 1800
+      duration: 36000
       decay_to: 0
 - id: 9626
   name: silver Fafnar trophy
@@ -739,7 +739,7 @@
     weight: 8000
     slot: 10
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37113
 - id: 37113
   name: armillary sphere
@@ -759,7 +759,7 @@
     weight: 8000
     slot: 10
     decay:
-      duration: 2
+      duration: 40
       decay_to: 37111
 - id: 37810
   name: Morshabaal's extract
@@ -805,7 +805,7 @@
     weight: 500
     slot: 10
     decay:
-      duration: 900
+      duration: 18000
       decay_to: 39700
 - id: 39699
   name: rainbow torch
@@ -825,7 +825,7 @@
     weight: 450
     slot: 10
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 39702
 - id: 39701
   name: rainbow torch
@@ -845,7 +845,7 @@
     weight: 400
     slot: 10
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 2926
 - id: 39703
   name: burnt down rainbow torch
@@ -857,7 +857,7 @@
     weight: 350
     slot: 10
     decay:
-      duration: 3600
+      duration: 72000
       decay_to: 39697
 - id: 43740
   name: scarab ocarina

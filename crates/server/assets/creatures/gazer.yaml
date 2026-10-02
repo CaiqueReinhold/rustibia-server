@@ -36,6 +36,7 @@ abilities:
       type: target
       range: 7
 corpse: 6036
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

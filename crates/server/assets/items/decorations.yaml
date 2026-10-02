@@ -35,7 +35,7 @@
   - unmove
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 182
 - id: 189
   name: remains of a spider web
@@ -44,7 +44,7 @@
   - unmove
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 183
 - id: 192
   name: spider web
@@ -194,6 +194,8 @@
   flags:
   - usable
   - unmove
+  attributes:
+    climb: down
 - id: 477
   name: pedestal
   article: a
@@ -1064,7 +1066,7 @@
   - unmove
   attributes:
     decay:
-      duration: 2
+      duration: 40
       decay_to: 0
 - id: 2145
   name: slits
@@ -1072,7 +1074,7 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 2146
 - id: 2146
   name: blades
@@ -1080,7 +1082,7 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 2145
 - id: 2147
   name: strange holes
@@ -1088,7 +1090,7 @@
   - unmove
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 2148
 - id: 2148
   name: spikes
@@ -1096,7 +1098,7 @@
   - unmove
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 2147
 - id: 2191
   name: ramp
@@ -1604,7 +1606,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 54
+      duration: 1080
       decay_to: 2661
 - id: 2661
   name: cuckoo clock
@@ -1615,7 +1617,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 6
+      duration: 120
       decay_to: 2660
 - id: 2662
   name: cuckoo clock
@@ -1626,7 +1628,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 54
+      duration: 1080
       decay_to: 2663
 - id: 2663
   name: cuckoo clock
@@ -1637,7 +1639,7 @@
   attributes:
     weight: 800
     decay:
-      duration: 6
+      duration: 120
       decay_to: 2662
 - id: 2665
   name: white tapestry
@@ -2175,7 +2177,7 @@
   - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 2295
 - id: 3146
   name: trashed wooden bars
@@ -2183,7 +2185,7 @@
   - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 2296
 - id: 3204
   name: dead human
@@ -2205,7 +2207,7 @@
   - unmove
   attributes:
     decay:
-      duration: 240
+      duration: 4800
       decay_to: 3652
 - id: 3652
   name: wheat
@@ -2213,7 +2215,7 @@
   - unmove
   attributes:
     decay:
-      duration: 240
+      duration: 4800
       decay_to: 3653
 - id: 3654
   name: moon flowers
@@ -2273,7 +2275,7 @@
   - unmove
   attributes:
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 3696
 - id: 3701
   name: jungle grass
@@ -2281,7 +2283,7 @@
   - unmove
   attributes:
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 3702
 - id: 3733
   name: stone
@@ -2568,10 +2570,6 @@
   flags:
   - bottom
   - unmove
-- id: 4014
-  name: thin air
-  flags:
-  - unmove
 - id: 4054
   name: red chair
   article: a
@@ -2582,7 +2580,7 @@
   flags: []
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4292
   name: dead bear
@@ -2591,7 +2589,7 @@
   attributes:
     capacity: 20
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4293
 - id: 4293
   name: dead bear
@@ -2599,7 +2597,7 @@
   flags: []
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4294
   name: dead bear
@@ -2607,7 +2605,7 @@
   flags: []
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4299
   name: dead cyclops
@@ -2615,7 +2613,7 @@
   flags: []
   attributes:
     decay:
-      duration: 300
+      duration: 6000
       decay_to: 4300
 - id: 4300
   name: dead cyclops
@@ -2623,7 +2621,7 @@
   flags: []
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 4306
   name: dead dragon
@@ -2643,10 +2641,6 @@
 - id: 4309
   name: dead dragon
   article: a
-  flags:
-  - unmove
-- id: 4653
-  name: shallow water
   flags:
   - unmove
 - id: 4854
@@ -3127,7 +3121,7 @@
   - unmove
   attributes:
     decay:
-      duration: 240
+      duration: 4800
       decay_to: 5470
 - id: 5463
   name: sugar cane
@@ -3142,7 +3136,7 @@
   - unmove
   attributes:
     decay:
-      duration: 240
+      duration: 4800
       decay_to: 5465
 - id: 5482
   name: wall chains
@@ -3714,7 +3708,7 @@
   - unmove
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 6493
 - id: 6492
   name: bat decoration
@@ -3730,7 +3724,7 @@
   - unmove
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 6490
 - id: 6494
   name: firefly
@@ -3739,7 +3733,7 @@
   - unmove
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 6497
 - id: 6495
   name: bat decoration
@@ -4368,17 +4362,13 @@
   flags:
   - bottom
   - unmove
-- id: 7288
-  name: nothing special
-  flags:
-  - unmove
 - id: 7349
   name: ashes
   flags:
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 7359
   name: flame of life
@@ -4386,7 +4376,7 @@
   flags: []
   attributes:
     decay:
-      duration: 360
+      duration: 7200
       decay_to: 7360
 - id: 7360
   name: flame of life
@@ -4394,7 +4384,7 @@
   flags: []
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 7486
   name: jagged stones
@@ -6254,7 +6244,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9403
   name: dead Dirtbeard
@@ -6263,7 +6253,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9404
   name: dead Evil Mastermind
@@ -6272,7 +6262,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9405
   name: dead Monstor
@@ -6281,7 +6271,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9406
   name: dead Mephiles
@@ -6290,7 +6280,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9407
   name: slain Boogey
@@ -6299,7 +6289,7 @@
   - usable
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 9424
   name: funnel
@@ -6518,17 +6508,9 @@
   article: a
   flags:
   - unmove
-- id: 9673
-  name: flower wreath
-  flags:
-  - unmove
 - id: 9675
   name: leaf wreath
   article: a
-  flags:
-  - unmove
-- id: 9677
-  name: moonlight flower wreath
   flags:
   - unmove
 - id: 9785
@@ -6617,10 +6599,6 @@
   name: wild wine
   flags:
   - usable
-  - unmove
-- id: 9962
-  name: flies
-  flags:
   - unmove
 - id: 10001
   name: zaoan decoration
@@ -6894,34 +6872,6 @@
   article: a
   flags:
   - unmove
-- id: 10682
-  name: black blisters
-  flags:
-  - unmove
-- id: 10685
-  name: black blisters
-  flags:
-  - unmove
-- id: 10686
-  name: black blisters
-  flags:
-  - unmove
-- id: 10687
-  name: black blisters
-  flags:
-  - unmove
-- id: 10688
-  name: black blisters
-  flags:
-  - unmove
-- id: 10689
-  name: black blisters
-  flags:
-  - unmove
-- id: 10690
-  name: black blisters
-  flags:
-  - unmove
 - id: 10707
   name: sulphur puddle
   article: a
@@ -6945,98 +6895,6 @@
 - id: 10748
   name: insectoid pore
   article: an
-  flags:
-  - unmove
-- id: 10749
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10750
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10751
-  name: acid
-  flags:
-  - unmove
-- id: 10752
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10753
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10754
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10755
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10756
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10757
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10758
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10759
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10760
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10761
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10762
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10763
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10764
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10765
-  name: putrid growth
-  flags:
-  - unmove
-- id: 10766
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10767
-  name: slimy growth
-  flags:
-  - unmove
-- id: 10768
-  name: blisters
-  flags:
-  - unmove
-- id: 10769
-  name: blisters
-  flags:
-  - unmove
-- id: 10771
-  name: tackleweed
-  flags:
-  - unmove
-- id: 10772
-  name: tackleweed
   flags:
   - unmove
 - id: 10803
@@ -7066,18 +6924,6 @@
 - id: 10842
   name: dimensional portal
   article: a
-  flags:
-  - unmove
-- id: 10843
-  name: black crystals
-  flags:
-  - unmove
-- id: 10844
-  name: small black crystals
-  flags:
-  - unmove
-- id: 10845
-  name: black crystals
   flags:
   - unmove
 - id: 10847
@@ -7169,22 +7015,6 @@
 - id: 10968
   name: decorative shield
   article: a
-  flags:
-  - unmove
-- id: 10969
-  name: ornament
-  flags:
-  - unmove
-- id: 10970
-  name: ornament
-  flags:
-  - unmove
-- id: 10973
-  name: dark ornament
-  flags:
-  - unmove
-- id: 10974
-  name: dark ornament
   flags:
   - unmove
 - id: 10977
@@ -7393,7 +7223,7 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 11258
 - id: 11258
   name: unknown item
@@ -7402,7 +7232,7 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 11257
 - id: 11259
   name: banner
@@ -7536,7 +7366,7 @@
   - unmove
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 11590
   name: dead Heoni
@@ -7546,7 +7376,7 @@
   - unmove
   attributes:
     decay:
-      duration: 500
+      duration: 10000
       decay_to: 0
 - id: 11595
   name: unknown item
@@ -7870,10 +7700,6 @@
   flags:
   - usable
   - unmove
-- id: 12072
-  name: slime fungus
-  flags:
-  - unmove
 - id: 12073
   name: slime fungus
   article: a
@@ -7946,18 +7772,6 @@
 - id: 12201
   name: skull
   article: a
-  flags:
-  - unmove
-- id: 12404
-  name: faint glow
-  flags:
-  - unmove
-- id: 12412
-  name: faint glow
-  flags:
-  - unmove
-- id: 12415
-  name: hole
   flags:
   - unmove
 - id: 12431
@@ -8136,14 +7950,6 @@
   name: small golden taboret
   article: a
   flags: []
-- id: 12480
-  name: archway
-  flags:
-  - unmove
-- id: 12481
-  name: archway
-  flags:
-  - unmove
 - id: 12485
   name: rocky archway
   article: a
@@ -8152,18 +7958,6 @@
 - id: 12486
   name: rocky archway
   article: a
-  flags:
-  - unmove
-- id: 12507
-  name: large painting
-  flags:
-  - unmove
-- id: 12508
-  name: large painting
-  flags:
-  - unmove
-- id: 12518
-  name: faint glow
   flags:
   - unmove
 - id: 12573
@@ -8270,14 +8064,6 @@
 - id: 12655
   name: corms
   article: a
-  flags:
-  - unmove
-- id: 12723
-  name: floor
-  flags:
-  - unmove
-- id: 12743
-  name: fire
   flags:
   - unmove
 - id: 12815
@@ -8612,14 +8398,6 @@
   name: small insectoid hairs
   flags:
   - unmove
-- id: 13378
-  name: small insectoid hairs
-  flags:
-  - unmove
-- id: 13379
-  name: small insectoid hairs
-  flags:
-  - unmove
 - id: 13383
   name: insectoid meatball
   article: an
@@ -8683,22 +8461,6 @@
 - id: 13396
   name: insectoid meatball
   article: an
-  flags:
-  - unmove
-- id: 13401
-  name: insectoid remains
-  flags:
-  - unmove
-- id: 13402
-  name: insectoid remains
-  flags:
-  - unmove
-- id: 13403
-  name: insectoid remains
-  flags:
-  - unmove
-- id: 13404
-  name: insectoid remains
   flags:
   - unmove
 - id: 13558
@@ -9919,7 +9681,7 @@
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 15706
   name: green spores
@@ -9927,7 +9689,7 @@
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 15707
   name: blue spores
@@ -9935,7 +9697,7 @@
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 15708
   name: yellow spores
@@ -9943,7 +9705,7 @@
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 15718
   name: stairs
@@ -9992,18 +9754,6 @@
   name: strange symbols
   flags:
   - bottom
-  - unmove
-- id: 16259
-  name: floor
-  flags:
-  - unmove
-- id: 16260
-  name: floor
-  flags:
-  - unmove
-- id: 16261
-  name: floor
-  flags:
   - unmove
 - id: 16373
   name: muddy stone wall
@@ -10275,7 +10025,7 @@
   - unmove
   attributes:
     decay:
-      duration: 21600
+      duration: 432000
       decay_to: 17152
 - id: 17152
   name: growing venorean spice
@@ -10283,7 +10033,7 @@
   - unmove
   attributes:
     decay:
-      duration: 21600
+      duration: 432000
       decay_to: 17153
 - id: 17189
   name: stone pillar
@@ -10973,18 +10723,6 @@
   name: small glowing fruits
   flags:
   - unmove
-- id: 18903
-  name: icy mammoth trunk
-  flags:
-  - unmove
-- id: 18904
-  name: icy mammoth trunk
-  flags:
-  - unmove
-- id: 18905
-  name: icy mammoth trunk
-  flags:
-  - unmove
 - id: 18910
   name: wild roses
   flags:
@@ -11072,7 +10810,7 @@
   - unmove
   attributes:
     decay:
-      duration: 8
+      duration: 160
       decay_to: 19114
 - id: 19114
   name: strange fire
@@ -11082,7 +10820,7 @@
   - unmove
   attributes:
     decay:
-      duration: 4
+      duration: 80
       decay_to: 19116
 - id: 19116
   name: strange fire
@@ -11091,7 +10829,7 @@
   - unmove
   attributes:
     decay:
-      duration: 13
+      duration: 260
       decay_to: 19113
 - id: 19135
   name: fury gate
@@ -11148,7 +10886,7 @@
   - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 19209
 - id: 19211
   name: Ominous mound
@@ -11164,7 +10902,7 @@
   - unmove
   attributes:
     decay:
-      duration: 120
+      duration: 2400
       decay_to: 19211
 - id: 19305
   name: crystal
@@ -11287,11 +11025,6 @@
   article: a
   flags:
   - unmove
-- id: 19394
-  name: floor
-  flags:
-  - unmove
-
 - id: 19405
   name: strange foundation
   article: a
@@ -13258,7 +12991,7 @@
   - unmove
   attributes:
     decay:
-      duration: 5
+      duration: 100
       decay_to: 0
 - id: 21398
   name: dead goblin
@@ -19908,5 +19641,273 @@
   - unmove
   attributes:
     decay:
-      duration: 10
+      duration: 200
       decay_to: 0
+- id: 4014
+  name: thin air
+  flags:
+  - unmove
+- id: 4653
+  name: shallow water
+  flags:
+  - unmove
+- id: 7288
+  name: nothing special
+  flags:
+  - unmove
+- id: 9673
+  name: flower wreath
+  flags:
+  - unmove
+- id: 9677
+  name: moonlight flower wreath
+  flags:
+  - unmove
+- id: 9962
+  name: flies
+  flags:
+  - unmove
+- id: 10682
+  name: black blisters
+  flags:
+  - unmove
+- id: 10685
+  name: black blisters
+  flags:
+  - unmove
+- id: 10686
+  name: black blisters
+  flags:
+  - unmove
+- id: 10687
+  name: black blisters
+  flags:
+  - unmove
+- id: 10688
+  name: black blisters
+  flags:
+  - unmove
+- id: 10689
+  name: black blisters
+  flags:
+  - unmove
+- id: 10690
+  name: black blisters
+  flags:
+  - unmove
+- id: 10749
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10750
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10751
+  name: acid
+  flags:
+  - unmove
+- id: 10752
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10753
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10754
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10755
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10756
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10757
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10758
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10759
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10760
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10761
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10762
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10763
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10764
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10765
+  name: putrid growth
+  flags:
+  - unmove
+- id: 10766
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10767
+  name: slimy growth
+  flags:
+  - unmove
+- id: 10768
+  name: blisters
+  flags:
+  - unmove
+- id: 10769
+  name: blisters
+  flags:
+  - unmove
+- id: 10771
+  name: tackleweed
+  flags:
+  - unmove
+- id: 10772
+  name: tackleweed
+  flags:
+  - unmove
+- id: 10843
+  name: black crystals
+  flags:
+  - unmove
+- id: 10844
+  name: small black crystals
+  flags:
+  - unmove
+- id: 10845
+  name: black crystals
+  flags:
+  - unmove
+- id: 10969
+  name: ornament
+  flags:
+  - unmove
+- id: 10970
+  name: ornament
+  flags:
+  - unmove
+- id: 10973
+  name: dark ornament
+  flags:
+  - unmove
+- id: 10974
+  name: dark ornament
+  flags:
+  - unmove
+- id: 12072
+  name: slime fungus
+  flags:
+  - unmove
+- id: 12404
+  name: faint glow
+  flags:
+  - unmove
+- id: 12412
+  name: faint glow
+  flags:
+  - unmove
+- id: 12415
+  name: hole
+  flags:
+  - unmove
+- id: 12480
+  name: archway
+  flags:
+  - unmove
+- id: 12481
+  name: archway
+  flags:
+  - unmove
+- id: 12507
+  name: large painting
+  flags:
+  - unmove
+- id: 12508
+  name: large painting
+  flags:
+  - unmove
+- id: 12518
+  name: faint glow
+  flags:
+  - unmove
+- id: 12723
+  name: floor
+  flags:
+  - unmove
+- id: 12743
+  name: fire
+  flags:
+  - unmove
+- id: 13378
+  name: small insectoid hairs
+  flags:
+  - unmove
+- id: 13379
+  name: small insectoid hairs
+  flags:
+  - unmove
+- id: 13401
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13402
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13403
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 13404
+  name: insectoid remains
+  flags:
+  - unmove
+- id: 16259
+  name: floor
+  flags:
+  - unmove
+- id: 16260
+  name: floor
+  flags:
+  - unmove
+- id: 16261
+  name: floor
+  flags:
+  - unmove
+- id: 18903
+  name: icy mammoth trunk
+  flags:
+  - unmove
+- id: 18904
+  name: icy mammoth trunk
+  flags:
+  - unmove
+- id: 18905
+  name: icy mammoth trunk
+  flags:
+  - unmove
+- id: 19394
+  name: floor
+  flags:
+  - unmove

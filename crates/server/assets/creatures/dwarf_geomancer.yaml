@@ -44,6 +44,7 @@ abilities:
       max: 130
 corpse: 6015
 flee_threshold: 150
+target_distance: 4
 say:
   cooldown: 100
   chance: 10000

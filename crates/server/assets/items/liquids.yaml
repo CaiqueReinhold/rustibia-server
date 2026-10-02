@@ -42,7 +42,7 @@
   - unmove
   attributes:
     decay:
-      duration: 45
+      duration: 900
       decay_to: 2887
 - id: 2887
   name: pool
@@ -53,7 +53,7 @@
   - unmove
   attributes:
     decay:
-      duration: 45
+      duration: 900
       decay_to: 2888
 - id: 2888
   name: pool
@@ -64,7 +64,7 @@
   - unmove
   attributes:
     decay:
-      duration: 600
+      duration: 12000
       decay_to: 0
 - id: 2889
   name: pool
@@ -75,7 +75,7 @@
   - unmove
   attributes:
     decay:
-      duration: 45
+      duration: 900
       decay_to: 2890
 - id: 2890
   name: pool
@@ -86,7 +86,7 @@
   - unmove
   attributes:
     decay:
-      duration: 45
+      duration: 900
       decay_to: 2891
 - id: 2891
   name: pool
@@ -97,7 +97,7 @@
   - unmove
   attributes:
     decay:
-      duration: 60
+      duration: 1200
       decay_to: 0
 - id: 2895
   name: pool
