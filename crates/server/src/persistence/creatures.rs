@@ -708,6 +708,14 @@ say:
     }
 
     #[test]
+    fn a_passive_flag_reaches_the_kind() {
+        let passive =
+            a_creature(&A_CREATURE.replace("speed: 86\n", "speed: 86\nflags: [passive]\n"));
+
+        assert!(passive.has_flag(CreatureFlag::Passive));
+    }
+
+    #[test]
     fn a_paralysing_ability_loads_as_support() {
         let contents = A_CREATURE.replace(
             "abilities:\n",

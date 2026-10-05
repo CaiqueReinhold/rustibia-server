@@ -8,9 +8,10 @@ use crate::entities::{
     skills::SkillType,
 };
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CombatElement {
+    #[default]
     Physical,
     Energy,
     Fire,
@@ -19,12 +20,6 @@ pub enum CombatElement {
     Holy,
     Death,
     Mana,
-}
-
-impl Default for CombatElement {
-    fn default() -> Self {
-        CombatElement::Physical
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

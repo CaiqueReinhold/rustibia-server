@@ -6,6 +6,7 @@
   attributes:
     weight: 500
     slot: 2
+    level: 60
 - id: 815
   name: glacier amulet
   article: a
@@ -14,6 +15,7 @@
   attributes:
     weight: 500
     slot: 2
+    level: 60
 - id: 816
   name: lightning pendant
   article: a
@@ -23,6 +25,7 @@
   attributes:
     weight: 500
     slot: 2
+    level: 60
 - id: 817
   name: magma amulet
   article: a
@@ -31,6 +34,7 @@
   attributes:
     weight: 500
     slot: 2
+    level: 60
 - id: 3008
   name: crystal necklace
   article: a
@@ -283,6 +287,7 @@
   attributes:
     weight: 700
     slot: 2
+    level: 80
 - id: 9302
   name: sacred tree amulet
   article: a
@@ -291,6 +296,7 @@
   attributes:
     weight: 700
     slot: 2
+    level: 80
 - id: 9303
   name: leviathan's amulet
   article: a
@@ -299,6 +305,7 @@
   attributes:
     weight: 700
     slot: 2
+    level: 80
 - id: 9304
   name: shockwave amulet
   article: a
@@ -307,6 +314,7 @@
   attributes:
     weight: 700
     slot: 2
+    level: 80
 - id: 9802
   name: friendship amulet
   article: a
@@ -385,6 +393,7 @@
   attributes:
     weight: 509
     slot: 2
+    level: 120
 - id: 16108
   name: gill necklace
   article: a
@@ -393,6 +402,7 @@
   attributes:
     weight: 410
     slot: 2
+    level: 150
 - id: 16113
   name: prismatic necklace
   article: a
@@ -401,6 +411,7 @@
   attributes:
     weight: 650
     slot: 2
+    level: 150
 - id: 19153
   name: friendship amulet
   article: a
@@ -419,6 +430,7 @@
   attributes:
     weight: 550
     slot: 2
+    level: 150
 - id: 20342
   name: jade amulet
   flags:
@@ -436,6 +448,7 @@
     weight: 1000
     slot: 2
     armor: 3
+    level: 75
 - id: 21183
   name: glooth amulet
   article: a
@@ -444,6 +457,10 @@
   attributes:
     weight: 220
     slot: 2
+    level: 75
+    vocations:
+    - sorcerer
+    - druid
 - id: 21439
   name: Lion's Heart
   article: the
@@ -498,6 +515,7 @@
     weight: 850
     slot: 2
     armor: 2
+    level: 60
 - id: 22746
   name: ancient amulet
   flags:
@@ -515,6 +533,7 @@
     weight: 500
     slot: 2
     armor: 3
+    level: 100
 - id: 22768
   name: Ferumbras' amulet
   article: a
@@ -525,6 +544,7 @@
     weight: 500
     slot: 2
     armor: 3
+    level: 100
 - id: 23526
   name: collar of blue plasma
   article: a
@@ -536,6 +556,9 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 150
+    vocations:
+    - paladin
 - id: 23527
   name: collar of green plasma
   article: a
@@ -547,6 +570,10 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 23528
   name: collar of red plasma
   article: a
@@ -558,6 +585,9 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 150
+    vocations:
+    - knight
 - id: 23542
   name: collar of blue plasma
   flags:
@@ -565,6 +595,9 @@
   attributes:
     weight: 500
     slot: 2
+    level: 150
+    vocations:
+    - paladin
 - id: 23543
   name: collar of green plasma
   flags:
@@ -572,6 +605,10 @@
   attributes:
     weight: 500
     slot: 2
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 23544
   name: collar of red plasma
   flags:
@@ -579,6 +616,9 @@
   attributes:
     weight: 500
     slot: 2
+    level: 150
+    vocations:
+    - knight
 - id: 25296
   name: rubbish amulet
   article: a
@@ -606,6 +646,7 @@
     weight: 500
     slot: 2
     armor: 2
+    level: 100
 - id: 27653
   name: suspicious device
   article: a
@@ -623,6 +664,9 @@
   attributes:
     weight: 430
     slot: 2
+    level: 180
+    vocations:
+    - paladin
 - id: 29429
   name: pendulet
   article: a
@@ -631,6 +675,9 @@
   attributes:
     weight: 650
     slot: 2
+    level: 180
+    vocations:
+    - paladin
 - id: 30323
   name: rainbow necklace
   article: a
@@ -640,6 +687,7 @@
     weight: 490
     slot: 2
     armor: 2
+    level: 220
 - id: 30342
   name: enchanted sleep shawl
   article: an
@@ -648,6 +696,9 @@
   attributes:
     weight: 430
     slot: 2
+    level: 180
+    vocations:
+    - paladin
 - id: 30343
   name: enchanted sleep shawl
   article: an
@@ -660,6 +711,9 @@
       duration: 72000
       decay_to: 29428
     armor: 3
+    level: 180
+    vocations:
+    - paladin
 - id: 30344
   name: enchanted pendulet
   article: an
@@ -668,6 +722,9 @@
   attributes:
     weight: 650
     slot: 2
+    level: 180
+    vocations:
+    - paladin
 - id: 30345
   name: enchanted pendulet
   article: an
@@ -680,6 +737,9 @@
       duration: 144000
       decay_to: 29429
     armor: 2
+    level: 180
+    vocations:
+    - paladin
 - id: 30401
   name: amulet of theurgy
   flags:
@@ -687,6 +747,10 @@
   attributes:
     weight: 500
     slot: 2
+    level: 220
+    vocations:
+    - sorcerer
+    - druid
 - id: 30402
   name: enchanted theurgic amulet
   flags:
@@ -698,6 +762,10 @@
       duration: 144000
       decay_to: 30401
     armor: 2
+    level: 220
+    vocations:
+    - sorcerer
+    - druid
 - id: 30403
   name: enchanted theurgic amulet
   flags:
@@ -705,6 +773,10 @@
   attributes:
     weight: 500
     slot: 2
+    level: 220
+    vocations:
+    - sorcerer
+    - druid
 - id: 31268
   name: jade amulet
   article: a
@@ -722,6 +794,7 @@
     weight: 570
     slot: 2
     armor: 3
+    level: 220
 - id: 31631
   name: cobra amulet
   article: the
@@ -733,6 +806,7 @@
     weight: 530
     slot: 2
     armor: 4
+    level: 250
 - id: 31676
   name: note about two souls
   article: a
@@ -759,6 +833,7 @@
     weight: 520
     slot: 2
     armor: 3
+    level: 230
 - id: 35523
   name: exotic amulet
   article: an
@@ -768,6 +843,7 @@
   attributes:
     weight: 730
     slot: 2
+    level: 180
 - id: 35604
   name: sapphire necklace
   flags:
@@ -833,6 +909,9 @@
   attributes:
     weight: 480
     slot: 2
+    level: 200
+    vocations:
+    - knight
 - id: 39234
   name: enchanted turtle amulet
   article: an
@@ -844,6 +923,9 @@
     decay:
       duration: 144000
       decay_to: 39235
+    level: 200
+    vocations:
+    - knight
 - id: 39235
   name: turtle amulet
   article: a
@@ -852,3 +934,6 @@
   attributes:
     weight: 480
     slot: 2
+    level: 200
+    vocations:
+    - knight

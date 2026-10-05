@@ -74,6 +74,7 @@ pub struct ConditionAttack {
 #[serde(rename_all = "snake_case")]
 pub enum CreatureFlag {
     ImmuneParalysis,
+    Passive,
 }
 
 #[derive(Clone, Debug)]

@@ -139,6 +139,8 @@ fn level_up(ctx: &mut TickCtx, agent_key: AgentKey, gained: i16) {
         .capacity()
         .saturating_add_signed(vocation.capacity_on_level_up() * gained as i32);
     player.set_capacity(capacity);
+    let level = player.level();
+    player.inventory_mut().set_wearer_level(level);
     agent.set_base_speed(base_speed + gained as u16);
     agent.change_max_life(vocation.life_on_level_up() * gained as i32);
     agent.change_max_mana(vocation.mana_on_level_up() * gained as i32);
@@ -374,5 +376,46 @@ vocations:
         assert_eq!(total_experience(&skill(1, 0)), 0);
         assert_eq!(total_experience(&skill(8, 0)), 4200);
         assert_eq!(total_experience(&skill(8, 55)), 4255);
+    }
+
+    #[test]
+    fn levelling_into_gear_switches_it_on() {
+        use crate::entities::agent::Agent;
+        use crate::entities::inventory::InventorySlot;
+        use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemId};
+        use crate::entities::map::{GameMap, MapTile};
+        use crate::entities::position::Position;
+        use crate::entities::world_map::WorldMap;
+        use crate::game::TestHarness;
+        use crate::persistence::test_fixtures::a_test_snapshot;
+        use std::collections::HashMap;
+        use std::sync::Arc;
+
+        let boots = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3079),
+                "boots".to_string(),
+                None,
+                None,
+                [],
+                vec![ItemAttribute::Speed(20), ItemAttribute::RequiredLevel(2)],
+            )),
+            1,
+        );
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.inventory = HashMap::from([(InventorySlot::Feet, boots)]);
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let key = map.insert_agent(Agent::from_player(snapshot), &pos).unwrap();
+        let mut map = WorldMap::new(map);
+        assert_eq!(map.get_player(key).unwrap().inventory().stats().speed, 0);
+
+        let mut h = TestHarness::new();
+        tick_skill(&mut h.ctx(&mut map), key, SkillType::Level, exp_for_level(2));
+
+        let player = map.get_player(key).unwrap();
+        assert_eq!(player.level(), 2);
+        assert_eq!(player.inventory().stats().speed, 20);
     }
 }

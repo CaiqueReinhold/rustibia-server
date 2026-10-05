@@ -198,7 +198,7 @@ pub enum Condition {
     },
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Default, Clone)]
 pub struct Conditions {
     conditions: SmallVec<[Condition; 3]>,
     next_generation: u32,
@@ -206,10 +206,7 @@ pub struct Conditions {
 
 impl Conditions {
     pub fn new() -> Self {
-        Self {
-            conditions: SmallVec::new(),
-            next_generation: 0,
-        }
+        Self::default()
     }
 
     pub fn fed(&self) -> Option<(Tick, u32)> {

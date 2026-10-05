@@ -116,6 +116,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2432
@@ -123,6 +124,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2433
@@ -130,6 +132,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2434
@@ -137,6 +140,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2435
@@ -205,6 +209,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2442
@@ -213,6 +218,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2443
@@ -221,6 +227,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2444
@@ -229,6 +236,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 10
 - id: 2449
@@ -389,6 +397,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -399,6 +408,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
@@ -409,6 +419,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 12000
@@ -419,6 +430,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -429,6 +441,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 9500
@@ -439,6 +452,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 12000
@@ -449,6 +463,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 12000
@@ -459,6 +474,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 12000
@@ -469,6 +485,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 2484
@@ -477,6 +494,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 2485
@@ -485,6 +503,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 2486
@@ -493,6 +512,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 2519
@@ -501,6 +521,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 25
 - id: 2523
@@ -509,6 +530,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 25
 - id: 2853
@@ -1026,6 +1048,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 1800
@@ -1036,6 +1059,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 1800
@@ -1838,6 +1862,7 @@
   - container
   - usable
   - unmove
+  - avoid
   attributes:
     weight: 8000
 - id: 11591
@@ -1863,6 +1888,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 11810
@@ -1871,6 +1897,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 11812
@@ -2486,6 +2513,7 @@
   name: floating green flask
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -2703,6 +2731,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23424
@@ -2711,6 +2740,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23425
@@ -2719,6 +2749,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23426
@@ -2727,6 +2758,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23427
@@ -2735,6 +2767,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23428
@@ -2743,6 +2776,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23429
@@ -2751,6 +2785,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23430
@@ -2759,6 +2794,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23525
@@ -2796,6 +2832,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23704
@@ -2804,6 +2841,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23705
@@ -2812,6 +2850,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23706
@@ -2820,6 +2859,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 23721
@@ -2835,6 +2875,7 @@
   name: spider web
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -2883,12 +2924,14 @@
   - container
   - usable
   - unmove
+  - avoid
 - id: 24861
   name: treasure chest
   article: a
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 9500
@@ -2899,6 +2942,7 @@
   flags:
   - container
   - usable
+  - avoid
   - take
   attributes:
     weight: 9500
@@ -2949,6 +2993,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 25230
@@ -2957,6 +3002,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 25231
@@ -2965,6 +3011,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 25232
@@ -2973,6 +3020,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 25234
@@ -3033,6 +3081,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26108
@@ -3041,6 +3090,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26109
@@ -3049,6 +3099,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26110
@@ -3057,6 +3108,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26162
@@ -3083,6 +3135,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26165
@@ -3091,6 +3144,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26166
@@ -3099,6 +3153,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 26167
@@ -3107,6 +3162,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 27448
@@ -3467,6 +3523,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28683
@@ -3475,6 +3532,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28684
@@ -3483,6 +3541,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28685
@@ -3491,6 +3550,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28686
@@ -3525,6 +3585,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28939
@@ -3533,6 +3594,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28940
@@ -3541,6 +3603,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28941
@@ -3549,6 +3612,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 28942
@@ -3715,6 +3779,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31188
@@ -3723,6 +3788,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31189
@@ -3731,6 +3797,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31190
@@ -3739,6 +3806,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31192
@@ -3812,6 +3880,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31688
@@ -3820,6 +3889,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31689
@@ -3828,6 +3898,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31690
@@ -3836,6 +3907,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 31705
@@ -3893,12 +3965,14 @@
   flags:
   - container
   - usable
+  - avoid
 - id: 31936
   name: pirate treasure chest
   article: a
   flags:
   - container
   - usable
+  - avoid
 - id: 32142
   name: blue traditional rack
   article: an
@@ -3988,6 +4062,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 32781
@@ -3996,6 +4071,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 32782
@@ -4004,6 +4080,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 32783
@@ -4012,6 +4089,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 33032
@@ -4035,6 +4113,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 33044
@@ -4042,6 +4121,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 33045
@@ -4049,6 +4129,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 33046
@@ -4056,6 +4137,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34040
@@ -4063,6 +4145,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34041
@@ -4070,6 +4153,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34042
@@ -4077,6 +4161,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34043
@@ -4084,6 +4169,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34054
@@ -4091,6 +4177,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34055
@@ -4098,6 +4185,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34056
@@ -4105,6 +4193,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34057
@@ -4112,6 +4201,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34276
@@ -4135,6 +4225,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34297
@@ -4142,6 +4233,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34298
@@ -4149,6 +4241,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 34299
@@ -4156,6 +4249,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35171
@@ -4163,6 +4257,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35172
@@ -4170,6 +4265,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35173
@@ -4177,6 +4273,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35174
@@ -4184,6 +4281,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35175
@@ -4236,6 +4334,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35920
@@ -4244,6 +4343,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35921
@@ -4252,6 +4352,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35922
@@ -4260,6 +4361,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35923
@@ -4268,6 +4370,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35924
@@ -4276,6 +4379,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35925
@@ -4284,6 +4388,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 35926
@@ -4292,6 +4397,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 36630
@@ -4300,6 +4406,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 36631
@@ -4308,6 +4415,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 36632
@@ -4316,6 +4424,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 36633
@@ -4324,6 +4433,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 36810
@@ -4381,6 +4491,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37012
@@ -4389,6 +4500,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37013
@@ -4397,6 +4509,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37014
@@ -4405,6 +4518,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37179
@@ -4431,6 +4545,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37182
@@ -4439,6 +4554,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37183
@@ -4447,6 +4563,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37184
@@ -4455,6 +4572,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 37536
@@ -4520,6 +4638,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39505
@@ -4528,6 +4647,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39506
@@ -4536,6 +4656,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39507
@@ -4544,6 +4665,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39693
@@ -4610,6 +4732,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39778
@@ -4618,6 +4741,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39779
@@ -4626,6 +4750,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 39780
@@ -4634,6 +4759,7 @@
   flags:
   - container
   - usable
+  - avoid
   attributes:
     capacity: 18
 - id: 42273
@@ -4653,41 +4779,49 @@
   flags:
   - container
   - usable
+  - avoid
 - id: 42276
   name: seafarer chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42277
   name: seafarer chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42278
   name: seafarer chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42328
   name: opulent chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42329
   name: opulent chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42330
   name: opulent chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42331
   name: opulent chest
   flags:
   - container
   - usable
+  - avoid
 - id: 42332
   name: opulent book case
   flags:

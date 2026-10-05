@@ -13,6 +13,7 @@
       element: energy
       damage: 14
     missile_id: 33
+    level: 20
 - id: 762
   name: shiver arrow
   article: a
@@ -28,6 +29,7 @@
       element: ice
       damage: 14
     missile_id: 35
+    level: 20
 - id: 763
   name: flaming arrow
   article: a
@@ -43,6 +45,7 @@
       element: fire
       damage: 14
     missile_id: 34
+    level: 20
 - id: 774
   name: earth arrow
   article: an
@@ -58,6 +61,7 @@
       element: earth
       damage: 14
     missile_id: 40
+    level: 20
 - id: 3446
   name: bolt
   article: a
@@ -123,6 +127,7 @@
     max_hit_chance: 91
     ammo_type: bolt
     missile_id: 14
+    level: 55
 - id: 6528
   name: infernal bolt
   article: an
@@ -135,6 +140,7 @@
     max_hit_chance: 91
     ammo_type: bolt
     missile_id: 16
+    level: 110
 - id: 7363
   name: piercing bolt
   article: a
@@ -147,6 +153,7 @@
     max_hit_chance: 87
     ammo_type: bolt
     missile_id: 24
+    level: 30
 - id: 7364
   name: sniper arrow
   article: a
@@ -159,6 +166,7 @@
     max_hit_chance: 100
     ammo_type: arrow
     missile_id: 22
+    level: 20
 - id: 7365
   name: onyx arrow
   article: an
@@ -171,6 +179,7 @@
     max_hit_chance: 94
     ammo_type: arrow
     missile_id: 23
+    level: 40
 - id: 14251
   name: tarsal arrow
   article: a
@@ -182,6 +191,7 @@
     attack: 33
     max_hit_chance: 94
     ammo_type: arrow
+    level: 30
 - id: 14252
   name: vortex bolt
   article: a
@@ -193,6 +203,7 @@
     attack: 36
     max_hit_chance: 89
     ammo_type: bolt
+    level: 40
 - id: 15793
   name: crystalline arrow
   article: a
@@ -204,6 +215,7 @@
     attack: 65
     max_hit_chance: 95
     ammo_type: arrow
+    level: 90
 - id: 16141
   name: prismatic bolt
   article: a
@@ -215,6 +227,7 @@
     attack: 66
     max_hit_chance: 90
     ammo_type: bolt
+    level: 90
 - id: 16142
   name: drill bolt
   article: a
@@ -226,6 +239,7 @@
     attack: 56
     max_hit_chance: 90
     ammo_type: bolt
+    level: 70
 - id: 16143
   name: envenomed arrow
   article: an
@@ -240,6 +254,7 @@
     element_damage:
       element: earth
       damage: 27
+    level: 70
 - id: 21470
   name: simple arrow
   article: a
@@ -277,6 +292,7 @@
     attack: 78
     max_hit_chance: 100
     ammo_type: bolt
+    level: 150
 - id: 35901
   name: diamond arrow
   article: a
@@ -299,3 +315,4 @@
     attack: 78
     max_hit_chance: 100
     ammo_type: bolt
+    level: 150

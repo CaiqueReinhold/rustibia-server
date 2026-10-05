@@ -6,6 +6,10 @@
     weight: 750
     slot: 8
     armor: 2
+    level: 35
+    vocations:
+    - sorcerer
+    - druid
 - id: 818
   name: magma boots
   flags:
@@ -14,6 +18,10 @@
     weight: 750
     slot: 8
     armor: 2
+    level: 35
+    vocations:
+    - sorcerer
+    - druid
 - id: 819
   name: glacier shoes
   flags:
@@ -22,6 +30,10 @@
     weight: 750
     slot: 8
     armor: 2
+    level: 35
+    vocations:
+    - sorcerer
+    - druid
 - id: 820
   name: lightning boots
   flags:
@@ -30,6 +42,10 @@
     weight: 750
     slot: 8
     armor: 2
+    level: 35
+    vocations:
+    - sorcerer
+    - druid
 - id: 3079
   name: boots of haste
   flags:
@@ -119,6 +135,10 @@
     weight: 2500
     slot: 8
     armor: 3
+    level: 80
+    vocations:
+    - knight
+    - paladin
     speed: 15
 - id: 5461
   name: pirate boots
@@ -172,6 +192,7 @@
       duration: 72000
       decay_to: 9020
     armor: 2
+    level: 130
 - id: 9019
   name: firewalker boots
   article: a
@@ -181,6 +202,7 @@
     weight: 950
     slot: 8
     armor: 2
+    level: 130
 - id: 9020
   name: worn firewalker boots
   flags:
@@ -196,6 +218,10 @@
     weight: 1850
     slot: 8
     armor: 3
+    level: 70
+    vocations:
+    - knight
+    - paladin
 - id: 10201
   name: dragon scale boots
   flags:
@@ -204,6 +230,10 @@
     weight: 1850
     slot: 8
     armor: 3
+    level: 70
+    vocations:
+    - knight
+    - paladin
 - id: 10323
   name: guardian boots
   flags:
@@ -212,6 +242,10 @@
     weight: 2250
     slot: 8
     armor: 3
+    level: 70
+    vocations:
+    - knight
+    - paladin
 - id: 10386
   name: Zaoan shoes
   article: a
@@ -246,6 +280,9 @@
     weight: 3700
     slot: 8
     armor: 3
+    level: 150
+    vocations:
+    - knight
     speed: -5
 - id: 16112
   name: prismatic boots
@@ -255,6 +292,9 @@
     weight: 1800
     slot: 8
     armor: 3
+    level: 150
+    vocations:
+    - paladin
 - id: 19374
   name: vampire silk slippers
   flags:
@@ -270,6 +310,10 @@
     weight: 1800
     slot: 8
     armor: 1
+    level: 50
+    vocations:
+    - knight
+    - paladin
 - id: 21981
   name: oriental shoes
   flags:
@@ -278,6 +322,10 @@
     weight: 500
     slot: 8
     armor: 2
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 22086
   name: badger boots
   article: a
@@ -287,6 +335,7 @@
     weight: 1200
     slot: 8
     armor: 2
+    level: 60
 - id: 22756
   name: treader of torment
   article: a
@@ -306,6 +355,7 @@
     weight: 1600
     slot: 8
     armor: 2
+    level: 100
 - id: 22774
   name: boots of homecoming
   article: a
@@ -315,6 +365,7 @@
     weight: 1600
     slot: 8
     armor: 2
+    level: 100
 - id: 23476
   name: void boots
   flags:
@@ -326,6 +377,7 @@
       duration: 72000
       decay_to: 0
     armor: 2
+    level: 150
 - id: 23477
   name: void boots
   flags:
@@ -334,6 +386,7 @@
     weight: 1500
     slot: 8
     armor: 2
+    level: 150
 - id: 24409
   name: filthy bunnyslippers
   flags:
@@ -350,6 +403,10 @@
     weight: 800
     slot: 8
     armor: 2
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 30196
   name: yetislippers
   article: a
@@ -366,6 +423,9 @@
     weight: 900
     slot: 8
     armor: 3
+    level: 220
+    vocations:
+    - knight
 - id: 31617
   name: winged boots
   flags:
@@ -374,6 +434,9 @@
     weight: 1200
     slot: 8
     armor: 2
+    level: 220
+    vocations:
+    - paladin
 - id: 32098
   name: traditional leather shoes
   article: a
@@ -390,6 +453,10 @@
     weight: 1300
     slot: 8
     armor: 2
+    level: 140
+    vocations:
+    - sorcerer
+    - druid
 - id: 34097
   name: pair of soulwalkers
   flags:
@@ -398,6 +465,9 @@
     weight: 1300
     slot: 8
     armor: 4
+    level: 400
+    vocations:
+    - knight
 - id: 34098
   name: pair of soulstalkers
   flags:
@@ -406,6 +476,9 @@
     weight: 1300
     slot: 8
     armor: 3
+    level: 400
+    vocations:
+    - paladin
 - id: 35519
   name: makeshift boots
   flags:
@@ -414,6 +487,9 @@
     weight: 1450
     slot: 8
     armor: 2
+    level: 150
+    vocations:
+    - sorcerer
 - id: 35520
   name: make-do boots
   flags:
@@ -422,6 +498,9 @@
     weight: 1450
     slot: 8
     armor: 2
+    level: 150
+    vocations:
+    - druid
 - id: 37610
   name: green demon slippers
   flags:
@@ -438,6 +517,9 @@
     weight: 1100
     slot: 8
     armor: 3
+    level: 270
+    vocations:
+    - knight
 - id: 39161
   name: feverbloom boots
   article: a
@@ -447,6 +529,9 @@
     weight: 980
     slot: 8
     armor: 2
+    level: 270
+    vocations:
+    - paladin
 - id: 40534
   name: broken Iks sandals
   article: the
@@ -466,6 +551,9 @@
     weight: 1600
     slot: 8
     armor: 2
+    level: 250
+    vocations:
+    - sorcerer
 - id: 40593
   name: mutant bone boots
   article: a
@@ -475,6 +563,9 @@
     weight: 1100
     slot: 8
     armor: 2
+    level: 250
+    vocations:
+    - druid
 - id: 43884
   name: sanguine boots
   flags:
@@ -483,6 +574,9 @@
     weight: 1900
     slot: 8
     armor: 3
+    level: 500
+    vocations:
+    - sorcerer
 - id: 43887
   name: sanguine galoshes
   article: a
@@ -492,6 +586,9 @@
     weight: 1700
     slot: 8
     armor: 3
+    level: 500
+    vocations:
+    - druid
 - id: 44648
   name: stoic iks boots
   flags:
@@ -500,6 +597,9 @@
     weight: 1500
     slot: 8
     armor: 2
+    level: 250
+    vocations:
+    - paladin
 - id: 44649
   name: stoic iks sandals
   flags:
@@ -508,3 +608,6 @@
     weight: 900
     slot: 8
     armor: 2
+    level: 250
+    vocations:
+    - sorcerer

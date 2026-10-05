@@ -1314,7 +1314,7 @@ mod tests {
     }
 
     #[test]
-    fn nothing_queued_behind_a_shutdown_is_run() {
+    fn a_shutdown_lets_its_tick_finish() {
         let mut actor = a_test_world_actor(GameMap::new());
         let (done, _stopped) = oneshot::channel();
         actor.command_queue.push(ScheduledCommand {
@@ -1325,11 +1325,15 @@ mod tests {
             at_tick: Tick(1),
             command: a_walk_for_nobody(),
         });
+        actor.command_queue.push(ScheduledCommand {
+            at_tick: Tick(2),
+            command: a_walk_for_nobody(),
+        });
         actor.tick = Tick(1);
 
         let records = actor.drain_due(&mut Vec::new());
 
-        assert_eq!(records.len(), 1);
+        assert_eq!(records.len(), 2);
         assert_eq!(actor.command_queue.len(), 1);
     }
 }

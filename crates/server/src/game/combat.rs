@@ -55,7 +55,7 @@ pub fn plan_auto_attack(
         return None;
     }
 
-    if agent.is_fleeing() {
+    if agent.is_fleeing() || !agent.is_hostile() {
         return None;
     }
 
@@ -547,7 +547,8 @@ mod tests {
     use crate::game::{TestHarness, TickDelta};
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::{
-        a_test_creature, a_test_creature_that_flees, a_test_creature_with_defences, a_test_snapshot,
+        a_test_creature, a_test_creature_that_flees, a_test_creature_with_defences,
+        a_test_passive_creature, a_test_snapshot,
     };
     use std::collections::HashSet;
     use std::sync::Arc;
@@ -1017,6 +1018,23 @@ mod tests {
             plan_auto_attack(&map, attacker, &mut roll, Tick(0)).is_none(),
             "5 of 10"
         );
+    }
+
+    #[test]
+    fn a_passive_creature_plans_no_attack() {
+        let mut roll = Rolls::new(1);
+        let (map, hostile, _) = duel(
+            a_test_creature("Rat", 10, (1, 2)),
+            Agent::from_player(a_test_snapshot(1, 1)),
+        );
+        assert!(plan_auto_attack(&map, hostile, &mut roll, Tick(0)).is_some());
+
+        let (map, passive, _) = duel(
+            a_test_passive_creature("Deer", 10),
+            Agent::from_player(a_test_snapshot(1, 1)),
+        );
+
+        assert!(plan_auto_attack(&map, passive, &mut roll, Tick(0)).is_none());
     }
 
     #[test]

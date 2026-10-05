@@ -16,6 +16,9 @@
     weight: 1000
     slot: 1
     armor: 5
+    vocations:
+    - sorcerer
+    - druid
 - id: 828
   name: lightning headband
   article: a
@@ -25,6 +28,9 @@
     weight: 1000
     slot: 1
     armor: 5
+    vocations:
+    - sorcerer
+    - druid
 - id: 829
   name: glacier mask
   article: a
@@ -34,6 +40,9 @@
     weight: 1000
     slot: 1
     armor: 5
+    vocations:
+    - sorcerer
+    - druid
 - id: 830
   name: terra hood
   article: a
@@ -43,6 +52,9 @@
     weight: 1000
     slot: 1
     armor: 5
+    vocations:
+    - sorcerer
+    - druid
 - id: 875
   name: mining helmet
   article: a
@@ -86,6 +98,9 @@
     weight: 700
     slot: 1
     armor: 3
+    vocations:
+    - sorcerer
+    - druid
 - id: 3226
   name: damaged helmet
   article: a
@@ -407,6 +422,8 @@
     weight: 1100
     slot: 1
     armor: 3
+    vocations:
+    - paladin
 - id: 3576
   name: post officer's hat
   article: a
@@ -523,6 +540,9 @@
     weight: 900
     slot: 1
     armor: 3
+    vocations:
+    - sorcerer
+    - druid
 - id: 8864
   name: yalahari mask
   article: a
@@ -532,6 +552,10 @@
     weight: 3500
     slot: 1
     armor: 5
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 9013
   name: flower wreath
   article: a
@@ -549,6 +573,10 @@
     weight: 600
     slot: 1
     armor: 3
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 9221
   name: laurel wreath
   article: a
@@ -603,6 +631,9 @@
     weight: 780
     slot: 1
     armor: 3
+    vocations:
+    - sorcerer
+    - druid
 - id: 10385
   name: Zaoan helmet
   article: a
@@ -612,6 +643,9 @@
     weight: 6600
     slot: 1
     armor: 9
+    vocations:
+    - knight
+    - paladin
 - id: 10451
   name: jade hat
   article: a
@@ -621,6 +655,10 @@
     weight: 900
     slot: 1
     armor: 4
+    level: 60
+    vocations:
+    - sorcerer
+    - druid
 - id: 11585
   name: helmet of the deep
   article: a
@@ -642,6 +680,9 @@
     weight: 850
     slot: 1
     armor: 3
+    vocations:
+    - sorcerer
+    - druid
 - id: 11689
   name: elite draken helmet
   article: an
@@ -651,6 +692,9 @@
     weight: 4300
     slot: 1
     armor: 9
+    level: 100
+    vocations:
+    - paladin
 - id: 11700
   name: sedge hat
   article: a
@@ -669,6 +713,9 @@
     weight: 1000
     slot: 1
     armor: 3
+    vocations:
+    - sorcerer
+    - druid
 - id: 12809
   name: epic wisdom
   article: the
@@ -695,6 +742,7 @@
     weight: 4600
     slot: 1
     armor: 8
+    level: 150
 - id: 14258
   name: depth galea
   article: a
@@ -713,6 +761,10 @@
     weight: 900
     slot: 1
     armor: 5
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 16109
   name: prismatic helmet
   article: a
@@ -722,6 +774,9 @@
     weight: 5600
     slot: 1
     armor: 9
+    level: 150
+    vocations:
+    - knight
 - id: 17852
   name: helmet of the lost
   article: a
@@ -750,6 +805,10 @@
     weight: 800
     slot: 1
     armor: 5
+    level: 70
+    vocations:
+    - sorcerer
+    - druid
 - id: 21892
   name: crest of the deep seas
   article: a
@@ -759,6 +818,7 @@
     weight: 4500
     slot: 1
     armor: 7
+    level: 80
 - id: 22062
   name: werewolf helmet
   article: a
@@ -770,6 +830,7 @@
     weight: 2500
     slot: 1
     armor: 9
+    level: 100
 - id: 22088
   name: enchanted werewolf helmet
   article: an
@@ -822,6 +883,9 @@
       duration: 72000
       decay_to: 22062
     armor: 9
+    level: 100
+    vocations:
+    - knight
 - id: 22128
   name: enchanted werewolf helmet
   article: an
@@ -834,6 +898,9 @@
       duration: 72000
       decay_to: 22062
     armor: 9
+    level: 100
+    vocations:
+    - knight
 - id: 22129
   name: enchanted werewolf helmet
   article: an
@@ -846,6 +913,9 @@
       duration: 72000
       decay_to: 22062
     armor: 9
+    level: 100
+    vocations:
+    - paladin
 - id: 22130
   name: enchanted werewolf helmet
   article: an
@@ -858,6 +928,10 @@
       duration: 72000
       decay_to: 22062
     armor: 9
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 22132
   name: enchanted werewolf helmet
   article: an
@@ -870,6 +944,9 @@
       duration: 72000
       decay_to: 22062
     armor: 9
+    level: 100
+    vocations:
+    - knight
 - id: 22153
   name: dark wizard's crown
   flags:
@@ -913,6 +990,7 @@
     weight: 3400
     slot: 1
     armor: 7
+    level: 150
 - id: 23474
   name: tiara of power
   article: a
@@ -921,6 +999,10 @@
   attributes:
     weight: 1150
     slot: 1
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 23475
   name: tiara of power
   article: a
@@ -933,6 +1015,10 @@
       duration: 72000
       decay_to: 0
     armor: 7
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 24397
   name: Ferumbras' Candy Hat
   article: a
@@ -1033,6 +1119,10 @@
     weight: 2400
     slot: 1
     armor: 8
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 28714
   name: falcon circlet
   article: a
@@ -1042,6 +1132,10 @@
     weight: 1300
     slot: 1
     armor: 8
+    level: 300
+    vocations:
+    - sorcerer
+    - druid
 - id: 28715
   name: falcon coif
   article: a
@@ -1051,6 +1145,10 @@
     weight: 2800
     slot: 1
     armor: 10
+    level: 300
+    vocations:
+    - knight
+    - paladin
 - id: 29427
   name: dark whispers
   article: a
@@ -1060,6 +1158,9 @@
     weight: 3400
     slot: 1
     armor: 7
+    level: 180
+    vocations:
+    - paladin
 - id: 30275
   name: crown of the percht queen
   article: the
@@ -1085,6 +1186,9 @@
     weight: 2700
     slot: 1
     armor: 9
+    level: 270
+    vocations:
+    - knight
 - id: 31369
   name: gryphon mask
   article: a
@@ -1126,6 +1230,9 @@
     weight: 3100
     slot: 1
     armor: 9
+    level: 230
+    vocations:
+    - knight
 - id: 31582
   name: galea mortis
   article: a
@@ -1135,6 +1242,9 @@
     weight: 2300
     slot: 1
     armor: 7
+    level: 220
+    vocations:
+    - sorcerer
 - id: 32100
   name: traditional gamsbart hat
   article: a
@@ -1168,6 +1278,9 @@
     weight: 3000
     slot: 1
     armor: 7
+    level: 230
+    vocations:
+    - paladin
 - id: 36670
   name: eldritch cowl
   article: a
@@ -1177,6 +1290,9 @@
     weight: 2600
     slot: 1
     armor: 7
+    level: 250
+    vocations:
+    - sorcerer
 - id: 36671
   name: eldritch hood
   article: a
@@ -1186,6 +1302,9 @@
     weight: 2700
     slot: 1
     armor: 7
+    level: 250
+    vocations:
+    - druid
 - id: 37164
   name: golden horned helmet
   article: a
@@ -1221,6 +1340,9 @@
     weight: 4400
     slot: 1
     armor: 12
+    level: 400
+    vocations:
+    - knight
 - id: 39149
   name: alicorn headguard
   article: an
@@ -1230,6 +1352,9 @@
     weight: 3900
     slot: 1
     armor: 11
+    level: 400
+    vocations:
+    - paladin
 - id: 39151
   name: arcanomancer regalia
   article: an
@@ -1239,6 +1364,9 @@
     weight: 1500
     slot: 1
     armor: 9
+    level: 400
+    vocations:
+    - sorcerer
 - id: 39153
   name: arboreal crown
   article: an
@@ -1248,6 +1376,9 @@
     weight: 1200
     slot: 1
     armor: 9
+    level: 400
+    vocations:
+    - druid
 - id: 40532
   name: broken Iks headpiece
   article: the
@@ -1267,6 +1398,9 @@
     weight: 2200
     slot: 1
     armor: 9
+    level: 250
+    vocations:
+    - knight
 - id: 44636
   name: stoic iks casque
   flags:
@@ -1275,6 +1409,9 @@
     weight: 3500
     slot: 1
     armor: 8
+    level: 250
+    vocations:
+    - paladin
 - id: 44637
   name: stoic iks headpiece
   flags:
@@ -1283,3 +1420,6 @@
     weight: 2100
     slot: 1
     armor: 8
+    level: 250
+    vocations:
+    - druid

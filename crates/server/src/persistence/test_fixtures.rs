@@ -16,7 +16,7 @@ use crate::entities::{
     Bounds,
     agent::{Agent, Facing, Pool},
     combat::CombatElement,
-    creature::{BloodType, CreatureAttackDamage, CreatureKind},
+    creature::{BloodType, CreatureAttackDamage, CreatureFlag, CreatureKind},
     inventory::InventorySlot,
     items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId},
     position::Position,
@@ -208,6 +208,20 @@ pub fn a_test_creature_that_flees(
     flee_threshold: u32,
 ) -> Agent {
     a_creature(name, life, damage, 0, 0, 0, Some(flee_threshold))
+}
+
+pub fn a_test_passive_creature(name: &str, life: u32) -> Agent {
+    Agent::from_creature_kind(
+        Arc::new(CreatureKind {
+            life: Pool {
+                current: life,
+                maximum: life,
+            },
+            flags: vec![CreatureFlag::Passive],
+            ..a_creature_kind(name)
+        }),
+        Position::new(1028, 128, 7),
+    )
 }
 
 /// The one `CreatureKind` every test builds on, so a new field on the struct is filled in

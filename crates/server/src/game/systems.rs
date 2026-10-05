@@ -1,5 +1,8 @@
 use crate::{
-    entities::{agent::AgentKey, conditions::TimedCondition},
+    entities::{
+        agent::{Agent, AgentKey},
+        conditions::TimedCondition,
+    },
     game::{TickCtx, combat, conditions, targeting},
 };
 
@@ -16,15 +19,17 @@ pub fn combat_system(ctx: &mut TickCtx) {
             continue;
         }
 
-        let tick = ctx.tick;
-        let created = match ctx.map.agent_mut(target) {
-            Some(mut agent) if !agent.is_creature() => {
-                agent.conditions(|c| c.reset_logout_block(tick))
+        if ctx.map.get_agent(agent_key).is_some_and(Agent::is_hostile) {
+            let tick = ctx.tick;
+            let created = match ctx.map.agent_mut(target) {
+                Some(mut agent) if !agent.is_creature() => {
+                    agent.conditions(|c| c.reset_logout_block(tick))
+                }
+                _ => false,
+            };
+            if created {
+                conditions::schedule_expiry(ctx, target, TimedCondition::LogoutBlock);
             }
-            _ => false,
-        };
-        if created {
-            conditions::schedule_expiry(ctx, target, TimedCondition::LogoutBlock);
         }
 
         drive_auto_attack(ctx, agent_key);
@@ -53,7 +58,9 @@ mod tests {
         position::Position,
     };
     use crate::game::{TestHarness, Tick, config::GAME_CONFIG};
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{
+        a_test_creature, a_test_passive_creature, a_test_snapshot,
+    };
 
     /// The cadence belongs to the world, not to the executor a spell planner also feeds:
     /// `execute_attack` stamps nothing, so this is the only thing standing between a player
@@ -120,5 +127,38 @@ mod tests {
             })
             .count();
         assert_eq!(expiries, 1);
+    }
+
+    #[test]
+    fn only_a_hostile_creature_blocks_the_logout_of_its_target() {
+        for (creature, blocked) in [
+            (a_test_creature("Rat", 100, (0, 0)), true),
+            (a_test_passive_creature("Deer", 100), false),
+        ] {
+            let (a, b) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+            let mut map = GameMap::new();
+            map.insert_tile(a.clone(), MapTile::new());
+            map.insert_tile(b.clone(), MapTile::new());
+            let creature = map.insert_agent(creature, &a).unwrap();
+            let player = map
+                .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &b)
+                .unwrap();
+            map.get_agent_mut(creature)
+                .unwrap()
+                .set_target(Some(player), 0);
+            let mut map = WorldMap::new(map);
+            let mut h = TestHarness::seeded(1);
+            h.tick = Tick(7);
+
+            combat_system(&mut h.ctx(&mut map));
+
+            assert_eq!(
+                map.get_agent(player)
+                    .unwrap()
+                    .conditions()
+                    .is_logout_blocked(Tick(7)),
+                blocked
+            );
+        }
     }
 }

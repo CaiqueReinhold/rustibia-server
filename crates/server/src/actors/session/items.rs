@@ -50,7 +50,7 @@ impl SessionActor {
                 {
                     ItemPlacement::Container {
                         guid: occupant.guid,
-                        within: within,
+                        within,
                         index: 0,
                     }
                 }

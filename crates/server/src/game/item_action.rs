@@ -146,7 +146,6 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
             agent_key,
             item: item_ref,
         });
-        return;
     } else if let Some(action) = action {
         match route_action(ctx, &action, agent_key, &item_ref) {
             Ok(()) => {
@@ -154,7 +153,6 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
                     .agent_mut(agent_key)
                     .unwrap()
                     .stamp_use(ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks);
-                return;
             }
             Err(e) => {
                 let message = match e {

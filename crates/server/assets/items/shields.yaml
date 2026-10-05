@@ -8,6 +8,9 @@
     weight: 1800
     slot: 5
     defense: 14
+    vocations:
+    - sorcerer
+    - druid
 - id: 3409
   name: steel shield
   article: a
@@ -387,6 +390,10 @@
     weight: 1950
     slot: 5
     defense: 18
+    level: 30
+    vocations:
+    - sorcerer
+    - druid
 - id: 8073
   name: spellbook of warding
   article: a
@@ -397,6 +404,10 @@
     weight: 2100
     slot: 5
     defense: 22
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 8074
   name: spellbook of mind control
   article: a
@@ -407,6 +418,10 @@
     weight: 2450
     slot: 5
     defense: 16
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 8075
   name: spellbook of lost souls
   article: a
@@ -417,6 +432,10 @@
     weight: 2560
     slot: 5
     defense: 20
+    level: 60
+    vocations:
+    - sorcerer
+    - druid
 - id: 8076
   name: spellscroll of prophecies
   article: a
@@ -427,6 +446,10 @@
     weight: 2650
     slot: 5
     defense: 12
+    level: 70
+    vocations:
+    - sorcerer
+    - druid
 - id: 8077
   name: rainbow shield
   article: a
@@ -436,6 +459,9 @@
     weight: 6900
     slot: 5
     defense: 30
+    level: 100
+    vocations:
+    - knight
 - id: 8078
   name: fiery rainbow shield
   article: a
@@ -448,6 +474,9 @@
       duration: 24000
       decay_to: 8077
     defense: 36
+    level: 100
+    vocations:
+    - knight
 - id: 8079
   name: icy rainbow shield
   article: an
@@ -460,6 +489,9 @@
       duration: 24000
       decay_to: 8077
     defense: 39
+    level: 100
+    vocations:
+    - knight
 - id: 8080
   name: sparking rainbow shield
   article: a
@@ -472,6 +504,9 @@
       duration: 24000
       decay_to: 8077
     defense: 36
+    level: 100
+    vocations:
+    - knight
 - id: 8081
   name: terran rainbow shield
   article: a
@@ -484,6 +519,9 @@
       duration: 24000
       decay_to: 8077
     defense: 37
+    level: 100
+    vocations:
+    - knight
 - id: 8090
   name: spellbook of dark mysteries
   article: a
@@ -494,6 +532,10 @@
     weight: 2850
     slot: 5
     defense: 16
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 9372
   name: meat shield
   article: a
@@ -553,6 +595,9 @@
     weight: 4900
     slot: 5
     defense: 36
+    level: 80
+    vocations:
+    - knight
 - id: 11691
   name: snake god's wristguard
   article: a
@@ -563,6 +608,10 @@
     weight: 2800
     slot: 5
     defense: 14
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 13998
   name: depth scutum
   article: a
@@ -572,6 +621,10 @@
     weight: 3000
     slot: 5
     defense: 25
+    level: 120
+    vocations:
+    - sorcerer
+    - druid
 - id: 14000
   name: ornate shield
   article: an
@@ -581,6 +634,9 @@
     weight: 7100
     slot: 5
     defense: 36
+    level: 130
+    vocations:
+    - knight
 - id: 14042
   name: warrior's shield
   article: a
@@ -627,6 +683,10 @@
     weight: 2500
     slot: 5
     defense: 19
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 16107
   name: spellbook of vigilance
   article: a
@@ -637,6 +697,10 @@
     weight: 2700
     slot: 5
     defense: 20
+    level: 130
+    vocations:
+    - sorcerer
+    - druid
 - id: 16116
   name: prismatic shield
   article: a
@@ -646,6 +710,9 @@
     weight: 7200
     slot: 5
     defense: 37
+    level: 150
+    vocations:
+    - knight
 - id: 17810
   name: spike shield
   article: a
@@ -691,6 +758,10 @@
     weight: 4000
     slot: 5
     defense: 14
+    level: 75
+    vocations:
+    - sorcerer
+    - druid
 - id: 20089
   name: umbral spellbook
   article: an
@@ -701,6 +772,10 @@
     weight: 3500
     slot: 5
     defense: 16
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 20090
   name: umbral master spellbook
   article: an
@@ -711,6 +786,10 @@
     weight: 3000
     slot: 5
     defense: 20
+    level: 250
+    vocations:
+    - sorcerer
+    - druid
 - id: 20140
   name: eerie song book
   article: an
@@ -738,6 +817,9 @@
     weight: 1400
     slot: 5
     defense: 8
+    vocations:
+    - sorcerer
+    - druid
 - id: 21401
   name: broken wooden shield
   article: a
@@ -795,6 +877,10 @@
     weight: 2400
     slot: 5
     defense: 18
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 22758
   name: death gaze
   article: a
@@ -804,6 +890,7 @@
     weight: 7900
     slot: 5
     defense: 38
+    level: 200
 - id: 22889
   name: shield of destiny
   article: a
@@ -912,6 +999,10 @@
     weight: 1200
     slot: 5
     defense: 16
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 25982
   name: mathmaster shield
   article: a
@@ -947,6 +1038,10 @@
     weight: 6000
     slot: 5
     defense: 38
+    level: 200
+    vocations:
+    - knight
+    - paladin
 - id: 28494
   name: silver chimes
   article: a
@@ -967,6 +1062,10 @@
     weight: 5700
     slot: 5
     defense: 39
+    level: 300
+    vocations:
+    - knight
+    - paladin
 - id: 28722
   name: falcon escutcheon
   article: a
@@ -976,6 +1075,10 @@
     weight: 6000
     slot: 5
     defense: 40
+    level: 300
+    vocations:
+    - knight
+    - paladin
 - id: 28887
   name: journal shield
   article: a
@@ -1034,6 +1137,10 @@
     weight: 3500
     slot: 5
     defense: 26
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 29426
   name: brain in a jar
   article: a
@@ -1044,6 +1151,10 @@
     weight: 2700
     slot: 5
     defense: 19
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 29430
   name: ectoplasmic shield
   article: an
@@ -1053,6 +1164,9 @@
     weight: 5800
     slot: 5
     defense: 37
+    level: 180
+    vocations:
+    - knight
 - id: 29431
   name: spirit guide
   article: a
@@ -1063,6 +1177,10 @@
     weight: 1800
     slot: 5
     defense: 17
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 30181
   name: shield of endless search
   article: a
@@ -1098,6 +1216,9 @@
     weight: 5800
     slot: 5
     defense: 42
+    level: 400
+    vocations:
+    - knight
 - id: 34153
   name: lion spellbook
   article: a
@@ -1108,6 +1229,10 @@
     weight: 2500
     slot: 5
     defense: 20
+    level: 220
+    vocations:
+    - sorcerer
+    - druid
 - id: 34154
   name: lion shield
   article: a
@@ -1117,6 +1242,9 @@
     weight: 6500
     slot: 5
     defense: 39
+    level: 250
+    vocations:
+    - knight
 - id: 35524
   name: jungle quiver
   article: a
@@ -1129,6 +1257,9 @@
     weight: 1800
     capacity: 8
     slot: 5
+    level: 150
+    vocations:
+    - paladin
 - id: 35562
   name: quiver
   article: a
@@ -1141,6 +1272,8 @@
     weight: 1700
     capacity: 6
     slot: 5
+    vocations:
+    - paladin
 - id: 35848
   name: blue quiver
   article: a
@@ -1153,6 +1286,8 @@
     weight: 1700
     capacity: 6
     slot: 5
+    vocations:
+    - paladin
 - id: 35849
   name: red quiver
   article: a
@@ -1165,6 +1300,8 @@
     weight: 1700
     capacity: 6
     slot: 5
+    vocations:
+    - paladin
 - id: 36656
   name: eldritch shield
   article: a
@@ -1174,6 +1311,9 @@
     weight: 6900
     slot: 5
     defense: 39
+    level: 270
+    vocations:
+    - knight
 - id: 36666
   name: eldritch quiver
   article: a
@@ -1186,6 +1326,9 @@
     weight: 2200
     capacity: 8
     slot: 5
+    level: 250
+    vocations:
+    - paladin
 - id: 36672
   name: eldritch folio
   article: a
@@ -1196,6 +1339,9 @@
     weight: 2800
     slot: 5
     defense: 21
+    level: 300
+    vocations:
+    - sorcerer
 - id: 36673
   name: eldritch tome
   article: a
@@ -1206,6 +1352,9 @@
     weight: 2600
     slot: 5
     defense: 21
+    level: 300
+    vocations:
+    - druid
 - id: 36994
   name: golden blessed shield
   article: a
@@ -1229,6 +1378,7 @@
   attributes:
     weight: 4100
     slot: 5
+    level: 150
 - id: 39150
   name: alicorn quiver
   article: an
@@ -1241,6 +1391,9 @@
     weight: 2000
     capacity: 12
     slot: 5
+    level: 400
+    vocations:
+    - paladin
 - id: 39152
   name: arcanomancer folio
   article: an
@@ -1251,6 +1404,9 @@
     weight: 2600
     slot: 5
     defense: 22
+    level: 400
+    vocations:
+    - sorcerer
 - id: 39154
   name: arboreal tome
   article: an
@@ -1261,6 +1417,9 @@
     weight: 2300
     slot: 5
     defense: 22
+    level: 400
+    vocations:
+    - druid
 - id: 39160
   name: naga quiver
   article: a
@@ -1273,6 +1432,9 @@
     weight: 1900
     capacity: 8
     slot: 5
+    level: 250
+    vocations:
+    - paladin
 - id: 40594
   name: alchemist's notepad
   article: an
@@ -1283,6 +1445,9 @@
     weight: 1300
     slot: 5
     defense: 20
+    level: 250
+    vocations:
+    - sorcerer
 - id: 43517
   name: shield of destiny replica
   article: a

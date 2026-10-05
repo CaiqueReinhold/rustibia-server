@@ -3,6 +3,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 4960
@@ -20,6 +21,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     field:
       type: flat
@@ -34,6 +36,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     field:
       type: flat
@@ -48,6 +51,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     field:
       type: flat
@@ -62,6 +66,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 4000
@@ -79,6 +84,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2960
@@ -113,6 +119,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     field:
@@ -128,6 +135,7 @@
   article: an
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 1960
@@ -145,6 +153,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     field:
@@ -160,6 +169,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     field:
@@ -190,6 +200,7 @@
   article: an
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     field:
@@ -205,6 +216,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 400
@@ -220,6 +232,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 400
@@ -229,6 +242,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2400
@@ -246,6 +260,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2400
@@ -280,6 +295,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2400
@@ -297,6 +313,7 @@
   article: an
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2400
@@ -319,6 +336,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     decay:
@@ -337,6 +355,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     decay:
@@ -354,6 +373,7 @@
   name: ashes
   flags:
   - unmove
+  - avoid
   - unreplaceable
   attributes:
     decay:
@@ -535,6 +555,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 400
@@ -544,6 +565,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 900
@@ -553,6 +575,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 2400
@@ -584,6 +607,7 @@
   article: an
   flags:
   - unmove
+  - avoid
   attributes:
     field:
       type: flat

@@ -21,6 +21,7 @@ use crate::{
         inventory::InventorySlot,
         position::{ItemPlacement, Position},
         spells::SpellId,
+        vocation::{Vocation, VocationSet},
     },
     game::TickDelta,
     local_id::LocalId,
@@ -95,6 +96,8 @@ pub enum ItemFlag {
     LiquidPool,
     Unreplaceable,
     Teleport,
+    Border,
+    Top,
 }
 
 impl ItemFlag {
@@ -220,6 +223,8 @@ pub enum ItemAttribute {
     ExtraDef(i16),
     Armor(u16),
     Speed(i16),
+    RequiredLevel(u16),
+    Vocations(VocationSet),
     Field(Arc<ConditionSpec>),
 }
 
@@ -294,6 +299,8 @@ impl ItemConfig {
         attr_mana_cost -> ManaCost: u32,
         attr_missile_id -> MissileId: MissileId,
         attr_speed -> Speed: i16,
+        attr_required_level -> RequiredLevel: u16,
+        attr_vocations -> Vocations: VocationSet,
     }
 
     pub fn attr_decay(&self) -> Option<(TickDelta, ItemId)> {
@@ -315,6 +322,14 @@ impl ItemConfig {
             ItemAttribute::WeaponArea(shape, effect_id) => Some((shape.as_ref(), *effect_id)),
             _ => None,
         })
+    }
+
+    pub fn can_be_worn_by(&self, level: u16, vocation: Vocation) -> bool {
+        self.attr_required_level()
+            .is_none_or(|required| level >= required)
+            && self
+                .attr_vocations()
+                .is_none_or(|set| set.contains(vocation))
     }
 }
 
@@ -659,6 +674,8 @@ mod tests {
         check("mana_cost", c.attr_mana_cost().is_some());
         check("missile_id", c.attr_missile_id().is_some());
         check("speed", c.attr_speed().is_some());
+        check("required_level", c.attr_required_level().is_some());
+        check("vocations", c.attr_vocations().is_some());
         check("decay", c.attr_decay().is_some());
         check("field", c.attr_field().is_some());
         found
@@ -703,6 +720,11 @@ mod tests {
             (ItemAttribute::ManaCost(1), "mana_cost"),
             (ItemAttribute::MissileId(MissileId(1)), "missile_id"),
             (ItemAttribute::Speed(1), "speed"),
+            (ItemAttribute::RequiredLevel(1), "required_level"),
+            (
+                ItemAttribute::Vocations([Vocation::Knight].into_iter().collect()),
+                "vocations",
+            ),
             (
                 ItemAttribute::Decay {
                     duration: TickDelta(1),
@@ -723,6 +745,25 @@ mod tests {
         ] {
             assert_eq!(answered(&only(attr)), vec![expected]);
         }
+    }
+
+    fn gated(attributes: Vec<ItemAttribute>) -> ItemConfig {
+        ItemConfig::new(ItemId(1), "thing".to_string(), None, None, [], attributes)
+    }
+
+    #[test]
+    fn wearing_needs_the_level_and_one_of_the_vocations() {
+        let sword = gated(vec![
+            ItemAttribute::RequiredLevel(35),
+            ItemAttribute::Vocations([Vocation::Knight, Vocation::Paladin].into_iter().collect()),
+        ]);
+
+        assert!(!sword.can_be_worn_by(34, Vocation::Knight));
+        assert!(!sword.can_be_worn_by(35, Vocation::Druid));
+        assert!(sword.can_be_worn_by(35, Vocation::Knight));
+        assert!(sword.can_be_worn_by(80, Vocation::Paladin));
+        assert!(gated(vec![ItemAttribute::RequiredLevel(35)]).can_be_worn_by(35, Vocation::Druid));
+        assert!(gated(vec![]).can_be_worn_by(1, Vocation::Sorcerer));
     }
 
     /// `ItemConfig::new` folds whatever it is handed, so the same flag twice must not

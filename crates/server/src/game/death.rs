@@ -1,4 +1,4 @@
-use tracing::{error, info};
+use tracing::error;
 
 use crate::actors::world::{ScheduledCommand, WorldCommand};
 use crate::constants::items::MAX_STACK_AMOUNT;

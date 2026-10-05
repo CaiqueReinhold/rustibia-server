@@ -260,7 +260,7 @@ mod tests {
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::game::{Tick, TickDelta};
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
     use std::collections::HashSet;
     use std::sync::Arc;
 
@@ -313,6 +313,35 @@ mod tests {
         assert_eq!(map.agent_position(player), Some(&east));
         assert_eq!(map.get_agent(player).unwrap().facing(), Facing::East);
         assert!(!map.delta().agent(player).facing());
+    }
+
+    #[test]
+    fn a_creature_is_walked_onto_a_tile_it_avoids() {
+        let mut map = GameMap::new();
+        for pos in [HERE, EAST] {
+            map.insert_tile(pos, a_floor_tile());
+        }
+        let parcel = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(2),
+                "parcel".to_string(),
+                None,
+                None,
+                [ItemFlag::Avoid],
+                Vec::new(),
+            )),
+            1,
+        );
+        map.place_item(&EAST, None, None, parcel).unwrap();
+        let rat = map
+            .insert_agent(a_test_creature("Rat", 10, (1, 2)), &HERE)
+            .unwrap();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+
+        walk(&mut h.ctx(&mut map), Direction::East, rat);
+
+        assert_eq!(map.agent_position(rat), Some(&EAST));
     }
 
     fn an_item_with(attributes: Vec<ItemAttribute>) -> Item {

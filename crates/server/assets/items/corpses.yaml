@@ -9226,6 +9226,7 @@
   name: corrupted plantation
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -9234,6 +9235,7 @@
   name: corrupted plantation
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -9242,6 +9244,7 @@
   name: corrupted plantation
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -9250,6 +9253,7 @@
   name: corrupted plantation
   article: a
   flags:
+  - border
   - container
   - usable
   - unpass
@@ -26474,6 +26478,7 @@
   - container
   - usable
   - unmove
+  - avoid
 - id: 32078
   name: unknown
   flags:
@@ -26813,6 +26818,7 @@
   - container
   - usable
   - unmove
+  - avoid
 - id: 32607
   name: dead lost soul
   article: a

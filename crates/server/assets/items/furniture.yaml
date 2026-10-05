@@ -471,127 +471,158 @@
 - id: 2314
   name: big table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2315
   name: square table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2316
   name: small round table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2319
   name: small table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2346
   name: carved stone table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2347
   name: stone table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2348
   name: tusk table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2349
   name: tusk table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2350
   name: bamboo table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2351
   name: bamboo table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2352
   name: thick trunk
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2358
   name: wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2359
   name: wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2360
   name: wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2361
   name: wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2366
   name: sofa chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2367
   name: sofa chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2368
   name: sofa chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2369
   name: sofa chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2374
   name: red cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2375
   name: red cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2376
   name: red cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2377
   name: red cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2378
   name: green cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2379
   name: green cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2380
   name: green cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2381
   name: green cushioned chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2382
   name: rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2383
   name: rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2384
   name: rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2385
   name: rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2386
   name: small purple pillow
   article: a
@@ -707,39 +738,48 @@
 - id: 2418
   name: tusk chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2419
   name: tusk chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2420
   name: tusk chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2421
   name: tusk chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2422
   name: ivory chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 2423
   name: ivory chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 2424
   name: ivory chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 2425
   name: ivory chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 2426
   name: small trunk
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 2445
   name: pendulum clock
   article: a
@@ -1033,6 +1073,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1041,6 +1082,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1049,6 +1091,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1057,6 +1100,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1065,6 +1109,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1073,6 +1118,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1081,6 +1127,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1089,6 +1136,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1096,6 +1144,7 @@
   name: round table kit
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1103,6 +1152,7 @@
   name: square table kit
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1111,6 +1161,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1119,6 +1170,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1127,6 +1179,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1135,6 +1188,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1143,6 +1197,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1151,6 +1206,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1159,6 +1215,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1167,6 +1224,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1175,6 +1233,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1183,6 +1242,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1191,6 +1251,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1199,6 +1260,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2000
@@ -1207,6 +1269,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2000
@@ -1215,6 +1278,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2000
@@ -1223,6 +1287,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1231,6 +1296,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1239,6 +1305,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1247,6 +1314,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1255,6 +1323,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1263,6 +1332,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1271,6 +1341,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1279,6 +1350,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1287,6 +1359,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1295,6 +1368,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1303,6 +1377,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1311,6 +1386,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -1319,6 +1395,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -1513,6 +1590,7 @@
 - id: 2981
   name: god flowers
   flags:
+  - avoid
   - take
   attributes:
     weight: 1100
@@ -1525,6 +1603,7 @@
   name: flower bowl
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 1100
@@ -1532,6 +1611,7 @@
   name: honey flower
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 1000
@@ -1539,12 +1619,14 @@
   name: potted flower
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 2300
 - id: 2988
   name: exotic flowers
   flags:
+  - avoid
   - take
   attributes:
     weight: 1100
@@ -1872,6 +1954,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1880,6 +1963,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -1888,6 +1972,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -2002,6 +2087,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -2010,6 +2096,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -2018,46 +2105,55 @@
   article: an
   flags:
   - usable
+  - avoid
 - id: 6356
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6357
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6358
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6359
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6360
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6361
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6362
   name: oven
   article: an
   flags:
   - usable
+  - avoid
 - id: 6371
   name: oven kit
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -2066,6 +2162,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -2272,29 +2369,34 @@
   flags:
   - usable
   - unpass
+  - avoid
 - id: 7861
   name: chimney
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 7862
   name: chimney
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 7863
   name: chimney
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 7864
   name: chimney kit
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
@@ -2414,13 +2516,15 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
 - id: 9062
   name: crystal table
   article: a
-  flags: []
+  flags:
+  - avoid
   attributes:
     weight: 2500
 - id: 9063
@@ -2494,6 +2598,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 5500
@@ -2522,6 +2627,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 6500
@@ -2537,16 +2643,19 @@
   article: a
   flags:
   - usable
+  - avoid
 - id: 10287
   name: dragon throne
   article: a
   flags:
   - usable
+  - avoid
 - id: 10288
   name: dragon throne kit
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 7500
@@ -2868,6 +2977,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 7500
@@ -2876,6 +2986,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 7500
@@ -3007,6 +3118,7 @@
   name: canopy bed
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 17921
@@ -3033,6 +3145,7 @@
   name: canopy bed
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 17925
@@ -3066,6 +3179,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
@@ -3074,6 +3188,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -3082,6 +3197,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2000
@@ -3259,6 +3375,7 @@
   name: rift carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 22737
@@ -3307,51 +3424,63 @@
 - id: 23403
   name: magnificent chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23404
   name: magnificent chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23405
   name: magnificent chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23406
   name: magnificent chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23407
   name: ferocious chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23408
   name: ferocious chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23409
   name: ferocious chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23410
   name: ferocious chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23411
   name: ferocious table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23414
   name: ferocious table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23417
   name: magnificent table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23418
   name: magnificent table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23431
   name: rolled-up yalaharian carpet
   article: a
@@ -3471,18 +3600,21 @@
   name: Yalaharian carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23454
   name: white fur carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23455
   name: bamboo mat
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23536
@@ -3498,6 +3630,7 @@
   name: void carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
   attributes:
@@ -3511,19 +3644,23 @@
 - id: 23693
   name: rustic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23694
   name: rustic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23695
   name: rustic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23696
   name: rustic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23697
   name: dog house
   article: a
@@ -3537,11 +3674,13 @@
 - id: 23698
   name: rustic table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23699
   name: rustic table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 23703
   name: dog house
   article: a
@@ -3600,36 +3739,42 @@
   name: crimson carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23716
   name: azure carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 23717
   name: emerald carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 23718
   name: light parquet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23719
   name: dark parquet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 23720
   name: marble floor
   article: a
   flags:
+  - border
   - usable
   - unmove
   attributes:
@@ -3697,48 +3842,56 @@
   name: colourful carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24425
   name: flowery carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24426
   name: striped carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24427
   name: fur carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24428
   name: diamond carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24429
   name: patterned carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24430
   name: night sky carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24431
   name: star carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 24432
@@ -3776,16 +3929,20 @@
       decay_to: 24435
 - id: 24525
   name: old tibia item
-  flags: []
+  flags:
+  - avoid
 - id: 24526
   name: old tibia item
-  flags: []
+  flags:
+  - avoid
 - id: 24527
   name: old tibia item
-  flags: []
+  flags:
+  - avoid
 - id: 24528
   name: old tibia item
-  flags: []
+  flags:
+  - avoid
 - id: 24950
   name: framed birthday card
   article: a
@@ -3887,27 +4044,33 @@
 - id: 25221
   name: vengothic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25222
   name: vengothic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25223
   name: vengothic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25224
   name: vengothic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25225
   name: vengothic table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25226
   name: vengothic table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 25233
   name: lit vengothic lamp
   article: a
@@ -4098,6 +4261,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26089
   name: verdant bed
   article: a
@@ -4105,6 +4269,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26090
   name: verdant bed
   article: a
@@ -4112,6 +4277,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26091
   name: verdant bed
   article: a
@@ -4119,6 +4285,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26092
   name: verdant bed
   article: a
@@ -4126,6 +4293,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26093
   name: verdant bed
   article: a
@@ -4133,6 +4301,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26094
   name: verdant bed
   article: a
@@ -4140,6 +4309,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26095
   name: verdant bed
   article: a
@@ -4147,28 +4317,33 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 26096
   name: verdant bed
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 26097
   name: verdant bed
   article: a
   flags:
   - unpass
+  - avoid
 - id: 26098
   name: verdant bed
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 26099
   name: verdant bed
   article: a
   flags:
   - unpass
+  - avoid
 - id: 26100
   name: bath tub
   article: a
@@ -4178,23 +4353,28 @@
 - id: 26101
   name: verdant chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 26102
   name: verdant chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 26103
   name: verdant chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 26104
   name: verdant chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 26111
   name: verdant table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 26112
   name: venorean table clock
   article: a
@@ -4214,6 +4394,7 @@
   name: verdant carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26116
@@ -4225,6 +4406,7 @@
   name: shaggy carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26118
@@ -4236,6 +4418,7 @@
   name: mystic carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26120
@@ -4247,12 +4430,14 @@
   name: stone tiles
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26122
   name: pile of wooden planks
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26123
@@ -4264,6 +4449,7 @@
   name: wheat carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26151
@@ -4279,6 +4465,7 @@
   name: crested carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26154
@@ -4290,32 +4477,39 @@
   name: decorated carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 26156
   name: ornate chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26157
   name: ornate chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26158
   name: ornate chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26159
   name: ornate chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26160
   name: ornate table
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26161
   name: ornate table
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 26169
   name: terrarium
   article: a
@@ -4434,19 +4628,23 @@
 - id: 27661
   name: alchemistic chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 27662
   name: alchemistic chair
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 27665
   name: alchemistic table
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 27666
   name: alchemistic table
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 27667
   name: light of change
   article: a
@@ -4672,27 +4870,33 @@
 - id: 28676
   name: skeletal chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28677
   name: skeletal chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28678
   name: skeletal chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28679
   name: skeletal chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28680
   name: skeletal table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28681
   name: skeletal table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28688
   name: carnivorous plant
   article: a
@@ -4847,27 +5051,33 @@
 - id: 28932
   name: comfy chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28933
   name: comfy chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28934
   name: comfy chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28935
   name: comfy chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28936
   name: comfy table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28937
   name: comfy table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 28944
   name: incomprehensible riches
   flags: []
@@ -4906,20 +5116,24 @@
   article: a
   flags:
   - usable
+  - avoid
 - id: 30230
   name: festive table
   article: a
   flags:
   - usable
+  - avoid
 - id: 30231
   name: festive table
   article: a
   flags:
   - usable
+  - avoid
 - id: 30232
   name: festive table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30233
   name: festive fireplace
   article: a
@@ -4959,27 +5173,33 @@
 - id: 30239
   name: festive rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30240
   name: festive rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30241
   name: festive rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30242
   name: festive rocking chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30243
   name: festive sleigh
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30244
   name: festive sleigh
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 30245
   name: festive pile of presents
   article: a
@@ -5092,6 +5312,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
@@ -5100,6 +5321,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
@@ -5108,29 +5330,35 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 8000
 - id: 31183
   name: dwarven stone chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31184
   name: dwarven stone chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31185
   name: dwarven stone chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31186
   name: dwarven stone chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31191
   name: dwarven stone table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31196
   name: crystal lamp
   article: a
@@ -5150,11 +5378,13 @@
 - id: 31207
   name: square side table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31208
   name: round side table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31209
   name: golden minotaur skull
   article: a
@@ -5310,12 +5540,14 @@
   name: tournament carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 31469
   name: sublime tournament carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 31470
@@ -5433,7 +5665,8 @@
 - id: 31679
   name: hrodmiran table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31680
   name: baby hedgehog
   article: a
@@ -5473,19 +5706,23 @@
 - id: 31691
   name: hrodmiran chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31692
   name: hrodmiran chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31693
   name: hrodmiran chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31694
   name: hrodmiran chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 31695
   name: curly hortensis lamp
   article: a
@@ -5677,51 +5914,63 @@
 - id: 32123
   name: blue traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32128
   name: blue traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32129
   name: blue traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32130
   name: blue traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32131
   name: green traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32132
   name: green traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32133
   name: green traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32134
   name: green traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32135
   name: red traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32136
   name: red traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32137
   name: red traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32138
   name: red traditional chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32139
   name: blue traditional table
   article: a
@@ -5851,198 +6100,234 @@
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32474
   name: green headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32475
   name: red headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32476
   name: yellow headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32477
   name: cot headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32478
   name: hammock head section
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32479
   name: simple headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32480
   name: straw mat head section
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32481
   name: canopy headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32482
   name: blue footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32483
   name: green footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32484
   name: red footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32485
   name: yellow footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32486
   name: cot footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32487
   name: hammock foot section
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32488
   name: simple footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32489
   name: straw bed foot section
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32490
   name: canopy footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32491
   name: blue headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32492
   name: green headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32493
   name: red headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32494
   name: yellow headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32495
   name: cot headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32496
   name: hammock head section
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32497
   name: simple headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32498
   name: straw mat head section
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32499
   name: canopy headboard
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32500
   name: blue footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32501
   name: green footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32502
   name: red footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32503
   name: yellow footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32504
   name: cot footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32505
   name: hammock foot section
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32506
   name: simple footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32507
   name: straw bed foot section
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32508
   name: canopy footboard
   article: a
   flags:
   - unpass
+  - avoid
 - id: 32509
   name: blue headboard
   article: a
@@ -6050,6 +6335,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32510
   name: green headboard
   article: a
@@ -6057,6 +6343,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32511
   name: red headboard
   article: a
@@ -6064,6 +6351,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32512
   name: yellow headboard
   article: a
@@ -6071,6 +6359,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32513
   name: cot headboard
   article: a
@@ -6078,6 +6367,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32514
   name: hammock head section
   article: a
@@ -6085,6 +6375,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32515
   name: simple headboard
   article: a
@@ -6092,6 +6383,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32516
   name: straw mat head section
   article: a
@@ -6099,6 +6391,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32517
   name: canopy headboard
   article: a
@@ -6106,6 +6399,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32518
   name: blue headboard
   article: a
@@ -6113,6 +6407,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32519
   name: green headboard
   article: a
@@ -6120,6 +6415,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32520
   name: red headboard
   article: a
@@ -6127,6 +6423,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32521
   name: yellow headboard
   article: a
@@ -6134,6 +6431,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32522
   name: cot headboard
   article: a
@@ -6141,6 +6439,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32523
   name: hammock head section
   article: a
@@ -6148,6 +6447,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32524
   name: simple headboard
   article: a
@@ -6155,6 +6455,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32525
   name: straw mat head section
   article: a
@@ -6162,6 +6463,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32526
   name: canopy headboard
   article: a
@@ -6169,6 +6471,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32527
   name: blue footboard
   article: a
@@ -6176,6 +6479,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32528
   name: green footboard
   article: a
@@ -6183,6 +6487,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32529
   name: red footboard
   article: a
@@ -6190,6 +6495,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32530
   name: yellow footboard
   article: a
@@ -6197,6 +6503,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32531
   name: cot footboard
   article: a
@@ -6204,6 +6511,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32532
   name: hammock foot section
   article: a
@@ -6211,6 +6519,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32533
   name: simple footboard
   article: a
@@ -6218,6 +6527,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32534
   name: straw bed foot section
   article: a
@@ -6225,6 +6535,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32535
   name: canopy footboard
   article: a
@@ -6232,6 +6543,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32536
   name: blue headboard
   article: a
@@ -6239,6 +6551,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32541
   name: green headboard
   article: a
@@ -6246,6 +6559,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32542
   name: red headboard
   article: a
@@ -6253,6 +6567,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32543
   name: yellow headboard
   article: a
@@ -6260,6 +6575,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32544
   name: cot headboard
   article: a
@@ -6267,6 +6583,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32545
   name: hammock head section
   article: a
@@ -6274,6 +6591,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32546
   name: simple headboard
   article: a
@@ -6281,6 +6599,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32547
   name: straw bed head section
   article: a
@@ -6288,6 +6607,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32548
   name: canopy headboard
   article: a
@@ -6295,6 +6615,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32549
   name: blue headboard
   article: a
@@ -6302,6 +6623,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32550
   name: green headboard
   article: a
@@ -6309,6 +6631,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32551
   name: red headboard
   article: a
@@ -6316,6 +6639,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32552
   name: yellow headboard
   article: a
@@ -6323,6 +6647,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32553
   name: cot headboard
   article: a
@@ -6330,6 +6655,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32554
   name: hammock head section
   article: a
@@ -6337,6 +6663,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32555
   name: simple headboard
   article: a
@@ -6344,6 +6671,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32556
   name: straw bed head section
   article: a
@@ -6351,6 +6679,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32557
   name: canopy headboard
   article: a
@@ -6358,6 +6687,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32558
   name: blue footboard
   article: a
@@ -6365,6 +6695,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32559
   name: green footboard
   article: a
@@ -6372,6 +6703,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32560
   name: red footboard
   article: a
@@ -6379,6 +6711,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32561
   name: yellow footboard
   article: a
@@ -6386,6 +6719,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32562
   name: cot footboard
   article: a
@@ -6393,6 +6727,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32563
   name: hammock foot section
   article: a
@@ -6400,6 +6735,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32564
   name: simple footboard
   article: a
@@ -6407,6 +6743,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32565
   name: straw bed foot section
   article: a
@@ -6414,6 +6751,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32566
   name: canopy footboard
   article: a
@@ -6421,6 +6759,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32746
   name: santa leech
   article: a
@@ -6473,15 +6812,18 @@
 - id: 32777
   name: ice table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32778
   name: ice stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32779
   name: ice stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32784
   name: ice chandelier
   article: a
@@ -6555,55 +6897,65 @@
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32796
   name: bone footboard
   flags:
   - unpass
+  - avoid
 - id: 32797
   name: bone headboard
   flags:
   - usable
   - unpass
+  - avoid
 - id: 32798
   name: bone footboard
   flags:
   - unpass
+  - avoid
 - id: 32799
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32800
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32801
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32802
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32803
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32804
   name: bone bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32897
   name: wall lamp
   flags:
@@ -6735,119 +7087,148 @@
 - id: 32946
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32947
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32948
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32949
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32950
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32951
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32952
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32953
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32954
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32955
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32956
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32957
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32958
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32959
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32960
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32961
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32962
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32963
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32964
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32965
   name: cozy couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32966
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32967
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32968
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32969
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32970
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32971
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32972
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32973
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 32974
   name: carved table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 33026
   name: heart lamp
   flags:
@@ -6880,22 +7261,28 @@
   - unpass
 - id: 33034
   name: heart table
-  flags: []
+  flags:
+  - avoid
 - id: 33035
   name: heart table
-  flags: []
+  flags:
+  - avoid
 - id: 33036
   name: heart chair
-  flags: []
+  flags:
+  - avoid
 - id: 33037
   name: heart chair
-  flags: []
+  flags:
+  - avoid
 - id: 33038
   name: heart chair
-  flags: []
+  flags:
+  - avoid
 - id: 33039
   name: heart chair
-  flags: []
+  flags:
+  - avoid
 - id: 33040
   name: bat
   flags:
@@ -6964,6 +7351,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 750
@@ -7020,22 +7408,28 @@
   name: artist table
   flags:
   - usable
+  - avoid
 - id: 34035
   name: artist table
   flags:
   - usable
+  - avoid
 - id: 34036
   name: artist chair
-  flags: []
+  flags:
+  - avoid
 - id: 34037
   name: artist chair
-  flags: []
+  flags:
+  - avoid
 - id: 34038
   name: artist chair
-  flags: []
+  flags:
+  - avoid
 - id: 34039
   name: artist chair
-  flags: []
+  flags:
+  - avoid
 - id: 34044
   name: sculptor shelf
   flags:
@@ -7060,22 +7454,28 @@
   name: sculptor table
   flags:
   - usable
+  - avoid
 - id: 34049
   name: sculptor table
   flags:
   - usable
+  - avoid
 - id: 34050
   name: sculptor chair
-  flags: []
+  flags:
+  - avoid
 - id: 34051
   name: sculptor chair
-  flags: []
+  flags:
+  - avoid
 - id: 34052
   name: sculptor chair
-  flags: []
+  flags:
+  - avoid
 - id: 34053
   name: sculptor chair
-  flags: []
+  flags:
+  - avoid
 - id: 34058
   name: demon statue
   flags:
@@ -7189,46 +7589,58 @@
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34285
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34286
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34287
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34288
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34289
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34290
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34291
   name: kitchen table
   flags:
   - usable
+  - avoid
 - id: 34292
   name: kitchen chair
-  flags: []
+  flags:
+  - avoid
 - id: 34293
   name: kitchen chair
-  flags: []
+  flags:
+  - avoid
 - id: 34294
   name: kitchen chair
-  flags: []
+  flags:
+  - avoid
 - id: 34295
   name: kitchen chair
-  flags: []
+  flags:
+  - avoid
 - id: 34300
   name: barrel
   flags:
@@ -7265,66 +7677,78 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34313
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34314
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34315
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34316
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34317
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34318
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34319
   name: homely bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 34320
   name: homely bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 34321
   name: homely bed
   flags:
   - unpass
+  - avoid
 - id: 34322
   name: homely bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 34323
   name: homely bed
   flags:
   - unpass
+  - avoid
 - id: 34324
   name: oven
   flags:
@@ -7406,30 +7830,38 @@
   name: workbench
   flags:
   - usable
+  - avoid
 - id: 35164
   name: workbench
   flags:
   - usable
+  - avoid
 - id: 35165
   name: workbench
   flags:
   - usable
+  - avoid
 - id: 35166
   name: workbench
   flags:
   - usable
+  - avoid
 - id: 35167
   name: wooden stool
-  flags: []
+  flags:
+  - avoid
 - id: 35168
   name: wooden stool
-  flags: []
+  flags:
+  - avoid
 - id: 35169
   name: wooden stool
-  flags: []
+  flags:
+  - avoid
 - id: 35170
   name: wooden stool
-  flags: []
+  flags:
+  - avoid
 - id: 35177
   name: grinding wheel
   flags:
@@ -7496,66 +7928,78 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35190
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35191
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35192
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35193
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35203
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35204
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35205
   name: wrought-iron bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35206
   name: wrought-iron bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35207
   name: wrought-iron bed
   flags:
   - unpass
+  - avoid
 - id: 35208
   name: wrought-iron bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35209
   name: wrought-iron bed
   flags:
   - unpass
+  - avoid
 - id: 35582
   name: blue shark trophy
   flags: []
@@ -7619,198 +8063,234 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35852
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35853
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35854
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35855
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35856
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35857
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35858
   name: magnificent bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35859
   name: magnificent bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35860
   name: magnificent bed
   flags:
   - unpass
+  - avoid
 - id: 35861
   name: magnificent bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35862
   name: magnificent bed
   flags:
   - unpass
+  - avoid
 - id: 35863
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35864
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35865
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35866
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35867
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35868
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35869
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35870
   name: ornate bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35871
   name: ornate bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35872
   name: ornate bed
   flags:
   - unpass
+  - avoid
 - id: 35873
   name: ornate bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35874
   name: ornate bed
   flags:
   - unpass
+  - avoid
 - id: 35875
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35876
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35877
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35878
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35879
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35880
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35881
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35882
   name: vengothic bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35883
   name: vengothic bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35884
   name: vengothic bed
   flags:
   - unpass
+  - avoid
 - id: 35885
   name: vengothic bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35886
   name: vengothic bed
   flags:
   - unpass
+  - avoid
 - id: 35887
   name: lilac carpet
   article: a
@@ -7820,6 +8300,7 @@
   name: lilac carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35889
@@ -7831,6 +8312,7 @@
   name: colourful pom-pom carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35891
@@ -7842,6 +8324,7 @@
   name: natural pom-pom carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35893
@@ -7853,6 +8336,7 @@
   name: owin rug
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35895
@@ -7864,6 +8348,7 @@
   name: midnight panther rug
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35897
@@ -7875,6 +8360,7 @@
   name: moon carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35899
@@ -7886,106 +8372,126 @@
   name: romantic carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35913
   name: grandiose table
   article: a
-  flags: []
+  flags:
+  - avoid
   attributes:
     capacity: 8
 - id: 35914
   name: grandiose table
   article: a
-  flags: []
+  flags:
+  - avoid
   attributes:
     capacity: 8
 - id: 35915
   name: grandiose chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35916
   name: grandiose chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35917
   name: grandiose chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35918
   name: grandiose chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35927
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35928
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35929
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35930
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35931
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35932
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35933
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35934
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35935
   name: grandiose bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 35936
   name: grandiose bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35937
   name: grandiose bed
   flags:
   - unpass
+  - avoid
 - id: 35938
   name: grandiose bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 35939
   name: grandiose bed
   flags:
   - unpass
+  - avoid
 - id: 35940
   name: grandiose painting
   flags: []
@@ -7998,6 +8504,7 @@
   name: grandiose carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 35943
@@ -8049,47 +8556,58 @@
 - id: 35954
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35955
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35956
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35957
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35958
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35959
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35960
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35961
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35962
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35963
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35964
   name: grandiose couch
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 35969
   name: portable aqueduct
   article: a
@@ -8144,6 +8662,7 @@
   name: eldritch carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 36618
@@ -8221,29 +8740,35 @@
 - id: 36634
   name: volcanic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 36635
   name: volcanic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 36636
   name: volcanic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 36637
   name: volcanic chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 36638
   name: volcanic table
   article: a
   flags:
   - usable
+  - avoid
 - id: 36639
   name: volcanic table
   article: a
   flags:
   - usable
+  - avoid
 - id: 36640
   name: volcanic shelf
   article: a
@@ -8441,6 +8966,7 @@
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8448,12 +8974,14 @@
   name: the sylvan sapling carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36941
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8461,12 +8989,14 @@
   name: the spatial almanach carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36943
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8474,12 +9004,14 @@
   name: the book of death carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36945
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8487,12 +9019,14 @@
   name: the supreme cube carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36947
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8500,12 +9034,14 @@
   name: the ring of ending carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36949
   name: cloth fragment
   article: a
   flags:
+  - border
   - usable
   - multiuse
   - unmove
@@ -8513,6 +9049,7 @@
   name: the cobra amulet carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 36951
@@ -8621,23 +9158,28 @@
 - id: 37004
   name: leaf chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37005
   name: leaf chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37006
   name: leaf chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37007
   name: leaf chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37008
   name: stump table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37015
   name: yellow shroom lamp
   article: a
@@ -8671,6 +9213,7 @@
   name: grass
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37021
@@ -8696,66 +9239,78 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37024
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37025
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37026
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37027
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37028
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37029
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37030
   name: log bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37031
   name: log bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37032
   name: log bed
   flags:
   - unpass
+  - avoid
 - id: 37033
   name: log bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37034
   name: log bed
   flags:
   - unpass
+  - avoid
 - id: 37161
   name: bronze cup
   article: a
@@ -8778,23 +9333,28 @@
 - id: 37174
   name: kraken chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37175
   name: kraken chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37176
   name: kraken chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37177
   name: kraken chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37178
   name: kraken table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37185
   name: kraken watcher lamp
   article: a
@@ -8849,66 +9409,78 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37194
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37195
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37196
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37197
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37198
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37199
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37200
   name: kraken bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37201
   name: kraken bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37202
   name: kraken bed
   flags:
   - unpass
+  - avoid
 - id: 37203
   name: kraken bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37204
   name: kraken bed
   flags:
   - unpass
+  - avoid
 - id: 37205
   name: sculpture of an octoputz
   article: a
@@ -8961,6 +9533,7 @@
   name: dragon lord carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37354
@@ -8974,12 +9547,14 @@
   name: dragon carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37356
   name: elemental carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 37357
@@ -9000,6 +9575,7 @@
   name: Morgaroth carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37360
@@ -9013,6 +9589,7 @@
   name: Ghazbaran carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37362
@@ -9026,6 +9603,7 @@
   name: Orshabaal carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 37364
@@ -9039,6 +9617,7 @@
   name: red cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37366
@@ -9052,42 +9631,49 @@
   name: orange cake carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 37368
   name: yellow cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37369
   name: green cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37370
   name: sky cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37371
   name: blue cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37372
   name: purple cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37373
   name: pink cake carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37374
@@ -9143,6 +9729,7 @@
   name: red Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37382
@@ -9156,42 +9743,49 @@
   name: orange Tibia carpet
   article: an
   flags:
+  - border
   - usable
   - unmove
 - id: 37384
   name: yellow Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37385
   name: green Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37386
   name: sky Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37387
   name: blue Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37388
   name: purple Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37389
   name: pink Tibia carpet
   article: a
   flags:
+  - border
   - usable
   - unmove
 - id: 37390
@@ -9778,51 +10372,64 @@
     weight: 1200
 - id: 37547
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37548
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37549
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37550
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37551
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37552
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37553
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37554
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37555
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37556
   name: presents
-  flags: []
+  flags:
+  - avoid
 - id: 37557
   name: dragon pinata
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37559
   name: dragon pinata
   article: a
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37562
   name: pile of presents kit
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9831,6 +10438,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9839,6 +10447,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9847,6 +10456,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9855,6 +10465,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9863,6 +10474,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9871,6 +10483,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9879,6 +10492,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9887,6 +10501,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9895,6 +10510,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9968,6 +10584,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9978,6 +10595,7 @@
 - id: 37764
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37765
@@ -9987,6 +10605,7 @@
 - id: 37766
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37767
@@ -9996,6 +10615,7 @@
 - id: 37768
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37769
@@ -10005,6 +10625,7 @@
 - id: 37770
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37771
@@ -10014,6 +10635,7 @@
 - id: 37772
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37773
@@ -10023,6 +10645,7 @@
 - id: 37774
   name: Zaoan bamboo tiles
   flags:
+  - border
   - usable
   - unmove
 - id: 37775
@@ -10040,19 +10663,23 @@
 - id: 37778
   name: Zaoan hassock
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37779
   name: Zaoan hassock
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37780
   name: Zaoan hassock
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37781
   name: Zaoan hassock
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37784
   name: Zaoan paravent
   article: a
@@ -10067,66 +10694,78 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37787
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37788
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37789
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37790
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37791
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37792
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37793
   name: sleeping mat
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37794
   name: sleeping mat
   flags:
   - unpass
+  - avoid
 - id: 37795
   name: sleeping mat
   flags:
   - usable
   - unpass
+  - avoid
 - id: 37796
   name: sleeping mat
   flags:
   - unpass
+  - avoid
 - id: 37797
   name: sleeping mat
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 37798
   name: Zaoan bonsai
   article: a
@@ -10150,7 +10789,8 @@
 - id: 37803
   name: Zaoan side table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 37804
   name: katana display
   article: a
@@ -10249,115 +10889,137 @@
 - id: 39419
   name: knightly chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39420
   name: knightly chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39421
   name: knightly chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39422
   name: knightly chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39423
   name: knightly table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39424
   name: knightly table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39425
   name: well-laid knightly table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39426
   name: well-laid knightly table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39427
   name: knightly chess table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39428
   name: knightly chess table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39429
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39430
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39431
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39432
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39433
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39434
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39435
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39436
   name: knightly bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39437
   name: knightly bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 39438
   name: knightly bed
   flags:
   - unpass
+  - avoid
 - id: 39439
   name: knightly bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 39440
   name: knightly bed
   flags:
   - unpass
+  - avoid
 - id: 39443
   name: knightly fire bowl
   article: a
@@ -10451,43 +11113,53 @@
 - id: 39517
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39518
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39519
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39520
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39521
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39522
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39523
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39524
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39525
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39526
   name: knightly bench
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39668
   name: knightly guard
   article: a
@@ -10680,11 +11352,13 @@
   flags:
   - usable
   - unpass
+  - avoid
 - id: 39695
   name: lucky dragon kit
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -10731,100 +11405,119 @@
 - id: 39768
   name: flower chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39769
   name: flower chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39770
   name: flower chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39771
   name: flower chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 39772
   name: flower table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39773
   name: flower table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39774
   name: flower table
   article: a
   flags:
   - usable
+  - avoid
 - id: 39781
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39782
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39783
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39784
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39785
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39786
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39787
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39788
   name: flower bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 39789
   name: flower bed
   flags:
   - unpass
+  - avoid
 - id: 39790
   name: flower bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 39791
   name: flower bed
   flags:
   - unpass
+  - avoid
 - id: 39792
   name: flower bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 39793
   name: turquoise flower lamp
   article: a
@@ -10856,6 +11549,7 @@
 - id: 39798
   name: flowery grass
   flags:
+  - border
   - usable
   - unmove
 - id: 39799
@@ -10923,90 +11617,108 @@
   - unpass
 - id: 42267
   name: seafarer chair
-  flags: []
+  flags:
+  - avoid
 - id: 42268
   name: seafarer chair
-  flags: []
+  flags:
+  - avoid
 - id: 42269
   name: seafarer chair
-  flags: []
+  flags:
+  - avoid
 - id: 42270
   name: seafarer chair
-  flags: []
+  flags:
+  - avoid
 - id: 42271
   name: seafarer table
   flags:
   - usable
+  - avoid
 - id: 42272
   name: seafarer table
   flags:
   - usable
+  - avoid
 - id: 42279
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42280
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42281
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42282
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42283
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42284
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42285
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42286
   name: seafarer bed
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42287
   name: seafarer bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 42288
   name: seafarer bed
   flags:
   - unpass
+  - avoid
 - id: 42289
   name: seafarer bed
   flags:
   - usable
   - unpass
+  - avoid
 - id: 42290
   name: seafarer bed
   flags:
   - unpass
+  - avoid
 - id: 42291
   name: seashell lamp
   flags:
@@ -11096,32 +11808,40 @@
   - unpass
 - id: 42320
   name: opulent chair
-  flags: []
+  flags:
+  - avoid
 - id: 42321
   name: opulent chair
-  flags: []
+  flags:
+  - avoid
 - id: 42322
   name: opulent chair
-  flags: []
+  flags:
+  - avoid
 - id: 42323
   name: opulent chair
-  flags: []
+  flags:
+  - avoid
 - id: 42324
   name: opulent table
   flags:
   - usable
+  - avoid
 - id: 42325
   name: opulent table
   flags:
   - usable
+  - avoid
 - id: 42326
   name: opulent table
   flags:
   - usable
+  - avoid
 - id: 42327
   name: opulent table
   flags:
   - usable
+  - avoid
 - id: 42336
   name: opulent wood floor planks
   flags:
@@ -11129,6 +11849,7 @@
 - id: 42337
   name: opulent wood floor
   flags:
+  - border
   - usable
   - unmove
 - id: 42338
@@ -11138,6 +11859,7 @@
 - id: 42339
   name: opulent floor intarsia
   flags:
+  - border
   - usable
   - unmove
 - id: 42340
@@ -11147,6 +11869,7 @@
 - id: 42341
   name: opulent carpet
   flags:
+  - border
   - usable
   - unmove
 - id: 42342
@@ -11185,73 +11908,86 @@
   - unpass
 - id: 42350
   name: opulent item stand
-  flags: []
+  flags:
+  - avoid
 - id: 42351
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42352
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42353
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42354
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42355
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42356
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42357
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42358
   name: opulent kline
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 42359
   name: opulent kline
   flags:
   - usable
   - unpass
+  - avoid
 - id: 42360
   name: opulent kline
   flags:
   - unpass
+  - avoid
 - id: 42361
   name: opulent kline
   flags:
   - usable
   - unpass
+  - avoid
 - id: 42362
   name: opulent kline
   flags:
   - unpass
+  - avoid
 - id: 42363
   name: djinn lamp
   flags:

@@ -8,6 +8,8 @@ experience: 0
 outfit:
   id: 13
   colors: [0, 0, 0, 0]
+flags:
+  - passive
 melee:
   damage:
     min: 0

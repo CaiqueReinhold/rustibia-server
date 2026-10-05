@@ -1,5 +1,5 @@
 pub mod view {
-    pub const MAX_VISIBLE_ITEMS: usize = 8;
+    pub const MAX_VISIBLE_ITEMS: usize = 10;
     pub const VIEW_LEFT: u16 = 8;
     pub const VIEW_RIGHT: u16 = 9;
     pub const VIEW_TOP: u16 = 6;

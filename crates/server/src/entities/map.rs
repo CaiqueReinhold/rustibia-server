@@ -16,7 +16,7 @@ use crate::game::Tick;
 
 pub type RemovedItem = (Item, Option<usize>, Option<(ItemGuid, usize)>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct MapTile {
     items: SmallVec<[Item; TILE_INLINE_ITEMS]>,
     agents: SmallVec<[AgentKey; 1]>,
@@ -116,7 +116,7 @@ impl<'a> ChunkSlice<'a> {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct GameMap {
     chunks: HashMap<ChunkCoord, Arc<Chunk>>,
     agents: SlotMap<AgentKey, Agent>,
@@ -128,18 +128,48 @@ pub struct GameMap {
 
 impl MapTile {
     pub fn new() -> Self {
-        MapTile {
-            items: SmallVec::new(),
-            agents: SmallVec::new(),
-        }
+        Self::default()
     }
 
     pub fn push_item(&mut self, item: Item) {
         self.items.push(item);
     }
 
+    pub fn visible_indices(&self) -> SmallVec<[usize; MAX_VISIBLE_ITEMS]> {
+        let fixed = |i: &usize| {
+            let item = &self.items[*i];
+            [
+                ItemFlag::Ground,
+                ItemFlag::Border,
+                ItemFlag::Bottom,
+                ItemFlag::Top,
+            ]
+            .into_iter()
+            .any(|flag| item.config.has_flag(flag))
+        };
+        let mut visible: SmallVec<[usize; MAX_VISIBLE_ITEMS]> = (0..self.items.len())
+            .filter(fixed)
+            .take(MAX_VISIBLE_ITEMS)
+            .collect();
+        let room = MAX_VISIBLE_ITEMS - visible.len();
+        visible.extend(
+            (0..self.items.len())
+                .rev()
+                .filter(|i| !fixed(i))
+                .take(room)
+                .collect::<SmallVec<[usize; MAX_VISIBLE_ITEMS]>>(),
+        );
+        visible.sort_unstable();
+        visible
+    }
+
     pub fn visible_items(&self) -> impl Iterator<Item = &Item> {
-        self.items.iter().take(MAX_VISIBLE_ITEMS)
+        self.visible_indices().into_iter().map(|i| &self.items[i])
+    }
+
+    /// `index` is a position in the stack the client was sent, not in the tile.
+    pub fn item_at_wire(&self, index: usize) -> Option<&Item> {
+        self.visible_indices().get(index).map(|&i| &self.items[i])
     }
 
     pub fn items(&self) -> impl Iterator<Item = &Item> {
@@ -149,14 +179,7 @@ impl MapTile {
 
 impl GameMap {
     pub fn new() -> Self {
-        GameMap {
-            chunks: HashMap::new(),
-            agents: SlotMap::with_key(),
-            agent_positions: HashMap::new(),
-            teleports: HashMap::new(),
-            chunk_copies: 0,
-            tick: Tick(0),
-        }
+        Self::default()
     }
 
     pub fn insert_tile(&mut self, pos: Position, tile: MapTile) {
@@ -421,14 +444,6 @@ impl GameMap {
 
                 if self.get_floor_change(pos).is_some() || self.teleport_destination(pos).is_some()
                 {
-                    return false;
-                }
-
-                let avoid = tile
-                    .items
-                    .iter()
-                    .any(|i| i.config.has_flag(ItemFlag::Avoid));
-                if avoid {
                     return false;
                 }
             } else {
@@ -1444,6 +1459,70 @@ mod tests {
             )),
             1,
         )
+    }
+
+    fn visible_ids(tile: &MapTile) -> Vec<u16> {
+        tile.visible_items().map(|item| item.id().0).collect()
+    }
+
+    fn a_pile(under: &[(u16, ItemFlag)], loose: std::ops::Range<u16>) -> MapTile {
+        let mut tile = MapTile::new();
+        for &(id, flag) in under {
+            tile.push_item(an_item(id, &[flag]));
+        }
+        for id in loose {
+            tile.push_item(an_item(id, &[ItemFlag::Take]));
+        }
+        tile
+    }
+
+    #[test]
+    fn a_pile_sends_its_fixed_items_and_its_newest_loose_ones() {
+        let tile = a_pile(
+            &[
+                (1, ItemFlag::Ground),
+                (2, ItemFlag::Border),
+                (3, ItemFlag::Bottom),
+            ],
+            100..112,
+        );
+
+        let expected: Vec<u16> = [1, 2, 3].into_iter().chain(105..112).collect();
+        assert_eq!(visible_ids(&tile), expected);
+    }
+
+    #[test]
+    fn a_tile_that_fits_sends_everything_in_order() {
+        let tile = a_pile(&[(1, ItemFlag::Ground)], 100..109);
+
+        let expected: Vec<u16> = [1].into_iter().chain(100..109).collect();
+        assert_eq!(visible_ids(&tile), expected);
+    }
+
+    #[test]
+    fn a_top_item_above_the_pile_is_still_sent() {
+        let mut tile = a_pile(&[(1, ItemFlag::Ground)], 100..112);
+        tile.push_item(an_item(4, &[ItemFlag::Top]));
+
+        let expected: Vec<u16> = [1].into_iter().chain(104..112).chain([4]).collect();
+        assert_eq!(visible_ids(&tile), expected);
+    }
+
+    #[test]
+    fn fixed_items_alone_can_fill_the_window() {
+        let under: Vec<(u16, ItemFlag)> = (1..=11).map(|id| (id, ItemFlag::Bottom)).collect();
+        let tile = a_pile(&under, 100..101);
+
+        assert_eq!(visible_ids(&tile), (1..=10).collect::<Vec<u16>>());
+    }
+
+    #[test]
+    fn a_wire_index_names_the_item_at_that_place_in_the_sent_stack() {
+        let tile = a_pile(&[(1, ItemFlag::Ground)], 100..112);
+
+        assert_eq!(tile.item_at_wire(0).map(|item| item.id().0), Some(1));
+        assert_eq!(tile.item_at_wire(9).map(|item| item.id().0), Some(111));
+        assert!(tile.item_at_wire(10).is_none());
     }
 
     fn a_teleport_tile(teleport: bool) -> MapTile {

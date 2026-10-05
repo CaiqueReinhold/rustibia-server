@@ -398,6 +398,14 @@ impl InventoryMut<'_> {
         Some(taken)
     }
 
+    pub fn set_wearer_level(&mut self, level: u16) {
+        let speed = self.inventory.stats().speed;
+        self.inventory.set_wearer_level(level);
+        if self.inventory.stats().speed != speed {
+            self.delta.mark_agent(self.key, AgentFlag::Speed);
+        }
+    }
+
     pub(in crate::entities) fn stack_onto(
         &mut self,
         slot: InventorySlot,
@@ -727,6 +735,48 @@ mod tests {
             config(3079, HashSet::new(), vec![ItemAttribute::Speed(speed)]),
             1,
         )
+    }
+
+    fn boots_from_level(speed: i16, level: u16) -> Item {
+        Item::new(
+            config(
+                3079,
+                HashSet::new(),
+                vec![ItemAttribute::Speed(speed), ItemAttribute::RequiredLevel(level)],
+            ),
+            1,
+        )
+    }
+
+    #[test]
+    fn a_level_that_switches_boots_on_marks_speed() {
+        let (mut map, key) = a_player_alone();
+        map.inner_mut()
+            .get_player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Feet, None, boots_from_level(20, 2))
+            .unwrap();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .set_wearer_level(2);
+
+        assert!(map.delta().agent(key).speed());
+        assert_eq!(map.get_player(key).unwrap().inventory().stats().speed, 20);
+    }
+
+    #[test]
+    fn a_level_that_switches_nothing_marks_nothing() {
+        let (mut map, key) = a_player_alone();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .set_wearer_level(2);
+
+        assert!(map.delta().is_empty());
     }
 
     #[test]

@@ -14,6 +14,10 @@
     weight: 1900
     slot: 7
     armor: 8
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 821
   name: magma legs
   flags:
@@ -22,6 +26,10 @@
     weight: 1900
     slot: 7
     armor: 8
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 822
   name: lightning legs
   flags:
@@ -30,6 +38,10 @@
     weight: 1900
     slot: 7
     armor: 8
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 823
   name: glacier kilt
   article: a
@@ -39,6 +51,10 @@
     weight: 1900
     slot: 7
     armor: 8
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 3362
   name: studded legs
   flags:
@@ -63,6 +79,9 @@
     weight: 5600
     slot: 7
     armor: 9
+    vocations:
+    - knight
+    - paladin
 - id: 3371
   name: knight legs
   flags:
@@ -71,6 +90,9 @@
     weight: 7000
     slot: 7
     armor: 8
+    vocations:
+    - knight
+    - paladin
 - id: 3372
   name: brass legs
   flags:
@@ -87,6 +109,9 @@
     weight: 6500
     slot: 7
     armor: 8
+    vocations:
+    - knight
+    - paladin
 - id: 3389
   name: demon legs
   flags:
@@ -166,6 +191,8 @@
     weight: 3500
     slot: 7
     armor: 4
+    vocations:
+    - paladin
 - id: 8863
   name: yalahari leg piece
   article: a
@@ -175,6 +202,9 @@
     weight: 6500
     slot: 7
     armor: 8
+    level: 80
+    vocations:
+    - paladin
 - id: 9014
   name: leaf legs
   article: a
@@ -209,6 +239,10 @@
     weight: 4800
     slot: 7
     armor: 8
+    level: 130
+    vocations:
+    - sorcerer
+    - druid
 - id: 13999
   name: ornate legs
   article: an
@@ -218,6 +252,9 @@
     weight: 7700
     slot: 7
     armor: 8
+    level: 185
+    vocations:
+    - knight
 - id: 14087
   name: grasshopper legs
   article: a
@@ -227,6 +264,7 @@
     weight: 3200
     slot: 7
     armor: 7
+    level: 75
 - id: 16106
   name: gill legs
   article: a
@@ -236,6 +274,10 @@
     weight: 2800
     slot: 7
     armor: 7
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 16111
   name: prismatic legs
   flags:
@@ -244,6 +286,9 @@
     weight: 7100
     slot: 7
     armor: 8
+    level: 150
+    vocations:
+    - paladin
 - id: 19366
   name: icy culottes
   flags:
@@ -252,6 +297,9 @@
     weight: 1500
     slot: 7
     armor: 8
+    vocations:
+    - sorcerer
+    - druid
 - id: 21168
   name: alloy legs
   flags:
@@ -260,6 +308,7 @@
     weight: 4500
     slot: 7
     armor: 6
+    level: 60
 - id: 22087
   name: wereboar loincloth
   article: a
@@ -324,6 +373,10 @@
     weight: 2500
     slot: 7
     armor: 9
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 28720
   name: falcon greaves
   flags:
@@ -332,6 +385,10 @@
     weight: 3600
     slot: 7
     armor: 10
+    level: 300
+    vocations:
+    - knight
+    - paladin
 - id: 32097
   name: lederhosen
   article: a
@@ -349,6 +406,10 @@
     weight: 5500
     slot: 7
     armor: 9
+    level: 225
+    vocations:
+    - knight
+    - paladin
 - id: 32618
   name: soulful legs
   article: a
@@ -358,6 +419,10 @@
     weight: 3800
     slot: 7
     armor: 8
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 34092
   name: soulshanks
   article: a
@@ -367,6 +432,9 @@
     weight: 3800
     slot: 7
     armor: 10
+    level: 400
+    vocations:
+    - sorcerer
 - id: 34093
   name: soulstrider
   article: a
@@ -376,6 +444,9 @@
     weight: 3800
     slot: 7
     armor: 10
+    level: 400
+    vocations:
+    - druid
 - id: 35516
   name: exotic legs
   flags:
@@ -384,6 +455,9 @@
     weight: 7200
     slot: 7
     armor: 8
+    level: 130
+    vocations:
+    - knight
 - id: 35517
   name: bast legs
   flags:
@@ -392,6 +466,9 @@
     weight: 6400
     slot: 7
     armor: 8
+    level: 150
+    vocations:
+    - paladin
 - id: 36667
   name: eldritch breeches
   article: a
@@ -401,6 +478,9 @@
     weight: 6900
     slot: 7
     armor: 9
+    level: 250
+    vocations:
+    - paladin
 - id: 37607
   name: green demon legs
   flags:
@@ -418,6 +498,9 @@
     weight: 3000
     slot: 7
     armor: 8
+    level: 300
+    vocations:
+    - sorcerer
 - id: 39167
   name: midnight sarong
   article: a
@@ -427,6 +510,9 @@
     weight: 3100
     slot: 7
     armor: 8
+    level: 250
+    vocations:
+    - druid
 - id: 40531
   name: broken Iks faulds
   article: the
@@ -445,6 +531,9 @@
     weight: 3400
     slot: 7
     armor: 9
+    level: 270
+    vocations:
+    - knight
 - id: 40590
   name: mutated skin legs
   flags:
@@ -453,6 +542,9 @@
     weight: 5200
     slot: 7
     armor: 9
+    level: 270
+    vocations:
+    - paladin
 - id: 40595
   name: mutant bone kilt
   flags:
@@ -461,6 +553,9 @@
     weight: 3500
     slot: 7
     armor: 8
+    level: 300
+    vocations:
+    - druid
 - id: 43876
   name: sanguine legs
   article: a
@@ -470,6 +565,9 @@
     weight: 3800
     slot: 7
     armor: 12
+    level: 500
+    vocations:
+    - knight
 - id: 43881
   name: sanguine greaves
   article: a
@@ -479,6 +577,9 @@
     weight: 3200
     slot: 7
     armor: 11
+    level: 500
+    vocations:
+    - paladin
 - id: 44642
   name: stoic iks culet
   flags:
@@ -487,6 +588,9 @@
     weight: 5100
     slot: 7
     armor: 9
+    level: 250
+    vocations:
+    - knight
 - id: 44643
   name: stoic iks faulds
   flags:
@@ -495,3 +599,6 @@
     weight: 3400
     slot: 7
     armor: 8
+    level: 250
+    vocations:
+    - sorcerer

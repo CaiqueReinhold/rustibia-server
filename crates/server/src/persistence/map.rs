@@ -358,7 +358,7 @@ fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> 
     let config = items
         .get(&item_id)
         .cloned()
-        .expect(&format!("Map contains invalid item id: {item_id}"));
+        .unwrap_or_else(|| panic!("Map contains invalid item id: {item_id}"));
     let content = if config.has_flag(ItemFlag::Container) {
         Some(Box::new(content))
     } else {

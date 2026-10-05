@@ -222,6 +222,7 @@
   name: parcel
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 1800
@@ -681,6 +682,7 @@
   name: barrel of beer
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 8500
@@ -796,6 +798,7 @@
   flags:
   - usable
   - multiuse
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -805,6 +808,7 @@
   flags:
   - usable
   - multiuse
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -814,6 +818,7 @@
   flags:
   - usable
   - multiuse
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -823,6 +828,7 @@
   flags:
   - usable
   - multiuse
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -912,6 +918,7 @@
   article: an
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -3661,6 +3668,7 @@
   name: bowl of evergreen flowers
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 1100
@@ -4726,6 +4734,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -5797,6 +5806,7 @@
   name: insectoid cocoon
   article: an
   flags:
+  - avoid
   - take
   attributes:
     weight: 500
@@ -6767,6 +6777,7 @@
   flags:
   - usable
   - multiuse
+  - avoid
   - take
   attributes:
     weight: 4000
@@ -9682,6 +9693,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9690,6 +9702,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2000
@@ -9698,6 +9711,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 2500
@@ -9706,6 +9720,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3500
@@ -9714,6 +9729,7 @@
   article: a
   flags:
   - usable
+  - avoid
   - take
   attributes:
     weight: 3000
@@ -9721,6 +9737,7 @@
   name: furniture kit
   article: a
   flags:
+  - avoid
   - take
   attributes:
     weight: 3500

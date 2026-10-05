@@ -233,7 +233,10 @@ pub fn retrieve_item<'a>(
     let placement = resolve_client_coord(cli_item.position.clone(), map, containers, agent_key)?;
     // A map coordinate names the tile; which of its items is meant comes from the stack index.
     let item = match &placement {
-        ItemPlacement::Map(pos) => map.get_item_at(pos, cli_item.stack_index as usize)?,
+        ItemPlacement::Map(pos) => map
+            .get_tile(pos)
+            .ok()?
+            .item_at_wire(cli_item.stack_index as usize)?,
         other => item_at_placement(map, other)?,
     };
     (item.id() == cli_item.item_id).then_some((item, placement))
@@ -1056,5 +1059,41 @@ mod tests {
             placement,
             ItemPlacement::Inventory(InventorySlot::Backpack, key)
         );
+    }
+
+    #[test]
+    fn a_stack_index_on_a_pile_names_the_item_the_client_was_shown() {
+        use crate::entities::items::{ItemConfig, ItemFlag};
+
+        let (mut map, key) = a_climber_and(&[]);
+        let at = Position::new(2, 1, 7);
+        let mut tile = a_floor();
+        for amount in 1..=12u8 {
+            tile.push_item(Item::new(
+                std::sync::Arc::new(ItemConfig::new(
+                    ItemId(3031),
+                    "gold coin".to_string(),
+                    None,
+                    None,
+                    [ItemFlag::Cumulative, ItemFlag::Take],
+                    Vec::new(),
+                )),
+                amount,
+            ));
+        }
+        map.insert_tile(at.clone(), tile);
+        let containers: LocalIdMap<ItemGuid, ContainerId> = LocalIdMap::new();
+        let reference = |stack_index: u8| ClientItemRef {
+            position: at.clone(),
+            item_id: ItemId(3031),
+            stack_index,
+        };
+
+        let newest = reference(9);
+        let (item, placement) = retrieve_item(&map, &newest, &containers, key).unwrap();
+        assert_eq!(item.amount, 12);
+        assert_eq!(placement, ItemPlacement::Map(at.clone()));
+        let past_the_window = reference(10);
+        assert!(retrieve_item(&map, &past_the_window, &containers, key).is_none());
     }
 }

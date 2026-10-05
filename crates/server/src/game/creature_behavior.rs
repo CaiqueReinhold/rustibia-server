@@ -5,6 +5,7 @@ use tracing::error;
 use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
 use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::creature::{CreatureAbility, CreatureAbilityId, CreatureKind};
+use crate::entities::items::ItemFlag;
 use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, Position, Rect};
 use crate::game::Tick;
@@ -98,7 +99,7 @@ pub fn active_creatures(map: &GameMap) -> HashSet<AgentKey> {
     for position in players {
         let near = Rect::radius(&position, AGENT_DESPAWN_RADIUS);
         for floor in
-            iter_visible_floors(position.z).chain([8 as u8].into_iter().filter(|_| position.z == 7))
+            iter_visible_floors(position.z).chain([8_u8].into_iter().filter(|_| position.z == 7))
         {
             for (creature, _) in map.iter_agents_in_rect(&near, floor) {
                 if map.get_agent(creature).is_some_and(Agent::is_creature) {
@@ -236,15 +237,17 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
         }
     }
 
-    let ability = use_ability(
-        ctx.creature,
-        agent,
-        ctx.state,
-        ctx.world_tick,
-        &mut ctx.roll,
-    );
-    if ability.is_some() {
-        return ability;
+    if agent.is_hostile() {
+        let ability = use_ability(
+            ctx.creature,
+            agent,
+            ctx.state,
+            ctx.world_tick,
+            &mut ctx.roll,
+        );
+        if ability.is_some() {
+            return ability;
+        }
     }
 
     // TODO: roll change target
@@ -269,7 +272,13 @@ fn approach(
 ) -> pathfinding::Step {
     let bounds = Rect::radius(from, SIGHT_RANGE);
     if target_distance <= 1 {
-        return pathfinding::next_step(map, creature, &Goal::adjacent(target.clone()), &bounds);
+        return pathfinding::next_step(
+            map,
+            creature,
+            &Goal::adjacent(target.clone()),
+            &bounds,
+            |pos| !avoids(map, pos),
+        );
     }
 
     if from.distance(target) < target_distance && can_throw(map, from, target, true) {
@@ -285,6 +294,7 @@ fn approach(
             range: target_distance,
         },
         &bounds,
+        |pos| !avoids(map, pos),
     )
 }
 
@@ -330,6 +340,7 @@ fn returning(ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
             GAME_CONFIG.movement.wander_distance,
         ),
         &Rect::radius(position, SIGHT_RANGE),
+        |pos| !avoids(ctx.map, pos),
     ) {
         pathfinding::Step::Arrived => {}
         pathfinding::Step::Move(direction) => {
@@ -355,7 +366,7 @@ fn wander(ctx: &mut CreatureBehaviourContext) -> Option<Direction> {
             .into_iter()
             .filter(|dir| {
                 let pos = creature_pos.clone() + *dir;
-                ctx.map.can_move(&pos, ctx.creature)
+                will_enter(ctx.map, ctx.creature, &pos)
             })
             .collect::<Vec<Direction>>();
         let direction = ctx.roll.category_roll(&available_directions);
@@ -401,7 +412,7 @@ fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
         return None;
     }
 
-    let reachable = pathfinding::reachable_from(map, creature, &viewport);
+    let reachable = pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
     candidates
         .iter()
         .filter_map(|(key, pos)| {
@@ -473,7 +484,7 @@ fn escape_step(
             .filter_map(|(dx, dy)| Direction::from_step(dx, dy))
             .filter(|direction| {
                 let pos = from.clone() + *direction;
-                map.can_move(&pos, creature)
+                will_enter(map, creature, &pos)
             })
             .collect();
         if let Some(direction) = roll.category_roll(&options) {
@@ -482,6 +493,15 @@ fn escape_step(
     }
 
     None
+}
+
+fn avoids(map: &GameMap, pos: &Position) -> bool {
+    map.iter_items(pos)
+        .is_ok_and(|mut items| items.any(|item| item.config.has_flag(ItemFlag::Avoid)))
+}
+
+fn will_enter(map: &GameMap, creature: AgentKey, pos: &Position) -> bool {
+    map.can_move(pos, creature) && !avoids(map, pos)
 }
 
 fn escape_ladder(offset_x: i32, offset_y: i32) -> [Rung; 5] {
@@ -551,7 +571,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::combat::CombatElement;
     use crate::entities::creature::{AbilityEffect, CreatureAbility, CreatureAttack};
-    use crate::entities::creature::{CreatureAttackDamage, CreatureKind};
+    use crate::entities::creature::{CreatureAttackDamage, CreatureFlag, CreatureKind};
     use crate::entities::items::ItemId;
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag};
     use crate::entities::map::MapTile;
@@ -638,6 +658,35 @@ mod tests {
             an_item(3, HashSet::from([ItemFlag::Unpass])),
         )
         .unwrap();
+    }
+
+    fn wander_from(map: &GameMap, creature: AgentKey, seed: u64) -> Option<Direction> {
+        let mut state = CreatureState::default();
+        wander(&mut CreatureBehaviourContext {
+            creature,
+            map,
+            roll: Rolls::new(seed),
+            world_tick: Tick(100),
+            state: &mut state,
+        })
+    }
+
+    #[test]
+    fn a_creature_wanders_onto_open_ground() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+
+        assert!((0..64).any(|seed| wander_from(&map, rat, seed).is_some()));
+    }
+
+    #[test]
+    fn a_creature_never_wanders_onto_a_tile_it_avoids() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+        block_walking(&mut map, 14);
+        block_walking(&mut map, 16);
+
+        assert!((0..64).all(|seed| wander_from(&map, rat, seed).is_none()));
     }
 
     #[test]
@@ -918,6 +967,16 @@ mod tests {
         map.insert_tile(at(x, y), MapTile::new());
     }
 
+    fn avoided(map: &mut GameMap, x: u16, y: u16) {
+        map.place_item(
+            &at(x, y),
+            None,
+            None,
+            an_item(2, HashSet::from([ItemFlag::Avoid])),
+        )
+        .unwrap();
+    }
+
     fn escape_from(map: &GameMap, creature: AgentKey, target: &Position) -> Option<Direction> {
         let from = map.agent_position(creature).unwrap().clone();
         escape_step(map, creature, &from, target, true, &mut Rolls::new(7))
@@ -975,6 +1034,27 @@ mod tests {
     fn a_creature_with_nowhere_at_all_to_go_stays_put() {
         let mut map = a_field(15..=15, 10..=10);
         let rat = put_frightened_creature(&mut map, 15, 10);
+
+        assert_eq!(escape_from(&map, rat, &at(16, 10)), None);
+    }
+
+    #[test]
+    fn a_creature_does_not_flee_onto_a_tile_it_avoids() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_frightened_creature(&mut map, 15, 10);
+        avoided(&mut map, 14, 10);
+
+        assert!(
+            matches!(escape_from(&map, rat, &at(16, 10)), Some(North | South)),
+            "expected a sidestep past the avoided tile"
+        );
+    }
+
+    #[test]
+    fn a_creature_hemmed_in_by_tiles_it_avoids_stays_put() {
+        let mut map = a_field(14..=15, 10..=10);
+        let rat = put_frightened_creature(&mut map, 15, 10);
+        avoided(&mut map, 14, 10);
 
         assert_eq!(escape_from(&map, rat, &at(16, 10)), None);
     }
@@ -1158,25 +1238,29 @@ mod tests {
     /// A caster adjacent to its target, so `in_combat` walks nowhere and falls straight
     /// through to the ability roll.
     fn a_caster_in_melee(map: &mut GameMap, ability: CreatureAbility) -> AgentKey {
-        let demon = map
+        a_kind_in_melee(
+            map,
+            CreatureKind {
+                abilities: vec![ability],
+                ..a_creature_kind("Demon")
+            },
+        )
+    }
+
+    fn a_kind_in_melee(map: &mut GameMap, kind: CreatureKind) -> AgentKey {
+        let creature = map
             .insert_agent(
-                Agent::from_creature_kind(
-                    Arc::new(CreatureKind {
-                        abilities: vec![ability],
-                        ..a_creature_kind("Demon")
-                    }),
-                    at(15, 10),
-                ),
+                Agent::from_creature_kind(Arc::new(kind), at(15, 10)),
                 &at(15, 10),
             )
             .unwrap();
         let player = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(16, 10))
             .unwrap();
-        map.get_agent_mut(demon)
+        map.get_agent_mut(creature)
             .unwrap()
             .set_target(Some(player), 1);
-        demon
+        creature
     }
 
     #[test]
@@ -1252,6 +1336,65 @@ mod tests {
             "the attack group is still on cooldown, got {action:?}"
         );
         assert_eq!(state.next_ability_tick(CreatureAbilityId(0)), Tick(0));
+    }
+
+    #[test]
+    fn a_passive_creature_casts_nothing() {
+        let mut map = a_field(5..=25, 5..=15);
+        let deer = a_kind_in_melee(
+            &mut map,
+            CreatureKind {
+                abilities: vec![an_attack_ability(MAX_DROP_CHANCE)],
+                flags: vec![CreatureFlag::Passive],
+                ..a_creature_kind("Deer")
+            },
+        );
+        let mut state = CreatureState::default();
+
+        let action = decide_action(CreatureBehaviourContext {
+            creature: deer,
+            map: &map,
+            roll: Rolls::new(7),
+            world_tick: Tick(100),
+            state: &mut state,
+        });
+
+        assert!(
+            !matches!(action, Some(CreatureAction::CastAbility { .. })),
+            "a passive creature must never cast, got {action:?}"
+        );
+    }
+
+    #[test]
+    fn a_passive_creature_still_takes_a_target() {
+        let mut map = a_corridor(5..=25);
+        let deer = map
+            .insert_agent(
+                Agent::from_creature_kind(
+                    Arc::new(CreatureKind {
+                        flags: vec![CreatureFlag::Passive],
+                        ..a_creature_kind("Deer")
+                    }),
+                    Position::new(15, 10, 7),
+                ),
+                &Position::new(15, 10, 7),
+            )
+            .unwrap();
+        let player = put_player(&mut map, 18, 1);
+        let mut state = CreatureState::default();
+
+        let action = decide_action(CreatureBehaviourContext {
+            creature: deer,
+            map: &map,
+            roll: Rolls::new(7),
+            world_tick: Tick(100),
+            state: &mut state,
+        });
+
+        assert!(
+            matches!(action, Some(CreatureAction::SetTarget { target: Some(t), .. }) if t == player),
+            "expected the deer to target the player, got {action:?}"
+        );
     }
 
     // keeping distance

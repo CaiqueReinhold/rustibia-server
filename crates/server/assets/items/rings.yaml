@@ -88,6 +88,9 @@
   attributes:
     weight: 80
     slot: 9
+    vocations:
+    - knight
+    - paladin
 - id: 3052
   name: life ring
   article: a
@@ -145,6 +148,9 @@
     decay:
       duration: 12000
       decay_to: 0
+    vocations:
+    - knight
+    - paladin
 - id: 3089
   name: life ring
   article: a
@@ -300,6 +306,7 @@
   attributes:
     weight: 500
     slot: 9
+    level: 100
 - id: 9393
   name: claw of 'The Noxious Spawn'
   article: a
@@ -319,6 +326,7 @@
     decay:
       duration: 200
       decay_to: 9392
+    level: 100
 - id: 9395
   name: claw of 'The Noxious Spawn'
   article: a
@@ -400,6 +408,7 @@
   attributes:
     weight: 105
     slot: 9
+    level: 120
 - id: 16264
   name: prismatic ring
   article: a
@@ -411,6 +420,7 @@
     decay:
       duration: 72000
       decay_to: 0
+    level: 120
 - id: 18935
   name: vampire's signet ring
   article: a
@@ -436,6 +446,7 @@
   attributes:
     weight: 0
     slot: 9
+    level: 200
 - id: 20209
   name: unstable ring of ending
   article: an
@@ -470,6 +481,9 @@
   attributes:
     weight: 90
     slot: 9
+    level: 100
+    vocations:
+    - paladin
 - id: 23530
   name: ring of blue plasma
   article: a
@@ -481,6 +495,9 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 100
+    vocations:
+    - paladin
 - id: 23531
   name: ring of green plasma
   flags:
@@ -488,6 +505,10 @@
   attributes:
     weight: 90
     slot: 9
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 23532
   name: ring of green plasma
   article: a
@@ -499,6 +520,10 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 23533
   name: ring of red plasma
   flags:
@@ -506,6 +531,9 @@
   attributes:
     weight: 90
     slot: 9
+    level: 100
+    vocations:
+    - knight
 - id: 23534
   name: ring of red plasma
   article: a
@@ -517,6 +545,9 @@
     decay:
       duration: 36000
       decay_to: 0
+    level: 100
+    vocations:
+    - knight
 - id: 25698
   name: butterfly ring
   article: a
@@ -526,6 +557,7 @@
     weight: 120
     slot: 9
     armor: 2
+    level: 50
 - id: 30279
   name: frozen claw
   article: a
@@ -566,6 +598,7 @@
   attributes:
     weight: 90
     slot: 9
+    level: 220
 - id: 31616
   name: enchanted blister ring
   article: a
@@ -577,6 +610,7 @@
     decay:
       duration: 72000
       decay_to: 31621
+    level: 220
 - id: 31621
   name: blister ring
   article: a
@@ -585,6 +619,7 @@
   attributes:
     weight: 90
     slot: 9
+    level: 220
 - id: 32621
   name: enchanted ring of souls
   article: a
@@ -593,6 +628,7 @@
   attributes:
     weight: 80
     slot: 9
+    level: 200
 - id: 32635
   name: enchanted ring of souls
   article: a
@@ -604,6 +640,7 @@
     decay:
       duration: 144000
       decay_to: 32636
+    level: 200
 - id: 32636
   name: ring of souls
   article: a
@@ -612,6 +649,7 @@
   attributes:
     weight: 80
     slot: 9
+    level: 200
 - id: 34080
   name: lion ring
   article: a
@@ -628,6 +666,9 @@
   attributes:
     weight: 95
     slot: 9
+    level: 400
+    vocations:
+    - knight
 - id: 39178
   name: charged spiritthorn ring
   article: a
@@ -640,6 +681,9 @@
       duration: 216000
       decay_to: 39179
     armor: 2
+    level: 400
+    vocations:
+    - knight
 - id: 39179
   name: spiritthorn ring
   article: a
@@ -648,6 +692,9 @@
   attributes:
     weight: 95
     slot: 9
+    level: 400
+    vocations:
+    - knight
 - id: 39180
   name: charged alicorn ring
   article: a
@@ -656,6 +703,9 @@
   attributes:
     weight: 85
     slot: 9
+    level: 400
+    vocations:
+    - paladin
 - id: 39181
   name: charged alicorn ring
   article: a
@@ -667,6 +717,9 @@
     decay:
       duration: 216000
       decay_to: 39182
+    level: 400
+    vocations:
+    - paladin
 - id: 39182
   name: alicorn ring
   article: an
@@ -675,6 +728,9 @@
   attributes:
     weight: 85
     slot: 9
+    level: 400
+    vocations:
+    - paladin
 - id: 39183
   name: charged arcanomancer sigil
   article: a
@@ -683,6 +739,9 @@
   attributes:
     weight: 90
     slot: 9
+    level: 400
+    vocations:
+    - sorcerer
 - id: 39184
   name: charged arcanomancer sigil
   article: a
@@ -694,6 +753,9 @@
     decay:
       duration: 216000
       decay_to: 39185
+    level: 400
+    vocations:
+    - sorcerer
 - id: 39185
   name: arcanomancer sigil
   article: an
@@ -702,6 +764,9 @@
   attributes:
     weight: 90
     slot: 9
+    level: 400
+    vocations:
+    - sorcerer
 - id: 39186
   name: charged arboreal ring
   article: a
@@ -710,6 +775,9 @@
   attributes:
     weight: 70
     slot: 9
+    level: 400
+    vocations:
+    - druid
 - id: 39187
   name: charged arboreal ring
   article: a
@@ -720,6 +788,9 @@
     decay:
       duration: 216000
       decay_to: 39188
+    level: 400
+    vocations:
+    - druid
 - id: 39188
   name: arboreal ring
   article: an
@@ -728,3 +799,6 @@
   attributes:
     weight: 70
     slot: 9
+    level: 400
+    vocations:
+    - druid

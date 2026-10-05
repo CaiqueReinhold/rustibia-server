@@ -238,6 +238,7 @@ fn parse_number(
     Ok(narrowed)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn parse_power(
     id: SpellId,
     name: &str,

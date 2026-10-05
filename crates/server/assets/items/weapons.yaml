@@ -32,6 +32,7 @@
     element_damage:
       element: fire
       damage: 8
+    level: 50
 - id: 662
   name: fiery mystic blade
   article: a
@@ -49,6 +50,7 @@
     element_damage:
       element: fire
       damage: 8
+    level: 60
 - id: 663
   name: fiery blacksteel sword
   article: a
@@ -65,6 +67,9 @@
     element_damage:
       element: fire
       damage: 7
+    level: 35
+    vocations:
+    - knight
 - id: 664
   name: fiery dragon slayer
   article: a
@@ -81,6 +86,9 @@
     element_damage:
       element: fire
       damage: 9
+    level: 45
+    vocations:
+    - knight
 - id: 665
   name: fiery barbarian axe
   article: a
@@ -98,6 +106,7 @@
     element_damage:
       element: fire
       damage: 5
+    level: 20
 - id: 666
   name: fiery knight axe
   article: a
@@ -115,6 +124,7 @@
     element_damage:
       element: fire
       damage: 6
+    level: 25
 - id: 667
   name: fiery heroic axe
   article: a
@@ -132,6 +142,7 @@
     element_damage:
       element: fire
       damage: 9
+    level: 60
 - id: 668
   name: fiery headchopper
   article: a
@@ -148,6 +159,9 @@
     element_damage:
       element: fire
       damage: 8
+    level: 35
+    vocations:
+    - knight
 - id: 669
   name: fiery war axe
   article: a
@@ -164,6 +178,9 @@
     element_damage:
       element: fire
       damage: 9
+    level: 65
+    vocations:
+    - knight
 - id: 670
   name: fiery clerical mace
   article: a
@@ -181,6 +198,7 @@
     element_damage:
       element: fire
       damage: 5
+    level: 20
 - id: 671
   name: fiery crystal mace
   article: a
@@ -198,6 +216,7 @@
     element_damage:
       element: fire
       damage: 7
+    level: 35
 - id: 672
   name: fiery cranial basher
   article: a
@@ -215,6 +234,7 @@
     element_damage:
       element: fire
       damage: 8
+    level: 60
 - id: 673
   name: fiery orcish maul
   article: a
@@ -231,6 +251,7 @@
     element_damage:
       element: fire
       damage: 7
+    level: 35
 - id: 674
   name: fiery war hammer
   article: a
@@ -247,6 +268,9 @@
     element_damage:
       element: fire
       damage: 9
+    level: 50
+    vocations:
+    - knight
 - id: 679
   name: icy spike sword
   article: an
@@ -281,6 +305,7 @@
     element_damage:
       element: ice
       damage: 8
+    level: 50
 - id: 681
   name: icy mystic blade
   article: an
@@ -298,6 +323,7 @@
     element_damage:
       element: ice
       damage: 8
+    level: 60
 - id: 682
   name: icy blacksteel sword
   article: an
@@ -314,6 +340,9 @@
     element_damage:
       element: ice
       damage: 7
+    level: 35
+    vocations:
+    - knight
 - id: 683
   name: icy dragon slayer
   article: an
@@ -330,6 +359,9 @@
     element_damage:
       element: ice
       damage: 9
+    level: 45
+    vocations:
+    - knight
 - id: 684
   name: icy barbarian axe
   article: an
@@ -347,6 +379,7 @@
     element_damage:
       element: ice
       damage: 5
+    level: 20
 - id: 685
   name: icy knight axe
   article: an
@@ -364,6 +397,7 @@
     element_damage:
       element: ice
       damage: 6
+    level: 25
 - id: 686
   name: icy heroic axe
   article: an
@@ -381,6 +415,7 @@
     element_damage:
       element: ice
       damage: 9
+    level: 60
 - id: 687
   name: icy headchopper
   article: an
@@ -397,6 +432,9 @@
     element_damage:
       element: ice
       damage: 8
+    level: 35
+    vocations:
+    - knight
 - id: 688
   name: icy war axe
   article: an
@@ -413,6 +451,9 @@
     element_damage:
       element: ice
       damage: 9
+    level: 65
+    vocations:
+    - knight
 - id: 689
   name: icy clerical mace
   article: an
@@ -430,6 +471,7 @@
     element_damage:
       element: ice
       damage: 5
+    level: 20
 - id: 690
   name: icy crystal mace
   article: an
@@ -447,6 +489,7 @@
     element_damage:
       element: ice
       damage: 7
+    level: 35
 - id: 691
   name: icy cranial basher
   article: an
@@ -464,6 +507,7 @@
     element_damage:
       element: ice
       damage: 8
+    level: 60
 - id: 692
   name: icy orcish maul
   article: an
@@ -480,6 +524,7 @@
     element_damage:
       element: ice
       damage: 7
+    level: 35
 - id: 693
   name: icy war hammer
   article: an
@@ -496,6 +541,9 @@
     element_damage:
       element: ice
       damage: 9
+    level: 50
+    vocations:
+    - knight
 - id: 779
   name: earth spike sword
   article: an
@@ -530,6 +578,7 @@
     element_damage:
       element: earth
       damage: 8
+    level: 50
 - id: 781
   name: earth mystic blade
   article: an
@@ -547,6 +596,7 @@
     element_damage:
       element: earth
       damage: 8
+    level: 60
 - id: 782
   name: earth blacksteel sword
   article: an
@@ -563,6 +613,9 @@
     element_damage:
       element: earth
       damage: 7
+    level: 35
+    vocations:
+    - knight
 - id: 783
   name: earth dragon slayer
   article: an
@@ -579,6 +632,9 @@
     element_damage:
       element: earth
       damage: 9
+    level: 45
+    vocations:
+    - knight
 - id: 784
   name: earth barbarian axe
   article: an
@@ -596,6 +652,7 @@
     element_damage:
       element: earth
       damage: 5
+    level: 20
 - id: 785
   name: earth knight axe
   article: an
@@ -613,6 +670,7 @@
     element_damage:
       element: earth
       damage: 6
+    level: 25
 - id: 786
   name: earth heroic axe
   article: an
@@ -630,6 +688,7 @@
     element_damage:
       element: earth
       damage: 9
+    level: 60
 - id: 787
   name: earth headchopper
   article: an
@@ -646,6 +705,9 @@
     element_damage:
       element: earth
       damage: 8
+    level: 35
+    vocations:
+    - knight
 - id: 788
   name: earth war axe
   article: an
@@ -662,6 +724,9 @@
     element_damage:
       element: earth
       damage: 9
+    level: 65
+    vocations:
+    - knight
 - id: 789
   name: earth clerical mace
   article: an
@@ -679,6 +744,7 @@
     element_damage:
       element: earth
       damage: 5
+    level: 20
 - id: 790
   name: earth crystal mace
   article: an
@@ -696,6 +762,7 @@
     element_damage:
       element: earth
       damage: 7
+    level: 35
 - id: 791
   name: earth cranial basher
   article: an
@@ -713,6 +780,7 @@
     element_damage:
       element: earth
       damage: 8
+    level: 60
 - id: 792
   name: earth orcish maul
   article: an
@@ -729,6 +797,7 @@
     element_damage:
       element: earth
       damage: 7
+    level: 35
 - id: 793
   name: earth war hammer
   article: an
@@ -745,6 +814,9 @@
     element_damage:
       element: earth
       damage: 9
+    level: 50
+    vocations:
+    - knight
 - id: 794
   name: energy spike sword
   article: an
@@ -776,6 +848,7 @@
     element_damage:
       element: energy
       damage: 8
+    level: 50
 - id: 796
   name: energy mystic blade
   article: an
@@ -793,6 +866,7 @@
     element_damage:
       element: energy
       damage: 8
+    level: 60
 - id: 797
   name: energy blacksteel sword
   article: an
@@ -809,6 +883,9 @@
     element_damage:
       element: energy
       damage: 7
+    level: 35
+    vocations:
+    - knight
 - id: 798
   name: energy dragon slayer
   article: an
@@ -825,6 +902,9 @@
     element_damage:
       element: energy
       damage: 9
+    level: 45
+    vocations:
+    - knight
 - id: 801
   name: energy barbarian axe
   article: an
@@ -842,6 +922,7 @@
     element_damage:
       element: energy
       damage: 5
+    level: 20
 - id: 802
   name: energy knight axe
   article: an
@@ -859,6 +940,7 @@
     element_damage:
       element: energy
       damage: 6
+    level: 25
 - id: 803
   name: energy heroic axe
   article: an
@@ -876,6 +958,7 @@
     element_damage:
       element: energy
       damage: 9
+    level: 60
 - id: 804
   name: energy headchopper
   article: an
@@ -892,6 +975,9 @@
     element_damage:
       element: energy
       damage: 8
+    level: 35
+    vocations:
+    - knight
 - id: 805
   name: energy war axe
   article: an
@@ -908,6 +994,9 @@
     element_damage:
       element: energy
       damage: 9
+    level: 65
+    vocations:
+    - knight
 - id: 806
   name: energy clerical mace
   article: an
@@ -925,6 +1014,7 @@
     element_damage:
       element: energy
       damage: 5
+    level: 20
 - id: 807
   name: energy crystal mace
   article: an
@@ -942,6 +1032,7 @@
     element_damage:
       element: energy
       damage: 7
+    level: 35
 - id: 808
   name: energy cranial basher
   article: an
@@ -959,6 +1050,7 @@
     element_damage:
       element: energy
       damage: 8
+    level: 60
 - id: 809
   name: energy orcish maul
   article: an
@@ -975,6 +1067,7 @@
     element_damage:
       element: energy
       damage: 7
+    level: 35
 - id: 810
   name: energy war hammer
   article: an
@@ -991,6 +1084,9 @@
     element_damage:
       element: energy
       damage: 9
+    level: 50
+    vocations:
+    - knight
 - id: 860
   name: crimson sword
   article: a
@@ -1063,6 +1159,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 26
+    vocations:
+    - druid
 - id: 3066
   name: snakebite rod
   article: a
@@ -1076,6 +1175,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 6
+    vocations:
+    - druid
 - id: 3067
   name: hailstorm rod
   article: a
@@ -1089,6 +1191,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 33
+    vocations:
+    - druid
     attack: 30
 - id: 3069
   name: necrotic rod
@@ -1103,6 +1208,9 @@
     weapon_type: wand
     element: death
     missile_id: 11
+    level: 19
+    vocations:
+    - druid
 - id: 3070
   name: moonlight rod
   article: a
@@ -1116,6 +1224,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 13
+    vocations:
+    - druid
 - id: 3071
   name: wand of inferno
   article: a
@@ -1129,6 +1240,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 33
+    vocations:
+    - sorcerer
     attack: 30
 - id: 3072
   name: wand of decay
@@ -1143,6 +1257,9 @@
     weapon_type: wand
     element: death
     missile_id: 11
+    level: 19
+    vocations:
+    - sorcerer
 - id: 3073
   name: wand of cosmic energy
   article: a
@@ -1156,6 +1273,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 26
+    vocations:
+    - sorcerer
 - id: 3074
   name: wand of vortex
   article: a
@@ -1169,6 +1289,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 6
+    vocations:
+    - sorcerer
 - id: 3075
   name: wand of dragonbreath
   article: a
@@ -1182,6 +1305,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 13
+    vocations:
+    - sorcerer
 - id: 3208
   name: giant smithhammer
   article: a
@@ -1222,6 +1348,9 @@
     defense: 25
     attack: 30
     weapon_type: sword
+    level: 20
+    vocations:
+    - knight
 - id: 3266
   name: battle axe
   article: a
@@ -1235,6 +1364,8 @@
     defense: 10
     attack: 25
     weapon_type: axe
+    vocations:
+    - knight
 - id: 3267
   name: dagger
   article: a
@@ -1274,6 +1405,7 @@
     defense: 14
     attack: 35
     weapon_type: axe
+    level: 25
 - id: 3270
   name: club
   article: a
@@ -1355,6 +1487,9 @@
     defense: 12
     attack: 35
     weapon_type: axe
+    level: 25
+    vocations:
+    - knight
 - id: 3276
   name: hatchet
   article: a
@@ -1396,6 +1531,9 @@
     defense: 40
     attack: 55
     weapon_type: sword
+    level: 140
+    vocations:
+    - knight
 - id: 3279
   name: war hammer
   article: a
@@ -1409,6 +1547,9 @@
     defense: 10
     attack: 45
     weapon_type: club
+    level: 50
+    vocations:
+    - knight
 - id: 3280
   name: fire sword
   article: a
@@ -1426,6 +1567,7 @@
     element_damage:
       element: fire
       damage: 11
+    level: 30
 - id: 3281
   name: giant sword
   article: a
@@ -1439,6 +1581,9 @@
     defense: 22
     attack: 46
     weapon_type: sword
+    level: 55
+    vocations:
+    - knight
 - id: 3282
   name: morning star
   article: a
@@ -1537,6 +1682,7 @@
     extra_defense: 3
     attack: 48
     weapon_type: sword
+    level: 80
 - id: 3289
   name: staff
   article: a
@@ -1629,6 +1775,7 @@
     extra_defense: 1
     attack: 36
     weapon_type: sword
+    level: 30
 - id: 3296
   name: warlord sword
   article: a
@@ -1642,6 +1789,9 @@
     defense: 38
     attack: 53
     weapon_type: sword
+    level: 120
+    vocations:
+    - knight
 - id: 3297
   name: serpent sword
   article: a
@@ -1717,6 +1867,8 @@
     defense: 23
     attack: 26
     weapon_type: sword
+    vocations:
+    - knight
 - id: 3302
   name: dragon lance
   article: a
@@ -1730,6 +1882,7 @@
     defense: 16
     attack: 47
     weapon_type: axe
+    level: 60
 - id: 3303
   name: great axe
   article: a
@@ -1743,6 +1896,9 @@
     defense: 22
     attack: 52
     weapon_type: axe
+    level: 95
+    vocations:
+    - knight
 - id: 3304
   name: crowbar
   article: a
@@ -1823,6 +1979,7 @@
     extra_defense: 1
     attack: 49
     weapon_type: club
+    level: 85
 - id: 3310
   name: iron hammer
   article: an
@@ -1850,6 +2007,7 @@
     extra_defense: 1
     attack: 28
     weapon_type: club
+    level: 20
 - id: 3312
   name: silver mace
   article: a
@@ -1864,6 +2022,7 @@
     extra_defense: 2
     attack: 41
     weapon_type: club
+    level: 45
 - id: 3313
   name: obsidian lance
   article: an
@@ -1877,6 +2036,7 @@
     defense: 10
     attack: 34
     weapon_type: axe
+    level: 20
 - id: 3314
   name: naginata
   article: a
@@ -1890,6 +2050,7 @@
     defense: 25
     attack: 39
     weapon_type: axe
+    level: 25
 - id: 3315
   name: guardian halberd
   article: a
@@ -1903,6 +2064,7 @@
     defense: 15
     attack: 46
     weapon_type: axe
+    level: 55
 - id: 3316
   name: orcish axe
   article: an
@@ -1930,6 +2092,7 @@
     extra_defense: 1
     attack: 28
     weapon_type: axe
+    level: 20
 - id: 3318
   name: knight axe
   article: a
@@ -1944,6 +2107,7 @@
     extra_defense: 1
     attack: 33
     weapon_type: axe
+    level: 25
 - id: 3319
   name: stonecutter axe
   article: a
@@ -1958,6 +2122,7 @@
     extra_defense: 3
     attack: 50
     weapon_type: axe
+    level: 90
 - id: 3320
   name: fire axe
   article: a
@@ -1975,6 +2140,7 @@
     element_damage:
       element: fire
       damage: 11
+    level: 35
 - id: 3321
   name: enchanted staff
   article: an
@@ -2004,6 +2170,7 @@
     defense: 20
     attack: 32
     weapon_type: club
+    level: 25
 - id: 3323
   name: dwarven axe
   article: a
@@ -2018,6 +2185,7 @@
     extra_defense: 2
     attack: 31
     weapon_type: axe
+    level: 20
 - id: 3324
   name: skull staff
   article: a
@@ -2032,6 +2200,7 @@
     extra_defense: 1
     attack: 36
     weapon_type: club
+    level: 30
 - id: 3325
   name: light mace
   article: a
@@ -2058,6 +2227,7 @@
     defense: 23
     attack: 37
     weapon_type: sword
+    level: 30
 - id: 3327
   name: daramian mace
   article: a
@@ -2084,6 +2254,9 @@
     defense: 15
     attack: 39
     weapon_type: axe
+    level: 25
+    vocations:
+    - knight
 - id: 3329
   name: daramian axe
   article: a
@@ -2123,6 +2296,7 @@
     defense: 14
     attack: 49
     weapon_type: axe
+    level: 70
 - id: 3332
   name: hammer of wrath
   article: a
@@ -2136,6 +2310,9 @@
     defense: 12
     attack: 48
     weapon_type: club
+    level: 65
+    vocations:
+    - knight
 - id: 3333
   name: crystal mace
   article: a
@@ -2150,6 +2327,7 @@
     extra_defense: 1
     attack: 38
     weapon_type: club
+    level: 35
 - id: 3334
   name: pharaoh sword
   article: a
@@ -2164,6 +2342,7 @@
     extra_defense: 2
     attack: 41
     weapon_type: sword
+    level: 45
 - id: 3335
   name: twin axe
   article: a
@@ -2177,6 +2356,9 @@
     defense: 24
     attack: 45
     weapon_type: axe
+    level: 50
+    vocations:
+    - knight
 - id: 3336
   name: studded club
   article: a
@@ -2230,6 +2412,7 @@
     extra_defense: 2
     attack: 38
     weapon_type: sword
+    level: 35
 - id: 3340
   name: heavy mace
   article: a
@@ -2243,6 +2426,7 @@
     defense: 15
     attack: 49
     weapon_type: club
+    level: 70
 - id: 3341
   name: arcane staff
   article: an
@@ -2256,6 +2440,7 @@
     defense: 30
     attack: 50
     weapon_type: club
+    level: 75
 - id: 3342
   name: war axe
   article: a
@@ -2269,6 +2454,9 @@
     defense: 10
     attack: 48
     weapon_type: axe
+    level: 65
+    vocations:
+    - knight
 - id: 3343
   name: lich staff
   article: a
@@ -2283,6 +2471,7 @@
     extra_defense: 2
     attack: 40
     weapon_type: club
+    level: 40
 - id: 3344
   name: beastslayer axe
   article: a
@@ -2297,6 +2486,7 @@
     extra_defense: 1
     attack: 35
     weapon_type: axe
+    level: 30
 - id: 3345
   name: templar scytheblade
   article: a
@@ -2339,6 +2529,7 @@
     break_chance: 6
     weapon_type: distance
     missile_id: 17
+    level: 20
 - id: 3348
   name: banana staff
   article: a
@@ -2401,6 +2592,9 @@
     hit_chance: 2
     weapon_type: crossbow
     ammo_type: bolt
+    level: 75
+    vocations:
+    - paladin
 - id: 6101
   name: Ron the Ripper's sabre
   flags:
@@ -2426,6 +2620,9 @@
     defense: 38
     attack: 50
     weapon_type: sword
+    level: 75
+    vocations:
+    - knight
 - id: 6553
   name: ruthless axe
   article: a
@@ -2439,6 +2636,9 @@
     defense: 15
     attack: 50
     weapon_type: axe
+    level: 75
+    vocations:
+    - knight
 - id: 7366
   name: viper star
   article: a
@@ -2470,6 +2670,7 @@
     break_chance: 1
     weapon_type: distance
     missile_id: 18
+    level: 42
 - id: 7368
   name: assassin star
   article: an
@@ -2485,6 +2686,7 @@
     break_chance: 33
     weapon_type: distance
     missile_id: 19
+    level: 80
 - id: 7378
   name: royal spear
   article: a
@@ -2500,6 +2702,7 @@
     break_chance: 3
     weapon_type: distance
     missile_id: 21
+    level: 25
 - id: 7379
   name: brutetamer's staff
   article: a
@@ -2513,6 +2716,7 @@
     defense: 15
     attack: 35
     weapon_type: club
+    level: 25
 - id: 7380
   name: headchopper
   article: a
@@ -2526,6 +2730,9 @@
     defense: 20
     attack: 42
     weapon_type: axe
+    level: 35
+    vocations:
+    - knight
 - id: 7381
   name: mammoth whopper
   article: a
@@ -2539,6 +2746,7 @@
     defense: 15
     attack: 30
     weapon_type: club
+    level: 20
 - id: 7382
   name: demonrage sword
   article: a
@@ -2552,6 +2760,9 @@
     defense: 22
     attack: 47
     weapon_type: sword
+    level: 60
+    vocations:
+    - knight
 - id: 7383
   name: relic sword
   article: a
@@ -2566,6 +2777,7 @@
     extra_defense: 1
     attack: 42
     weapon_type: sword
+    level: 50
 - id: 7384
   name: mystic blade
   article: a
@@ -2580,6 +2792,7 @@
     extra_defense: 2
     attack: 44
     weapon_type: sword
+    level: 60
 - id: 7385
   name: crimson sword
   article: a
@@ -2594,6 +2807,7 @@
     extra_defense: 1
     attack: 28
     weapon_type: sword
+    level: 20
 - id: 7386
   name: mercenary sword
   article: a
@@ -2607,6 +2821,9 @@
     defense: 27
     attack: 43
     weapon_type: sword
+    level: 40
+    vocations:
+    - knight
 - id: 7387
   name: diamond sceptre
   article: a
@@ -2620,6 +2837,7 @@
     defense: 18
     attack: 34
     weapon_type: club
+    level: 25
 - id: 7388
   name: vile axe
   article: a
@@ -2634,6 +2852,7 @@
     extra_defense: 3
     attack: 43
     weapon_type: axe
+    level: 55
 - id: 7389
   name: heroic axe
   article: a
@@ -2648,6 +2867,7 @@
     extra_defense: 1
     attack: 44
     weapon_type: axe
+    level: 60
 - id: 7390
   name: justice seeker
   article: the
@@ -2662,6 +2882,7 @@
     extra_defense: 3
     attack: 47
     weapon_type: sword
+    level: 75
 - id: 7391
   name: thaian sword
   article: a
@@ -2675,6 +2896,9 @@
     defense: 29
     attack: 45
     weapon_type: sword
+    level: 50
+    vocations:
+    - knight
 - id: 7392
   name: orcish maul
   article: an
@@ -2688,6 +2912,7 @@
     defense: 18
     attack: 42
     weapon_type: club
+    level: 35
 - id: 7402
   name: dragon slayer
   article: a
@@ -2701,6 +2926,9 @@
     defense: 28
     attack: 44
     weapon_type: sword
+    level: 45
+    vocations:
+    - knight
 - id: 7403
   name: berserker
   article: a
@@ -2714,6 +2942,9 @@
     defense: 21
     attack: 48
     weapon_type: sword
+    level: 65
+    vocations:
+    - knight
 - id: 7404
   name: assassin dagger
   article: an
@@ -2728,6 +2959,7 @@
     extra_defense: -2
     attack: 40
     weapon_type: sword
+    level: 40
 - id: 7405
   name: havoc blade
   article: a
@@ -2741,6 +2973,9 @@
     defense: 34
     attack: 49
     weapon_type: sword
+    level: 70
+    vocations:
+    - knight
 - id: 7406
   name: blacksteel sword
   article: a
@@ -2754,6 +2989,9 @@
     defense: 22
     attack: 42
     weapon_type: sword
+    level: 35
+    vocations:
+    - knight
 - id: 7407
   name: haunted blade
   article: a
@@ -2767,6 +3005,9 @@
     defense: 12
     attack: 40
     weapon_type: sword
+    level: 30
+    vocations:
+    - knight
 - id: 7408
   name: wyvern fang
   article: a
@@ -2781,6 +3022,7 @@
     extra_defense: 1
     attack: 32
     weapon_type: sword
+    level: 25
 - id: 7409
   name: northern star
   article: a
@@ -2795,6 +3037,7 @@
     extra_defense: 1
     attack: 42
     weapon_type: club
+    level: 50
 - id: 7410
   name: queen's sceptre
   article: a
@@ -2808,6 +3051,7 @@
     defense: 19
     attack: 43
     weapon_type: club
+    level: 55
 - id: 7411
   name: ornamented axe
   article: an
@@ -2822,6 +3066,7 @@
     extra_defense: 2
     attack: 42
     weapon_type: axe
+    level: 50
 - id: 7412
   name: butcher's axe
   article: a
@@ -2836,6 +3081,7 @@
     extra_defense: -2
     attack: 41
     weapon_type: axe
+    level: 45
 - id: 7413
   name: titan axe
   article: a
@@ -2849,6 +3095,9 @@
     defense: 30
     attack: 43
     weapon_type: axe
+    level: 40
+    vocations:
+    - knight
 - id: 7414
   name: abyss hammer
   article: an
@@ -2862,6 +3111,9 @@
     defense: 21
     attack: 47
     weapon_type: club
+    level: 60
+    vocations:
+    - knight
 - id: 7415
   name: cranial basher
   article: a
@@ -2876,6 +3128,7 @@
     extra_defense: -2
     attack: 44
     weapon_type: club
+    level: 60
 - id: 7416
   name: bloody edge
   article: a
@@ -2890,6 +3143,7 @@
     extra_defense: -3
     attack: 43
     weapon_type: sword
+    level: 55
 - id: 7417
   name: runed sword
   article: a
@@ -2904,6 +3158,7 @@
     extra_defense: 2
     attack: 45
     weapon_type: sword
+    level: 65
 - id: 7418
   name: nightmare blade
   article: a
@@ -2918,6 +3173,7 @@
     extra_defense: -3
     attack: 46
     weapon_type: sword
+    level: 70
 - id: 7419
   name: dreaded cleaver
   article: a
@@ -2932,6 +3188,7 @@
     extra_defense: -3
     attack: 40
     weapon_type: axe
+    level: 40
 - id: 7420
   name: reaper's axe
   article: a
@@ -2946,6 +3203,7 @@
     extra_defense: 2
     attack: 46
     weapon_type: axe
+    level: 70
 - id: 7421
   name: onyx flail
   article: an
@@ -2959,6 +3217,7 @@
     defense: 18
     attack: 45
     weapon_type: club
+    level: 65
 - id: 7422
   name: jade hammer
   article: a
@@ -2973,6 +3232,7 @@
     extra_defense: 1
     attack: 46
     weapon_type: club
+    level: 70
 - id: 7423
   name: skullcrusher
   article: a
@@ -2986,6 +3246,9 @@
     defense: 20
     attack: 51
     weapon_type: club
+    level: 85
+    vocations:
+    - knight
 - id: 7424
   name: lunar staff
   article: a
@@ -2999,6 +3262,7 @@
     defense: 25
     attack: 40
     weapon_type: club
+    level: 30
 - id: 7425
   name: taurus mace
   article: a
@@ -3012,6 +3276,7 @@
     defense: 18
     attack: 30
     weapon_type: club
+    level: 20
 - id: 7426
   name: amber staff
   article: an
@@ -3025,6 +3290,7 @@
     defense: 25
     attack: 43
     weapon_type: club
+    level: 40
 - id: 7427
   name: chaos mace
   article: a
@@ -3038,6 +3304,7 @@
     defense: 21
     attack: 44
     weapon_type: club
+    level: 45
 - id: 7428
   name: bonebreaker
   article: a
@@ -3051,6 +3318,9 @@
     defense: 15
     attack: 46
     weapon_type: club
+    level: 55
+    vocations:
+    - knight
 - id: 7429
   name: blessed sceptre
   article: a
@@ -3065,6 +3335,7 @@
     extra_defense: 3
     attack: 47
     weapon_type: club
+    level: 75
 - id: 7430
   name: dragonbone staff
   article: a
@@ -3078,6 +3349,7 @@
     defense: 18
     attack: 35
     weapon_type: club
+    level: 30
 - id: 7431
   name: demonbone
   article: a
@@ -3092,6 +3364,7 @@
     extra_defense: -2
     attack: 48
     weapon_type: club
+    level: 80
 - id: 7432
   name: furry club
   article: a
@@ -3106,6 +3379,7 @@
     extra_defense: 1
     attack: 31
     weapon_type: club
+    level: 20
 - id: 7433
   name: ravenwing
   article: a
@@ -3120,6 +3394,7 @@
     extra_defense: 1
     attack: 45
     weapon_type: axe
+    level: 65
 - id: 7434
   name: royal axe
   article: a
@@ -3134,6 +3409,7 @@
     extra_defense: 3
     attack: 47
     weapon_type: axe
+    level: 75
 - id: 7435
   name: impaler
   article: an
@@ -3148,6 +3424,7 @@
     extra_defense: -2
     attack: 49
     weapon_type: axe
+    level: 85
 - id: 7436
   name: angelic axe
   article: an
@@ -3161,6 +3438,9 @@
     defense: 24
     attack: 44
     weapon_type: axe
+    level: 45
+    vocations:
+    - knight
 - id: 7437
   name: sapphire hammer
   article: a
@@ -3174,6 +3454,7 @@
     defense: 18
     attack: 37
     weapon_type: club
+    level: 30
 - id: 7438
   name: elvish bow
   article: an
@@ -3199,6 +3480,9 @@
     defense: 26
     attack: 35
     weapon_type: sword
+    level: 25
+    vocations:
+    - knight
 - id: 7450
   name: hammer of prophecy
   article: a
@@ -3212,6 +3496,9 @@
     defense: 35
     attack: 52
     weapon_type: club
+    level: 120
+    vocations:
+    - knight
 - id: 7451
   name: shadow sceptre
   article: a
@@ -3225,6 +3512,7 @@
     defense: 17
     attack: 39
     weapon_type: club
+    level: 35
 - id: 7452
   name: spiked squelcher
   article: a
@@ -3238,6 +3526,9 @@
     defense: 21
     attack: 41
     weapon_type: club
+    level: 30
+    vocations:
+    - knight
 - id: 7453
   name: executioner
   article: an
@@ -3251,6 +3542,9 @@
     defense: 20
     attack: 51
     weapon_type: axe
+    level: 85
+    vocations:
+    - knight
 - id: 7454
   name: glorious axe
   article: a
@@ -3264,6 +3558,9 @@
     defense: 23
     attack: 40
     weapon_type: axe
+    level: 30
+    vocations:
+    - knight
 - id: 7455
   name: mythril axe
   article: a
@@ -3278,6 +3575,7 @@
     extra_defense: 2
     attack: 48
     weapon_type: axe
+    level: 80
 - id: 7456
   name: noble axe
   article: a
@@ -3291,6 +3589,7 @@
     defense: 22
     attack: 39
     weapon_type: axe
+    level: 35
 - id: 7773
   name: steel axe
   article: a
@@ -3330,6 +3629,9 @@
     hit_chance: 1
     weapon_type: crossbow
     ammo_type: bolt
+    level: 45
+    vocations:
+    - paladin
 - id: 8022
   name: chain bolter
   article: a
@@ -3342,6 +3644,9 @@
     range: 3
     weapon_type: crossbow
     ammo_type: bolt
+    level: 60
+    vocations:
+    - paladin
 - id: 8023
   name: royal crossbow
   article: a
@@ -3355,6 +3660,9 @@
     hit_chance: 3
     weapon_type: crossbow
     ammo_type: bolt
+    level: 130
+    vocations:
+    - paladin
 - id: 8024
   name: devileye
   article: the
@@ -3368,6 +3676,9 @@
     hit_chance: -20
     weapon_type: crossbow
     ammo_type: bolt
+    level: 100
+    vocations:
+    - paladin
 - id: 8025
   name: ironworker
   article: the
@@ -3380,6 +3691,9 @@
     range: 5
     weapon_type: crossbow
     ammo_type: bolt
+    level: 80
+    vocations:
+    - paladin
 - id: 8026
   name: warsinger bow
   article: a
@@ -3393,6 +3707,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 80
+    vocations:
+    - paladin
 - id: 8027
   name: composite hornbow
   article: a
@@ -3406,6 +3723,9 @@
     hit_chance: 2
     weapon_type: bow
     ammo_type: arrow
+    level: 50
+    vocations:
+    - paladin
 - id: 8028
   name: Yol's bow
   flags:
@@ -3417,6 +3737,9 @@
     hit_chance: 7
     weapon_type: bow
     ammo_type: arrow
+    level: 60
+    vocations:
+    - paladin
 - id: 8029
   name: silkweaver bow
   article: a
@@ -3429,6 +3752,9 @@
     hit_chance: 3
     weapon_type: bow
     ammo_type: arrow
+    level: 40
+    vocations:
+    - paladin
 - id: 8030
   name: Elethriel's elemental bow
   flags:
@@ -3440,6 +3766,9 @@
     range: 4
     weapon_type: bow
     ammo_type: arrow
+    level: 70
+    vocations:
+    - paladin
 - id: 8082
   name: underworld rod
   article: an
@@ -3453,6 +3782,9 @@
     weapon_type: wand
     element: death
     missile_id: 11
+    level: 42
+    vocations:
+    - druid
 - id: 8083
   name: northwind rod
   article: a
@@ -3466,6 +3798,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 22
+    vocations:
+    - druid
 - id: 8084
   name: springsprout rod
   article: a
@@ -3479,6 +3814,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 37
+    vocations:
+    - druid
 - id: 8092
   name: wand of starstorm
   article: a
@@ -3492,6 +3830,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 37
+    vocations:
+    - sorcerer
     attack: 32
 - id: 8093
   name: wand of draconia
@@ -3506,6 +3847,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 22
+    vocations:
+    - sorcerer
 - id: 8094
   name: wand of voodoo
   article: a
@@ -3519,6 +3863,9 @@
     weapon_type: wand
     element: death
     missile_id: 11
+    level: 42
+    vocations:
+    - sorcerer
 - id: 8096
   name: hellforged axe
   article: a
@@ -3533,6 +3880,7 @@
     extra_defense: 2
     attack: 51
     weapon_type: axe
+    level: 110
 - id: 8097
   name: solar axe
   article: a
@@ -3547,6 +3895,7 @@
     extra_defense: 3
     attack: 52
     weapon_type: axe
+    level: 130
 - id: 8098
   name: demonwing axe
   article: a
@@ -3560,6 +3909,9 @@
     defense: 20
     attack: 53
     weapon_type: axe
+    level: 120
+    vocations:
+    - knight
 - id: 8099
   name: dark trinity mace
   article: a
@@ -3574,6 +3926,7 @@
     extra_defense: -1
     attack: 51
     weapon_type: club
+    level: 120
 - id: 8100
   name: obsidian truncheon
   article: an
@@ -3588,6 +3941,7 @@
     extra_defense: 2
     attack: 50
     weapon_type: club
+    level: 100
 - id: 8101
   name: stomper
   article: the
@@ -3601,6 +3955,9 @@
     defense: 20
     attack: 51
     weapon_type: club
+    level: 100
+    vocations:
+    - knight
 - id: 8102
   name: emerald sword
   article: an
@@ -3615,6 +3972,7 @@
     extra_defense: 3
     attack: 49
     weapon_type: sword
+    level: 100
 - id: 8103
   name: epiphany
   article: the
@@ -3629,6 +3987,7 @@
     extra_defense: 3
     attack: 50
     weapon_type: sword
+    level: 120
 - id: 8104
   name: calamity
   article: the
@@ -3642,6 +4001,9 @@
     defense: 35
     attack: 51
     weapon_type: sword
+    level: 100
+    vocations:
+    - knight
 - id: 9373
   name: glutton's mace
   flags:
@@ -3755,6 +4117,7 @@
     defense: 20
     attack: 47
     weapon_type: axe
+    level: 60
 - id: 10389
   name: sai
   article: a
@@ -3768,6 +4131,9 @@
     defense: 27
     attack: 45
     weapon_type: sword
+    level: 50
+    vocations:
+    - knight
 - id: 10390
   name: Zaoan sword
   article: a
@@ -3782,6 +4148,7 @@
     extra_defense: 2
     attack: 43
     weapon_type: sword
+    level: 55
 - id: 10391
   name: drachaku
   article: a
@@ -3795,6 +4162,9 @@
     defense: 25
     attack: 46
     weapon_type: club
+    level: 55
+    vocations:
+    - knight
 - id: 10392
   name: twin hooks
   article: a
@@ -3808,6 +4178,9 @@
     defense: 22
     attack: 32
     weapon_type: sword
+    level: 20
+    vocations:
+    - knight
 - id: 10406
   name: Zaoan halberd
   article: a
@@ -3821,6 +4194,7 @@
     defense: 15
     attack: 37
     weapon_type: axe
+    level: 25
 - id: 11657
   name: twiceslicer
   article: a
@@ -3834,6 +4208,9 @@
     defense: 30
     attack: 47
     weapon_type: sword
+    level: 58
+    vocations:
+    - knight
 - id: 11692
   name: snake god's sceptre
   article: a
@@ -3848,6 +4225,7 @@
     extra_defense: 3
     attack: 48
     weapon_type: club
+    level: 82
 - id: 11693
   name: blade of corruption
   article: a
@@ -3862,6 +4240,7 @@
     extra_defense: 2
     attack: 48
     weapon_type: sword
+    level: 82
 - id: 12510
   name: hammer of mighty cheating
   article: a
@@ -3887,6 +4266,9 @@
     weapon_type: wand
     element: death
     missile_id: 5
+    level: 37
+    vocations:
+    - sorcerer
 - id: 12673
   name: wooden sword
   article: a
@@ -3913,6 +4295,7 @@
     defense: 17
     attack: 35
     weapon_type: axe
+    level: 25
 - id: 12731
   name: shimmer sword
   article: a
@@ -3929,6 +4312,7 @@
     defense: 20
     attack: 42
     weapon_type: sword
+    level: 40
 - id: 12732
   name: shimmer rod
   article: a
@@ -3945,6 +4329,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 40
+    vocations:
+    - druid
 - id: 12733
   name: shimmer bow
   article: a
@@ -3961,6 +4348,9 @@
     hit_chance: 7
     weapon_type: bow
     ammo_type: arrow
+    level: 40
+    vocations:
+    - paladin
 - id: 12741
   name: shimmer wand
   article: a
@@ -3977,6 +4367,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 40
+    vocations:
+    - sorcerer
 - id: 13987
   name: deepling staff
   article: a
@@ -3990,6 +4383,7 @@
     defense: 23
     attack: 43
     weapon_type: club
+    level: 38
 - id: 13991
   name: deepling axe
   article: a
@@ -4003,6 +4397,7 @@
     defense: 29
     attack: 49
     weapon_type: axe
+    level: 80
 - id: 14001
   name: ornate mace
   article: an
@@ -4016,6 +4411,7 @@
     defense: 24
     attack: 49
     weapon_type: club
+    level: 90
 - id: 14040
   name: warrior's axe
   article: a
@@ -4029,6 +4425,7 @@
     defense: 21
     attack: 42
     weapon_type: axe
+    level: 40
 - id: 14043
   name: guardian axe
   article: a
@@ -4042,6 +4439,7 @@
     defense: 11
     attack: 46
     weapon_type: axe
+    level: 50
 - id: 14089
   name: hive scythe
   article: a
@@ -4055,6 +4453,7 @@
     defense: 24
     attack: 46
     weapon_type: axe
+    level: 70
 - id: 14246
   name: hive bow
   article: a
@@ -4068,6 +4467,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 85
+    vocations:
+    - paladin
 - id: 14247
   name: ornate crossbow
   article: an
@@ -4081,6 +4483,9 @@
     hit_chance: 2
     weapon_type: crossbow
     ammo_type: bolt
+    level: 50
+    vocations:
+    - paladin
 - id: 14250
   name: deepling squelcher
   article: a
@@ -4094,6 +4499,7 @@
     defense: 28
     attack: 44
     weapon_type: club
+    level: 48
 - id: 14768
   name: thorn spitter
   article: a
@@ -4107,6 +4513,9 @@
     hit_chance: 1
     weapon_type: crossbow
     ammo_type: bolt
+    level: 150
+    vocations:
+    - paladin
 - id: 16096
   name: wand of defiance
   article: a
@@ -4120,6 +4529,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 65
+    vocations:
+    - sorcerer
 - id: 16115
   name: wand of everblazing
   article: a
@@ -4133,6 +4545,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 65
+    vocations:
+    - sorcerer
 - id: 16117
   name: muck rod
   article: a
@@ -4146,6 +4561,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 65
+    vocations:
+    - druid
 - id: 16118
   name: glacial rod
   article: a
@@ -4159,6 +4577,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 65
+    vocations:
+    - druid
 - id: 16160
   name: crystalline sword
   article: a
@@ -4173,6 +4594,7 @@
     extra_defense: 1
     attack: 47
     weapon_type: sword
+    level: 62
 - id: 16161
   name: crystalline axe
   article: a
@@ -4187,6 +4609,7 @@
     extra_defense: 3
     attack: 51
     weapon_type: axe
+    level: 120
 - id: 16162
   name: mycological mace
   article: a
@@ -4201,6 +4624,7 @@
     extra_defense: 3
     attack: 50
     weapon_type: club
+    level: 120
 - id: 16163
   name: crystal crossbow
   article: a
@@ -4214,6 +4638,9 @@
     hit_chance: 3
     weapon_type: crossbow
     ammo_type: bolt
+    level: 90
+    vocations:
+    - paladin
 - id: 16164
   name: mycological bow
   article: a
@@ -4227,6 +4654,9 @@
     hit_chance: 4
     weapon_type: bow
     ammo_type: arrow
+    level: 105
+    vocations:
+    - paladin
 - id: 16175
   name: shiny blade
   article: a
@@ -4241,6 +4671,7 @@
     extra_defense: 2
     attack: 49
     weapon_type: sword
+    level: 120
 - id: 17109
   name: mean knight sword
   article: a
@@ -4282,6 +4713,7 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 1
 - id: 17812
   name: ratana
   article: a
@@ -4296,6 +4728,7 @@
     extra_defense: 1
     attack: 27
     weapon_type: sword
+    level: 15
 - id: 17813
   name: life preserver
   article: a
@@ -4310,6 +4743,7 @@
     extra_defense: 2
     attack: 27
     weapon_type: club
+    level: 15
 - id: 17824
   name: swampling club
   article: a
@@ -4336,6 +4770,9 @@
     defense: 17
     attack: 45
     weapon_type: club
+    level: 50
+    vocations:
+    - knight
 - id: 17859
   name: spiky club
   article: a
@@ -4349,6 +4786,7 @@
     defense: 14
     attack: 31
     weapon_type: club
+    level: 20
 - id: 19356
   name: triple bolt crossbow
   article: a
@@ -4362,6 +4800,9 @@
     hit_chance: 2
     weapon_type: crossbow
     ammo_type: bolt
+    level: 70
+    vocations:
+    - paladin
 - id: 19362
   name: icicle bow
   article: an
@@ -4384,6 +4825,7 @@
     defense: 30
     attack: 50
     weapon_type: club
+    level: 75
 - id: 20064
   name: crude umbral blade
   article: a
@@ -4398,6 +4840,9 @@
     extra_defense: 1
     attack: 48
     weapon_type: sword
+    level: 75
+    vocations:
+    - knight
 - id: 20065
   name: umbral blade
   article: an
@@ -4412,6 +4857,9 @@
     extra_defense: 2
     attack: 50
     weapon_type: sword
+    level: 120
+    vocations:
+    - knight
 - id: 20066
   name: umbral masterblade
   article: an
@@ -4426,6 +4874,9 @@
     extra_defense: 3
     attack: 52
     weapon_type: sword
+    level: 250
+    vocations:
+    - knight
 - id: 20067
   name: crude umbral slayer
   article: a
@@ -4439,6 +4890,9 @@
     defense: 29
     attack: 51
     weapon_type: sword
+    level: 75
+    vocations:
+    - knight
 - id: 20068
   name: umbral slayer
   article: an
@@ -4452,6 +4906,9 @@
     defense: 31
     attack: 52
     weapon_type: sword
+    level: 120
+    vocations:
+    - knight
 - id: 20069
   name: umbral master slayer
   article: an
@@ -4465,6 +4922,9 @@
     defense: 35
     attack: 54
     weapon_type: sword
+    level: 250
+    vocations:
+    - knight
 - id: 20070
   name: crude umbral axe
   article: a
@@ -4479,6 +4939,9 @@
     extra_defense: 1
     attack: 49
     weapon_type: axe
+    level: 75
+    vocations:
+    - knight
 - id: 20071
   name: umbral axe
   article: an
@@ -4493,6 +4956,9 @@
     extra_defense: 2
     attack: 51
     weapon_type: axe
+    level: 120
+    vocations:
+    - knight
 - id: 20072
   name: umbral master axe
   article: an
@@ -4507,6 +4973,9 @@
     extra_defense: 3
     attack: 53
     weapon_type: axe
+    level: 250
+    vocations:
+    - knight
 - id: 20073
   name: crude umbral chopper
   article: a
@@ -4520,6 +4989,9 @@
     defense: 27
     attack: 51
     weapon_type: axe
+    level: 75
+    vocations:
+    - knight
 - id: 20074
   name: umbral chopper
   article: an
@@ -4533,6 +5005,9 @@
     defense: 30
     attack: 52
     weapon_type: axe
+    level: 120
+    vocations:
+    - knight
 - id: 20075
   name: umbral master chopper
   article: an
@@ -4546,6 +5021,9 @@
     defense: 34
     attack: 54
     weapon_type: axe
+    level: 250
+    vocations:
+    - knight
 - id: 20076
   name: crude umbral mace
   article: a
@@ -4560,6 +5038,9 @@
     extra_defense: 1
     attack: 48
     weapon_type: club
+    level: 75
+    vocations:
+    - knight
 - id: 20077
   name: umbral mace
   article: an
@@ -4574,6 +5055,9 @@
     extra_defense: 2
     attack: 50
     weapon_type: club
+    level: 120
+    vocations:
+    - knight
 - id: 20078
   name: umbral master mace
   article: an
@@ -4588,6 +5072,9 @@
     extra_defense: 3
     attack: 52
     weapon_type: club
+    level: 250
+    vocations:
+    - knight
 - id: 20079
   name: crude umbral hammer
   article: a
@@ -4601,6 +5088,9 @@
     defense: 27
     attack: 51
     weapon_type: club
+    level: 75
+    vocations:
+    - knight
 - id: 20080
   name: umbral hammer
   article: an
@@ -4614,6 +5104,9 @@
     defense: 30
     attack: 53
     weapon_type: club
+    level: 120
+    vocations:
+    - knight
 - id: 20081
   name: umbral master hammer
   article: an
@@ -4627,6 +5120,9 @@
     defense: 34
     attack: 55
     weapon_type: club
+    level: 250
+    vocations:
+    - knight
 - id: 20082
   name: crude umbral bow
   article: a
@@ -4640,6 +5136,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 75
+    vocations:
+    - paladin
 - id: 20083
   name: umbral bow
   article: an
@@ -4653,6 +5152,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 120
+    vocations:
+    - paladin
 - id: 20084
   name: umbral master bow
   article: an
@@ -4666,6 +5168,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 250
+    vocations:
+    - paladin
 - id: 20085
   name: crude umbral crossbow
   article: a
@@ -4679,6 +5184,9 @@
     hit_chance: 1
     weapon_type: crossbow
     ammo_type: bolt
+    level: 75
+    vocations:
+    - paladin
 - id: 20086
   name: umbral crossbow
   article: an
@@ -4692,6 +5200,9 @@
     hit_chance: 2
     weapon_type: crossbow
     ammo_type: bolt
+    level: 120
+    vocations:
+    - paladin
 - id: 20087
   name: umbral master crossbow
   article: an
@@ -4705,6 +5216,9 @@
     hit_chance: 4
     weapon_type: crossbow
     ammo_type: bolt
+    level: 250
+    vocations:
+    - paladin
 - id: 21158
   name: glooth spear
   article: a
@@ -4718,6 +5232,7 @@
     range: 3
     break_chance: 2
     weapon_type: distance
+    level: 60
 - id: 21171
   name: metal bat
   article: a
@@ -4731,6 +5246,7 @@
     defense: 20
     attack: 44
     weapon_type: club
+    level: 55
 - id: 21172
   name: glooth whip
   article: a
@@ -4744,6 +5260,7 @@
     defense: 19
     attack: 33
     weapon_type: club
+    level: 25
 - id: 21173
   name: moohtant cudgel
   article: a
@@ -4757,6 +5274,7 @@
     defense: 21
     attack: 47
     weapon_type: club
+    level: 60
 - id: 21174
   name: mino lance
   article: a
@@ -4770,6 +5288,7 @@
     defense: 23
     attack: 40
     weapon_type: axe
+    level: 45
 - id: 21176
   name: execowtioner axe
   article: an
@@ -4783,6 +5302,7 @@
     defense: 18
     attack: 46
     weapon_type: axe
+    level: 55
 - id: 21177
   name: cowtana
   article: a
@@ -4797,6 +5317,7 @@
     extra_defense: 1
     attack: 34
     weapon_type: sword
+    level: 25
 - id: 21178
   name: glooth club
   article: a
@@ -4813,6 +5334,9 @@
     element_damage:
       element: earth
       damage: 26
+    level: 75
+    vocations:
+    - knight
 - id: 21179
   name: glooth blade
   article: a
@@ -4829,6 +5353,9 @@
     element_damage:
       element: earth
       damage: 26
+    level: 75
+    vocations:
+    - knight
 - id: 21180
   name: glooth axe
   article: a
@@ -4845,6 +5372,9 @@
     element_damage:
       element: earth
       damage: 26
+    level: 75
+    vocations:
+    - knight
 - id: 21219
   name: one hit wonder
   article: an
@@ -4858,6 +5388,7 @@
     defense: 22
     attack: 49
     weapon_type: club
+    level: 70
 - id: 21348
   name: scorcher
   article: the
@@ -4871,6 +5402,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 1
+    vocations:
+    - sorcerer
 - id: 21350
   name: chiller
   article: the
@@ -4884,6 +5418,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 1
+    vocations:
+    - druid
 - id: 22171
   name: ogre klubba
   article: an
@@ -4897,6 +5434,7 @@
     defense: 25
     attack: 45
     weapon_type: club
+    level: 50
 - id: 22172
   name: ogre choppa
   article: an
@@ -4910,6 +5448,7 @@
     defense: 23
     attack: 39
     weapon_type: axe
+    level: 25
 - id: 22183
   name: ogre scepta
   article: an
@@ -4923,6 +5462,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 37
+    vocations:
+    - druid
 - id: 22727
   name: rift lance
   article: a
@@ -4936,6 +5478,7 @@
     defense: 28
     attack: 48
     weapon_type: axe
+    level: 70
 - id: 22759
   name: plague bite
   article: a
@@ -4953,6 +5496,7 @@
     element_damage:
       element: earth
       damage: 26
+    level: 150
 - id: 22760
   name: impaler of the igniter
   article: an
@@ -4970,6 +5514,7 @@
     element_damage:
       element: fire
       damage: 26
+    level: 150
 - id: 22762
   name: maimer
   article: a
@@ -4983,6 +5528,7 @@
     defense: 32
     attack: 51
     weapon_type: club
+    level: 150
 - id: 22764
   name: Ferumbras' staff
   article: a
@@ -4995,6 +5541,7 @@
     defense: 30
     attack: 20
     weapon_type: club
+    level: 100
 - id: 22765
   name: Ferumbras' staff
   article: a
@@ -5011,6 +5558,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 65
+    vocations:
+    - sorcerer
 - id: 22766
   name: Ferumbras' staff
   article: a
@@ -5027,6 +5577,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 100
+    vocations:
+    - sorcerer
 - id: 22866
   name: rift bow
   article: a
@@ -5040,6 +5593,9 @@
     hit_chance: 3
     weapon_type: bow
     ammo_type: arrow
+    level: 120
+    vocations:
+    - paladin
 - id: 22867
   name: rift crossbow
   article: a
@@ -5053,6 +5609,9 @@
     hit_chance: 4
     weapon_type: crossbow
     ammo_type: bolt
+    level: 120
+    vocations:
+    - paladin
 - id: 22870
   name: throwing star of Sula
   article: a
@@ -5081,6 +5640,10 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 25735
   name: leaf star
   article: a
@@ -5099,6 +5662,7 @@
     element_damage:
       element: earth
       damage: 2
+    level: 60
 - id: 25759
   name: royal star
   article: a
@@ -5116,6 +5680,7 @@
     element_damage:
       element: fire
       damage: 2
+    level: 120
 - id: 25760
   name: wand of darkness
   article: a
@@ -5132,6 +5697,9 @@
     weapon_type: wand
     element: death
     missile_id: 11
+    level: 41
+    vocations:
+    - sorcerer
 - id: 25915
   name: fiery spike sword replica
   article: a
@@ -6951,6 +7519,9 @@
     defense: 33
     attack: 50
     weapon_type: sword
+    level: 200
+    vocations:
+    - knight
 - id: 27450
   name: slayer of destruction
   article: a
@@ -6964,6 +7535,9 @@
     defense: 30
     attack: 52
     weapon_type: sword
+    level: 200
+    vocations:
+    - knight
 - id: 27451
   name: axe of destruction
   article: an
@@ -6977,6 +7551,9 @@
     defense: 31
     attack: 51
     weapon_type: axe
+    level: 200
+    vocations:
+    - knight
 - id: 27452
   name: chopper of destruction
   article: a
@@ -6990,6 +7567,9 @@
     defense: 30
     attack: 52
     weapon_type: axe
+    level: 200
+    vocations:
+    - knight
 - id: 27453
   name: mace of destruction
   article: a
@@ -7003,6 +7583,9 @@
     defense: 32
     attack: 50
     weapon_type: club
+    level: 200
+    vocations:
+    - knight
 - id: 27454
   name: hammer of destruction
   article: a
@@ -7016,6 +7599,9 @@
     defense: 29
     attack: 53
     weapon_type: club
+    level: 200
+    vocations:
+    - knight
 - id: 27455
   name: bow of destruction
   article: a
@@ -7029,6 +7615,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 200
+    vocations:
+    - paladin
 - id: 27456
   name: crossbow of destruction
   article: a
@@ -7042,6 +7631,9 @@
     hit_chance: 5
     weapon_type: crossbow
     ammo_type: bolt
+    level: 200
+    vocations:
+    - paladin
 - id: 27457
   name: wand of destruction
   article: a
@@ -7055,6 +7647,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 200
+    vocations:
+    - sorcerer
 - id: 27458
   name: rod of destruction
   article: a
@@ -7068,6 +7663,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 200
+    vocations:
+    - druid
 - id: 27523
   name: strange mallet
   article: a
@@ -7125,6 +7723,9 @@
     element_damage:
       element: energy
       damage: 42
+    level: 250
+    vocations:
+    - knight
 - id: 28464
   name: 'test weapon for knights '
   article: a
@@ -7172,6 +7773,9 @@
     weapon_type: rod
     element: earth
     missile_id: 30
+    level: 300
+    vocations:
+    - druid
 - id: 28717
   name: falcon wand
   article: a
@@ -7185,6 +7789,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 300
+    vocations:
+    - sorcerer
 - id: 28718
   name: falcon bow
   article: a
@@ -7198,6 +7805,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 300
+    vocations:
+    - paladin
 - id: 28723
   name: falcon longsword
   article: a
@@ -7211,6 +7821,9 @@
     defense: 34
     attack: 56
     weapon_type: sword
+    level: 300
+    vocations:
+    - knight
 - id: 28724
   name: falcon battleaxe
   article: a
@@ -7227,6 +7840,9 @@
     element_damage:
       element: energy
       damage: 47
+    level: 300
+    vocations:
+    - knight
 - id: 28725
   name: falcon mace
   article: a
@@ -7244,6 +7860,9 @@
     element_damage:
       element: energy
       damage: 41
+    level: 300
+    vocations:
+    - knight
 - id: 28746
   name: zathroth' redeemer
   flags:
@@ -7293,6 +7912,10 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 28826
   name: deepling fork
   article: a
@@ -7306,6 +7929,10 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 230
+    vocations:
+    - sorcerer
+    - druid
 - id: 28829
   name: rotten demonbone
   article: a
@@ -7321,6 +7948,7 @@
     extra_defense: -1
     attack: 46
     weapon_type: club
+    level: 80
 - id: 28830
   name: energized demonbone
   article: an
@@ -7336,6 +7964,7 @@
     extra_defense: -1
     attack: 46
     weapon_type: club
+    level: 80
 - id: 28831
   name: unliving demonbone
   article: an
@@ -7351,6 +7980,7 @@
     extra_defense: -1
     attack: 46
     weapon_type: club
+    level: 80
 - id: 28832
   name: sulphurous demonbone
   article: a
@@ -7366,6 +7996,7 @@
     extra_defense: -1
     attack: 46
     weapon_type: club
+    level: 80
 - id: 29286
   name: golden axe
   article: a
@@ -7392,6 +8023,9 @@
     hit_chance: 4
     weapon_type: bow
     ammo_type: arrow
+    level: 220
+    vocations:
+    - paladin
 - id: 29419
   name: resizer
   article: a
@@ -7408,6 +8042,9 @@
     element_damage:
       element: ice
       damage: 46
+    level: 230
+    vocations:
+    - knight
 - id: 29421
   name: summerblade
   article: a
@@ -7425,6 +8062,9 @@
     element_damage:
       element: fire
       damage: 41
+    level: 200
+    vocations:
+    - knight
 - id: 29422
   name: winterblade
   article: a
@@ -7442,6 +8082,9 @@
     element_damage:
       element: ice
       damage: 40
+    level: 200
+    vocations:
+    - knight
 - id: 29425
   name: energized limb
   article: an
@@ -7455,6 +8098,10 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 30194
   name: soft hammer
   article: a
@@ -7494,6 +8141,9 @@
     hit_chance: 6
     weapon_type: crossbow
     ammo_type: bolt
+    level: 220
+    vocations:
+    - paladin
 - id: 30395
   name: cobra club
   flags:
@@ -7510,6 +8160,9 @@
     element_damage:
       element: fire
       damage: 44
+    level: 220
+    vocations:
+    - knight
 - id: 30396
   name: cobra axe
   flags:
@@ -7526,6 +8179,9 @@
     element_damage:
       element: ice
       damage: 44
+    level: 220
+    vocations:
+    - knight
 - id: 30398
   name: cobra sword
   flags:
@@ -7539,6 +8195,9 @@
     extra_defense: 2
     attack: 52
     weapon_type: sword
+    level: 220
+    vocations:
+    - knight
 - id: 30399
   name: cobra wand
   flags:
@@ -7551,6 +8210,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 270
+    vocations:
+    - sorcerer
 - id: 30400
   name: cobra rod
   flags:
@@ -7563,6 +8225,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 220
+    vocations:
+    - druid
 - id: 31580
   name: mortal mace
   article: a
@@ -7580,6 +8245,9 @@
     element_damage:
       element: death
       damage: 44
+    level: 220
+    vocations:
+    - knight
 - id: 31581
   name: bow of cataclysm
   article: a
@@ -7593,6 +8261,9 @@
     hit_chance: 4
     weapon_type: bow
     ammo_type: arrow
+    level: 250
+    vocations:
+    - paladin
 - id: 31614
   name: tagralt blade
   article: a
@@ -7609,6 +8280,9 @@
     element_damage:
       element: earth
       damage: 49
+    level: 250
+    vocations:
+    - knight
 - id: 32093
   name: schnitzel meat grinder
   article: a
@@ -7637,6 +8311,9 @@
     element_damage:
       element: fire
       damage: 49
+    level: 180
+    vocations:
+    - knight
 - id: 34082
   name: soulcutter
   article: a
@@ -7654,6 +8331,9 @@
     element_damage:
       element: death
       damage: 45
+    level: 400
+    vocations:
+    - knight
 - id: 34083
   name: soulshredder
   article: a
@@ -7670,6 +8350,9 @@
     element_damage:
       element: ice
       damage: 47
+    level: 400
+    vocations:
+    - knight
 - id: 34084
   name: soulbiter
   article: a
@@ -7687,6 +8370,9 @@
     element_damage:
       element: death
       damage: 45
+    level: 400
+    vocations:
+    - knight
 - id: 34085
   name: souleater
   article: a
@@ -7703,6 +8389,9 @@
     element_damage:
       element: ice
       damage: 47
+    level: 400
+    vocations:
+    - knight
 - id: 34086
   name: soulcrusher
   article: a
@@ -7720,6 +8409,9 @@
     element_damage:
       element: ice
       damage: 46
+    level: 400
+    vocations:
+    - knight
 - id: 34087
   name: soulmaimer
   article: a
@@ -7736,6 +8428,9 @@
     element_damage:
       element: energy
       damage: 47
+    level: 400
+    vocations:
+    - knight
 - id: 34088
   name: soulbleeder
   article: a
@@ -7749,6 +8444,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 400
+    vocations:
+    - paladin
 - id: 34089
   name: soulpiercer
   article: a
@@ -7762,6 +8460,9 @@
     hit_chance: 6
     weapon_type: crossbow
     ammo_type: bolt
+    level: 400
+    vocations:
+    - paladin
 - id: 34090
   name: soultainter
   article: a
@@ -7775,6 +8476,9 @@
     weapon_type: wand
     element: death
     missile_id: 32
+    level: 400
+    vocations:
+    - sorcerer
 - id: 34091
   name: soulhexer
   article: a
@@ -7788,6 +8492,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 400
+    vocations:
+    - druid
 - id: 34150
   name: lion longbow
   article: a
@@ -7801,6 +8508,9 @@
     hit_chance: 6
     weapon_type: bow
     ammo_type: arrow
+    level: 270
+    vocations:
+    - paladin
 - id: 34151
   name: lion rod
   article: a
@@ -7814,6 +8524,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 270
+    vocations:
+    - druid
 - id: 34152
   name: lion wand
   article: a
@@ -7827,6 +8540,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 220
+    vocations:
+    - sorcerer
 - id: 34155
   name: lion longsword
   article: a
@@ -7844,6 +8560,9 @@
     element_damage:
       element: earth
       damage: 44
+    level: 270
+    vocations:
+    - knight
 - id: 34253
   name: lion axe
   article: a
@@ -7861,6 +8580,9 @@
     element_damage:
       element: earth
       damage: 44
+    level: 270
+    vocations:
+    - knight
 - id: 34254
   name: lion hammer
   article: a
@@ -7878,6 +8600,9 @@
     element_damage:
       element: earth
       damage: 44
+    level: 270
+    vocations:
+    - knight
 - id: 34331
   name: golden magic longsword
   article: a
@@ -7899,6 +8624,9 @@
     defense: 31
     attack: 52
     weapon_type: club
+    level: 150
+    vocations:
+    - knight
 - id: 35515
   name: throwing axe
   article: a
@@ -7913,6 +8641,9 @@
     extra_defense: 2
     attack: 51
     weapon_type: axe
+    level: 150
+    vocations:
+    - knight
 - id: 35518
   name: jungle bow
   article: a
@@ -7926,6 +8657,9 @@
     hit_chance: 5
     weapon_type: bow
     ammo_type: arrow
+    level: 150
+    vocations:
+    - paladin
 - id: 35521
   name: jungle rod
   article: a
@@ -7939,6 +8673,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 150
+    vocations:
+    - druid
 - id: 35522
   name: jungle wand
   article: a
@@ -7952,6 +8689,9 @@
     weapon_type: rod
     element: earth
     missile_id: 39
+    level: 150
+    vocations:
+    - sorcerer
 - id: 36657
   name: eldritch claymore
   article: a
@@ -7968,6 +8708,9 @@
     element_damage:
       element: fire
       damage: 50
+    level: 270
+    vocations:
+    - knight
 - id: 36658
   name: gilded eldritch claymore
   article: a
@@ -7984,6 +8727,9 @@
     element_damage:
       element: fire
       damage: 50
+    level: 270
+    vocations:
+    - knight
 - id: 36659
   name: eldritch warmace
   article: a
@@ -8000,6 +8746,9 @@
     element_damage:
       element: fire
       damage: 50
+    level: 270
+    vocations:
+    - knight
 - id: 36660
   name: gilded eldritch warmace
   article: a
@@ -8016,6 +8765,9 @@
     element_damage:
       element: fire
       damage: 50
+    level: 270
+    vocations:
+    - knight
 - id: 36661
   name: eldritch greataxe
   article: a
@@ -8029,6 +8781,9 @@
     defense: 33
     attack: 56
     weapon_type: axe
+    level: 270
+    vocations:
+    - knight
 - id: 36662
   name: gilded eldritch greataxe
   article: a
@@ -8042,6 +8797,9 @@
     defense: 33
     attack: 56
     weapon_type: axe
+    level: 270
+    vocations:
+    - knight
 - id: 36664
   name: eldritch bow
   article: a
@@ -8055,6 +8813,9 @@
     hit_chance: 6
     weapon_type: bow
     ammo_type: arrow
+    level: 250
+    vocations:
+    - paladin
 - id: 36665
   name: gilded eldritch bow
   article: a
@@ -8068,6 +8829,9 @@
     hit_chance: 6
     weapon_type: bow
     ammo_type: arrow
+    level: 250
+    vocations:
+    - paladin
 - id: 36668
   name: eldritch wand
   article: a
@@ -8080,6 +8844,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 250
+    vocations:
+    - sorcerer
 - id: 36669
   name: gilded eldritch wand
   article: a
@@ -8092,6 +8859,9 @@
     weapon_type: wand
     element: fire
     missile_id: 4
+    level: 250
+    vocations:
+    - sorcerer
 - id: 36674
   name: eldritch rod
   article: a
@@ -8105,6 +8875,9 @@
     weapon_type: rod
     element: ice
     missile_id: 29
+    level: 250
+    vocations:
+    - druid
 - id: 36675
   name: gilded eldritch rod
   article: a
@@ -8118,6 +8891,9 @@
     weapon_type: rod
     element: ice
     missile_id: 29
+    level: 250
+    vocations:
+    - druid
 - id: 38642
   name: golden warlord sword
   article: a
@@ -8143,6 +8919,9 @@
     element_damage:
       element: ice
       damage: 44
+    level: 300
+    vocations:
+    - knight
 - id: 39156
   name: naga axe
   article: a
@@ -8160,6 +8939,9 @@
     element_damage:
       element: energy
       damage: 44
+    level: 300
+    vocations:
+    - knight
 - id: 39157
   name: naga club
   article: a
@@ -8174,6 +8956,9 @@
     extra_defense: 3
     attack: 52
     weapon_type: club
+    level: 300
+    vocations:
+    - knight
 - id: 39159
   name: naga crossbow
   article: a
@@ -8187,6 +8972,9 @@
     hit_chance: 6
     weapon_type: crossbow
     ammo_type: bolt
+    level: 300
+    vocations:
+    - paladin
 - id: 39162
   name: naga wand
   article: a
@@ -8200,6 +8988,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 250
+    vocations:
+    - sorcerer
 - id: 39163
   name: naga rod
   article: a
@@ -8213,6 +9004,9 @@
     weapon_type: rod
     element: ice
     missile_id: 37
+    level: 250
+    vocations:
+    - druid
 - id: 40530
   name: broken macuahuitl
   flags:
@@ -8254,6 +9048,9 @@
     element_damage:
       element: fire
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43865
   name: grand sanguine blade
   article: a
@@ -8271,6 +9068,9 @@
     element_damage:
       element: fire
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43866
   name: sanguine cudgel
   article: a
@@ -8288,6 +9088,9 @@
     element_damage:
       element: death
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43867
   name: grand sanguine cudgel
   article: a
@@ -8305,6 +9108,9 @@
     element_damage:
       element: death
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43868
   name: sanguine hatchet
   article: a
@@ -8322,6 +9128,9 @@
     element_damage:
       element: fire
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43869
   name: grand sanguine hatchet
   article: a
@@ -8339,6 +9148,9 @@
     element_damage:
       element: fire
       damage: 46
+    level: 600
+    vocations:
+    - knight
 - id: 43870
   name: sanguine razor
   article: a
@@ -8355,6 +9167,9 @@
     element_damage:
       element: energy
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43871
   name: grand sanguine razor
   article: a
@@ -8371,6 +9186,9 @@
     element_damage:
       element: energy
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43872
   name: sanguine bludgeon
   article: a
@@ -8387,6 +9205,9 @@
     element_damage:
       element: earth
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43873
   name: grand sanguine bludgeon
   article: a
@@ -8403,6 +9224,9 @@
     element_damage:
       element: earth
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43874
   name: sanguine battleaxe
   article: a
@@ -8419,6 +9243,9 @@
     element_damage:
       element: death
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43875
   name: grand sanguine battleaxe
   article: a
@@ -8435,6 +9262,9 @@
     element_damage:
       element: death
       damage: 50
+    level: 600
+    vocations:
+    - knight
 - id: 43877
   name: sanguine bow
   article: a
@@ -8448,6 +9278,9 @@
     hit_chance: 6
     weapon_type: bow
     ammo_type: arrow
+    level: 600
+    vocations:
+    - paladin
 - id: 43878
   name: grand sanguine bow
   article: a
@@ -8461,6 +9294,9 @@
     hit_chance: 6
     weapon_type: bow
     ammo_type: arrow
+    level: 600
+    vocations:
+    - paladin
 - id: 43879
   name: sanguine crossbow
   article: a
@@ -8474,6 +9310,9 @@
     hit_chance: 7
     weapon_type: crossbow
     ammo_type: bolt
+    level: 600
+    vocations:
+    - paladin
 - id: 43880
   name: grand sanguine crossbow
   article: a
@@ -8487,6 +9326,9 @@
     hit_chance: 7
     weapon_type: crossbow
     ammo_type: bolt
+    level: 600
+    vocations:
+    - paladin
 - id: 43882
   name: sanguine coil
   article: a
@@ -8500,6 +9342,9 @@
     weapon_type: wand
     element: fire
     missile_id: 5
+    level: 600
+    vocations:
+    - sorcerer
 - id: 43883
   name: grand sanguine coil
   article: a
@@ -8513,6 +9358,9 @@
     weapon_type: wand
     element: energy
     missile_id: 5
+    level: 600
+    vocations:
+    - sorcerer
 - id: 43885
   name: sanguine rod
   article: a
@@ -8526,6 +9374,9 @@
     weapon_type: rod
     element: earth
     missile_id: 30
+    level: 600
+    vocations:
+    - druid
 - id: 43886
   name: grand sanguine rod
   article: a
@@ -8539,3 +9390,6 @@
     weapon_type: rod
     element: earth
     missile_id: 30
+    level: 600
+    vocations:
+    - druid

@@ -4396,6 +4396,7 @@
   article: a
   flags:
   - unpass
+  - avoid
   attributes:
     weight: 2300
 - id: 3221
@@ -8505,6 +8506,7 @@
 - id: 5708
   name: rubble
   flags:
+  - top
   - unpass
   - unmove
 - id: 5709
@@ -8606,6 +8608,7 @@
 - id: 5866
   name: rubble
   flags:
+  - top
   - unpass
   - unmove
 - id: 5867
@@ -12929,12 +12932,14 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9159
   name: pile of chaos matter
   flags:
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9160
   name: metal locker
   article: a
@@ -12942,6 +12947,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9161
   name: glue dispenser
   article: a
@@ -12949,6 +12955,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9162
   name: storage chest
   article: a
@@ -12956,6 +12963,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9163
   name: amphora of grease
   article: an
@@ -12963,6 +12971,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9164
   name: storage box
   article: a
@@ -12970,6 +12979,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9165
   name: toolbox
   article: a
@@ -12977,6 +12987,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9166
   name: screwdriver holder
   article: a
@@ -12984,6 +12995,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9167
   name: energy generator
   article: an
@@ -12998,6 +13010,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9169
   name: old crate
   article: an
@@ -13005,6 +13018,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 9176
   name: hot cauldron
   article: a
@@ -16094,21 +16108,25 @@
 - id: 11382
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11383
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11384
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11385
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11386
@@ -16124,21 +16142,25 @@
 - id: 11388
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11389
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11390
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11391
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 11394
@@ -16227,6 +16249,7 @@
   flags:
   - unpass
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 1200
@@ -16437,6 +16460,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 11814
   name: barbecue
   article: a
@@ -16444,6 +16468,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 11861
   name: stone pillar
   article: a
@@ -17062,6 +17087,7 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 12470
   name: small golden scorpion
   article: a
@@ -17082,12 +17108,14 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 12473
   name: ornamented scorpion table
   article: an
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 12474
   name: scorpion altar
   article: a
@@ -17161,6 +17189,7 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 12506
   name: remains of a canopic jar
   flags:
@@ -17304,11 +17333,13 @@
 - id: 12676
   name: bird's nest
   flags:
+  - top
   - unpass
   - unmove
 - id: 12677
   name: bird's nest
   flags:
+  - top
   - unpass
   - unmove
 - id: 12713
@@ -18036,12 +18067,14 @@
   name: stone pillar
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 13124
   name: stone pillar
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 13138
@@ -18978,6 +19011,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 14163
   name: fossilised coral
   flags:
@@ -18990,6 +19024,7 @@
   flags:
   - unpass
   - unmove
+  - avoid
   attributes:
     weight: 8000
     capacity: 15
@@ -21675,6 +21710,7 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 17678
   name: smashed trunk
   article: a
@@ -21728,11 +21764,13 @@
   article: a
   flags:
   - unpass
+  - avoid
 - id: 17724
   name: filigree statue
   article: a
   flags:
   - unpass
+  - avoid
 - id: 17725
   name: sign
   article: a
@@ -22404,6 +22442,7 @@
   name: elevator
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 17944
@@ -25601,6 +25640,7 @@
   name: elevator
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 21058
@@ -25799,6 +25839,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
   attributes:
     weight: 6000
 - id: 21161
@@ -25877,6 +25918,7 @@
   name: reinforced pillar
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 21290
@@ -25920,12 +25962,14 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21336
   name: slime slide
   article: a
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21372
   name: Mr Jones's piano
   flags:
@@ -26170,24 +26214,28 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21809
   name: spark of light
   article: a
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21810
   name: maelstrom of darkness
   article: a
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21811
   name: cloud of Earth energy
   article: a
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 21813
   name: orb of Earth Everpresent
   article: the
@@ -27024,6 +27072,7 @@
   name: bird nest
   article: a
   flags:
+  - top
   - usable
   - unpass
   - unmove
@@ -27082,21 +27131,25 @@
 - id: 23172
   name: rift archway
   flags:
+  - top
   - unpass
   - unmove
 - id: 23173
   name: rift archway
   flags:
+  - top
   - unpass
   - unmove
 - id: 23174
   name: rift archway
   flags:
+  - top
   - unpass
   - unmove
 - id: 23175
   name: rift archway
   flags:
+  - top
   - unpass
   - unmove
 - id: 23181
@@ -28404,11 +28457,13 @@
 - id: 24868
   name: old tibia item
   flags:
+  - top
   - unpass
   - unmove
 - id: 24869
   name: old tibia item
   flags:
+  - top
   - unpass
   - unmove
 - id: 24872
@@ -28971,48 +29026,56 @@
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25341
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25342
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25343
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25344
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25345
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25346
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25347
   name: green leaves
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 25350
@@ -29562,12 +29625,14 @@
   name: owl
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 25508
   name: owl
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 25631
@@ -30018,6 +30083,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 27309
   name: barricade
   article: a
@@ -30621,21 +30687,25 @@
 - id: 27954
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 27955
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 27956
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 27957
   name: unknown item
   flags:
+  - top
   - unpass
   - unmove
 - id: 27958
@@ -31263,6 +31333,7 @@
 - id: 28437
   name: fiery metal eye
   flags:
+  - top
   - unpass
   - unmove
 - id: 28438
@@ -31298,6 +31369,7 @@
 - id: 28444
   name: fiery metal eye
   flags:
+  - top
   - unpass
   - unmove
 - id: 28445
@@ -31566,6 +31638,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 28879
   name: fiery metal eye
   article: a
@@ -31595,12 +31668,14 @@
   flags:
   - unpass
   - unmove
+  - avoid
 - id: 28905
   name: chest
   article: a
   flags:
   - unpass
   - unmove
+  - avoid
   attributes:
     weight: 12000
     capacity: 15
@@ -33986,6 +34061,7 @@
   name: throne of scarlett etzel
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 31518
@@ -34159,6 +34235,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 31736
   name: unknown item
   flags:
@@ -34224,6 +34301,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
 - id: 32007
   name: event item
   flags:
@@ -34510,6 +34588,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
   attributes:
     weight: 170
 - id: 32569
@@ -34519,6 +34598,7 @@
   - usable
   - unpass
   - unmove
+  - avoid
   attributes:
     weight: 170
 - id: 32588
@@ -35518,102 +35598,119 @@
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37144
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37145
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37146
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37147
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37148
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37149
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37150
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37151
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37152
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37153
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37154
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37155
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37156
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37157
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37158
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37159
   name: exaltation forge
   article: an
   flags:
+  - top
   - unpass
   - unmove
 - id: 37213
@@ -36014,12 +36111,14 @@
   name: painting booth
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 37404
   name: painting booth
   article: a
   flags:
+  - top
   - unpass
   - unmove
 - id: 37558
@@ -38242,6 +38341,7 @@
   name: jungle moa nest
   article: a
   flags:
+  - top
   - usable
   - unpass
   - unmove

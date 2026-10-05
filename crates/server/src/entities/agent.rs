@@ -12,14 +12,14 @@ use crate::{
     local_id::LocalId,
 };
 
-use super::{inventory::Inventory, player::Player};
+use super::player::Player;
 use crate::{
     config,
     constants::movement::{DIAGONAL_STEP_FACTOR, SPEED_PARAM_A, SPEED_PARAM_B, SPEED_PARAM_C},
     entities::{
         combat::Participation,
         conditions::Conditions,
-        creature::{BloodType, CreatureKind},
+        creature::{BloodType, CreatureFlag, CreatureKind},
         items::ItemId,
         position::Position,
         skills::SkillType,
@@ -216,7 +216,7 @@ impl Agent {
             player.position,
             player.vocation,
             player.capacity,
-            Inventory::from_snapshot(player.inventory),
+            player.inventory,
             player.skills,
         );
         Self {
@@ -340,6 +340,12 @@ impl Agent {
         self.get_creature_kind()
             .and_then(|kind| kind.flee_threshold)
             .is_some_and(|threshold| self.life.current <= threshold)
+    }
+
+    pub fn is_hostile(&self) -> bool {
+        !self
+            .get_creature_kind()
+            .is_some_and(|kind| kind.has_flag(CreatureFlag::Passive))
     }
 
     pub fn outfit(&self) -> (OutfitId, OutfitColors) {
@@ -529,7 +535,9 @@ mod tests {
     use crate::entities::vocation::Vocation;
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::a_creature_kind;
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{
+        a_test_creature, a_test_passive_creature, a_test_snapshot,
+    };
     use std::collections::HashMap;
 
     fn make_snapshot(id: u32) -> PlayerSnapshot {
@@ -632,6 +640,13 @@ mod tests {
         assert_eq!(snap.capacity, 40000);
         assert_eq!(snap.outfit, (OutfitId(133), OutfitColors::new(1, 2, 3, 4)));
         assert_eq!(snap.skills[&SkillType::Level].value, 120);
+    }
+
+    #[test]
+    fn only_a_passive_creature_is_not_hostile() {
+        assert!(!a_test_passive_creature("Deer", 25).is_hostile());
+        assert!(a_test_creature("Rat", 10, (1, 2)).is_hostile());
+        assert!(Agent::from_player(a_test_snapshot(1, 1)).is_hostile());
     }
 
     #[test]

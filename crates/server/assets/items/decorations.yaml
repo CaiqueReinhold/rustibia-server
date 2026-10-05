@@ -159,34 +159,42 @@
 - id: 244
   name: linen
   flags:
+  - top
   - unmove
 - id: 245
   name: linen
   flags:
+  - top
   - unmove
 - id: 246
   name: linen
   flags:
+  - top
   - unmove
 - id: 247
   name: linen
   flags:
+  - top
   - unmove
 - id: 249
   name: linen
   flags:
+  - top
   - unmove
 - id: 250
   name: linen
   flags:
+  - top
   - unmove
 - id: 251
   name: linen
   flags:
+  - top
   - unmove
 - id: 252
   name: linen
   flags:
+  - top
   - unmove
 - id: 435
   name: sewer grate
@@ -201,6 +209,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 571
   name: wooden floor
   flags:
@@ -295,26 +304,31 @@
   flags:
   - usable
   - unmove
+  - avoid
 - id: 620
   name: beach chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 621
   name: beach chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 623
   name: beach chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 624
   name: beach chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 752
   name: celestial map
   article: a
@@ -339,16 +353,19 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 777
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 778
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 851
   name: chalk board
@@ -376,6 +393,7 @@
   flags:
   - usable
   - unmove
+  - avoid
 - id: 876
   name: ant trail
   article: an
@@ -384,6 +402,7 @@
 - id: 1012
   name: sparkling gem
   flags:
+  - top
   - unmove
 - id: 1013
   name: sparkling gems
@@ -495,240 +514,288 @@
 - id: 1088
   name: earth
   flags:
+  - top
   - unmove
 - id: 1089
   name: earth
   flags:
+  - top
   - unmove
 - id: 1123
   name: stone archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1124
   name: stone archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1125
   name: stone archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1126
   name: stone archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1365
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1366
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1367
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1368
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1369
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1370
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1371
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1372
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1403
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1404
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1405
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1406
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1407
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1408
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1482
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1483
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1484
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1485
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1528
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1529
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1530
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1531
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1532
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1533
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1534
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1535
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1557
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1561
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1565
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1566
   name: stone archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1567
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1568
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1593
   name: grass archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1594
   name: grass archway
   article: a
   flags:
+  - top
   - unmove
 - id: 1624
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1625
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1626
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1627
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 1634
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 1635
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 1636
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 1637
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 1716
   name: waterfall
@@ -1064,6 +1131,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 40
@@ -1127,147 +1195,176 @@
 - id: 2353
   name: ornamented stone table
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 2354
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2355
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2356
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2357
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2362
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2363
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2364
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2365
   name: throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2370
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2371
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2372
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2373
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2402
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2403
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2404
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2405
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2406
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2407
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2408
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2409
   name: couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2410
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2411
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2412
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2413
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2414
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2415
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2416
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2417
   name: luxurious couch
   article: a
   flags:
   - unmove
+  - avoid
 - id: 2511
   name: grass mat
   article: a
@@ -2200,7 +2297,8 @@
 - id: 3514
   name: empty coal basin
   article: an
-  flags: []
+  flags:
+  - avoid
 - id: 3651
   name: wheat
   flags:
@@ -2213,6 +2311,7 @@
   name: wheat
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 4800
@@ -2259,6 +2358,7 @@
   name: some sunflowers
   flags:
   - unmove
+  - avoid
 - id: 3667
   name: sunflower
   article: a
@@ -2573,7 +2673,8 @@
 - id: 4054
   name: red chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 4289
   name: dead dragon
   article: a
@@ -2930,21 +3031,25 @@
   name: wooden column
   article: a
   flags:
+  - top
   - unmove
 - id: 5325
   name: wooden column
   article: a
   flags:
+  - top
   - unmove
 - id: 5329
   name: wooden column
   article: a
   flags:
+  - top
   - unmove
 - id: 5330
   name: wooden column
   article: a
   flags:
+  - top
   - unmove
 - id: 5361
   name: sign
@@ -3104,10 +3209,12 @@
 - id: 5418
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 5419
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 5459
   name: wrecked ventilation grill
@@ -3129,6 +3236,7 @@
   flags:
   - usable
   - unmove
+  - avoid
 - id: 5470
   name: sugar cane
   article: a
@@ -3232,11 +3340,13 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 5675
   name: treasure chest
   article: a
   flags:
   - unmove
+  - avoid
 - id: 5679
   name: shell
   article: a
@@ -3396,21 +3506,25 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 5916
   name: large throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 6116
   name: electric sparks
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 6117
   name: electric sparks
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 6118
   name: treasure map
   article: a
@@ -3438,51 +3552,61 @@
   name: tree archway
   article: a
   flags:
+  - top
   - unmove
 - id: 6175
   name: tree archway
   article: a
   flags:
+  - top
   - unmove
 - id: 6181
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6182
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6183
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6184
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6185
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6186
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6187
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6188
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6215
   name: grass
@@ -3552,31 +3676,37 @@
   name: tree archway
   article: a
   flags:
+  - top
   - unmove
 - id: 6232
   name: tree archway
   article: a
   flags:
+  - top
   - unmove
 - id: 6233
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6234
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6235
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6236
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6270
   name: some leaves
@@ -3606,11 +3736,13 @@
   name: tree archway
   article: a
   flags:
+  - top
   - unmove
 - id: 6275
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6391
   name: hawser
@@ -3620,62 +3752,75 @@
 - id: 6407
   name: bones
   flags:
+  - top
   - unmove
 - id: 6408
   name: bones
   flags:
+  - top
   - unmove
 - id: 6409
   name: bones
   flags:
+  - top
   - unmove
 - id: 6410
   name: bones
   flags:
+  - top
   - unmove
 - id: 6411
   name: bones
   flags:
+  - top
   - unmove
 - id: 6422
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6423
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6424
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6425
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6426
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6427
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6428
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6429
   name: large branch
   article: a
   flags:
+  - top
   - unmove
 - id: 6433
   name: blue tapestry
@@ -3705,6 +3850,7 @@
   name: firefly
   article: a
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -3721,6 +3867,7 @@
   name: firefly
   article: a
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -3730,6 +3877,7 @@
   name: firefly
   article: a
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -3746,6 +3894,7 @@
   name: firefly
   article: a
   flags:
+  - top
   - unmove
 - id: 6512
   name: christmas wreath
@@ -3823,32 +3972,39 @@
 - id: 6763
   name: ice
   flags:
+  - top
   - unmove
 - id: 6764
   name: ice
   flags:
+  - top
   - unmove
 - id: 6765
   name: ice
   flags:
+  - top
   - unmove
 - id: 6766
   name: ice
   flags:
+  - top
   - unmove
 - id: 6767
   name: ice
   flags:
+  - top
   - unmove
 - id: 6792
   name: entrance
   article: an
   flags:
+  - top
   - unmove
 - id: 6803
   name: entrance
   article: an
   flags:
+  - top
   - unmove
 - id: 6870
   name: ice
@@ -3902,21 +4058,25 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6883
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6884
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6885
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 6886
   name: strut
@@ -4065,23 +4225,27 @@
   name: frozen railing
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 6962
   name: frozen railing
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 6968
   name: entrance
   article: an
   flags:
+  - top
   - unmove
 - id: 6969
   name: entrance
   article: an
   flags:
+  - top
   - unmove
 - id: 6970
   name: mammoth skull
@@ -4121,6 +4285,7 @@
   name: rope
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 1800
@@ -4128,6 +4293,7 @@
   name: rope
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 1800
@@ -4135,6 +4301,7 @@
   name: rope
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 1800
@@ -4142,6 +4309,7 @@
   name: pillar
   article: a
   flags:
+  - top
   - unmove
 - id: 6987
   name: wooden dragon
@@ -4183,19 +4351,23 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7032
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7060
   name: ice
   flags:
+  - top
   - unmove
 - id: 7061
   name: ice
   flags:
+  - top
   - unmove
 - id: 7137
   name: bloodstain
@@ -4216,56 +4388,67 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7144
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7160
   name: frozen chest
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7161
   name: frozen chest
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7162
   name: frozen drawers
   flags:
   - unmove
+  - avoid
 - id: 7163
   name: frozen chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7164
   name: frozen chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7165
   name: frozen chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7166
   name: frozen chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7169
   name: frozen trough
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7170
   name: frozen trough
   article: a
   flags:
   - unmove
+  - avoid
 - id: 7180
   name: broken pottery
   flags:
@@ -4332,12 +4515,14 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 7267
   name: sled
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 7277
   name: stone throne
   article: a
@@ -4484,31 +4669,37 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7510
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7511
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7512
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7513
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7514
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 7519
   name: something crawling
@@ -4528,6 +4719,7 @@
   name: mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 7543
   name: ramp
@@ -4649,21 +4841,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7705
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7706
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7707
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 7750
   name: sewer grate
@@ -4871,6 +5067,7 @@
 - id: 7996
   name: sparkling gems
   flags:
+  - top
   - unmove
 - id: 7997
   name: sparkling gems
@@ -4924,6 +5121,7 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8172
   name: tree
@@ -4950,36 +5148,43 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8243
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8244
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8245
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8246
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8247
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8248
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8333
   name: golden ornament
@@ -5044,16 +5249,19 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8370
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8371
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8391
   name: golden ornament
@@ -5111,36 +5319,43 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8405
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8406
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8407
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8408
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8409
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8410
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8411
   name: copper pipes
@@ -5184,11 +5399,13 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8420
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8421
   name: golden ornament
@@ -5415,31 +5632,37 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8520
   name: heavy wooden chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8521
   name: heavy wooden chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8522
   name: heavy wooden chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8529
   name: brass throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8530
   name: brass throne
   article: a
   flags:
   - unmove
+  - avoid
 - id: 8533
   name: tapestry
   article: a
@@ -5673,41 +5896,49 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8608
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8609
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8610
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8611
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8612
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8613
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8614
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8646
   name: large gem
@@ -5821,6 +6052,7 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 8785
   name: acid
@@ -5911,6 +6143,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     weight: 900
 - id: 8824
@@ -5918,6 +6151,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     weight: 900
 - id: 8825
@@ -5925,6 +6159,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     weight: 900
 - id: 8832
@@ -5967,6 +6202,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
   attributes:
     weight: 900
 - id: 8921
@@ -6136,6 +6372,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 9101
   name: stand
   article: a
@@ -6215,6 +6452,7 @@
 - id: 9254
   name: sparkling gems
   flags:
+  - top
   - usable
   - unmove
 - id: 9286
@@ -6490,6 +6728,7 @@
   article: an
   flags:
   - unmove
+  - avoid
 - id: 9669
   name: unknown item
   flags:
@@ -6516,10 +6755,12 @@
 - id: 9785
   name: zaoan decoration
   flags:
+  - top
   - unmove
 - id: 9786
   name: zaoan decoration
   flags:
+  - top
   - unmove
 - id: 9787
   name: zaoan decoration
@@ -6544,22 +6785,27 @@
 - id: 9804
   name: zaoan decoration
   flags:
+  - top
   - unmove
 - id: 9805
   name: skull decoration
   flags:
+  - top
   - unmove
 - id: 9806
   name: skull decoration
   flags:
+  - top
   - unmove
 - id: 9807
   name: lizard statue
   flags:
+  - top
   - unmove
 - id: 9808
   name: lizard statue
   flags:
+  - top
   - unmove
 - id: 9809
   name: zaoan decoration
@@ -6568,6 +6814,7 @@
 - id: 9810
   name: zaoan decoration
   flags:
+  - top
   - unmove
 - id: 9820
   name: dry grass
@@ -6771,6 +7018,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6778,6 +7026,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6789,6 +7038,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6796,6 +7046,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6803,6 +7054,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6810,6 +7062,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6817,6 +7070,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6824,6 +7078,7 @@
   name: lamp
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 3000
@@ -6921,11 +7176,13 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 10842
   name: dimensional portal
   article: a
   flags:
   - unmove
+  - avoid
 - id: 10847
   name: black crystals
   article: a
@@ -6934,22 +7191,27 @@
 - id: 10871
   name: fog
   flags:
+  - top
   - unmove
 - id: 10872
   name: fog
   flags:
+  - top
   - unmove
 - id: 10873
   name: fog
   flags:
+  - top
   - unmove
 - id: 10874
   name: fog
   flags:
+  - top
   - unmove
 - id: 10875
   name: fog
   flags:
+  - top
   - unmove
 - id: 10876
   name: skull
@@ -6963,21 +7225,25 @@
   name: corrupted wall
   article: a
   flags:
+  - top
   - unmove
 - id: 10956
   name: corrupted wall
   article: a
   flags:
+  - top
   - unmove
 - id: 10957
   name: corrupted wall
   article: a
   flags:
+  - top
   - unmove
 - id: 10958
   name: corrupted wall
   article: a
   flags:
+  - top
   - unmove
 - id: 10961
   name: tapestry
@@ -7027,46 +7293,55 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 10979
   name: chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11003
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 11004
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 11005
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 11010
   name: chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11011
   name: chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11012
   name: chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11013
   name: chair
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11039
   name: torch
   article: a
@@ -7220,6 +7495,7 @@
   name: unknown item
   article: a
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -7288,6 +7564,7 @@
   name: watchguard
   article: a
   flags:
+  - top
   - unmove
 - id: 11318
   name: watchguard
@@ -7381,34 +7658,42 @@
 - id: 11595
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11596
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11597
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11598
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11599
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11600
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11601
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11602
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 11786
   name: branch
@@ -7460,52 +7745,64 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11798
   name: timber table
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11799
   name: timber table
   article: a
   flags:
   - unmove
+  - avoid
 - id: 11800
   name: timber chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11801
   name: timber chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11802
   name: timber chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11803
   name: timber chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11804
   name: stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11805
   name: stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11806
   name: stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11807
   name: stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11808
   name: taboret
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 11815
   name: tattered curtain
   article: a
@@ -7540,11 +7837,13 @@
   name: wolf hide
   article: a
   flags:
+  - top
   - unmove
 - id: 11824
   name: wolf hide
   article: a
   flags:
+  - top
   - unmove
 - id: 11825
   name: rods
@@ -7570,41 +7869,49 @@
   name: beam
   article: a
   flags:
+  - top
   - unmove
 - id: 11830
   name: beam
   article: a
   flags:
+  - top
   - unmove
 - id: 11831
   name: hanging wolf
   article: a
   flags:
+  - top
   - unmove
 - id: 11832
   name: hanging deer
   article: a
   flags:
+  - top
   - unmove
 - id: 11833
   name: hanging wolf
   article: a
   flags:
+  - top
   - unmove
 - id: 11834
   name: hanging deer
   article: a
   flags:
+  - top
   - unmove
 - id: 11835
   name: hanging fur
   article: a
   flags:
+  - top
   - unmove
 - id: 11836
   name: hanging fur
   article: a
   flags:
+  - top
   - unmove
 - id: 11837
   name: unknown item
@@ -7669,26 +7976,31 @@
 - id: 11984
   name: stone
   flags:
+  - top
   - unmove
 - id: 11987
   name: stone
   flags:
+  - top
   - unmove
 - id: 12020
   name: timber table
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12021
   name: timber table
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12022
   name: timber table
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12023
   name: huge cauldron
   article: a
@@ -7949,21 +8261,25 @@
 - id: 12477
   name: small golden taboret
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 12485
   name: rocky archway
   article: a
   flags:
+  - top
   - unmove
 - id: 12486
   name: rocky archway
   article: a
   flags:
+  - top
   - unmove
 - id: 12573
   name: unknown item
   flags:
   - unmove
+  - avoid
 - id: 12605
   name: rubbish
   flags:
@@ -8017,21 +8333,25 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12637
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12638
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12639
   name: bench
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12646
   name: pallet
   article: a
@@ -8074,21 +8394,25 @@
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12862
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12863
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12864
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12903
   name: market
@@ -8100,134 +8424,160 @@
   name: hive pillar
   article: a
   flags:
+  - top
   - unmove
 - id: 12927
   name: hive pillar
   article: a
   flags:
+  - top
   - unmove
 - id: 12962
   name: hive structure
   article: a
   flags:
   - unmove
+  - avoid
 - id: 12992
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12993
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12994
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12995
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12996
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 12997
   name: hive structure
   article: a
   flags:
+  - top
   - unmove
 - id: 13026
   name: hive structure
   article: a
   flags:
   - unmove
+  - avoid
 - id: 13027
   name: hive structure
   article: a
   flags:
   - unmove
+  - avoid
 - id: 13028
   name: hive structure
   article: a
   flags:
   - unmove
+  - avoid
 - id: 13125
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13126
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13127
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13128
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13129
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13130
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13131
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13132
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13133
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13134
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13139
   name: archway
   article: an
   flags:
+  - top
   - usable
   - unmove
 - id: 13141
   name: archway
   article: an
   flags:
+  - top
   - usable
   - unmove
 - id: 13146
   name: archway
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 13148
   name: archway
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 13161
@@ -8789,18 +9139,22 @@
 - id: 13689
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 13690
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 13691
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 13692
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 13717
   name: ramp
@@ -8904,52 +9258,64 @@
 - id: 13895
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 13896
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 13897
   name: lampions
   flags:
+  - top
   - unmove
 - id: 13898
   name: lampions
   flags:
+  - top
   - unmove
 - id: 13899
   name: lampions
   flags:
+  - top
   - unmove
 - id: 13900
   name: lampions
   flags:
+  - top
   - unmove
 - id: 13901
   name: flitter
   flags:
+  - top
   - unmove
 - id: 13902
   name: party snake
   article: a
   flags:
+  - top
   - unmove
 - id: 13903
   name: royal emblems
   flags:
+  - top
   - unmove
 - id: 13904
   name: flitter
   flags:
+  - top
   - unmove
 - id: 13905
   name: party snake
   article: a
   flags:
+  - top
   - unmove
 - id: 13906
   name: royal emblems
   flags:
+  - top
   - unmove
 - id: 13907
   name: lampions
@@ -9015,31 +9381,37 @@
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13922
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13923
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13924
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13934
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13935
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 13936
   name: unknown item
@@ -9324,6 +9696,7 @@
   flags:
   - usable
   - unmove
+  - avoid
 - id: 14925
   name: small stream
   article: a
@@ -9562,27 +9935,33 @@
 - id: 15151
   name: toad stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 15152
   name: toad stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 15153
   name: toad stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 15154
   name: toad stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 15155
   name: mushroom table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 15251
   name: crystal wall
   article: a
   flags:
+  - top
   - unmove
 - id: 15518
   name: cave painting
@@ -9678,6 +10057,7 @@
 - id: 15705
   name: red spores
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -9686,6 +10066,7 @@
 - id: 15706
   name: green spores
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -9694,6 +10075,7 @@
 - id: 15707
   name: blue spores
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -9702,6 +10084,7 @@
 - id: 15708
   name: yellow spores
   flags:
+  - top
   - unmove
   attributes:
     decay:
@@ -9715,22 +10098,27 @@
 - id: 15736
   name: icy bones
   flags:
+  - top
   - unmove
 - id: 15737
   name: icy bones
   flags:
+  - top
   - unmove
 - id: 15738
   name: icy bones
   flags:
+  - top
   - unmove
 - id: 15739
   name: icy bones
   flags:
+  - top
   - unmove
 - id: 15740
   name: icy bones
   flags:
+  - top
   - unmove
 - id: 15756
   name: icy bones
@@ -9750,6 +10138,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 16246
   name: strange symbols
   flags:
@@ -9759,21 +10148,25 @@
   name: muddy stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 16374
   name: muddy stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 16375
   name: muddy stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 16376
   name: muddy stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 16385
   name: swamp claw
@@ -10008,16 +10401,19 @@
   name: muddy mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 16870
   name: swamp clay mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 16871
   name: swamp clay mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 17151
   name: freshly cut venorean spice
@@ -10031,6 +10427,7 @@
   name: growing venorean spice
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 432000
@@ -10152,6 +10549,7 @@
   name: muddy mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 17330
   name: ornament
@@ -10226,39 +10624,48 @@
 - id: 17359
   name: venorean chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17360
   name: venorean chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17361
   name: venorean chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17362
   name: venorean chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17363
   name: venorean stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17364
   name: venorean stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17365
   name: venorean stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17366
   name: venorean stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17367
   name: kidney table
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 17368
   name: venorean bench
   article: a
@@ -10402,11 +10809,13 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 17808
   name: cave entrance
   article: a
   flags:
   - unmove
+  - avoid
 - id: 17832
   name: beams
   flags:
@@ -10486,6 +10895,7 @@
   name: elevator
   article: an
   flags:
+  - top
   - unmove
 - id: 17941
   name: winch
@@ -10496,6 +10906,7 @@
   name: winch
   article: a
   flags:
+  - top
   - unmove
 - id: 17946
   name: elevator
@@ -10636,35 +11047,43 @@
   name: sandstone mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 18659
   name: sandstone mountain
   article: a
   flags:
+  - top
   - unmove
 - id: 18808
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18809
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18810
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18811
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18812
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18813
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 18862
   name: enormous glowing fruit
@@ -10726,6 +11145,7 @@
 - id: 18910
   name: wild roses
   flags:
+  - top
   - unmove
 - id: 19033
   name: dripping candles
@@ -10808,6 +11228,7 @@
   flags:
   - usable
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 160
@@ -10818,6 +11239,7 @@
   flags:
   - usable
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 80
@@ -10827,6 +11249,7 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     decay:
       duration: 260
@@ -10867,6 +11290,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 19201
   name: ornate door with a keyhole
   article: an
@@ -11020,6 +11444,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 19393
   name: stone tablet
   article: a
@@ -11029,36 +11454,43 @@
   name: strange foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19406
   name: strange foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19407
   name: strange foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19408
   name: strange foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19411
   name: strange foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19412
   name: strange window
   article: a
   flags:
+  - top
   - unmove
 - id: 19427
   name: strange wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19437
   name: window shutter
@@ -11074,26 +11506,31 @@
   name: thick ruined foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19441
   name: thick ruined foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19442
   name: thick ruined foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19443
   name: thick ruined foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19444
   name: thick ruined foundation
   article: a
   flags:
+  - top
   - unmove
 - id: 19463
   name: window shutter
@@ -11139,6 +11576,7 @@
   name: ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19535
   name: small ruined wall
@@ -11168,26 +11606,31 @@
   name: small ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19546
   name: small ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19547
   name: small ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19548
   name: small ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19549
   name: small ruined wall
   article: a
   flags:
+  - top
   - unmove
 - id: 19602
   name: thick ruined foundation
@@ -11454,6 +11897,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 20126
   name: lamp
   article: a
@@ -11561,6 +12005,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 20363
   name: geyser
   flags:
@@ -11614,11 +12059,13 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20436
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20437
   name: buttress
@@ -11629,11 +12076,13 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20439
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20440
   name: buttress
@@ -11644,31 +12093,37 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20481
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20482
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20483
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20484
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20485
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20493
   name: stairs
@@ -11708,11 +12163,13 @@
   name: sewer duct
   article: a
   flags:
+  - top
   - unmove
 - id: 20582
   name: sewer duct
   article: a
   flags:
+  - top
   - unmove
 - id: 20599
   name: broken bars
@@ -11828,6 +12285,7 @@
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 20624
   name: grime
@@ -11918,16 +12376,19 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20663
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20664
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 20670
   name: tube
@@ -12701,15 +13162,18 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 21049
   name: slime slide
   article: a
   flags:
   - unmove
+  - avoid
 - id: 21050
   name: elevator
   article: an
   flags:
+  - top
   - unmove
 - id: 21052
   name: switch
@@ -12737,6 +13201,7 @@
   name: elevator
   article: an
   flags:
+  - top
   - unmove
 - id: 21060
   name: elevator
@@ -12849,6 +13314,7 @@
   - bottom
   - usable
   - unmove
+  - avoid
 - id: 21190
   name: coloured glooth
   article: a
@@ -12876,41 +13342,49 @@
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21281
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21284
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21285
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21286
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21287
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21288
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21289
   name: strong chain
   article: a
   flags:
+  - top
   - unmove
 - id: 21293
   name: note pinned on the wall
@@ -12927,6 +13401,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 21324
   name: unknown item
   flags:
@@ -12978,6 +13453,7 @@
   - usable
   - multiuse
   - unmove
+  - avoid
 - id: 21393
   name: krailos
   article: a
@@ -13123,11 +13599,13 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 21463
   name: magic field
   article: a
   flags:
   - unmove
+  - avoid
 - id: 21468
   name: translation scroll
   article: a
@@ -13141,6 +13619,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 21565
   name: ramp
   article: a
@@ -13230,6 +13709,7 @@
   name: edible rock fungi
   flags:
   - unmove
+  - avoid
 - id: 21867
   name: torn piece of cloth
   article: a
@@ -13267,11 +13747,13 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 22077
   name: strangely glowing mark
   article: a
   flags:
   - unmove
+  - avoid
 - id: 22093
   name: werebadger trophy
   article: a
@@ -13330,12 +13812,14 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 22165
   name: wall
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 22263
   name: cooking pillar
   article: a
@@ -13482,18 +13966,22 @@
 - id: 22567
   name: cracked stone wall
   flags:
+  - top
   - unmove
 - id: 22568
   name: cracked stone wall
   flags:
+  - top
   - unmove
 - id: 22569
   name: cracked stone wall
   flags:
+  - top
   - unmove
 - id: 22570
   name: cracked stone wall
   flags:
+  - top
   - unmove
 - id: 22585
   name: energy wall
@@ -13640,31 +14128,37 @@
 - id: 22629
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22631
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22633
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22636
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22638
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22640
   name: stone wall
   flags:
+  - top
   - usable
   - unmove
 - id: 22643
@@ -13741,6 +14235,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 23155
   name: glowing dirt
   flags:
@@ -13784,10 +14279,12 @@
 - id: 23176
   name: rift archway
   flags:
+  - top
   - unmove
 - id: 23177
   name: rift archway
   flags:
+  - top
   - unmove
 - id: 23178
   name: rift jag
@@ -13944,30 +14441,36 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 23735
   name: cave entrance
   article: a
   flags:
   - unmove
+  - avoid
 - id: 23845
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 23846
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 23847
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 23848
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 23857
   name: ramp
@@ -14736,53 +15239,66 @@
   name: unknown item
   flags:
   - unmove
+  - avoid
 - id: 24398
   name: plate layered archway
   flags:
+  - top
   - unmove
 - id: 24399
   name: plate layered archway
   flags:
+  - top
   - unmove
 - id: 24400
   name: plate layered archway
   flags:
+  - top
   - unmove
 - id: 24401
   name: plate layered archway
   flags:
+  - top
   - unmove
 - id: 24442
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24443
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24444
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24445
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24446
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24447
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24448
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24449
   name: colourful bunting
   flags:
+  - top
   - unmove
 - id: 24450
   name: emblem
@@ -14910,11 +15426,13 @@
 - id: 24587
   name: old tibia item
   flags:
+  - top
   - usable
   - unmove
 - id: 24589
   name: old tibia item
   flags:
+  - top
   - usable
   - unmove
 - id: 24593
@@ -15069,6 +15587,7 @@
   name: old tibia item
   flags:
   - unmove
+  - avoid
 - id: 24809
   name: old ramp
   article: a
@@ -15078,18 +15597,22 @@
 - id: 24818
   name: old stone wall
   flags:
+  - top
   - unmove
 - id: 24819
   name: old stone wall
   flags:
+  - top
   - unmove
 - id: 24820
   name: old stone wall
   flags:
+  - top
   - unmove
 - id: 24821
   name: old stone wall
   flags:
+  - top
   - unmove
 - id: 24840
   name: dry flower
@@ -15106,51 +15629,61 @@
 - id: 24918
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 24932
   name: unknown teleport
   article: a
   flags:
   - unmove
+  - avoid
 - id: 24933
   name: large glowing emerald
   article: a
   flags:
   - unmove
+  - avoid
 - id: 24934
   name: large glowing ruby
   article: a
   flags:
   - unmove
+  - avoid
 - id: 24935
   name: large glowing sapphire
   article: a
   flags:
   - unmove
+  - avoid
 - id: 24936
   name: large glowing amethyst
   article: a
   flags:
   - unmove
+  - avoid
 - id: 25003
   name: dragon lair wall
   article: a
   flags:
+  - top
   - unmove
 - id: 25004
   name: dragon lair wall
   article: a
   flags:
+  - top
   - unmove
 - id: 25005
   name: dragon lair wall
   article: a
   flags:
+  - top
   - unmove
 - id: 25006
   name: dragon lair wall
   article: a
   flags:
+  - top
   - unmove
 - id: 25015
   name: ramp
@@ -15182,6 +15715,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25098
   name: time machine
   article: a
@@ -15212,33 +15746,39 @@
   - bottom
   - usable
   - unmove
+  - avoid
 - id: 25136
   name: unknown item
   flags:
   - bottom
   - usable
   - unmove
+  - avoid
 - id: 25137
   name: unknown item
   flags:
   - bottom
   - usable
   - unmove
+  - avoid
 - id: 25138
   name: unknown item
   flags:
   - bottom
   - usable
   - unmove
+  - avoid
 - id: 25337
   name: pillar
   article: a
   flags:
+  - top
   - unmove
 - id: 25338
   name: pillar
   article: a
   flags:
+  - top
   - unmove
 - id: 25348
   name: sea plant
@@ -15254,11 +15794,13 @@
   name: stone arch
   article: an
   flags:
+  - top
   - unmove
 - id: 25354
   name: stone arch
   article: an
   flags:
+  - top
   - unmove
 - id: 25356
   name: white crystals
@@ -15335,90 +15877,105 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25413
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25414
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25415
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25416
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25417
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25418
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25419
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25420
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25421
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25422
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25423
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25424
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25425
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25426
   name: lush roof
   article: a
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 25458
   name: sentient stone
   article: a
@@ -15451,51 +16008,61 @@
   name: arching tree
   article: an
   flags:
+  - top
   - unmove
 - id: 25486
   name: arching tree
   article: an
   flags:
+  - top
   - unmove
 - id: 25503
   name: rose arch
   article: a
   flags:
+  - top
   - unmove
 - id: 25504
   name: rose arch
   article: a
   flags:
+  - top
   - unmove
 - id: 25505
   name: big rose
   article: a
   flags:
+  - top
   - unmove
 - id: 25506
   name: big rose
   article: a
   flags:
+  - top
   - unmove
 - id: 25639
   name: rose arch
   article: a
   flags:
+  - top
   - unmove
 - id: 25640
   name: rose arch
   article: a
   flags:
+  - top
   - unmove
 - id: 25641
   name: big rose
   article: a
   flags:
+  - top
   - unmove
 - id: 25642
   name: big rose
   article: a
   flags:
+  - top
   - unmove
 - id: 25644
   name: stone pillar
@@ -15684,6 +16251,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 25727
   name: emerald sign
   article: an
@@ -15743,41 +16311,49 @@
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 26966
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 26993
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 26994
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 27022
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 27023
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 27050
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 27051
   name: stone wall
   article: a
   flags:
+  - top
   - unmove
 - id: 27354
   name: makeshift home
@@ -15901,6 +16477,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 27704
   name: werefox trophy
   article: a
@@ -15997,11 +16574,13 @@
 - id: 27898
   name: black wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 27899
   name: black wooden chair
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 27912
   name: pile of scrolls
   article: a
@@ -16156,18 +16735,22 @@
 - id: 27960
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 27961
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 27962
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 27963
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 28137
   name: ostentatious bookstand
@@ -16406,6 +16989,7 @@
   name: painting of Tibiasula
   article: a
   flags:
+  - top
   - unmove
 - id: 28239
   name: painting of Tibiasula
@@ -16476,21 +17060,25 @@
   name: tessellated wall
   article: a
   flags:
+  - top
   - unmove
 - id: 28349
   name: tessellated wall
   article: a
   flags:
+  - top
   - unmove
 - id: 28350
   name: tessellated wall
   article: a
   flags:
+  - top
   - unmove
 - id: 28351
   name: tessellated wall
   article: a
   flags:
+  - top
   - unmove
 - id: 28356
   name: ramp
@@ -16529,10 +17117,12 @@
 - id: 28429
   name: stone wall
   flags:
+  - top
   - unmove
 - id: 28430
   name: stone wall
   flags:
+  - top
   - unmove
 - id: 28496
   name: wooden wall
@@ -16624,6 +17214,7 @@
   name: unknown item
   flags:
   - unmove
+  - avoid
 - id: 28951
   name: focus of corrupted nature
   article: a
@@ -16633,21 +17224,25 @@
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29099
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29100
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29101
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29108
   name: ramp
@@ -16677,21 +17272,25 @@
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29127
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29128
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29129
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29136
   name: ramp
@@ -16721,11 +17320,13 @@
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29155
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29156
   name: ornamented wall
@@ -16741,11 +17342,13 @@
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29159
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29160
   name: ornamented wall
@@ -16761,41 +17364,49 @@
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29165
   name: ornamented wall
   article: an
   flags:
+  - top
   - unmove
 - id: 29166
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29167
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29168
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29169
   name: frozen wall
   article: a
   flags:
+  - top
   - unmove
 - id: 29170
   name: frozen column
   article: a
   flags:
+  - top
   - unmove
 - id: 29171
   name: frozen column
   article: a
   flags:
+  - top
   - unmove
 - id: 29182
   name: roof
@@ -17072,6 +17683,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 29319
   name: banner
   article: a
@@ -17095,34 +17707,42 @@
 - id: 29323
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29324
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29325
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29326
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29328
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29329
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29330
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29331
   name: unknown item
   flags:
+  - top
   - unmove
 - id: 29973
   name: ice flower
@@ -17223,6 +17843,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 30630
   name: obelisk
   article: a
@@ -17257,11 +17878,13 @@
   name: door casing
   article: a
   flags:
+  - top
   - unmove
 - id: 30645
   name: door casing
   article: a
   flags:
+  - top
   - unmove
 - id: 30655
   name: mosaic
@@ -17397,21 +18020,25 @@
   name: archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30747
   name: archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30748
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 30749
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 30756
   name: ramp
@@ -17441,21 +18068,25 @@
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30808
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30809
   name: ancient railing
   article: a
   flags:
+  - top
   - unmove
 - id: 30810
   name: ancient railing
   article: a
   flags:
+  - top
   - unmove
 - id: 30819
   name: ramp
@@ -17497,31 +18128,37 @@
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30868
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30869
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30870
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30871
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30872
   name: ancient archway
   article: a
   flags:
+  - top
   - unmove
 - id: 30903
   name: ramp
@@ -17651,21 +18288,25 @@
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 31008
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 31014
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 31015
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 31052
   name: wooden scaffolding
@@ -17928,6 +18569,7 @@
   article: a
   flags:
   - unmove
+  - avoid
 - id: 31377
   name: unknown item
   flags:
@@ -17981,6 +18623,7 @@
   name: unknown item
   flags:
   - unmove
+  - avoid
 - id: 31734
   name: unknown item
   flags:
@@ -18084,20 +18727,25 @@
   name: burning wall
   flags:
   - unmove
+  - avoid
 - id: 32042
   name: unknown
   flags:
   - unmove
+  - avoid
 - id: 32176
   name: unknow item
   article: a
   flags:
+  - top
   - unmove
+  - avoid
 - id: 32265
   name: unknow item
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     weight: 100
 - id: 32411
@@ -18113,6 +18761,7 @@
   name: luminescent crystal
   article: a
   flags:
+  - top
   - usable
   - unmove
   attributes:
@@ -18121,6 +18770,7 @@
   name: luminescent crystal
   article: a
   flags:
+  - top
   - usable
   - unmove
   attributes:
@@ -18129,6 +18779,7 @@
   name: unknow
   article: a
   flags:
+  - top
   - usable
   - unmove
   attributes:
@@ -18144,12 +18795,14 @@
   article: a
   flags:
   - unmove
+  - avoid
   attributes:
     weight: 170
 - id: 32605
   name: unknow item
   article: a
   flags:
+  - top
   - unmove
   attributes:
     weight: 100
@@ -18162,41 +18815,49 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33122
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33123
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33124
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33125
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33126
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33127
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33128
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33129
   name: buttress
@@ -18214,21 +18875,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33171
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33172
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33173
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33174
   name: ramp
@@ -18258,21 +18923,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33200
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33201
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33202
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33203
   name: ramp
@@ -18326,21 +18995,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33252
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33253
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33254
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33255
   name: ramp
@@ -18370,21 +19043,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33268
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33269
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33270
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33278
   name: hand
@@ -18404,41 +19081,49 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33281
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33282
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33283
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33624
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33625
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33626
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33627
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 33692
   name: roof
@@ -18592,12 +19277,14 @@
   name: rocky wall
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 34216
   name: rocky wall
   article: a
   flags:
+  - top
   - usable
   - unmove
 - id: 34220
@@ -18606,6 +19293,7 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 34238
   name: paper
   article: a
@@ -18639,18 +19327,22 @@
 - id: 36012
   name: column
   flags:
+  - top
   - unmove
 - id: 36013
   name: column
   flags:
+  - top
   - unmove
 - id: 36015
   name: column
   flags:
+  - top
   - unmove
 - id: 36016
   name: column
   flags:
+  - top
   - unmove
 - id: 36017
   name: column
@@ -18706,21 +19398,25 @@
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 36432
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 36433
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 36434
   name: buttress
   article: a
   flags:
+  - top
   - unmove
 - id: 36443
   name: ramp
@@ -18750,11 +19446,13 @@
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 36464
   name: wall
   article: a
   flags:
+  - top
   - unmove
 - id: 36549
   name: sun mosaic
@@ -18796,41 +19494,49 @@
   name: painting booth
   article: a
   flags:
+  - top
   - unmove
 - id: 37401
   name: painting booth
   article: a
   flags:
+  - top
   - unmove
 - id: 37402
   name: painting booth
   article: a
   flags:
+  - top
   - unmove
 - id: 37405
   name: painting booth
   article: a
   flags:
+  - top
   - unmove
 - id: 37951
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 37952
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 37953
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 37954
   name: archway
   article: an
   flags:
+  - top
   - unmove
 - id: 37963
   name: ramp
@@ -18912,6 +19618,7 @@
   - usable
   - multiuse
   - unmove
+  - avoid
 - id: 38226
   name: huge lily pad
   article: a
@@ -19095,6 +19802,7 @@
 - id: 38458
   name: mangrove branches
   flags:
+  - top
   - unmove
 - id: 38475
   name: water
@@ -19204,6 +19912,7 @@
 - id: 38614
   name: mangrove branches
   flags:
+  - top
   - unmove
 - id: 38615
   name: mangrove branches
@@ -19272,11 +19981,13 @@
 - id: 38752
   name: crystal stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 38753
   name: crystal stool
   article: a
-  flags: []
+  flags:
+  - avoid
 - id: 38827
   name: mushroom lamp
   article: a
@@ -19418,11 +20129,13 @@
   flags:
   - bottom
   - unmove
+  - avoid
 - id: 39547
   name: energy vein
   article: an
   flags:
   - unmove
+  - avoid
 - id: 39550
   name: alga
   article: an
@@ -19451,6 +20164,7 @@
 - id: 39557
   name: bubbles
   flags:
+  - top
   - unmove
 - id: 39638
   name: mangrove branches
@@ -19479,10 +20193,12 @@
 - id: 39650
   name: mangrove
   flags:
+  - top
   - unmove
 - id: 39651
   name: mangrove
   flags:
+  - top
   - unmove
 - id: 39652
   name: mangrove
@@ -19524,6 +20240,7 @@
   - usable
   - multiuse
   - unmove
+  - avoid
 - id: 40043
   name: ominous flask
   article: an
@@ -19655,6 +20372,7 @@
   name: nothing special
   flags:
   - unmove
+  - avoid
 - id: 9673
   name: flower wreath
   flags:
@@ -19666,6 +20384,7 @@
 - id: 9962
   name: flies
   flags:
+  - top
   - unmove
 - id: 10682
   name: black blisters
@@ -19810,10 +20529,12 @@
 - id: 10973
   name: dark ornament
   flags:
+  - top
   - unmove
 - id: 10974
   name: dark ornament
   flags:
+  - top
   - unmove
 - id: 12072
   name: slime fungus
@@ -19834,10 +20555,12 @@
 - id: 12480
   name: archway
   flags:
+  - top
   - unmove
 - id: 12481
   name: archway
   flags:
+  - top
   - unmove
 - id: 12507
   name: large painting
@@ -19859,6 +20582,7 @@
   name: fire
   flags:
   - unmove
+  - avoid
 - id: 13378
   name: small insectoid hairs
   flags:

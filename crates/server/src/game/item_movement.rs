@@ -196,6 +196,16 @@ pub fn move_item(
                 });
                 return;
             }
+            let usable = item
+                .zip(ctx.map.get_player(agent))
+                .is_some_and(|(it, player)| player.can_use(it));
+            if !usable {
+                ctx.events.push(BroadcastMessage::MoveItemDenied {
+                    agent_key: agent,
+                    message: "You cannot use this object.".to_string(),
+                });
+                return;
+            }
         }
         (_, Some((container_guid, _))) => {
             let take_ok = item
@@ -403,6 +413,7 @@ mod tests {
     use crate::entities::map::GameMap;
     use crate::entities::map::MapTile;
     use crate::entities::position::Position;
+    use crate::entities::vocation::Vocation;
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::persistence::test_fixtures::{a_player_with_a_full_backpack, a_test_snapshot};
@@ -651,6 +662,97 @@ mod tests {
             map.get_player(agent).unwrap().armor(),
             0,
             "unequipping should drop it"
+        );
+    }
+
+    fn a_helmet_requiring(requirements: Vec<ItemAttribute>) -> Item {
+        let mut attributes = vec![
+            ItemAttribute::Weight(100),
+            ItemAttribute::Inventory(InventorySlot::Head),
+        ];
+        attributes.extend(requirements);
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3365),
+                "helmet".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Take]),
+                attributes,
+            )),
+            1,
+        )
+    }
+
+    fn try_to_wear(item: Item) -> (WorldMap, AgentKey, Vec<BroadcastMessage>) {
+        let (map, agent, source, _, guid) = a_player_beside(item);
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+        move_item(
+            &mut h.ctx(&mut map),
+            agent,
+            ItemRef {
+                guid,
+                placement: ItemPlacement::Map(source),
+            },
+            1,
+            ItemPlacement::Inventory(InventorySlot::Head, agent),
+        );
+        (map, agent, h.events)
+    }
+
+    fn refused(events: &[BroadcastMessage]) -> bool {
+        events.iter().any(|e| {
+            matches!(e, BroadcastMessage::MoveItemDenied { message, .. }
+                if message == "You cannot use this object.")
+        })
+    }
+
+    #[test]
+    fn equipping_above_the_players_level_is_refused() {
+        let (map, agent, events) =
+            try_to_wear(a_helmet_requiring(vec![ItemAttribute::RequiredLevel(2)]));
+
+        assert!(refused(&events), "{events:?}");
+        assert!(
+            map.get_player(agent)
+                .unwrap()
+                .inventory()
+                .get(&InventorySlot::Head)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn equipping_another_vocations_gear_is_refused() {
+        let (map, agent, events) = try_to_wear(a_helmet_requiring(vec![ItemAttribute::Vocations(
+            [Vocation::Sorcerer, Vocation::Druid].into_iter().collect(),
+        )]));
+
+        assert!(refused(&events), "{events:?}");
+        assert!(
+            map.get_player(agent)
+                .unwrap()
+                .inventory()
+                .get(&InventorySlot::Head)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn equipping_gear_whose_requirements_are_met_is_allowed() {
+        let (map, agent, events) = try_to_wear(a_helmet_requiring(vec![
+            ItemAttribute::RequiredLevel(1),
+            ItemAttribute::Vocations([Vocation::Knight].into_iter().collect()),
+        ]));
+
+        assert!(!refused(&events), "{events:?}");
+        assert!(
+            map.get_player(agent)
+                .unwrap()
+                .inventory()
+                .get(&InventorySlot::Head)
+                .is_some()
         );
     }
 

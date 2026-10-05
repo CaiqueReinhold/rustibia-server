@@ -7,6 +7,10 @@
     weight: 2250
     slot: 4
     armor: 11
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 824
   name: glacier robe
   article: a
@@ -16,6 +20,10 @@
     weight: 2250
     slot: 4
     armor: 11
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 825
   name: lightning robe
   article: a
@@ -25,6 +33,10 @@
     weight: 2250
     slot: 4
     armor: 11
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 826
   name: magma coat
   article: a
@@ -34,6 +46,10 @@
     weight: 2250
     slot: 4
     armor: 11
+    level: 50
+    vocations:
+    - sorcerer
+    - druid
 - id: 3357
   name: plate armor
   article: a
@@ -70,6 +86,9 @@
     weight: 8000
     slot: 4
     armor: 14
+    vocations:
+    - knight
+    - paladin
 - id: 3361
   name: leather armor
   article: a
@@ -88,6 +107,9 @@
     weight: 8500
     slot: 4
     armor: 17
+    vocations:
+    - knight
+    - paladin
 - id: 3370
   name: knight armor
   article: a
@@ -97,6 +119,9 @@
     weight: 12000
     slot: 4
     armor: 12
+    vocations:
+    - knight
+    - paladin
 - id: 3377
   name: scale armor
   article: a
@@ -142,6 +167,9 @@
     weight: 9900
     slot: 4
     armor: 13
+    vocations:
+    - knight
+    - paladin
 - id: 3383
   name: dark armor
   article: a
@@ -160,6 +188,9 @@
     weight: 11400
     slot: 4
     armor: 15
+    vocations:
+    - knight
+    - paladin
 - id: 3388
   name: demon armor
   article: a
@@ -178,6 +209,9 @@
     weight: 4500
     slot: 4
     armor: 13
+    level: 60
+    vocations:
+    - paladin
 - id: 3397
   name: dwarven armor
   article: a
@@ -310,6 +344,8 @@
     weight: 4800
     slot: 4
     armor: 7
+    vocations:
+    - paladin
 - id: 4836
   name: spectral dress
   article: a
@@ -345,6 +381,9 @@
     weight: 2500
     slot: 4
     armor: 6
+    vocations:
+    - sorcerer
+    - druid
 - id: 7993
   name: witchhunter's coat
   article: a
@@ -354,6 +393,7 @@
     weight: 2500
     slot: 4
     armor: 11
+    level: 50
 - id: 8037
   name: dark lord's cape
   article: a
@@ -363,6 +403,9 @@
     weight: 2900
     slot: 4
     armor: 11
+    level: 65
+    vocations:
+    - sorcerer
 - id: 8038
   name: robe of the ice queen
   article: a
@@ -372,6 +415,9 @@
     weight: 2950
     slot: 4
     armor: 12
+    level: 75
+    vocations:
+    - druid
 - id: 8039
   name: dragon robe
   article: a
@@ -381,6 +427,9 @@
     weight: 2850
     slot: 4
     armor: 12
+    level: 75
+    vocations:
+    - sorcerer
 - id: 8040
   name: velvet mantle
   article: a
@@ -390,6 +439,9 @@
     weight: 2850
     slot: 4
     armor: 12
+    level: 75
+    vocations:
+    - sorcerer
 - id: 8041
   name: greenwood coat
   article: a
@@ -399,6 +451,9 @@
     weight: 2850
     slot: 4
     armor: 12
+    level: 75
+    vocations:
+    - druid
 - id: 8042
   name: spirit cloak
   article: a
@@ -408,6 +463,9 @@
     weight: 2650
     slot: 4
     armor: 8
+    vocations:
+    - sorcerer
+    - druid
 - id: 8043
   name: focus cape
   article: a
@@ -417,6 +475,9 @@
     weight: 2100
     slot: 4
     armor: 9
+    vocations:
+    - sorcerer
+    - druid
 - id: 8044
   name: belted cape
   article: a
@@ -426,6 +487,8 @@
     weight: 3500
     slot: 4
     armor: 10
+    vocations:
+    - paladin
 - id: 8045
   name: hibiscus dress
   article: a
@@ -467,6 +530,10 @@
     weight: 8500
     slot: 4
     armor: 13
+    level: 60
+    vocations:
+    - knight
+    - paladin
 - id: 8050
   name: crystalline armor
   article: a
@@ -476,6 +543,10 @@
     weight: 8450
     slot: 4
     armor: 13
+    level: 60
+    vocations:
+    - knight
+    - paladin
 - id: 8051
   name: voltage armor
   article: a
@@ -485,6 +556,10 @@
     weight: 8450
     slot: 4
     armor: 13
+    level: 60
+    vocations:
+    - knight
+    - paladin
 - id: 8052
   name: swamplair armor
   article: a
@@ -494,6 +569,10 @@
     weight: 8450
     slot: 4
     armor: 13
+    level: 60
+    vocations:
+    - knight
+    - paladin
 - id: 8053
   name: fireborn giant armor
   article: a
@@ -503,6 +582,9 @@
     weight: 12000
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - knight
 - id: 8054
   name: earthborn titan armor
   article: an
@@ -512,6 +594,9 @@
     weight: 12000
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - knight
 - id: 8055
   name: windborn colossus armor
   article: a
@@ -521,6 +606,9 @@
     weight: 12000
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - knight
 - id: 8056
   name: oceanborn leviathan armor
   article: an
@@ -530,6 +618,9 @@
     weight: 10000
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - knight
 - id: 8057
   name: divine plate
   article: a
@@ -539,6 +630,9 @@
     weight: 7500
     slot: 4
     armor: 13
+    level: 75
+    vocations:
+    - paladin
 - id: 8058
   name: molten plate
   article: a
@@ -548,6 +642,9 @@
     weight: 7500
     slot: 4
     armor: 13
+    level: 75
+    vocations:
+    - paladin
 - id: 8059
   name: frozen plate
   article: a
@@ -557,6 +654,9 @@
     weight: 7500
     slot: 4
     armor: 13
+    level: 75
+    vocations:
+    - paladin
 - id: 8060
   name: master archer's armor
   article: a
@@ -566,6 +666,9 @@
     weight: 6900
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - paladin
 - id: 8061
   name: skullcracker armor
   article: a
@@ -575,6 +678,9 @@
     weight: 11000
     slot: 4
     armor: 14
+    level: 85
+    vocations:
+    - knight
 - id: 8062
   name: robe of the underworld
   article: a
@@ -584,6 +690,9 @@
     weight: 3100
     slot: 4
     armor: 12
+    level: 100
+    vocations:
+    - sorcerer
 - id: 8063
   name: paladin armor
   article: a
@@ -593,6 +702,8 @@
     weight: 6500
     slot: 4
     armor: 12
+    vocations:
+    - paladin
 - id: 8064
   name: ethno coat
   article: an
@@ -602,6 +713,9 @@
     weight: 2550
     slot: 4
     armor: 7
+    vocations:
+    - sorcerer
+    - druid
 - id: 8862
   name: yalahari armor
   article: a
@@ -611,6 +725,9 @@
     weight: 7000
     slot: 4
     armor: 16
+    level: 80
+    vocations:
+    - knight
 - id: 9015
   name: flower dress
   article: a
@@ -659,6 +776,10 @@
     weight: 9550
     slot: 4
     armor: 13
+    level: 50
+    vocations:
+    - knight
+    - paladin
 - id: 10438
   name: spellweaver's robe
   article: a
@@ -668,6 +789,10 @@
     weight: 2350
     slot: 4
     armor: 11
+    level: 60
+    vocations:
+    - sorcerer
+    - druid
 - id: 10439
   name: Zaoan robe
   article: a
@@ -677,6 +802,10 @@
     weight: 2450
     slot: 4
     armor: 11
+    level: 60
+    vocations:
+    - sorcerer
+    - druid
 - id: 11651
   name: elite draken mail
   article: an
@@ -686,6 +815,10 @@
     weight: 12000
     slot: 4
     armor: 15
+    level: 100
+    vocations:
+    - knight
+    - paladin
 - id: 11686
   name: royal draken mail
   article: a
@@ -695,6 +828,9 @@
     weight: 13000
     slot: 4
     armor: 16
+    level: 100
+    vocations:
+    - knight
 - id: 11687
   name: royal scale robe
   article: a
@@ -704,6 +840,10 @@
     weight: 4500
     slot: 4
     armor: 12
+    level: 100
+    vocations:
+    - sorcerer
+    - druid
 - id: 11701
   name: old cape
   article: an
@@ -722,6 +862,9 @@
     weight: 15600
     slot: 4
     armor: 16
+    level: 200
+    vocations:
+    - knight
 - id: 13994
   name: depth lorica
   article: a
@@ -731,6 +874,9 @@
     weight: 14500
     slot: 4
     armor: 16
+    level: 150
+    vocations:
+    - paladin
 - id: 14086
   name: calopteryx cape
   article: a
@@ -740,6 +886,10 @@
     weight: 2000
     slot: 4
     armor: 12
+    level: 80
+    vocations:
+    - sorcerer
+    - druid
 - id: 16105
   name: gill coat
   article: a
@@ -749,6 +899,10 @@
     weight: 1900
     slot: 4
     armor: 12
+    level: 150
+    vocations:
+    - sorcerer
+    - druid
 - id: 16110
   name: prismatic armor
   article: a
@@ -758,6 +912,10 @@
     weight: 7900
     slot: 4
     armor: 15
+    level: 120
+    vocations:
+    - knight
+    - paladin
 - id: 17829
   name: buckle
   article: a
@@ -803,6 +961,10 @@
     weight: 3400
     slot: 4
     armor: 12
+    level: 130
+    vocations:
+    - sorcerer
+    - druid
 - id: 21164
   name: glooth cape
   article: a
@@ -812,6 +974,10 @@
     weight: 2900
     slot: 4
     armor: 9
+    level: 40
+    vocations:
+    - sorcerer
+    - druid
 - id: 21166
   name: mooh'tah plate
   article: a
@@ -821,6 +987,9 @@
     weight: 12500
     slot: 4
     armor: 12
+    vocations:
+    - knight
+    - paladin
 - id: 21167
   name: heat core
   article: a
@@ -839,6 +1008,7 @@
     weight: 4900
     slot: 4
     armor: 11
+    level: 50
 - id: 22518
   name: Fireheart cuirass
   article: a
@@ -848,6 +1018,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22519
   name: fireheart hauberk
   article: a
@@ -857,6 +1030,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22520
   name: fireheart platemail
   article: a
@@ -866,6 +1042,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22521
   name: earthheart cuirass
   article: an
@@ -875,6 +1054,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22522
   name: earthheart hauberk
   article: an
@@ -884,6 +1066,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22523
   name: earthheart platemail
   article: an
@@ -893,6 +1078,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22524
   name: thunderheart cuirass
   article: a
@@ -902,6 +1090,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22525
   name: thunderheart hauberk
   article: a
@@ -911,6 +1102,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22526
   name: thunderheart platemail
   article: a
@@ -920,6 +1114,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22527
   name: frostheart cuirass
   article: a
@@ -929,6 +1126,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22528
   name: frostheart hauberk
   article: a
@@ -938,6 +1138,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22529
   name: frostheart platemail
   article: a
@@ -947,6 +1150,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - knight
 - id: 22530
   name: firesoul tabard
   article: a
@@ -956,6 +1162,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - paladin
 - id: 22531
   name: earthsoul tabard
   article: an
@@ -965,6 +1174,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - paladin
 - id: 22532
   name: thundersoul tabard
   article: a
@@ -974,6 +1186,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - paladin
 - id: 22533
   name: frostsoul tabard
   article: a
@@ -983,6 +1198,9 @@
     weight: 14500
     slot: 4
     armor: 18
+    level: 200
+    vocations:
+    - paladin
 - id: 22534
   name: firemind raiment
   article: a
@@ -992,6 +1210,10 @@
     weight: 5500
     slot: 4
     armor: 15
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 22535
   name: earthmind raiment
   article: an
@@ -1001,6 +1223,10 @@
     weight: 5500
     slot: 4
     armor: 15
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 22536
   name: thundermind raiment
   article: a
@@ -1010,6 +1236,10 @@
     weight: 5500
     slot: 4
     armor: 15
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 22537
   name: frostmind raiment
   article: a
@@ -1019,6 +1249,10 @@
     weight: 5500
     slot: 4
     armor: 15
+    level: 200
+    vocations:
+    - sorcerer
+    - druid
 - id: 24531
   name: old tibia item
   flags:
@@ -1063,6 +1297,7 @@
     weight: 400
     slot: 4
     armor: 12
+    level: 60
 - id: 27648
   name: gnome armor
   article: a
@@ -1072,6 +1307,9 @@
     weight: 12000
     slot: 4
     armor: 17
+    level: 200
+    vocations:
+    - paladin
 - id: 28475
   name: ornate testtplate
   article: an
@@ -1088,6 +1326,9 @@
     weight: 18800
     slot: 4
     armor: 18
+    level: 300
+    vocations:
+    - knight
 - id: 29418
   name: living armor
   article: a
@@ -1097,6 +1338,10 @@
     weight: 4800
     slot: 4
     armor: 13
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 29423
   name: dream shroud
   article: a
@@ -1106,6 +1351,10 @@
     weight: 2500
     slot: 4
     armor: 12
+    level: 180
+    vocations:
+    - sorcerer
+    - druid
 - id: 31578
   name: bear skin
   article: a
@@ -1115,6 +1364,9 @@
     weight: 4400
     slot: 4
     armor: 16
+    level: 230
+    vocations:
+    - druid
 - id: 31579
   name: embrace of nature
   article: an
@@ -1124,6 +1376,9 @@
     weight: 2400
     slot: 4
     armor: 16
+    level: 220
+    vocations:
+    - paladin
 - id: 31583
   name: toga mortis
   article: a
@@ -1133,6 +1388,9 @@
     weight: 5200
     slot: 4
     armor: 16
+    level: 220
+    vocations:
+    - sorcerer
 - id: 32099
   name: traditional shirt
   article: a
@@ -1158,6 +1416,9 @@
     weight: 12300
     slot: 4
     armor: 17
+    level: 230
+    vocations:
+    - paladin
 - id: 32705
   name: pair of old bracers
   article: a
@@ -1177,6 +1438,9 @@
     weight: 12300
     slot: 4
     armor: 18
+    level: 400
+    vocations:
+    - paladin
 - id: 34095
   name: soulmantle
   article: a
@@ -1186,6 +1450,9 @@
     weight: 2400
     slot: 4
     armor: 17
+    level: 400
+    vocations:
+    - sorcerer
 - id: 34096
   name: soulshroud
   article: a
@@ -1195,6 +1462,9 @@
     weight: 2400
     slot: 4
     armor: 17
+    level: 400
+    vocations:
+    - druid
 - id: 34157
   name: lion plate
   article: a
@@ -1204,6 +1474,9 @@
     weight: 15000
     slot: 4
     armor: 17
+    level: 270
+    vocations:
+    - knight
 - id: 36663
   name: eldritch cuirass
   article: a
@@ -1213,6 +1486,9 @@
     weight: 11000
     slot: 4
     armor: 16
+    level: 250
+    vocations:
+    - knight
 - id: 37608
   name: green demon armor
   flags:
@@ -1230,6 +1506,9 @@
     weight: 16000
     slot: 4
     armor: 20
+    level: 400
+    vocations:
+    - knight
 - id: 39164
   name: dawnfire sherwani
   article: a
@@ -1239,6 +1518,9 @@
     weight: 2800
     slot: 4
     armor: 16
+    level: 270
+    vocations:
+    - sorcerer
 - id: 39165
   name: midnight tunic
   article: a
@@ -1248,6 +1530,9 @@
     weight: 2700
     slot: 4
     armor: 16
+    level: 300
+    vocations:
+    - druid
 - id: 40533
   name: broken Iks cuirass
   article: the
@@ -1267,6 +1552,9 @@
     weight: 6300
     slot: 4
     armor: 17
+    level: 270
+    vocations:
+    - paladin
 - id: 44619
   name: stoic iks cuirass
   flags:
@@ -1275,6 +1563,9 @@
     weight: 4400
     slot: 4
     armor: 15
+    level: 250
+    vocations:
+    - druid
 - id: 44620
   name: stoic iks chestplate
   flags:
@@ -1283,6 +1574,9 @@
     weight: 14200
     slot: 4
     armor: 16
+    level: 250
+    vocations:
+    - knight
 - id: 44621
   name: dauntless dragon scale armor
   article: a
@@ -1292,6 +1586,9 @@
     weight: 15200
     slot: 4
     armor: 18
+    level: 300
+    vocations:
+    - knight
 - id: 44622
   name: unerring dragon scale armor
   article: an
@@ -1301,6 +1598,9 @@
     weight: 13500
     slot: 4
     armor: 17
+    level: 300
+    vocations:
+    - paladin
 - id: 44623
   name: arcane dragon robe
   article: an
@@ -1310,6 +1610,9 @@
     weight: 4300
     slot: 4
     armor: 15
+    level: 300
+    vocations:
+    - sorcerer
 - id: 44624
   name: mystical dragon robe
   article: an
@@ -1319,3 +1622,6 @@
     weight: 3800
     slot: 4
     armor: 15
+    level: 300
+    vocations:
+    - druid

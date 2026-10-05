@@ -36,7 +36,13 @@ pub enum Step {
 }
 
 /// The first step of the walk that reaches `goal` in the fewest ticks.
-pub fn next_step(map: &GameMap, walker: AgentKey, goal: &Goal, bounds: &Rect) -> Step {
+pub fn next_step(
+    map: &GameMap,
+    walker: AgentKey,
+    goal: &Goal,
+    bounds: &Rect,
+    enters: impl Fn(&Position) -> bool,
+) -> Step {
     let Some(from) = map.agent_position(walker) else {
         return Step::Unreachable;
     };
@@ -49,7 +55,7 @@ pub fn next_step(map: &GameMap, walker: AgentKey, goal: &Goal, bounds: &Rect) ->
 
     let found = astar(
         from,
-        |pos| successors(map, walker, pos, bounds),
+        |pos| successors(map, walker, pos, bounds, &enters),
         |pos| heuristic(goal, pos),
         |pos| goal_is_met(map, goal, pos),
     );
@@ -66,7 +72,12 @@ pub fn next_step(map: &GameMap, walker: AgentKey, goal: &Goal, bounds: &Rect) ->
 }
 
 /// The ticks it takes `walker` to reach every tile it can walk to inside `bounds`.
-pub fn reachable_from(map: &GameMap, walker: AgentKey, bounds: &Rect) -> Reachable {
+pub fn reachable_from(
+    map: &GameMap,
+    walker: AgentKey,
+    bounds: &Rect,
+    enters: impl Fn(&Position) -> bool,
+) -> Reachable {
     let Some(origin) = map.agent_position(walker).cloned() else {
         return Reachable {
             costs: HashMap::new(),
@@ -74,7 +85,7 @@ pub fn reachable_from(map: &GameMap, walker: AgentKey, bounds: &Rect) -> Reachab
     };
 
     let mut costs: HashMap<Position, TickDelta> =
-        dijkstra_all(&origin, |pos| successors(map, walker, pos, bounds))
+        dijkstra_all(&origin, |pos| successors(map, walker, pos, bounds, &enters))
             .into_iter()
             .map(|(pos, (_parent, cost))| (pos, cost))
             .collect();
@@ -113,6 +124,7 @@ fn successors(
     walker: AgentKey,
     from: &Position,
     bounds: &Rect,
+    enters: &impl Fn(&Position) -> bool,
 ) -> Vec<(Position, TickDelta)> {
     // Equal-cost routes break ties on `ALL_DIRECTIONS`' order, which is what keeps a
     // chase reproducible from its seed.
@@ -120,7 +132,7 @@ fn successors(
         .iter()
         .filter_map(|direction| {
             let to = from.clone() + *direction;
-            if !bounds.contains(&to) {
+            if !bounds.contains(&to) || !enters(&to) {
                 return None;
             }
             let cost = step_cost(map, walker, &to, direction.is_diagonal())?;
@@ -278,6 +290,10 @@ mod tests {
         Rect::new(0, 0, u16::MAX, u16::MAX)
     }
 
+    fn anywhere(_: &Position) -> bool {
+        true
+    }
+
     fn walk_ticks(map: &GameMap, walker: AgentKey, friction: u16, diagonal: bool) -> TickDelta {
         map.get_agent(walker)
             .unwrap()
@@ -290,7 +306,13 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         put_player(&mut map, 16, 10);
 
-        let step = next_step(&map, rat, &Goal::adjacent(at(16, 10)), &everywhere());
+        let step = next_step(
+            &map,
+            rat,
+            &Goal::adjacent(at(16, 10)),
+            &everywhere(),
+            anywhere,
+        );
 
         assert_eq!(step, Step::Arrived);
     }
@@ -301,7 +323,13 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         put_player(&mut map, 20, 10);
 
-        let step = next_step(&map, rat, &Goal::adjacent(at(20, 10)), &everywhere());
+        let step = next_step(
+            &map,
+            rat,
+            &Goal::adjacent(at(20, 10)),
+            &everywhere(),
+            anywhere,
+        );
 
         assert_eq!(step, Step::Move(Direction::East));
     }
@@ -312,11 +340,17 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         put_player(&mut map, 20, 10);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere(), anywhere);
 
         assert_eq!(step, Step::Unreachable);
         assert_eq!(
-            next_step(&map, rat, &Goal::adjacent(at(20, 10)), &everywhere()),
+            next_step(
+                &map,
+                rat,
+                &Goal::adjacent(at(20, 10)),
+                &everywhere(),
+                anywhere
+            ),
             Step::Move(Direction::East),
             "the same chase against the adjacency goal does find a route"
         );
@@ -328,23 +362,34 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         block(&mut map, 17, 10, ItemFlag::Unpass);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere(), anywhere);
 
         assert_eq!(step, Step::Unreachable);
     }
 
     #[test]
-    fn a_creature_routes_around_a_tile_it_avoids() {
+    fn a_walker_routes_around_a_tile_it_will_not_enter() {
         let mut map = a_room(5..=25, 8..=12);
         let rat = put_creature(&mut map, 15, 10);
-        block(&mut map, 16, 10, ItemFlag::Avoid);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(17, 10)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(17, 10)), &everywhere(), |pos| {
+            *pos != at(16, 10)
+        });
 
         assert!(
             matches!(step, Step::Move(Direction::North | Direction::South)),
-            "expected a route around the avoided tile, got {step:?}"
+            "expected a route around the refused tile, got {step:?}"
         );
+    }
+
+    #[test]
+    fn a_tile_the_walker_will_not_enter_is_not_reached() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15, 10);
+
+        let reachable = reachable_from(&map, rat, &everywhere(), |pos| *pos != at(16, 10));
+
+        assert_eq!(reachable.cost_to(&map, &Goal::Tile(at(17, 10))), None);
     }
 
     #[test]
@@ -357,7 +402,7 @@ mod tests {
 
         assert!(map.can_move(&at(17, 10), rat), "can_move alone allows it");
         assert_eq!(
-            next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere()),
+            next_step(&map, rat, &Goal::Tile(at(20, 10)), &everywhere(), anywhere),
             Step::Unreachable
         );
     }
@@ -368,7 +413,7 @@ mod tests {
         let mut map = a_room(5..=25, 5..=15);
         let rat = put_creature(&mut map, 15, 10);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(17, 12)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(17, 12)), &everywhere(), anywhere);
 
         assert!(
             matches!(step, Step::Move(Direction::East | Direction::South)),
@@ -383,7 +428,7 @@ mod tests {
         floor_tile(&mut map, 16, 11, FAST);
         let rat = put_creature(&mut map, 15, 10);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(16, 11)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(16, 11)), &everywhere(), anywhere);
 
         assert_eq!(step, Step::Move(Direction::SouthEast));
     }
@@ -404,7 +449,7 @@ mod tests {
         }
         let rat = put_creature(&mut map, 10, 10);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(14, 10)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(14, 10)), &everywhere(), anywhere);
 
         assert_eq!(step, Step::Move(Direction::NorthEast));
     }
@@ -421,8 +466,14 @@ mod tests {
             floor_tile(&mut map, x, 16, FAST);
         }
 
-        let unbounded = next_step(&map, rat, &Goal::Tile(at(17, 15)), &everywhere());
-        let bounded = next_step(&map, rat, &Goal::Tile(at(17, 15)), &Rect::new(5, 5, 25, 15));
+        let unbounded = next_step(&map, rat, &Goal::Tile(at(17, 15)), &everywhere(), anywhere);
+        let bounded = next_step(
+            &map,
+            rat,
+            &Goal::Tile(at(17, 15)),
+            &Rect::new(5, 5, 25, 15),
+            anywhere,
+        );
 
         assert!(matches!(unbounded, Step::Move(_)), "the way round exists");
         assert_eq!(bounded, Step::Unreachable, "and it is outside the bounds");
@@ -438,6 +489,7 @@ mod tests {
             rat,
             &Goal::Tile(Position::new(17, 10, FLOOR - 1)),
             &everywhere(),
+            anywhere,
         );
 
         assert_eq!(step, Step::Unreachable);
@@ -450,7 +502,7 @@ mod tests {
         let mut map = a_room(0..=3, 0..=3);
         let rat = put_creature(&mut map, 0, 0);
 
-        let step = next_step(&map, rat, &Goal::Tile(at(2, 0)), &everywhere());
+        let step = next_step(&map, rat, &Goal::Tile(at(2, 0)), &everywhere(), anywhere);
 
         assert_eq!(step, Step::Move(Direction::East));
     }
@@ -462,9 +514,9 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         let goal = Goal::Tile(at(18, 13));
 
-        let first = next_step(&map, rat, &goal, &everywhere());
+        let first = next_step(&map, rat, &goal, &everywhere(), anywhere);
         for _ in 0..64 {
-            assert_eq!(next_step(&map, rat, &goal, &everywhere()), first);
+            assert_eq!(next_step(&map, rat, &goal, &everywhere(), anywhere), first);
         }
     }
 
@@ -473,7 +525,7 @@ mod tests {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15, 10);
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(
             reachable.cost_to(&map, &Goal::Tile(at(15, 10))),
@@ -487,7 +539,7 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         let cardinal = walk_ticks(&map, rat, FAST, false);
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(
             reachable.cost_to(&map, &Goal::Tile(at(16, 10))),
@@ -509,7 +561,7 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         block(&mut map, 17, 10, ItemFlag::Unpass);
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(reachable.cost_to(&map, &Goal::Tile(at(18, 10))), None);
         assert!(reachable.cost_to(&map, &Goal::Tile(at(16, 10))).is_some());
@@ -522,7 +574,7 @@ mod tests {
         put_player(&mut map, 20, 10);
         let cardinal = walk_ticks(&map, rat, FAST, false);
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(
             reachable.cost_to(&map, &Goal::adjacent(at(20, 10))),
@@ -537,7 +589,7 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
         put_player(&mut map, 16, 10);
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(
             reachable.cost_to(&map, &Goal::adjacent(at(16, 10))),
@@ -551,11 +603,18 @@ mod tests {
         let orphan = AgentKey::default();
 
         assert_eq!(
-            next_step(&map, orphan, &Goal::Tile(at(16, 10)), &everywhere()),
+            next_step(
+                &map,
+                orphan,
+                &Goal::Tile(at(16, 10)),
+                &everywhere(),
+                anywhere
+            ),
             Step::Unreachable
         );
         assert_eq!(
-            reachable_from(&map, orphan, &everywhere()).cost_to(&map, &Goal::Tile(at(16, 10))),
+            reachable_from(&map, orphan, &everywhere(), anywhere)
+                .cost_to(&map, &Goal::Tile(at(16, 10))),
             None
         );
     }
@@ -578,9 +637,12 @@ mod tests {
         block(&mut map, 17, 10, ItemFlag::Unpass);
         let (within, in_sight) = around_the_wall();
 
-        assert_eq!(next_step(&map, rat, &within, &everywhere()), Step::Arrived);
         assert_eq!(
-            next_step(&map, rat, &in_sight, &everywhere()),
+            next_step(&map, rat, &within, &everywhere(), anywhere),
+            Step::Arrived
+        );
+        assert_eq!(
+            next_step(&map, rat, &in_sight, &everywhere(), anywhere),
             Step::Unreachable,
             "no tile this side of the wall sees past it"
         );
@@ -593,7 +655,7 @@ mod tests {
         block(&mut map, 17, 10, ItemFlag::Unpass);
         let (_, in_sight) = around_the_wall();
 
-        let step = next_step(&map, rat, &in_sight, &everywhere());
+        let step = next_step(&map, rat, &in_sight, &everywhere(), anywhere);
 
         assert!(matches!(step, Step::Move(_)), "got {step:?}");
     }
@@ -605,7 +667,7 @@ mod tests {
         block(&mut map, 17, 10, ItemFlag::Unpass);
         let (within, in_sight) = around_the_wall();
 
-        let reachable = reachable_from(&map, rat, &everywhere());
+        let reachable = reachable_from(&map, rat, &everywhere(), anywhere);
 
         assert_eq!(reachable.cost_to(&map, &within), Some(TickDelta(0)));
         assert_eq!(reachable.cost_to(&map, &in_sight), None);

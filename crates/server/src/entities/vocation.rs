@@ -1,6 +1,8 @@
+use strum::{EnumIter, IntoEnumIterator};
+
 use crate::game::config::GAME_CONFIG;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize, EnumIter)]
 #[serde(rename_all = "lowercase")]
 pub enum Vocation {
     Knight = 0,
@@ -66,9 +68,61 @@ impl Vocation {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct VocationSet(u8);
+
+impl VocationSet {
+    pub fn contains(self, vocation: Vocation) -> bool {
+        self.0 & Self::bit(vocation) != 0
+    }
+
+    pub fn is_empty(self) -> bool {
+        self.0 == 0
+    }
+
+    pub fn iter(self) -> impl Iterator<Item = Vocation> {
+        Vocation::iter().filter(move |vocation| self.contains(*vocation))
+    }
+
+    fn bit(vocation: Vocation) -> u8 {
+        1 << vocation as u8
+    }
+}
+
+impl FromIterator<Vocation> for VocationSet {
+    fn from_iter<I: IntoIterator<Item = Vocation>>(iter: I) -> Self {
+        Self(
+            iter.into_iter()
+                .fold(0, |bits, vocation| bits | Self::bit(vocation)),
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_vocation_set_holds_exactly_what_it_was_built_from() {
+        let set: VocationSet = [Vocation::Druid, Vocation::Knight, Vocation::Druid]
+            .into_iter()
+            .collect();
+
+        assert!(set.contains(Vocation::Knight));
+        assert!(set.contains(Vocation::Druid));
+        assert!(!set.contains(Vocation::Paladin));
+        assert!(!set.contains(Vocation::Sorcerer));
+        assert_eq!(
+            set.iter().collect::<Vec<_>>(),
+            vec![Vocation::Knight, Vocation::Druid]
+        );
+        assert!(!set.is_empty());
+        assert!(
+            std::iter::empty::<Vocation>()
+                .collect::<VocationSet>()
+                .is_empty()
+        );
+    }
 
     /// The pin. Its twin is `roundtrips_through_i16` in the site's
     /// `domain::vocation`, which asserts the same four numbers. If these two

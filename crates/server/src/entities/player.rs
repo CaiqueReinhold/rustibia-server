@@ -4,7 +4,7 @@ use std::sync::Arc;
 use crate::entities::{
     combat::{AmmoType, CombatElement, WeaponType},
     effects::{AreaShape, EffectId},
-    inventory::{Inventory, InventorySlot},
+    inventory::{Inventory, InventorySlot, Wearer},
     items::{Item, ItemFlag},
     position::Position,
     skills::{SkillType, SkillValue},
@@ -45,9 +45,12 @@ impl Player {
         last_logout_position: Position,
         vocation: Vocation,
         capacity: u32,
-        inventory: Inventory,
+        inventory: HashMap<InventorySlot, Item>,
         skills: HashMap<SkillType, SkillValue>,
     ) -> Self {
+        let level = skills
+            .get(&SkillType::Level)
+            .map_or(SkillType::Level.default_value(), |skill| skill.value);
         Self {
             id,
             name,
@@ -56,7 +59,10 @@ impl Player {
             last_logout_position,
             vocation,
             capacity,
-            inventory: Arc::new(inventory),
+            inventory: Arc::new(Inventory::from_snapshot(
+                inventory,
+                Wearer { level, vocation },
+            )),
             skills,
         }
     }
@@ -129,12 +135,14 @@ impl Player {
     pub fn has_shield(&self) -> bool {
         self.inventory
             .get(&InventorySlot::RightHand)
-            .map(|it| it.config.attr_defense().is_some())
-            .unwrap_or(false)
+            .filter(|it| self.can_use(it))
+            .is_some_and(|it| it.config.attr_defense().is_some())
     }
 
     pub fn weapon(&self) -> Option<&Item> {
-        self.inventory.get(&InventorySlot::LeftHand)
+        self.inventory
+            .get(&InventorySlot::LeftHand)
+            .filter(|it| self.can_use(it))
     }
 
     pub fn weapon_element(&self) -> CombatElement {
@@ -166,17 +174,18 @@ impl Player {
         if matches!(weapon_type, WeaponType::Crossbow | WeaponType::Bow) {
             self.inventory
                 .get(&InventorySlot::RightHand)
-                .filter(|it| it.config.has_flag(ItemFlag::AmmoContainer))
+                .filter(|it| it.config.has_flag(ItemFlag::AmmoContainer) && self.can_use(it))
                 .and_then(|quiv| {
                     quiv.content.as_ref().and_then(|content| {
                         content.iter().find(|it| {
-                            it.config.attr_ammo_type().is_some_and(|at| {
-                                matches!(
-                                    (at, weapon_type),
-                                    (AmmoType::Arrow, WeaponType::Bow)
-                                        | (AmmoType::Bolt, WeaponType::Crossbow)
-                                )
-                            })
+                            self.can_use(it)
+                                && it.config.attr_ammo_type().is_some_and(|at| {
+                                    matches!(
+                                        (at, weapon_type),
+                                        (AmmoType::Arrow, WeaponType::Bow)
+                                            | (AmmoType::Bolt, WeaponType::Crossbow)
+                                    )
+                                })
                         })
                     })
                 })
@@ -210,5 +219,164 @@ impl Player {
 
     pub fn level(&self) -> u16 {
         self.skill(SkillType::Level)
+    }
+
+    pub fn can_use(&self, item: &Item) -> bool {
+        item.config.can_be_worn_by(self.level(), self.vocation)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::entities::agent::Agent;
+    use crate::entities::items::{ItemAttribute, ItemConfig, ItemId};
+    use crate::persistence::test_fixtures::a_test_snapshot;
+    use std::collections::HashSet;
+
+    fn a_knight_of_level(level: u16, slots: HashMap<InventorySlot, Item>) -> Agent {
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.skills.insert(
+            SkillType::Level,
+            SkillValue {
+                value: level,
+                current_ticks: 0,
+            },
+        );
+        snapshot.inventory = slots;
+        Agent::from_player(snapshot)
+    }
+
+    fn item(flags: HashSet<ItemFlag>, attributes: Vec<ItemAttribute>) -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "thing".to_string(),
+                None,
+                None,
+                flags,
+                attributes,
+            )),
+            1,
+        )
+    }
+
+    fn a_level_35_sword() -> Item {
+        item(
+            HashSet::new(),
+            vec![
+                ItemAttribute::WeaponType(WeaponType::Sword),
+                ItemAttribute::WeaponAttack(35),
+                ItemAttribute::RequiredLevel(35),
+            ],
+        )
+    }
+
+    #[test]
+    fn a_weapon_above_the_players_level_fights_as_an_empty_hand() {
+        let below = a_knight_of_level(
+            34,
+            HashMap::from([(InventorySlot::LeftHand, a_level_35_sword())]),
+        );
+        let player = below.get_player().unwrap();
+        assert!(player.weapon().is_none());
+        assert_eq!(player.weapon_type(), WeaponType::None);
+        assert_eq!(player.weapon_attack(), 5);
+
+        let at = a_knight_of_level(
+            35,
+            HashMap::from([(InventorySlot::LeftHand, a_level_35_sword())]),
+        );
+        assert_eq!(at.get_player().unwrap().weapon_attack(), 35);
+    }
+
+    #[test]
+    fn a_weapon_for_another_vocation_fights_as_an_empty_hand() {
+        let bow = item(
+            HashSet::new(),
+            vec![
+                ItemAttribute::WeaponType(WeaponType::Bow),
+                ItemAttribute::Vocations([Vocation::Paladin].into_iter().collect()),
+            ],
+        );
+        let knight = a_knight_of_level(100, HashMap::from([(InventorySlot::LeftHand, bow)]));
+
+        assert_eq!(knight.get_player().unwrap().weapon_type(), WeaponType::None);
+    }
+
+    #[test]
+    fn ammunition_the_player_cannot_use_is_passed_over() {
+        let bow = item(
+            HashSet::new(),
+            vec![ItemAttribute::WeaponType(WeaponType::Bow)],
+        );
+        let flash_arrow = item(
+            HashSet::new(),
+            vec![
+                ItemAttribute::AmmoType(AmmoType::Arrow),
+                ItemAttribute::RequiredLevel(20),
+            ],
+        );
+        let arrow = item(
+            HashSet::new(),
+            vec![ItemAttribute::AmmoType(AmmoType::Arrow)],
+        );
+        let arrow_guid = arrow.guid;
+        let mut quiver = item(
+            HashSet::from([ItemFlag::Container, ItemFlag::AmmoContainer]),
+            vec![ItemAttribute::Capacity(2)],
+        );
+        quiver.content = Some(Box::new(vec![flash_arrow, arrow]));
+        let knight = a_knight_of_level(
+            1,
+            HashMap::from([
+                (InventorySlot::LeftHand, bow),
+                (InventorySlot::RightHand, quiver),
+            ]),
+        );
+
+        assert_eq!(
+            knight.get_player().unwrap().weapon_ammo().map(|it| it.guid),
+            Some(arrow_guid)
+        );
+    }
+
+    #[test]
+    fn a_quiver_the_player_cannot_use_supplies_nothing() {
+        let bow = item(
+            HashSet::new(),
+            vec![ItemAttribute::WeaponType(WeaponType::Bow)],
+        );
+        let mut quiver = item(
+            HashSet::from([ItemFlag::Container, ItemFlag::AmmoContainer]),
+            vec![
+                ItemAttribute::Capacity(1),
+                ItemAttribute::RequiredLevel(150),
+            ],
+        );
+        quiver.content = Some(Box::new(vec![item(
+            HashSet::new(),
+            vec![ItemAttribute::AmmoType(AmmoType::Arrow)],
+        )]));
+        let knight = a_knight_of_level(
+            1,
+            HashMap::from([
+                (InventorySlot::LeftHand, bow),
+                (InventorySlot::RightHand, quiver),
+            ]),
+        );
+
+        assert!(knight.get_player().unwrap().weapon_ammo().is_none());
+    }
+
+    #[test]
+    fn a_shield_above_the_players_level_is_not_a_shield() {
+        let shield = item(
+            HashSet::new(),
+            vec![ItemAttribute::Defense(30), ItemAttribute::RequiredLevel(50)],
+        );
+        let knight = a_knight_of_level(49, HashMap::from([(InventorySlot::RightHand, shield)]));
+
+        assert!(!knight.get_player().unwrap().has_shield());
     }
 }

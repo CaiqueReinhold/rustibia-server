@@ -519,7 +519,7 @@ mod tests {
     use super::*;
     use crate::testing::*;
     use rustibia_server::constants::view::{
-        PLAYER_VIEWPORT_HEIGHT, VIEW_LEFT, VIEW_RIGHT, VIEW_TOP, VIEWPORT_SIZE,
+        MAX_VISIBLE_ITEMS, PLAYER_VIEWPORT_HEIGHT, VIEW_LEFT, VIEW_RIGHT, VIEW_TOP, VIEWPORT_SIZE,
     };
     use rustibia_server::entities::agent::{Facing, OutfitColors, OutfitId};
     use rustibia_server::messages::SpellListEntry;
@@ -692,7 +692,7 @@ mod tests {
     // Asymmetric fixture: item id = tile index, so a transposed or offset
     // placement fails instead of accidentally matching.
     fn a_describe_map(center: Position, floor: u8) -> ServerMessage {
-        let mut tiles = Box::new([[None; 8]; VIEWPORT_SIZE]);
+        let mut tiles = Box::new([[None; MAX_VISIBLE_ITEMS]; VIEWPORT_SIZE]);
         for (i, tile) in tiles.iter_mut().enumerate() {
             tile[0] = Some((ItemId(i as u16), 1));
         }

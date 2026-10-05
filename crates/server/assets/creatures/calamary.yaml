@@ -10,6 +10,7 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+  - passive
 melee:
   damage:
     min: 0

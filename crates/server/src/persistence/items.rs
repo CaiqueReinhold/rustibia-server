@@ -17,6 +17,7 @@ use crate::entities::items::{
     ItemMultiAction,
 };
 use crate::entities::spells::SpellId;
+use crate::entities::vocation::{Vocation, VocationSet};
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
 use crate::persistence::conditions::RawConditionSpec;
@@ -83,6 +84,8 @@ fn parse_flag(s: &str) -> Option<ItemFlag> {
         "liquidpool" => Some(ItemFlag::LiquidPool),
         "unreplaceable" => Some(ItemFlag::Unreplaceable),
         "teleport" => Some(ItemFlag::Teleport),
+        "border" => Some(ItemFlag::Border),
+        "top" => Some(ItemFlag::Top),
         _ => None,
     }
 }
@@ -230,6 +233,14 @@ fn parse_attribute(
             EffectId(value.get("effect_id")?.as_u64()? as u16),
         )),
         "speed" => Some(ItemAttribute::Speed(value.as_i64()? as i16)),
+        "level" => Some(ItemAttribute::RequiredLevel(
+            u16::try_from(value.as_u64()?).ok()?,
+        )),
+        "vocations" => {
+            let vocations: Vec<Vocation> = serde_yaml::from_value(value.clone()).ok()?;
+            let set: VocationSet = vocations.into_iter().collect();
+            (!set.is_empty()).then_some(ItemAttribute::Vocations(set))
+        }
         _ => {
             let n = value.as_u64()? as u32;
             match key {
@@ -327,6 +338,7 @@ mod tests {
     use super::*;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
     use crate::entities::items::ItemId;
+    use crate::entities::vocation::Vocation;
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
         parse_attribute(key, &serde_yaml::from_str(value).unwrap(), &HashMap::new())
@@ -340,6 +352,52 @@ mod tests {
                 new: ItemId(1630)
             }))
         );
+    }
+
+    #[test]
+    fn a_required_level_is_read() {
+        assert_eq!(parse("level", "35"), Some(ItemAttribute::RequiredLevel(35)));
+    }
+
+    #[test]
+    fn vocations_are_read_as_a_set() {
+        assert_eq!(
+            parse("vocations", "[knight, paladin]"),
+            Some(ItemAttribute::Vocations(
+                [Vocation::Knight, Vocation::Paladin].into_iter().collect()
+            ))
+        );
+    }
+
+    #[test]
+    fn an_unknown_or_empty_vocation_list_is_dropped_whole() {
+        assert_eq!(parse("vocations", "[knight, monk]"), None);
+        assert_eq!(parse("vocations", "[]"), None);
+    }
+
+    #[test]
+    fn requirements_survive_the_whole_load_path() {
+        let items = load_items_from_files(
+            [(
+                Path::new("weapons.yaml"),
+                "
+- id: 663
+  name: fiery blacksteel sword
+  attributes:
+    attack: 35
+    level: 35
+    vocations:
+    - knight
+",
+            )],
+            &HashMap::new(),
+        )
+        .unwrap();
+
+        let sword = &items[&ItemId(663)];
+        assert_eq!(sword.attr_required_level(), Some(35));
+        assert!(sword.can_be_worn_by(35, Vocation::Knight));
+        assert!(!sword.can_be_worn_by(35, Vocation::Paladin));
     }
 
     #[test]
@@ -372,6 +430,12 @@ mod tests {
     #[test]
     fn the_teleport_flag_is_read() {
         assert_eq!(parse_flag("teleport"), Some(ItemFlag::Teleport));
+    }
+
+    #[test]
+    fn the_border_and_top_flags_are_read() {
+        assert_eq!(parse_flag("border"), Some(ItemFlag::Border));
+        assert_eq!(parse_flag("top"), Some(ItemFlag::Top));
     }
 
     #[test]
@@ -504,6 +568,23 @@ mod tests {
 
     /// The catalogue is the real check: a `rune:` naming a spell that is missing, or one
     /// delivered by words, would be a free cast off the item path.
+    #[test]
+    fn the_shipped_catalogue_carries_requirements() {
+        let sword = &ITEM_CONFIGS[&ItemId(663)];
+        assert_eq!(sword.name, "fiery blacksteel sword");
+        assert_eq!(sword.attr_required_level(), Some(35));
+        assert_eq!(
+            sword.attr_vocations().map(|set| set.iter().collect::<Vec<_>>()),
+            Some(vec![Vocation::Knight])
+        );
+
+        let gated = ITEM_CONFIGS
+            .values()
+            .filter(|config| config.attr_vocations().is_some())
+            .count();
+        assert_eq!(gated, 515, "a vocations list failed to parse and was dropped");
+    }
+
     #[test]
     fn every_shipped_rune_names_a_spell_delivered_by_runes() {
         use crate::entities::spells::SpellDelivery;

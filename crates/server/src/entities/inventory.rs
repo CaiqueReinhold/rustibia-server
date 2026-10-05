@@ -1,6 +1,7 @@
 use strum::FromRepr;
 
 use crate::entities::items::{Item, ItemGuid};
+use crate::entities::vocation::Vocation;
 use crate::game::item_movement::ItemMovementError;
 use std::collections::HashMap;
 
@@ -37,20 +38,28 @@ pub struct EquipmentStats {
     pub speed: i16,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Wearer {
+    pub level: u16,
+    pub vocation: Vocation,
+}
+
 #[derive(Debug, Clone)]
 pub struct Inventory {
     slots: HashMap<InventorySlot, Item>,
     carried_weight: u32,
     stats: EquipmentStats,
+    wearer: Wearer,
 }
 
 impl Inventory {
-    pub fn from_snapshot(slots: HashMap<InventorySlot, Item>) -> Self {
+    pub fn from_snapshot(slots: HashMap<InventorySlot, Item>, wearer: Wearer) -> Self {
         let carried_weight = slots.values().map(|i| i.total_weight()).sum();
         let mut inventory = Inventory {
             slots,
             carried_weight,
             stats: EquipmentStats::default(),
+            wearer,
         };
         inventory.update_equipment_stats();
         inventory
@@ -66,6 +75,13 @@ impl Inventory {
 
     pub fn stats(&self) -> &EquipmentStats {
         &self.stats
+    }
+
+    pub fn set_wearer_level(&mut self, level: u16) {
+        if self.wearer.level != level {
+            self.wearer.level = level;
+            self.update_equipment_stats();
+        }
     }
 
     /// Insert `item` into `slot`.
@@ -177,34 +193,39 @@ impl Inventory {
         self.update_speed();
     }
 
+    fn can_wear(&self, item: &Item) -> bool {
+        item.config
+            .can_be_worn_by(self.wearer.level, self.wearer.vocation)
+    }
+
+    fn worn(&self, slot: &InventorySlot) -> Option<&Item> {
+        self.slots.get(slot).filter(|it| self.can_wear(it))
+    }
+
+    fn worn_items(&self) -> impl Iterator<Item = &Item> {
+        self.slots.values().filter(|it| self.can_wear(it))
+    }
+
     fn update_armor(&mut self) {
         self.stats.armor = self
-            .slots()
-            .values()
+            .worn_items()
             .filter_map(|it| it.config.attr_armor())
             .sum()
     }
 
     fn update_defense(&mut self) {
-        let weapon_extra = self
-            .get(&InventorySlot::LeftHand)
-            .and_then(|w| w.config.attr_extra_def())
-            .unwrap_or(0);
-        self.stats.defense = match self.get(&InventorySlot::RightHand) {
-            Some(it) => (it.config.attr_defense().unwrap_or(0) as i16 + weapon_extra).max(0) as u16,
-            None => self
-                .get(&InventorySlot::LeftHand)
-                .map(|it| {
-                    (it.config.attr_defense().unwrap_or(0) as i16 + weapon_extra).max(0) as u16
-                })
-                .unwrap_or(0),
-        }
+        let weapon = self.worn(&InventorySlot::LeftHand);
+        let weapon_extra = weapon.and_then(|w| w.config.attr_extra_def()).unwrap_or(0);
+        self.stats.defense = self
+            .worn(&InventorySlot::RightHand)
+            .or(weapon)
+            .map(|it| (it.config.attr_defense().unwrap_or(0) as i16 + weapon_extra).max(0) as u16)
+            .unwrap_or(0)
     }
 
     fn update_speed(&mut self) {
         self.stats.speed = self
-            .slots()
-            .values()
+            .worn_items()
             .filter_map(|it| it.config.attr_speed())
             .sum();
     }
@@ -233,8 +254,105 @@ mod tests {
     use super::*;
     use crate::entities::items::ItemId;
     use crate::entities::items::{ItemAttribute, ItemConfig, ItemFlag};
+    use crate::entities::vocation::Vocation;
     use std::collections::HashSet;
     use std::sync::Arc;
+
+    fn anyone() -> Wearer {
+        Wearer {
+            level: 1,
+            vocation: Vocation::Knight,
+        }
+    }
+
+    fn worn_at(level: u16, slot: InventorySlot, item: Item) -> Inventory {
+        Inventory::from_snapshot(
+            HashMap::from([(slot, item)]),
+            Wearer {
+                level,
+                vocation: Vocation::Knight,
+            },
+        )
+    }
+
+    fn gear(attributes: Vec<ItemAttribute>) -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(4321),
+                "gear".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Take]),
+                attributes,
+            )),
+            1,
+        )
+    }
+
+    #[test]
+    fn gear_above_the_wearers_level_counts_for_nothing() {
+        let helmet = gear(vec![
+            ItemAttribute::Armor(8),
+            ItemAttribute::RequiredLevel(20),
+        ]);
+        let boots = gear(vec![
+            ItemAttribute::Speed(20),
+            ItemAttribute::RequiredLevel(20),
+        ]);
+
+        assert_eq!(
+            worn_at(19, InventorySlot::Head, helmet.clone())
+                .stats()
+                .armor,
+            0
+        );
+        assert_eq!(worn_at(20, InventorySlot::Head, helmet).stats().armor, 8);
+        assert_eq!(worn_at(19, InventorySlot::Feet, boots).stats().speed, 0);
+    }
+
+    #[test]
+    fn gear_for_another_vocation_counts_for_nothing() {
+        let robe = gear(vec![
+            ItemAttribute::Armor(12),
+            ItemAttribute::Vocations([Vocation::Sorcerer].into_iter().collect()),
+        ]);
+
+        assert_eq!(worn_at(100, InventorySlot::Chest, robe).stats().armor, 0);
+    }
+
+    #[test]
+    fn a_shield_the_wearer_cannot_use_leaves_the_weapon_to_defend() {
+        let sword = gear(vec![ItemAttribute::Defense(15), ItemAttribute::ExtraDef(2)]);
+        let shield = gear(vec![
+            ItemAttribute::Defense(30),
+            ItemAttribute::RequiredLevel(50),
+        ]);
+        let inventory = Inventory::from_snapshot(
+            HashMap::from([
+                (InventorySlot::LeftHand, sword),
+                (InventorySlot::RightHand, shield),
+            ]),
+            anyone(),
+        );
+
+        assert_eq!(inventory.stats().defense, 17);
+    }
+
+    #[test]
+    fn reaching_the_level_turns_the_gear_on() {
+        let mut inventory = worn_at(
+            19,
+            InventorySlot::Head,
+            gear(vec![
+                ItemAttribute::Armor(8),
+                ItemAttribute::RequiredLevel(20),
+            ]),
+        );
+
+        inventory.set_wearer_level(20);
+
+        assert_eq!(inventory.stats().armor, 8);
+    }
 
     /// `carried_weight` is accumulated per mutation; `total_weight` recomputes from the slots.
     /// `Player::capacity_available` reads the accumulated one, so any mutation path that lets the
@@ -277,7 +395,7 @@ mod tests {
 
     #[test]
     fn an_empty_inventory_carries_nothing() {
-        let inventory = Inventory::from_snapshot(HashMap::new());
+        let inventory = Inventory::from_snapshot(HashMap::new(), anyone());
         assert_eq!(inventory.carried_weight, 0);
         assert_accounted(&inventory);
     }
@@ -286,10 +404,13 @@ mod tests {
     fn a_snapshot_totals_what_it_was_given() {
         let mut backpack = a_backpack();
         backpack.content = Some(Box::new(vec![a_thing(5, 3)]));
-        let inventory = Inventory::from_snapshot(HashMap::from([
-            (InventorySlot::Backpack, backpack),
-            (InventorySlot::Head, a_thing(40, 1)),
-        ]));
+        let inventory = Inventory::from_snapshot(
+            HashMap::from([
+                (InventorySlot::Backpack, backpack),
+                (InventorySlot::Head, a_thing(40, 1)),
+            ]),
+            anyone(),
+        );
 
         assert_eq!(inventory.carried_weight, 18 + 15 + 40);
         assert_accounted(&inventory);
@@ -297,8 +418,10 @@ mod tests {
 
     #[test]
     fn equipping_over_an_occupied_slot_drops_the_displaced_weight() {
-        let mut inventory =
-            Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, a_thing(40, 1))]));
+        let mut inventory = Inventory::from_snapshot(
+            HashMap::from([(InventorySlot::Head, a_thing(40, 1))]),
+            anyone(),
+        );
 
         let displaced = inventory
             .insert(InventorySlot::Head, None, a_thing(7, 1))
@@ -313,8 +436,10 @@ mod tests {
     fn inserting_into_a_container_counts_through_the_nesting() {
         let backpack = a_backpack();
         let backpack_guid = backpack.guid;
-        let mut inventory =
-            Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
+        let mut inventory = Inventory::from_snapshot(
+            HashMap::from([(InventorySlot::Backpack, backpack)]),
+            anyone(),
+        );
 
         inventory
             .insert(
@@ -333,8 +458,10 @@ mod tests {
         let mut backpack = a_backpack();
         let backpack_guid = backpack.guid;
         backpack.content = Some(Box::new((0..20).map(|_| a_thing(1, 1)).collect()));
-        let mut inventory =
-            Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
+        let mut inventory = Inventory::from_snapshot(
+            HashMap::from([(InventorySlot::Backpack, backpack)]),
+            anyone(),
+        );
         let before = inventory.carried_weight;
 
         let result = inventory.insert(
@@ -352,7 +479,8 @@ mod tests {
     fn removing_a_whole_stack_removes_all_of_its_weight() {
         let coins = a_thing(5, 4);
         let guid = coins.guid;
-        let mut inventory = Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]));
+        let mut inventory =
+            Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]), anyone());
 
         inventory.remove(InventorySlot::Head, &guid, 4).unwrap();
 
@@ -364,7 +492,8 @@ mod tests {
     fn splitting_a_stack_only_removes_the_part_that_left() {
         let coins = a_thing(5, 4);
         let guid = coins.guid;
-        let mut inventory = Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]));
+        let mut inventory =
+            Inventory::from_snapshot(HashMap::from([(InventorySlot::Head, coins)]), anyone());
 
         let (taken, _) = inventory.remove(InventorySlot::Head, &guid, 1).unwrap();
 
@@ -380,8 +509,10 @@ mod tests {
         let coins = a_thing(5, 4);
         let coins_guid = coins.guid;
         backpack.content = Some(Box::new(vec![coins]));
-        let mut inventory =
-            Inventory::from_snapshot(HashMap::from([(InventorySlot::Backpack, backpack)]));
+        let mut inventory = Inventory::from_snapshot(
+            HashMap::from([(InventorySlot::Backpack, backpack)]),
+            anyone(),
+        );
 
         inventory
             .remove(InventorySlot::Backpack, &coins_guid, 1)
@@ -396,10 +527,13 @@ mod tests {
     fn taking_a_slot_drops_the_container_and_everything_in_it() {
         let mut backpack = a_backpack();
         backpack.content = Some(Box::new(vec![a_thing(5, 4)]));
-        let mut inventory = Inventory::from_snapshot(HashMap::from([
-            (InventorySlot::Backpack, backpack),
-            (InventorySlot::Head, a_thing(40, 1)),
-        ]));
+        let mut inventory = Inventory::from_snapshot(
+            HashMap::from([
+                (InventorySlot::Backpack, backpack),
+                (InventorySlot::Head, a_thing(40, 1)),
+            ]),
+            anyone(),
+        );
 
         inventory.take_slot(&InventorySlot::Backpack).unwrap();
 

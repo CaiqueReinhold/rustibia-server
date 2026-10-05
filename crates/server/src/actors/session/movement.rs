@@ -25,7 +25,7 @@ impl SessionActor {
         let Some(direction) = self.queued_walk else {
             return Ok(());
         };
-        if self.walk_cooldown_remaining() > TickDelta(0) {
+        if self.walk_cooldown_remaining() > TickDelta(1) {
             return Ok(());
         }
         self.queued_walk = None;
