@@ -95,6 +95,33 @@ fn advance(skill: &mut SkillValue, ticks: u64, required: impl Fn(u16) -> u64) ->
     gained
 }
 
+fn regress(
+    skill: &mut SkillValue,
+    mut ticks: u64,
+    floor: u16,
+    required: impl Fn(u16) -> u64,
+) -> u16 {
+    let mut lost = 0u16;
+    while ticks > skill.current_ticks && skill.value > floor {
+        ticks -= skill.current_ticks;
+        skill.current_ticks = required(skill.value);
+        skill.value -= 1;
+        lost += 1;
+    }
+    skill.current_ticks = skill.current_ticks.saturating_sub(ticks);
+    lost
+}
+
+fn progress_above_floor(skill: &SkillValue, floor: u16, required: impl Fn(u16) -> u64) -> u64 {
+    (floor.saturating_add(1)..=skill.value)
+        .map(required)
+        .fold(skill.current_ticks, u64::saturating_add)
+}
+
+fn percent_of(amount: u64, percent: u32) -> u64 {
+    (amount as u128 * percent.min(100) as u128 / 100) as u64
+}
+
 pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, ticks: u64) {
     let Some(mut player) = ctx.map.player_mut(agent_key) else {
         return;
@@ -126,6 +153,33 @@ pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, tick
     }
 }
 
+pub fn apply_death_loss(ctx: &mut TickCtx, agent_key: AgentKey, percent: u32) {
+    let levels_lost = {
+        let Some(mut player) = ctx.map.player_mut(agent_key) else {
+            return;
+        };
+        let vocation = player.vocation();
+        let skills: Vec<SkillType> = player.skills().keys().copied().collect();
+        let mut levels_lost = 0;
+        for skill in skills {
+            let required = |level| required_ticks(vocation, &skill, level);
+            let floor = skill.default_value();
+            let Some(value) = player.skill_mut(skill) else {
+                continue;
+            };
+            let loss = percent_of(progress_above_floor(value, floor, required), percent);
+            let lost = regress(value, loss, floor, required);
+            if skill == SkillType::Level {
+                levels_lost = lost;
+            }
+        }
+        levels_lost
+    };
+    if levels_lost > 0 {
+        level_up(ctx, agent_key, -(levels_lost as i16));
+    }
+}
+
 fn level_up(ctx: &mut TickCtx, agent_key: AgentKey, gained: i16) {
     let Some(mut agent) = ctx.map.agent_mut(agent_key) else {
         return;
@@ -141,7 +195,7 @@ fn level_up(ctx: &mut TickCtx, agent_key: AgentKey, gained: i16) {
     player.set_capacity(capacity);
     let level = player.level();
     player.inventory_mut().set_wearer_level(level);
-    agent.set_base_speed(base_speed + gained as u16);
+    agent.set_base_speed(base_speed.saturating_add_signed(gained));
     agent.change_max_life(vocation.life_on_level_up() * gained as i32);
     agent.change_max_mana(vocation.mana_on_level_up() * gained as i32);
 }
@@ -379,6 +433,82 @@ vocations:
     }
 
     #[test]
+    fn a_loss_inside_a_level_only_lowers_its_progress() {
+        let mut s = skill(12, 500);
+
+        let lost = regress(&mut s, 200, 10, linear);
+
+        assert_eq!(lost, 0);
+        assert_eq!((s.value, s.current_ticks), (12, 300));
+    }
+
+    /// 50 + 1300 takes level 13 back; another 50 of level 12's 1200 leaves 1150.
+    #[test]
+    fn a_loss_can_cost_several_levels_and_keeps_the_remainder() {
+        let mut s = skill(13, 50);
+
+        let lost = regress(&mut s, 1400, 10, linear);
+
+        assert_eq!(lost, 2);
+        assert_eq!((s.value, s.current_ticks), (11, 1150));
+    }
+
+    #[test]
+    fn a_loss_stops_at_the_floor_with_nothing_left() {
+        let mut s = skill(11, 100);
+
+        let lost = regress(&mut s, 10_000, 10, linear);
+
+        assert_eq!(lost, 1);
+        assert_eq!((s.value, s.current_ticks), (10, 0));
+    }
+
+    #[test]
+    fn a_zero_loss_changes_nothing() {
+        let mut s = skill(12, 500);
+
+        let lost = regress(&mut s, 0, 10, linear);
+
+        assert_eq!(lost, 0);
+        assert_eq!((s.value, s.current_ticks), (12, 500));
+    }
+
+    #[test]
+    fn regress_undoes_advance() {
+        let mut s = skill(10, 0);
+        advance(&mut s, 3650, linear);
+
+        regress(&mut s, 3650, 10, linear);
+
+        assert_eq!((s.value, s.current_ticks), (10, 0));
+    }
+
+    #[test]
+    fn progress_above_the_floor_is_the_steps_taken_plus_the_current_one() {
+        assert_eq!(progress_above_floor(&skill(13, 50), 10, linear), 3650);
+        assert_eq!(progress_above_floor(&skill(10, 40), 10, linear), 40);
+    }
+
+    #[test]
+    fn experience_above_level_one_is_the_total_experience() {
+        let cfg = curves();
+        let level = |l| required_ticks_in(&cfg, Vocation::Knight, &SkillType::Level, l);
+
+        assert_eq!(
+            progress_above_floor(&skill(8, 55), 1, level),
+            total_experience(&skill(8, 55))
+        );
+    }
+
+    #[test]
+    fn a_percentage_rounds_down_and_never_exceeds_the_whole() {
+        assert_eq!(percent_of(105, 10), 10);
+        assert_eq!(percent_of(4255, 10), 425);
+        assert_eq!(percent_of(500, 250), 500);
+        assert_eq!(percent_of(u64::MAX, 100), u64::MAX);
+    }
+
+    #[test]
     fn levelling_into_gear_switches_it_on() {
         use crate::entities::agent::Agent;
         use crate::entities::inventory::InventorySlot;
@@ -407,15 +537,139 @@ vocations:
         let pos = Position::new(10, 10, 7);
         let mut map = GameMap::new();
         map.insert_tile(pos.clone(), MapTile::new());
-        let key = map.insert_agent(Agent::from_player(snapshot), &pos).unwrap();
+        let key = map
+            .insert_agent(Agent::from_player(snapshot), &pos)
+            .unwrap();
         let mut map = WorldMap::new(map);
         assert_eq!(map.get_player(key).unwrap().inventory().stats().speed, 0);
 
         let mut h = TestHarness::new();
-        tick_skill(&mut h.ctx(&mut map), key, SkillType::Level, exp_for_level(2));
+        tick_skill(
+            &mut h.ctx(&mut map),
+            key,
+            SkillType::Level,
+            exp_for_level(2),
+        );
 
         let player = map.get_player(key).unwrap();
         assert_eq!(player.level(), 2);
         assert_eq!(player.inventory().stats().speed, 20);
+    }
+
+    mod death_loss {
+        use super::*;
+        use crate::entities::agent::Agent;
+        use crate::entities::inventory::InventorySlot;
+        use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemId};
+        use crate::entities::map::{GameMap, MapTile};
+        use crate::entities::position::Position;
+        use crate::entities::world_map::WorldMap;
+        use crate::game::TestHarness;
+        use crate::persistence::test_fixtures::a_test_snapshot;
+        use std::collections::HashMap;
+        use std::sync::Arc;
+
+        fn a_knight_with(skills: &[(SkillType, SkillValue)]) -> (WorldMap, AgentKey) {
+            let mut snapshot = a_test_snapshot(1, 1);
+            snapshot.skills = skills.iter().cloned().collect();
+            let pos = Position::new(10, 10, 7);
+            let mut map = GameMap::new();
+            map.insert_tile(pos.clone(), MapTile::new());
+            let key = map
+                .insert_agent(Agent::from_player(snapshot), &pos)
+                .unwrap();
+            (WorldMap::new(map), key)
+        }
+
+        /// 4255 experience at level 8; 10% is 425, which takes level 8 back.
+        #[test]
+        fn ten_percent_of_the_experience_is_lost() {
+            let (mut map, key) = a_knight_with(&[(SkillType::Level, skill(8, 55))]);
+            let mut h = TestHarness::new();
+
+            apply_death_loss(&mut h.ctx(&mut map), key, 10);
+
+            let level = &map.get_player(key).unwrap().skills()[&SkillType::Level];
+            assert_eq!(total_experience(level), 4255 - 425);
+            assert_eq!(level.value, 7);
+        }
+
+        #[test]
+        fn a_lost_level_takes_back_what_the_level_gave() {
+            let (mut map, key) = a_knight_with(&[(SkillType::Level, skill(3, 0))]);
+            let mut h = TestHarness::new();
+
+            apply_death_loss(&mut h.ctx(&mut map), key, 10);
+
+            let agent = map.get_agent(key).unwrap();
+            let player = map.get_player(key).unwrap();
+            let knight = Vocation::Knight;
+            assert_eq!(player.level(), 2);
+            assert_eq!(
+                agent.life().maximum,
+                (100 - knight.life_on_level_up()) as u32
+            );
+            assert_eq!(
+                agent.mana().maximum,
+                (100 - knight.mana_on_level_up()) as u32
+            );
+            assert_eq!(agent.mana().current, agent.mana().maximum);
+            assert_eq!(
+                player.capacity(),
+                (40000 - knight.capacity_on_level_up()) as u32
+            );
+            assert_eq!(agent.base_speed(), 119);
+        }
+
+        #[test]
+        fn a_lost_level_switches_off_gear_it_no_longer_meets() {
+            let boots = Item::new(
+                Arc::new(ItemConfig::new(
+                    ItemId(3079),
+                    "boots".to_string(),
+                    None,
+                    None,
+                    [],
+                    vec![ItemAttribute::Speed(20), ItemAttribute::RequiredLevel(3)],
+                )),
+                1,
+            );
+            let mut snapshot = a_test_snapshot(1, 1);
+            snapshot.skills = HashMap::from([(SkillType::Level, skill(3, 0))]);
+            snapshot.inventory = HashMap::from([(InventorySlot::Feet, boots)]);
+            let pos = Position::new(10, 10, 7);
+            let mut map = GameMap::new();
+            map.insert_tile(pos.clone(), MapTile::new());
+            let key = map
+                .insert_agent(Agent::from_player(snapshot), &pos)
+                .unwrap();
+            let mut map = WorldMap::new(map);
+            assert_eq!(map.get_player(key).unwrap().inventory().stats().speed, 20);
+            let mut h = TestHarness::new();
+
+            apply_death_loss(&mut h.ctx(&mut map), key, 10);
+
+            assert_eq!(map.get_player(key).unwrap().inventory().stats().speed, 0);
+        }
+
+        /// Sword 12 for a knight: 50 + 55 above the floor, so 10% is 10.
+        #[test]
+        fn every_skill_loses_the_same_share_and_one_at_its_floor_keeps_it() {
+            let (mut map, key) = a_knight_with(&[
+                (SkillType::Level, skill(1, 0)),
+                (SkillType::Sword, skill(12, 0)),
+                (SkillType::Shielding, skill(10, 0)),
+            ]);
+            let mut h = TestHarness::new();
+
+            apply_death_loss(&mut h.ctx(&mut map), key, 10);
+
+            let skills = map.get_player(key).unwrap().skills();
+            let sword = &skills[&SkillType::Sword];
+            let shielding = &skills[&SkillType::Shielding];
+            assert_eq!((sword.value, sword.current_ticks), (11, 45));
+            assert_eq!((shielding.value, shielding.current_ticks), (10, 0));
+            assert_eq!(skills[&SkillType::Level].value, 1);
+        }
     }
 }

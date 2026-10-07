@@ -60,13 +60,8 @@ pub fn apply_damage(
 
     let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
     let life = agent.life().current;
-    let (survivable, records_participation) = if agent.is_creature() {
-        (life, true)
-    } else {
-        (life.saturating_sub(1), false) // TODO: player death
-    };
 
-    damage.value = damage.value.min(survivable);
+    damage.value = damage.value.min(life);
     if damage.value == 0 {
         if damage.blocked_shield || damage.blocked_armor {
             ctx.events.push(BroadcastMessage::DamageTaken {
@@ -85,7 +80,7 @@ pub fn apply_damage(
 
     if let Some(mut agent) = ctx.map.agent_mut(target) {
         agent.remove_life(applied);
-        if records_participation && let Some(source) = source {
+        if let Some(source) = source {
             agent.record_damage(source, applied);
         }
     }
@@ -214,6 +209,7 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::actors::persistence::PersistenceCommand;
     use crate::entities::agent::Agent;
     use crate::entities::combat::AttackPlan;
     use crate::entities::map::{GameMap, MapTile};
@@ -341,29 +337,22 @@ mod tests {
     }
 
     #[test]
-    fn a_lethal_hit_on_a_player_leaves_one_life() {
+    fn a_lethal_hit_kills_a_player_and_saves_them() {
         let (map, player) = map_with_player();
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
         apply_damage(&mut h.ctx(&mut map), player, physical(500), None);
 
-        assert_eq!(map.get_agent(player).unwrap().life().current, 1);
-        assert_eq!(reported_damage(&h.events), Some(99));
-    }
-
-    #[test]
-    fn a_player_at_one_life_takes_no_further_damage() {
-        let (map, player) = map_with_player();
-        let mut h = TestHarness::seeded(1);
-        let mut map = WorldMap::new(map);
-        apply_damage(&mut h.ctx(&mut map), player, physical(500), None);
-        h.events.clear();
-
-        apply_damage(&mut h.ctx(&mut map), player, physical(500), None);
-
-        assert_eq!(map.get_agent(player).unwrap().life().current, 1);
-        assert!(h.events.is_empty());
+        assert!(map.get_agent(player).is_none());
+        assert_eq!(reported_damage(&h.events), Some(100));
+        assert!(h.events.iter().any(
+            |m| matches!(m, BroadcastMessage::PlayerDied { agent_key } if *agent_key == player)
+        ));
+        assert!(matches!(
+            h.persistence_rx.try_recv(),
+            Ok(PersistenceCommand::SavePlayer(..))
+        ));
     }
 
     #[test]
@@ -458,10 +447,8 @@ mod tests {
         assert_eq!(map.get_agent(rat).unwrap().participation().total(), 0);
     }
 
-    /// Players cannot die, so nothing would ever read their table — and with no idle
-    /// clear it would grow an entry per creature that ever hit them.
     #[test]
-    fn a_players_participation_table_is_never_written() {
+    fn a_players_participation_is_recorded() {
         let (map, player, rat) = an_attacked_player();
         let mut h = TestHarness::seeded(1);
 
@@ -469,7 +456,7 @@ mod tests {
         apply_damage(&mut h.ctx(&mut map), player, physical(30), Some(rat));
 
         assert_eq!(map.get_agent(player).unwrap().life().current, 70);
-        assert_eq!(map.get_agent(player).unwrap().participation().total(), 0);
+        assert_eq!(map.get_agent(player).unwrap().participation().total(), 30);
     }
 
     /// The overkill must not inflate the killer's share. A 500 roll into a creature with

@@ -92,7 +92,7 @@ impl SessionActor {
     pub(super) async fn remove_agents_not_in_reach(&mut self) -> Result<()> {
         let map = self.shared_map.load();
         let Some(pos) = map.agent_position(self.player_key) else {
-            return Err(SessionError::InvalidState.into());
+            return Ok(());
         };
         let gone: Vec<AgentKey> = self
             .agents
@@ -304,6 +304,23 @@ impl SessionActor {
         }
         Ok(())
     }
+
+    pub(super) async fn died(&self) -> Result<()> {
+        let agent_id = self.agents.get_local(&self.player_key).unwrap();
+        self.connection
+            .send_message(ServerMessage::RemoveAgent { agent_id })
+            .await?;
+        self.connection
+            .send_message(ServerMessage::TextMessage {
+                text: "You're dead.".to_owned(),
+                message_type: TextMessageType::Look,
+            })
+            .await?;
+        self.connection
+            .send_message(ServerMessage::PlayerDied)
+            .await?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -320,6 +337,19 @@ mod tests {
     use crate::game::TickDelta;
     use crate::messages::ServerMessage;
     use tokio::sync::mpsc;
+
+    /// `end_tick` publishes the tick before routing that tick's events, so a session ticks
+    /// once with its player already gone from the snapshot and the `PlayerDied` or
+    /// `AgentDespawned` that ends it still queued behind.
+    #[tokio::test]
+    async fn a_tick_after_the_player_left_the_map_waits_for_the_despawn() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        map.remove_agent(me);
+        let (mut session, _connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session.tick_schedules().await.unwrap();
+    }
 
     #[tokio::test]
     pub(super) async fn target_lost_forwards_the_seq_verbatim() {

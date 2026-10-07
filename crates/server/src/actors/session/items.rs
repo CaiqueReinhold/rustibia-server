@@ -182,9 +182,9 @@ impl SessionActor {
 
     pub(super) async fn handle_look(&self, position: Position) -> Result<()> {
         let map = self.shared_map.load();
-        let player_pos = map
-            .agent_position(self.player_key)
-            .ok_or(SessionError::InvalidState)?;
+        let Some(player_pos) = map.agent_position(self.player_key) else {
+            return Ok(());
+        };
         let Some(placement) =
             resolve_client_coord(position, &map, &self.containers, self.player_key)
         else {
@@ -325,6 +325,21 @@ mod tests {
     use crate::constants::items::{CARRIED_SEARCH_FLAG, INVENTORY_COORD_FLAG};
     use crate::entities::agent::Agent;
     use crate::persistence::test_fixtures::a_player_with_a_full_backpack;
+
+    /// Same window as `a_tick_after_the_player_left_the_map_waits_for_the_despawn`: a look that
+    /// arrives after the player left the map but before their despawn is delivered.
+    #[tokio::test]
+    async fn a_look_after_the_player_left_the_map_answers_nothing() {
+        let mut map = GameMap::new();
+        let at = Position::new(100, 100, 7);
+        let me = seat_player(&mut map, &at, 1);
+        map.remove_agent(me);
+        let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session.handle_look(at).await.unwrap();
+
+        assert!(connection_rx.try_recv().is_err());
+    }
 
     fn searched(item_id: u16) -> ClientItemRef {
         ClientItemRef {

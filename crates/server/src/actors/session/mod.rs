@@ -435,6 +435,7 @@ impl SessionActor {
             BroadcastMessage::AgentActionMessage { position, message } => {
                 self.action_message(position, message).await
             }
+            BroadcastMessage::PlayerDied { .. } => self.died().await,
         }
     }
 

@@ -5,13 +5,13 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 use crate::entities::agent::{OutfitColors, OutfitId};
-use crate::entities::creature::CreatureVoices;
 use crate::entities::player::PlayerId;
 use crate::entities::spells::{
     PowerCurve, Spell, SpellDelivery, SpellEffect, SpellGroup, SpellHealing, SpellId,
 };
 use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
+use crate::entities::voices::Voices;
 use crate::entities::{
     Bounds,
     agent::{Agent, Facing, Pool},
@@ -250,7 +250,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
         loot_table: vec![],
         flee_threshold: None,
         target_distance: 1,
-        say: CreatureVoices {
+        say: Voices {
             cooldown: TickDelta(100),
             chance: 10000,
             sentences: vec!["sentence".to_owned()],

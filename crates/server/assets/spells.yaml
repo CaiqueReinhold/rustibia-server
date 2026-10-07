@@ -242,7 +242,7 @@ spells:
     cooldown_ticks: 40
     mana: 20
     level: 8
-    icon: 27
+    icon: 32
     vocations: [sorcerer, druid]
     effect:
       type: attack
@@ -265,7 +265,7 @@ spells:
     cooldown_ticks: 40
     mana: 20
     level: 13
-    icon: 28
+    icon: 35
     vocations: [sorcerer, druid]
     effect:
       type: attack
@@ -288,7 +288,7 @@ spells:
     cooldown_ticks: 160
     mana: 60
     level: 70
-    icon: 31
+    icon: 27
     vocations: [sorcerer]
     effect:
       type: attack
@@ -311,7 +311,7 @@ spells:
     cooldown_ticks: 160
     mana: 60
     level: 80
-    icon: 32
+    icon: 33
     vocations: [druid]
     effect:
       type: attack
@@ -357,7 +357,7 @@ spells:
     cooldown_ticks: 80
     mana: 170
     level: 38
-    icon: 46
+    icon: 47
     vocations: [druid]
     effect:
       type: attack
@@ -380,7 +380,7 @@ spells:
     cooldown_ticks: 160
     mana: 170
     level: 38
-    icon: 47
+    icon: 43
     vocations: [sorcerer]
     effect:
       type: attack
@@ -449,7 +449,7 @@ spells:
     cooldown_ticks: 800
     mana: 1100
     level: 60
-    icon: 53
+    icon: 49
     vocations: [sorcerer]
     effect:
       type: attack
@@ -472,7 +472,7 @@ spells:
     cooldown_ticks: 800
     mana: 700
     level: 55
-    icon: 54
+    icon: 48
     vocations: [druid]
     effect:
       type: attack
@@ -495,7 +495,7 @@ spells:
     cooldown_ticks: 800
     mana: 1050
     level: 60
-    icon: 55
+    icon: 50
     vocations: [druid]
     effect:
       type: attack
@@ -518,7 +518,7 @@ spells:
     cooldown_ticks: 40
     mana: 20
     level: 40
-    icon: 33
+    icon: 39
     vocations: [paladin]
     effect:
       type: attack
@@ -541,7 +541,7 @@ spells:
     cooldown_ticks: 80
     mana: 160
     level: 50
-    icon: 34
+    icon: 40
     vocations: [paladin]
     effect:
       type: attack
@@ -564,7 +564,7 @@ spells:
     cooldown_ticks: 40
     mana: 25
     level: 23
-    icon: 35
+    icon: 18
     vocations: [paladin]
     effect:
       type: attack
@@ -578,7 +578,7 @@ spells:
       flat: -100
       spread_min: 0.417
       spread_max: 0.417
-      effect_id: 1
+      effect_id: 28
       missile_id: 25
       weapon_required: true
   - id: 26
@@ -588,7 +588,7 @@ spells:
     cooldown_ticks: 20
     mana: 160
     level: 35
-    icon: 8
+    icon: 2
     vocations: [paladin]
     effect:
       type: heal
@@ -607,7 +607,7 @@ spells:
     cooldown_ticks: 20
     mana: 40
     level: 8
-    icon: 10
+    icon: 3
     vocations: [knight]
     effect:
       type: heal
@@ -626,7 +626,7 @@ spells:
     cooldown_ticks: 120
     mana: 40
     level: 28
-    icon: 23
+    icon: 19
     vocations: [knight]
     effect:
       type: attack
@@ -640,7 +640,7 @@ spells:
       flat: -100
       spread_min: 0.375
       spread_max: 0.33
-      effect_id: 1
+      effect_id: 10
       missile_id: 25
       weapon_required: true
   - id: 29
@@ -650,7 +650,7 @@ spells:
     cooldown_ticks: 160
     mana: 200
     level: 33
-    icon: 24
+    icon: 25
     vocations: [knight]
     effect:
       type: attack
@@ -665,7 +665,7 @@ spells:
       flat: -100
       spread_min: 0.27
       spread_max: 0.255
-      effect_id: 1
+      effect_id: 35
       weapon_required: true
   - id: 30
     name: Brutal Strike
@@ -674,7 +674,7 @@ spells:
     cooldown_ticks: 120
     mana: 30
     level: 16
-    icon: 19
+    icon: 23
     vocations: [knight]
     effect:
       type: attack
@@ -688,7 +688,7 @@ spells:
       flat: -100
       spread_min: 0.5
       spread_max: 0.5
-      effect_id: 1
+      effect_id: 10
       missile_id: 25
       weapon_required: true
   - id: 31
@@ -698,7 +698,7 @@ spells:
     cooldown_ticks: 120
     mana: 200
     level: 70
-    icon: 20
+    icon: 19
     vocations: [knight]
     effect:
       type: attack
@@ -713,7 +713,7 @@ spells:
       flat: -100
       spread_min: 0.421
       spread_max: 0.421
-      effect_id: 1
+      effect_id: 10
       weapon_required: true
   - id: 32
     name: Annihilation
@@ -722,7 +722,7 @@ spells:
     cooldown_ticks: 600
     mana: 300
     level: 110
-    icon: 25
+    icon: 24
     vocations: [knight]
     effect:
       type: attack
@@ -736,7 +736,7 @@ spells:
       flat: -100
       spread_min: 0.44
       spread_max: 0.44
-      effect_id: 1
+      effect_id: 10
       missile_id: 25
       weapon_required: true
   - id: 33
@@ -746,7 +746,7 @@ spells:
     cooldown_ticks: 20
     mana: 160
     level: 30
-    icon: 9
+    icon: 1
     vocations: [sorcerer, druid]
     effect:
       type: heal
@@ -811,7 +811,7 @@ spells:
     cooldown_ticks: 40
     mana: 150
     level: 36
-    icon: 11
+    icon: 9
     vocations: [druid]
     effect:
       type: heal
@@ -832,7 +832,7 @@ spells:
     cooldown_ticks: 20
     mana: 120
     level: 18
-    icon: 12
+    icon: 8
     vocations: [druid]
     effect:
       type: heal
@@ -869,7 +869,7 @@ spells:
       flat: -28.5
       spread_min: 0.328
       spread_max: 0.328
-      effect_id: 44
+      effect_id: 42
       missile_id: 29
   - id: 39
     name: Great Fireball Rune
@@ -895,7 +895,7 @@ spells:
       flat: -28.5
       spread_min: 0.328
       spread_max: 0.328
-      effect_id: 37
+      effect_id: 7
       missile_id: 4
   - id: 40
     name: Intense Healing Rune
@@ -1135,7 +1135,7 @@ spells:
       flat: -29.0
       spread_min: 0.356
       spread_max: 0.356
-      effect_id: 48
+      effect_id: 12
       missile_id: 36
   - id: 50
     name: Explosion Rune
@@ -1161,8 +1161,8 @@ spells:
       flat: -26.0
       spread_min: 0.284
       spread_max: 0.284
-      effect_id: 1
-      missile_id: 25
+      effect_id: 5
+      missile_id: 41
   - id: 51
     name: Ultimate Healing Rune
     words: ""
@@ -1227,7 +1227,7 @@ spells:
     cooldown_ticks: 40
     mana: 50
     level: 14
-    icon: 95
+    icon: 124
     vocations: [sorcerer, druid]
     effect:
       type: magic_shield

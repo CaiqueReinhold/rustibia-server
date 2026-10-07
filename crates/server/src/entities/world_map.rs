@@ -291,6 +291,10 @@ impl AgentMut<'_> {
         self.agent.record_damage(attacker, damage);
     }
 
+    pub fn clear_participation(&mut self) {
+        self.agent.clear_participation();
+    }
+
     pub fn player_mut(&mut self) -> Option<PlayerMut<'_>> {
         let player = self.agent.get_player_mut()?;
         Some(PlayerMut {

@@ -90,6 +90,8 @@ max_fed_ticks: 24000
 regen_ticks: 120
 logout_block_ticks: 1200
 disconnect_linger_cap_ticks: 2400
+slot_drop_chance: 10
+death_loss_percent: 10
 
 vocation:
   knight:   { life_regen_amount: 10, mana_regen_amount: 5,  life_gain_level: 15, mana_gain_level: 5,  capacity_gain_level: 2500 }

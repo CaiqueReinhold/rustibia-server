@@ -78,6 +78,9 @@ pub fn expire_condition(ctx: &mut TickCtx, agent_key: AgentKey, kind: TimedCondi
     }
     if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
         agent.conditions(|c| c.remove_timed(kind));
+        if kind == TimedCondition::LogoutBlock {
+            agent.clear_participation();
+        }
     }
 }
 
@@ -363,6 +366,66 @@ mod tests {
 
         assert!(map.delta().is_empty());
         assert!(h.scheduled.is_empty());
+    }
+
+    fn a_blocked_player_hit_for(damage: u32) -> (WorldMap, AgentKey) {
+        let (mut map, player) = a_blocked_player(Tick(0));
+        let rat_pos = Position::new(11, 10, 7);
+        map.inner_mut().insert_tile(rat_pos.clone(), MapTile::new());
+        let rat = map
+            .inner_mut()
+            .insert_agent(a_test_creature("Rat", 100, (1, 2)), &rat_pos)
+            .unwrap();
+        map.inner_mut()
+            .get_agent_mut(player)
+            .unwrap()
+            .record_damage(rat, damage);
+        (map, player)
+    }
+
+    #[test]
+    fn the_end_of_the_fight_forgets_who_hit_the_player() {
+        let (mut map, player) = a_blocked_player_hit_for(30);
+        let mut h = TestHarness::new();
+        h.tick = Tick(0) + GAME_CONFIG.logout_block_ticks;
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::LogoutBlock);
+
+        assert_eq!(map.get_agent(player).unwrap().participation().total(), 0);
+    }
+
+    #[test]
+    fn a_fight_still_going_keeps_who_hit_the_player() {
+        let (mut map, player) = a_blocked_player_hit_for(30);
+        map.inner_mut()
+            .get_agent_mut(player)
+            .unwrap()
+            .conditions_mut()
+            .reset_logout_block(Tick(10));
+        let mut h = TestHarness::new();
+        h.tick = Tick(0) + GAME_CONFIG.logout_block_ticks;
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::LogoutBlock);
+
+        assert_eq!(map.get_agent(player).unwrap().participation().total(), 30);
+    }
+
+    #[test]
+    fn another_condition_ending_keeps_who_hit_the_player() {
+        let (mut map, player) = a_blocked_player_hit_for(30);
+        map.inner_mut()
+            .get_agent_mut(player)
+            .unwrap()
+            .conditions_mut()
+            .add_fed_ticks(Tick(0), TickDelta(10));
+        let mut h = TestHarness::new();
+        h.tick = Tick(10);
+
+        expire_condition(&mut h.ctx(&mut map), player, TimedCondition::Fed);
+
+        let agent = map.get_agent(player).unwrap();
+        assert_eq!(agent.conditions().until(TimedCondition::Fed), None);
+        assert_eq!(agent.participation().total(), 30);
     }
 
     fn a_rat_at(position: &Position) -> (WorldMap, AgentKey) {

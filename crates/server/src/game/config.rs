@@ -30,6 +30,8 @@ pub enum GameConfigLoadError {
 
 #[derive(Deserialize)]
 pub struct GameConfig {
+    pub slot_drop_chance: u32,
+    pub death_loss_percent: u32,
     pub max_fed_ticks: TickDelta,
     pub regen_ticks: TickDelta,
     pub logout_block_ticks: TickDelta,

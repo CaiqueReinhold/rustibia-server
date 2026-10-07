@@ -5,6 +5,18 @@ use crate::entities::vocation::Vocation;
 use crate::game::item_movement::ItemMovementError;
 use std::collections::HashMap;
 
+pub const PLAYER_DROP_SLOTS: [InventorySlot; 9] = [
+    InventorySlot::Amulet,
+    InventorySlot::Chest,
+    InventorySlot::Feet,
+    InventorySlot::Head,
+    InventorySlot::LeftHand,
+    InventorySlot::Legs,
+    InventorySlot::RightHand,
+    InventorySlot::Ring,
+    InventorySlot::Trinket,
+];
+
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, FromRepr)]
 #[repr(u8)]
 pub enum InventorySlot {

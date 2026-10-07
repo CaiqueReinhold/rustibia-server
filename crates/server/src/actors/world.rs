@@ -298,14 +298,15 @@ impl WorldActor {
                 );
                 continue;
             };
-            self.command_queue.push(ScheduledCommand {
-                at_tick: Tick(1),
-                command: WorldCommand::SpawnCreature {
+            let mut messages = Vec::new();
+            self.handle_command(
+                WorldCommand::SpawnCreature {
                     kind,
                     position: spawn.position.clone(),
                     respawn_ticks: Some(spawn.respawn_ticks),
                 },
-            });
+                &mut messages,
+            );
         }
         info!("Seeded {} spawn points", self.command_queue.len());
     }
@@ -462,6 +463,7 @@ impl WorldActor {
             scheduled: &mut scheduled,
             roll: &mut self.roll,
             tick: self.tick,
+            persistence: &self.persistence,
         });
         for cmd in scheduled {
             self.command_queue.push(cmd);

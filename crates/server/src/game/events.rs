@@ -111,6 +111,9 @@ pub enum BroadcastMessage {
         position: Position,
         message: String,
     },
+    PlayerDied {
+        agent_key: AgentKey,
+    },
 }
 
 /// Who a broadcast reaches.
@@ -163,7 +166,8 @@ impl BroadcastMessage {
             | Self::UseItemDenied { agent_key, .. }
             | Self::LogoutDenied { agent_key, .. }
             | Self::ExperienceGained { agent_key, .. }
-            | Self::SkillUpgraded { agent_key, .. } => Routing::Agent(*agent_key),
+            | Self::SkillUpgraded { agent_key, .. }
+            | Self::PlayerDied { agent_key } => Routing::Agent(*agent_key),
 
             Self::AgentMoved {
                 agent_key,

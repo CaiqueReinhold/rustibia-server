@@ -142,6 +142,7 @@ const SRV_SPELL_LIST: u8 = 32;
 const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
 const SRV_DAMAGED_BY: u8 = 35;
+const SRV_DIED: u8 = 36;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum TextMessageType {
@@ -336,6 +337,7 @@ pub enum ServerMessage {
     PlayerStatus {
         status: u32,
     },
+    PlayerDied,
 }
 
 #[derive(Error, Debug)]
@@ -885,6 +887,9 @@ impl Encoder<ServerMessage> for GameMessageCodec {
             ServerMessage::PlayerStatus { status } => {
                 dst.put_u8(SRV_PLAYER_STATUS);
                 dst.put_u32_le(status);
+            }
+            ServerMessage::PlayerDied => {
+                dst.put_u8(SRV_DIED);
             }
         }
 

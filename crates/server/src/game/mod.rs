@@ -27,6 +27,7 @@ pub mod targeting;
 
 use serde::Deserialize;
 
+use crate::actors::persistence::PersistenceActorHandle;
 use crate::actors::world::ScheduledCommand;
 use crate::entities::world_map::WorldMap;
 use crate::game::events::BroadcastMessage;
@@ -117,6 +118,7 @@ pub struct TickCtx<'a> {
     pub scheduled: &'a mut Vec<ScheduledCommand>,
     pub roll: &'a mut Rolls,
     pub tick: Tick,
+    pub persistence: &'a PersistenceActorHandle,
 }
 
 #[derive(Clone, Copy)]
@@ -146,16 +148,22 @@ pub struct TestHarness {
     pub scheduled: Vec<ScheduledCommand>,
     pub roll: Rolls,
     pub tick: Tick,
+    pub persistence: PersistenceActorHandle,
+    pub persistence_rx:
+        tokio::sync::mpsc::UnboundedReceiver<crate::actors::persistence::PersistenceCommand>,
 }
 
 #[cfg(test)]
 impl TestHarness {
     pub fn new() -> Self {
+        let (persistence, persistence_rx) = PersistenceActorHandle::for_test();
         Self {
             events: Vec::new(),
             scheduled: Vec::new(),
             roll: Rolls::new(0),
             tick: Tick(0),
+            persistence,
+            persistence_rx,
         }
     }
 
@@ -173,6 +181,7 @@ impl TestHarness {
             scheduled: &mut self.scheduled,
             roll: &mut self.roll,
             tick: self.tick,
+            persistence: &self.persistence,
         }
     }
 }

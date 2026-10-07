@@ -11,6 +11,7 @@ use crate::{
         spells::SpellGroup,
         support::SupportCast,
         targeting::TargetMode,
+        voices::Voices,
     },
     game::TickDelta,
 };
@@ -38,13 +39,6 @@ pub struct LootEntry {
     pub item_id: ItemId,
     pub chance: u32,
     pub amount: u32,
-}
-
-#[derive(Clone, Debug)]
-pub struct CreatureVoices {
-    pub cooldown: TickDelta,
-    pub chance: u32,
-    pub sentences: Vec<String>,
 }
 
 #[derive(Clone, Debug)]
@@ -124,7 +118,7 @@ pub struct CreatureKind {
     pub loot_table: Vec<LootEntry>,
     pub flee_threshold: Option<u32>,
     pub target_distance: u16,
-    pub say: CreatureVoices,
+    pub say: Voices,
     pub flags: Vec<CreatureFlag>,
 }
 

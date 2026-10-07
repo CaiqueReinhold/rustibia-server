@@ -12,11 +12,13 @@ use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
 use crate::entities::creature::{
     AbilityEffect, BloodType, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
-    CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, CreatureVoices, LootEntry,
+    CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, LootEntry,
 };
+
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::items::ItemId;
 use crate::entities::support::SupportCast;
+use crate::entities::voices::Voices;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
 use crate::persistence::conditions::{RawBounds, RawConditionSpec};
@@ -327,7 +329,7 @@ impl RawCreature {
                 .collect(),
             flee_threshold: self.flee_threshold,
             target_distance: self.target_distance,
-            say: CreatureVoices {
+            say: Voices {
                 cooldown: self.say.cooldown,
                 chance: self.say.chance,
                 sentences: self.say.sentences,

@@ -4,21 +4,23 @@ use crate::actors::world::{ScheduledCommand, WorldCommand};
 use crate::constants::items::MAX_STACK_AMOUNT;
 use crate::entities::agent::{Agent, AgentKey};
 use crate::entities::creature::CreatureKind;
+use crate::entities::inventory::{InventorySlot, PLAYER_DROP_SLOTS};
 use crate::entities::items::{Item, ItemFlag, ItemId};
 use crate::entities::position::ItemPlacement;
 use crate::game::TickCtx;
+use crate::game::config::GAME_CONFIG;
 use crate::game::events::BroadcastMessage;
 use crate::game::item_action::check_decay;
 use crate::game::item_movement::insert_item_at;
 use crate::game::random::Rolls;
-use crate::game::{experience, targeting};
+use crate::game::{experience, skills, targeting};
 use crate::persistence::items::ITEM_CONFIGS;
 
 pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
     let Some(dead) = ctx.map.get_agent(agent_key) else {
         return;
     };
-    if !dead.is_creature() || dead.life().current > 0 {
+    if dead.life().current > 0 {
         return;
     }
 
@@ -34,15 +36,13 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
         targeting::lose_target(ctx, key);
     }
 
-    let Some((agent, position)) = ctx.map.remove_agent(agent_key) else {
+    if ctx.map.get_player(agent_key).is_some() {
+        skills::apply_death_loss(ctx, agent_key, GAME_CONFIG.death_loss_percent);
+    }
+
+    let Some((mut agent, position)) = ctx.map.remove_agent(agent_key) else {
         return;
     };
-    ctx.events.push(BroadcastMessage::AgentDespawned {
-        agent_key,
-        position: position.clone(),
-    });
-    schedule_respawn(ctx, &agent);
-
     let agent_corpse = agent.get_corpse();
     let Some(config) = ITEM_CONFIGS.get(&agent_corpse) else {
         error!("creature corpse with id {} not found", agent_corpse);
@@ -51,6 +51,8 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
     let mut corpse = Item::new(config.clone(), 1);
     if let Some(creature) = agent.get_creature_kind() {
         roll_creature_loot(&mut corpse, creature, ctx.roll);
+    } else {
+        roll_player_drop_chance(&mut corpse, &mut agent, ctx.roll);
     }
     let placement = ItemPlacement::Map(position.clone());
     check_decay(ctx.scheduled, &corpse, placement.clone(), ctx.tick);
@@ -60,6 +62,51 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
             position, e
         );
     }
+
+    if agent.is_player() {
+        reset_player(&mut agent);
+        let origin = agent.get_origin().clone();
+        if let Some(snapshot) = agent.to_snapshot(origin) {
+            ctx.persistence.save_player(snapshot, ctx.tick);
+        }
+
+        ctx.events.push(BroadcastMessage::PlayerDied { agent_key });
+    }
+    ctx.events.push(BroadcastMessage::AgentDespawned {
+        agent_key,
+        position,
+    });
+    schedule_respawn(ctx, &agent);
+}
+
+fn roll_player_drop_chance(corpse: &mut Item, agent: &mut Agent, rolls: &mut Rolls) {
+    let Some(player) = agent.get_player_mut() else {
+        return;
+    };
+
+    let item = player.inventory_mut().take_slot(&InventorySlot::Backpack);
+    if let Some(item) = item
+        && let Some(content) = &mut corpse.content
+    {
+        content.push(item);
+    }
+
+    for slot in PLAYER_DROP_SLOTS {
+        if rolls.uniform(0, 100) < GAME_CONFIG.slot_drop_chance {
+            let item = player.inventory_mut().take_slot(&slot);
+            if let Some(item) = item
+                && let Some(content) = &mut corpse.content
+            {
+                content.push(item);
+            }
+        }
+    }
+}
+
+fn reset_player(agent: &mut Agent) {
+    agent.restore_life(agent.life().missing());
+    agent.restore_mana(agent.mana().missing());
+    // TODO: reset conditions
 }
 
 fn schedule_respawn(ctx: &mut TickCtx, dead: &Agent) {
@@ -366,5 +413,43 @@ mod tests {
                 .value,
             1
         );
+    }
+
+    #[test]
+    fn a_dead_player_is_saved_with_the_loss_and_full_at_the_lower_maximum() {
+        use crate::actors::persistence::PersistenceCommand;
+        use crate::entities::skills::{SkillType, SkillValue};
+        use crate::entities::vocation::Vocation;
+        use std::collections::HashMap;
+
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.skills = HashMap::from([(
+            SkillType::Level,
+            SkillValue {
+                value: 3,
+                current_ticks: 0,
+            },
+        )]);
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let key = map
+            .insert_agent(Agent::from_player(snapshot), &pos)
+            .unwrap();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+        map.agent_mut(key).unwrap().remove_life(100);
+
+        reap(&mut h.ctx(&mut map), key);
+
+        let Ok(PersistenceCommand::SavePlayer(saved, _)) = h.persistence_rx.try_recv() else {
+            panic!("the dead player was not saved");
+        };
+        let knight = Vocation::Knight;
+        assert_eq!(saved.skills[&SkillType::Level].value, 2);
+        assert_eq!(saved.life.maximum, (100 - knight.life_on_level_up()) as u32);
+        assert_eq!(saved.life.current, saved.life.maximum);
+        assert_eq!(saved.mana.maximum, (100 - knight.mana_on_level_up()) as u32);
+        assert_eq!(saved.mana.current, saved.mana.maximum);
     }
 }

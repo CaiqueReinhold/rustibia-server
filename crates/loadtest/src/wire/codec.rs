@@ -283,6 +283,7 @@ const SRV_SPELL_LIST: u8 = 32;
 const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
 const SRV_DAMAGED_BY: u8 = 35;
+const SRV_DIED: u8 = 36;
 
 fn read_utf8(buf: &mut BytesMut, len: usize) -> Result<String, WireError> {
     if buf.len() < len {
@@ -791,6 +792,7 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
         SRV_PLAYER_STATUS => Ok(ServerMessage::PlayerStatus {
             status: payload.try_get_u32_le()?,
         }),
+        SRV_DIED => Ok(ServerMessage::PlayerDied),
         _ => Err(WireError::UnknownOpcode(opcode)),
     }
 }
@@ -953,7 +955,7 @@ mod tests {
         }
     }
 
-    const SERVER_MESSAGE_VARIANTS: usize = 36;
+    const SERVER_MESSAGE_VARIANTS: usize = 37;
 
     /// Exhaustive for the same reason as `client_message_variant_index`.
     fn server_message_variant_index(message: &ServerMessage) -> usize {
@@ -994,6 +996,7 @@ mod tests {
             ServerMessage::SpellList { .. } => 33,
             ServerMessage::AgentSpeedUpdated { .. } => 34,
             ServerMessage::PlayerStatus { .. } => 35,
+            ServerMessage::PlayerDied => 36,
         }
     }
 
@@ -1218,6 +1221,7 @@ mod tests {
                 speed: 130,
             },
             ServerMessage::PlayerStatus { status: 0x0A },
+            ServerMessage::PlayerDied,
         ]
     }
 

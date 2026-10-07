@@ -86,6 +86,7 @@ fn decayed_into(item: &Item, config: Arc<ItemConfig>) -> Item {
     };
     next.owner = item.owner;
     next.action_id = item.action_id;
+    next.content = item.content.clone();
     next
 }
 

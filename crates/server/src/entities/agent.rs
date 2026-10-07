@@ -99,7 +99,8 @@ impl Pool {
     }
 
     pub fn change_capacity(&mut self, amount: i32) {
-        self.maximum = self.maximum.saturating_add_signed(amount)
+        self.maximum = self.maximum.saturating_add_signed(amount);
+        self.current = self.current.min(self.maximum);
     }
 
     pub fn to_wire(&self) -> u32 {
@@ -201,6 +202,10 @@ impl Agent {
 
     pub fn is_creature(&self) -> bool {
         matches!(self.inner, AgentInner::Creature(..))
+    }
+
+    pub fn is_player(&self) -> bool {
+        matches!(self.inner, AgentInner::Player(..))
     }
 
     pub fn get_origin(&self) -> &Position {
@@ -402,6 +407,10 @@ impl Agent {
 
     pub fn record_damage(&mut self, attacker: AgentKey, damage: u32) {
         self.participation.record(attacker, damage);
+    }
+
+    pub fn clear_participation(&mut self) {
+        self.participation = Participation::default();
     }
 
     pub fn calculate_walk_ticks(&self, tile_friction: u16, diagonal: bool) -> TickDelta {
@@ -1006,5 +1015,18 @@ mod tests {
 
         agent.remove_mana(60);
         assert!(!agent.conditions().is_magic_shielded(Tick(0)));
+    }
+
+    #[test]
+    fn lowering_a_pools_maximum_below_its_current_clamps_it() {
+        let mut pool = Pool {
+            current: 100,
+            maximum: 100,
+        };
+
+        pool.change_capacity(-5);
+
+        assert_eq!(pool.current, 95);
+        assert_eq!(pool.missing(), 0);
     }
 }
