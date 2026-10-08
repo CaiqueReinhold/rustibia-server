@@ -116,7 +116,7 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
     if ctx
         .map
         .get_agent(agent_key)
-        .map(|agent| agent.next_use_tick > ctx.tick)
+        .map(|agent| agent.next_use_tick() > ctx.tick)
         .unwrap_or(false)
     {
         return use_item_failed(ctx, mark, agent_key, "Can't use that fast");
@@ -150,10 +150,7 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
     } else if let Some(action) = action {
         match route_action(ctx, &action, agent_key, &item_ref) {
             Ok(()) => {
-                ctx.map
-                    .agent_mut(agent_key)
-                    .unwrap()
-                    .stamp_use(ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks);
+                ctx.map.agent_mut(agent_key).unwrap().stamp_use(ctx.tick);
             }
             Err(e) => {
                 let message = match e {

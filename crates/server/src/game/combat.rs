@@ -47,7 +47,7 @@ pub fn plan_auto_attack(
     let target = agent.target()?;
     let to = map.agent_position(target)?.clone();
 
-    if agent.next_auto_attack_tick > current_tick || agent.next_walk_tick > current_tick {
+    if agent.next_auto_attack_tick() > current_tick || agent.next_walk_tick() > current_tick {
         return None;
     }
 
@@ -1043,7 +1043,9 @@ mod tests {
             Agent::from_player(a_test_snapshot(1, 1)),
             a_test_creature("Rat", 10, (1, 2)),
         );
-        map.get_agent_mut(attacker).unwrap().next_auto_attack_tick = Tick(40);
+        map.get_agent_mut(attacker)
+            .unwrap()
+            .stamp_auto_attack(Tick(0));
         let mut roll = Rolls::new(1);
 
         assert!(plan_auto_attack(&map, attacker, &mut roll, Tick(10)).is_none());

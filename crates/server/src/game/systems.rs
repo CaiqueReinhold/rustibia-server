@@ -10,7 +10,7 @@ pub fn combat_system(ctx: &mut TickCtx) {
     let with_targets: Vec<(AgentKey, AgentKey)> = ctx
         .map
         .iter_agents()
-        .filter(|(_, agent)| agent.target().is_some())
+        .filter(|(_, agent)| agent.target().is_some() && !agent.is_npc())
         .map(|(key, agent)| (key, agent.target().unwrap()))
         .collect();
 
@@ -22,7 +22,7 @@ pub fn combat_system(ctx: &mut TickCtx) {
         if ctx.map.get_agent(agent_key).is_some_and(Agent::is_hostile) {
             let tick = ctx.tick;
             let created = match ctx.map.agent_mut(target) {
-                Some(mut agent) if !agent.is_creature() => {
+                Some(mut agent) if agent.is_player() => {
                     agent.conditions(|c| c.reset_logout_block(tick))
                 }
                 _ => false,
@@ -87,7 +87,7 @@ mod tests {
         combat_system(&mut h.ctx(&mut map));
 
         assert_eq!(
-            map.get_agent(attacker).unwrap().next_auto_attack_tick,
+            map.get_agent(attacker).unwrap().next_auto_attack_tick(),
             Tick(7) + GAME_CONFIG.combat.auto_attack_ticks
         );
     }

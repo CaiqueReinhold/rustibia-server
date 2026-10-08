@@ -8,6 +8,7 @@ pub mod items;
 pub mod journal;
 pub mod login;
 pub mod map;
+pub mod npcs;
 pub mod player;
 pub mod recovery;
 pub mod site_client;

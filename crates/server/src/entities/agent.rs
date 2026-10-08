@@ -7,6 +7,7 @@ use strum::{EnumCount, FromRepr};
 use crate::{
     entities::{
         combat::WeaponType,
+        npc::{Keyword, Npc},
         spells::{Spell, SpellGroup, SpellId},
     },
     local_id::LocalId,
@@ -131,6 +132,7 @@ impl Facing {
 enum AgentInner {
     Player(Arc<Player>),
     Creature(Arc<CreatureKind>),
+    Npc(Arc<Npc>),
 }
 
 new_key_type! { pub struct AgentKey; }
@@ -145,21 +147,16 @@ pub struct Agent {
     facing: Facing,
     origin: Position,
     respawn_ticks: Option<TickDelta>,
-
-    // both
-    pub next_walk_tick: Tick,
-    pub next_auto_attack_tick: Tick,
-
-    // player
-    pub next_use_tick: Tick,
-
+    keyword_branch: Option<(String, Arc<Keyword>)>,
     conditions: Conditions,
-
     spell_cooldowns: SmallVec<[(SpellId, Tick); 4]>,
     group_cooldowns: [Tick; SpellGroup::COUNT],
     target: Option<AgentKey>,
     target_seq: u32,
     participation: Participation,
+    next_walk_tick: Tick,
+    next_auto_attack_tick: Tick,
+    next_use_tick: Tick,
 }
 
 pub fn walk_ticks(speed: u16, tile_friction: u16, diagonal: bool) -> TickDelta {
@@ -182,21 +179,28 @@ impl Agent {
     pub fn get_player(&self) -> Option<&Player> {
         match &self.inner {
             AgentInner::Player(p) => Some(p),
-            AgentInner::Creature(..) => None,
+            _ => None,
         }
     }
 
     pub fn get_player_mut(&mut self) -> Option<&mut Player> {
         match &mut self.inner {
             AgentInner::Player(p) => Some(Arc::make_mut(p)),
-            AgentInner::Creature(..) => None,
+            _ => None,
         }
     }
 
     pub fn get_creature_kind(&self) -> Option<&CreatureKind> {
         match &self.inner {
             AgentInner::Creature(c) => Some(c),
-            AgentInner::Player(..) => None,
+            _ => None,
+        }
+    }
+
+    pub fn get_npc(&self) -> Option<&Npc> {
+        match &self.inner {
+            AgentInner::Npc(n) => Some(n),
+            _ => None,
         }
     }
 
@@ -206,6 +210,10 @@ impl Agent {
 
     pub fn is_player(&self) -> bool {
         matches!(self.inner, AgentInner::Player(..))
+    }
+
+    pub fn is_npc(&self) -> bool {
+        matches!(self.inner, AgentInner::Npc(..))
     }
 
     pub fn get_origin(&self) -> &Position {
@@ -242,6 +250,7 @@ impl Agent {
             spell_cooldowns: SmallVec::new(),
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
             conditions: Conditions::new(),
+            keyword_branch: None,
         }
     }
 
@@ -270,6 +279,7 @@ impl Agent {
             spell_cooldowns: SmallVec::new(),
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
             conditions: Conditions::new(),
+            keyword_branch: None,
         }
     }
 
@@ -280,6 +290,38 @@ impl Agent {
         }
     }
 
+    pub fn from_npc(npc: Arc<Npc>) -> Self {
+        let outfit = npc.outfit;
+        let speed = npc.speed;
+        let origin = npc.origin.clone();
+        Self {
+            inner: AgentInner::Npc(npc),
+            life: Pool {
+                current: 100,
+                maximum: 100,
+            },
+            mana: Pool {
+                current: 0,
+                maximum: 0,
+            },
+            outfit,
+            base_speed: speed,
+            facing: Facing::South,
+            next_walk_tick: Tick(0),
+            next_use_tick: Tick(0),
+            next_auto_attack_tick: Tick(0),
+            target: None,
+            target_seq: 0,
+            participation: Participation::default(),
+            origin,
+            respawn_ticks: None,
+            spell_cooldowns: SmallVec::new(),
+            group_cooldowns: [Tick(0); SpellGroup::COUNT],
+            conditions: Conditions::new(),
+            keyword_branch: None,
+        }
+    }
+
     pub fn respawn_ticks(&self) -> Option<TickDelta> {
         self.respawn_ticks
     }
@@ -287,7 +329,7 @@ impl Agent {
     pub fn creature_kind(&self) -> Option<&Arc<CreatureKind>> {
         match &self.inner {
             AgentInner::Creature(c) => Some(c),
-            AgentInner::Player(..) => None,
+            _ => None,
         }
     }
 
@@ -295,6 +337,7 @@ impl Agent {
         match &self.inner {
             AgentInner::Creature(c) => &c.name,
             AgentInner::Player(p) => p.name(),
+            AgentInner::Npc(n) => &n.name,
         }
     }
 
@@ -348,9 +391,11 @@ impl Agent {
     }
 
     pub fn is_hostile(&self) -> bool {
-        !self
-            .get_creature_kind()
-            .is_some_and(|kind| kind.has_flag(CreatureFlag::Passive))
+        match &self.inner {
+            AgentInner::Creature(c) => !c.has_flag(CreatureFlag::Passive),
+            AgentInner::Player(..) => true,
+            AgentInner::Npc(..) => false,
+        }
     }
 
     pub fn outfit(&self) -> (OutfitId, OutfitColors) {
@@ -363,6 +408,7 @@ impl Agent {
             AgentInner::Player(p) => self
                 .base_speed
                 .saturating_add_signed(p.inventory().stats().speed),
+            AgentInner::Npc(n) => n.speed,
         };
         match self.conditions.speed_change() {
             0 => base,
@@ -425,6 +471,7 @@ impl Agent {
         match &self.inner {
             AgentInner::Player(p) => p.weapon_range(),
             AgentInner::Creature(..) => 1,
+            AgentInner::Npc(..) => 1,
         }
     }
 
@@ -432,6 +479,7 @@ impl Agent {
         match &self.inner {
             AgentInner::Player(..) => BloodType::Blood,
             AgentInner::Creature(c) => c.blood_type.clone(),
+            AgentInner::Npc(..) => BloodType::Blood,
         }
     }
 
@@ -439,6 +487,7 @@ impl Agent {
         match &self.inner {
             AgentInner::Creature(c) => c.armor,
             AgentInner::Player(p) => p.armor(),
+            AgentInner::Npc(..) => 0,
         }
     }
 
@@ -468,6 +517,7 @@ impl Agent {
                 } as f32;
                 Some(((skill / 4. + 2.23) * def * 0.15) as u32)
             }
+            AgentInner::Npc(..) => None,
         }
     }
 
@@ -475,7 +525,20 @@ impl Agent {
         match &self.inner {
             AgentInner::Creature(c) => c.corpse,
             AgentInner::Player(..) => GAME_CONFIG.combat.human_corpse_item_id,
+            AgentInner::Npc(..) => GAME_CONFIG.combat.human_corpse_item_id,
         }
+    }
+
+    pub fn next_walk_tick(&self) -> Tick {
+        self.next_walk_tick
+    }
+
+    pub fn next_auto_attack_tick(&self) -> Tick {
+        self.next_auto_attack_tick
+    }
+
+    pub fn next_use_tick(&self) -> Tick {
+        self.next_use_tick
     }
 
     pub fn next_spell_tick(&self, spell_id: SpellId) -> Tick {
@@ -509,6 +572,22 @@ impl Agent {
 
     pub fn stamp_auto_attack(&mut self, current_tick: Tick) {
         self.next_auto_attack_tick = current_tick + GAME_CONFIG.combat.auto_attack_ticks;
+    }
+
+    pub fn stamp_walk(&mut self, next_walk_tick: Tick) {
+        self.next_walk_tick = next_walk_tick;
+    }
+
+    pub fn stamp_use_item(&mut self, current_tick: Tick) {
+        self.next_use_tick = current_tick + GAME_CONFIG.action.use_item_cooldown_ticks;
+    }
+
+    pub fn keyword_branch(&self) -> Option<&(String, Arc<Keyword>)> {
+        self.keyword_branch.as_ref()
+    }
+
+    pub fn set_keyword_branch(&mut self, branch: Option<(String, Arc<Keyword>)>) {
+        self.keyword_branch = branch;
     }
 
     pub fn to_snapshot(&self, position: Position) -> Option<Box<PlayerSnapshot>> {
@@ -877,10 +956,22 @@ mod tests {
         assert!(restored.target().is_none());
     }
 
+    #[test]
+    fn an_npc_agent_stands_at_its_origin_and_is_not_hostile() {
+        let npc = crate::persistence::test_fixtures::an_npc();
+        let agent = Agent::from_npc(Arc::clone(&npc));
+
+        assert!(agent.is_npc());
+        assert!(!agent.is_hostile());
+        assert_eq!(*agent.get_origin(), npc.origin);
+        assert_eq!(agent.name(), "Captain Jack");
+        assert_eq!(agent.speed(), 100);
+    }
+
     fn player_arc(agent: &Agent) -> &Arc<Player> {
         match &agent.inner {
             AgentInner::Player(p) => p,
-            AgentInner::Creature(..) => panic!("not a player"),
+            _ => panic!("not a player"),
         }
     }
 

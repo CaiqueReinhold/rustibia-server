@@ -1,10 +1,12 @@
-use crate::entities::agent::AgentKey;
-use crate::game::TickCtx;
+use crate::constants::view::{VIEW_LEFT, VIEW_TOP};
+use crate::entities::agent::{Agent, AgentKey};
+use crate::entities::position::{Position, Rect};
 use crate::game::admin::parse_command;
 use crate::game::events::BroadcastMessage;
+use crate::game::{TickCtx, npc};
 
 pub fn say(ctx: &mut TickCtx, agent_key: AgentKey, message: String) {
-    let Some(position) = ctx.map.agent_position(agent_key).cloned() else {
+    let Some(agent_pos) = ctx.map.agent_position(agent_key).cloned() else {
         return;
     };
 
@@ -12,9 +14,29 @@ pub fn say(ctx: &mut TickCtx, agent_key: AgentKey, message: String) {
         return;
     }
 
+    if let Some(agent) = ctx.map.get_agent(agent_key)
+        && agent.is_player()
+    {
+        let npcs_in_view: Vec<(AgentKey, Position)> = ctx
+            .map
+            .iter_agents_in_rect(
+                &Rect::radius(&agent_pos, (VIEW_LEFT, VIEW_TOP)),
+                agent_pos.z,
+            )
+            .filter(|(key, _)| ctx.map.get_agent(*key).is_some_and(Agent::is_npc))
+            .collect();
+
+        for (key, npc_pos) in npcs_in_view {
+            let npc = ctx.map.get_agent(key).and_then(|a| a.get_npc()).unwrap();
+            if agent_pos.is_within(&npc_pos, npc.talk_range) {
+                npc::respond_player(ctx, agent_key, key, &message);
+            }
+        }
+    }
+
     ctx.events.push(BroadcastMessage::AgentSaid {
         agent_key,
-        position,
+        position: agent_pos,
         message,
     });
 }

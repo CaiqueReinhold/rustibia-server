@@ -20,7 +20,7 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
     let Some(dead) = ctx.map.get_agent(agent_key) else {
         return;
     };
-    if dead.life().current > 0 {
+    if dead.life().current > 0 || dead.is_npc() {
         return;
     }
 

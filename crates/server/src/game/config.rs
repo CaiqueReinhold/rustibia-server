@@ -47,6 +47,7 @@ pub struct GameConfig {
     pub combat: CombatConfig,
     pub skills: SkillsConfig,
     pub vocation: VocationsConfig,
+    pub money: MoneyConfig,
 }
 
 #[derive(Deserialize)]
@@ -60,6 +61,13 @@ pub struct MovementConfig {
 #[derive(Deserialize)]
 pub struct ItemActionConfig {
     pub use_item_cooldown_ticks: TickDelta,
+}
+
+#[derive(Deserialize)]
+pub struct MoneyConfig {
+    pub gold_coin_id: ItemId,
+    pub platinum_coin_id: ItemId,
+    pub crystal_coin_id: ItemId,
 }
 
 #[derive(Deserialize, Default)]
@@ -113,6 +121,7 @@ pub struct ChatConfig {
     pub server_channels: Vec<ChannelConfig>,
     pub max_message_length: usize,
     pub message_cooldown_ticks: TickDelta,
+    pub npc_reply_delay_ticks: TickDelta,
 }
 
 #[derive(Deserialize)]

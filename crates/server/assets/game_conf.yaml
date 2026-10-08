@@ -29,6 +29,7 @@ chat:
       name: Help
   max_message_length: 255
   message_cooldown_ticks: 10
+  npc_reply_delay_ticks: 20
 
 effect_ids:
   life_hit: 1
@@ -72,6 +73,11 @@ combat:
   attack_group_cooldown: 40
   healing_group_cooldown: 20
   support_group_cooldown: 20
+
+money:
+  gold_coin_id: 3031
+  platinum_coin_id: 3035
+  crystal_coin_id: 3043
 
 skills:
   min_level: 10

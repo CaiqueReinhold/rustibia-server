@@ -1,5 +1,6 @@
 use anyhow::{Result, anyhow};
 use arc_swap::ArcSwap;
+use std::collections::HashMap;
 use std::collections::binary_heap::BinaryHeap;
 
 use std::{
@@ -21,6 +22,7 @@ use crate::actors::{
     session::SessionActorHandle,
 };
 use crate::config::CONFIG;
+use crate::entities::npc::Npc;
 use crate::entities::{
     agent::{Agent, AgentKey, Facing},
     combat::{CombatDamage, CombatElement},
@@ -40,6 +42,7 @@ use crate::game::{
     item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, spells, support,
     systems, targeting,
 };
+use crate::persistence::npcs::{NPCS, NpcId};
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
 use crate::telemetry::{self, CommandRecord, CommandSink, TickTimings};
 
@@ -283,6 +286,7 @@ impl WorldActor {
             stopping: None,
         };
         actor.seed_spawn_points(spawns);
+        actor.seed_npcs(&NPCS);
 
         tokio::spawn(actor.run());
 
@@ -309,6 +313,19 @@ impl WorldActor {
             );
         }
         info!("Seeded {} spawn points", self.command_queue.len());
+    }
+
+    fn seed_npcs(&mut self, npcs: &HashMap<NpcId, Arc<Npc>>) {
+        for (id, npc) in npcs {
+            let origin = npc.origin.clone();
+            if let Err(e) = self
+                .map
+                .insert_agent(Agent::from_npc(Arc::clone(npc)), &origin)
+            {
+                error!("Failed to place NPC '{id}' at {origin:?}: {e:?}");
+            }
+        }
+        info!("Seeded {} NPCs", npcs.len());
     }
 
     pub async fn run(mut self) {
@@ -937,6 +954,23 @@ mod tests {
         let (_, agent) = actor.map.iter_agents().next().expect("nothing spawned");
         assert_eq!(agent.respawn_ticks(), Some(TickDelta(600)));
         assert_eq!(*agent.get_origin(), pos);
+    }
+
+    #[test]
+    fn every_npc_is_placed_at_its_origin() {
+        let npc = crate::persistence::test_fixtures::an_npc();
+        let mut map = GameMap::new();
+        map.insert_tile(npc.origin.clone(), MapTile::new());
+        let mut actor = a_test_world_actor(map);
+
+        actor.seed_npcs(&HashMap::from([(
+            "captain_jack".to_string(),
+            Arc::clone(&npc),
+        )]));
+
+        let (key, agent) = actor.map.iter_agents().next().expect("nothing was placed");
+        assert!(agent.is_npc());
+        assert_eq!(actor.map.agent_position(key), Some(&npc.origin));
     }
 
     fn a_ground_tile() -> MapTile {

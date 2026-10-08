@@ -8,6 +8,7 @@ pub mod healing;
 pub mod inventory;
 pub mod items;
 pub mod map;
+pub mod npc;
 pub mod player;
 pub mod position;
 pub mod skills;

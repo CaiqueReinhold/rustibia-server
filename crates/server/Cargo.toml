@@ -46,6 +46,7 @@ rand_distr = "0.6.0"
 strum = { version = "0.28.0", features = ["derive"] }
 imbl = "7.0.2"
 mimalloc = "0.1"
+minijinja = "2.24.0"
 
 [dev-dependencies]
 tempfile = "3"

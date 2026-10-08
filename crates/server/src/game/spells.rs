@@ -342,7 +342,7 @@ fn resolve_area_origin<'a>(
 
 fn passes(map: &GameMap, key: AgentKey, filter: TargetFilter) -> bool {
     match filter {
-        TargetFilter::Any => true,
+        TargetFilter::Any => map.get_agent(key).is_some_and(|a| !a.is_npc()),
         TargetFilter::Players => map.get_player(key).is_some(),
     }
 }

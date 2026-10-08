@@ -87,11 +87,11 @@ pub fn active_creatures(map: &GameMap) -> HashSet<AgentKey> {
     let mut active = HashSet::new();
     let mut players: Vec<Position> = Vec::new();
     for (key, agent) in map.iter_agents() {
-        if !agent.is_creature() {
+        if agent.is_player() {
             if let Some(position) = map.agent_position(key) {
                 players.push(position.clone());
             }
-        } else if agent.target().is_some() {
+        } else if agent.is_creature() && agent.target().is_some() {
             active.insert(key);
         }
     }
@@ -198,7 +198,7 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let target_position = ctx.map.agent_position(target_key)?;
     let target_distance = agent.get_creature_kind()?.target_distance;
 
-    if agent.next_walk_tick <= ctx.world_tick {
+    if agent.next_walk_tick() <= ctx.world_tick {
         match approach(
             ctx.map,
             ctx.creature,
@@ -304,7 +304,7 @@ fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let from = map.agent_position(ctx.creature)?;
     let to = map.agent_position(agent.target()?)?;
 
-    if agent.next_walk_tick <= ctx.world_tick {
+    if agent.next_walk_tick() <= ctx.world_tick {
         let direction = escape_step(map, ctx.creature, from, to, true, &mut ctx.roll)?;
         return Some(CreatureAction::Walk {
             agent_key: ctx.creature,
@@ -401,10 +401,7 @@ fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
     let viewport = Rect::radius(from, SIGHT_RANGE);
     let candidates: Vec<(AgentKey, Position)> = map
         .iter_agents_in_rect(&viewport, from.z)
-        .filter(|(key, _)| {
-            map.get_agent(*key)
-                .is_some_and(|agent| !agent.is_creature())
-        })
+        .filter(|(key, _)| map.get_agent(*key).is_some_and(Agent::is_player))
         .filter(|(_, pos)| can_throw(map, from, pos, true))
         .collect();
 
@@ -567,6 +564,24 @@ fn escape_ladder(offset_x: i32, offset_y: i32) -> [Rung; 5] {
 mod tests {
     use super::*;
     use crate::constants::items::MAX_DROP_CHANCE;
+
+    #[test]
+    fn an_npc_talking_to_a_player_is_not_an_active_creature() {
+        use crate::entities::{map::GameMap, position::Position};
+        use crate::persistence::test_fixtures::{a_test_snapshot, an_npc};
+
+        let here = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), MapTile::new());
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &here)
+            .unwrap();
+        let mut npc = Agent::from_npc(an_npc());
+        npc.set_target(Some(player), 0);
+        let npc = map.insert_agent(npc, &here).unwrap();
+
+        assert!(!active_creatures(&map).contains(&npc));
+    }
     use crate::entities::Bounds;
     use crate::entities::agent::Agent;
     use crate::entities::combat::CombatElement;
@@ -846,10 +861,7 @@ mod tests {
         for (_, pos) in &creatures {
             seen += map
                 .iter_agents_in_rect(&Rect::radius(pos, SIGHT_RANGE), pos.z)
-                .filter(|(key, _)| {
-                    map.get_agent(*key)
-                        .is_some_and(|agent| !agent.is_creature())
-                })
+                .filter(|(key, _)| map.get_agent(*key).is_some_and(Agent::is_player))
                 .count();
         }
         std::hint::black_box(seen);

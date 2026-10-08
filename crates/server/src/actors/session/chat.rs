@@ -24,7 +24,7 @@ impl SessionActor {
     fn online_player_by_name(&self, name: &str) -> Option<AgentKey> {
         let map = self.shared_map.load();
         map.iter_agents()
-            .find(|(_, agent)| !agent.is_creature() && agent.name().eq_ignore_ascii_case(name))
+            .find(|(_, agent)| agent.is_player() && agent.name().eq_ignore_ascii_case(name))
             .map(|(key, _)| key)
     }
 
@@ -114,6 +114,12 @@ impl SessionActor {
     pub(super) async fn handle_say(&mut self, message: String, target: SayTarget) -> Result<()> {
         if message.chars().count() > GAME_CONFIG.chat.max_message_length {
             return self.deny("Your message is too long.").await;
+        }
+
+        if message.chars().any(char::is_control) {
+            return self
+                .deny("Your message contains characters that cannot be sent.")
+                .await;
         }
 
         let now = *self.tick_rx.borrow();
@@ -274,6 +280,30 @@ mod tests {
             ),
             "an over-length message must be refused, not truncated"
         );
+    }
+
+    #[tokio::test]
+    pub(super) async fn a_message_with_a_control_character_is_denied() {
+        let mut map = GameMap::new();
+        let key = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let (mut session, mut connection_rx, mut world_rx, _tick_tx) =
+            SessionActor::for_test(key, map);
+
+        session
+            .handle_say("\u{1}walk_away".to_owned(), SayTarget::Local)
+            .await
+            .unwrap();
+
+        assert!(matches!(
+            connection_rx.try_recv(),
+            Ok(ConnectionCommand::SendPlayerMessage(
+                ServerMessage::TextMessage {
+                    message_type: TextMessageType::ActionDenied,
+                    ..
+                }
+            ))
+        ));
+        assert!(world_rx.try_recv().is_err());
     }
 
     /// The limit counts characters, not bytes, so that the client's input-field cap

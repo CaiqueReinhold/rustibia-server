@@ -39,7 +39,7 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
     if ctx
         .map
         .get_agent(agent_key)
-        .map(|agent| agent.next_use_tick > ctx.tick)
+        .map(|agent| agent.next_use_tick() > ctx.tick)
         .unwrap_or(false)
     {
         return use_item_failed(ctx, mark, agent_key, "Can't use that fast");
@@ -77,10 +77,7 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
 
     match route_multi_action(ctx, &action, agent_key, &source, &target) {
         Ok(()) => {
-            ctx.map
-                .agent_mut(agent_key)
-                .unwrap()
-                .stamp_use(ctx.tick + GAME_CONFIG.action.use_item_cooldown_ticks);
+            ctx.map.agent_mut(agent_key).unwrap().stamp_use(ctx.tick);
         }
         Err(ItemActionError::Reported) => {}
         Err(e) => {

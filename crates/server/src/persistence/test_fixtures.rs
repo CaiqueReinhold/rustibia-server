@@ -5,6 +5,7 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 use crate::entities::agent::{OutfitColors, OutfitId};
+use crate::entities::npc::Npc;
 use crate::entities::player::PlayerId;
 use crate::entities::spells::{
     PowerCurve, Spell, SpellDelivery, SpellEffect, SpellGroup, SpellHealing, SpellId,
@@ -23,6 +24,7 @@ use crate::entities::{
     skills::{SkillType, SkillValue},
 };
 use crate::game::TickDelta;
+use crate::persistence::npcs::parse_npc;
 use crate::persistence::player::PlayerSnapshot;
 
 /// A `TargetMode::Caster` heal is the one effect that cannot fail to resolve, which is what
@@ -290,4 +292,50 @@ fn a_creature(
         }),
         Position::new(1028, 128, 7),
     )
+}
+
+const AN_NPC: &str = r#"
+name: Captain Jack
+position: { x: 10, y: 10, z: 7 }
+speed: 100
+outfit: { id: 314, colors: [0, 0, 0, 0] }
+walk_range: 3
+talk_range: 3
+say: { cooldown: 300, chance: 50000 }
+arguments:
+  DESTINATIONS:
+    edron: { cost: 40, position: { x: 20, y: 20, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome, {{ PLAYERNAME }}."
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: ["sail"]
+    action: say
+    text: Where to?
+  - words: ["no"]
+    action: say
+    text: No what?
+  - words: ["edron"]
+    action: say
+    text: "Edron for {{ DESTINATIONS[WORD].cost }}?"
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: "No gold, {{ PLAYERNAME }}."
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe later.
+"#;
+
+/// Stands at (10, 10, 7) and sails to (20, 20, 7) for 40. `no` answers at the root and, with a
+/// reset, under `edron`, so a test can tell which level matched.
+pub fn an_npc() -> Arc<Npc> {
+    Arc::new(parse_npc(std::path::Path::new("an_npc.yaml"), AN_NPC).unwrap())
 }

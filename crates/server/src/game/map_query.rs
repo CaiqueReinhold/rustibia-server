@@ -5,7 +5,7 @@ use crate::{
         VIEW_TOP, VIEWPORT_SIZE,
     },
     entities::{
-        agent::AgentKey,
+        agent::{AgentKey, Facing},
         inventory::InventorySlot,
         items::{ClientItemRef, ContainerId, Item, ItemGuid, ItemId},
         map::{GameMap, MapTile},
@@ -491,6 +491,25 @@ pub fn can_throw(map: &GameMap, from: &Position, to: &Position, same_floor: bool
     } else {
         // same floor
         is_sight_clear(map, from, to, from.z)
+    }
+}
+
+pub fn face_target(pos: &Position, target_pos: &Position) -> Facing {
+    let delta_x = pos.x as i32 - target_pos.x as i32;
+    let delta_y = pos.y as i32 - target_pos.y as i32;
+
+    if delta_x.abs() > delta_y.abs() {
+        if delta_x > 0 {
+            Facing::West
+        } else {
+            Facing::East
+        }
+    } else {
+        if delta_y > 0 {
+            Facing::North
+        } else {
+            Facing::South
+        }
     }
 }
 

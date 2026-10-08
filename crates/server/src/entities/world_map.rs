@@ -1,4 +1,5 @@
 use std::ops::Deref;
+use std::sync::Arc;
 
 use crate::entities::agent::{Agent, AgentKey, Facing};
 use crate::entities::conditions::Conditions;
@@ -7,6 +8,7 @@ use crate::entities::items::{Item, ItemGuid};
 #[cfg(test)]
 use crate::entities::map::MapTile;
 use crate::entities::map::{GameMap, MapError, RemovedItem};
+use crate::entities::npc::Keyword;
 use crate::entities::player::Player;
 use crate::entities::position::{ItemPlacement, PlacementSite, Position};
 use crate::entities::skills::{SkillType, SkillValue};
@@ -259,11 +261,11 @@ impl AgentMut<'_> {
     }
 
     pub fn stamp_walk(&mut self, until: Tick) {
-        self.agent.next_walk_tick = until;
+        self.agent.stamp_walk(until);
     }
 
-    pub fn stamp_use(&mut self, until: Tick) {
-        self.agent.next_use_tick = until;
+    pub fn stamp_use(&mut self, tick: Tick) {
+        self.agent.stamp_use_item(tick);
     }
 
     pub fn stamp_auto_attack(&mut self, tick: Tick) {
@@ -302,6 +304,10 @@ impl AgentMut<'_> {
             key: self.key,
             delta: &mut *self.delta,
         })
+    }
+
+    pub fn set_keyword_branch(&mut self, branch: Option<(String, Arc<Keyword>)>) {
+        self.agent.set_keyword_branch(branch);
     }
 }
 
@@ -709,8 +715,8 @@ mod tests {
         agent.record_damage(key, 3);
 
         assert!(map.delta().is_empty());
-        assert_eq!(map.get_agent(key).unwrap().next_walk_tick, Tick(5));
-        assert_eq!(map.get_agent(key).unwrap().next_use_tick, Tick(5));
+        assert_eq!(map.get_agent(key).unwrap().next_walk_tick(), Tick(5));
+        assert_eq!(map.get_agent(key).unwrap().next_use_tick(), Tick(5));
     }
 
     fn a_player_with_a_backpack() -> (WorldMap, AgentKey) {
@@ -746,7 +752,10 @@ mod tests {
             config(
                 3079,
                 HashSet::new(),
-                vec![ItemAttribute::Speed(speed), ItemAttribute::RequiredLevel(level)],
+                vec![
+                    ItemAttribute::Speed(speed),
+                    ItemAttribute::RequiredLevel(level),
+                ],
             ),
             1,
         )

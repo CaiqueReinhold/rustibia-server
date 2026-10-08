@@ -574,7 +574,9 @@ mod tests {
         assert_eq!(sword.name, "fiery blacksteel sword");
         assert_eq!(sword.attr_required_level(), Some(35));
         assert_eq!(
-            sword.attr_vocations().map(|set| set.iter().collect::<Vec<_>>()),
+            sword
+                .attr_vocations()
+                .map(|set| set.iter().collect::<Vec<_>>()),
             Some(vec![Vocation::Knight])
         );
 
@@ -582,7 +584,10 @@ mod tests {
             .values()
             .filter(|config| config.attr_vocations().is_some())
             .count();
-        assert_eq!(gated, 515, "a vocations list failed to parse and was dropped");
+        assert_eq!(
+            gated, 515,
+            "a vocations list failed to parse and was dropped"
+        );
     }
 
     #[test]

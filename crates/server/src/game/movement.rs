@@ -31,7 +31,7 @@ pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
         error!("agent {agent_key:?} not spawned");
         return;
     };
-    let next_walk_tick = agent.next_walk_tick;
+    let next_walk_tick = agent.next_walk_tick();
     let Some(current_pos) = ctx.map.agent_position(agent_key).cloned() else {
         error!("agent {agent_key:?} position not found");
         return;
@@ -455,7 +455,7 @@ mod tests {
 
         assert_eq!(map.agent_position(player), Some(&EAST));
         assert_eq!(map.get_agent(player).unwrap().facing(), facing);
-        assert!(map.get_agent(player).unwrap().next_walk_tick > Tick(0));
+        assert!(map.get_agent(player).unwrap().next_walk_tick() > Tick(0));
         assert_eq!(life(&map, player), before - 20, "the landing effects run");
         assert!(h.events.iter().any(|e| matches!(
             e,

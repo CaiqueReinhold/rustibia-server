@@ -437,18 +437,17 @@ impl GameMap {
         }
 
         if let Some(agent) = self.get_agent(agent_key) {
-            if agent.is_creature() {
+            if let Some(player) = agent.get_player() {
+                if !player.admin() && !tile.agents.is_empty() {
+                    return false;
+                }
+            } else {
                 if !tile.agents.is_empty() {
                     return false;
                 }
 
                 if self.get_floor_change(pos).is_some() || self.teleport_destination(pos).is_some()
                 {
-                    return false;
-                }
-            } else {
-                let player = agent.get_player().unwrap();
-                if !player.admin() && !tile.agents.is_empty() {
                     return false;
                 }
             }
@@ -1137,13 +1136,16 @@ mod tests {
         }
 
         let slot_write = write_after_clone!(slots, |i: usize| {
-            slots[keys[i]].next_walk_tick = Tick(i as u64);
+            slots[keys[i]].stamp_walk(Tick(i as u64));
         });
         let value_write = write_after_clone!(by_value, |i: usize| {
-            by_value.get_mut(&ids[i]).unwrap().next_walk_tick = Tick(i as u64);
+            by_value
+                .get_mut(&ids[i])
+                .unwrap()
+                .stamp_walk(Tick(i as u64));
         });
         let arc_write = write_after_clone!(by_arc, |i: usize| {
-            Arc::make_mut(by_arc.get_mut(&ids[i]).unwrap()).next_walk_tick = Tick(i as u64);
+            Arc::make_mut(by_arc.get_mut(&ids[i]).unwrap()).stamp_walk(Tick(i as u64));
         });
 
         let scan = |iter: &dyn Fn() -> u64| {
@@ -1155,9 +1157,9 @@ mod tests {
         };
         println!(
             "full scan  : SlotMap {:>6.3} ms | HAMT<Agent> {:>6.3} ms | HAMT<Arc> {:>6.3} ms",
-            scan(&|| slots.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
-            scan(&|| by_value.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
-            scan(&|| by_arc.iter().map(|(_, a)| a.next_walk_tick.0).sum()),
+            scan(&|| slots.iter().map(|(_, a)| a.next_walk_tick().0).sum()),
+            scan(&|| by_value.iter().map(|(_, a)| a.next_walk_tick().0).sum()),
+            scan(&|| by_arc.iter().map(|(_, a)| a.next_walk_tick().0).sum()),
         );
 
         let lookups = |get: &dyn Fn(usize) -> Tick| {
@@ -1176,19 +1178,19 @@ mod tests {
             "SlotMap    : publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
             clone_cost_ms(ROUNDS, &slots),
             slot_write,
-            lookups(&|i| slots[keys[i]].next_walk_tick),
+            lookups(&|i| slots[keys[i]].next_walk_tick()),
         );
         println!(
             "HAMT<Agent>: publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
             clone_cost_ms(ROUNDS, &by_value),
             value_write,
-            lookups(&|i| by_value[&ids[i]].next_walk_tick),
+            lookups(&|i| by_value[&ids[i]].next_walk_tick()),
         );
         println!(
             "HAMT<Arc>  : publish {:>7.3} ms | {WRITES} writes {:>7.3} ms | lookup {:>6.1} ns",
             clone_cost_ms(ROUNDS, &by_arc),
             arc_write,
-            lookups(&|i| by_arc[&ids[i]].next_walk_tick),
+            lookups(&|i| by_arc[&ids[i]].next_walk_tick()),
         );
     }
 

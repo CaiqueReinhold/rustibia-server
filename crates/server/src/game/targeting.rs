@@ -10,7 +10,7 @@ pub fn set_target(ctx: &mut TickCtx, agent: AgentKey, target: Option<AgentKey>, 
 
     let requested_a_target = target.is_some();
     let accepted = match target {
-        Some(t) if t != agent && ctx.map.get_agent(t).is_some() => Some(t),
+        Some(t) if t != agent && ctx.map.get_agent(t).filter(|a| !a.is_npc()).is_some() => Some(t),
         _ => None,
     };
 
@@ -27,8 +27,6 @@ pub fn set_target(ctx: &mut TickCtx, agent: AgentKey, target: Option<AgentKey>, 
     }
 }
 
-/// Clears `agent`'s target and announces the loss, stamped with the seq that set
-/// it.
 pub fn lose_target(ctx: &mut TickCtx, agent: AgentKey) {
     let Some(actor) = ctx.map.get_agent(agent) else {
         return;

@@ -1,0 +1,43 @@
+name: Captain Jack
+position: { x: 32190, y: 31957, z: 6 }
+speed: 100
+outfit:
+  id: 132
+  colors: [0, 128, 95, 115]
+walk_range: 3
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Thais, Carlin, Ab'Dendriel, Krailos, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Gray Island, Yalahar and Ankrahmun.
+arguments:
+  DESTINATIONS:
+    edron: { cost: 40, position: { x: 33173, y: 31764, z: 6 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["sail", "passage", "travel"]
+    action: say
+    text: Where do you want to go? To Issavi, krailos, Thais, Carlin, Ab'Dendriel, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Yalahar, Gray Island or Ankrahmun?
+  - words: ["edron"]
+    action: say
+    text: Do you seek a passage to {{ WORD }} for {{ DESTINATIONS[WORD].cost }}?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money, {{ PLAYERNAME }}.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.

@@ -17,7 +17,11 @@ impl SessionActor {
     pub(super) fn walk_cooldown_remaining(&self) -> TickDelta {
         let map = self.shared_map.load();
         map.get_agent(self.player_key)
-            .map(|agent| agent.next_walk_tick.saturating_sub(*self.tick_rx.borrow()))
+            .map(|agent| {
+                agent
+                    .next_walk_tick()
+                    .saturating_sub(*self.tick_rx.borrow())
+            })
             .unwrap_or(TickDelta(0))
     }
 
@@ -210,7 +214,7 @@ mod tests {
         let mut map = (**session.shared_map.load()).clone();
         map.get_agent_mut(session.player_key)
             .unwrap()
-            .next_walk_tick = until;
+            .stamp_walk(until);
         session.shared_map.store(Arc::new(map));
     }
 
