@@ -49,6 +49,7 @@ abilities:
       max: 100
 corpse: 6041
 target_distance: 4
+dance_chance: 20
 say:
   cooldown: 100
   chance: 10000

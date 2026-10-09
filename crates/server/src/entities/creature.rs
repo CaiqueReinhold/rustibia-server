@@ -119,6 +119,9 @@ pub struct CreatureKind {
     pub loot_table: Vec<LootEntry>,
     pub flee_threshold: Option<u32>,
     pub target_distance: u16,
+    /// Percent chance, per roll, that a creature holding its distance sidesteps around its
+    /// target.
+    pub dance_chance: u8,
     pub say: Voices,
     pub flags: Vec<CreatureFlag>,
 }

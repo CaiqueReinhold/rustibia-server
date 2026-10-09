@@ -64,6 +64,7 @@ abilities:
       shape: boxed
     effect_id: 21
 corpse: 17425
+dance_chance: 10
 say:
   cooldown: 20
   chance: 5000

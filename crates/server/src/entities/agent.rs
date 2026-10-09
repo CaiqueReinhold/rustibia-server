@@ -7,7 +7,7 @@ use strum::{EnumCount, FromRepr};
 use crate::{
     entities::{
         combat::WeaponType,
-        npc::{Keyword, Npc},
+        npc::{Branch, Npc},
         spells::{Spell, SpellGroup, SpellId},
     },
     local_id::LocalId,
@@ -147,7 +147,7 @@ pub struct Agent {
     facing: Facing,
     origin: Position,
     respawn_ticks: Option<TickDelta>,
-    keyword_branch: Option<(String, Arc<Keyword>)>,
+    keyword_branch: Option<Arc<Branch>>,
     conditions: Conditions,
     spell_cooldowns: SmallVec<[(SpellId, Tick); 4]>,
     group_cooldowns: [Tick; SpellGroup::COUNT],
@@ -232,6 +232,7 @@ impl Agent {
             player.capacity,
             player.inventory,
             player.skills,
+            player.bank_balance,
         );
         Self {
             inner: AgentInner::Player(Arc::new(p)),
@@ -460,6 +461,10 @@ impl Agent {
         self.participation = Participation::default();
     }
 
+    pub fn forget_participant(&mut self, attacker: AgentKey) {
+        self.participation.forget(attacker);
+    }
+
     pub fn calculate_walk_ticks(&self, tile_friction: u16, diagonal: bool) -> TickDelta {
         walk_ticks(self.speed(), tile_friction, diagonal)
     }
@@ -583,11 +588,11 @@ impl Agent {
         self.next_use_tick = current_tick + GAME_CONFIG.action.use_item_cooldown_ticks;
     }
 
-    pub fn keyword_branch(&self) -> Option<&(String, Arc<Keyword>)> {
-        self.keyword_branch.as_ref()
+    pub fn keyword_branch(&self) -> Option<&Branch> {
+        self.keyword_branch.as_deref()
     }
 
-    pub fn set_keyword_branch(&mut self, branch: Option<(String, Arc<Keyword>)>) {
+    pub fn set_keyword_branch(&mut self, branch: Option<Arc<Branch>>) {
         self.keyword_branch = branch;
     }
 
@@ -610,6 +615,7 @@ impl Agent {
             outfit: self.outfit,
             skills: player.skills().clone(),
             inventory: player.inventory().slots().clone(),
+            bank_balance: player.bank_balance(),
         }))
     }
 }
@@ -673,6 +679,7 @@ mod tests {
                 m
             },
             inventory: HashMap::new(),
+            bank_balance: 0,
         }
     }
 

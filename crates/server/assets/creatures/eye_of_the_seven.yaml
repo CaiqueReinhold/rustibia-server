@@ -28,6 +28,7 @@ abilities:
       type: target
       range: 6
 corpse: 6036
+dance_chance: 10
 say:
   cooldown: 100
   chance: 0

@@ -29,6 +29,7 @@ abilities:
       shape: beam8
     effect_id: 6
 corpse: 20992
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

@@ -26,15 +26,20 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
 
     experience::award(ctx, agent_key);
 
-    let still_targeting: Vec<AgentKey> = ctx
-        .map
-        .iter_agents()
-        .filter(|(_, other)| other.target() == Some(agent_key))
-        .map(|(key, _)| key)
-        .collect();
+    let mut still_targeting = Vec::new();
+    let mut remembering = Vec::new();
+    for (key, other) in ctx.map.iter_agents() {
+        if other.target() == Some(agent_key) {
+            still_targeting.push(key);
+        }
+        if experience::remembers(other, agent_key) {
+            remembering.push(key);
+        }
+    }
     for key in still_targeting {
         targeting::lose_target(ctx, key);
     }
+    experience::forget_departed(ctx.map, agent_key, &remembering);
 
     if ctx.map.get_player(agent_key).is_some() {
         skills::apply_death_loss(ctx, agent_key, GAME_CONFIG.death_loss_percent);
@@ -451,5 +456,36 @@ mod tests {
         assert_eq!(saved.life.current, saved.life.maximum);
         assert_eq!(saved.mana.maximum, (100 - knight.mana_on_level_up()) as u32);
         assert_eq!(saved.mana.current, saved.mana.maximum);
+    }
+
+    #[test]
+    fn a_dead_creature_leaves_the_tables_of_the_players_it_hit() {
+        let mut map = GameMap::new();
+        let rat_at = Position::new(10, 10, 7);
+        let player_at = Position::new(11, 10, 7);
+        let wolf_at = Position::new(12, 10, 7);
+        for pos in [&rat_at, &player_at, &wolf_at] {
+            map.insert_tile(pos.clone(), MapTile::new());
+        }
+        let rat = map
+            .insert_agent(a_test_creature("Rat", 0, (1, 2)), &rat_at)
+            .unwrap();
+        let wolf = map
+            .insert_agent(a_test_creature("Wolf", 100, (1, 2)), &wolf_at)
+            .unwrap();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &player_at)
+            .unwrap();
+        map.get_agent_mut(player).unwrap().record_damage(rat, 20);
+        map.get_agent_mut(player).unwrap().record_damage(wolf, 30);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        reap(&mut h.ctx(&mut map), rat);
+
+        let table = map.get_agent(player).unwrap().participation();
+        assert!(!table.contains(rat));
+        assert!(table.contains(wolf));
+        assert_eq!(table.total(), 30);
     }
 }

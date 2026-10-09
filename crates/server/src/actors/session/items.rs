@@ -357,6 +357,55 @@ mod tests {
         ));
     }
 
+    #[tokio::test]
+    async fn a_bag_in_a_carried_backpack_navigates_back_to_the_backpack() {
+        let at = Position::new(100, 100, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(at.clone(), MapTile::new());
+        let me = map
+            .insert_agent(Agent::from_player(a_player_with_a_full_backpack(1, 1)), &at)
+            .unwrap();
+        let backpack = map
+            .get_player(me)
+            .unwrap()
+            .inventory()
+            .get(&InventorySlot::Backpack)
+            .unwrap()
+            .clone();
+        let pouch = backpack.content.as_ref().unwrap()[0].guid;
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session
+            .open_container(ItemRef {
+                guid: pouch,
+                placement: ItemPlacement::Inventory(InventorySlot::Backpack, me),
+            })
+            .await
+            .unwrap();
+        let Ok(ConnectionCommand::SendPlayerMessage(ServerMessage::OpenContainer {
+            container_id,
+            has_parent: true,
+            ..
+        })) = connection_rx.try_recv()
+        else {
+            panic!("the pouch did not open with a parent");
+        };
+
+        session
+            .handle_open_parent_container(container_id)
+            .await
+            .unwrap();
+
+        assert!(matches!(
+            connection_rx.try_recv(),
+            Ok(ConnectionCommand::SendPlayerMessage(ServerMessage::OpenContainer {
+                container_id,
+                has_parent: false,
+                ..
+            })) if session.containers.get_global(container_id) == Some(&backpack.guid)
+        ));
+    }
+
     fn searched(item_id: u16) -> ClientItemRef {
         ClientItemRef {
             position: Position::new(INVENTORY_COORD_FLAG, CARRIED_SEARCH_FLAG, 0),

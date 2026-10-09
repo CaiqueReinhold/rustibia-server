@@ -1,5 +1,7 @@
-use crate::entities::agent::AgentKey;
+use crate::entities::agent::{Agent, AgentKey};
+use crate::entities::map::GameMap;
 use crate::entities::skills::SkillType;
+use crate::entities::world_map::WorldMap;
 use crate::game::TickCtx;
 use crate::game::skills::tick_skill;
 
@@ -16,6 +18,25 @@ pub fn award(ctx: &mut TickCtx, victim: AgentKey) {
 
     for (key, share) in shares {
         tick_skill(ctx, key, SkillType::Level, share);
+    }
+}
+
+pub fn remembers(agent: &Agent, departed: AgentKey) -> bool {
+    agent.get_player().is_some() && agent.participation().contains(departed)
+}
+
+pub fn players_naming(map: &GameMap, departed: AgentKey) -> Vec<AgentKey> {
+    map.iter_agents()
+        .filter(|(_, agent)| remembers(agent, departed))
+        .map(|(key, _)| key)
+        .collect()
+}
+
+pub fn forget_departed(map: &mut WorldMap, departed: AgentKey, holders: &[AgentKey]) {
+    for &key in holders {
+        if let Some(mut agent) = map.agent_mut(key) {
+            agent.forget_participant(departed);
+        }
     }
 }
 
@@ -214,5 +235,35 @@ mod tests {
         award(&mut h.ctx(&mut map), rat);
 
         assert!(h.events.is_empty());
+    }
+
+    #[test]
+    fn only_players_whose_table_names_the_departed_are_found() {
+        let (mut map, rat) = a_victim(100);
+        let bitten = add_player(&mut map, 1, Position::new(11, 10, 7));
+        let untouched = add_player(&mut map, 2, Position::new(12, 10, 7));
+        let wolf = add_creature(&mut map, "Wolf", Position::new(13, 10, 7));
+        hit(&mut map, bitten, rat, 20);
+        hit(&mut map, wolf, rat, 20);
+
+        assert_eq!(players_naming(&map, rat), vec![bitten]);
+        assert!(!remembers(map.get_agent(untouched).unwrap(), rat));
+        assert!(!remembers(map.get_agent(wolf).unwrap(), rat));
+    }
+
+    #[test]
+    fn forgetting_the_departed_keeps_the_holders_other_attackers() {
+        let (mut map, rat) = a_victim(100);
+        let player = add_player(&mut map, 1, Position::new(11, 10, 7));
+        let wolf = add_creature(&mut map, "Wolf", Position::new(12, 10, 7));
+        hit(&mut map, player, rat, 20);
+        hit(&mut map, player, wolf, 30);
+
+        let mut map = WorldMap::new(map);
+        forget_departed(&mut map, rat, &[player]);
+
+        let table = map.get_agent(player).unwrap().participation();
+        assert!(!table.contains(rat));
+        assert_eq!(table.total(), 30);
     }
 }

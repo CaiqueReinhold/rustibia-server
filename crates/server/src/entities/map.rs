@@ -607,6 +607,10 @@ impl GameMap {
         None
     }
 
+    pub fn parent_container_within<'a>(item: &'a Item, guid: &ItemGuid) -> Option<&'a ItemGuid> {
+        Self::find_by_id_inner(item, guid, None).and_then(|(parent_guid, _)| parent_guid)
+    }
+
     pub fn get_item_by_id(&self, pos: &Position, guid: &ItemGuid) -> Option<&Item> {
         let Ok(tile) = self.get_tile(pos) else {
             return None;

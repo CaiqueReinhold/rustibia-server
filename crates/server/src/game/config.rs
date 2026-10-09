@@ -55,6 +55,7 @@ pub struct GameConfig {
 pub struct MovementConfig {
     pub wander_chance: u32,
     pub wander_ticks: TickDelta,
+    pub dance_ticks: TickDelta,
     pub wander_distance: u16,
     pub min_speed: u16,
 }

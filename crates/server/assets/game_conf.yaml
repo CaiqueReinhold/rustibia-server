@@ -25,6 +25,7 @@ action:
 movement:
   wander_chance: 80000
   wander_ticks: 20
+  dance_ticks: 20
   wander_distance: 10
   min_speed: 40
 

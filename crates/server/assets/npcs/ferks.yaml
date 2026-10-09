@@ -1,0 +1,140 @@
+name: Ferks
+position: { x: 32634, y: 32739, z: 6 }
+speed: 100
+outfit:
+  id: 128
+  colors: [59, 71, 119, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Don't forget to deposit your money here in the Global Bank before you head out for adventure.
+keywords:
+  - words: GREET
+    action: engage
+    text: Yes? What may I do for you, {{ PLAYERNAME | capitalize }}? Bank business, perhaps?
+  - words: GOODBYE
+    action: dismiss
+    text: Have a nice day.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Have a nice day.
+
+  - words: ["balance"]
+    condition: BALANCE >= 100000000
+    action: say
+    text: I think you must be one of the richest inhabitants in the world! Your account balance is {{ BALANCE }} gold.
+  - words: ["balance"]
+    condition: BALANCE >= 10000000
+    action: say
+    text: You have made ten millions and it still grows! Your account balance is {{ BALANCE }} gold.
+  - words: ["balance"]
+    condition: BALANCE >= 1000000
+    action: say
+    text: Wow, you have reached the magic number of a million gp!!! Your account balance is {{ BALANCE }} gold!
+  - words: ["balance"]
+    condition: BALANCE >= 100000
+    action: say
+    text: You certainly have made a pretty penny. Your account balance is {{ BALANCE }} gold.
+  - words: ["balance"]
+    action: say
+    text: Your account balance is {{ BALANCE }} gold.
+
+  - words: ["deposit all"]
+    condition: GOLD > 0
+    action: say
+    set: { amount: GOLD }
+    text: Would you really like to deposit {{ amount }} gold?
+    children: &confirm_deposit
+      - words: ["yes"]
+        action: deposit
+        text: Alright, we have added the amount of {{ amount }} gold to your balance. You can withdraw your money anytime you want to.
+        failed_text: You do not have enough gold.
+        params: { amount: amount }
+      - words: ["no"]
+        action: say
+        text: As you wish. Is there something else I can do for you?
+        reset: true
+  - words: ["deposit all"]
+    action: say
+    text: You do not have enough gold.
+  - words: ["deposit <amount:int>"]
+    condition: amount > 0 and amount <= GOLD
+    action: say
+    text: Would you really like to deposit {{ amount }} gold?
+    children: *confirm_deposit
+  - words: ["deposit <amount:int>"]
+    action: say
+    text: You do not have enough gold.
+  - words: ["deposit"]
+    action: say
+    text: Please tell me how much gold it is you would like to deposit.
+    children:
+      - words: ["all"]
+        condition: GOLD > 0
+        action: say
+        set: { amount: GOLD }
+        text: Would you really like to deposit {{ amount }} gold?
+        children: *confirm_deposit
+      - words: ["<amount:int>"]
+        condition: amount > 0 and amount <= GOLD
+        action: say
+        text: Would you really like to deposit {{ amount }} gold?
+        children: *confirm_deposit
+      - words: ["all"]
+        action: say
+        text: You do not have enough gold.
+        reset: true
+      - words: ["<amount:int>"]
+        action: say
+        text: You do not have enough gold.
+        reset: true
+
+  - words: ["withdraw <amount:int>"]
+    condition: amount > 0 and amount <= BALANCE
+    action: say
+    text: Are you sure you wish to withdraw {{ amount }} gold from your bank account?
+    children: &confirm_withdraw
+      - words: ["yes"]
+        action: withdraw
+        text: Here you are, {{ amount }} gold. Please let me know if there is something else I can do for you.
+        failed_text: There is not enough gold on your account.
+        params: { amount: amount }
+      - words: ["no"]
+        action: say
+        text: The customer is king! Come back anytime you want to if you wish to withdraw your money.
+        reset: true
+  - words: ["withdraw <amount:int>"]
+    action: say
+    text: There is not enough gold on your account.
+  - words: ["withdraw"]
+    action: say
+    text: Please tell me how much gold you would like to withdraw.
+    children:
+      - words: ["<amount:int>"]
+        condition: amount > 0 and amount <= BALANCE
+        action: say
+        text: Are you sure you wish to withdraw {{ amount }} gold from your bank account?
+        children: *confirm_withdraw
+      - words: ["<amount:int>"]
+        action: say
+        text: There is not enough gold on your account.
+        reset: true
+
+  - words: ["bank account"]
+    action: say
+    text: Every Tibian has one. The big advantage is that you can access your money in every branch of the Tibian Bank! Would you like to know more about the basic functions of your bank account, the advanced functions, or are you already bored, perhaps?
+  - words: ["money", "bank"]
+    action: say
+    text: We can change money for you. You can also access your bank account.
+  - words: ["help", "functions", "basic"]
+    action: say
+    text: You can check the balance of your bank account, deposit money or withdraw it. You can also transfer money to other characters, provided that they have a vocation.
+  - words: ["advanced"]
+    action: say
+    text: Your bank account will be used automatically when you want to rent a house or place an offer on an item on the market. Let me know if you want to know about how either one works.
+  - words: ["job"]
+    action: say
+    text: I work in this bank. I can change money for you and help you with your bank account.

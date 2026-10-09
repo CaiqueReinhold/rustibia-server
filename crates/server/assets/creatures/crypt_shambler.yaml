@@ -27,6 +27,7 @@ abilities:
       type: target
       range: 1
 corpse: 6029
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

@@ -15,6 +15,7 @@ melee:
   element: physical
 corpse: 16176
 flee_threshold: 500
+dance_chance: 10
 say:
   cooldown: 100
   chance: 0

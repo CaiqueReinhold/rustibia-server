@@ -83,7 +83,8 @@ pub fn a_character_record_json() -> serde_json::Value {
         "speed": 120,
         "outfit": { "id": 128, "head": 78, "body": 69, "legs": 58, "feet": 76 },
         "skills": [{ "skill_type": 1, "value": 220, "current_ticks": 0 }],
-        "inventory": {}
+        "inventory": {},
+        "bank_balance": 0
     })
 }
 
@@ -125,6 +126,7 @@ pub fn a_test_snapshot(id: u32, account_id: i32) -> PlayerSnapshot {
             },
         )]),
         inventory: HashMap::new(),
+        bank_balance: 0,
     }
 }
 
@@ -256,6 +258,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
         loot_table: vec![],
         flee_threshold: None,
         target_distance: 1,
+        dance_chance: 0,
         say: Voices {
             cooldown: TickDelta(100),
             chance: 10000,
@@ -355,11 +358,58 @@ keywords:
         action: say
         reset: true
         text: Maybe later.
+  - words: ["count <n:int>"]
+    action: say
+    text: "{{ n }}?"
+    children:
+      - words: ["yes"]
+        action: say
+        text: "{{ n }} it is."
+      - words: ["recount <n:int>"]
+        action: say
+        text: "{{ n }} then."
+  - words: ["peek"]
+    action: say
+    text: "{{ n }}"
+  - words: ["purse"]
+    action: say
+    set: { held: GOLD }
+    text: "{{ held }}?"
+    children:
+      - words: ["yes"]
+        action: say
+        text: "{{ held }} it was."
+  - words: ["balance"]
+    action: say
+    text: "{{ BALANCE }} banked."
+  - words: ["deposit <amount:int>"]
+    condition: amount > 0 and amount <= GOLD
+    action: say
+    text: "Deposit {{ amount }}?"
+    children:
+      - words: ["yes"]
+        action: deposit
+        text: "Deposited {{ amount }}."
+        failed_text: Not enough gold.
+        params: { amount: amount }
+  - words: ["deposit <amount:int>"]
+    action: say
+    text: You do not have enough gold.
+  - words: ["withdraw <amount:int>"]
+    action: say
+    text: "Withdraw {{ amount }}?"
+    children:
+      - words: ["yes"]
+        action: withdraw
+        text: "Withdrew {{ amount }}."
+        failed_text: Not enough on your account.
+        params: { amount: amount }
 "#;
 
 /// Stands at (10, 10, 7) and sails to (20, 20, 7) for 40, or for item 9999 when asked `ferry`
 /// by a player carrying it. `no` answers at the root and, with a reset, under `edron`, so a test
-/// can tell which level matched.
+/// can tell which level matched. `count <n:int>` carries `n` to its children and `peek` reads `n`
+/// from the root, where it is undefined.
 pub fn an_npc() -> Arc<Npc> {
     Arc::new(parse_npc(std::path::Path::new("an_npc.yaml"), AN_NPC).unwrap())
 }

@@ -34,6 +34,7 @@ pub struct PlayerSnapshot {
     pub outfit: (OutfitId, OutfitColors),
     pub skills: HashMap<SkillType, SkillValue>,
     pub inventory: HashMap<InventorySlot, Item>,
+    pub bank_balance: u64,
 }
 
 pub fn to_character_save(snapshot: &PlayerSnapshot) -> CharacterSave {
@@ -74,6 +75,7 @@ pub fn to_character_save(snapshot: &PlayerSnapshot) -> CharacterSave {
             .iter()
             .map(|(slot, item)| (slot.as_id().to_string(), stored_item(item)))
             .collect(),
+        bank_balance: i64::try_from(snapshot.bank_balance).unwrap_or(i64::MAX),
     }
 }
 
@@ -163,6 +165,7 @@ mod tests {
         let mut snapshot = a_test_snapshot(7, 3);
         snapshot.life.current = 37;
         snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
+        snapshot.bank_balance = 1_234_567;
 
         let save = to_character_save(&snapshot);
         let record = CharacterRecord {
@@ -182,6 +185,7 @@ mod tests {
             outfit: save.outfit,
             skills: save.skills,
             inventory: save.inventory,
+            bank_balance: save.bank_balance,
         };
         let configs = HashMap::from([(ItemId(1987), bag), (ItemId(3031), coin)]);
         let restored = snapshot_from_record(record, &configs).unwrap();
@@ -196,6 +200,7 @@ mod tests {
             (restored.capacity, restored.speed),
             (snapshot.capacity, snapshot.speed)
         );
+        assert_eq!(restored.bank_balance, 1_234_567);
         assert_eq!(
             restored.skills[&SkillType::Level].current_ticks,
             snapshot.skills[&SkillType::Level].current_ticks

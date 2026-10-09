@@ -74,6 +74,7 @@ abilities:
       shape: wave8_3
     effect_id: 8
 corpse: 11571
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

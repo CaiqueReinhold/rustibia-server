@@ -54,6 +54,7 @@ abilities:
       shape: circle2
     effect_id: 49
 corpse: 16075
+dance_chance: 20
 say:
   cooldown: 100
   chance: 10000

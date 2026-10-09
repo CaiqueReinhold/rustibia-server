@@ -135,7 +135,18 @@ pub(crate) mod tests {
             },
             skills: Vec::new(),
             inventory: HashMap::new(),
+            bank_balance: 0,
         }
+    }
+
+    #[test]
+    fn a_save_written_without_a_bank_balance_reads_as_an_empty_account() {
+        let mut json = serde_json::to_value(a_save(1)).unwrap();
+        json.as_object_mut().unwrap().remove("bank_balance");
+
+        let save: CharacterSave = serde_json::from_value(json).unwrap();
+
+        assert_eq!(save.bank_balance, 0);
     }
 
     fn player(id: i32, tick: u64) -> JournaledPlayer {

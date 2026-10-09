@@ -3,7 +3,7 @@ use crate::{
         agent::{Agent, AgentKey},
         conditions::TimedCondition,
     },
-    game::{TickCtx, combat, conditions, targeting},
+    game::{TickCtx, combat, conditions, movement, targeting},
 };
 
 pub fn combat_system(ctx: &mut TickCtx) {
@@ -17,6 +17,12 @@ pub fn combat_system(ctx: &mut TickCtx) {
     for (agent_key, target) in with_targets {
         if targeting::drop_unreachable_target(ctx, agent_key) {
             continue;
+        }
+
+        if ctx.map.get_agent(agent_key).is_some_and(|agent| {
+            agent.is_creature() && !agent.is_fleeing() && agent.next_walk_tick() <= ctx.tick
+        }) {
+            movement::face_agent(ctx, agent_key, target);
         }
 
         if ctx.map.get_agent(agent_key).is_some_and(Agent::is_hostile) {
@@ -50,6 +56,7 @@ fn drive_auto_attack(ctx: &mut TickCtx, agent_key: AgentKey) {
 mod tests {
     use super::*;
     use crate::actors::world::WorldCommand;
+    use crate::entities::agent::Facing;
     use crate::entities::conditions::TimedCondition;
     use crate::entities::world_map::WorldMap;
     use crate::entities::{
@@ -59,7 +66,7 @@ mod tests {
     };
     use crate::game::{TestHarness, Tick, config::GAME_CONFIG};
     use crate::persistence::test_fixtures::{
-        a_test_creature, a_test_passive_creature, a_test_snapshot,
+        a_test_creature, a_test_creature_that_flees, a_test_passive_creature, a_test_snapshot,
     };
 
     /// The cadence belongs to the world, not to the executor a spell planner also feeds:
@@ -160,5 +167,64 @@ mod tests {
                 blocked
             );
         }
+    }
+
+    fn a_rat_west_of_a_player(rat: Agent) -> (GameMap, AgentKey, AgentKey) {
+        let (a, b) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(a.clone(), MapTile::new());
+        map.insert_tile(b.clone(), MapTile::new());
+        let rat = map.insert_agent(rat, &a).unwrap();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &b)
+            .unwrap();
+        map.get_agent_mut(rat).unwrap().set_target(Some(player), 0);
+        map.get_agent_mut(rat).unwrap().set_facing(Facing::West);
+        (map, rat, player)
+    }
+
+    #[test]
+    fn a_creature_turns_to_its_target_once_its_step_lands() {
+        let (mut map, rat, _) = a_rat_west_of_a_player(a_test_creature("Rat", 100, (0, 0)));
+        map.get_agent_mut(rat).unwrap().stamp_walk(Tick(10));
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        h.tick = Tick(7);
+        combat_system(&mut h.ctx(&mut map));
+        assert_eq!(map.get_agent(rat).unwrap().facing(), Facing::West);
+
+        h.tick = Tick(10);
+        combat_system(&mut h.ctx(&mut map));
+        assert_eq!(map.get_agent(rat).unwrap().facing(), Facing::East);
+        assert!(map.delta().agent(rat).facing());
+    }
+
+    #[test]
+    fn a_fleeing_creature_keeps_facing_where_it_runs() {
+        let (map, rat, _) =
+            a_rat_west_of_a_player(a_test_creature_that_flees("Rat", 100, (0, 0), 100));
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(7);
+
+        combat_system(&mut h.ctx(&mut map));
+
+        assert_eq!(map.get_agent(rat).unwrap().facing(), Facing::West);
+    }
+
+    #[test]
+    fn a_player_is_never_turned_for_them() {
+        let (mut map, rat, player) = a_rat_west_of_a_player(a_test_creature("Rat", 100, (0, 0)));
+        map.get_agent_mut(rat).unwrap().set_target(None, 0);
+        map.get_agent_mut(player).unwrap().set_target(Some(rat), 0);
+        map.get_agent_mut(player).unwrap().set_facing(Facing::East);
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(7);
+
+        combat_system(&mut h.ctx(&mut map));
+
+        assert_eq!(map.get_agent(player).unwrap().facing(), Facing::East);
     }
 }

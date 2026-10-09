@@ -17,6 +17,7 @@ melee:
     max: 150
   element: physical
 corpse: 16176
+dance_chance: 30
 say:
   cooldown: 100
   chance: 10000

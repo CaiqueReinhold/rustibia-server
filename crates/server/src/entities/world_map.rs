@@ -8,7 +8,7 @@ use crate::entities::items::{Item, ItemGuid};
 #[cfg(test)]
 use crate::entities::map::MapTile;
 use crate::entities::map::{GameMap, MapError, RemovedItem};
-use crate::entities::npc::Keyword;
+use crate::entities::npc::Branch;
 use crate::entities::player::Player;
 use crate::entities::position::{ItemPlacement, PlacementSite, Position};
 use crate::entities::skills::{SkillType, SkillValue};
@@ -297,6 +297,10 @@ impl AgentMut<'_> {
         self.agent.clear_participation();
     }
 
+    pub fn forget_participant(&mut self, attacker: AgentKey) {
+        self.agent.forget_participant(attacker);
+    }
+
     pub fn player_mut(&mut self) -> Option<PlayerMut<'_>> {
         let player = self.agent.get_player_mut()?;
         Some(PlayerMut {
@@ -306,7 +310,7 @@ impl AgentMut<'_> {
         })
     }
 
-    pub fn set_keyword_branch(&mut self, branch: Option<(String, Arc<Keyword>)>) {
+    pub fn set_keyword_branch(&mut self, branch: Option<Arc<Branch>>) {
         self.agent.set_keyword_branch(branch);
     }
 }
@@ -343,6 +347,14 @@ impl PlayerMut<'_> {
             key: self.key,
             delta: &mut *self.delta,
         }
+    }
+
+    pub fn deposit(&mut self, amount: u64) {
+        self.player.deposit(amount);
+    }
+
+    pub fn withdraw(&mut self, amount: u64) -> bool {
+        self.player.withdraw(amount)
     }
 }
 
@@ -457,6 +469,7 @@ mod tests {
     use crate::entities::position::ItemPlacement;
     use crate::entities::skills::SkillType;
     use crate::game::Tick;
+    use crate::game::config::GAME_CONFIG;
     use crate::persistence::test_fixtures::a_player_with_a_full_backpack;
     use crate::persistence::test_fixtures::a_test_snapshot;
     use std::collections::HashSet;
@@ -716,7 +729,10 @@ mod tests {
 
         assert!(map.delta().is_empty());
         assert_eq!(map.get_agent(key).unwrap().next_walk_tick(), Tick(5));
-        assert_eq!(map.get_agent(key).unwrap().next_use_tick(), Tick(5));
+        assert_eq!(
+            map.get_agent(key).unwrap().next_use_tick(),
+            Tick(5) + GAME_CONFIG.action.use_item_cooldown_ticks
+        );
     }
 
     fn a_player_with_a_backpack() -> (WorldMap, AgentKey) {

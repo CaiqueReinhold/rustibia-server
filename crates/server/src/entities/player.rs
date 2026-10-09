@@ -35,6 +35,7 @@ pub struct Player {
     capacity: u32,
     inventory: Arc<Inventory>,
     skills: HashMap<SkillType, SkillValue>,
+    bank_balance: u64,
 }
 
 impl Player {
@@ -50,6 +51,7 @@ impl Player {
         capacity: u32,
         inventory: HashMap<InventorySlot, Item>,
         skills: HashMap<SkillType, SkillValue>,
+        bank_balance: u64,
     ) -> Self {
         let level = skills
             .get(&SkillType::Level)
@@ -68,6 +70,7 @@ impl Player {
                 Wearer { level, vocation },
             )),
             skills,
+            bank_balance,
         }
     }
 
@@ -231,6 +234,22 @@ impl Player {
 
     pub fn can_use(&self, item: &Item) -> bool {
         item.config.can_be_worn_by(self.level(), self.vocation)
+    }
+
+    pub fn bank_balance(&self) -> u64 {
+        self.bank_balance
+    }
+
+    pub(crate) fn deposit(&mut self, amount: u64) {
+        self.bank_balance += amount;
+    }
+
+    pub(crate) fn withdraw(&mut self, amount: u64) -> bool {
+        let Some(left) = self.bank_balance.checked_sub(amount) else {
+            return false;
+        };
+        self.bank_balance = left;
+        true
     }
 }
 

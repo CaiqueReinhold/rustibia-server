@@ -95,6 +95,7 @@ abilities:
     duration_ticks: 140
     effect_id: 14
 corpse: 15988
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

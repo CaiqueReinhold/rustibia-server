@@ -101,6 +101,7 @@ abilities:
     effect_id: 14
 corpse: 21099
 target_distance: 4
+dance_chance: 10
 say:
   cooldown: 40
   chance: 5000

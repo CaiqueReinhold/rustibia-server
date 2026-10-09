@@ -328,7 +328,11 @@ pub fn find_parent_container<'a>(
             return Some((parent_guid, ItemPlacement::Map(pos)));
         }
     }
-    None
+    let inventory = map.get_player(agent_key)?.inventory();
+    inventory.keys().find_map(|slot| {
+        let parent_guid = GameMap::parent_container_within(inventory.get(slot)?, guid)?;
+        Some((parent_guid, ItemPlacement::Inventory(*slot, agent_key)))
+    })
 }
 
 /// The item `guid` names, looked for at `placement`.
@@ -494,22 +498,31 @@ pub fn can_throw(map: &GameMap, from: &Position, to: &Position, same_floor: bool
     }
 }
 
-pub fn face_target(pos: &Position, target_pos: &Position) -> Facing {
-    let delta_x = pos.x as i32 - target_pos.x as i32;
-    let delta_y = pos.y as i32 - target_pos.y as i32;
-
-    if delta_x.abs() > delta_y.abs() {
-        if delta_x > 0 {
-            Facing::West
-        } else {
-            Facing::East
-        }
+/// The facing toward `target_pos`. On a perfect diagonal `current` is kept when it already
+/// points at the target, so an agent does not flip between the two equally good facings.
+pub fn face_target(current: Facing, pos: &Position, target_pos: &Position) -> Facing {
+    let delta_x = target_pos.x as i32 - pos.x as i32;
+    let delta_y = target_pos.y as i32 - pos.y as i32;
+    let horizontal = if delta_x < 0 {
+        Facing::West
     } else {
-        if delta_y > 0 {
-            Facing::North
-        } else {
-            Facing::South
+        Facing::East
+    };
+    let vertical = if delta_y < 0 {
+        Facing::North
+    } else {
+        Facing::South
+    };
+
+    match delta_x.abs().cmp(&delta_y.abs()) {
+        std::cmp::Ordering::Greater => horizontal,
+        std::cmp::Ordering::Less => vertical,
+        std::cmp::Ordering::Equal
+            if delta_x == 0 || current == horizontal || current == vertical =>
+        {
+            current
         }
+        std::cmp::Ordering::Equal => vertical,
     }
 }
 
@@ -1114,5 +1127,48 @@ mod tests {
         assert_eq!(placement, ItemPlacement::Map(at.clone()));
         let past_the_window = reference(10);
         assert!(retrieve_item(&map, &past_the_window, &containers, key).is_none());
+    }
+
+    #[test]
+    fn the_dominant_axis_decides_the_facing() {
+        let from = Position::new(10, 10, 7);
+
+        assert_eq!(
+            face_target(Facing::South, &from, &Position::new(13, 9, 7)),
+            Facing::East
+        );
+        assert_eq!(
+            face_target(Facing::South, &from, &Position::new(9, 7, 7)),
+            Facing::North
+        );
+    }
+
+    #[test]
+    fn on_a_diagonal_a_facing_toward_the_target_is_kept() {
+        let from = Position::new(10, 10, 7);
+        let north_east = Position::new(12, 8, 7);
+
+        assert_eq!(face_target(Facing::East, &from, &north_east), Facing::East);
+        assert_eq!(
+            face_target(Facing::North, &from, &north_east),
+            Facing::North
+        );
+    }
+
+    #[test]
+    fn on_a_diagonal_a_facing_away_from_the_target_turns() {
+        let from = Position::new(10, 10, 7);
+
+        assert_eq!(
+            face_target(Facing::West, &from, &Position::new(12, 8, 7)),
+            Facing::North
+        );
+    }
+
+    #[test]
+    fn a_target_on_the_same_tile_leaves_the_facing_alone() {
+        let here = Position::new(10, 10, 7);
+
+        assert_eq!(face_target(Facing::West, &here, &here), Facing::West);
     }
 }

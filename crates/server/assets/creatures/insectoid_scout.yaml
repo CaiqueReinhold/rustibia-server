@@ -22,6 +22,7 @@ melee:
       max: 60
     interval: 80
 corpse: 12525
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

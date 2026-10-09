@@ -60,6 +60,7 @@ abilities:
       shape: cross1
     effect_id: 1
 corpse: 18949
+dance_chance: 30
 say:
   cooldown: 100
   chance: 0

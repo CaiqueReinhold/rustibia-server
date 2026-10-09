@@ -67,6 +67,7 @@ abilities:
       shape: radius7
     effect_id: 7
 corpse: 7893
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

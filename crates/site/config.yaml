@@ -9,10 +9,8 @@ new_character:
   facing: 1
   life: 150
   mana: 100
-  capacity: 40000
+  capacity: 60000
   speed: 100
-  outfit_id_female: 136
-  outfit_id_male: 128
   outfit_head: 78
   outfit_body: 69
   outfit_legs: 58
@@ -25,3 +23,81 @@ new_character:
     - { skill_type: 4, value: 10, current_ticks: 0 }
     - { skill_type: 5, value: 1, current_ticks: 0 }
     - { skill_type: 6, value: 10, current_ticks: 0 }
+  vocations:
+    knight:
+      outfit_id_male: 131
+      outfit_id_female: 139
+      inventory:
+        head: { item_id: 3375 }        # soldier helmet
+        chest: { item_id: 3359 }       # brass armor
+        legs: { item_id: 3372 }        # brass legs
+        feet: { item_id: 3552 }        # leather boots
+        left_hand: { item_id: 3273 }   # sabre
+        right_hand: { item_id: 3409 }  # steel shield
+        backpack:
+          item_id: 2854
+          content:
+            - { item_id: 3003 }              # rope
+            - { item_id: 3457 }              # shovel
+            - { item_id: 3725, amount: 10 }  # brown mushroom
+            - { item_id: 7876, amount: 10 }  # small health potion
+            - { item_id: 268, amount: 10 }   # mana potion
+            - { item_id: 3274 }              # axe
+            - { item_id: 3337 }              # bone club
+    paladin:
+      outfit_id_male: 129
+      outfit_id_female: 137
+      inventory:
+        head: { item_id: 3355 }        # leather helmet
+        chest: { item_id: 3571 }       # ranger's cloak
+        legs: { item_id: 8095 }        # ranger legs
+        feet: { item_id: 3552 }        # leather boots
+        left_hand: { item_id: 3350 }   # bow
+        right_hand:
+          item_id: 35562               # quiver
+          content:
+            - { item_id: 3447, amount: 100 }  # arrow
+        backpack:
+          item_id: 2854
+          content:
+            - { item_id: 3003 }              # rope
+            - { item_id: 3457 }              # shovel
+            - { item_id: 3725, amount: 10 }  # brown mushroom
+            - { item_id: 7876, amount: 10 }  # small health potion
+            - { item_id: 268, amount: 10 }   # mana potion
+    sorcerer:
+      outfit_id_male: 130
+      outfit_id_female: 138
+      inventory:
+        head: { item_id: 7992 }        # mage hat
+        chest: { item_id: 7991 }       # magician's robe
+        legs: { item_id: 3559 }        # leather legs
+        feet: { item_id: 3552 }        # leather boots
+        left_hand: { item_id: 21348 }  # the scorcher
+        right_hand: { item_id: 3059 }  # spellbook
+        backpack:
+          item_id: 2854
+          content:
+            - { item_id: 3003 }              # rope
+            - { item_id: 3457 }              # shovel
+            - { item_id: 3725, amount: 10 }  # brown mushroom
+            - { item_id: 7876, amount: 10 }  # small health potion
+            - { item_id: 268, amount: 10 }   # mana potion
+    druid:
+      outfit_id_male: 133
+      outfit_id_female: 141
+      inventory:
+        head: { item_id: 7992 }        # mage hat
+        chest: { item_id: 7991 }       # magician's robe
+        legs: { item_id: 3559 }        # leather legs
+        feet: { item_id: 3552 }        # leather boots
+        left_hand: { item_id: 21350 }  # the chiller
+        right_hand: { item_id: 3059 }  # spellbook
+        backpack:
+          item_id: 2854
+          content:
+            - { item_id: 3003 }              # rope
+            - { item_id: 3457 }              # shovel
+            - { item_id: 3725, amount: 10 }  # brown mushroom
+            - { item_id: 7876, amount: 10 }  # small health potion
+            - { item_id: 268, amount: 10 }   # mana potion

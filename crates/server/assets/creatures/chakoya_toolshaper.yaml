@@ -27,6 +27,7 @@ abilities:
       shape: boxed
     missile_id: 10
 corpse: 7320
+dance_chance: 20
 say:
   cooldown: 100
   chance: 10000

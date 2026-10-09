@@ -61,6 +61,8 @@ pub enum CreaturesLoadError {
     BadAttack { path: PathBuf, reason: &'static str },
     #[error("{path} has a support ability that {source}")]
     Support { path: PathBuf, source: SupportError },
+    #[error("{path} has a dance_chance of {value}, above 100")]
+    DanceChance { path: PathBuf, value: u8 },
 }
 
 #[derive(Deserialize)]
@@ -174,6 +176,8 @@ struct RawCreature {
     flee_threshold: Option<u32>,
     #[serde(default = "melee_distance")]
     target_distance: u16,
+    #[serde(default = "reference_dance_chance")]
+    dance_chance: u8,
     say: RawCreatureVoices,
     #[serde(default)]
     flags: Vec<CreatureFlag>,
@@ -181,6 +185,10 @@ struct RawCreature {
 
 fn melee_distance() -> u16 {
     1
+}
+
+fn reference_dance_chance() -> u8 {
+    5
 }
 
 fn parse_ability(
@@ -298,6 +306,13 @@ impl RawCreature {
         path: &Path,
         shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
     ) -> Result<CreatureKind, CreaturesLoadError> {
+        if self.dance_chance > 100 {
+            return Err(CreaturesLoadError::DanceChance {
+                path: path.to_path_buf(),
+                value: self.dance_chance,
+            });
+        }
+
         let abilities = self
             .abilities
             .into_iter()
@@ -332,6 +347,7 @@ impl RawCreature {
                 .collect(),
             flee_threshold: self.flee_threshold,
             target_distance: self.target_distance,
+            dance_chance: self.dance_chance,
             say: Voices {
                 cooldown: self.say.cooldown,
                 chance: self.say.chance,
@@ -628,6 +644,31 @@ say:
             a_creature(&A_CREATURE.replace("corpse: 5973", "target_distance: 4\ncorpse: 5973"));
 
         assert_eq!(kind.target_distance, 4);
+    }
+
+    #[test]
+    fn a_creature_without_a_dance_chance_takes_the_reference_default() {
+        assert_eq!(a_creature(A_CREATURE).dance_chance, 5);
+    }
+
+    #[test]
+    fn a_dance_chance_is_read_from_the_document() {
+        let kind =
+            a_creature(&A_CREATURE.replace("corpse: 5973", "dance_chance: 30\ncorpse: 5973"));
+
+        assert_eq!(kind.dance_chance, 30);
+    }
+
+    #[test]
+    fn a_dance_chance_above_a_hundred_percent_is_refused() {
+        let contents = A_CREATURE.replace("corpse: 5973", "dance_chance: 101\ncorpse: 5973");
+        let error = parse_creature(Path::new("test.yaml"), &contents, &shape("probe"))
+            .expect_err("a chance above 100% must not load");
+
+        assert!(
+            matches!(error, CreaturesLoadError::DanceChance { value: 101, .. }),
+            "unexpected error: {error}"
+        );
     }
 
     /// The loader must refuse an ability it cannot run rather than drop it: a creature that

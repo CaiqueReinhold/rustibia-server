@@ -13,11 +13,19 @@ use crate::{
     },
     game::{
         TickCtx, combat::execute_attack, conditions::apply_condition, events::BroadcastMessage,
-        healing::execute_healing, random::Rolls, spells::resolve_targets, support::cast_support,
+        healing::execute_healing, movement, random::Rolls, spells::resolve_targets,
+        support::cast_support,
     },
 };
 
 pub fn cast_ability(ctx: &mut TickCtx, agent_key: AgentKey, ability_id: CreatureAbilityId) {
+    if let Some(target) = ctx
+        .map
+        .get_agent(agent_key)
+        .and_then(|agent| agent.target())
+    {
+        movement::face_agent(ctx, agent_key, target);
+    }
     let Some(kind) = ctx
         .map
         .get_agent(agent_key)
@@ -202,12 +210,14 @@ mod tests {
     use crate::constants::items::MAX_DROP_CHANCE;
     use crate::entities::Bounds;
     use crate::entities::agent::Agent;
+    use crate::entities::agent::Facing;
     use crate::entities::combat::CombatElement;
     use crate::entities::creature::{CreatureAbility, CreatureAttackDamage, CreatureKind};
+    use crate::entities::effects::AreaShape;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::entities::spells::SpellGroup;
-    use crate::entities::targeting::TargetMode;
+    use crate::entities::targeting::{AreaOrigin, TargetMode};
     use crate::entities::world_map::WorldMap;
     use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick, TickDelta};
@@ -386,5 +396,35 @@ mod tests {
             s.command,
             WorldCommand::DamageOverTimeTick { agent_key, .. } if agent_key == player
         )));
+    }
+
+    #[test]
+    fn a_wave_is_aimed_at_the_target_even_mid_step() {
+        let (mut map, demon) = a_map_with(AbilityEffect::Attack(CreatureAttack {
+            damage: CreatureAttackDamage {
+                element: CombatElement::Fire,
+                value: Bounds { min: 10, max: 20 },
+                condition: None,
+            },
+            target: TargetMode::Area {
+                origin: AreaOrigin::Caster,
+                shape: Arc::new(AreaShape::new(vec![(0, -1)].into_boxed_slice())),
+            },
+            effect_id: None,
+            missile_id: None,
+        }));
+        let player = map.get_agent(demon).unwrap().target().unwrap();
+        map.get_agent_mut(demon).unwrap().set_facing(Facing::West);
+        map.get_agent_mut(demon).unwrap().stamp_walk(Tick(500));
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(100);
+
+        let mut map = WorldMap::new(map);
+        cast_ability(&mut h.ctx(&mut map), demon, CreatureAbilityId(0));
+
+        assert_eq!(map.get_agent(demon).unwrap().facing(), Facing::East);
+        assert!(h.events.iter().any(
+            |e| matches!(e, BroadcastMessage::DamageTaken { target, .. } if *target == player)
+        ));
     }
 }

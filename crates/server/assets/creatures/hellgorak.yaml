@@ -73,6 +73,7 @@ abilities:
       max: 1700
 corpse: 6068
 flee_threshold: 150
+dance_chance: 15
 say:
   cooldown: 100
   chance: 10000

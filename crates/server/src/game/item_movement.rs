@@ -68,23 +68,19 @@ fn displace_inventory_items(
         }
     }
 
-    let is_bow_or_quiver = |it: &Item| {
+    let is_bow = |it: &Item| {
         it.config
             .attr_weapon_type()
-            .filter(|wt| matches!(wt, WeaponType::Bow | WeaponType::Crossbow))
-            .is_some()
-            || it.config.has_flag(ItemFlag::AmmoContainer)
+            .is_some_and(|wt| matches!(wt, WeaponType::Bow | WeaponType::Crossbow))
     };
-    let left_is_bow_or_quiver = ctx
-        .map
-        .get_player(agent)
-        .unwrap()
-        .inventory()
-        .get(&InventorySlot::LeftHand)
-        .map(is_bow_or_quiver)
-        .unwrap_or(false);
-    let source_is_bow_or_quiver = is_bow_or_quiver(source_item);
-    if left_is_bow_or_quiver && source_is_bow_or_quiver {
+    let is_quiver = |it: &Item| it.config.has_flag(ItemFlag::AmmoContainer);
+    let inventory = ctx.map.get_player(agent).unwrap().inventory();
+    let joins_its_pair = (is_bow(source_item)
+        && inventory
+            .get(&InventorySlot::RightHand)
+            .is_some_and(is_quiver))
+        || (is_quiver(source_item) && inventory.get(&InventorySlot::LeftHand).is_some_and(is_bow));
+    if joins_its_pair {
         return Ok(());
     }
 
@@ -925,6 +921,127 @@ mod tests {
             map.get_top_item(&here).map(|it| it.guid) != Some(weapon_guid),
             "the two-hander landed at the player's feet"
         );
+    }
+
+    fn a_bow() -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3350),
+                "bow".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Take]),
+                vec![
+                    ItemAttribute::Weight(100),
+                    ItemAttribute::Inventory(InventorySlot::BothHands),
+                    ItemAttribute::WeaponType(WeaponType::Bow),
+                ],
+            )),
+            1,
+        )
+    }
+
+    fn a_quiver() -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(35562),
+                "quiver".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Container, ItemFlag::AmmoContainer, ItemFlag::Take]),
+                vec![
+                    ItemAttribute::Weight(100),
+                    ItemAttribute::Capacity(6),
+                    ItemAttribute::Inventory(InventorySlot::RightHand),
+                ],
+            )),
+            1,
+        )
+    }
+
+    /// Equips `item`, lying beside the player, into `slot` while the player wears `worn`
+    /// and carries an empty backpack, so anything displaced has somewhere to go.
+    fn equip_beside(
+        item: Item,
+        slot: InventorySlot,
+        worn: (InventorySlot, Item),
+    ) -> (WorldMap, AgentKey, ItemGuid, ItemGuid) {
+        let (here, source) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_ground_tile());
+        let mut source_tile = a_ground_tile();
+        let item_guid = item.guid;
+        source_tile.push_item(item);
+        map.insert_tile(source.clone(), source_tile);
+
+        let (worn_slot, worn_item) = worn;
+        let worn_guid = worn_item.guid;
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.inventory = HashMap::from([
+            (InventorySlot::Backpack, a_backpack_with(20, Vec::new())),
+            (worn_slot, worn_item),
+        ]);
+        let agent = map
+            .insert_agent(Agent::from_player(snapshot), &here)
+            .unwrap();
+
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+        move_item(
+            &mut h.ctx(&mut map),
+            agent,
+            ItemRef {
+                guid: item_guid,
+                placement: ItemPlacement::Map(source),
+            },
+            1,
+            ItemPlacement::Inventory(slot, agent),
+        );
+        (map, agent, item_guid, worn_guid)
+    }
+
+    fn guid_in(map: &WorldMap, agent: AgentKey, slot: InventorySlot) -> Option<ItemGuid> {
+        map.get_player(agent)
+            .unwrap()
+            .inventory()
+            .get(&slot)
+            .map(|it| it.guid)
+    }
+
+    #[test]
+    fn a_bow_equipped_beside_a_worn_quiver_keeps_the_quiver() {
+        let (map, agent, bow, quiver) = equip_beside(
+            a_bow(),
+            InventorySlot::LeftHand,
+            (InventorySlot::RightHand, a_quiver()),
+        );
+
+        assert_eq!(guid_in(&map, agent, InventorySlot::LeftHand), Some(bow));
+        assert_eq!(guid_in(&map, agent, InventorySlot::RightHand), Some(quiver));
+    }
+
+    #[test]
+    fn a_quiver_equipped_beside_a_held_bow_keeps_the_bow() {
+        let (map, agent, quiver, bow) = equip_beside(
+            a_quiver(),
+            InventorySlot::RightHand,
+            (InventorySlot::LeftHand, a_bow()),
+        );
+
+        assert_eq!(guid_in(&map, agent, InventorySlot::LeftHand), Some(bow));
+        assert_eq!(guid_in(&map, agent, InventorySlot::RightHand), Some(quiver));
+    }
+
+    #[test]
+    fn another_two_handed_weapon_still_stows_a_worn_quiver() {
+        let (map, agent, weapon, _) = equip_beside(
+            an_item_for(InventorySlot::BothHands),
+            InventorySlot::LeftHand,
+            (InventorySlot::RightHand, a_quiver()),
+        );
+
+        assert_eq!(guid_in(&map, agent, InventorySlot::LeftHand), Some(weapon));
+        assert_eq!(guid_in(&map, agent, InventorySlot::RightHand), None);
     }
 
     /// The placement an item came from can be gone by the time it comes back -- a tile

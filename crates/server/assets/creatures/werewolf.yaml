@@ -50,6 +50,7 @@ abilities:
     effect_id: 23
 corpse: 18099
 flee_threshold: 300
+dance_chance: 20
 say:
   cooldown: 100
   chance: 10000

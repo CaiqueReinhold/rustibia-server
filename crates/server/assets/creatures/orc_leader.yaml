@@ -27,6 +27,7 @@ abilities:
       range: 7
     missile_id: 9
 corpse: 6001
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

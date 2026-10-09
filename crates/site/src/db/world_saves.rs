@@ -51,7 +51,7 @@ async fn write_character(
          capacity = $13, speed = $14, \
          outfit_id = $15, outfit_head = $16, outfit_body = $17, \
          outfit_legs = $18, outfit_feet = $19, \
-         inventory = $20 \
+         inventory = $20, bank_balance = $21 \
          WHERE id = $1 AND deleted_at IS NULL",
     )
     .bind(save.id)
@@ -74,6 +74,7 @@ async fn write_character(
     .bind(save.outfit.legs)
     .bind(save.outfit.feet)
     .bind(Json(&save.inventory))
+    .bind(save.bank_balance)
     .execute(&mut *conn)
     .await?
     .rows_affected();
@@ -168,6 +169,7 @@ mod tests {
                 current_ticks: 1234,
             }],
             inventory: HashMap::new(),
+            bank_balance: 0,
         }
     }
 
@@ -218,6 +220,31 @@ mod tests {
         );
         assert_eq!(life_of(&pool, id).await, 37);
         assert_eq!(load_chunks(&pool).await.unwrap(), vec![a_chunk(5, 3031)]);
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_world_save_writes_the_bank_balance(pool: PgPool) {
+        let id = a_character(&pool, "a@example.com", "Rizael").await;
+        let mut character = a_character_save(id);
+        character.bank_balance = 1_234_567;
+
+        apply(
+            &pool,
+            &WorldSave {
+                tick: 1,
+                characters: vec![character],
+                chunks: Vec::new(),
+            },
+        )
+        .await
+        .unwrap();
+
+        let balance: i64 = sqlx::query_scalar("SELECT bank_balance FROM players WHERE id = $1")
+            .bind(id)
+            .fetch_one(&pool)
+            .await
+            .unwrap();
+        assert_eq!(balance, 1_234_567);
     }
 
     #[sqlx::test(migrations = "./migrations")]

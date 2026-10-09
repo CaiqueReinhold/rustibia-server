@@ -29,6 +29,7 @@ abilities:
       shape: single
     effect_id: 39
 corpse: 5963
+dance_chance: 10
 say:
   cooldown: 100
   chance: 0

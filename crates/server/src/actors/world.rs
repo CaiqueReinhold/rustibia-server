@@ -38,9 +38,9 @@ use crate::entities::{
 use crate::game::config::GAME_CONFIG;
 use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, creature_abilities,
-    creature_behavior::CreatureAction, events::BroadcastMessage, item_action, item_movement,
-    item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, spells, support,
-    systems, targeting,
+    creature_behavior::CreatureAction, events::BroadcastMessage, experience, item_action,
+    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls,
+    spells, support, systems, targeting,
 };
 use crate::persistence::npcs::{NPCS, NpcId};
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
@@ -294,6 +294,7 @@ impl WorldActor {
     }
 
     fn seed_spawn_points(&mut self, spawns: &[SpawnPoint]) {
+        let mut spawned = Vec::new();
         for spawn in spawns {
             let Some(kind) = CREATURE_KINDS.get(&spawn.kind).cloned() else {
                 error!(
@@ -302,17 +303,16 @@ impl WorldActor {
                 );
                 continue;
             };
-            let mut messages = Vec::new();
             self.handle_command(
                 WorldCommand::SpawnCreature {
                     kind,
                     position: spawn.position.clone(),
                     respawn_ticks: Some(spawn.respawn_ticks),
                 },
-                &mut messages,
+                &mut spawned,
             );
         }
-        info!("Seeded {} spawn points", self.command_queue.len());
+        info!("Seeded {} spawn points", spawned.len());
     }
 
     fn seed_npcs(&mut self, npcs: &HashMap<NpcId, Arc<Npc>>) {
@@ -702,6 +702,8 @@ impl WorldActor {
         broadcast_messages: &mut Vec<BroadcastMessage>,
     ) {
         if let Some((agent, position)) = self.map.remove_agent(agent_key) {
+            let remembering = experience::players_naming(&self.map, agent_key);
+            experience::forget_departed(&mut self.map, agent_key, &remembering);
             if let Some(snapshot) = agent.to_snapshot(position.clone()) {
                 self.persistence.save_player(snapshot, self.tick);
             }
@@ -912,25 +914,27 @@ mod tests {
     /// Nothing tracks spawn slots any more, so the table has exactly one effect: it seeds the
     /// first population. A kind the catalogue does not carry is dropped rather than retried.
     #[test]
-    fn the_spawn_table_is_queued_for_the_first_tick_and_unknown_kinds_are_dropped() {
-        let mut actor = a_test_world_actor(GameMap::new());
+    fn the_spawn_table_is_placed_at_once_and_unknown_kinds_are_dropped() {
+        let known = Position::new(10, 10, 7);
+        let unknown = Position::new(11, 10, 7);
+        let mut map = GameMap::new();
+        for pos in [&known, &unknown] {
+            map.insert_tile(pos.clone(), MapTile::new());
+        }
+        let mut actor = a_test_world_actor(map);
         actor.command_queue.clear();
 
         actor.seed_spawn_points(&[
-            a_spawn_point("elf", Position::new(10, 10, 7), TickDelta(600)),
-            a_spawn_point("nosuchcreature", Position::new(11, 10, 7), TickDelta(600)),
+            a_spawn_point("elf", known.clone(), TickDelta(600)),
+            a_spawn_point("nosuchcreature", unknown, TickDelta(600)),
         ]);
 
-        assert_eq!(actor.command_queue.len(), 1);
-        let queued = actor.command_queue.pop().unwrap();
-        assert_eq!(queued.at_tick, Tick(1));
-        assert!(matches!(
-            queued.command,
-            WorldCommand::SpawnCreature {
-                respawn_ticks: Some(TickDelta(600)),
-                ..
-            }
-        ));
+        assert!(actor.command_queue.is_empty());
+        let agents: Vec<_> = actor.map.iter_agents().collect();
+        assert_eq!(agents.len(), 1);
+        let (key, agent) = agents[0];
+        assert_eq!(actor.map.agent_position(key), Some(&known));
+        assert_eq!(agent.respawn_ticks(), Some(TickDelta(600)));
     }
 
     /// The delay has to survive the dispatch onto the agent, because that is the only copy of
@@ -1311,6 +1315,71 @@ mod tests {
             .insert_agent(a_test_creature("rat", 20, (0, 0)), &creature_at)
             .unwrap();
         (map, player, creature)
+    }
+
+    fn two_players_and_a_creature() -> (GameMap, AgentKey, AgentKey, AgentKey) {
+        let mut map = GameMap::new();
+        let quitter_at = Position::new(5, 5, 7);
+        let victim_at = Position::new(6, 5, 7);
+        let creature_at = Position::new(7, 5, 7);
+        for pos in [&quitter_at, &victim_at, &creature_at] {
+            map.insert_tile(pos.clone(), MapTile::new());
+        }
+        let quitter = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &quitter_at)
+            .unwrap();
+        let victim = map
+            .insert_agent(Agent::from_player(a_test_snapshot(2, 2)), &victim_at)
+            .unwrap();
+        let creature = map
+            .insert_agent(a_test_creature("rat", 20, (0, 0)), &creature_at)
+            .unwrap();
+        map.get_agent_mut(victim)
+            .unwrap()
+            .record_damage(quitter, 20);
+        map.get_agent_mut(victim)
+            .unwrap()
+            .record_damage(creature, 30);
+        map.get_agent_mut(creature)
+            .unwrap()
+            .record_damage(quitter, 10);
+        (map, quitter, victim, creature)
+    }
+
+    fn log_out(actor: &mut WorldActor, agent_key: AgentKey) {
+        actor.handle_command(
+            WorldCommand::DespawnPlayer {
+                agent_key,
+                disconnect: None,
+            },
+            &mut Vec::new(),
+        );
+    }
+
+    #[test]
+    fn a_player_who_logs_out_leaves_other_players_tables() {
+        let (map, quitter, victim, creature) = two_players_and_a_creature();
+        let mut actor = a_test_world_actor(map);
+
+        log_out(&mut actor, quitter);
+
+        assert!(actor.map.get_agent(quitter).is_none());
+        let table = actor.map.get_agent(victim).unwrap().participation();
+        assert!(!table.contains(quitter));
+        assert!(table.contains(creature));
+        assert_eq!(table.total(), 30);
+    }
+
+    #[test]
+    fn a_player_who_logs_out_stays_in_a_creatures_table() {
+        let (map, quitter, _, creature) = two_players_and_a_creature();
+        let mut actor = a_test_world_actor(map);
+
+        log_out(&mut actor, quitter);
+
+        let table = actor.map.get_agent(creature).unwrap().participation();
+        assert!(table.contains(quitter));
+        assert_eq!(table.total(), 10);
     }
 
     #[test]

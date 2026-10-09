@@ -1,6 +1,7 @@
+use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
 
-use minijinja::{Value, context};
+use minijinja::Value;
 use tracing::error;
 
 use crate::{
@@ -8,15 +9,15 @@ use crate::{
     entities::{
         agent::{Agent, AgentKey},
         items::ItemId,
-        npc::{Keyword, NpcResponse},
+        npc::{Branch, Keyword, NpcResponse, WordMatch},
         position::Position,
     },
     game::{
         TickCtx,
         config::GAME_CONFIG,
         events::BroadcastMessage,
-        map_query::face_target,
-        money::{COINS, pay, plan_item_payment, plan_payment},
+        money::{COINS, coins_held, give_change, pay, plan_item_payment, plan_payment},
+        movement::face_agent,
         random::Rolls,
     },
 };
@@ -44,44 +45,82 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
         return;
     };
     let player_name = player.name();
-    let Some(inventory) = player.get_player().map(|player| player.inventory().clone()) else {
+    let Some(player_def) = player.get_player() else {
         return;
     };
+    let inventory = player_def.inventory().clone();
+    let gold = coins_held(&inventory, &COINS);
+    let balance = player_def.bank_balance();
 
     let uniform =
         Value::from_function(move |min: u32, max: u32| rolls.lock().unwrap().uniform(min, max));
     let has_item =
         Value::from_function(move |id: u16| plan_item_payment(&inventory, ItemId(id)).is_some());
-    let branch_parent = npc.keyword_branch().map(|(parent, _)| parent.clone());
-    let context = |word: &str, from_branch: bool| {
-        context! {
-            PLAYERNAME => player_name,
-            WORD => word,
-            PARENT_KEYWORD => from_branch.then(|| branch_parent.clone()).flatten(),
-            uniform => uniform.clone(),
-            has_item => has_item.clone(),
-            ..Value::from_serialize(&npc_def.arguments)
+    let branch = npc.keyword_branch();
+    let inherited = branch.map_or(&[][..], |branch| branch.vars.as_slice());
+    let context = |found: &WordMatch, from_branch: bool, set: &[(String, Value)]| {
+        let mut vars: BTreeMap<String, Value> = npc_def.arguments.clone();
+        if from_branch {
+            vars.extend(inherited.iter().cloned());
         }
+        vars.extend(found.captures.iter().cloned());
+        vars.extend(set.iter().cloned());
+        vars.insert("PLAYERNAME".into(), Value::from(player_name));
+        vars.insert("WORD".into(), Value::from(found.word.as_str()));
+        vars.insert(
+            "PARENT_KEYWORD".into(),
+            Value::from(
+                from_branch
+                    .then(|| branch.map(|branch| branch.word.clone()))
+                    .flatten(),
+            ),
+        );
+        vars.insert("GOLD".into(), Value::from(gold));
+        vars.insert("BALANCE".into(), Value::from(balance));
+        vars.insert("uniform".into(), uniform.clone());
+        vars.insert("has_item".into(), has_item.clone());
+        Value::from_iter(vars)
     };
 
-    let allows = |keyword: &Keyword, word: &str, from_branch: bool| {
+    let allows = |keyword: &Keyword, found: &WordMatch, from_branch: bool| {
         keyword
-            .allows(&npc_def.environment, &context(word, from_branch))
+            .allows(&npc_def.environment, &context(found, from_branch, &[]))
             .unwrap_or_else(|e| {
-                error!("NPC {} could not check {word:?}: {e}", npc_def.name);
+                error!("NPC {} could not check {:?}: {e}", npc_def.name, found.word);
                 false
             })
     };
-    let Some((word, keyword, from_branch)) = match_keywords(npc, message, allows) else {
+    let Some((found, keyword, from_branch)) = match_keywords(npc, message, allows) else {
         return;
     };
-    let response = match keyword.response(&npc_def.environment, context(&word, from_branch)) {
-        Ok(response) => response,
+    let set = match keyword.bindings(&npc_def.environment, &context(&found, from_branch, &[])) {
+        Ok(set) => set,
         Err(e) => {
-            error!("NPC {} could not answer {word:?}: {e}", npc_def.name);
+            error!("NPC {} could not set {:?}: {e}", npc_def.name, found.word);
             return;
         }
     };
+    let response = match keyword.response(&npc_def.environment, context(&found, from_branch, &set))
+    {
+        Ok(response) => response,
+        Err(e) => {
+            error!(
+                "NPC {} could not answer {:?}: {e}",
+                npc_def.name, found.word
+            );
+            return;
+        }
+    };
+    let WordMatch { word, captures } = found;
+    let mut vars = if from_branch {
+        inherited.to_vec()
+    } else {
+        Vec::new()
+    };
+    for (name, value) in captures.into_iter().chain(set) {
+        vars.retain(|(other, _)| *other != name);
+        vars.push((name, value));
+    }
     if !engaged && !matches!(response, NpcResponse::Engage(_)) {
         return;
     }
@@ -96,13 +135,27 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
             to,
             failed_text,
         } => teleport_player(ctx, player_key, npc_key, failed_text, cost, item, to),
+        NpcResponse::Deposit {
+            amount,
+            text,
+            failed_text,
+        } => deposit_to_bank(ctx, player_key, npc_key, text, failed_text, amount),
+        NpcResponse::Withdraw {
+            amount,
+            text,
+            failed_text,
+        } => withdraw_from_bank(ctx, player_key, npc_key, text, failed_text, amount),
     };
 
     let branch = match outcome {
         Outcome::Ignored => return,
         Outcome::Ended => None,
         Outcome::Answered if keyword.resets() => None,
-        Outcome::Answered if !keyword.children().is_empty() => Some((word, keyword)),
+        Outcome::Answered if !keyword.children().is_empty() => Some(Arc::new(Branch {
+            word,
+            keyword,
+            vars,
+        })),
         Outcome::Answered if from_branch => return,
         Outcome::Answered => None,
     };
@@ -115,20 +168,20 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
 fn match_keywords(
     npc: &Agent,
     message: &str,
-    allows: impl Fn(&Keyword, &str, bool) -> bool,
-) -> Option<(String, Arc<Keyword>, bool)> {
+    allows: impl Fn(&Keyword, &WordMatch, bool) -> bool,
+) -> Option<(WordMatch, Arc<Keyword>, bool)> {
     let npc_def = npc.get_npc()?;
     let branch = npc
         .keyword_branch()
-        .map(|(_, keyword)| keyword.children())
+        .map(|branch| branch.keyword.children())
         .unwrap_or_default();
 
     let matching = |keywords: &[Arc<Keyword>], from_branch: bool| {
         keywords.iter().find_map(|keyword| {
             keyword
                 .match_word(message)
-                .filter(|word| allows(keyword, word, from_branch))
-                .map(|word| (word, Arc::clone(keyword), from_branch))
+                .filter(|found| allows(keyword, found, from_branch))
+                .map(|found| (found, Arc::clone(keyword), from_branch))
         })
     };
     matching(branch, true).or_else(|| matching(npc_def.keywords.as_slice(), false))
@@ -150,7 +203,7 @@ fn engage_player(
     if let Some(mut npc) = ctx.map.agent_mut(npc_key) {
         npc.set_target(Some(player_key), 0);
     }
-    face_player(ctx, npc_key, player_key);
+    face_agent(ctx, npc_key, player_key);
     npc_say(ctx, npc_key, text);
     Outcome::Ended
 }
@@ -164,13 +217,13 @@ fn dismiss_player(
     if let Some(mut npc) = ctx.map.agent_mut(npc_key) {
         npc.set_target(None, 0);
     }
-    face_player(ctx, npc_key, player_key);
+    face_agent(ctx, npc_key, player_key);
     npc_say(ctx, npc_key, text);
     Outcome::Ended
 }
 
 fn say(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey, text: String) -> Outcome {
-    face_player(ctx, npc_key, player_key);
+    face_agent(ctx, npc_key, player_key);
     npc_say(ctx, npc_key, text);
     Outcome::Answered
 }
@@ -195,7 +248,7 @@ fn teleport_player(
         }
     });
     let Some(payment) = payment else {
-        face_player(ctx, npc_key, player_key);
+        face_agent(ctx, npc_key, player_key);
         npc_say(ctx, npc_key, failed_text);
         return Outcome::Answered;
     };
@@ -217,17 +270,51 @@ fn teleport_player(
     Outcome::Ended
 }
 
-fn face_player(ctx: &mut TickCtx, npc_key: AgentKey, player_key: AgentKey) {
-    let (Some(npc_pos), Some(player_pos)) = (
-        ctx.map.agent_position(npc_key),
-        ctx.map.agent_position(player_key),
-    ) else {
-        return;
+fn deposit_to_bank(
+    ctx: &mut TickCtx,
+    player_key: AgentKey,
+    npc_key: AgentKey,
+    text: String,
+    failed_text: String,
+    amount: u64,
+) -> Outcome {
+    let Some(player) = ctx.map.get_player(player_key) else {
+        return Outcome::Ignored;
     };
-    let facing = face_target(npc_pos, player_pos);
-    if let Some(mut npc) = ctx.map.agent_mut(npc_key) {
-        npc.set_facing(facing);
+    let Some(payment) = plan_payment(player.inventory(), &COINS, amount) else {
+        return say(ctx, player_key, npc_key, failed_text);
+    };
+    pay(ctx, player_key, payment, &COINS);
+    if let Some(mut player) = ctx.map.player_mut(player_key) {
+        player.deposit(amount);
     }
+    say(ctx, player_key, npc_key, text);
+    Outcome::Ended
+}
+
+fn withdraw_from_bank(
+    ctx: &mut TickCtx,
+    player_key: AgentKey,
+    npc_key: AgentKey,
+    text: String,
+    failed_text: String,
+    amount: u64,
+) -> Outcome {
+    let Some(withdrawn) = ctx
+        .map
+        .player_mut(player_key)
+        .map(|mut player| player.withdraw(amount))
+    else {
+        return Outcome::Ignored;
+    };
+    if !withdrawn {
+        return say(ctx, player_key, npc_key, failed_text);
+    }
+    for coin in COINS.make_change(amount) {
+        give_change(ctx, player_key, coin);
+    }
+    say(ctx, player_key, npc_key, text);
+    Outcome::Ended
 }
 
 fn npc_say(ctx: &mut TickCtx, npc_key: AgentKey, text: String) {
@@ -337,7 +424,22 @@ mod tests {
                 .get_agent(self.npc)
                 .unwrap()
                 .keyword_branch()
-                .map(|(word, _)| word.as_str())
+                .map(|branch| branch.word.as_str())
+        }
+
+        fn balance(&self) -> u64 {
+            self.map.get_player(self.player).unwrap().bank_balance()
+        }
+
+        fn coins_on_the_floor(&self) -> Vec<(ItemId, u8)> {
+            let mut coins: Vec<_> = self
+                .map
+                .iter_items(&HERE)
+                .unwrap()
+                .map(|item| (item.id(), item.amount))
+                .collect();
+            coins.sort();
+            coins
         }
 
         fn has_ring(&self) -> bool {
@@ -520,6 +622,181 @@ mod tests {
 
         assert_eq!(w.said().last(), Some(&"No ring."));
         assert_eq!(w.map.agent_position(w.player), Some(&HERE));
+    }
+
+    #[test]
+    fn a_captured_number_reaches_the_childs_answer() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+
+        w.hear(w.player, "count 5");
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said()[1..], ["5?", "5 it is."]);
+    }
+
+    #[test]
+    fn a_childless_branch_match_keeps_the_variables() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "count 5");
+
+        w.hear(w.player, "yes");
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said()[2..], ["5 it is.", "5 it is."]);
+        assert_eq!(w.branch(), Some("count <n:int>"));
+    }
+
+    #[test]
+    fn a_childs_capture_replaces_an_inherited_variable_for_its_own_answer_only() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "count 5");
+
+        w.hear(w.player, "recount 7");
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said()[2..], ["7 then.", "5 it is."]);
+    }
+
+    #[test]
+    fn a_root_match_does_not_see_the_branchs_variables() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "count 5");
+
+        w.hear(w.player, "peek");
+
+        assert_eq!(w.said().len(), 2);
+        assert_eq!(w.branch(), Some("count <n:int>"));
+    }
+
+    #[test]
+    fn an_ended_conversation_drops_the_variables() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "count 5");
+
+        w.hear(w.player, "bye");
+
+        assert_eq!(w.branch(), None);
+    }
+
+    #[test]
+    fn set_keeps_the_value_it_computed_when_the_purse_changes() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "purse");
+        w.map
+            .player_mut(w.player)
+            .unwrap()
+            .inventory_mut()
+            .take_slot(&InventorySlot::RightHand);
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said()[1..], ["100?", "100 it was."]);
+    }
+
+    #[test]
+    fn balance_reads_the_players_bank_account() {
+        let mut w = World::new(100, true);
+        w.map.player_mut(w.player).unwrap().deposit(250);
+        w.hear(w.player, "hi");
+
+        w.hear(w.player, "balance");
+
+        assert_eq!(w.said().last(), Some(&"250 banked."));
+    }
+
+    #[test]
+    fn a_deposit_moves_the_coins_into_the_balance() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "deposit 60");
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said()[1..], ["Deposit 60?", "Deposited 60."]);
+        assert_eq!((w.gold(), w.balance()), (40, 60));
+        assert_eq!(w.branch(), None);
+    }
+
+    #[test]
+    fn a_second_yes_does_not_deposit_again() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "deposit 60");
+        w.hear(w.player, "yes");
+
+        w.hear(w.player, "yes");
+
+        assert_eq!((w.gold(), w.balance()), (40, 60));
+    }
+
+    #[test]
+    fn a_condition_on_the_captured_amount_refuses_more_than_the_player_carries() {
+        let mut w = World::new(10, true);
+        w.hear(w.player, "hi");
+
+        w.hear(w.player, "deposit 60");
+
+        assert_eq!(w.said().last(), Some(&"You do not have enough gold."));
+        assert_eq!(w.branch(), None);
+    }
+
+    #[test]
+    fn a_deposit_whose_coins_are_gone_says_the_failed_text_and_keeps_the_branch() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "deposit 60");
+        w.map
+            .player_mut(w.player)
+            .unwrap()
+            .inventory_mut()
+            .take_slot(&InventorySlot::RightHand);
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said().last(), Some(&"Not enough gold."));
+        assert_eq!(w.balance(), 0);
+        assert_eq!(w.branch(), Some("deposit <amount:int>"));
+    }
+
+    #[test]
+    fn a_withdrawal_debits_the_balance_and_pays_out_the_fewest_coins() {
+        let mut w = World::new(1, true);
+        w.map.player_mut(w.player).unwrap().deposit(250);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "withdraw 150");
+
+        w.hear(w.player, "yes");
+
+        let mut expected: Vec<_> = COINS
+            .make_change(150)
+            .iter()
+            .map(|coin| (coin.id(), coin.amount))
+            .collect();
+        expected.sort();
+        assert_eq!(w.said().last(), Some(&"Withdrew 150."));
+        assert_eq!(w.balance(), 100);
+        assert_eq!(w.coins_on_the_floor(), expected);
+        assert_eq!(w.branch(), None);
+    }
+
+    #[test]
+    fn a_withdrawal_larger_than_the_balance_changes_nothing() {
+        let mut w = World::new(1, true);
+        w.map.player_mut(w.player).unwrap().deposit(100);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "withdraw 150");
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said().last(), Some(&"Not enough on your account."));
+        assert_eq!(w.balance(), 100);
+        assert_eq!(w.coins_on_the_floor(), []);
     }
 
     #[test]

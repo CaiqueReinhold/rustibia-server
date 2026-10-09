@@ -115,6 +115,8 @@ pub fn snapshot_from_record(
         ),
         skills,
         inventory,
+        bank_balance: u64::try_from(record.bank_balance)
+            .map_err(|_| malformed("bank balance is negative"))?,
     }))
 }
 
@@ -235,6 +237,7 @@ fn overlay(record: &mut CharacterRecord, save: CharacterSave) {
     record.outfit = save.outfit;
     record.skills = save.skills;
     record.inventory = save.inventory;
+    record.bank_balance = save.bank_balance;
 }
 
 #[cfg(test)]
@@ -337,6 +340,7 @@ mod tests {
                 current_ticks: 0,
             }],
             inventory: HashMap::new(),
+            bank_balance: 0,
         }
     }
 
@@ -664,6 +668,7 @@ mod http_tests {
             y: 600,
             z: 6,
         };
+        journaled.bank_balance = 500;
 
         let snapshot = login_with(&server, a_courier_holding(Some(journaled)))
             .redeem("a-token")
@@ -678,6 +683,7 @@ mod http_tests {
             ),
             (500, 600, 6)
         );
+        assert_eq!(snapshot.bank_balance, 500);
         assert_eq!(snapshot.name, "Rizael");
         assert_eq!(snapshot.sex, Sex::Male);
     }

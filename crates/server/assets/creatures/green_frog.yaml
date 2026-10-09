@@ -15,6 +15,7 @@ melee:
   element: physical
 corpse: 6079
 target_distance: 6
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

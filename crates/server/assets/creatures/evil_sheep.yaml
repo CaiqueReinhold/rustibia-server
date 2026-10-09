@@ -28,6 +28,7 @@ abilities:
     missile_id: 13
 corpse: 5991
 flee_threshold: 20
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

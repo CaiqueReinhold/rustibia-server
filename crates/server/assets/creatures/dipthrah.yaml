@@ -65,6 +65,7 @@ abilities:
       min: 100
       max: 200
 corpse: 6031
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

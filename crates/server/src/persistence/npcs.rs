@@ -11,7 +11,7 @@ use thiserror::Error;
 use crate::config::CONFIG;
 use crate::entities::agent::{OutfitColors, OutfitId};
 use crate::entities::npc::{
-    self, GOODBYE_WORDS, GREET_WORDS, Keyword, Npc, NpcAction, WALK_AWAY_WORD,
+    self, GOODBYE_WORDS, GREET_WORDS, Keyword, Npc, NpcAction, SlotKind, WALK_AWAY_WORD, Word,
 };
 use crate::entities::position::Position;
 use crate::entities::voices::Voices;
@@ -94,6 +94,8 @@ enum RawAction {
     Engage,
     Dismiss,
     Teleport,
+    Deposit,
+    Withdraw,
 }
 
 #[derive(Deserialize)]
@@ -102,6 +104,8 @@ struct RawKeyword {
     words: RawWords,
     #[serde(default)]
     condition: Option<String>,
+    #[serde(default)]
+    set: BTreeMap<String, String>,
     action: RawAction,
     #[serde(default)]
     text: Option<String>,
@@ -159,8 +163,29 @@ fn convert_action(
                 position,
             })
         }
+        RawAction::Deposit | RawAction::Withdraw => {
+            if !has_text {
+                return Err("is a deposit or withdraw, which needs a text");
+            }
+            if !has_failed_text {
+                return Err("is a deposit or withdraw, which needs a failed_text");
+            }
+            let mut params = params.unwrap_or_default();
+            let Some(amount) = params.remove("amount") else {
+                return Err("is a deposit or withdraw, which needs an `amount` param");
+            };
+            if !params.is_empty() {
+                return Err("has a param a deposit or withdraw does not take");
+            }
+            Ok(match action {
+                RawAction::Deposit => NpcAction::Deposit { amount },
+                _ => NpcAction::Withdraw { amount },
+            })
+        }
         _ if !has_text => Err("needs a text"),
-        _ if has_failed_text => Err("takes no failed_text, which only a teleport has"),
+        _ if has_failed_text => {
+            Err("takes no failed_text, which only a teleport, deposit or withdraw has")
+        }
         _ if params.is_some() => Err("takes no params"),
         RawAction::Say => Ok(NpcAction::Say),
         RawAction::Engage => Ok(NpcAction::Engage),
@@ -189,6 +214,7 @@ fn check_words(words: &[String]) -> Result<(), &'static str> {
 fn convert_keywords(
     path: &Path,
     env: &mut Environment<'static>,
+    arguments: &BTreeMap<String, Value>,
     raw_keywords: Vec<RawKeyword>,
     parent: Option<&str>,
 ) -> Result<Vec<Arc<Keyword>>, NpcsLoadError> {
@@ -222,13 +248,42 @@ fn convert_keywords(
                 words
             }
         };
-        if words.iter().any(|word| siblings.contains(word)) {
+        let words = words
+            .into_iter()
+            .map(Word::parse)
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(bad)?;
+        if words.iter().any(|word| siblings.contains(word.text())) {
             return Err(bad(
                 "answers a word an earlier keyword without a condition at its level already answers",
             ));
         }
         if raw.condition.is_none() {
-            siblings.extend(words.iter().cloned());
+            siblings.extend(words.iter().map(|word| word.text().to_string()));
+        }
+        let slots: BTreeMap<String, SlotKind> = words[0]
+            .slots()
+            .map(|(name, kind)| (name.to_string(), kind))
+            .collect();
+        if words.iter().any(|word| {
+            word.slots()
+                .map(|(name, kind)| (name.to_string(), kind))
+                .collect::<BTreeMap<_, _>>()
+                != slots
+        }) {
+            return Err(bad("has words that declare different slots"));
+        }
+        if slots.keys().any(|name| is_reserved(name, arguments)) {
+            return Err(bad("has a slot named like a game variable or an argument"));
+        }
+        if raw
+            .set
+            .keys()
+            .any(|name| is_reserved(name, arguments) || slots.contains_key(name))
+        {
+            return Err(bad(
+                "sets a variable named like a game variable, an argument or one of its slots",
+            ));
         }
 
         if raw.reset && !raw.children.is_empty() {
@@ -241,11 +296,12 @@ fn convert_keywords(
             raw.params,
         )
         .map_err(bad)?;
-        let children = convert_keywords(path, env, raw.children, Some(&label))?;
+        let children = convert_keywords(path, env, arguments, raw.children, Some(&label))?;
         let keyword = Keyword::new(
             env,
             words,
             raw.condition,
+            raw.set.into_iter().collect(),
             action,
             raw.text,
             raw.failed_text,
@@ -262,13 +318,19 @@ fn convert_keywords(
     Ok(keywords)
 }
 
-const GAME_VARIABLES: [&str; 5] = [
+const GAME_VARIABLES: [&str; 7] = [
     "PLAYERNAME",
     "WORD",
     "PARENT_KEYWORD",
+    "GOLD",
+    "BALANCE",
     "uniform",
     "has_item",
 ];
+
+fn is_reserved(name: &str, arguments: &BTreeMap<String, Value>) -> bool {
+    GAME_VARIABLES.contains(&name) || arguments.contains_key(name)
+}
 
 pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadError> {
     let raw: RawNpc =
@@ -289,7 +351,7 @@ pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadErro
     }
 
     let mut environment = npc::environment();
-    let keywords = convert_keywords(path, &mut environment, raw.keywords, None)?;
+    let keywords = convert_keywords(path, &mut environment, &raw.arguments, raw.keywords, None)?;
 
     Ok(Npc {
         name: raw.name,
@@ -395,7 +457,7 @@ keywords:
     ) -> &'a Keyword {
         keywords
             .into_iter()
-            .find(|keyword| keyword.words().iter().any(|w| w == word))
+            .find(|keyword| keyword.words().iter().any(|w| w.text() == word))
             .unwrap_or_else(|| panic!("no keyword answers {word:?}"))
     }
 
@@ -426,14 +488,18 @@ keywords:
         assert_eq!(npc.keywords.len(), 5);
     }
 
+    fn texts(keyword: &Keyword) -> Vec<&str> {
+        keyword.words().iter().map(Word::text).collect()
+    }
+
     #[test]
     fn the_triggers_expand_to_their_word_lists() {
         let npc = parse(AN_NPC).unwrap();
 
-        assert_eq!(answering(&npc.keywords, "hi").words(), GREET_WORDS);
-        assert_eq!(answering(&npc.keywords, "bye").words(), GOODBYE_WORDS);
+        assert_eq!(texts(answering(&npc.keywords, "hi")), GREET_WORDS);
+        assert_eq!(texts(answering(&npc.keywords, "bye")), GOODBYE_WORDS);
         assert_eq!(
-            answering(&npc.keywords, WALK_AWAY_WORD).words(),
+            texts(answering(&npc.keywords, WALK_AWAY_WORD)),
             [WALK_AWAY_WORD]
         );
     }
@@ -671,6 +737,120 @@ keywords:
 
         assert!(!edron.resets());
         assert!(answering(edron.children(), "no").resets());
+    }
+
+    #[test]
+    fn a_keyword_with_slots_loads() {
+        let document = with_keywords(
+            "  - words: [\"deposit <amount:int>\", \"<amount:int>\"]\n    action: say\n    text: \"{{ amount }}?\"\n",
+        );
+
+        parse(&document).unwrap();
+    }
+
+    #[test]
+    fn a_malformed_slot_is_refused_naming_its_keyword() {
+        let document = with_keywords(
+            "  - words: [\"deposit <amount:float>\"]\n    action: say\n    text: Hm?\n",
+        );
+
+        assert_eq!(bad_keyword(&document).0, "deposit <amount:float>");
+    }
+
+    #[test]
+    fn words_that_declare_different_slots_are_refused() {
+        let document = with_keywords(
+            "  - words: [\"deposit <amount:int>\", \"deposit\"]\n    action: say\n    text: Hm?\n",
+        );
+
+        assert_eq!(bad_keyword(&document).0, "deposit <amount:int>, deposit");
+    }
+
+    #[test]
+    fn a_slot_named_like_a_game_variable_is_refused() {
+        let document =
+            with_keywords("  - words: [\"roll <uniform:int>\"]\n    action: say\n    text: Hm?\n");
+
+        bad_keyword(&document);
+    }
+
+    #[test]
+    fn a_slot_named_like_an_argument_is_refused() {
+        let document = with_keywords(
+            "  - words: [\"deposit <amount:int>\"]\n    action: say\n    text: Hm?\n",
+        )
+        .replace("keywords:\n", "arguments:\n  amount: 1\nkeywords:\n");
+
+        bad_keyword(&document);
+    }
+
+    #[test]
+    fn set_evaluates_each_expression_against_the_context() {
+        let document = with_keywords(
+            "  - words: [\"count <n:int>\"]\n    action: say\n    set: { double: \"n * 2\", same: n }\n    text: Hm?\n",
+        );
+        let npc = parse(&document).unwrap();
+        let keyword = answering(&npc.keywords, "count <n:int>");
+
+        let set = keyword
+            .bindings(&npc.environment, &minijinja::context! { n => 3 })
+            .unwrap();
+
+        assert_eq!(
+            set,
+            vec![
+                ("double".to_string(), Value::from(6)),
+                ("same".to_string(), Value::from(3)),
+            ]
+        );
+    }
+
+    #[test]
+    fn a_set_expression_that_does_not_compile_is_refused() {
+        let document = with_keywords(
+            "  - words: [\"sail\"]\n    action: say\n    set: { x: \"GOLD +\" }\n    text: Hm?\n",
+        );
+
+        assert!(matches!(
+            parse(&document),
+            Err(NpcsLoadError::Template { keyword, .. }) if keyword == "sail"
+        ));
+    }
+
+    #[test]
+    fn a_set_name_shadowing_a_slot_a_game_variable_or_an_argument_is_refused() {
+        for set in ["amount: \"1\"", "WORD: \"1\"", "DESTINATIONS: \"1\""] {
+            let document = with_keywords(&format!(
+                "  - words: [\"deposit <amount:int>\"]\n    action: say\n    set: {{ {set} }}\n    text: Hm?\n"
+            ))
+            .replace("keywords:\n", "arguments:\n  DESTINATIONS: 1\nkeywords:\n");
+
+            bad_keyword(&document);
+        }
+    }
+
+    #[test]
+    fn a_deposit_loads_with_a_text_a_failed_text_and_an_amount() {
+        let document = with_keywords(
+            "  - words: [\"yes\"]\n    action: deposit\n    text: Done.\n    failed_text: No.\n    params: { amount: \"40\" }\n",
+        );
+
+        parse(&document).unwrap();
+    }
+
+    #[test]
+    fn a_deposit_or_withdraw_without_a_failed_text_or_an_amount_is_refused() {
+        for action in ["deposit", "withdraw"] {
+            let without_failed_text = with_keywords(&format!(
+                "  - words: [\"yes\"]\n    action: {action}\n    text: Done.\n    params: {{ amount: \"40\" }}\n"
+            ));
+            let without_amount = with_keywords(&format!(
+                "  - words: [\"yes\"]\n    action: {action}\n    text: Done.\n    failed_text: No.\n"
+            ));
+
+            assert_eq!(bad_keyword(&without_failed_text).0, "yes");
+            assert_eq!(bad_keyword(&without_amount).0, "yes");
+        }
     }
 
     #[test]

@@ -248,6 +248,20 @@ pub fn change_direction(ctx: &mut TickCtx, agent_key: AgentKey, facing: Facing) 
     }
 }
 
+pub fn face_agent(ctx: &mut TickCtx, agent_key: AgentKey, target: AgentKey) {
+    let (Some(agent), Some(from), Some(to)) = (
+        ctx.map.get_agent(agent_key),
+        ctx.map.agent_position(agent_key),
+        ctx.map.agent_position(target),
+    ) else {
+        return;
+    };
+    let facing = crate::game::map_query::face_target(agent.facing(), from, to);
+    if let Some(mut agent) = ctx.map.agent_mut(agent_key) {
+        agent.set_facing(facing);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

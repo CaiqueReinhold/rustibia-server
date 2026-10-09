@@ -2,12 +2,17 @@ use std::collections::HashSet;
 
 use tracing::error;
 
+use crate::constants::items::MAX_DROP_CHANCE;
 use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
 use crate::entities::agent::{Agent, AgentKey};
-use crate::entities::creature::{CreatureAbility, CreatureAbilityId, CreatureKind};
+use crate::entities::creature::{
+    AbilityEffect, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
+    CreatureKind,
+};
 use crate::entities::items::ItemFlag;
 use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, Position, Rect};
+use crate::entities::targeting::TargetMode;
 use crate::game::Tick;
 use crate::game::config::GAME_CONFIG;
 use crate::game::map_query::{can_throw, iter_visible_floors};
@@ -39,12 +44,17 @@ pub enum CreatureAction {
 pub struct CreatureState {
     next_wander_tick: Tick,
     next_say_tick: Tick,
+    next_dance_tick: Tick,
     ability_cooldowns: Vec<(CreatureAbilityId, Tick)>,
 }
 
 impl CreatureState {
     fn stamp_wander(&mut self, current_tick: Tick) {
         self.next_wander_tick = current_tick + GAME_CONFIG.movement.wander_ticks
+    }
+
+    fn stamp_dance(&mut self, current_tick: Tick) {
+        self.next_dance_tick = current_tick + GAME_CONFIG.movement.dance_ticks
     }
 
     fn stamp_say(&mut self, current_tick: Tick, kind: &CreatureKind) {
@@ -213,7 +223,14 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
                     direction,
                 });
             }
-            pathfinding::Step::Arrived => {}
+            pathfinding::Step::Arrived => {
+                if let Some(direction) = dance(&mut ctx, position, target_position) {
+                    return Some(CreatureAction::Walk {
+                        agent_key: ctx.creature,
+                        direction,
+                    });
+                }
+            }
             pathfinding::Step::Unreachable => {
                 if let Some(new_target) = search_target(ctx.creature, ctx.map) {
                     if new_target != target_key {
@@ -296,6 +313,29 @@ fn approach(
         &bounds,
         |pos| !avoids(map, pos),
     )
+}
+
+fn dance(
+    ctx: &mut CreatureBehaviourContext,
+    from: &Position,
+    target: &Position,
+) -> Option<Direction> {
+    if ctx.state.next_dance_tick > ctx.world_tick {
+        return None;
+    }
+    ctx.state.stamp_dance(ctx.world_tick);
+    let dance_chance = ctx
+        .map
+        .get_agent(ctx.creature)?
+        .get_creature_kind()?
+        .dance_chance;
+    if !ctx
+        .roll
+        .chance(u32::from(dance_chance) * MAX_DROP_CHANCE / 100)
+    {
+        return None;
+    }
+    dance_step(ctx.map, ctx.creature, from, target, &mut ctx.roll)
 }
 
 fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
@@ -490,6 +530,64 @@ fn escape_step(
     }
 
     None
+}
+
+fn dance_step(
+    map: &GameMap,
+    creature: AgentKey,
+    from: &Position,
+    target: &Position,
+    roll: &mut Rolls,
+) -> Option<Direction> {
+    let agent = map.get_agent(creature)?;
+    let distance = from.distance(target);
+    if distance < agent.get_creature_kind()?.target_distance {
+        return None;
+    }
+    let attacking = can_attack_from(map, agent, from, target);
+    let offset_x = from.x as i32 - target.x as i32;
+    let offset_y = from.y as i32 - target.y as i32;
+
+    let options: Vec<Direction> = [
+        (Direction::North, offset_y >= 0),
+        (Direction::South, offset_y <= 0),
+        (Direction::East, offset_x <= 0),
+        (Direction::West, offset_x >= 0),
+    ]
+    .into_iter()
+    .filter(|(_, toward_target)| *toward_target)
+    .map(|(direction, _)| direction)
+    .filter(|direction| {
+        let pos = from.clone() + *direction;
+        pos.distance(target) == distance
+            && will_enter(map, creature, &pos)
+            && (!attacking || can_attack_from(map, agent, &pos, target))
+    })
+    .collect();
+    roll.category_roll(&options).copied()
+}
+
+fn can_attack_from(map: &GameMap, agent: &Agent, from: &Position, target: &Position) -> bool {
+    if !agent.is_hostile() {
+        return true;
+    }
+    let Some(kind) = agent.get_creature_kind() else {
+        return false;
+    };
+    let distance = from.distance(target);
+    let in_range = distance <= 1
+        || kind.abilities.iter().any(|ability| match &ability.effect {
+            AbilityEffect::Attack(CreatureAttack {
+                target: TargetMode::Target { range },
+                ..
+            })
+            | AbilityEffect::Condition(ConditionAttack {
+                target: TargetMode::Target { range },
+                ..
+            }) => distance <= *range,
+            _ => false,
+        });
+    in_range && can_throw(map, from, target, true)
 }
 
 fn avoids(map: &GameMap, pos: &Position) -> bool {
@@ -1413,24 +1511,32 @@ mod tests {
 
     const ARCHER_DISTANCE: u16 = 4;
 
-    fn put_archer_and_target(map: &mut GameMap, archer: Position, target: Position) -> AgentKey {
+    fn put_hunter(
+        map: &mut GameMap,
+        kind: CreatureKind,
+        at: Position,
+        target: Position,
+    ) -> AgentKey {
         let key = map
-            .insert_agent(
-                Agent::from_creature_kind(
-                    Arc::new(CreatureKind {
-                        target_distance: ARCHER_DISTANCE,
-                        ..a_creature_kind("Archer")
-                    }),
-                    archer.clone(),
-                ),
-                &archer,
-            )
+            .insert_agent(Agent::from_creature_kind(Arc::new(kind), at.clone()), &at)
             .unwrap();
         let player = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &target)
             .unwrap();
         map.get_agent_mut(key).unwrap().set_target(Some(player), 1);
         key
+    }
+
+    fn put_archer_and_target(map: &mut GameMap, archer: Position, target: Position) -> AgentKey {
+        put_hunter(
+            map,
+            CreatureKind {
+                target_distance: ARCHER_DISTANCE,
+                ..a_creature_kind("Archer")
+            },
+            archer,
+            target,
+        )
     }
 
     fn walked(map: &GameMap, creature: AgentKey) -> Option<Direction> {
@@ -1500,5 +1606,220 @@ mod tests {
         map.get_agent_mut(rat).unwrap().set_target(Some(player), 1);
 
         assert_eq!(walked(&map, rat), Some(East));
+    }
+
+    // dancing
+
+    fn sorted(mut directions: Vec<Direction>) -> Vec<Direction> {
+        directions.sort_by_key(|direction| *direction as u8);
+        directions.dedup();
+        directions
+    }
+
+    fn dance_options(map: &GameMap, creature: AgentKey) -> Vec<Direction> {
+        let from = map.agent_position(creature).unwrap();
+        let target = map
+            .agent_position(map.get_agent(creature).unwrap().target().unwrap())
+            .unwrap();
+        sorted(
+            (0..64)
+                .filter_map(|seed| dance_step(map, creature, from, target, &mut Rolls::new(seed)))
+                .collect(),
+        )
+    }
+
+    fn a_shooter(range: u16) -> CreatureKind {
+        CreatureKind {
+            target_distance: ARCHER_DISTANCE,
+            abilities: vec![CreatureAbility {
+                id: CreatureAbilityId(0),
+                cooldown: TickDelta(40),
+                chance: 0,
+                effect: AbilityEffect::Attack(CreatureAttack {
+                    damage: CreatureAttackDamage {
+                        element: CombatElement::Physical,
+                        value: Bounds { min: 1, max: 2 },
+                        condition: None,
+                    },
+                    target: TargetMode::Target { range },
+                    effect_id: None,
+                    missile_id: None,
+                }),
+            }],
+            ..a_creature_kind("Archer")
+        }
+    }
+
+    #[test]
+    fn a_melee_creature_on_a_diagonal_slides_to_a_side() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_hunter(&mut map, a_creature_kind("Rat"), at(15, 10), at(16, 11));
+
+        assert_eq!(dance_options(&map, rat), sorted(vec![South, East]));
+    }
+
+    #[test]
+    fn a_melee_creature_on_a_side_slides_to_a_diagonal() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_hunter(&mut map, a_creature_kind("Rat"), at(15, 10), at(16, 10));
+
+        assert_eq!(dance_options(&map, rat), sorted(vec![North, South]));
+    }
+
+    #[test]
+    fn a_ranged_creature_dances_along_its_distance() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(19, 10));
+
+        assert_eq!(dance_options(&map, archer), sorted(vec![North, South]));
+    }
+
+    #[test]
+    fn a_ranged_creature_inside_its_distance_does_not_dance() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(17, 10));
+
+        assert!(dance_options(&map, archer).is_empty());
+    }
+
+    #[test]
+    fn a_creature_never_dances_onto_a_tile_it_cannot_or_will_not_enter() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_hunter(&mut map, a_creature_kind("Rat"), at(15, 10), at(16, 10));
+        map.place_item(
+            &at(15, 9),
+            None,
+            None,
+            an_item(2, HashSet::from([ItemFlag::Avoid])),
+        )
+        .unwrap();
+
+        assert_eq!(dance_options(&map, rat), sorted(vec![South]));
+    }
+
+    fn wall_off_the_flanks(map: &mut GameMap) {
+        for x in 16..=18 {
+            for y in [9, 11] {
+                map.place_item(
+                    &at(x, y),
+                    None,
+                    None,
+                    an_item(3, HashSet::from([ItemFlag::Unpass])),
+                )
+                .unwrap();
+            }
+        }
+    }
+
+    #[test]
+    fn a_creature_that_can_shoot_only_dances_where_it_still_can() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_hunter(&mut map, a_shooter(7), at(15, 10), at(19, 10));
+        wall_off_the_flanks(&mut map);
+        assert!(!can_throw(&map, &at(15, 9), &at(19, 10), true));
+        assert!(can_throw(&map, &at(15, 11), &at(19, 10), true));
+
+        assert_eq!(dance_options(&map, archer), sorted(vec![South]));
+    }
+
+    #[test]
+    fn a_creature_that_cannot_shoot_anyway_dances_freely() {
+        let mut map = a_field(5..=25, 5..=15);
+        let archer = put_archer_and_target(&mut map, at(15, 10), at(19, 10));
+        wall_off_the_flanks(&mut map);
+
+        assert_eq!(dance_options(&map, archer), sorted(vec![North, South]));
+    }
+
+    #[test]
+    fn a_passive_creature_ignores_its_line_of_fire() {
+        let mut map = a_field(5..=25, 5..=15);
+        let deer = put_hunter(
+            &mut map,
+            CreatureKind {
+                flags: vec![CreatureFlag::Passive],
+                ..a_shooter(7)
+            },
+            at(15, 10),
+            at(19, 10),
+        );
+        wall_off_the_flanks(&mut map);
+
+        assert_eq!(dance_options(&map, deer), sorted(vec![North, South]));
+    }
+
+    fn a_dancer(map: &mut GameMap, dance_chance: u8) -> AgentKey {
+        put_hunter(
+            map,
+            CreatureKind {
+                dance_chance,
+                ..a_creature_kind("Rat")
+            },
+            at(15, 10),
+            at(16, 10),
+        )
+    }
+
+    fn decide_at(
+        map: &GameMap,
+        creature: AgentKey,
+        state: &mut CreatureState,
+        tick: Tick,
+        seed: u64,
+    ) -> Option<CreatureAction> {
+        decide_action(CreatureBehaviourContext {
+            creature,
+            map,
+            roll: Rolls::new(seed),
+            world_tick: tick,
+            state,
+        })
+    }
+
+    fn is_walk(action: &Option<CreatureAction>) -> bool {
+        matches!(action, Some(CreatureAction::Walk { .. }))
+    }
+
+    #[test]
+    fn a_creature_that_always_stands_never_dances() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = a_dancer(&mut map, 0);
+
+        assert!((0..64).all(|seed| {
+            !is_walk(&decide_at(
+                &map,
+                rat,
+                &mut CreatureState::default(),
+                Tick(100),
+                seed,
+            ))
+        }));
+    }
+
+    #[test]
+    fn a_dance_waits_out_its_cooldown() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = a_dancer(&mut map, 100);
+        let mut state = CreatureState::default();
+        let due = Tick(100) + GAME_CONFIG.movement.dance_ticks;
+
+        assert!(is_walk(&decide_at(&map, rat, &mut state, Tick(100), 7)));
+        assert!(!is_walk(&decide_at(&map, rat, &mut state, Tick(101), 7)));
+        assert!(is_walk(&decide_at(&map, rat, &mut state, due, 7)));
+    }
+
+    #[test]
+    fn a_creature_mid_step_does_not_dance() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = a_dancer(&mut map, 100);
+        map.get_agent_mut(rat).unwrap().stamp_walk(Tick(200));
+
+        assert!(!is_walk(&decide_at(
+            &map,
+            rat,
+            &mut CreatureState::default(),
+            Tick(100),
+            7
+        )));
     }
 }

@@ -36,6 +36,7 @@ pub struct CharacterRecord {
     pub skills: Vec<SkillRow>,
     /// Keyed by inventory slot index, matching `players.inventory`'s JSONB shape.
     pub inventory: std::collections::HashMap<String, StoredItemRecord>,
+    pub bank_balance: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -74,11 +75,16 @@ pub struct SkillRow {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StoredItemRecord {
     pub item_id: u16,
+    #[serde(default = "one")]
     pub amount: u8,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content: Option<Vec<StoredItemRecord>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub action_id: Option<u16>,
+}
+
+fn one() -> u8 {
+    1
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -95,6 +101,8 @@ pub struct CharacterSave {
     pub skills: Vec<SkillRow>,
     /// Keyed by inventory slot index, matching `players.inventory`'s JSONB shape.
     pub inventory: std::collections::HashMap<String, StoredItemRecord>,
+    #[serde(default)]
+    pub bank_balance: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -197,6 +205,7 @@ mod tests {
                     action_id: None,
                 },
             )]),
+            bank_balance: 0,
         }
     }
 
@@ -312,6 +321,13 @@ mod tests {
             serde_json::from_str(r#"{"item_id":2970,"amount":1}"#).unwrap();
 
         assert_eq!(item.action_id, None);
+    }
+
+    #[test]
+    fn stored_item_without_an_amount_is_one() {
+        let item: StoredItemRecord = serde_json::from_str(r#"{"item_id":3003}"#).unwrap();
+
+        assert_eq!(item.amount, 1);
     }
 
     #[test]

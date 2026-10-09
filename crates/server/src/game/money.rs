@@ -53,7 +53,7 @@ impl Coins {
             .map(|(_, worth)| *worth)
     }
 
-    fn make_change(&self, mut amount: u64) -> Vec<Item> {
+    pub fn make_change(&self, mut amount: u64) -> Vec<Item> {
         let mut change = Vec::new();
         for (config, worth) in self.0.iter().rev() {
             let mut count = amount / worth;
@@ -135,6 +135,17 @@ pub fn plan_payment(inventory: &Inventory, coins: &Coins, cost: u64) -> Option<P
     (remaining == 0).then_some(Payment { takes, change: 0 })
 }
 
+pub fn coins_held(inventory: &Inventory, coins: &Coins) -> u64 {
+    let mut stacks = Vec::new();
+    for (slot, item) in inventory.slots() {
+        collect_coins(*slot, item, coins, &mut stacks);
+    }
+    stacks
+        .iter()
+        .map(|(_, _, worth, amount)| worth * *amount as u64)
+        .sum()
+}
+
 pub fn pay(ctx: &mut TickCtx, player: AgentKey, payment: Payment, coins: &Coins) {
     for (slot, guid, amount) in payment.takes {
         let removed = ctx
@@ -152,7 +163,7 @@ pub fn pay(ctx: &mut TickCtx, player: AgentKey, payment: Payment, coins: &Coins)
     }
 }
 
-fn give_change(ctx: &mut TickCtx, player: AgentKey, coin: Item) {
+pub fn give_change(ctx: &mut TickCtx, player: AgentKey, coin: Item) {
     if stow_item(ctx, player, coin.clone()).is_ok() {
         return;
     }
@@ -389,14 +400,7 @@ mod tests {
     }
 
     fn money_held(map: &WorldMap, player: AgentKey, coins: &Coins) -> u64 {
-        let mut stacks = Vec::new();
-        for (slot, item) in map.get_player(player).unwrap().inventory().slots() {
-            collect_coins(*slot, item, coins, &mut stacks);
-        }
-        stacks
-            .iter()
-            .map(|(_, _, worth, amount)| worth * *amount as u64)
-            .sum()
+        coins_held(map.get_player(player).unwrap().inventory(), coins)
     }
 
     fn charge(map: &mut WorldMap, player: AgentKey, coins: &Coins, cost: u64) {
@@ -404,6 +408,29 @@ mod tests {
             .expect("the player can afford the cost");
         let mut h = TestHarness::new();
         pay(&mut h.ctx(map), player, payment, coins);
+    }
+
+    #[test]
+    fn coins_held_adds_up_every_stack_in_every_slot_and_container() {
+        let coins = coins();
+        let (map, player, _) = a_player_holding(vec![
+            (InventorySlot::RightHand, a_coin(&coins, 100, 3)),
+            (
+                InventorySlot::Backpack,
+                a_bag(
+                    20,
+                    vec![
+                        a_coin(&coins, 1, 5),
+                        a_bag(20, vec![a_coin(&coins, 10_000, 1)]),
+                    ],
+                ),
+            ),
+        ]);
+
+        assert_eq!(
+            coins_held(map.get_player(player).unwrap().inventory(), &coins),
+            10_305
+        );
     }
 
     #[test]

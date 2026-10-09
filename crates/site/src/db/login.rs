@@ -38,7 +38,7 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
     let row = sqlx::query(
         "SELECT id, account_id, name, vocation, sex, pos_x, pos_y, pos_z, origin_x, origin_y, origin_z, \
          facing, life_cur, life_max, mana_cur, mana_max, capacity, speed, \
-         outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory, admin \
+         outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory, admin, bank_balance \
          FROM players WHERE id = $1 AND deleted_at IS NULL",
     )
     .bind(character_id)
@@ -117,6 +117,7 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
         },
         skills,
         inventory: inventory.0,
+        bank_balance: row.try_get("bank_balance")?,
     };
 
     tx.commit().await?;
@@ -196,12 +197,29 @@ mod tests {
         assert_eq!(record.facing, template.facing);
         assert_eq!(record.life.current, template.life);
         assert_eq!(record.life.maximum, template.life);
-        assert_eq!(record.outfit.id, template.outfit_id_male);
+        assert_eq!(record.outfit.id, template.vocations.paladin.outfit_id_male);
         assert_eq!(record.skills.len(), template.starting_skills.len());
-        assert!(
-            record.inventory.is_empty(),
-            "a new character starts with nothing equipped"
+        assert_eq!(
+            record.inventory,
+            template.vocations.paladin.stored_inventory(),
+            "a new character starts with its vocation's kit"
         );
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_redeemed_character_carries_its_bank_balance(pool: PgPool) {
+        let account_id = an_account(&pool, "player@example.com").await;
+        let character_id = a_character(&pool, account_id, "Rizael").await;
+        sqlx::query("UPDATE players SET bank_balance = 4200 WHERE id = $1")
+            .bind(character_id)
+            .execute(&pool)
+            .await
+            .unwrap();
+        let token = a_token(&pool, character_id, 60).await;
+
+        let record = redeem(&pool, &token).await.unwrap().unwrap();
+
+        assert_eq!(record.bank_balance, 4200);
     }
 
     /// The property that replaces the old "someone else's character is refused" test.

@@ -49,6 +49,7 @@ abilities:
       range: 1
     effect_id: 39
 corpse: 8961
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000

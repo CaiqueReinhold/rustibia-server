@@ -1,4 +1,4 @@
-use sqlx::PgPool;
+use sqlx::{PgPool, types::Json};
 use time::OffsetDateTime;
 
 use crate::{
@@ -45,10 +45,8 @@ pub async fn create(
     sex: Sex,
     template: &NewCharacterConfig,
 ) -> Result<i32, AppError> {
-    let outfit_id = match sex {
-        Sex::Female => template.outfit_id_female,
-        Sex::Male => template.outfit_id_male,
-    };
+    let kit = template.vocations.for_vocation(vocation);
+    let outfit_id = kit.outfit_id(sex);
 
     let mut tx = pool.begin().await?;
 
@@ -76,9 +74,10 @@ pub async fn create(
             outfit_head, \
             outfit_body, \
             outfit_legs, \
-            outfit_feet \
+            outfit_feet, \
+            inventory \
         ) \
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$5,$6,$7,$8,$9,$9,$10,$10,$11,$12,$13,$14,$15,$16,$17) \
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$5,$6,$7,$8,$9,$9,$10,$10,$11,$12,$13,$14,$15,$16,$17,$18) \
          RETURNING id",
     )
     .bind(account_id)
@@ -98,6 +97,7 @@ pub async fn create(
     .bind(template.outfit_body) //15
     .bind(template.outfit_legs) //16
     .bind(template.outfit_feet) //17
+    .bind(Json(kit.stored_inventory())) //18
     .fetch_one(&mut *tx)
     .await
     .map_err(|e| match &e {
@@ -312,6 +312,8 @@ pub async fn highscores(pool: &PgPool, limit: i64) -> Result<Vec<HighscoreEntry>
 mod tests {
     use super::*;
     use crate::{config::SiteConfig, db::accounts::create_account};
+    use rustibia_contract::StoredItemRecord;
+    use std::collections::HashMap;
 
     async fn a_character(pool: &PgPool, email: &str, name: &str, level: i16) -> i32 {
         let template = SiteConfig::load("config.yaml").unwrap().new_character;
@@ -548,7 +550,7 @@ mod tests {
     }
 
     #[sqlx::test(migrations = "./migrations")]
-    async fn sex_selects_the_outfit(pool: PgPool) {
+    async fn vocation_and_sex_select_the_outfit(pool: PgPool) {
         let account_id = an_account(&pool, "player@example.com").await;
         let t = template();
 
@@ -570,8 +572,33 @@ mod tests {
             }
         };
 
-        assert_eq!(outfit_of(female).await, t.outfit_id_female);
-        assert_eq!(outfit_of(male).await, t.outfit_id_male);
+        assert_eq!(outfit_of(female).await, t.vocations.druid.outfit_id_female);
+        assert_eq!(outfit_of(male).await, t.vocations.knight.outfit_id_male);
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn a_new_character_carries_its_vocations_kit(pool: PgPool) {
+        let account_id = an_account(&pool, "player@example.com").await;
+        let t = template();
+
+        let id = create(
+            &pool,
+            account_id,
+            "Rizael",
+            Vocation::Paladin,
+            Sex::Male,
+            &t,
+        )
+        .await
+        .unwrap();
+
+        let Json(inventory): Json<HashMap<String, StoredItemRecord>> =
+            sqlx::query_scalar("SELECT inventory FROM players WHERE id = $1")
+                .bind(id)
+                .fetch_one(&pool)
+                .await
+                .unwrap();
+        assert_eq!(inventory, t.vocations.paladin.stored_inventory());
     }
 
     #[sqlx::test(migrations = "./migrations")]

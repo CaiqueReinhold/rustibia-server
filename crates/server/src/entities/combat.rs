@@ -96,6 +96,14 @@ impl Participation {
         }
     }
 
+    pub fn contains(&self, attacker: AgentKey) -> bool {
+        self.0.iter().any(|(key, _)| *key == attacker)
+    }
+
+    pub fn forget(&mut self, attacker: AgentKey) {
+        self.0.retain(|(key, _)| *key != attacker);
+    }
+
     pub fn total(&self) -> u64 {
         self.0.iter().map(|(_, damage)| *damage).sum()
     }
@@ -209,5 +217,30 @@ mod tests {
         }
 
         assert!(!table.0.spilled());
+    }
+
+    #[test]
+    fn forgetting_an_attacker_keeps_the_others() {
+        let mut table = Participation::default();
+        table.record(key(1), 10);
+        table.record(key(2), 30);
+        table.record(key(3), 5);
+
+        table.forget(key(2));
+
+        assert!(!table.contains(key(2)));
+        assert_eq!(table.total(), 15);
+        assert_eq!(table.shares(15), vec![(key(1), 10), (key(3), 5)]);
+    }
+
+    #[test]
+    fn forgetting_an_absent_attacker_changes_nothing() {
+        let mut table = Participation::default();
+        table.record(key(1), 10);
+
+        table.forget(key(2));
+
+        assert!(table.contains(key(1)));
+        assert_eq!(table.total(), 10);
     }
 }

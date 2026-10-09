@@ -62,6 +62,7 @@ abilities:
     effect_id: 21
     missile_id: 15
 corpse: 21108
+dance_chance: 10
 say:
   cooldown: 100
   chance: 0

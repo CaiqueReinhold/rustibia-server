@@ -52,6 +52,7 @@ abilities:
       shape: beam5
     effect_id: 45
 corpse: 15865
+dance_chance: 10
 say:
   cooldown: 100
   chance: 10000
