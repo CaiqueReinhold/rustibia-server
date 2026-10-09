@@ -11,6 +11,7 @@ use crate::{
     config::CONFIG,
     entities::{
         chat::ChannelId,
+        creature::CreatureKindId,
         effects::EffectId,
         items::{ItemId, ItemMultiAction},
     },
@@ -92,6 +93,21 @@ pub struct MultiActionConfig {
     pub machete_clears: Vec<ItemId>,
     #[serde(default)]
     pub pick_grounds: HashMap<ItemId, ItemId>,
+    #[serde(default)]
+    pub sand_digging: Option<SandDiggingConfig>,
+}
+
+/// Chances are percentages over a roll of 1 to 100.
+#[derive(Deserialize)]
+pub struct SandDiggingConfig {
+    pub sand_ids: Vec<ItemId>,
+    pub hole_into: ItemId,
+    pub hole_action_id: u16,
+    pub hole_chance: u32,
+    pub coin_id: ItemId,
+    pub coin_chance: u32,
+    pub creature: CreatureKindId,
+    pub creature_chance: u32,
 }
 
 impl MultiActionConfig {

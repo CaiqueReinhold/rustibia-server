@@ -1,0 +1,97 @@
+name: Captain Fearless
+position: { x: 32957, y: 32021, z: 6 }
+speed: 100
+outfit:
+  id: 129
+  colors: [19, 113, 95, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Thais, Carlin, Ab'Dendriel, Krailos, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Gray Island, Yalahar and Ankrahmun.
+arguments:
+  DESTINATIONS:
+    thais: { name: Thais, cost: 170, position: { x: 32310, y: 32210, z: 6 } }
+    krailos: { name: Krailos, cost: 185, position: { x: 33493, y: 31712, z: 6 } }
+    carlin: { name: Carlin, cost: 130, position: { x: 32387, y: 31820, z: 6 } }
+    gray island: { name: Gray Island, cost: 150, position: { x: 33196, y: 31984, z: 7 } }
+    ab'dendriel: { name: Ab'Dendriel, cost: 90, position: { x: 32734, y: 31668, z: 6 } }
+    edron: { name: Edron, cost: 40, position: { x: 33173, y: 31764, z: 6 } }
+    port hope: { name: Port Hope, cost: 160, position: { x: 32527, y: 32784, z: 6 } }
+    svargrond: { name: Svargrond, cost: 150, position: { x: 32341, y: 31108, z: 6 } }
+    liberty bay: { name: Liberty Bay, cost: 180, position: { x: 32285, y: 32892, z: 6 } }
+    yalahar: { name: Yalahar, cost: 185, position: { x: 32816, y: 31272, z: 6 } }
+    ankrahmun: { name: Ankrahmun, cost: 150, position: { x: 33092, y: 32883, z: 6 } }
+    issavi: { name: Issavi, cost: 130, position: { x: 33900, y: 31463, z: 6 } }
+  DARASHIA: { x: 33289, y: 32481, z: 6 }
+  GHOSTSHIP: { x: 33324, y: 32173, z: 6 }
+  KICK:
+    - { x: 32952, y: 32031, z: 6 }
+    - { x: 32955, y: 32031, z: 6 }
+    - { x: 32957, y: 32032, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["thais", "krailos", "carlin", "gray island", "ab'dendriel", "edron", "port hope", "svargrond", "liberty bay", "yalahar", "ankrahmun", "issavi"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["darashia"]
+    action: say
+    text: Do you seek a passage to Darashia for 60 gold?
+    children:
+      - words: ["yes"]
+        action: say
+        text: I warn you! This route is haunted by a ghostship. Do you really want to go there?
+        children:
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "60"
+              position: GHOSTSHIP if uniform(1, 10) == 1 else DARASHIA
+          - words: ["no"]
+            action: say
+            reset: true
+            text: We would like to serve you some time.
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 2)]
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go? To Issavi, Krailos, Thais, Carlin, Ab'Dendriel, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Yalahar, Gray Island or Ankrahmun?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.
+  - words: ["venore"]
+    action: say
+    text: This is Venore. Where do you want to go?
+  - words: ["name"]
+    action: say
+    text: My name is Captain Fearless from the Royal Tibia Line.

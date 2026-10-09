@@ -148,6 +148,7 @@ const SRV_DIED: u8 = 36;
 pub enum TextMessageType {
     ActionDenied,
     Look,
+    ServerMessage,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -975,6 +976,7 @@ fn encode_text_message_type(text_type: TextMessageType) -> u8 {
     match text_type {
         TextMessageType::ActionDenied => 0x01,
         TextMessageType::Look => 0x02,
+        TextMessageType::ServerMessage => 0x03,
     }
 }
 

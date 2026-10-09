@@ -1,0 +1,46 @@
+name: Junkar
+position: { x: 32556, y: 32069, z: 10 }
+speed: 100
+outfit:
+  id: 66
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - So much to do. So many things to be fixed.
+    - Still so much work.
+arguments:
+  DESTINATIONS:
+    kazordoon: { name: Kazordoon, cost: 10, position: { x: 32660, y: 31957, z: 15 } }
+    thais: { name: Thais, cost: 90, position: { x: 32370, y: 32180, z: 13 } }
+    robsons isle: { name: Robsons Isle, cost: 70, position: { x: 32527, y: 32036, z: 14 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome, {{ PLAYERNAME | capitalize }}! You are lucky that the service is running right now. Save your coal for the days to come though!
+  - words: GOODBYE
+    action: dismiss
+    text: See you next time!
+  - words: WALK_AWAY
+    action: dismiss
+    text: <Sigh> No patience!
+  - words: ["kazordoon", "thais", "robsons isle"]
+    action: say
+    text: So you wish for a trip to {{ DESTINATIONS[WORD].name }}? {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Well, then you stay here, simple as that.
+  - words: ["passage"]
+    action: say
+    text: Where do you want me to take you? To Kazordoon, Thais or to Robsons Isle?

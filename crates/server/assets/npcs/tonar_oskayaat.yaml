@@ -1,0 +1,39 @@
+name: Tonar
+position: { x: 33068, y: 32917, z: 7 }
+speed: 100
+outfit:
+  id: 146
+  colors: [0, 66, 124, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - I don't feel safe here ... I hope we can return to Ankrahmun soon.
+arguments:
+  DESTINATION: { x: 33182, y: 32883, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome back, Sir.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["passage"]
+    action: say
+    text: A passage to Ankrahmun? Shall we cast off?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: DESTINATION
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.

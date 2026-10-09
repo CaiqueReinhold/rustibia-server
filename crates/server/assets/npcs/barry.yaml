@@ -1,0 +1,35 @@
+name: Barry
+position: { x: 32884, y: 31160, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [58, 43, 38, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  QUARTERS:
+    magician: { x: 32885, y: 31157, z: 7 }
+    sunken: { x: 32884, y: 31162, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["pass"]
+    action: say
+    text: You can pass either to the Magician Quarter or Sunken Quarter. Which one will it be?
+    children:
+      - words: ["magician", "sunken"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: QUARTERS[WORD]

@@ -1,0 +1,43 @@
+name: A Ghostly Sage
+position: { x: 32828, y: 32245, z: 10 }
+speed: 100
+outfit:
+  id: 130
+  colors: [9, 85, 9, 85]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  OUT: { x: 32834, y: 32275, z: 9 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Ah, I feel a mortal walks these ancient halls again. Pardon me, I barely notice you. I am so lost in my thoughts.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Farewell then.
+  - words: ["help"]
+    action: say
+    text: You will now be travelled out of here. Are you sure that you want to face that teleport?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: OUT
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then stay here in these ghostly halls.
+  - words: ["passage"]
+    action: say
+    text: I can offer you a teleport.
+  - words: ["job"]
+    action: say
+    text: Dont mind me.

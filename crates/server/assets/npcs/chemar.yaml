@@ -1,0 +1,53 @@
+name: Chemar
+position: { x: 33269, y: 32440, z: 6 }
+speed: 100
+outfit:
+  id: 130
+  colors: [95, 3, 14, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Ask me if you need letters or parcels. I'll deliver them via airmail, of course!
+    - Feel the wind in your hair during one of my carpet rides!
+arguments:
+  DESTINATIONS:
+    farmine: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    zao: { name: Zao, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    edron: { name: Edron, cost: 60, position: { x: 33193, y: 31784, z: 3 } }
+    svargrond: { name: Svargrond, cost: 60, position: { x: 32253, y: 31097, z: 4 } }
+    femor hills: { name: Femor Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    hills: { name: Femor Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    kazordoon: { name: Kazordoon, cost: 80, position: { x: 32588, y: 31941, z: 0 } }
+    kazor: { name: Kazordoon, cost: 80, position: { x: 32588, y: 31941, z: 0 } }
+    issavi: { name: Issavi, cost: 100, position: { x: 33957, y: 31515, z: 0 } }
+    marapur: { name: Marapur, cost: 70, position: { x: 33805, y: 32767, z: 2 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Daraman's blessings, traveller {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: ["farmine", "zao", "edron", "svargrond", "femor hills", "hills", "kazordoon", "kazor", "issavi", "marapur"]
+    action: say
+    text: Do you seek a ride to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["fly"]
+    action: say
+    text: I can fly you to Edron, Issavi, Svargrond, Kazordoon, Zao, Femor Hills or to Marapur if you like. Where do you want to go?

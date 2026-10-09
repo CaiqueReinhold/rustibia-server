@@ -1,0 +1,57 @@
+name: Captain Breezelda
+position: { x: 32341, y: 31109, z: 6 }
+speed: 100
+outfit:
+  id: 142
+  colors: [97, 23, 28, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    thais: { name: Thais, cost: 110, position: { x: 32310, y: 32210, z: 6 } }
+    carlin: { name: Carlin, cost: 180, position: { x: 32387, y: 31820, z: 6 } }
+    venore: { name: Venore, cost: 150, position: { x: 32954, y: 32022, z: 6 } }
+  KICK:
+    - { x: 32337, y: 31115, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["thais", "carlin", "venore"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go? To Carlin, Venore or Thais?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.
+  - words: ["svargrond"]
+    action: say
+    text: This is Svargrond. Where do you want to go?
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 0)]

@@ -1,0 +1,75 @@
+name: Captain Gulliver
+position: { x: 33479, y: 31986, z: 7 }
+speed: 100
+outfit:
+  id: 472
+  colors: [0, 57, 20, 39]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Thais and Krailos! Visit the strange lands!
+arguments:
+  DESTINATIONS:
+    thais: { name: Thais, cost: 150, position: { x: 32311, y: 32210, z: 6 } }
+    krailos: { name: Krailos, cost: 180, position: { x: 33493, y: 31712, z: 6 } }
+    issavi: { name: Issavi, cost: 130, position: { x: 33902, y: 31462, z: 6 } }
+  KICK:
+    - { x: 33487, y: 31986, z: 7 }
+    - { x: 33486, y: 31984, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, Sir {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["thais", "krailos", "issavi"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 1)]
+  - words: ["name"]
+    action: say
+    text: Ah, you may not have heard of me. I am Captain Gulliver, the first Oramondian for a hundred years to have sailed through the mist to your strange lands.
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of the 'Sea Goddess', the splendid and beautiful ship you see over there.
+  - words: ["ship"]
+    action: say
+    text: The 'Sea Goddess' is the most beautiful in Oramond, a whole new model of ship, elegant, sure and swift. There's no weather she can't take!
+  - words: ["tibia"]
+    action: say
+    text: Ah, your lands are quite a sight! I have only visited Thais so far, but I think of navigating to more cities, when the time - and public demand - comes.
+  - words: ["good"]
+    action: say
+    text: I will gladly take on board everything you wish to transport. No pets, though.
+  - words: ["passenger"]
+    action: say
+    text: <bows> I would be delighted to have you on board.
+  - words: ["sail", "route", "trip", "passage", "town", "destination", "go"]
+    action: say
+    text: You would like to book a passage for Thais or Krailos?
+  - words: ["oramond"]
+    action: say
+    text: This is the only safe landing place on Oramond. The cliffs surrounding the isle are too dangerous, you see.

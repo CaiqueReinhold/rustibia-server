@@ -1,0 +1,42 @@
+name: Old Adall
+position: { x: 32629, y: 32771, z: 7 }
+speed: 100
+outfit:
+  id: 130
+  colors: [95, 26, 115, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    east: { name: east, cost: 7, position: { x: 32679, y: 32777, z: 7 } }
+    west: { name: west, cost: 7, position: { x: 32558, y: 32780, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["east", "west"]
+    action: say
+    text: Do you seek a passage to the {{ DESTINATIONS[WORD].name }} end for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe another time.
+  - words: ["passage"]
+    action: say
+    text: I can bring you either to the east end of Port Hope or to the west end of the town, where would you like to go?

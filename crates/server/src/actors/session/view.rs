@@ -267,7 +267,7 @@ impl SessionActor {
             self.connection
                 .send_message(ServerMessage::TextMessage {
                     text: message,
-                    message_type: TextMessageType::Look,
+                    message_type: TextMessageType::ServerMessage,
                 })
                 .await?;
         }
@@ -313,7 +313,7 @@ impl SessionActor {
         self.connection
             .send_message(ServerMessage::TextMessage {
                 text: "You're dead.".to_owned(),
-                message_type: TextMessageType::Look,
+                message_type: TextMessageType::ServerMessage,
             })
             .await?;
         self.connection

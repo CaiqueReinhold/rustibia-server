@@ -1,0 +1,82 @@
+name: Palomino
+position: { x: 32450, y: 32226, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [116, 39, 12, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATION: { x: 32850, y: 32124, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Salutations, {{ PLAYERNAME | capitalize }} I guess you are here for the horses.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["transport"]
+    action: say
+    text: We can bring you to Venore with one of our coaches for 125 gold. Are you interested?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "125"
+          position: DESTINATION
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not.
+  - words: ["minotaur"]
+    action: say
+    text: Did you know that minotaurs ride giant bulls? It seems somewhat strange, like a human riding a cyclops.
+  - words: ["cyclops"]
+    action: say
+    text: There is nothing big enough for a cyclops to ride.
+  - words: ["donkey"]
+    action: say
+    text: Sorry, but the donkeys and the horses did not get along well with each other. So we sold all of the donkeys to the dwarfs.
+  - words: ["venore"]
+    action: say
+    text: Venore is the heart of trade and commerce. Not even Thais can rival Venore in that field.
+  - words: ["carlin"]
+    action: say
+    text: Perhaps one day we will expand to Carlin. The women there will just love our ponies!
+  - words: ["goblin"]
+    action: say
+    text: As far as I know, the goblins ride all kinds of creepy things like lizards, centipedes, spiders and slugs. Most of those beasts can even walk on the ceilings of caverns and climb walls with ease!
+  - words: ["mounts"]
+    action: say
+    text: We loan mounts for a certain time. Those horses are easy to handle and loyal.
+  - words: ["dwarf"]
+    action: say
+    text: Most dwarfs don't like riding at all. Though I heard one of their heroes is riding a ram, they usually use horses and donkeys as beasts of burden. Given their size it is not astounding that they prefer the smaller donkeys over the horses.
+  - words: ["thais"]
+    action: say
+    text: The city is the centre of the known world. It is almost as if everything else is just built around it!
+  - words: ["elves"]
+    action: say
+    text: I heard the elves ride every animal that roams the woods. From wolves and bears to squirrels, the elves befriend and ride them all. Just amazing!
+  - words: ["straw"]
+    action: say
+    text: Be careful, the straw is highly inflammable.
+  - words: ["coach"]
+    action: say
+    text: We order our coaches from the dwarfs. They deliver high quality work that rarely breaks. Therefore we rarely have any delays. That is if there are no bandits, or monsters, or bad weather, or the horses are on the loose and such.
+  - words: ["king"]
+    action: say
+    text: If we could convince the king to use one of our coaches on his next visit to Venore, our business would get a fundamental boost!
+  - words: ["job"]
+    action: say
+    text: I can rent you a horse for a day or I can transport you with a coach.
+  - words: ["orc"]
+    action: say
+    text: Orcs ride wolves and sometimes boars, and even spiders, as far as one can trust the rumour mill.

@@ -1,0 +1,65 @@
+name: Harlow
+position: { x: 32836, y: 31364, z: 7 }
+speed: 100
+outfit:
+  id: 151
+  colors: [116, 77, 113, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  VENGOTH: { x: 32858, y: 31549, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: What do you want, {{ PLAYERNAME | capitalize }}? I'm a busy man.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["vengoth"]
+    action: say
+    text: So you are saying you're looking for someone to take you to Vengoth?
+    children:
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Oh well.
+      - words: ["yes"]
+        action: say
+        text: I could do that, it's not far from here. I don't run a charity organisation, though. Tell you what. Give me 100 gold pieces, and me and my boat are yours for the trip. Okay?
+        children:
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "100"
+              position: VENGOTH
+          - words: ["no"]
+            action: say
+            reset: true
+            text: Oh well.
+  - words: ["transportation"]
+    action: say
+    text: Want me to bring you to Vengoth again for 100 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "100"
+          position: VENGOTH
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Oh well.
+  - words: ["busy"]
+    action: say
+    text: I have a job, you know?
+  - words: ["job"]
+    action: say
+    text: Well, I'm kind of a delivery man I guess. I take on small transportation jobs with my boat.

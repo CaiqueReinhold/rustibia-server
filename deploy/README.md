@@ -49,6 +49,18 @@ ansible-playbook deploy.yml -e image_tag=<sha>   # roll back to a pushed tag
 Images are tagged with the 12-character commit sha. `-e allow_dirty=true` builds an
 uncommitted tree anyway, tagged `<sha>-dirty`.
 
+A new client is released before the site that links to it:
+
+```bash
+ansible-playbook release-client.yml     # builds ../rustibia-client at its Cargo.toml version
+# then set client_version in crates/site/config.yaml to that version, commit, and
+ansible-playbook build.yml deploy.yml
+```
+
+`release-client.yml` refuses a dirty client tree and a version already on the host; a released
+version is never replaced. `deploy.yml` refuses a site image whose `client_version` has no
+packages under `/opt/rustibia/downloads/`.
+
 Grafana: `ssh -L 3000:127.0.0.1:3000 <host>`, then http://localhost:3000 as `admin` with
 `grafana_admin_password`. Change the password in 1Password, not in Grafana: every deploy resets
 it to the 1Password value.

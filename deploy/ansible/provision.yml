@@ -50,5 +50,6 @@
       loop:
         - "{{ app_dir }}"
         - "{{ app_dir }}/nginx"
+        - "{{ app_dir }}/downloads"
         - /var/www/certbot
         - /etc/letsencrypt/renewal-hooks/deploy

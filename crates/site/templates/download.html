@@ -4,15 +4,21 @@
 <section class="page-heading">
   <div class="eyebrow">Game</div>
   <h1 class="page-title">Download</h1>
-  <p class="lede">Build the client and step into the realm.</p>
+  <p class="lede">Install the client and step into the realm. Version {{ client_version }}.</p>
 </section>
 <div class="column">
   <div class="divider" aria-hidden="true"><span class="diamond"></span><span class="diamond diamond-solid"></span><span class="diamond"></span></div>
   <div class="column-body">
     <div class="card prose">
-      <p>Rustibia's client is built from source. Clone the repository and run it with Cargo:</p>
-      <p><code>cargo run --release</code></p>
-      <p>The client connects to <code>127.0.0.1:5555</code> by default.</p>
+      <h3 class="card-title">Windows</h3>
+      <p>Windows 10 or 11, 64-bit.</p>
+      <p><a class="btn btn-primary" href="/downloads/{{ client_version }}/RustibiaSetup-{{ client_version }}.exe">Download the installer</a></p>
+    </div>
+    <div class="card prose">
+      <h3 class="card-title">Linux</h3>
+      <p>Debian or Ubuntu, x86-64. Install the package with:</p>
+      <p><code>sudo apt install ./rustibia_{{ client_version }}_amd64.deb</code></p>
+      <p><a class="btn btn-primary" href="/downloads/{{ client_version }}/rustibia_{{ client_version }}_amd64.deb">Download the .deb</a></p>
     </div>
   </div>
 </div>

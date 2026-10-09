@@ -1,0 +1,44 @@
+name: Cornell
+position: { x: 33342, y: 31691, z: 7 }
+speed: 100
+outfit:
+  id: 129
+  colors: [114, 99, 40, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passage to Grimvale and Edron.
+arguments:
+  DESTINATIONS:
+    grimvale: { name: Grimvale, cost: 100, position: { x: 33341, y: 31691, z: 7 } }
+    edron: { name: Edron, cost: 100, position: { x: 33304, y: 31719, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where can I sail you today, to Grimvale or Edron?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["grimvale", "edron"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["sail"]
+    action: say
+    text: I can travel you to Grimvale or Edron.

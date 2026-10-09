@@ -1,0 +1,204 @@
+name: Buddel
+position: { x: 32332, y: 31227, z: 7 }
+speed: 100
+outfit:
+  id: 143
+  colors: [19, 57, 22, 20]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  RING: 3097
+  DESTINATIONS:
+    svargrond: { x: 32255, y: 31197, z: 7 }
+    okolnir: { x: 32225, y: 31381, z: 7 }
+    helheim: { x: 32462, y: 31174, z: 7 }
+    camp: { x: 32021, y: 31294, z: 7 }
+  ASTRAY:
+    - { x: 32255, y: 31197, z: 7 }
+    - { x: 32225, y: 31381, z: 7 }
+    - { x: 32462, y: 31174, z: 7 }
+    - { x: 32021, y: 31294, z: 7 }
+  KICK:
+    - { x: 32332, y: 31232, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Where are we at the moment? Is this Svargrond? NO,*HICKS* it's Tyrsung! Anyway, where do you want to go?"
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["svargrond"]
+    condition: has_item(RING)
+    action: say
+    text: Ohh, you got a nice ring there! Ya don't have to pay if you gimme the ring and I promise you I will bring you to the correct spot!*HICKS* Alright?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          item: RING
+          position: DESTINATIONS["svargrond"]
+      - words: ["no"]
+        action: say
+        text: Give me 50 gold and I bring you to svargrond. 'kay?
+        children:
+          - words: ["no"]
+            action: say
+            reset: true
+            text: You shouldn't miss the experience.
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "50"
+              position: DESTINATIONS["svargrond"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["svargrond"]
+    action: say
+    text: "You know a town nicer than this? NICER DICER! Apropos, don't play dice when you are drunk ..."
+    children:
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "50"
+          position: DESTINATIONS["svargrond"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["okolnir"]
+    condition: has_item(RING)
+    action: say
+    text: Ohh, you got a nice ring there! Ya don't have to pay if you gimme the ring and I promise you I will bring you to the correct spot!*HICKS* Alright?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          item: RING
+          position: DESTINATIONS["okolnir"]
+      - words: ["no"]
+        action: say
+        text: Give me 50 gold and I bring you to okolnir. 'kay?
+        children:
+          - words: ["no"]
+            action: say
+            reset: true
+            text: You shouldn't miss the experience.
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "50"
+              position: DESTINATIONS["okolnir"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["okolnir"]
+    action: say
+    text: "It's nice there. Except of the ice dragons which are not very companionable."
+    children:
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "50"
+          position: DESTINATIONS["okolnir"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["helheim"]
+    condition: has_item(RING)
+    action: say
+    text: Ohh, you got a nice ring there! Ya don't have to pay if you gimme the ring and I promise you I will bring you to the correct spot!*HICKS* Alright?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          item: RING
+          position: DESTINATIONS["helheim"]
+      - words: ["no"]
+        action: say
+        text: Give me 50 gold and I bring you to helheim. 'kay?
+        children:
+          - words: ["no"]
+            action: say
+            reset: true
+            text: You shouldn't miss the experience.
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "50"
+              position: DESTINATIONS["helheim"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["helheim"]
+    action: say
+    text: "T'at is a small island to the east."
+    children:
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "50"
+          position: DESTINATIONS["helheim"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["camp"]
+    condition: has_item(RING)
+    action: say
+    text: Ohh, you got a nice ring there! Ya don't have to pay if you gimme the ring and I promise you I will bring you to the correct spot!*HICKS* Alright?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          item: RING
+          position: DESTINATIONS["camp"]
+      - words: ["no"]
+        action: say
+        text: Give me 50 gold and I bring you to camp. 'kay?
+        children:
+          - words: ["no"]
+            action: say
+            reset: true
+            text: You shouldn't miss the experience.
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "50"
+              position: DESTINATIONS["camp"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["camp"]
+    action: say
+    text: "Both of you look like you could defend yourself! If you want to go there, ask me for a passage."
+    children:
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "50"
+          position: DESTINATIONS["camp"] if uniform(1, 5) > 1 else ASTRAY[uniform(0, 3)]
+  - words: ["kick"]
+    action: teleport
+    failed_text: Get out o' here!*HICKS*
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 0)]
+  - words: ["passage", "trip", "go", "sail"]
+    action: say
+    text: Where are we at the moment? Is this Svargrond? Ahh yes!*HICKS* Where do you want to go?

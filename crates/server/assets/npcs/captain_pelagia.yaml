@@ -1,0 +1,62 @@
+name: Captain Pelagia
+position: { x: 33491, y: 31710, z: 6 }
+speed: 100
+outfit:
+  id: 155
+  colors: [94, 0, 114, 85]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Edron, Darashia, Oramond, Thais and Venore.
+arguments:
+  DESTINATIONS:
+    venore: { name: Venore, cost: 120, position: { x: 32954, y: 32022, z: 6 } }
+    edron: { name: Edron, cost: 110, position: { x: 33176, y: 31765, z: 6 } }
+    oramond: { name: Oramond, cost: 70, position: { x: 33479, y: 31985, z: 7 } }
+    darashia: { name: Darashia, cost: 120, position: { x: 33289, y: 32481, z: 6 } }
+    thais: { name: Thais, cost: 130, position: { x: 32310, y: 32210, z: 6 } }
+    issavi: { name: Issavi, cost: 130, position: { x: 33902, y: 31464, z: 6 } }
+  KICK:
+    - { x: 33498, y: 31711, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["venore", "edron", "oramond", "darashia", "thais", "issavi"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 0)]
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go? To Edron, Darashia, Oramond or Venore?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.
+  - words: ["name"]
+    action: say
+    text: My name is Captain Pelagia from the Royal Tibia Line.

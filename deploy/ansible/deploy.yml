@@ -52,6 +52,42 @@
       no_log: true
       changed_when: false
 
+    - name: Pull the site image
+      ansible.builtin.command: docker pull {{ site_image }}:{{ image_tag }}
+      register: site_pull
+      changed_when: "'Downloaded newer image' in site_pull.stdout"
+
+    - name: Read the client version the site image serves
+      ansible.builtin.command: >-
+        docker image inspect {{ site_image }}:{{ image_tag }}
+        --format {% raw %}'{{ index .Config.Labels "online.rustibia.client-version" }}'{% endraw %}
+      register: site_client_version
+      changed_when: false
+
+    - name: Refuse a site image that names no client version
+      ansible.builtin.fail:
+        msg: >-
+          {{ site_image }}:{{ image_tag }} has no online.rustibia.client-version label, so it was
+          built before the site linked client downloads. Build it again with build.yml.
+      when: site_client_version.stdout in ['', '<no value>']
+
+    - name: Look for that version's packages
+      ansible.builtin.stat:
+        path: "{{ app_dir }}/downloads/{{ site_client_version.stdout }}/{{ item }}"
+      loop:
+        - RustibiaSetup-{{ site_client_version.stdout }}.exe
+        - rustibia_{{ site_client_version.stdout }}_amd64.deb
+      register: client_packages
+
+    - name: Refuse to deploy a site that links to packages never released
+      ansible.builtin.fail:
+        msg: >-
+          {{ site_image }}:{{ image_tag }} serves client {{ site_client_version.stdout }}, but
+          {{ app_dir }}/downloads/{{ site_client_version.stdout }}/ is missing
+          {{ client_packages.results | rejectattr('stat.exists') | map(attribute='item') | join(', ') }}.
+          Run release-client.yml at that version first.
+      when: client_packages.results | rejectattr('stat.exists') | list | length > 0
+
     - name: Create certificate directories
       ansible.builtin.file:
         path: "{{ app_dir }}/certs/{{ item }}"

@@ -1,0 +1,95 @@
+name: Jack Fate
+position: { x: 32286, y: 32891, z: 6 }
+speed: 100
+outfit:
+  id: 129
+  colors: [19, 69, 107, 50]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Edron, Thais, Venore, Darashia, Ankrahmun, Yalahar and Port Hope.
+arguments:
+  DESTINATIONS:
+    edron: { name: Edron, cost: 170, position: { x: 33173, y: 31764, z: 6 } }
+    venore: { name: Venore, cost: 180, position: { x: 32954, y: 32022, z: 6 } }
+    port hope: { name: Port Hope, cost: 50, position: { x: 32527, y: 32784, z: 6 } }
+    darashia: { name: Darashia, cost: 200, position: { x: 33289, y: 32480, z: 6 } }
+    ankrahmun: { name: Ankrahmun, cost: 90, position: { x: 33092, y: 32883, z: 6 } }
+    yalahar: { name: Yalahar, cost: 275, position: { x: 32816, y: 31272, z: 6 } }
+  THAIS: { x: 32310, y: 32210, z: 6 }
+  GOROMA: { x: 32161, y: 32558, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, Sir {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["edron", "venore", "port hope", "darashia", "ankrahmun", "yalahar"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["goroma"]
+    action: say
+    text: Ugh. You really want to go back to Goroma? I'll surely have to repair my ship afterwards, so I won't charge. Okay?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: GOROMA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["thais"]
+    action: say
+    text: Do you seek a passage to Thais for 180 gold?
+    children:
+      - words: ["yes"]
+        action: say
+        text: I have to warn you - we might get into a tropical storm on that route. I'm not sure if my ship will withstand it. Do you really want to travel to Thais?
+        children:
+          - words: ["yes"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: "180"
+              position: GOROMA if uniform(1, 8) == 1 else THAIS
+          - words: ["no"]
+            action: say
+            reset: true
+            text: We would like to serve you some time.
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go? To Edron, Thais, Venore, Darashia, Ankrahmun, Yalahar or Port Hope?
+  - words: ["name"]
+    action: say
+    text: My name is Jack Fate from the Royal Tibia Line.
+  - words: ["job", "captain"]
+    action: say
+    text: I'm the captain of this sailing ship.
+  - words: ["liberty bay"]
+    action: say
+    text: That's where we are.

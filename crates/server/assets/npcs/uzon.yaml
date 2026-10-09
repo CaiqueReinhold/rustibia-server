@@ -1,0 +1,114 @@
+name: Uzon
+position: { x: 32536, y: 31836, z: 4 }
+speed: 100
+outfit:
+  id: 130
+  colors: [95, 4, 17, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Feel the wind in your hair during one of my carpet rides!
+arguments:
+  DESTINATIONS:
+    farmine: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    zao: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    edron: { name: Edron, cost: 60, position: { x: 33193, y: 31783, z: 3 } }
+    darashia: { name: Darashia on Darama, cost: 60, position: { x: 33270, y: 32441, z: 6 } }
+    darama: { name: Darashia on Darama, cost: 60, position: { x: 33270, y: 32441, z: 6 } }
+    svargrond: { name: Svargrond, cost: 60, position: { x: 32253, y: 31097, z: 4 } }
+    kazordoon: { name: Kazordoon, cost: 70, position: { x: 32588, y: 31942, z: 0 } }
+    kazor: { name: Kazordoon, cost: 70, position: { x: 32588, y: 31942, z: 0 } }
+    issavi: { name: Issavi, cost: 100, position: { x: 33957, y: 31515, z: 0 } }
+  ECLIPSE: { x: 32659, y: 31915, z: 0 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Daraman's blessings, traveller {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Daraman's blessings
+  - words: WALK_AWAY
+    action: dismiss
+    text: Daraman's blessings
+  - words: ["eclipse"]
+    action: say
+    text: Oh no, so the time has come? Do you really want me to fly you to this unholy place?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "110"
+          position: ECLIPSE
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["farmine", "zao", "edron", "darashia", "darama", "svargrond", "kazordoon", "kazor", "issavi"]
+    action: say
+    text: Do you seek a ride to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["name"]
+    action: say
+    text: I am known as Uzon Ibn Kalith.
+  - words: ["job"]
+    action: say
+    text: I am a licensed Darashian carpet pilot. I can bring you to Darashia, Kazordoon, Svargrond or Edron.
+  - words: ["caliph", "kazzan"]
+    action: say
+    text: The caliph welcomes travellers to his land.
+  - words: ["daraman"]
+    action: say
+    text: Oh, there is so much to tell about Daraman. You better travel to Darama to learn about his teachings.
+  - words: ["ferumbras"]
+    action: say
+    text: I would never transport this one.
+  - words: ["drefia"]
+    action: say
+    text: "So you heard about haunted Drefia? Many adventures travel there to test their skills against the undead: vampires, mummies, and ghosts."
+  - words: ["excalibug"]
+    action: say
+    text: Some people claim it is hidden somewhere under the endless sands of the devourer desert in Darama.
+  - words: ["thais"]
+    action: say
+    text: Thais is noisy and overcrowded. That's why I like Darashia more.
+  - words: ["tibia"]
+    action: say
+    text: I have seen almost every place on the continent.
+  - words: ["continent"]
+    action: say
+    text: I could retell the tales of my travels for hours. Sadly another flight is scheduled soon.
+  - words: ["carlin"]
+    action: say
+    text: Just another Thais but with women to lead them.
+  - words: ["flying"]
+    action: say
+    text: You can buy flying carpets only in Darashia.
+  - words: ["fly"]
+    action: say
+    text: I transport travellers to the continent of Darama for a small fee. So many want to see the wonders of the desert and learn the secrets of Darama.
+  - words: ["new", "rumors"]
+    action: say
+    text: I heard too many news to recall them all.
+  - words: ["passage"]
+    action: say
+    text: I can fly you to Darashia on Darama, Kazordoon, Svargrond, Issavi, Farmine or Edron if you like. Where do you want to go?
+  - words: ["transport", "ride", "trip"]
+    action: say
+    text: I can fly you to Darashia on Darama, Kazordoon, Svargrond or Edron if you like. Where do you want to go?
+  - words: ["time"]
+    action: say
+    text: It's 3:42 pm right now. The next flight is scheduled soon.

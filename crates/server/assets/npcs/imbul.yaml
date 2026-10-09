@@ -1,0 +1,42 @@
+name: Imbul
+position: { x: 32558, y: 32781, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [95, 2, 63, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    east: { name: east end, cost: 7, position: { x: 32679, y: 32777, z: 7 } }
+    centre: { name: centre, cost: 7, position: { x: 32628, y: 32771, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["east", "centre"]
+    action: say
+    text: Do you seek a passage to the {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe another time.
+  - words: ["passage"]
+    action: say
+    text: I can bring you either to the east end of Port Hope or to the centre of the town, where would you like to go?

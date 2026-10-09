@@ -100,6 +100,8 @@ enum RawAction {
 #[serde(deny_unknown_fields)]
 struct RawKeyword {
     words: RawWords,
+    #[serde(default)]
+    condition: Option<String>,
     action: RawAction,
     #[serde(default)]
     text: Option<String>,
@@ -147,10 +149,15 @@ fn convert_action(
             else {
                 return Err("is a teleport, which needs a `cost` and a `position` param");
             };
+            let item = params.remove("item");
             if !params.is_empty() {
                 return Err("has a param a teleport does not take");
             }
-            Ok(NpcAction::Teleport { cost, position })
+            Ok(NpcAction::Teleport {
+                cost,
+                item,
+                position,
+            })
         }
         _ if !has_text => Err("needs a text"),
         _ if has_failed_text => Err("takes no failed_text, which only a teleport has"),
@@ -217,10 +224,12 @@ fn convert_keywords(
         };
         if words.iter().any(|word| siblings.contains(word)) {
             return Err(bad(
-                "answers a word an earlier keyword at its level already answers",
+                "answers a word an earlier keyword without a condition at its level already answers",
             ));
         }
-        siblings.extend(words.iter().cloned());
+        if raw.condition.is_none() {
+            siblings.extend(words.iter().cloned());
+        }
 
         if raw.reset && !raw.children.is_empty() {
             return Err(bad("resets the branch, so it cannot have children"));
@@ -236,6 +245,7 @@ fn convert_keywords(
         let keyword = Keyword::new(
             env,
             words,
+            raw.condition,
             action,
             raw.text,
             raw.failed_text,
@@ -252,7 +262,13 @@ fn convert_keywords(
     Ok(keywords)
 }
 
-const GAME_VARIABLES: [&str; 3] = ["PLAYERNAME", "WORD", "PARENT_KEYWORD"];
+const GAME_VARIABLES: [&str; 5] = [
+    "PLAYERNAME",
+    "WORD",
+    "PARENT_KEYWORD",
+    "uniform",
+    "has_item",
+];
 
 pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadError> {
     let raw: RawNpc =
@@ -445,10 +461,12 @@ keywords:
         {
             NpcResponse::Teleport {
                 cost,
+                item,
                 to,
                 failed_text,
             } => {
                 assert_eq!(cost, 40);
+                assert_eq!(item, None);
                 assert_eq!(to, Position::new(33173, 31764, 6));
                 assert_eq!(failed_text, "No gold, Rizael.");
             }
@@ -565,6 +583,28 @@ keywords:
             with_keywords("  - words: [\"\\u0001walk_away\"]\n    action: say\n    text: Hm?\n");
 
         bad_keyword(&document);
+    }
+
+    #[test]
+    fn a_word_may_repeat_after_a_sibling_with_a_condition() {
+        let document = with_keywords(concat!(
+            "  - words: [\"sail\"]\n    condition: \"true\"\n    action: say\n    text: A\n",
+            "  - words: [\"sail\"]\n    action: say\n    text: B\n",
+        ));
+
+        parse(&document).unwrap();
+    }
+
+    #[test]
+    fn a_condition_that_does_not_compile_is_refused() {
+        let document = with_keywords(
+            "  - words: [\"sail\"]\n    condition: \"has_item(\"\n    action: say\n    text: A\n",
+        );
+
+        assert!(matches!(
+            parse(&document),
+            Err(NpcsLoadError::Template { .. })
+        ));
     }
 
     #[test]

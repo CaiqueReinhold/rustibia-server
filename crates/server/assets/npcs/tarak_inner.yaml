@@ -1,0 +1,33 @@
+name: Tarak
+position: { x: 32917, y: 31198, z: 7 }
+speed: 100
+outfit:
+  id: 153
+  colors: [115, 31, 66, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATION: { x: 32940, y: 31182, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Can I interest you in a trip to the monument tower?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["monument tower", "passage", "trip"]
+    action: say
+    text: Do you want to travel to the monument tower for a 50 gold fee?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enought money.
+        params:
+          cost: "50"
+          position: DESTINATION

@@ -1,0 +1,98 @@
+name: Charles
+position: { x: 32529, y: 32783, z: 6 }
+speed: 100
+outfit:
+  id: 134
+  colors: [57, 67, 95, 60]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Thais, Darashia, Edron, Venore, Ankrahmun, Liberty Bay and Yalahar.
+arguments:
+  DESTINATIONS:
+    edron: { name: Edron, cost: 150, position: { x: 33173, y: 31764, z: 6 } }
+    venore: { name: Venore, cost: 160, position: { x: 32954, y: 32022, z: 6 } }
+    yalahar: { name: Yalahar, cost: 260, position: { x: 32816, y: 31272, z: 6 } }
+    ankrahmun: { name: Ankrahmun, cost: 110, position: { x: 33092, y: 32883, z: 6 } }
+    darashia: { name: Darashia, cost: 180, position: { x: 33289, y: 32480, z: 6 } }
+    thais: { name: Thais, cost: 160, position: { x: 32310, y: 32210, z: 6 } }
+    liberty bay: { name: Liberty Bay, cost: 50, position: { x: 32285, y: 32892, z: 6 } }
+    carlin: { name: Carlin, cost: 120, position: { x: 32387, y: 31820, z: 6 } }
+  SHORTCUTS:
+    thais: { cost: 100, position: { x: 32310, y: 32210, z: 6 } }
+    edron: { cost: 90, position: { x: 33173, y: 31764, z: 6 } }
+    liberty bay: { cost: 20, position: { x: 32285, y: 32891, z: 6 } }
+    yalahar: { cost: 200, position: { x: 32816, y: 31272, z: 6 } }
+  ISLES:
+    - { x: 32031, y: 32463, z: 7 }
+    - { x: 33454, y: 32160, z: 7 }
+    - { x: 32112, y: 31745, z: 7 }
+    - { x: 32457, y: 32937, z: 7 }
+  KICK:
+    - { x: 32535, y: 32792, z: 6 }
+    - { x: 32536, y: 32778, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Ahoy. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Bye.
+  - words: ["edron", "venore", "yalahar", "ankrahmun", "darashia", "thais", "liberty bay", "carlin"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["shortcut"]
+    action: say
+    text: This passage is shorter and costs less gold - but on the other hand it is also a bit riskier. On this route there are frequent tempests and the severe winds may blow a passenger over board. Few ship captains would sail this route. But if you want to take the risk, I can bring you to Thais, Edron, Liberty Bay or Yalahar for less gold than usual. Interested?
+    children:
+      - words: ["yes"]
+        action: say
+        text: Do you seek a shortcut passage to Thais for 100 gold, to Edron for 90 gold, to Liberty Bay for 20 gold or to Yalahar for 200 gold?
+        children:
+          - words: ["thais", "edron", "liberty bay", "yalahar"]
+            action: teleport
+            failed_text: You don't have enough money.
+            params:
+              cost: SHORTCUTS[WORD].cost
+              position: SHORTCUTS[WORD].position if uniform(1, 10) <= 3 else ISLES[uniform(0, 3)]
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 1)]
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go - Thais, Darashia, Venore, Liberty Bay, Ankrahmun, Yalahar or Edron?
+  - words: ["job"]
+    action: say
+    text: Im the captain of the Poodle, the proudest ship on all oceans.
+  - words: ["captain"]
+    action: say
+    text: I am the captain of this ship.
+  - words: ["port hope"]
+    action: say
+    text: That's where we are.
+  - words: ["name"]
+    action: say
+    text: It's Charles.
+  - words: ["svargrond"]
+    action: say
+    text: I'm sorry, but we don't serve the routes to the Ice Islands.

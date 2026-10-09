@@ -1,0 +1,75 @@
+name: Peter
+position: { x: 32856, y: 31302, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [58, 43, 38, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  FACTORY: { x: 32859, y: 31302, z: 7 }
+  TRADE: { x: 32854, y: 31302, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Hello. Unless you have official business here or want to pass the gate, please move on.
+  - words: GOODBYE
+    action: dismiss
+    text: Goodbye citizen!
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["factory"]
+    action: teleport
+    failed_text: You don't have enough money.
+    params:
+      cost: "0"
+      position: FACTORY
+  - words: ["trade"]
+    action: teleport
+    failed_text: You don't have enough money.
+    params:
+      cost: "0"
+      position: TRADE
+  - words: ["pass", "gate"]
+    action: say
+    text: Pass the gate? If it must be. Are you headed for the factory or the former trade quarter?
+  - words: ["alchemist quarter"]
+    action: say
+    text: There it's even more smelly than in the factory quarter. Smells a bit like rotten eggs.
+  - words: ["arena quarter"]
+    action: say
+    text: You don't look as if you would last one second there.
+  - words: ["augur"]
+    action: say
+    text: One day I will walk into the office of my superior and announce my resignment. Probably not long from now.
+  - words: ["cemetery quarter"]
+    action: say
+    text: Good idea. Go for a walk there. Preferably six feet down.
+  - words: ["foreign quarter"]
+    action: say
+    text: Go there if you wanna get beaten up.
+  - words: ["job", "official"]
+    action: say
+    text: Sergeant first class of the Yalaharian Guard Force. But I don't care about ranks and titles.
+  - words: ["magician quarter"]
+    action: say
+    text: I can't stand those arrogant fools.
+  - words: ["mission"]
+    action: say
+    text: Leave me alone with your 'mission' unless you have precise orders from my superiors.
+  - words: ["name"]
+    action: say
+    text: Peter.
+  - words: ["sunken quarter"]
+    action: say
+    text: That quara brood should be extinguished.
+  - words: ["quarter"]
+    action: say
+    text: Count them yourself.
+  - words: ["yalahar"]
+    action: say
+    text: You're here. So what?

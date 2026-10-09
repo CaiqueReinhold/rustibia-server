@@ -1,0 +1,77 @@
+name: Anderson
+position: { x: 32127, y: 31660, z: 7 }
+speed: 100
+outfit:
+  id: 129
+  colors: [79, 113, 105, 86]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Tibia, Folda and Vega.
+arguments:
+  DESTINATIONS:
+    vega: { name: Vega, cost: 20, position: { x: 32020, y: 31692, z: 7 } }
+    folda: { name: Folda, cost: 20, position: { x: 32046, y: 31578, z: 7 } }
+  TIBIA: { x: 32235, y: 31674, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Ahoi, young man {{ PLAYERNAME | capitalize }} and welcome to the Nordic Tibia Ferries. If you need a passage, let me know.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. You are welcome.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["tibia"]
+    action: say
+    text: Do you want a passage to Tibia for free?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: TIBIA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["vega", "folda"]
+    action: say
+    text: Do you want a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["passage"]
+    action: say
+    text: Where do you want to go today? We serve the routes to Senja, Folda and Vega and back to Tibia.
+  - words: ["job", "captain"]
+    action: say
+    text: We are ferrymen. We transport goods and passengers to the Ice Islands.
+  - words: ["ferries", "ferry"]
+    action: say
+    text: Our ferries are strong enough to stand the high waves of the Nordic Ocean.
+  - words: ["ice islands"]
+    action: say
+    text: We serve the routes to Senja, Folda, and Vega, and back to Tibia.
+  - words: ["senja"]
+    action: say
+    text: This island is Senja.
+  - words: ["name"]
+    action: say
+    text: My name is Anderson from the Nordic Tibia Ferries.
+  - words: ["anderson", "carlson", "nielson", "svenson"]
+    action: say
+    text: The four of us are the captains of the Nordic Tibia Ferries.

@@ -89,6 +89,7 @@ pub struct HighscoresPage {
 pub struct DownloadPage {
     pub viewer: Viewer,
     pub active: Nav,
+    pub client_version: String,
 }
 
 #[derive(Template)]
@@ -245,10 +246,11 @@ pub async fn get_highscores(
     }))
 }
 
-pub async fn get_download(viewer: Viewer) -> impl IntoResponse {
+pub async fn get_download(State(state): State<AppState>, viewer: Viewer) -> impl IntoResponse {
     HtmlTemplate(DownloadPage {
         viewer,
         active: Nav::Download,
+        client_version: state.config.client_version.clone(),
     })
 }
 
@@ -559,6 +561,21 @@ mod tests {
                 "{uri} must use the site shell"
             );
         }
+    }
+
+    #[sqlx::test(migrations = "./migrations")]
+    async fn the_download_page_links_both_packages_of_the_supported_version(pool: PgPool) {
+        let version = SiteConfig::load("config.yaml").unwrap().client_version;
+
+        let (_, body, _) = fetch(test_app(pool), "/download").await;
+
+        assert!(body.contains(&format!(
+            r#"href="/downloads/{version}/RustibiaSetup-{version}.exe""#
+        )));
+        assert!(body.contains(&format!(
+            r#"href="/downloads/{version}/rustibia_{version}_amd64.deb""#
+        )));
+        assert!(!body.contains("cargo run"));
     }
 
     #[sqlx::test(migrations = "./migrations")]

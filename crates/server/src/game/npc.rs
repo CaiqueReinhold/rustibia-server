@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 
 use minijinja::{Value, context};
 use tracing::error;
@@ -7,6 +7,7 @@ use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         agent::{Agent, AgentKey},
+        items::ItemId,
         npc::{Keyword, NpcResponse},
         position::Position,
     },
@@ -15,7 +16,8 @@ use crate::{
         config::GAME_CONFIG,
         events::BroadcastMessage,
         map_query::face_target,
-        money::{COINS, pay, plan_payment},
+        money::{COINS, pay, plan_item_payment, plan_payment},
+        random::Rolls,
     },
 };
 
@@ -26,6 +28,7 @@ enum Outcome {
 }
 
 pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey, message: &str) {
+    let rolls = Mutex::new(Rolls::new(ctx.roll.uniform(0, u32::MAX).into()));
     let Some(npc) = ctx.map.get_agent(npc_key) else {
         return;
     };
@@ -37,25 +40,42 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
         Some(_) => true,
         None => false,
     };
+    let Some(player) = ctx.map.get_agent(player_key) else {
+        return;
+    };
+    let player_name = player.name();
+    let Some(inventory) = player.get_player().map(|player| player.inventory().clone()) else {
+        return;
+    };
 
-    let Some((word, keyword, from_branch)) = match_keywords(npc, message) else {
-        return;
-    };
-    let Some(player_name) = ctx.map.get_agent(player_key).map(|a| a.name()) else {
-        return;
-    };
-    let parent_keyword = from_branch
-        .then(|| npc.keyword_branch().map(|(parent, _)| parent.clone()))
-        .flatten();
-    let response = match keyword.response(
-        &npc_def.environment,
+    let uniform =
+        Value::from_function(move |min: u32, max: u32| rolls.lock().unwrap().uniform(min, max));
+    let has_item =
+        Value::from_function(move |id: u16| plan_item_payment(&inventory, ItemId(id)).is_some());
+    let branch_parent = npc.keyword_branch().map(|(parent, _)| parent.clone());
+    let context = |word: &str, from_branch: bool| {
         context! {
             PLAYERNAME => player_name,
-            WORD => &word,
-            PARENT_KEYWORD => parent_keyword,
+            WORD => word,
+            PARENT_KEYWORD => from_branch.then(|| branch_parent.clone()).flatten(),
+            uniform => uniform.clone(),
+            has_item => has_item.clone(),
             ..Value::from_serialize(&npc_def.arguments)
-        },
-    ) {
+        }
+    };
+
+    let allows = |keyword: &Keyword, word: &str, from_branch: bool| {
+        keyword
+            .allows(&npc_def.environment, &context(word, from_branch))
+            .unwrap_or_else(|e| {
+                error!("NPC {} could not check {word:?}: {e}", npc_def.name);
+                false
+            })
+    };
+    let Some((word, keyword, from_branch)) = match_keywords(npc, message, allows) else {
+        return;
+    };
+    let response = match keyword.response(&npc_def.environment, context(&word, from_branch)) {
         Ok(response) => response,
         Err(e) => {
             error!("NPC {} could not answer {word:?}: {e}", npc_def.name);
@@ -72,9 +92,10 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
         NpcResponse::Say(text) => say(ctx, player_key, npc_key, text),
         NpcResponse::Teleport {
             cost,
+            item,
             to,
             failed_text,
-        } => teleport_player(ctx, player_key, npc_key, failed_text, cost, to),
+        } => teleport_player(ctx, player_key, npc_key, failed_text, cost, item, to),
     };
 
     let branch = match outcome {
@@ -91,25 +112,26 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
 }
 
 /// The branch's children first, then the root. The flag says which of the two matched.
-fn match_keywords(npc: &Agent, message: &str) -> Option<(String, Arc<Keyword>, bool)> {
+fn match_keywords(
+    npc: &Agent,
+    message: &str,
+    allows: impl Fn(&Keyword, &str, bool) -> bool,
+) -> Option<(String, Arc<Keyword>, bool)> {
     let npc_def = npc.get_npc()?;
     let branch = npc
         .keyword_branch()
         .map(|(_, keyword)| keyword.children())
         .unwrap_or_default();
 
-    let matching = |keywords: &[Arc<Keyword>]| {
+    let matching = |keywords: &[Arc<Keyword>], from_branch: bool| {
         keywords.iter().find_map(|keyword| {
             keyword
                 .match_word(message)
-                .map(|word| (word, Arc::clone(keyword)))
+                .filter(|word| allows(keyword, word, from_branch))
+                .map(|word| (word, Arc::clone(keyword), from_branch))
         })
     };
-    matching(branch)
-        .map(|(word, keyword)| (word, keyword, true))
-        .or_else(|| {
-            matching(npc_def.keywords.as_slice()).map(|(word, keyword)| (word, keyword, false))
-        })
+    matching(branch, true).or_else(|| matching(npc_def.keywords.as_slice(), false))
 }
 
 fn engage_player(
@@ -159,15 +181,19 @@ fn teleport_player(
     npc_key: AgentKey,
     failed_text: String,
     cost: u64,
+    item: Option<ItemId>,
     to: Position,
 ) -> Outcome {
     let Some(from) = ctx.map.agent_position(player_key).cloned() else {
         return Outcome::Ignored;
     };
-    let payment = ctx
-        .map
-        .get_player(player_key)
-        .and_then(|player| plan_payment(player.inventory(), &COINS, cost));
+    let payment = ctx.map.get_player(player_key).and_then(|player| {
+        let coins = plan_payment(player.inventory(), &COINS, cost)?;
+        match item {
+            Some(item) => Some(coins.and(plan_item_payment(player.inventory(), item)?)),
+            None => Some(coins),
+        }
+    });
     let Some(payment) = payment else {
         face_player(ctx, npc_key, player_key);
         npc_say(ctx, npc_key, failed_text);
@@ -220,7 +246,7 @@ mod tests {
     use crate::actors::world::WorldCommand;
     use crate::entities::{
         inventory::InventorySlot,
-        items::Item,
+        items::{Item, ItemConfig, ItemFlag},
         map::{GameMap, MapTile},
         world_map::WorldMap,
     };
@@ -240,6 +266,30 @@ mod tests {
 
     impl World {
         fn new(gold: u8, edron_exists: bool) -> Self {
+            Self::carrying(gold, edron_exists, [])
+        }
+
+        fn with_ring(gold: u8) -> Self {
+            let ring = ItemConfig::new(
+                ItemId(9999),
+                "ring".to_string(),
+                None,
+                None,
+                [ItemFlag::Take],
+                [],
+            );
+            Self::carrying(
+                gold,
+                true,
+                [(InventorySlot::Ring, Item::new(Arc::new(ring), 1))],
+            )
+        }
+
+        fn carrying(
+            gold: u8,
+            edron_exists: bool,
+            items: impl IntoIterator<Item = (InventorySlot, Item)>,
+        ) -> Self {
             let mut map = GameMap::new();
             map.insert_tile(HERE, MapTile::new());
             if edron_exists {
@@ -248,6 +298,7 @@ mod tests {
             let mut snapshot = a_test_snapshot(1, 1);
             snapshot.inventory =
                 HashMap::from([(InventorySlot::RightHand, Item::new(COINS.cheapest(), gold))]);
+            snapshot.inventory.extend(items);
             let player = map
                 .insert_agent(Agent::from_player(snapshot), &HERE)
                 .unwrap();
@@ -287,6 +338,15 @@ mod tests {
                 .unwrap()
                 .keyword_branch()
                 .map(|(word, _)| word.as_str())
+        }
+
+        fn has_ring(&self) -> bool {
+            self.map
+                .get_player(self.player)
+                .unwrap()
+                .inventory()
+                .get(&InventorySlot::Ring)
+                .is_some()
         }
 
         fn gold(&self) -> u8 {
@@ -405,6 +465,60 @@ mod tests {
         w.hear(w.player, "yes");
 
         assert_eq!(w.gold(), 100);
+        assert_eq!(w.map.agent_position(w.player), Some(&HERE));
+    }
+
+    #[test]
+    fn uniform_rolls_within_its_bounds() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+
+        for _ in 0..30 {
+            w.hear(w.player, "dice");
+        }
+
+        let rolled: Vec<&str> = w.said()[1..].to_vec();
+        assert!(rolled.iter().all(|roll| ["1", "2", "3"].contains(roll)));
+        assert!(rolled.iter().any(|roll| *roll != rolled[0]));
+    }
+
+    #[test]
+    fn a_keyword_whose_condition_fails_gives_way_to_the_next_one_with_the_word() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+
+        w.hear(w.player, "ferry");
+
+        assert_eq!(w.said().last(), Some(&"No ring, no ferry."));
+    }
+
+    #[test]
+    fn a_teleport_priced_in_an_item_takes_it_and_no_gold() {
+        let mut w = World::with_ring(100);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "ferry");
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.map.agent_position(w.player), Some(&EDRON));
+        assert!(!w.has_ring());
+        assert_eq!(w.gold(), 100);
+    }
+
+    #[test]
+    fn a_player_who_no_longer_has_the_item_hears_the_failed_text_and_stays() {
+        let mut w = World::with_ring(100);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "ferry");
+        w.map
+            .player_mut(w.player)
+            .unwrap()
+            .inventory_mut()
+            .take_slot(&InventorySlot::Ring);
+
+        w.hear(w.player, "yes");
+
+        assert_eq!(w.said().last(), Some(&"No ring."));
         assert_eq!(w.map.agent_position(w.player), Some(&HERE));
     }
 

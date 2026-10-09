@@ -1,0 +1,70 @@
+name: Captain Seahorse
+position: { x: 33175, y: 31763, z: 6 }
+speed: 100
+outfit:
+  id: 129
+  colors: [19, 113, 95, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    venore: { name: Venore, cost: 40, position: { x: 32954, y: 32022, z: 6 } }
+    thais: { name: Thais, cost: 160, position: { x: 32310, y: 32210, z: 6 } }
+    carlin: { name: Carlin, cost: 110, position: { x: 32387, y: 31820, z: 6 } }
+    krailos: { name: Krailos, cost: 185, position: { x: 33493, y: 31712, z: 6 } }
+    ab'dendriel: { name: Ab'Dendriel, cost: 70, position: { x: 32734, y: 31668, z: 6 } }
+    gray island: { name: Gray Island, cost: 190, position: { x: 33196, y: 31984, z: 7 } }
+    port hope: { name: Port Hope, cost: 150, position: { x: 32527, y: 32784, z: 6 } }
+    liberty bay: { name: Liberty Bay, cost: 170, position: { x: 32285, y: 32892, z: 6 } }
+    ankrahmun: { name: Ankrahmun, cost: 160, position: { x: 33092, y: 32883, z: 6 } }
+    cormaya: { name: Cormaya, cost: 20, position: { x: 33288, y: 31956, z: 6 } }
+    oramond: { name: Oramond, cost: 200, position: { x: 33479, y: 31985, z: 7 } }
+  KICK:
+    - { x: 33174, y: 31773, z: 6 }
+    - { x: 33175, y: 31771, z: 6 }
+    - { x: 33177, y: 31772, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where may I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["venore", "thais", "carlin", "krailos", "ab'dendriel", "gray island", "port hope", "liberty bay", "ankrahmun", "cormaya", "oramond"]
+    action: say
+    text: Do you seek a seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 2)]
+  - words: ["sail", "passage"]
+    action: say
+    text: Where do you want to go? To Krailos, Thais, Carlin, Ab'Dendriel, Venore, Port Hope, Ankrahmun, Liberty Bay, Gray Island or the isle Cormaya?
+  - words: ["name"]
+    action: say
+    text: My name is Captain Seahorse from the Royal Tibia Line.
+  - words: ["edron"]
+    action: say
+    text: This is Edron. Where do you want to go?
+  - words: ["yalahar"]
+    action: say
+    text: I'm sorry, but we don't serve this route. However, I heard that Wyrdin here in Edron is looking for adventurers to go on a trip to Yalahar for him.

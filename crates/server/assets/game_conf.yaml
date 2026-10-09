@@ -9,6 +9,15 @@ multi_action:
   machete_cuts: {3696: 3695, 3702: 3701, 17153: 17151}
   machete_clears: [2130, 3635, 30224]
   pick_grounds: {354: 394, 355: 394}
+  sand_digging:
+    sand_ids: [231]
+    hole_into: 615
+    hole_action_id: 100
+    hole_chance: 20
+    coin_id: 3042
+    coin_chance: 1
+    creature: scarab
+    creature_chance: 5
 
 action:
   use_item_cooldown_ticks: 20

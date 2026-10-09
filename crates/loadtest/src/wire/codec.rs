@@ -347,6 +347,7 @@ fn read_text_message_type(buf: &mut BytesMut) -> Result<TextMessageType, WireErr
     match buf.try_get_u8()? {
         0x01 => Ok(TextMessageType::ActionDenied),
         0x02 => Ok(TextMessageType::Look),
+        0x03 => Ok(TextMessageType::ServerMessage),
         _ => Err(WireError::Malformed { opcode: 0 }),
     }
 }
@@ -1068,6 +1069,10 @@ mod tests {
             ServerMessage::TextMessage {
                 text: "You see a sword".to_string(),
                 message_type: TextMessageType::Look,
+            },
+            ServerMessage::TextMessage {
+                text: "You advanced to level 8".to_string(),
+                message_type: TextMessageType::ServerMessage,
             },
             ServerMessage::OpenContainer {
                 container_id: ContainerId(3),

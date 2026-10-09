@@ -1,0 +1,43 @@
+name: Eremo
+position: { x: 33327, y: 31882, z: 7 }
+speed: 100
+outfit:
+  id: 130
+  colors: [0, 109, 128, 128]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  PEMARET: { x: 33288, y: 31956, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome to my little garden, adventurer {{ PLAYERNAME | capitalize }}!
+  - words: GOODBYE
+    action: dismiss
+    text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: ["cormaya", "back", "passage", "pemaret"]
+    action: say
+    text: Should I teleport you back to Pemaret?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: PEMARET
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe later.
+  - words: ["job"]
+    action: say
+    text: I teach some spells, provide one of the five blessings, and sell some amulets. Ask me for a trade if you like.
+  - words: ["name"]
+    action: say
+    text: I am Eremo, an old man who has seen many things.

@@ -5,6 +5,7 @@ use serde::de::DeserializeOwned;
 
 use crate::entities::{
     agent::{OutfitColors, OutfitId},
+    items::ItemId,
     position::Position,
     voices::Voices,
 };
@@ -14,9 +15,25 @@ pub const GOODBYE_WORDS: [&str; 3] = ["bye", "goodbye", "farewell"];
 /// Unsayable because `handle_say` refuses control characters.
 pub const WALK_AWAY_WORD: &str = "\u{1}walk_away";
 
+fn capitalize(text: &str) -> String {
+    let mut word_start = true;
+    text.chars()
+        .flat_map(|c| {
+            let upper = word_start;
+            word_start = c.is_whitespace();
+            if upper {
+                c.to_uppercase().collect::<Vec<_>>()
+            } else {
+                vec![c]
+            }
+        })
+        .collect()
+}
+
 pub fn environment() -> Environment<'static> {
     let mut env = Environment::empty();
     env.set_undefined_behavior(UndefinedBehavior::Strict);
+    env.add_filter("capitalize", capitalize);
     env
 }
 
@@ -25,7 +42,11 @@ pub enum NpcAction {
     Engage,
     Dismiss,
     Say,
-    Teleport { cost: String, position: String },
+    Teleport {
+        cost: String,
+        item: Option<String>,
+        position: String,
+    },
 }
 
 #[derive(Debug)]
@@ -35,6 +56,7 @@ pub enum NpcResponse {
     Dismiss(String),
     Teleport {
         cost: u64,
+        item: Option<ItemId>,
         to: Position,
         failed_text: String,
     },
@@ -71,6 +93,7 @@ impl Reply {
 #[derive(Debug)]
 pub struct Keyword {
     words: Vec<String>,
+    condition: Option<String>,
     action: NpcAction,
     text: Option<Reply>,
     failed_text: Option<Reply>,
@@ -79,22 +102,36 @@ pub struct Keyword {
 }
 
 impl Keyword {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         env: &mut Environment<'static>,
         words: Vec<String>,
+        condition: Option<String>,
         action: NpcAction,
         text: Option<String>,
         failed_text: Option<String>,
         reset: bool,
         children: Vec<Arc<Keyword>>,
     ) -> Result<Self, Error> {
-        if let NpcAction::Teleport { cost, position } = &action {
-            env.compile_expression_owned(cost.clone())?;
-            env.compile_expression_owned(position.clone())?;
+        let expressions = match &action {
+            NpcAction::Teleport {
+                cost,
+                item,
+                position,
+            } => vec![Some(cost), item.as_ref(), Some(position)],
+            _ => vec![],
+        };
+        for expr in expressions
+            .into_iter()
+            .chain([condition.as_ref()])
+            .flatten()
+        {
+            env.compile_expression_owned(expr.clone())?;
         }
 
         Ok(Self {
             words,
+            condition,
             action,
             text: text.map(|text| Reply::register(env, text)).transpose()?,
             failed_text: failed_text
@@ -114,11 +151,30 @@ impl Keyword {
     }
 
     pub fn match_word(&self, message: &str) -> Option<String> {
-        message
+        let message: String = message
             .to_lowercase()
-            .split(" ")
-            .find(|part| self.words.iter().any(|word| part == word))
-            .map(|word| word.to_owned())
+            .chars()
+            .map(|c| match c {
+                '\'' | '_' => c,
+                c if c.is_ascii_punctuation() => ' ',
+                c => c,
+            })
+            .collect();
+        let message = format!(
+            " {} ",
+            message.split_whitespace().collect::<Vec<_>>().join(" ")
+        );
+        self.words
+            .iter()
+            .find(|word| message.contains(&format!(" {word} ")))
+            .cloned()
+    }
+
+    pub fn allows(&self, env: &Environment, ctx: &Value) -> Result<bool, Error> {
+        match &self.condition {
+            Some(condition) => Ok(env.compile_expression(condition)?.eval(ctx)?.is_true()),
+            None => Ok(true),
+        }
     }
 
     pub fn response(&self, env: &Environment, ctx: Value) -> Result<NpcResponse, Error> {
@@ -126,8 +182,16 @@ impl Keyword {
             NpcAction::Engage => self.text(env, ctx).map(NpcResponse::Engage),
             NpcAction::Dismiss => self.text(env, ctx).map(NpcResponse::Dismiss),
             NpcAction::Say => self.text(env, ctx).map(NpcResponse::Say),
-            NpcAction::Teleport { cost, position } => Ok(NpcResponse::Teleport {
+            NpcAction::Teleport {
+                cost,
+                item,
+                position,
+            } => Ok(NpcResponse::Teleport {
                 cost: self.eval(cost, env, &ctx)?,
+                item: item
+                    .as_ref()
+                    .map(|item| self.eval(item, env, &ctx))
+                    .transpose()?,
                 to: self.eval(position, env, &ctx)?,
                 failed_text: self
                     .failed_text
@@ -183,6 +247,7 @@ mod tests {
         Keyword::new(
             env,
             vec!["hi".to_string()],
+            None,
             action,
             text.map(str::to_string),
             None,
@@ -190,6 +255,49 @@ mod tests {
             vec![],
         )
         .unwrap()
+    }
+
+    fn answering(words: &[&str]) -> Keyword {
+        Keyword::new(
+            &mut environment(),
+            words.iter().map(|word| word.to_string()).collect(),
+            None,
+            NpcAction::Say,
+            Some("Hm?".to_string()),
+            None,
+            false,
+            vec![],
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn a_word_of_several_parts_matches_them_in_a_row() {
+        let keyword = answering(&["liberty bay"]);
+
+        assert_eq!(
+            keyword.match_word("To Liberty Bay, please"),
+            Some("liberty bay".to_string())
+        );
+        assert_eq!(keyword.match_word("liberty or bay"), None);
+        assert_eq!(keyword.match_word("liberty"), None);
+    }
+
+    #[test]
+    fn punctuation_around_a_word_does_not_stop_it_matching() {
+        let keyword = answering(&["edron", "ab'dendriel"]);
+
+        assert_eq!(keyword.match_word("edron?"), Some("edron".to_string()));
+        assert_eq!(keyword.match_word("thais,edron"), Some("edron".to_string()));
+        assert_eq!(
+            keyword.match_word("Ab'Dendriel!"),
+            Some("ab'dendriel".to_string())
+        );
+    }
+
+    #[test]
+    fn a_word_matches_only_whole() {
+        assert_eq!(answering(&["yes"]).match_word("yesterday"), None);
     }
 
     #[test]
@@ -214,6 +322,21 @@ mod tests {
     }
 
     #[test]
+    fn capitalize_uppercases_the_first_letter_of_each_word() {
+        let mut env = environment();
+        let template = a_keyword(
+            &mut env,
+            NpcAction::Engage,
+            Some("Welcome, {{ PLAYERNAME | capitalize }}."),
+        );
+
+        assert!(matches!(
+            template.response(&env, context! { PLAYERNAME => "sir mcDoe" }).unwrap(),
+            NpcResponse::Engage(text) if text == "Welcome, Sir McDoe."
+        ));
+    }
+
+    #[test]
     fn an_undefined_variable_is_an_error_not_an_empty_string() {
         let mut env = environment();
         let template = a_keyword(
@@ -230,6 +353,7 @@ mod tests {
         let mut env = environment();
         let teleport = NpcAction::Teleport {
             cost: "DESTINATIONS[".to_string(),
+            item: None,
             position: "DESTINATIONS.edron".to_string(),
         };
 
@@ -237,6 +361,7 @@ mod tests {
             Keyword::new(
                 &mut env,
                 vec!["yes".to_string()],
+                None,
                 teleport,
                 None,
                 Some("No.".to_string()),

@@ -1,0 +1,85 @@
+name: Captain Seagull
+position: { x: 32735, y: 31670, z: 6 }
+speed: 100
+outfit:
+  id: 129
+  colors: [60, 113, 95, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    thais: { name: Thais, cost: 130, position: { x: 32310, y: 32210, z: 6 } }
+    carlin: { name: Carlin, cost: 80, position: { x: 32387, y: 31820, z: 6 } }
+    gray island: { name: Gray Island, cost: 150, position: { x: 33196, y: 31984, z: 7 } }
+    edron: { name: Edron, cost: 70, position: { x: 33175, y: 31764, z: 6 } }
+    venore: { name: Venore, cost: 90, position: { x: 32954, y: 32022, z: 6 } }
+    yalahar: { name: Yalahar, cost: 160, position: { x: 32816, y: 31272, z: 6 } }
+  KICK:
+    - { x: 32724, y: 31669, z: 6 }
+    - { x: 32726, y: 31665, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["thais", "carlin", "gray island", "edron", "venore", "yalahar"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 1)]
+  - words: ["name"]
+    action: say
+    text: My name is Captain Seagull from the Royal Tibia Line.
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this sailing-ship.
+  - words: ["ship", "line", "company", "route", "tibia"]
+    action: say
+    text: The Royal Tibia Line connects all seaside towns of Tibia.
+  - words: ["good"]
+    action: say
+    text: We can transport everything you want.
+  - words: ["passanger"]
+    action: say
+    text: We would like to welcome you on board.
+  - words: ["trip", "passage", "town", "destination", "sail", "go"]
+    action: say
+    text: Where do you want to go? To Thais, Carlin, Venore, Yalahar, Edron or Gray Island?
+  - words: ["ice", "senja", "folda", "vega"]
+    action: say
+    text: I'm sorry, but we don't serve the routes to the Ice Islands.
+  - words: ["ankrahmun", "tiquanda", "port hope"]
+    action: say
+    text: I'm sorry, but we don't serve this route.
+  - words: ["darashia", "darama"]
+    action: say
+    text: I'm not sailing there. This route is afflicted by a ghost ship! However I've heard that Captain Fearless from Venore sails there.
+  - words: ["ghost"]
+    action: say
+    text: Many people who sailed to Darashia never returned because they were attacked by a ghostship! I'll never sail there!
+  - words: ["ab'dendriel"]
+    action: say
+    text: This is Ab'Dendriel. Where do you want to go?

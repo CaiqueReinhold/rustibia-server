@@ -1,0 +1,75 @@
+name: Svenson
+position: { x: 32045, y: 31580, z: 7 }
+speed: 100
+outfit:
+  id: 129
+  colors: [77, 113, 105, 86]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    senja: { name: Senja, cost: 10, position: { x: 32128, y: 31664, z: 7 } }
+    vega: { name: Vega, cost: 10, position: { x: 32020, y: 31692, z: 7 } }
+  TIBIA: { x: 32235, y: 31674, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["tibia"]
+    action: say
+    text: Do you want to sail back to Tibia?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: TIBIA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["senja", "vega"]
+    action: say
+    text: Do you want to sail {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["passage"]
+    action: say
+    text: Where do you want to go? To Tibia, Senja or Vega?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.
+  - words: ["ferries", "ferry"]
+    action: say
+    text: Our ferries are strong enough to stand the high waves of the Nordic Ocean.
+  - words: ["ice islands"]
+    action: say
+    text: We serve the routes to Senja, Folda, and Vega, and back to Tibia.
+  - words: ["folda"]
+    action: say
+    text: This island is Folda.
+  - words: ["name"]
+    action: say
+    text: My name is Svenson from the Nordic Tibia Ferries.
+  - words: ["anderson", "carlson", "nielson", "svenson"]
+    action: say
+    text: The four of us are the captains of the Nordic Tibia Ferries.

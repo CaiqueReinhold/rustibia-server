@@ -84,6 +84,7 @@ services:
       - {{ app_dir }}/nginx:/etc/nginx/conf.d:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot:ro
+      - {{ app_dir }}/downloads:/var/www/downloads:ro
     ports:
       - "80:80"
       - "443:443"

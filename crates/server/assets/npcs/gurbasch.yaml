@@ -1,0 +1,72 @@
+name: Gurbasch
+position: { x: 33311, y: 31988, z: 15 }
+speed: 100
+outfit:
+  id: 66
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Passages to Kazordoon! Gotta try the beer there.
+arguments:
+  FARMINE: { x: 33025, y: 31553, z: 14 }
+  KAZORDOON: { x: 32660, y: 31957, z: 15 }
+  GNOMPRONA: { x: 33516, y: 32856, z: 14 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome, {{ PLAYERNAME | capitalize }}! Lovely steamboat, ain't it? I can even offer you a passage if you like.
+  - words: GOODBYE
+    action: dismiss
+    text: Until next time.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Until next time.
+  - words: ["farmine"]
+    action: say
+    text: Do you seek a ride to Farmine for 110 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "110"
+          position: FARMINE
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["kazordoon"]
+    action: say
+    text: Do you want to go to Kazordoon to try the beer there? 160 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "160"
+          position: KAZORDOON
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not.
+  - words: ["gnomprona"]
+    action: say
+    text: Would you like to travel to Gnomprona for 200 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "200"
+          position: GNOMPRONA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not.
+  - words: ["passage"]
+    action: say
+    text: Where do you want me to take you? To Kazordoon, Farmine or Gnomprona?

@@ -4,40 +4,37 @@ speed: 100
 outfit:
   id: 132
   colors: [0, 128, 95, 115]
-walk_range: 3
+walk_range: 2
 talk_range: 3
 say:
   cooldown: 300
-  chance: 50000
-  sentences:
-    - Passages to Thais, Carlin, Ab'Dendriel, Krailos, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Gray Island, Yalahar and Ankrahmun.
+  chance: 0
 arguments:
-  DESTINATIONS:
-    edron: { cost: 40, position: { x: 33173, y: 31764, z: 6 } }
+  TIBIA: { x: 32204, y: 31756, z: 6 }
 keywords:
   - words: GREET
     action: engage
-    text: Welcome on board, {{ PLAYERNAME }}. Where can I sail you today?
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
   - words: GOODBYE
     action: dismiss
-    text: Good bye. Recommend us if you were satisfied with our service.
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
   - words: WALK_AWAY
     action: dismiss
-    text: Good bye then.
-  - words: ["sail", "passage", "travel"]
+    text: Good bye.
+  - words: ["tibia"]
     action: say
-    text: Where do you want to go? To Issavi, krailos, Thais, Carlin, Ab'Dendriel, Port Hope, Edron, Darashia, Liberty Bay, Svargrond, Yalahar, Gray Island or Ankrahmun?
-  - words: ["edron"]
-    action: say
-    text: Do you seek a passage to {{ WORD }} for {{ DESTINATIONS[WORD].cost }}?
+    text: Do you seek a passage back to Tibia?
     children:
       - words: ["yes"]
         action: teleport
-        failed_text: You don't have enough money, {{ PLAYERNAME }}.
+        failed_text: You don't have enough money.
         params:
-          cost: DESTINATIONS[PARENT_KEYWORD].cost
-          position: DESTINATIONS[PARENT_KEYWORD].position
+          cost: "0"
+          position: TIBIA
       - words: ["no"]
         action: say
         reset: true
         text: We would like to serve you some time.
+  - words: ["passage", "job"]
+    action: say
+    text: I can travel you to Tibia.

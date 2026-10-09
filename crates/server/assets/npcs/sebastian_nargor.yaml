@@ -1,0 +1,45 @@
+name: Sebastian
+position: { x: 32027, y: 32814, z: 7 }
+speed: 100
+outfit:
+  id: 151
+  colors: [57, 52, 109, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    liberty bay: { name: Liberty Bay, cost: 100, position: { x: 32316, y: 32702, z: 7 } }
+    meriana: { name: Meriana, cost: 50, position: { x: 32346, y: 32625, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, daring adventurer. If you need a passage, let me know.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Oh well.
+  - words: ["liberty bay", "meriana"]
+    action: say
+    text: Do you want to sail {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["passage"]
+    action: say
+    text: Where do you want to go? To Liberty bay or to Meriana?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.

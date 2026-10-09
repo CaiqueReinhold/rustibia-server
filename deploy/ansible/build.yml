@@ -4,6 +4,7 @@
   gather_facts: false
   vars:
     allow_dirty: false
+    client_version: "{{ (lookup('file', repo_root ~ '/crates/site/config.yaml') | from_yaml).client_version }}"
   tasks:
     - name: Refuse to build an image that does not match a commit
       ansible.builtin.fail:
@@ -42,6 +43,7 @@
           - --tag={{ item.image }}:{{ image_tag }}
           - --label=org.opencontainers.image.source=https://github.com/{{ ghcr_owner }}/rustibia-server
           - --label=org.opencontainers.image.revision={{ git_sha }}
+          - --label=online.rustibia.client-version={{ client_version }}
           - --push
           - .
       loop:

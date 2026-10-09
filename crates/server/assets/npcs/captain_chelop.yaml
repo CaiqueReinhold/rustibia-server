@@ -1,0 +1,64 @@
+name: Captain Chelop
+position: { x: 33494, y: 32568, z: 7 }
+speed: 100
+outfit:
+  id: 289
+  colors: [2, 67, 39, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - By direct edict of the honorable Henricus, we are ordered to give passage for all recruits to Thais.
+arguments:
+  THAIS: { x: 32310, y: 32210, z: 6 }
+  KICK:
+    - { x: 33495, y: 32564, z: 7 }
+    - { x: 33495, y: 32563, z: 7 }
+    - { x: 33496, y: 32562, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, recruit {{ PLAYERNAME | capitalize }}. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: On behalf of the inquisition, I bid you farewell.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["thais", "town"]
+    action: say
+    text: Do you seek a passage to Thais for 210 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "210"
+          position: THAIS
+      - words: ["no"]
+        action: say
+        reset: true
+        text: By direct edict of the honorable Henricus himself... well, you know.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 2)]
+  - words: ["sail"]
+    action: say
+    text: I can bring you back to Thais if you are weary or you can stay and fight. What shall it be?
+  - words: ["name"]
+    action: say
+    text: My name is Chelop and I am a captain of this inquisition ship.
+  - words: ["job"]
+    action: say
+    text: Can't you see? I'm captain of the Pesadilla, the proud inquisition ship which anchors here.
+  - words: ["inquisition"]
+    action: say
+    text: By edict of the honorable Henricus himself, we are ordered to give passage to all recruits of the Roshamuul mission for a small fee.
+  - words: ["roshamuul"]
+    action: say
+    text: This is the island you are currently on, just in case you forgot.

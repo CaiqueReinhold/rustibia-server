@@ -1,0 +1,55 @@
+name: Captain Harava
+position: { x: 33902, y: 31462, z: 6 }
+speed: 100
+outfit:
+  id: 1200
+  colors: [77, 101, 3, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Come on board! The winds are prosperous!
+arguments:
+  DESTINATIONS:
+    darashia: { name: Darashia, cost: 80, position: { x: 33289, y: 32481, z: 6 } }
+    venore: { name: Venore, cost: 80, position: { x: 32954, y: 32022, z: 6 } }
+    oramond: { name: Oramond, cost: 100, position: { x: 33479, y: 31985, z: 7 } }
+    krailos: { name: Krailos, cost: 80, position: { x: 33492, y: 31712, z: 6 } }
+  KICK:
+    - { x: 33897, y: 31471, z: 6 }
+    - { x: 33901, y: 31471, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome on board, traveller. Where can I sail you today?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["darashia", "venore", "oramond", "krailos"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 1)]
+  - words: ["trip", "route", "passage", "town", "destination", "sail", "go"]
+    action: say
+    text: I'm ready to bring you to Oramond, Krailos, Venore or Darashia.

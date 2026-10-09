@@ -32,6 +32,7 @@ pub struct SiteConfig {
     pub session_ttl_days: i64,
     pub auth_token_ttl_seconds: i64,
     pub min_password_length: usize,
+    pub client_version: String,
     pub new_character: NewCharacterConfig,
 }
 
@@ -59,12 +60,10 @@ pub enum ConfigError {
 mod tests {
     use super::*;
 
-    #[test]
-    fn parses_a_full_config() {
-        let cfg = SiteConfig::from_yaml(
-            "session_ttl_days: 7\n\
+    const FULL_CONFIG: &str = "session_ttl_days: 7\n\
              auth_token_ttl_seconds: 60\n\
              min_password_length: 8\n\
+             client_version: \"0.3.0\"\n\
              new_character:\n\
              \x20\x20pos_x: 1028\n\
              \x20\x20pos_y: 1028\n\
@@ -82,14 +81,29 @@ mod tests {
              \x20\x20outfit_feet: 76\n\
              \x20\x20starting_skills:\n\
              \x20\x20\x20\x20- { skill_type: 0, value: 1, current_ticks: 0 }\n\
-             \x20\x20\x20\x20- { skill_type: 1, value: 220, current_ticks: 0 }\n",
-        )
-        .unwrap();
+             \x20\x20\x20\x20- { skill_type: 1, value: 220, current_ticks: 0 }\n";
+
+    #[test]
+    fn parses_a_full_config() {
+        let cfg = SiteConfig::from_yaml(FULL_CONFIG).unwrap();
         assert_eq!(cfg.session_ttl_days, 7);
         assert_eq!(cfg.auth_token_ttl_seconds, 60);
         assert_eq!(cfg.min_password_length, 8);
+        assert_eq!(cfg.client_version, "0.3.0");
         assert_eq!(cfg.new_character.pos_x, 1028);
         assert_eq!(cfg.new_character.starting_skills.len(), 2);
+    }
+
+    #[test]
+    fn rejects_a_config_without_a_client_version() {
+        let without = FULL_CONFIG.replace("client_version: \"0.3.0\"\n", "");
+        assert!(SiteConfig::from_yaml(&without).is_err());
+    }
+
+    #[test]
+    fn the_checked_in_config_names_a_client_version() {
+        let cfg = SiteConfig::load("config.yaml").unwrap();
+        assert!(!cfg.client_version.is_empty());
     }
 
     #[test]

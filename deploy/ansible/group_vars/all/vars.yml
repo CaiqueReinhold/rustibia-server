@@ -9,6 +9,7 @@ image_platform: linux/amd64
 
 repo_root: "{{ playbook_dir }}/../.."
 certs_dir: "{{ repo_root }}/deploy/certs"
+client_repo: "{{ repo_root }}/../rustibia-client"
 app_dir: /opt/rustibia
 app_uid: 10001
 

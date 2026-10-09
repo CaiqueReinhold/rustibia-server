@@ -8,7 +8,7 @@ use crate::{
     entities::{
         agent::AgentKey,
         inventory::{Inventory, InventorySlot},
-        items::{Item, ItemConfig, ItemGuid},
+        items::{Item, ItemConfig, ItemGuid, ItemId},
         position::ItemPlacement,
     },
     game::{
@@ -77,6 +77,34 @@ impl Coins {
 pub struct Payment {
     takes: Vec<(InventorySlot, ItemGuid, u8)>,
     change: u64,
+}
+
+impl Payment {
+    pub fn and(mut self, other: Payment) -> Payment {
+        self.takes.extend(other.takes);
+        self.change += other.change;
+        self
+    }
+}
+
+/// One `id` from anywhere in `inventory`, containers included.
+pub fn plan_item_payment(inventory: &Inventory, id: ItemId) -> Option<Payment> {
+    inventory.slots().iter().find_map(|(slot, item)| {
+        find_item(item, id).map(|guid| Payment {
+            takes: vec![(*slot, guid, 1)],
+            change: 0,
+        })
+    })
+}
+
+fn find_item(item: &Item, id: ItemId) -> Option<ItemGuid> {
+    if item.id() == id {
+        return Some(item.guid);
+    }
+    item.content
+        .iter()
+        .flat_map(|content| content.iter())
+        .find_map(|inner| find_item(inner, id))
 }
 
 pub fn plan_payment(inventory: &Inventory, coins: &Coins, cost: u64) -> Option<Payment> {
@@ -315,6 +343,23 @@ mod tests {
                 change: 0,
             })
         );
+    }
+
+    #[test]
+    fn an_item_price_takes_one_from_a_stack_in_a_bag() {
+        let coins = coins();
+        let gold = a_coin(&coins, 1, 5);
+        let guid = gold.guid;
+        let inventory = an_inventory(vec![(InventorySlot::Backpack, a_bag(20, vec![gold]))]);
+
+        assert_eq!(
+            plan_item_payment(&inventory, ItemId(3031)),
+            Some(Payment {
+                takes: vec![(InventorySlot::Backpack, guid, 1)],
+                change: 0,
+            })
+        );
+        assert_eq!(plan_item_payment(&inventory, ItemId(3035)), None);
     }
 
     fn a_rope() -> Item {

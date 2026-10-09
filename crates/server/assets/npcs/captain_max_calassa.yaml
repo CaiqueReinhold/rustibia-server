@@ -1,0 +1,48 @@
+name: Captain Max
+position: { x: 31915, y: 32710, z: 6 }
+speed: 100
+outfit:
+  id: 134
+  colors: [95, 10, 56, 77]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Whoah. That was a large shadow passing by.
+arguments:
+  LIBERTY_BAY: { x: 32298, y: 32895, z: 6 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Ahoy, {{ PLAYERNAME | capitalize }}. On a mission for the explorer society, eh?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["liberty bay"]
+    action: say
+    text: Do you want go back to Liberty Bay?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: LIBERTY_BAY
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe another time, then.
+  - words: ["back"]
+    action: say
+    text: Do you want go back to Liberty Bay?
+  - words: ["passage"]
+    action: say
+    text: Welcome on board, noble {{ PLAYERNAME | capitalize }}. I can bring you back to Liberty Bay. Do you want me to do it?
+  - words: ["job", "captain"]
+    action: say
+    text: I am the captain of this ship.

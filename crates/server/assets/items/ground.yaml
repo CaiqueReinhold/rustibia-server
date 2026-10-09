@@ -1790,7 +1790,7 @@
     floor_change: down
     decay:
       duration: 6000
-      decay_to: 606
+      decay_to: 231
 - id: 622
   name: water
   flags:

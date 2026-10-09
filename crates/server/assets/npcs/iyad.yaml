@@ -1,0 +1,87 @@
+name: Iyad
+position: { x: 32251, y: 31097, z: 4 }
+speed: 100
+outfit:
+  id: 146
+  colors: [75, 94, 106, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - A... aargh. I wish I had some e... earmuffs to put over this useless t... turban.
+    - Oh p.. please. P... lease let me fly us out of this c... cold.
+arguments:
+  DESTINATIONS:
+    farmine: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    zao: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    darashia: { name: Darashia on Darama, cost: 60, position: { x: 33270, y: 32441, z: 6 } }
+    darama: { name: Darashia on Darama, cost: 60, position: { x: 33270, y: 32441, z: 6 } }
+    kazordoon: { name: Kazordoon, cost: 70, position: { x: 32588, y: 31941, z: 0 } }
+    kazor: { name: Kazordoon, cost: 70, position: { x: 32588, y: 31941, z: 0 } }
+    femor hills: { name: the Femor Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    hills: { name: the Femor Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    edron: { name: Edron, cost: 60, position: { x: 33193, y: 31784, z: 3 } }
+    issavi: { name: Issavi, cost: 100, position: { x: 33957, y: 31515, z: 0 } }
+    marapur: { name: Marapur, cost: 70, position: { x: 33805, y: 32767, z: 2 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Finally! A c...c...customer! Wh... where do you want to f...f...fly?
+  - words: GOODBYE
+    action: dismiss
+    text: D...Daraman's blessings... oh, how I m...miss my warm Darashia...
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye!
+  - words: ["farmine", "zao", "darashia", "darama", "kazordoon", "kazor", "femor hills", "hills", "edron", "issavi", "marapur"]
+    action: say
+    text: Do you seek a ride to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: You shouldn't miss the experience.
+  - words: ["job"]
+    action: say
+    text: I'm a licensed c...carpet pilot. I can transport you t...to a warm p...place.
+  - words: ["fly"]
+    action: say
+    text: I t...transport travellers to the continent of Darama for a small fee. It's w...warm there.
+  - words: ["transport", "passage", "ride", "go"]
+    action: say
+    text: I can fly you to Darashia, to Edron, to Kazordoon, to Z... Zao, to the F...Femor Hills, to Issavi or to M... Marapur if you like. W....Where do you want to go?
+  - words: ["name"]
+    action: say
+    text: I'm k...known as Iyad Ibn Abdul.
+  - words: ["ferumbras"]
+    action: say
+    text: The thought of s...some mad sorcerer unleashing some f...fire magic is very tempting.
+  - words: ["carlin"]
+    action: say
+    text: S...so close and s...still that far away.
+  - words: ["thais"]
+    action: say
+    text: For all its m...mistakes, Thais is warm at least.
+  - words: ["excalibug"]
+    action: say
+    text: I would t...trade it for some firewood.
+  - words: ["continent"]
+    action: say
+    text: This h...here is no continent. This is h...hell.
+  - words: ["drefia"]
+    action: say
+    text: Even D...Drefia can't be worse than this land.
+  - words: ["news"]
+    action: say
+    text: I d...don't care about any n...news unless it's the announcement of a h....heatwave.
+  - words: ["time"]
+    action: say
+    text: It's p...probably the ice age.

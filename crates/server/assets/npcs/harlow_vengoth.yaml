@@ -1,0 +1,37 @@
+name: Harlow
+position: { x: 32856, y: 31549, z: 7 }
+speed: 100
+outfit:
+  id: 151
+  colors: [116, 77, 94, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  YALAHAR: { x: 32837, y: 31366, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Want to go back to Yalahar for 50 gold? Just ask me.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["yalahar"]
+    action: say
+    text: Do you seek a passage to Yalahar for free?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "0"
+          position: YALAHAR
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Oh well.

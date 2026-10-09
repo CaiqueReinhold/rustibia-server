@@ -1,0 +1,65 @@
+name: Ziyad
+position: { x: 33805, y: 32768, z: 2 }
+speed: 100
+outfit:
+  id: 146
+  colors: [114, 49, 94, 49]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Feel the wind in your hair during one of my carpet rides!
+arguments:
+  DESTINATIONS:
+    farmine: { name: Farmine, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    zao: { name: Zao, cost: 60, position: { x: 32983, y: 31539, z: 1 } }
+    darashia: { name: Darashia, cost: 40, position: { x: 33270, y: 32441, z: 6 } }
+    darama: { name: Darama, cost: 40, position: { x: 33270, y: 32441, z: 6 } }
+    kazordoon: { name: Kazordoon, cost: 70, position: { x: 32588, y: 31941, z: 0 } }
+    kazor: { name: Kazor, cost: 70, position: { x: 32588, y: 31941, z: 0 } }
+    femor hills: { name: Femor Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    hills: { name: Hills, cost: 60, position: { x: 32536, y: 31837, z: 4 } }
+    svargrond: { name: Svargrond, cost: 60, position: { x: 32253, y: 31097, z: 4 } }
+    edron: { name: Edron, cost: 60, position: { x: 33193, y: 31784, z: 3 } }
+    issavi: { name: Issavi, cost: 100, position: { x: 33957, y: 31515, z: 0 } }
+  KICK:
+    - { x: 33958, y: 31512, z: 1 }
+    - { x: 33959, y: 31512, z: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Ah, the wind brings in another visitor. Welcome, dear guest. Are you looking for a passage with my carpet?
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye. Recommend us if you were satisfied with our service.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["farmine", "zao", "darashia", "darama", "kazordoon", "kazor", "femor hills", "hills", "svargrond", "edron", "issavi"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: We would like to serve you some time.
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 1)]
+  - words: ["trip", "route", "passage", "town", "destination", "sail", "go"]
+    action: say
+    text: I can fly you to Darashia, to Svargrond, to Kazordoon, to Zao, to the Femor Hills, to Edron or to Issavi if you like. Where do you want to go?
+  - words: ["fly"]
+    action: say
+    text: I can fly you to Darashia, Edron, Issavi, Svargrond, Kazordoon, Zao or to Femor Hills if you like. Where do you want to go?

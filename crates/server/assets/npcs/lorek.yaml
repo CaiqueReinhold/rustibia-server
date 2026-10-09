@@ -1,0 +1,51 @@
+name: Lorek
+position: { x: 32679, y: 32775, z: 7 }
+speed: 100
+outfit:
+  id: 132
+  colors: [19, 10, 38, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  DESTINATIONS:
+    west: { name: the west end of Port Hope, price: 7 gold, cost: 7, position: { x: 32558, y: 32780, z: 7 } }
+    centre: { name: the centre of Port Hope, price: 7 gold, cost: 7, position: { x: 32628, y: 32771, z: 7 } }
+    darama: { name: Darama, price: 30 gold, cost: 30, position: { x: 32987, y: 32729, z: 7 } }
+    center: { name: the centre of Port Hope, price: free, cost: 0, position: { x: 32628, y: 32771, z: 7 } }
+    chor: { name: Chor, price: 30 gold, cost: 30, position: { x: 32968, y: 32799, z: 7 } }
+    banuta: { name: Banuta, price: 30 gold, cost: 30, position: { x: 32826, y: 32631, z: 7 } }
+    mountain: { name: Mountain, price: 30 gold, cost: 30, position: { x: 32987, y: 32729, z: 7 } }
+    mountain pass: { name: Mountain Pass, price: 30 gold, cost: 30, position: { x: 32987, y: 32729, z: 7 } }
+keywords:
+  - words: GREET
+    action: engage
+    text: Greetings, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye, {{ PLAYERNAME | capitalize }}.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye.
+  - words: ["west", "centre", "darama", "center", "chor", "banuta", "mountain pass", "mountain"]
+    action: say
+    text: Do you seek a passage to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].price }}?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: DESTINATIONS[PARENT_KEYWORD].cost
+          position: DESTINATIONS[PARENT_KEYWORD].position
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Maybe another time.
+  - words: ["passage"]
+    action: say
+    text: I can travel you to west, centre, darama, chor or banuta.
+  - words: ["ferumbras"]
+    action: say
+    text: I heard he is some scary magician or so.

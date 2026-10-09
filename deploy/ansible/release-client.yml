@@ -1,0 +1,91 @@
+- name: Read the client version
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read the version from Cargo.toml
+      ansible.builtin.set_fact:
+        client_version: >-
+          {{ lookup('file', client_repo ~ '/Cargo.toml')
+             | regex_findall('(?m)^version *= *"([^"]+)"') | first }}
+
+    - name: Check the client working tree
+      ansible.builtin.command: git -C {{ client_repo }} status --porcelain
+      register: client_status
+      changed_when: false
+
+    - name: Refuse to release a client that does not match a commit
+      ansible.builtin.fail:
+        msg: >-
+          {{ client_repo }} has uncommitted changes. A released version is never replaced,
+          so it must be built from a commit.
+      when: client_status.stdout | length > 0
+
+- name: Check the version is new on the host
+  hosts: prod
+  become: true
+  gather_facts: false
+  vars:
+    client_version: "{{ hostvars['localhost'].client_version }}"
+  tasks:
+    - name: Look for an existing release
+      ansible.builtin.stat:
+        path: "{{ app_dir }}/downloads/{{ client_version }}"
+      register: existing
+
+    - name: Refuse to replace a released version
+      ansible.builtin.fail:
+        msg: >-
+          Client {{ client_version }} is already released. Bump the version in
+          rustibia-client/Cargo.toml to publish a new one.
+      when: existing.stat.exists
+
+- name: Build the packages
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Build the Windows installer
+      ansible.builtin.command:
+        chdir: "{{ client_repo }}"
+        cmd: ./packaging/build-windows.sh
+      changed_when: true
+
+    - name: Build the Linux package
+      ansible.builtin.command:
+        chdir: "{{ client_repo }}"
+        cmd: ./packaging/build-linux.sh
+      changed_when: true
+
+- name: Upload the packages
+  hosts: prod
+  become: true
+  gather_facts: false
+  vars:
+    client_version: "{{ hostvars['localhost'].client_version }}"
+    partial: "{{ app_dir }}/downloads/.{{ client_version }}.partial"
+  tasks:
+    - name: Remove a partial upload left by a failed run
+      ansible.builtin.file:
+        path: "{{ partial }}"
+        state: absent
+
+    - name: Create the upload directory
+      ansible.builtin.file:
+        path: "{{ partial }}"
+        state: directory
+        mode: "0755"
+
+    - name: Upload the packages
+      ansible.builtin.copy:
+        src: "{{ client_repo }}/{{ item }}"
+        dest: "{{ partial }}/"
+        mode: "0644"
+      loop:
+        - dist/windows/RustibiaSetup-{{ client_version }}.exe
+        - dist/linux/rustibia_{{ client_version }}_amd64.deb
+
+    - name: Publish the version
+      ansible.builtin.command:
+        cmd: mv {{ partial }} {{ app_dir }}/downloads/{{ client_version }}
+        creates: "{{ app_dir }}/downloads/{{ client_version }}"

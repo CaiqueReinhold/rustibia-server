@@ -2,6 +2,7 @@ use smallvec::SmallVec;
 use tracing::{error, warn};
 
 use crate::{
+    actors::world::{ScheduledCommand, WorldCommand},
     entities::{
         Bounds,
         agent::AgentKey,
@@ -15,7 +16,7 @@ use crate::{
     },
     game::{
         Mark, TickCtx,
-        config::{GAME_CONFIG, MultiActionConfig},
+        config::{GAME_CONFIG, MultiActionConfig, SandDiggingConfig},
         events::BroadcastMessage,
         healing::execute_healing,
         item_action::{ItemActionError, transform},
@@ -23,7 +24,7 @@ use crate::{
         map_query::{find_item, find_landing},
         spells::{CastSource, cast_spell},
     },
-    persistence::{items::ITEM_CONFIGS, spells::SPELLS},
+    persistence::{creatures::CREATURE_KINDS, items::ITEM_CONFIGS, spells::SPELLS},
 };
 
 #[derive(Debug)]
@@ -108,7 +109,7 @@ fn route_multi_action(
     match action {
         ItemMultiAction::Shovel => {
             let tool_target = tool_target(ctx.map, target)?;
-            shovel(ctx, tool_target)
+            shovel(ctx, tool_target, &GAME_CONFIG.multi_action)
         }
         ItemMultiAction::Rope => {
             let tool_target = tool_target(ctx.map, target)?;
@@ -184,18 +185,86 @@ fn tool_target<'a>(map: &GameMap, target: &'a UseTarget) -> Result<&'a ItemRef, 
     Ok(item)
 }
 
-fn shovel(ctx: &mut TickCtx, target: &ItemRef) -> Result<(), ItemActionError> {
+fn shovel(
+    ctx: &mut TickCtx,
+    target: &ItemRef,
+    config: &MultiActionConfig,
+) -> Result<(), ItemActionError> {
     let target_item_id = find_item(ctx.map, &target.placement, &target.guid)
         .unwrap()
         .id();
-    if !GAME_CONFIG
-        .multi_action
-        .diggable_ids
-        .contains(&target_item_id)
-    {
-        return Err(ItemActionError::ActionFailed);
+    if config.diggable_ids.contains(&target_item_id) {
+        return transform(ctx, target, ItemId(target_item_id.0 + 1));
     }
-    transform(ctx, target, ItemId(target_item_id.0 + 1))
+    match &config.sand_digging {
+        Some(sand) => dig_sand(ctx, target, sand),
+        None => Err(ItemActionError::ActionFailed),
+    }
+}
+
+fn dig_sand(
+    ctx: &mut TickCtx,
+    target: &ItemRef,
+    config: &SandDiggingConfig,
+) -> Result<(), ItemActionError> {
+    let ItemPlacement::Map(pos) = &target.placement else {
+        return Err(ItemActionError::ActionFailed);
+    };
+    let (guid, action_id) = {
+        let mut items = ctx
+            .map
+            .iter_items(pos)
+            .map_err(|_| ItemActionError::ActionFailed)?;
+        match (items.next(), items.next()) {
+            (Some(only), None)
+                if only.config.has_flag(ItemFlag::Ground)
+                    && config.sand_ids.contains(&only.id()) =>
+            {
+                (only.guid, only.action_id)
+            }
+            _ => return Err(ItemActionError::ActionFailed),
+        }
+    };
+
+    let roll = ctx.roll.uniform(1, 100);
+    if action_id.map(|id| id.get()) == Some(config.hole_action_id) && roll <= config.hole_chance {
+        let sand = ItemRef {
+            guid,
+            placement: target.placement.clone(),
+        };
+        transform(ctx, &sand, config.hole_into)?;
+    } else if roll <= config.coin_chance {
+        let Some(coin) = ITEM_CONFIGS.get(&config.coin_id) else {
+            error!(
+                "sand digging yields {}, which is not in the catalogue",
+                config.coin_id
+            );
+            return Err(ItemActionError::ActionFailed);
+        };
+        insert_item_at(ctx, Item::new(coin.clone(), 1), &target.placement, None)
+            .map_err(|_| ItemActionError::ActionFailed)?;
+    } else if roll + config.creature_chance > 100 {
+        let Some(kind) = CREATURE_KINDS.get(&config.creature).cloned() else {
+            error!(
+                "sand digging spawns {:?}, which is not a creature kind",
+                config.creature
+            );
+            return Err(ItemActionError::ActionFailed);
+        };
+        ctx.scheduled.push(ScheduledCommand {
+            at_tick: ctx.tick,
+            command: WorldCommand::SpawnCreature {
+                kind,
+                position: pos.clone(),
+                respawn_ticks: None,
+            },
+        });
+    }
+
+    ctx.events.push(BroadcastMessage::AreaEffectAppeared {
+        area_effect: AreaEffect::single(GAME_CONFIG.effect_ids.puff, pos.clone()),
+    });
+    Ok(())
 }
 
 fn machete(
@@ -372,6 +441,7 @@ mod tests {
     use super::*;
     use crate::constants::items::MAX_STACK_AMOUNT;
     use crate::entities::combat::CombatElement;
+    use crate::entities::creature::CreatureKindId;
     use crate::entities::effects::EffectId;
     use crate::entities::spells::{
         PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect, SpellGroup, SpellHealing,
@@ -501,6 +571,180 @@ mod tests {
 
         assert!(pick(&mut h.ctx(&mut map), &dirt, &config).is_err());
         assert_eq!(ids_on(&map), vec![ItemId(64004)]);
+    }
+
+    fn a_creature_kind() -> CreatureKindId {
+        CREATURE_KINDS
+            .keys()
+            .min()
+            .expect("no creature kinds are loaded")
+            .clone()
+    }
+
+    fn a_sand_config(
+        hole_chance: u32,
+        coin_chance: u32,
+        creature_chance: u32,
+    ) -> MultiActionConfig {
+        MultiActionConfig {
+            sand_digging: Some(SandDiggingConfig {
+                sand_ids: vec![ItemId(64010)],
+                hole_into: a_catalogue_id(),
+                hole_action_id: 100,
+                hole_chance,
+                coin_id: a_flask_id(),
+                coin_chance,
+                creature: a_creature_kind(),
+                creature_chance,
+            }),
+            ..Default::default()
+        }
+    }
+
+    /// Sand at (10, 10, 7) with `on_top` lying on it, and a reference to the sand.
+    fn a_sand_tile(action_id: Option<u16>, on_top: Vec<Item>) -> (WorldMap, ItemRef) {
+        let pos = Position::new(10, 10, 7);
+        let mut sand = a_built_item(ItemId(64010), [ItemFlag::Ground]);
+        sand.action_id = action_id.and_then(std::num::NonZeroU16::new);
+        let target = ItemRef {
+            guid: sand.guid,
+            placement: ItemPlacement::Map(pos.clone()),
+        };
+        let mut tile = a_tile_with(sand);
+        for item in on_top {
+            tile.push_item(item);
+        }
+        let mut map = GameMap::new();
+        map.insert_tile(pos, tile);
+        (WorldMap::new(map), target)
+    }
+
+    #[test]
+    fn marked_sand_opens_into_a_hole_that_keeps_its_action_id() {
+        let config = a_sand_config(100, 0, 0);
+        let (mut map, sand) = a_sand_tile(Some(100), Vec::new());
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &sand, &config).unwrap();
+
+        let hole = map.get_top_item(&Position::new(10, 10, 7)).unwrap();
+        assert_eq!(hole.id(), a_catalogue_id());
+        assert_eq!(hole.action_id.map(|id| id.get()), Some(100));
+    }
+
+    #[test]
+    fn unmarked_sand_never_opens() {
+        let config = a_sand_config(100, 0, 0);
+        let (mut map, sand) = a_sand_tile(None, Vec::new());
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &sand, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64010)]);
+    }
+
+    #[test]
+    fn sand_can_turn_up_a_coin() {
+        let config = a_sand_config(0, 100, 0);
+        let (mut map, sand) = a_sand_tile(None, Vec::new());
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &sand, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64010), a_flask_id()]);
+    }
+
+    #[test]
+    fn sand_can_turn_up_a_creature_that_never_respawns() {
+        let config = a_sand_config(0, 0, 100);
+        let (mut map, sand) = a_sand_tile(None, Vec::new());
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &sand, &config).unwrap();
+
+        assert!(
+            matches!(
+                h.scheduled.as_slice(),
+                [ScheduledCommand {
+                    at_tick,
+                    command: WorldCommand::SpawnCreature {
+                        position,
+                        respawn_ticks: None,
+                        ..
+                    },
+                }] if *at_tick == h.tick && *position == Position::new(10, 10, 7)
+            ),
+            "{:?}",
+            h.scheduled
+        );
+    }
+
+    #[test]
+    fn an_empty_dig_still_puffs() {
+        let config = a_sand_config(0, 0, 0);
+        let (mut map, sand) = a_sand_tile(Some(100), Vec::new());
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &sand, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64010)]);
+        assert!(h.scheduled.is_empty());
+        assert!(
+            h.events
+                .iter()
+                .any(|e| matches!(e, BroadcastMessage::AreaEffectAppeared { .. }))
+        );
+    }
+
+    #[test]
+    fn an_item_on_the_sand_blocks_the_dig() {
+        let config = a_sand_config(100, 100, 100);
+        let flask = a_built_item(ItemId(64011), [ItemFlag::Take]);
+        let (mut map, sand) = a_sand_tile(Some(100), vec![flask]);
+        let mut h = TestHarness::new();
+
+        assert!(shovel(&mut h.ctx(&mut map), &sand, &config).is_err());
+        assert_eq!(ids_on(&map), vec![ItemId(64010), ItemId(64011)]);
+        assert!(h.scheduled.is_empty());
+    }
+
+    #[test]
+    fn a_ground_that_is_not_sand_is_refused() {
+        let config = a_sand_config(100, 100, 100);
+        let (mut map, dirt) = a_dirt_floor(Some(100));
+        let mut h = TestHarness::new();
+
+        assert!(shovel(&mut h.ctx(&mut map), &dirt, &config).is_err());
+        assert_eq!(ids_on(&map), vec![ItemId(64004)]);
+    }
+
+    #[test]
+    fn sand_digging_off_refuses_sand() {
+        let (mut map, sand) = a_sand_tile(Some(100), Vec::new());
+        let mut h = TestHarness::new();
+
+        assert!(shovel(&mut h.ctx(&mut map), &sand, &MultiActionConfig::default()).is_err());
+    }
+
+    #[test]
+    fn a_diggable_item_is_dug_before_sand_is_considered() {
+        let into = a_catalogue_id();
+        let diggable = ItemId(into.0 - 1);
+        let config = MultiActionConfig {
+            diggable_ids: vec![diggable],
+            ..a_sand_config(100, 100, 100)
+        };
+        let (mut map, pile) = a_target(a_built_item(diggable, [ItemFlag::Usable]));
+        let mut h = TestHarness::new();
+
+        shovel(&mut h.ctx(&mut map), &pile, &config).unwrap();
+
+        assert_eq!(ids_on(&map), vec![ItemId(64000), into]);
+        assert!(
+            h.scheduled
+                .iter()
+                .all(|s| !matches!(s.command, WorldCommand::SpawnCreature { .. }))
+        );
     }
 
     fn an_item(id: ItemId) -> Item {
@@ -684,6 +928,39 @@ mod tests {
                     ItemId(diggable_id.0 + 1),
                     "{name} ({shovel_id:?}) dug {diggable_id:?} into the wrong item"
                 );
+            }
+        }
+    }
+
+    #[test]
+    fn sand_digging_names_items_and_a_creature_that_exist() {
+        let Some(sand) = &GAME_CONFIG.multi_action.sand_digging else {
+            return;
+        };
+        for id in sand.sand_ids.iter().chain([&sand.hole_into, &sand.coin_id]) {
+            assert!(
+                ITEM_CONFIGS.contains_key(id),
+                "{id:?} is not in the catalogue"
+            );
+        }
+        assert!(
+            CREATURE_KINDS.contains_key(&sand.creature),
+            "{:?} is not a creature kind",
+            sand.creature
+        );
+    }
+
+    #[test]
+    fn every_shovel_digs_bare_sand() {
+        let config = &GAME_CONFIG.multi_action;
+        let Some(sand) = &config.sand_digging else {
+            return;
+        };
+        for shovel_id in &config.shovel_ids {
+            for sand_id in &sand.sand_ids {
+                let (denied, _) = use_tool_on(*shovel_id, *sand_id);
+                let name = &ITEM_CONFIGS[shovel_id].name;
+                assert!(!denied, "{name} ({shovel_id}) could not dig sand {sand_id}");
             }
         }
     }

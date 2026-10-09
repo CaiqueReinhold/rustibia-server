@@ -1,0 +1,66 @@
+name: Maris
+position: { x: 32564, y: 31313, z: 7 }
+speed: 100
+outfit:
+  id: 151
+  colors: [78, 51, 85, 126]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+arguments:
+  YALAHAR: { x: 32649, y: 31292, z: 6 }
+  MISTROCK: { x: 32640, y: 31439, z: 7 }
+  KICK:
+    - { x: 32561, y: 31312, z: 7 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Oh, you're still alive. Hello, {{ PLAYERNAME | capitalize }}.
+  - words: GOODBYE
+    action: dismiss
+    text: Yeah, bye or whatever.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Bye.
+  - words: ["yalahar"]
+    action: say
+    text: Do you want go back to Yalahar for 100 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "100"
+          position: YALAHAR
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Alright then!
+  - words: ["mistrock"]
+    action: say
+    text: Do you want go to the Mistrock for 50 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "50"
+          position: MISTROCK
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Alright then!
+  - words: ["kick"]
+    action: teleport
+    failed_text: Off with you!
+    params:
+      cost: "0"
+      position: KICK[uniform(0, 0)]
+  - words: ["offer", "passage"]
+    action: say
+    text: I can take you to Yalahar or Mistrock!
+  - words: ["job", "captain"]
+    action: say
+    text: I am Maris, Captain of this ship.

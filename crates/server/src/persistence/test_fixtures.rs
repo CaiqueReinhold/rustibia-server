@@ -305,6 +305,7 @@ say: { cooldown: 300, chance: 50000 }
 arguments:
   DESTINATIONS:
     edron: { cost: 40, position: { x: 20, y: 20, z: 7 } }
+  RING: 9999
 keywords:
   - words: GREET
     action: engage
@@ -318,6 +319,24 @@ keywords:
   - words: ["no"]
     action: say
     text: No what?
+  - words: ["dice"]
+    action: say
+    text: "{{ uniform(1, 3) }}"
+  - words: ["ferry"]
+    condition: has_item(RING)
+    action: say
+    text: Ring?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: No ring.
+        params:
+          cost: "0"
+          item: RING
+          position: DESTINATIONS.edron.position
+  - words: ["ferry"]
+    action: say
+    text: No ring, no ferry.
   - words: ["edron"]
     action: say
     text: "Edron for {{ DESTINATIONS[WORD].cost }}?"
@@ -334,8 +353,9 @@ keywords:
         text: Maybe later.
 "#;
 
-/// Stands at (10, 10, 7) and sails to (20, 20, 7) for 40. `no` answers at the root and, with a
-/// reset, under `edron`, so a test can tell which level matched.
+/// Stands at (10, 10, 7) and sails to (20, 20, 7) for 40, or for item 9999 when asked `ferry`
+/// by a player carrying it. `no` answers at the root and, with a reset, under `edron`, so a test
+/// can tell which level matched.
 pub fn an_npc() -> Arc<Npc> {
     Arc::new(parse_npc(std::path::Path::new("an_npc.yaml"), AN_NPC).unwrap())
 }

@@ -1,0 +1,72 @@
+name: Thorgrin
+position: { x: 33024, y: 31554, z: 12 }
+speed: 100
+outfit:
+  id: 66
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - Ask me for a passage...
+arguments:
+  KAZORDOON: { x: 32659, y: 31957, z: 15 }
+  CORMAYA: { x: 33310, y: 31988, z: 15 }
+  GNOMPRONA: { x: 33516, y: 32856, z: 14 }
+keywords:
+  - words: GREET
+    action: engage
+    text: Welcome, {{ PLAYERNAME | capitalize }}! May earth protect you on the rocky grounds. If you need a passage back, I can help you.
+  - words: GOODBYE
+    action: dismiss
+    text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Good bye then.
+  - words: ["kazordoon"]
+    action: say
+    text: Do you seek a ride to Kazordoon for 210 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "210"
+          position: KAZORDOON
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not
+  - words: ["cormaya"]
+    action: say
+    text: Do you seek a ride to Cormaya for 110 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "110"
+          position: CORMAYA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not
+  - words: ["gnomprona"]
+    action: say
+    text: Would you like to travel to Gnomprona for 200 gold?
+    children:
+      - words: ["yes"]
+        action: teleport
+        failed_text: You don't have enough money.
+        params:
+          cost: "200"
+          position: GNOMPRONA
+      - words: ["no"]
+        action: say
+        reset: true
+        text: Then not
+  - words: ["passage"]
+    action: say
+    text: Do you want me take you to Cormaya, Kazordoon or Gnomprona?
