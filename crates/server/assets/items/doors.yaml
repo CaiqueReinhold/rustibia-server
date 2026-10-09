@@ -1,6 +1,7 @@
 - id: 1628
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -31,6 +32,7 @@
 - id: 1631
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -181,6 +183,7 @@
 - id: 1650
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -211,6 +214,7 @@
 - id: 1653
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -361,6 +365,7 @@
 - id: 1668
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -391,6 +396,7 @@
 - id: 1671
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -501,6 +507,7 @@
 - id: 1682
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -591,6 +598,7 @@
 - id: 1691
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -787,6 +795,7 @@
 - id: 4912
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -797,6 +806,7 @@
 - id: 4913
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -877,6 +887,7 @@
 - id: 5097
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -967,6 +978,7 @@
 - id: 5106
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1057,6 +1069,7 @@
 - id: 5115
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1147,6 +1160,7 @@
 - id: 5124
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1237,6 +1251,7 @@
 - id: 5133
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1267,6 +1282,7 @@
 - id: 5136
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1297,6 +1313,7 @@
 - id: 5139
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1327,6 +1344,7 @@
 - id: 5142
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1357,6 +1375,7 @@
 - id: 5277
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1387,6 +1406,7 @@
 - id: 5280
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1593,6 +1613,7 @@
 - id: 5732
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1623,6 +1644,7 @@
 - id: 5735
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1653,6 +1675,7 @@
 - id: 5745
   name: closed door
   article: a
+  description: The door seems to be sealed against unwanted intruders.
   flags:
   - usable
   - unpass
@@ -1660,6 +1683,7 @@
 - id: 5746
   name: open door
   article: an
+  description: The door seems to be sealed against unwanted intruders.
   flags:
   - top
   - usable
@@ -1667,6 +1691,7 @@
 - id: 5748
   name: open door
   article: an
+  description: The door seems to be sealed against unwanted intruders.
   flags:
   - top
   - usable
@@ -1677,6 +1702,7 @@
 - id: 5749
   name: closed door
   article: a
+  description: The door seems to be sealed against unwanted intruders.
   flags:
   - usable
   - unpass
@@ -1687,6 +1713,7 @@
 - id: 6191
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1717,6 +1744,7 @@
 - id: 6194
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1867,6 +1895,7 @@
 - id: 6248
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -1897,6 +1926,7 @@
 - id: 6251
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2405,6 +2435,7 @@
 - id: 6799
   name: entrance
   article: an
+  description: It seems tightly closed.
   flags:
   - usable
   - unpass
@@ -2422,6 +2453,7 @@
 - id: 6801
   name: entrance
   article: an
+  description: It seems tightly closed.
   flags:
   - usable
   - unpass
@@ -2439,6 +2471,7 @@
 - id: 6891
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2529,6 +2562,7 @@
 - id: 6900
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2667,6 +2701,7 @@
 - id: 7033
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2757,6 +2792,7 @@
 - id: 7042
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2903,6 +2939,7 @@
 - id: 7711
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -2933,6 +2970,7 @@
 - id: 7714
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3089,6 +3127,7 @@
 - id: 7869
   name: open door
   article: an
+  description: It can't be closed.
   flags:
   - top
   - unmove
@@ -3162,6 +3201,7 @@
 - id: 8255
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3182,6 +3222,7 @@
 - id: 8257
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3342,6 +3383,7 @@
 - id: 8357
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3362,6 +3404,7 @@
 - id: 8359
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3494,6 +3537,7 @@
 - id: 9351
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3524,6 +3568,7 @@
 - id: 9354
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3674,6 +3719,7 @@
 - id: 9551
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3764,6 +3810,7 @@
 - id: 9560
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3886,6 +3933,7 @@
 - id: 9858
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -3956,6 +4004,7 @@
 - id: 9867
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4026,6 +4075,7 @@
 - id: 11136
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4090,6 +4140,7 @@
 - id: 11143
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4170,6 +4221,7 @@
 - id: 11233
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4230,6 +4282,7 @@
 - id: 11241
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4400,6 +4453,7 @@
 - id: 13135
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4430,6 +4484,7 @@
 - id: 13142
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4527,6 +4582,7 @@
 - id: 17560
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4617,6 +4673,7 @@
 - id: 17569
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4707,6 +4764,7 @@
 - id: 17700
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4797,6 +4855,7 @@
 - id: 17709
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4887,6 +4946,7 @@
 - id: 17993
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -4977,6 +5037,7 @@
 - id: 18002
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5087,6 +5148,7 @@
 - id: 20443
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5177,6 +5239,7 @@
 - id: 20452
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5354,6 +5417,7 @@
 - id: 23873
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5374,6 +5438,7 @@
 - id: 23875
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5462,6 +5527,7 @@
 - id: 28364
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5482,6 +5548,7 @@
 - id: 28366
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5754,6 +5821,7 @@
 - id: 30049
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5764,6 +5832,7 @@
 - id: 30050
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5774,6 +5843,7 @@
 - id: 30051
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -5784,6 +5854,7 @@
 - id: 30052
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -6204,6 +6275,7 @@
 - id: 33632
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -6220,6 +6292,7 @@
 - id: 33634
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - usable
   - unpass
@@ -6389,6 +6462,7 @@
 - id: 37982
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - unpass
   - unmove
@@ -6408,6 +6482,7 @@
 - id: 37984
   name: closed door
   article: a
+  description: It is locked.
   flags:
   - unpass
   - unmove

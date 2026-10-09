@@ -1090,6 +1090,7 @@
 - id: 860
   name: crimson sword
   article: a
+  description: Its blade is very notchy
   flags:
   - usable
   - multiuse
@@ -1103,6 +1104,8 @@
 - id: 904
   name: throwing cake
   article: a
+  description: You could eat it. But then again, throwing it at others is so much
+    more fun
   flags:
   - take
   attributes:
@@ -1149,6 +1152,7 @@
 - id: 3065
   name: terra rod
   article: a
+  description: Small stones are flying from its tip
   flags:
   - take
   attributes:
@@ -1165,6 +1169,7 @@
 - id: 3066
   name: snakebite rod
   article: a
+  description: It seems to twitch and quiver as if trying to escape your grip
   flags:
   - take
   attributes:
@@ -1181,6 +1186,7 @@
 - id: 3067
   name: hailstorm rod
   article: a
+  description: It grants you the power of striking your foes with furious hailstorms
   flags:
   - take
   attributes:
@@ -1198,6 +1204,7 @@
 - id: 3069
   name: necrotic rod
   article: a
+  description: It was brought up from hell to deliver death
   flags:
   - take
   attributes:
@@ -1214,6 +1221,7 @@
 - id: 3070
   name: moonlight rod
   article: a
+  description: Icecold rays of moonlight shimmer on its tip
   flags:
   - take
   attributes:
@@ -1230,6 +1238,7 @@
 - id: 3071
   name: wand of inferno
   article: a
+  description: It unleashes the very fires of hell
   flags:
   - take
   attributes:
@@ -1247,6 +1256,7 @@
 - id: 3072
   name: wand of decay
   article: a
+  description: It is half-rotten itself and reeks terribly
   flags:
   - take
   attributes:
@@ -1263,6 +1273,7 @@
 - id: 3073
   name: wand of cosmic energy
   article: a
+  description: The energy of a radiant star is trapped inside its globe
   flags:
   - take
   attributes:
@@ -1279,6 +1290,7 @@
 - id: 3074
   name: wand of vortex
   article: a
+  description: Surges of energy rush through the tip of this wand
   flags:
   - take
   attributes:
@@ -1295,6 +1307,7 @@
 - id: 3075
   name: wand of dragonbreath
   article: a
+  description: Legends say that this wand holds the soul of a young dragon
   flags:
   - take
   attributes:
@@ -1311,6 +1324,7 @@
 - id: 3208
   name: giant smithhammer
   article: a
+  description: This cyclopean hammer seems to be an awesome smithing tool
   flags:
   - usable
   - multiuse
@@ -1422,6 +1436,7 @@
 - id: 3271
   name: spike sword
   article: a
+  description: It can be enchanted with an element.
   flags:
   - usable
   - multiuse
@@ -1521,6 +1536,7 @@
 - id: 3278
   name: magic longsword
   article: a
+  description: It's the magic Cyclopmania Sword
   flags:
   - usable
   - multiuse
@@ -1553,6 +1569,7 @@
 - id: 3280
   name: fire sword
   article: a
+  description: The blade is a magic flame
   flags:
   - usable
   - multiuse
@@ -1571,6 +1588,7 @@
 - id: 3281
   name: giant sword
   article: a
+  description: This sword has been forged by ancient giants
   flags:
   - usable
   - multiuse
@@ -1614,6 +1632,7 @@
 - id: 3284
   name: ice rapier
   article: an
+  description: A deadly but fragile weapon
   flags:
   - usable
   - multiuse
@@ -1671,6 +1690,7 @@
 - id: 3288
   name: magic sword
   article: a
+  description: It's the Sword of Valor
   flags:
   - usable
   - multiuse
@@ -1764,6 +1784,7 @@
 - id: 3295
   name: bright sword
   article: a
+  description: The blade shimmers in light blue
   flags:
   - usable
   - multiuse
@@ -1779,6 +1800,7 @@
 - id: 3296
   name: warlord sword
   article: a
+  description: Strong powers flow in this magic sword
   flags:
   - usable
   - multiuse
@@ -1812,6 +1834,7 @@
 - id: 3298
   name: throwing knife
   article: a
+  plural: throwing knives
   flags:
   - cumulative
   - take
@@ -1872,6 +1895,7 @@
 - id: 3302
   name: dragon lance
   article: a
+  description: The extraordinary sharp blade penetrates every armor
   flags:
   - usable
   - multiuse
@@ -1886,6 +1910,7 @@
 - id: 3303
   name: great axe
   article: a
+  description: A masterpiece of a dwarven smith
   flags:
   - usable
   - multiuse
@@ -1902,6 +1927,7 @@
 - id: 3304
   name: crowbar
   article: a
+  description: It may come in handy sometime
   flags:
   - usable
   - multiuse
@@ -1968,6 +1994,7 @@
 - id: 3309
   name: thunder hammer
   article: a
+  description: It is blessed by the gods of Tibia
   flags:
   - usable
   - multiuse
@@ -2011,6 +2038,7 @@
 - id: 3312
   name: silver mace
   article: a
+  description: You feel an aura of protection
   flags:
   - usable
   - multiuse
@@ -2111,6 +2139,7 @@
 - id: 3319
   name: stonecutter axe
   article: a
+  description: You feel the power of this mighty axe
   flags:
   - usable
   - multiuse
@@ -2126,6 +2155,7 @@
 - id: 3320
   name: fire axe
   article: a
+  description: The blade is a magic flame
   flags:
   - usable
   - multiuse
@@ -2144,6 +2174,7 @@
 - id: 3321
   name: enchanted staff
   article: an
+  description: Temporal magic powers enchant this staff
   flags:
   - usable
   - multiuse
@@ -2189,6 +2220,7 @@
 - id: 3324
   name: skull staff
   article: a
+  description: The staff longs for death
   flags:
   - usable
   - multiuse
@@ -2300,6 +2332,8 @@
 - id: 3332
   name: hammer of wrath
   article: a
+  description: A giant is said to have forged this hammer to take revenge for the
+    death of his brother
   flags:
   - usable
   - multiuse
@@ -2362,6 +2396,7 @@
 - id: 3336
   name: studded club
   article: a
+  description: It has been reinforced with iron
   flags:
   - usable
   - multiuse
@@ -2375,6 +2410,7 @@
 - id: 3337
   name: bone club
   article: a
+  description: It apparently originally belonged to some lesser undead
   flags:
   - usable
   - multiuse
@@ -2416,6 +2452,7 @@
 - id: 3340
   name: heavy mace
   article: a
+  description: Its tip is made of extremely solid steel
   flags:
   - usable
   - multiuse
@@ -2430,6 +2467,8 @@
 - id: 3341
   name: arcane staff
   article: an
+  description: It is enchanted with ancient magic that renders a weak staff into a
+    powerful weapon
   flags:
   - usable
   - multiuse
@@ -2460,6 +2499,7 @@
 - id: 3343
   name: lich staff
   article: a
+  description: A scent of death and decay sticks to this weapon
   flags:
   - usable
   - multiuse
@@ -2582,6 +2622,7 @@
 - id: 5803
   name: arbalest
   article: an
+  description: It is a bit heavy due to the iron mounting, but very precise
   flags:
   - take
   attributes:
@@ -2610,6 +2651,7 @@
 - id: 6527
   name: avenger
   article: the
+  description: This holy blade was forged of shattered dreams
   flags:
   - usable
   - multiuse
@@ -2706,6 +2748,7 @@
 - id: 7379
   name: brutetamer's staff
   article: a
+  description: Barbarian women are said to use it for conjuring beasts
   flags:
   - usable
   - multiuse
@@ -2720,6 +2763,7 @@
 - id: 7380
   name: headchopper
   article: a
+  description: This axe is only granted to a greenhorn of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -2736,6 +2780,8 @@
 - id: 7381
   name: mammoth whopper
   article: a
+  description: Made from a mammoth's legbones, it is one of the favoured weapons among
+    barbarians
   flags:
   - usable
   - multiuse
@@ -2781,6 +2827,7 @@
 - id: 7384
   name: mystic blade
   article: a
+  description: This sword is only granted to a scrapper of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -2811,6 +2858,7 @@
 - id: 7386
   name: mercenary sword
   article: a
+  description: This axe is only granted to a scrapper of the Svargrond arena.
   flags:
   - usable
   - multiuse
@@ -2827,6 +2875,8 @@
 - id: 7387
   name: diamond sceptre
   article: a
+  description: The beautiful jewel on the top of this sceptre is sharp enough to cut
+    through glass
   flags:
   - usable
   - multiuse
@@ -2856,6 +2906,7 @@
 - id: 7389
   name: heroic axe
   article: a
+  description: This axe is only granted to a scrapper of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -2871,6 +2922,7 @@
 - id: 7390
   name: justice seeker
   article: the
+  description: This sword is only granted to a warlord of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -2902,6 +2954,7 @@
 - id: 7392
   name: orcish maul
   article: an
+  description: This club is only granted to a greenhorn of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -2979,6 +3032,7 @@
 - id: 7406
   name: blacksteel sword
   article: a
+  description: This sword is only granted to a greenhorn of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -3101,6 +3155,8 @@
 - id: 7414
   name: abyss hammer
   article: an
+  description: Floating stones form the tip of this strange weapon, held in place
+    by unspeakable magic
   flags:
   - usable
   - multiuse
@@ -3117,6 +3173,7 @@
 - id: 7415
   name: cranial basher
   article: a
+  description: This club is only granted to a scrapper of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -3294,6 +3351,8 @@
 - id: 7427
   name: chaos mace
   article: a
+  description: Only those who have descended to the deepest depths may wield this
+    hammer without it cursing them
   flags:
   - usable
   - multiuse
@@ -3308,6 +3367,7 @@
 - id: 7428
   name: bonebreaker
   article: a
+  description: This weapon has to be swung in both hands and requires a lot of strength
   flags:
   - usable
   - multiuse
@@ -3324,6 +3384,7 @@
 - id: 7429
   name: blessed sceptre
   article: a
+  description: This sceptre is only granted to a warlord of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -3339,6 +3400,7 @@
 - id: 7430
   name: dragonbone staff
   article: a
+  description: Small flames are dancing around this strange weapon
   flags:
   - usable
   - multiuse
@@ -3398,6 +3460,7 @@
 - id: 7434
   name: royal axe
   article: a
+  description: This axe is only granted to a warlord of the Svargrond arena
   flags:
   - usable
   - multiuse
@@ -3444,6 +3507,7 @@
 - id: 7437
   name: sapphire hammer
   article: a
+  description: A beautiful gem is embedded in this weapon
   flags:
   - usable
   - multiuse
@@ -3458,6 +3522,7 @@
 - id: 7438
   name: elvish bow
   article: an
+  description: This beautifully ornamented bow was made by a skilled elvish bowmaker
   flags:
   - take
   attributes:
@@ -3772,6 +3837,7 @@
 - id: 8082
   name: underworld rod
   article: an
+  description: No one knows which hell this unholy rod comes from
   flags:
   - take
   attributes:
@@ -3788,6 +3854,8 @@
 - id: 8083
   name: northwind rod
   article: a
+  description: It was made by one of the shamans in Svargrond and symbolises an icy
+    mammoth
   flags:
   - take
   attributes:
@@ -3804,6 +3872,7 @@
 - id: 8084
   name: springsprout rod
   article: a
+  description: It is filled with the energy of growing plants
   flags:
   - take
   attributes:
@@ -3820,6 +3889,7 @@
 - id: 8092
   name: wand of starstorm
   article: a
+  description: It is sparkling with universal energy
   flags:
   - take
   attributes:
@@ -3837,6 +3907,7 @@
 - id: 8093
   name: wand of draconia
   article: a
+  description: This wand holds the spirit and soul of a dragon lord
   flags:
   - take
   attributes:
@@ -3853,6 +3924,7 @@
 - id: 8094
   name: wand of voodoo
   article: a
+  description: It is filled with the dark hatred and rage of a tormented demonic being
   flags:
   - take
   attributes:
@@ -4006,6 +4078,7 @@
     - knight
 - id: 9373
   name: glutton's mace
+  description: It would be an awesome weapon if the handle weren't that greasy
   flags:
   - take
   attributes:
@@ -4017,6 +4090,8 @@
 - id: 9375
   name: pointed rabbitslayer
   article: a
+  description: Someone has sharpened this carrot to inflict some nasty damage especially
+    on rabbits
   flags:
   - take
   attributes:
@@ -4028,6 +4103,8 @@
 - id: 9376
   name: stale bread of ancientness
   article: a
+  description: This bread is so old that it has become unbreakable and a formidable
+    weapon
   flags:
   - take
   attributes:
@@ -4039,6 +4116,8 @@
 - id: 9378
   name: musician's bow
   article: a
+  description: If you could only figure out how you are supposed to fire more arrows
+    at once
   flags:
   - take
   attributes:
@@ -4050,6 +4129,7 @@
 - id: 9384
   name: scythe of the reaper
   article: a
+  description: This scythe has harvested countless souls and still hungers for more
   flags:
   - take
   attributes:
@@ -4061,6 +4141,7 @@
 - id: 9385
   name: club of the fury
   article: a
+  description: It's ready to unleash a fury's wrath on its enemies
   flags:
   - take
   attributes:
@@ -4072,6 +4153,7 @@
 - id: 9386
   name: farmer's avenger
   article: a
+  description: A weapon forged to fight oppression of the poor underdogs
   flags:
   - take
   attributes:
@@ -4083,6 +4165,7 @@
 - id: 9387
   name: poet's fencing quill
   article: a
+  description: This feather is mightier than a sword
   flags:
   - take
   attributes:
@@ -4094,6 +4177,8 @@
 - id: 9396
   name: incredible mumpiz slayer
   article: an
+  description: This magnificent weapon was forged to slay arch mumpiz demons with
+    a single blow
   flags:
   - usable
   - multiuse
@@ -4244,6 +4329,7 @@
 - id: 12510
   name: hammer of mighty cheating
   article: a
+  description: This hammer is a lesser version of the fabled Ban-Hammer
   flags:
   - usable
   - multiuse
@@ -4256,6 +4342,7 @@
 - id: 12603
   name: wand of dimensions
   article: a
+  description: This wand controls the rift between time and space
   flags:
   - take
   attributes:
@@ -4316,6 +4403,7 @@
 - id: 12732
   name: shimmer rod
   article: a
+  description: It feels cold and smooth
   flags:
   - take
   attributes:
@@ -4335,6 +4423,7 @@
 - id: 12733
   name: shimmer bow
   article: a
+  description: This bow seems to be alive but keeps perfectly still
   flags:
   - take
   attributes:
@@ -4354,6 +4443,7 @@
 - id: 12741
   name: shimmer wand
   article: a
+  description: It feels cold and smooth
   flags:
   - take
   attributes:
@@ -4519,6 +4609,7 @@
 - id: 16096
   name: wand of defiance
   article: a
+  description: It reveals devastating energy arcs
   flags:
   - take
   attributes:
@@ -4535,6 +4626,7 @@
 - id: 16115
   name: wand of everblazing
   article: a
+  description: It contains the everblazing fire
   flags:
   - take
   attributes:
@@ -4551,6 +4643,7 @@
 - id: 16117
   name: muck rod
   article: a
+  description: A true staff of old, spitting slimy orbs
   flags:
   - take
   attributes:
@@ -4567,6 +4660,7 @@
 - id: 16118
   name: glacial rod
   article: a
+  description: Hurls the icy essence of the Svargrond glaciers
   flags:
   - take
   attributes:
@@ -4598,6 +4692,8 @@
 - id: 16161
   name: crystalline axe
   article: a
+  description: Even in the light of day, the stars seem to reflect in each facet of
+    this crystalline axe
   flags:
   - usable
   - multiuse
@@ -4675,6 +4771,7 @@
 - id: 17109
   name: mean knight sword
   article: a
+  description: It can only be wielded properly by players without vocation.
   flags:
   - usable
   - multiuse
@@ -4688,6 +4785,7 @@
 - id: 17110
   name: mean paladin spear
   article: a
+  description: It can only be wielded properly by players without vocation.
   flags:
   - cumulative
   - take
@@ -4703,6 +4801,7 @@
 - id: 17111
   name: sorcerer and druid staff
   article: a
+  description: It can only be wielded properly by players without vocation.
   flags:
   - take
   attributes:
@@ -5222,6 +5321,7 @@
 - id: 21158
   name: glooth spear
   article: a
+  plural: glooth spears
   flags:
   - cumulative
   - take
@@ -5392,6 +5492,7 @@
 - id: 21348
   name: scorcher
   article: the
+  description: It's warm to the touch
   flags:
   - take
   attributes:
@@ -5408,6 +5509,7 @@
 - id: 21350
   name: chiller
   article: the
+  description: It is a little, well, chilly to the touch
   flags:
   - take
   attributes:
@@ -5532,6 +5634,8 @@
 - id: 22764
   name: Ferumbras' staff
   article: a
+  description: It is made of platinum and emeralds and topped by a large F made of
+    gold
   flags:
   - usable
   - take
@@ -5545,6 +5649,8 @@
 - id: 22765
   name: Ferumbras' staff
   article: a
+  description: It is made of platinum and emeralds and topped by a large F made of
+    gold
   flags:
   - take
   attributes:
@@ -5564,6 +5670,8 @@
 - id: 22766
   name: Ferumbras' staff
   article: a
+  description: It is made of platinum and emeralds and topped by a large F made of
+    gold
   flags:
   - take
   attributes:
@@ -5615,6 +5723,7 @@
 - id: 22870
   name: throwing star of Sula
   article: a
+  description: The golden starfish's arms are sharp as razor blades
   flags:
   - cumulative
   - take
@@ -5630,6 +5739,7 @@
 - id: 25700
   name: dream blossom staff
   article: a
+  description: It's a gnarly branch with a gleaming blue blossom
   flags:
   - take
   attributes:
@@ -5684,6 +5794,7 @@
 - id: 25760
   name: wand of darkness
   article: a
+  description: Temporary magic powers enchant this staff.
   flags:
   - take
   attributes:
@@ -6483,6 +6594,7 @@
 - id: 25983
   name: plain mayhem blade
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6496,6 +6608,7 @@
 - id: 25984
   name: valuable mayhem blade
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6509,6 +6622,7 @@
 - id: 25985
   name: ornate mayhem blade
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6522,6 +6636,7 @@
 - id: 25986
   name: plain mayhem slayer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6535,6 +6650,7 @@
 - id: 25987
   name: valuable mayhem slayer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6548,6 +6664,7 @@
 - id: 25988
   name: ornate mayhem slayer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6561,6 +6678,7 @@
 - id: 25989
   name: plain mayhem axe
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6574,6 +6692,7 @@
 - id: 25990
   name: valuable mayhem axe
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6587,6 +6706,7 @@
 - id: 25991
   name: ornate mayhem axe
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6600,6 +6720,7 @@
 - id: 25992
   name: plain mayhem chopper
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6613,6 +6734,7 @@
 - id: 25993
   name: valuable mayhem chopper
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6626,6 +6748,7 @@
 - id: 25994
   name: ornate mayhem chopper
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6639,6 +6762,7 @@
 - id: 25995
   name: plain mayhem mace
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6652,6 +6776,7 @@
 - id: 25996
   name: valuable mayhem mace
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6665,6 +6790,7 @@
 - id: 25997
   name: ornate mayhem mace
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6678,6 +6804,7 @@
 - id: 25998
   name: plain mayhem hammer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6691,6 +6818,7 @@
 - id: 25999
   name: valuable mayhem hammer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6704,6 +6832,7 @@
 - id: 26000
   name: ornate mayhem hammer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6717,6 +6846,7 @@
 - id: 26001
   name: plain mayhem bow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -6726,6 +6856,7 @@
 - id: 26002
   name: valuable mayhem bow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -6735,6 +6866,7 @@
 - id: 26003
   name: ornate mayhem bow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -6744,6 +6876,7 @@
 - id: 26004
   name: plain mayhem crossbow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -6753,6 +6886,7 @@
 - id: 26005
   name: valuable mayhem crossbow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -6762,6 +6896,7 @@
 - id: 26006
   name: ornate mayhem crossbow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -6771,6 +6906,7 @@
 - id: 26007
   name: plain mayhem wand
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -6780,6 +6916,7 @@
 - id: 26008
   name: valuable mayhem wand
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -6789,6 +6926,7 @@
 - id: 26009
   name: ornate mayhem wand
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -6798,6 +6936,7 @@
 - id: 26010
   name: plain mayhem rod
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -6807,6 +6946,7 @@
 - id: 26011
   name: valuable mayhem rod
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -6816,6 +6956,7 @@
 - id: 26012
   name: ornate mayhem rod
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -6825,6 +6966,7 @@
 - id: 26014
   name: plain remedy blade
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6838,6 +6980,7 @@
 - id: 26015
   name: valuable remedy blade
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6851,6 +6994,7 @@
 - id: 26016
   name: ornate remedy blade
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6864,6 +7008,7 @@
 - id: 26017
   name: plain remedy slayer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6877,6 +7022,7 @@
 - id: 26018
   name: valuable remedy slayer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6890,6 +7036,7 @@
 - id: 26019
   name: ornate remedy slayer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6903,6 +7050,7 @@
 - id: 26020
   name: plain remedy axe
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6916,6 +7064,7 @@
 - id: 26021
   name: valuable remedy axe
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6929,6 +7078,7 @@
 - id: 26022
   name: ornate remedy axe
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6942,6 +7092,7 @@
 - id: 26023
   name: plain remedy chopper
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6955,6 +7106,7 @@
 - id: 26024
   name: valuable remedy chopper
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -6968,6 +7120,7 @@
 - id: 26025
   name: ornate remedy chopper
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -6981,6 +7134,7 @@
 - id: 26026
   name: plain remedy mace
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -6994,6 +7148,7 @@
 - id: 26027
   name: valuable remedy mace
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7007,6 +7162,7 @@
 - id: 26028
   name: ornate remedy mace
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7020,6 +7176,7 @@
 - id: 26029
   name: plain remedy hammer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7033,6 +7190,7 @@
 - id: 26030
   name: valuable remedy hammer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7046,6 +7204,7 @@
 - id: 26031
   name: ornate remedy hammer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7059,6 +7218,7 @@
 - id: 26032
   name: plain remedy bow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7068,6 +7228,7 @@
 - id: 26033
   name: valuable remedy bow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7077,6 +7238,7 @@
 - id: 26034
   name: ornate remedy bow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7086,6 +7248,7 @@
 - id: 26035
   name: plain remedy crossbow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7095,6 +7258,7 @@
 - id: 26036
   name: valuable remedy crossbow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7104,6 +7268,7 @@
 - id: 26037
   name: ornate remedy crossbow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7113,6 +7278,7 @@
 - id: 26038
   name: plain remedy wand
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7122,6 +7288,7 @@
 - id: 26039
   name: valuable remedy wand
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7131,6 +7298,7 @@
 - id: 26040
   name: ornate remedy wand
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7140,6 +7308,7 @@
 - id: 26041
   name: plain remedy rod
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7149,6 +7318,7 @@
 - id: 26042
   name: valuable remedy rod
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7158,6 +7328,7 @@
 - id: 26043
   name: ornate remedy rod
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7167,6 +7338,7 @@
 - id: 26044
   name: plain carving blade
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7180,6 +7352,7 @@
 - id: 26045
   name: valuable carving blade
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7193,6 +7366,7 @@
 - id: 26046
   name: ornate carving blade
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7206,6 +7380,7 @@
 - id: 26047
   name: plain carving slayer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7219,6 +7394,7 @@
 - id: 26048
   name: valuable carving slayer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7232,6 +7408,7 @@
 - id: 26049
   name: ornate carving slayer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7245,6 +7422,7 @@
 - id: 26050
   name: plain carving axe
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7258,6 +7436,7 @@
 - id: 26051
   name: valuable carving axe
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7271,6 +7450,7 @@
 - id: 26052
   name: ornate carving axe
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7284,6 +7464,7 @@
 - id: 26053
   name: plain carving chopper
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7297,6 +7478,7 @@
 - id: 26054
   name: valuable carving chopper
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7310,6 +7492,7 @@
 - id: 26055
   name: ornate carving chopper
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7323,6 +7506,7 @@
 - id: 26056
   name: plain carving mace
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7336,6 +7520,7 @@
 - id: 26057
   name: valuable carving mace
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7349,6 +7534,7 @@
 - id: 26058
   name: ornate carving mace
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7362,6 +7548,7 @@
 - id: 26059
   name: plain carving hammer
   article: a
+  description: This replica looks charged
   flags:
   - usable
   - multiuse
@@ -7375,6 +7562,7 @@
 - id: 26060
   name: valuable carving hammer
   article: a
+  description: This replica looks heavily charged
   flags:
   - usable
   - multiuse
@@ -7388,6 +7576,7 @@
 - id: 26061
   name: ornate carving hammer
   article: an
+  description: This replica looks overcharged
   flags:
   - usable
   - multiuse
@@ -7401,6 +7590,7 @@
 - id: 26062
   name: plain carving bow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7410,6 +7600,7 @@
 - id: 26063
   name: valuable carving bow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7419,6 +7610,7 @@
 - id: 26064
   name: ornate carving bow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7428,6 +7620,7 @@
 - id: 26065
   name: plain carving crossbow
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7437,6 +7630,7 @@
 - id: 26066
   name: valuable carving crossbow
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7446,6 +7640,7 @@
 - id: 26067
   name: ornate carving crossbow
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7455,6 +7650,7 @@
 - id: 26068
   name: plain carving wand
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7464,6 +7660,7 @@
 - id: 26069
   name: valuable carving wand
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7473,6 +7670,7 @@
 - id: 26070
   name: ornate carving wand
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7482,6 +7680,7 @@
 - id: 26071
   name: plain carving rod
   article: a
+  description: This replica looks charged
   flags:
   - take
   attributes:
@@ -7491,6 +7690,7 @@
 - id: 26072
   name: valuable carving rod
   article: a
+  description: This replica looks heavily charged
   flags:
   - take
   attributes:
@@ -7500,6 +7700,7 @@
 - id: 26073
   name: ornate carving rod
   article: an
+  description: This replica looks overcharged
   flags:
   - take
   attributes:
@@ -7669,6 +7870,7 @@
 - id: 27523
   name: strange mallet
   article: a
+  description: This mallet seems almost anxious to hit something
   flags:
   - usable
   - multiuse
@@ -7682,6 +7884,7 @@
 - id: 27524
   name: mallet head
   article: a
+  description: This is the head of a mallet
   flags:
   - take
   attributes:
@@ -7689,6 +7892,7 @@
 - id: 27525
   name: mallet handle
   article: a
+  description: This seems to be the handle of a mallet
   flags:
   - usable
   - multiuse
@@ -7702,6 +7906,7 @@
 - id: 27526
   name: mallet pommel
   article: a
+  description: This seems to be the pommel of a mallet
   flags:
   - take
   attributes:
@@ -7865,6 +8070,7 @@
     - knight
 - id: 28746
   name: zathroth' redeemer
+  description: This is an ordinary looking scythe - or is it?
   flags:
   - usable
   - multiuse
@@ -7874,6 +8080,7 @@
     weapon_type: club
 - id: 28747
   name: zathroth' redeemer
+  description: This is an ordinary looking scythe - or is it?
   flags:
   - usable
   - multiuse
@@ -7883,6 +8090,7 @@
     weapon_type: club
 - id: 28748
   name: zathroth' redeemer
+  description: This is an ordinary looking scythe - or is it?
   flags:
   - usable
   - multiuse
@@ -7892,6 +8100,7 @@
     weapon_type: club
 - id: 28749
   name: zathroth' redeemer
+  description: This is an ordinary looking scythe - or is it?
   flags:
   - usable
   - multiuse
@@ -8000,6 +8209,8 @@
 - id: 29286
   name: golden axe
   article: a
+  description: Forged and wielded by a long forgotten dwarf with a heart as black
+    as an adder
   flags:
   - usable
   - multiuse
@@ -8606,6 +8817,7 @@
 - id: 34331
   name: golden magic longsword
   article: a
+  description: This is a golden replica of the famous magic longsword
   flags:
   - take
   attributes:
@@ -8714,6 +8926,7 @@
 - id: 36658
   name: gilded eldritch claymore
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - usable
   - multiuse
@@ -8752,6 +8965,7 @@
 - id: 36660
   name: gilded eldritch warmace
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - usable
   - multiuse
@@ -8787,6 +9001,7 @@
 - id: 36662
   name: gilded eldritch greataxe
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - usable
   - multiuse
@@ -8819,6 +9034,7 @@
 - id: 36665
   name: gilded eldritch bow
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - take
   attributes:
@@ -8850,6 +9066,7 @@
 - id: 36669
   name: gilded eldritch wand
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - take
   attributes:
@@ -8881,6 +9098,7 @@
 - id: 36675
   name: gilded eldritch rod
   article: a
+  description: Refined by the legendary artisan Gnomaurum
   flags:
   - take
   attributes:
@@ -8897,6 +9115,7 @@
 - id: 38642
   name: golden warlord sword
   article: a
+  description: This is a golden replica of the famous warlord sword
   flags:
   - take
   attributes:
@@ -9009,6 +9228,8 @@
     - druid
 - id: 40530
   name: broken macuahuitl
+  description: This macuahuitl was a once legendary obsidian sword wielded by the
+    ancient Iks
   flags:
   - cumulative
   - take
@@ -9020,6 +9241,7 @@
     weapon_type: sword
 - id: 40535
   name: broken Iks spear
+  description: This spear was once wielded by the ancient Iks
   flags:
   - cumulative
   - take

@@ -1,4 +1,5 @@
 name: Orc Warrior
+name_description: an orc warrior
 life: 125
 speed: 95
 blood_type: blood

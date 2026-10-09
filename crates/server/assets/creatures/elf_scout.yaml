@@ -1,4 +1,5 @@
 name: Elf Scout
+name_description: an elf scout
 life: 160
 speed: 110
 blood_type: blood

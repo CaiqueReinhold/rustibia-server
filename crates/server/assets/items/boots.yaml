@@ -56,6 +56,7 @@
     speed: 20
 - id: 3246
   name: boots of waterwalking
+  description: (This item has 5 charges left)
   flags:
   - take
   attributes:
@@ -158,6 +159,7 @@
     slot: 8
 - id: 6530
   name: worn soft boots
+  description: Someone specialised in shoes might be able to repair them for you
   flags:
   - take
   attributes:
@@ -165,6 +167,8 @@
     slot: 8
 - id: 7457
   name: fur boots
+  description: These boots keep your toes warm even in the iciest regions, but they
+    feel kind of heavy
   flags:
   - take
   attributes:
@@ -183,6 +187,7 @@
 - id: 9018
   name: firewalker boots
   article: a
+  description: Wearing these boots reduces the damage gotten from fiery ground
   flags:
   - take
   attributes:
@@ -196,6 +201,7 @@
 - id: 9019
   name: firewalker boots
   article: a
+  description: Wearing these boots reduces the damage gotten from fiery ground
   flags:
   - take
   attributes:
@@ -205,6 +211,7 @@
     level: 130
 - id: 9020
   name: worn firewalker boots
+  description: They can be recharged with an enchanted ruby
   flags:
   - take
   attributes:
@@ -266,6 +273,8 @@
 - id: 11543
   name: fish tail
   article: a
+  description: Supposedly the last will of someone. Whatever may have been written
+    on it is long vanished.
   flags:
   - take
   attributes:
@@ -348,6 +357,8 @@
 - id: 22773
   name: boots of homecoming
   article: a
+  description: They are made of dark red buckskin and the golden clasps look like
+    the letter F
   flags:
   - usable
   - take
@@ -359,6 +370,8 @@
 - id: 22774
   name: boots of homecoming
   article: a
+  description: They are made of dark red buckskin and the golden clasps look like
+    the letter F
   flags:
   - take
   attributes:
@@ -368,6 +381,7 @@
     level: 100
 - id: 23476
   name: void boots
+  description: It can only be wielded properly by players of level 150 or higher.
   flags:
   - take
   attributes:
@@ -380,6 +394,7 @@
     level: 150
 - id: 23477
   name: void boots
+  description: It can only be wielded properly by players of level 150 or higher.
   flags:
   - take
   attributes:
@@ -389,6 +404,7 @@
     level: 150
 - id: 24409
   name: filthy bunnyslippers
+  description: They clearly have seen better days
   flags:
   - take
   attributes:
@@ -440,6 +456,8 @@
 - id: 32098
   name: traditional leather shoes
   article: a
+  description: Soled with sturdy orc hides, these tranditional Orcsoberfest leather
+    shoes are robust and useful
   flags:
   - take
   attributes:
@@ -535,6 +553,7 @@
 - id: 40534
   name: broken Iks sandals
   article: the
+  description: These sandals once belonged to a warrior of the ancient Iks
   flags:
   - cumulative
   - take

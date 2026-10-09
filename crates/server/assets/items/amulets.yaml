@@ -62,6 +62,7 @@
 - id: 3013
   name: golden amulet
   article: a
+  description: Many gems glitter on the amulet
   flags:
   - take
   attributes:
@@ -142,6 +143,7 @@
 - id: 3055
   name: platinum amulet
   article: a
+  description: It is an amulet of protection
   flags:
   - take
   attributes:
@@ -231,6 +233,7 @@
     armor: 1
 - id: 5940
   name: wolf tooth chain
+  description: It has the letter 'C' carved into one of the teeth
   flags:
   - take
   attributes:
@@ -282,6 +285,7 @@
 - id: 9301
   name: bonfire amulet
   article: a
+  description: It engulfs you in flames - fire against fire
   flags:
   - take
   attributes:
@@ -291,6 +295,8 @@
 - id: 9302
   name: sacred tree amulet
   article: a
+  description: Its leaves stretch out to cover your whole body if you receive earth
+    damage
   flags:
   - take
   attributes:
@@ -300,6 +306,7 @@
 - id: 9303
   name: leviathan's amulet
   article: a
+  description: It holds the last breath of Leviathan
   flags:
   - take
   attributes:
@@ -309,6 +316,8 @@
 - id: 9304
   name: shockwave amulet
   article: a
+  description: It tickles your neck in a rather pleasant way and absorbs loads of
+    damage
   flags:
   - take
   attributes:
@@ -318,6 +327,8 @@
 - id: 9802
   name: friendship amulet
   article: a
+  description: It shines as beautifully as a good friendship. This amulet was rewarded
+    by Tibiafriends
   flags:
   - usable
   - take
@@ -327,6 +338,8 @@
 - id: 9803
   name: friendship amulet
   article: a
+  description: It shines as beautifully as a good friendship. This amulet was rewarded
+    by Tibiafriends
   flags:
   - take
   attributes:
@@ -354,6 +367,7 @@
 - id: 10476
   name: lucky clover amulet
   article: a
+  description: It is rumoured to bring you good luck! Luck sponsored by TibiaLottery
   flags:
   - take
   attributes:
@@ -415,6 +429,7 @@
 - id: 19153
   name: friendship amulet
   article: a
+  description: Souvenir from Thais Museum
   flags:
   - take
   attributes:
@@ -433,6 +448,8 @@
     level: 150
 - id: 20342
   name: jade amulet
+  description: Golden lines are embedded in the amulet and show mysterious symbols.
+    It was awarded by TibiaHoF
   flags:
   - usable
   - take
@@ -464,6 +481,8 @@
 - id: 21439
   name: Lion's Heart
   article: the
+  description: The amulet looks like a golden lion's head. A hermit in Carlin might
+    tell you more about it
   flags:
   - usable
   - multiuse
@@ -526,6 +545,7 @@
 - id: 22767
   name: Ferumbras' amulet
   article: a
+  description: The rare jewel is made of sapphire and ruby and has a golden F-pendant
   flags:
   - usable
   - take
@@ -537,6 +557,7 @@
 - id: 22768
   name: Ferumbras' amulet
   article: a
+  description: The rare jewel is made of sapphire and ruby and has a golden F-pendant
   flags:
   - usable
   - take
@@ -622,6 +643,8 @@
 - id: 25296
   name: rubbish amulet
   article: a
+  description: To some it is rubbish, others see it as the most magnificent necklace
+    in the world
   flags:
   - take
   attributes:
@@ -630,6 +653,8 @@
 - id: 25297
   name: glowing rubbish amulet
   article: a
+  description: To some it is rubbish, others see it as the most magnificent necklace
+    in the world. This one glows violently
   flags:
   - usable
   - multiuse
@@ -650,6 +675,7 @@
 - id: 27653
   name: suspicious device
   article: a
+  description: This thing looks like it was carried around by someone for a long time
   flags:
   - cumulative
   - take
@@ -780,6 +806,7 @@
 - id: 31268
   name: jade amulet
   article: a
+  description: Souvenir from Thais Museum
   flags:
   - take
   attributes:
@@ -798,6 +825,9 @@
 - id: 31631
   name: cobra amulet
   article: the
+  description: The bearer of this amulet will command the gaze, the resilience and
+    deadliness of the cobra. Yet what firmly has its place in the heart of its wearer,
+    the cobra will conceal
   flags:
   - usable
   - multiuse
@@ -810,6 +840,9 @@
 - id: 31676
   name: note about two souls
   article: a
+  description: Returning the amulet of the Cobra to its resting place has reversed
+    everything that happened to Scarlett and Galthen after it was taken. For them
+    only, however. You are truly selfless
   flags:
   - usable
   - take
@@ -819,6 +852,8 @@
 - id: 32101
   name: traditional neckerchief
   article: a
+  description: A traditional neckerchief which complements every traditional Orcsoberfest
+    look
   flags:
   - take
   attributes:
@@ -827,6 +862,8 @@
 - id: 34158
   name: lion amulet
   article: a
+  description: The heraldic animal of the Order of the Lion is emblazoned on this
+    imposing amulet. It is worn with pride by true knights of the lion
   flags:
   - take
   attributes:
@@ -896,6 +933,7 @@
 - id: 37059
   name: lucky clover amulet
   article: a
+  description: Souvenir from Thais Museum
   flags:
   - take
   attributes:

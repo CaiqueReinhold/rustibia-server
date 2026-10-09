@@ -1,4 +1,5 @@
 name: Ice Golem
+name_description: an ice golem
 life: 385
 speed: 97
 blood_type: blood

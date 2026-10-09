@@ -19,6 +19,8 @@
 - id: 907
   name: shapeshifter ring
   article: a
+  description: It will only work for a few days after the challenge of Kurik has been
+    won
   flags:
   - take
   attributes:
@@ -27,6 +29,8 @@
 - id: 908
   name: shapeshifter ring
   article: a
+  description: It will only work for a few days after the challenge of Kurik has been
+    won
   flags:
   - take
   attributes:
@@ -271,6 +275,7 @@
 - id: 3245
   name: ring of wishes
   article: a
+  description: (This item has 3 charges left)
   flags:
   - take
   attributes:
@@ -288,6 +293,7 @@
 - id: 6300
   name: death ring
   article: a
+  description: Wearing it makes you feel a little weaker than usual
   flags:
   - take
   attributes:
@@ -300,6 +306,7 @@
 - id: 9392
   name: claw of 'The Noxious Spawn'
   article: a
+  description: It feels tight and uncomfortable on your hand
   flags:
   - usable
   - take
@@ -310,6 +317,8 @@
 - id: 9393
   name: claw of 'The Noxious Spawn'
   article: a
+  description: It's like a glove and you can't wear a ring on it. You are not sure
+    if you should really put it on.
   flags:
   - take
   attributes:
@@ -318,6 +327,7 @@
 - id: 9394
   name: claw of 'The Noxious Spawn'
   article: a
+  description: Its power is depleted at the moment
   flags:
   - take
   attributes:
@@ -330,6 +340,7 @@
 - id: 9395
   name: claw of 'The Noxious Spawn'
   article: a
+  description: Its power is depleted at the moment
   flags:
   - take
   attributes:
@@ -341,6 +352,7 @@
 - id: 9397
   name: claw of 'The Noxious Spawn'
   article: a
+  description: Its power is depleted at the moment
   flags:
   - take
   attributes:
@@ -349,6 +361,7 @@
 - id: 9398
   name: claw of 'The Noxious Spawn'
   article: a
+  description: Its power is depleted at the moment
   flags:
   - take
   attributes:
@@ -368,6 +381,7 @@
 - id: 9593
   name: broken wedding ring
   article: a
+  description: It is a memory of a lost love
   flags:
   - take
   attributes:
@@ -376,6 +390,8 @@
 - id: 12669
   name: star ring
   article: a
+  description: If you wear it on your ring slot, it will boost your health regeneration
+    when you're not hungry
   flags:
   - take
   attributes:
@@ -384,6 +400,8 @@
 - id: 12670
   name: star ring
   article: a
+  description: If you wear it on your ring slot, it will boost your health regeneration
+    when you're not hungry
   flags:
   - take
   attributes:
@@ -395,6 +413,8 @@
 - id: 12737
   name: broken ring of ending
   article: a
+  description: It seems all its former magical power has left this broken carcass
+    of a ring
   flags:
   - take
   attributes:
@@ -424,6 +444,8 @@
 - id: 18935
   name: vampire's signet ring
   article: a
+  description: A ring with a massive, faintly glowing seal, containing the blood of
+    a vampire
   flags:
   - take
   attributes:
@@ -441,6 +463,8 @@
 - id: 20182
   name: ring of ending
   article: a
+  description: This constantly rotating ring is perfectly weightless, yet feels infinitely
+    heavy at the same time
   flags:
   - take
   attributes:
@@ -450,6 +474,7 @@
 - id: 20209
   name: unstable ring of ending
   article: an
+  description: Something is happening to this ring
   flags:
   - take
   attributes:
@@ -467,6 +492,7 @@
 - id: 22170
   name: House Silversun's signet ring
   article: a
+  description: It depicts a small silver sun with many rays of light
   flags:
   - usable
   - multiuse
@@ -577,6 +603,7 @@
 - id: 31306
   name: ring of secret thoughts
   article: a
+  description: It is charged with the memories of the Ambassador of Rathleton
   flags:
   - take
   attributes:
@@ -614,6 +641,7 @@
 - id: 31621
   name: blister ring
   article: a
+  description: This ring is out of magic energy
   flags:
   - take
   attributes:
@@ -644,6 +672,7 @@
 - id: 32636
   name: ring of souls
   article: a
+  description: This ring is out of magic energy
   flags:
   - take
   attributes:

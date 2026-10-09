@@ -1,4 +1,5 @@
 name: Elephant
+name_description: an elephant
 life: 320
 speed: 95
 blood_type: blood

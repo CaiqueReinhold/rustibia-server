@@ -155,6 +155,8 @@ struct RawCreatureVoices {
 #[derive(Deserialize)]
 struct RawCreature {
     name: String,
+    #[serde(default)]
+    name_description: Option<String>,
     life: u32,
     outfit: RawOutfit,
     melee: RawAttackDamage,
@@ -305,6 +307,7 @@ impl RawCreature {
 
         Ok(CreatureKind {
             name: self.name,
+            name_description: self.name_description,
             life: Pool {
                 current: self.life,
                 maximum: self.life,
@@ -464,6 +467,13 @@ say:
             AbilityEffect::Attack(attk) => (&attk.damage, &attk.target),
             _ => panic!("not an attack"),
         }
+    }
+
+    #[test]
+    fn a_name_description_is_read_and_its_absence_is_none() {
+        let named = a_creature(&format!("name_description: the Test Dragon\n{A_CREATURE}"));
+        assert_eq!(named.name_description.as_deref(), Some("the Test Dragon"));
+        assert_eq!(a_creature(A_CREATURE).name_description, None);
     }
 
     #[test]

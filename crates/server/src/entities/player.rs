@@ -7,6 +7,7 @@ use crate::entities::{
     inventory::{Inventory, InventorySlot, Wearer},
     items::{Item, ItemFlag},
     position::Position,
+    sex::Sex,
     skills::{SkillType, SkillValue},
     vocation::Vocation,
 };
@@ -30,6 +31,7 @@ pub struct Player {
     admin: bool,
     last_logout_position: Position,
     vocation: Vocation,
+    sex: Sex,
     capacity: u32,
     inventory: Arc<Inventory>,
     skills: HashMap<SkillType, SkillValue>,
@@ -44,6 +46,7 @@ impl Player {
         admin: bool,
         last_logout_position: Position,
         vocation: Vocation,
+        sex: Sex,
         capacity: u32,
         inventory: HashMap<InventorySlot, Item>,
         skills: HashMap<SkillType, SkillValue>,
@@ -58,6 +61,7 @@ impl Player {
             admin,
             last_logout_position,
             vocation,
+            sex,
             capacity,
             inventory: Arc::new(Inventory::from_snapshot(
                 inventory,
@@ -89,6 +93,10 @@ impl Player {
 
     pub fn vocation(&self) -> Vocation {
         self.vocation
+    }
+
+    pub fn sex(&self) -> Sex {
+        self.sex
     }
 
     pub fn capacity(&self) -> u32 {

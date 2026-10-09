@@ -1,4 +1,5 @@
 name: Waspoid
+name_description: Waspoid
 life: 1100
 speed: 105
 blood_type: poison

@@ -804,6 +804,7 @@
 - id: 2879
   name: elven vase
   article: an
+  description: It is made of very fine glass and covered with decorations
   flags:
   - usable
   - multiuse
@@ -914,6 +915,7 @@
 - id: 3217
   name: letterbag
   article: a
+  description: This bag is nearly bursting from all the letters inside
   flags:
   - usable
   - multiuse
@@ -924,6 +926,7 @@
 - id: 3244
   name: old and used backpack
   article: an
+  description: 'A label on the backpack reads: Property of Sam, Thais'
   flags:
   - container
   - usable
@@ -2025,6 +2028,8 @@
 - id: 14066
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2035,6 +2040,8 @@
 - id: 14067
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2045,6 +2052,8 @@
 - id: 14068
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2055,6 +2064,8 @@
 - id: 14069
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2065,6 +2076,8 @@
 - id: 14070
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2075,6 +2088,8 @@
 - id: 14071
   name: seashell bookcase
   article: a
+  description: A filigree case made of seashell. It seems there is a small lock on
+    the side of the case.
   flags:
   - container
   - usable
@@ -2107,6 +2122,7 @@
 - id: 14674
   name: anniversary backpack
   article: an
+  description: It was awarded during the festivities of Tibia's 15th anniversary
   flags:
   - container
   - usable
@@ -2118,6 +2134,7 @@
 - id: 14750
   name: surprise nest
   article: a
+  description: Use it to get a little surprise.
   flags:
   - bottom
   - container
@@ -2323,6 +2340,8 @@
 - id: 18339
   name: Zaoan chess box
   article: a
+  description: This chess box is made of jade and obsidian. It will hold a full set
+    of 32 Zaoan chess figures
   flags:
   - container
   - usable
@@ -2373,6 +2392,7 @@
 - id: 19079
   name: crate
   article: a
+  description: This crate is quite heavy.
   flags:
   - container
   - usable
@@ -2403,6 +2423,7 @@
 - id: 19250
   name: reward chest
   article: a
+  description: This chest contains your rewards earned in battles.
   flags:
   - container
   - usable
@@ -2865,6 +2886,7 @@
 - id: 23721
   name: gold pouch
   article: a
+  description: A infinity bag where you can hold coins.
   flags:
   - container
   - usable
@@ -2910,6 +2932,7 @@
 - id: 24395
   name: birthday backpack
   article: a
+  description: It was awarded during the festivities of Tibia's 20th anniversary
   flags:
   - container
   - usable
@@ -3429,6 +3452,7 @@
 - id: 28274
   name: strong wooden gable
   article: a
+  description: Pressure on this gable will move the stone on the plank.
   flags:
   - container
   - usable
@@ -3437,6 +3461,7 @@
 - id: 28275
   name: strong wooden gable
   article: a
+  description: Pressure on this gable will move the stone on the plank.
   flags:
   - container
   - usable
@@ -3445,6 +3470,7 @@
 - id: 28276
   name: strong wooden gable
   article: a
+  description: Pressure on this gable will move the stone on the plank.
   flags:
   - container
   - usable
@@ -3453,6 +3479,7 @@
 - id: 28277
   name: strong wooden gable
   article: a
+  description: Pressure on this gable will move the stone on the plank.
   flags:
   - container
   - usable
@@ -3848,6 +3875,8 @@
 - id: 31282
   name: Zaoan chess box
   article: a
+  description: This chess box is made of jade and obsidian. It will hold a full set
+    of 32 Zaoan chess figures.
   flags:
   - container
   - usable
@@ -3945,6 +3974,8 @@
 - id: 31908
   name: Time Distort Almanac
   article: the
+  description: An extremely old book on the concept of time which once contained a
+    variety of spells on the concept of time. Most of its pages have been ripped out.
   flags:
   - container
   - usable
@@ -4439,6 +4470,7 @@
 - id: 36810
   name: artefact box
   article: an
+  description: The knight Galthen built this box to hold Prime Artefacts
   flags:
   - container
   - usable
@@ -4449,6 +4481,8 @@
 - id: 36813
   name: Galthen's satchel
   article: a
+  description: The original satchel in which Galthen once carried all his personal
+    notes and research
   flags:
   - container
   - usable
@@ -4578,6 +4612,7 @@
 - id: 37536
   name: changing backpack
   article: a
+  description: It changes its appearance in the course of years, just like Tibia
   flags:
   - container
   - usable
@@ -4589,6 +4624,7 @@
 - id: 37561
   name: exaltation chest
   article: an
+  plural: exaltation chests
   flags:
   - container
   - usable
@@ -4671,6 +4707,8 @@
 - id: 39693
   name: 25 years backpack
   article: a
+  description: It could be bought for Theons after the festivities of Tibia's 25th
+    anniversary
   flags:
   - container
   - usable

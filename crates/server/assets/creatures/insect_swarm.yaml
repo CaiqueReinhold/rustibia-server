@@ -1,4 +1,5 @@
 name: Insect Swarm
+name_description: an insect swarm
 life: 50
 speed: 75
 blood_type: blood

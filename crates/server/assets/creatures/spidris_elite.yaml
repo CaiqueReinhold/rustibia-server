@@ -1,4 +1,5 @@
 name: Spidris Elite
+name_description: Spidris Elite
 life: 5000
 speed: 130
 blood_type: poison

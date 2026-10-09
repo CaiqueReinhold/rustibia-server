@@ -1,4 +1,5 @@
 name: Undead Prospector
+name_description: an undead prospector
 life: 100
 speed: 85
 blood_type: blood

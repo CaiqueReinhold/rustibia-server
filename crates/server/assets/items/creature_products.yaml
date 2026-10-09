@@ -1,5 +1,7 @@
 - id: 647
   name: seeds
+  show_count: false
+  description: They might be worth keeping, who knows what will happen to them
   flags:
   - cumulative
   - take
@@ -7,6 +9,7 @@
     weight: 50
 - id: 940
   name: natural soil
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -16,6 +19,7 @@
     weight: 250
 - id: 941
   name: glimmering soil
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -35,6 +39,7 @@
     weight: 250
 - id: 944
   name: iced soil
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -44,6 +49,7 @@
     weight: 250
 - id: 945
   name: energy soil
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -62,6 +68,7 @@
     weight: 250
 - id: 947
   name: mother soil
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -80,6 +87,7 @@
     weight: 250
 - id: 954
   name: neutral matter
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -106,6 +114,7 @@
 - id: 4831
   name: old parchment
   article: an
+  description: It is covered with foreign symbols
   flags:
   - cumulative
   - take
@@ -132,6 +141,7 @@
 - id: 5804
   name: nose ring
   article: a
+  description: It was the favourite trinket of the famous Horned Fox
   flags:
   - cumulative
   - take
@@ -147,6 +157,7 @@
 - id: 5809
   name: soul stone
   article: a
+  description: It contains the essence of countless tormented souls
   flags:
   - cumulative
   - take
@@ -154,6 +165,7 @@
     weight: 30
 - id: 5875
   name: sniper gloves
+  description: They are the pride of the paladin guild
   flags:
   - cumulative
   - take
@@ -162,6 +174,7 @@
 - id: 5876
   name: lizard leather
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -170,6 +183,7 @@
 - id: 5877
   name: green dragon leather
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -178,6 +192,7 @@
 - id: 5878
   name: minotaur leather
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -186,6 +201,7 @@
 - id: 5879
   name: spider silk
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -194,6 +210,7 @@
 - id: 5880
   name: iron ore
   article: an
+  show_count: false
   flags:
   - cumulative
   - take
@@ -218,6 +235,8 @@
 - id: 5883
   name: ape fur
   article: an
+  plural: ape fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -226,6 +245,7 @@
 - id: 5884
   name: spirit container
   article: a
+  description: It contains pure fighting spirit
   flags:
   - cumulative
   - take
@@ -234,6 +254,8 @@
 - id: 5885
   name: flask of warrior's sweat
   article: a
+  description: It contains the sweat spilled in many battles and is said to be used
+    for certain perfumes too
   flags:
   - cumulative
   - take
@@ -242,6 +264,7 @@
 - id: 5886
   name: spool of yarn
   article: a
+  description: It is made from fine spider silk
   flags:
   - cumulative
   - take
@@ -250,6 +273,8 @@
 - id: 5887
   name: piece of royal steel
   article: a
+  description: Even the king would be proud to wear an armor made of this refined
+    steel
   flags:
   - cumulative
   - take
@@ -258,6 +283,7 @@
 - id: 5888
   name: piece of hell steel
   article: a
+  description: This rare metal must have been refined in the depths of Tibia
   flags:
   - cumulative
   - take
@@ -266,6 +292,8 @@
 - id: 5889
   name: piece of draconian steel
   article: a
+  description: An armor made of this steel is said to protect against fiery dragon
+    breath
   flags:
   - cumulative
   - take
@@ -274,6 +302,8 @@
 - id: 5890
   name: chicken feather
   article: a
+  description: Some thousands of these would probably make an extremely comfortable
+    pillow
   flags:
   - cumulative
   - take
@@ -282,6 +312,7 @@
 - id: 5891
   name: enchanted chicken wing
   article: an
+  description: It is said to make your feet fly
   flags:
   - cumulative
   - take
@@ -298,6 +329,7 @@
 - id: 5893
   name: perfect behemoth fang
   article: a
+  description: Collectors all around the world crave for this item
   flags:
   - cumulative
   - take
@@ -306,6 +338,7 @@
 - id: 5894
   name: bat wing
   article: a
+  plural: bat wings
   flags:
   - cumulative
   - take
@@ -314,6 +347,7 @@
 - id: 5895
   name: fish fin
   article: a
+  description: It once belonged to a mighty creature of the deep
   flags:
   - cumulative
   - take
@@ -322,6 +356,7 @@
 - id: 5896
   name: bear paw
   article: a
+  plural: bear paws
   flags:
   - cumulative
   - take
@@ -338,6 +373,7 @@
 - id: 5898
   name: bonelord eye
   article: a
+  description: You could swear it just winked at you
   flags:
   - cumulative
   - take
@@ -346,6 +382,7 @@
 - id: 5899
   name: turtle shell
   article: a
+  plural: turtle shells
   flags:
   - cumulative
   - take
@@ -354,6 +391,7 @@
 - id: 5900
   name: dwarven beard
   article: a
+  description: It was once worn proudly by a dwarfish warrior - or maiden
   flags:
   - cumulative
   - take
@@ -361,6 +399,7 @@
     weight: 50
 - id: 5901
   name: wood
+  show_count: false
   flags:
   - cumulative
   - take
@@ -369,6 +408,7 @@
 - id: 5902
   name: honeycomb
   article: a
+  description: Some people swear it makes an excellent glue
   flags:
   - cumulative
   - usable
@@ -379,6 +419,9 @@
 - id: 5904
   name: magic sulphur
   article: a
+  show_count: false
+  description: It smells rather badly but is said to be an important catalyst for
+    magical rituals
   flags:
   - cumulative
   - take
@@ -386,6 +429,9 @@
     weight: 100
 - id: 5905
   name: vampire dust
+  plural: vampire dust
+  show_count: false
+  description: Sun can be a merciless killer, but so can you
   flags:
   - cumulative
   - take
@@ -394,6 +440,8 @@
 - id: 5906
   name: demon dust
   article: a
+  show_count: false
+  description: It reeks of hatred and malice
   flags:
   - cumulative
   - take
@@ -402,6 +450,7 @@
 - id: 5909
   name: white piece of cloth
   article: a
+  plural: white pieces of cloth
   flags:
   - cumulative
   - take
@@ -410,6 +459,7 @@
 - id: 5910
   name: green piece of cloth
   article: a
+  plural: green pieces of cloth
   flags:
   - cumulative
   - take
@@ -418,6 +468,7 @@
 - id: 5911
   name: red piece of cloth
   article: a
+  plural: red pieces of cloth
   flags:
   - cumulative
   - take
@@ -426,6 +477,7 @@
 - id: 5912
   name: blue piece of cloth
   article: a
+  plural: blue pieces of cloth
   flags:
   - cumulative
   - take
@@ -434,6 +486,7 @@
 - id: 5913
   name: brown piece of cloth
   article: a
+  plural: brown pieces of cloth
   flags:
   - cumulative
   - take
@@ -442,6 +495,7 @@
 - id: 5914
   name: yellow piece of cloth
   article: a
+  plural: yellow pieces of cloth
   flags:
   - cumulative
   - take
@@ -450,6 +504,7 @@
 - id: 5919
   name: dragon claw
   article: a
+  description: It is the claw of Demodras
   flags:
   - cumulative
   - take
@@ -490,6 +545,7 @@
 - id: 5930
   name: behemoth claw
   article: a
+  plural: behemoth claws
   flags:
   - cumulative
   - take
@@ -505,6 +561,7 @@
 - id: 5948
   name: red dragon leather
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -521,6 +578,7 @@
 - id: 6097
   name: hook
   article: a
+  description: It belonged once to a pirate
   flags:
   - cumulative
   - take
@@ -529,6 +587,8 @@
 - id: 6098
   name: eye patch
   article: an
+  plural: eye patches
+  description: It belonged once to a pirate
   flags:
   - cumulative
   - take
@@ -559,6 +619,7 @@
 - id: 6126
   name: peg leg
   article: a
+  description: It belonged once to a pirate
   flags:
   - cumulative
   - take
@@ -567,6 +628,8 @@
 - id: 6496
   name: christmas present bag
   article: a
+  description: It contains presents which were stolen from Santa. Bring them back
+    to Ruprecht on Vega
   flags:
   - take
   attributes:
@@ -574,6 +637,7 @@
 - id: 6499
   name: demonic essence
   article: a
+  description: Someone might be interested in trading this
   flags:
   - cumulative
   - take
@@ -582,6 +646,7 @@
 - id: 6526
   name: christmas token
   article: a
+  description: Collect enough of these to trade them for valuable prizes
   flags:
   - cumulative
   - take
@@ -643,6 +708,7 @@
 - id: 6558
   name: flask of demonic blood
   article: a
+  description: Shake it to create a potion
   flags:
   - cumulative
   - usable
@@ -652,6 +718,7 @@
 - id: 7250
   name: hydra tongue
   article: a
+  description: It is a common pest plant in warmer regions
   flags:
   - cumulative
   - take
@@ -660,6 +727,7 @@
 - id: 7290
   name: shard
   article: a
+  description: It is a shattered part of the Frostheart Spire
   flags:
   - cumulative
   - take
@@ -675,6 +743,7 @@
     weight: 1000
 - id: 8031
   name: spider fangs
+  show_count: false
   flags:
   - cumulative
   - take
@@ -683,6 +752,7 @@
 - id: 8143
   name: gland
   article: a
+  description: It is the pheromone gland of a rotworm queen
   flags:
   - cumulative
   - take
@@ -691,6 +761,7 @@
 - id: 8192
   name: vampire lord token
   article: a
+  description: It proves that you have killed a vampire lord
   flags:
   - cumulative
   - take
@@ -739,6 +810,7 @@
 - id: 9631
   name: scarab pincers
   article: a
+  plural: scarab pincers
   flags:
   - cumulative
   - take
@@ -747,6 +819,7 @@
 - id: 9632
   name: ancient stone
   article: an
+  plural: ancient stones
   flags:
   - cumulative
   - take
@@ -754,6 +827,8 @@
     weight: 160
 - id: 9633
   name: bloody pincers
+  plural: bloody pincers
+  show_count: false
   flags:
   - cumulative
   - take
@@ -820,6 +895,7 @@
 - id: 9641
   name: piece of scarab shell
   article: a
+  plural: pieces of scarab shell
   flags:
   - cumulative
   - take
@@ -836,6 +912,7 @@
 - id: 9643
   name: thorn
   article: a
+  plural: thorns
   flags:
   - cumulative
   - take
@@ -844,6 +921,7 @@
 - id: 9644
   name: wyvern talisman
   article: a
+  plural: wyvern talismans
   flags:
   - cumulative
   - take
@@ -852,6 +930,7 @@
 - id: 9645
   name: black hood
   article: a
+  plural: black hoods
   flags:
   - cumulative
   - take
@@ -860,6 +939,7 @@
 - id: 9646
   name: book of prayers
   article: a
+  plural: books of prayers
   flags:
   - cumulative
   - take
@@ -908,6 +988,7 @@
 - id: 9652
   name: witch broom
   article: a
+  plural: witch brooms
   flags:
   - cumulative
   - take
@@ -916,6 +997,7 @@
 - id: 9654
   name: war crystal
   article: a
+  plural: war crystals
   flags:
   - cumulative
   - take
@@ -964,6 +1046,7 @@
 - id: 9660
   name: mystical hourglass
   article: a
+  plural: mystical hourglasses
   flags:
   - cumulative
   - take
@@ -988,6 +1071,7 @@
 - id: 9663
   name: piece of dead brain
   article: a
+  plural: pieces of dead brain
   flags:
   - cumulative
   - take
@@ -996,6 +1080,7 @@
 - id: 9664
   name: piece of hellfire armor
   article: a
+  plural: pieces of hellfire armor
   flags:
   - cumulative
   - take
@@ -1020,6 +1105,7 @@
 - id: 9667
   name: boggy dreads
   article: a
+  plural: boggy's dreads
   flags:
   - cumulative
   - take
@@ -1044,6 +1130,7 @@
 - id: 9684
   name: tattered piece of robe
   article: a
+  plural: tattered pieces of robe
   flags:
   - cumulative
   - take
@@ -1051,6 +1138,8 @@
     weight: 70
 - id: 9685
   name: vampire teeth
+  plural: vampire teeth
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1060,6 +1149,8 @@
     weight: 50
 - id: 9686
   name: swamp grass
+  plural: swamp grass
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1068,6 +1159,7 @@
 - id: 9688
   name: bundle of cursed straw
   article: a
+  plural: bundles of cursed straw
   flags:
   - cumulative
   - take
@@ -1076,6 +1168,7 @@
 - id: 9689
   name: bunch of troll hair
   article: a
+  plural: bunches of troll hair
   flags:
   - cumulative
   - take
@@ -1092,6 +1185,7 @@
 - id: 9691
   name: lion's mane
   article: a
+  plural: lion's mane
   flags:
   - cumulative
   - take
@@ -1100,6 +1194,7 @@
 - id: 9692
   name: lump of dirt
   article: a
+  plural: lumps of dirt
   flags:
   - cumulative
   - take
@@ -1108,6 +1203,7 @@
 - id: 9693
   name: pig foot
   article: a
+  plural: pig feet
   flags:
   - cumulative
   - take
@@ -1124,6 +1220,7 @@
 - id: 10196
   name: orc tooth
   article: an
+  plural: orc teeth
   flags:
   - cumulative
   - take
@@ -1131,6 +1228,7 @@
     weight: 100
 - id: 10272
   name: crab pincers
+  plural: crab pincers
   flags:
   - cumulative
   - take
@@ -1139,6 +1237,7 @@
 - id: 10273
   name: terrorbird beak
   article: a
+  plural: terrorbird beaks
   flags:
   - cumulative
   - take
@@ -1179,6 +1278,7 @@
 - id: 10278
   name: stone wing
   article: a
+  plural: stone wings
   flags:
   - cumulative
   - take
@@ -1187,6 +1287,7 @@
 - id: 10279
   name: piece of crocodile leather
   article: a
+  plural: pieces of crocodile leather
   flags:
   - cumulative
   - take
@@ -1203,6 +1304,8 @@
 - id: 10281
   name: tarantula egg
   article: a
+  plural: tarantula eggs
+  description: Looking quite poisonous, so no good choice for a meal
   flags:
   - cumulative
   - take
@@ -1219,6 +1322,7 @@
 - id: 10283
   name: half-digested piece of meat
   article: a
+  plural: half-digested pieces of meat
   flags:
   - cumulative
   - take
@@ -1235,6 +1339,7 @@
 - id: 10291
   name: rotten piece of cloth
   article: a
+  plural: rotten pieces of cloth
   flags:
   - cumulative
   - take
@@ -1242,6 +1347,8 @@
     weight: 60
 - id: 10292
   name: silky fur
+  plural: silky fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1249,6 +1356,8 @@
     weight: 114
 - id: 10293
   name: striped fur
+  plural: striped fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1256,6 +1365,8 @@
     weight: 120
 - id: 10295
   name: winter wolf fur
+  plural: winter wolf furs
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1264,6 +1375,7 @@
 - id: 10296
   name: acorn
   article: an
+  plural: acorns
   flags:
   - cumulative
   - take
@@ -1271,6 +1383,8 @@
     weight: 50
 - id: 10297
   name: antlers
+  plural: antlers
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1288,6 +1402,8 @@
     weight: 50
 - id: 10299
   name: badger fur
+  plural: badger fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1295,6 +1411,7 @@
     weight: 65
 - id: 10300
   name: carniphila seeds
+  plural: carniphila's seeds
   flags:
   - cumulative
   - take
@@ -1303,6 +1420,7 @@
 - id: 10301
   name: centipede leg
   article: a
+  plural: centipede legs
   flags:
   - cumulative
   - take
@@ -1311,6 +1429,7 @@
 - id: 10302
   name: compass
   article: a
+  plural: compasses
   flags:
   - cumulative
   - take
@@ -1319,6 +1438,7 @@
 - id: 10303
   name: dark rosary
   article: a
+  plural: dark rosaries
   flags:
   - cumulative
   - take
@@ -1335,6 +1455,7 @@
 - id: 10305
   name: lump of earth
   article: a
+  plural: lumps of earth
   flags:
   - cumulative
   - take
@@ -1343,6 +1464,7 @@
 - id: 10306
   name: essence of a bad dream
   article: an
+  plural: essences of a bad dream
   flags:
   - cumulative
   - take
@@ -1350,6 +1472,8 @@
     weight: 95
 - id: 10307
   name: thick fur
+  plural: thick fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1358,6 +1482,7 @@
 - id: 10308
   name: mutated flesh
   article: a
+  plural: mutated flesh
   flags:
   - cumulative
   - take
@@ -1366,6 +1491,7 @@
 - id: 10309
   name: strand of medusa hair
   article: a
+  plural: strands of medusa hair
   flags:
   - cumulative
   - take
@@ -1374,6 +1500,7 @@
 - id: 10310
   name: shiny stone
   article: a
+  description: Something precious might be sealed in it
   flags:
   - cumulative
   - take
@@ -1382,6 +1509,7 @@
 - id: 10311
   name: sabretooth
   article: a
+  plural: sabreteeth
   flags:
   - cumulative
   - take
@@ -1398,6 +1526,7 @@
 - id: 10313
   name: winged tail
   article: a
+  plural: winged tails
   flags:
   - cumulative
   - take
@@ -1414,6 +1543,7 @@
 - id: 10315
   name: sulphurous stone
   article: a
+  plural: sulphurous stones
   flags:
   - cumulative
   - take
@@ -1422,6 +1552,7 @@
 - id: 10316
   name: unholy bone
   article: an
+  plural: unholy bones
   flags:
   - cumulative
   - take
@@ -1429,6 +1560,8 @@
     weight: 125
 - id: 10317
   name: werewolf fur
+  plural: werewolf fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1436,6 +1569,8 @@
     weight: 112
 - id: 10318
   name: warwolf fur
+  plural: warwolf fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1443,6 +1578,8 @@
     weight: 105
 - id: 10319
   name: wool
+  plural: wool
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1451,6 +1588,7 @@
 - id: 10320
   name: book of necromantic rituals
   article: a
+  plural: books of necromantic rituals
   flags:
   - cumulative
   - take
@@ -1467,6 +1605,7 @@
 - id: 10397
   name: weaver's wandtip
   article: a
+  plural: weaver's wandtips
   flags:
   - cumulative
   - take
@@ -1482,6 +1621,8 @@
     weight: 220
 - id: 10405
   name: warmaster's wristguards
+  plural: warmaster's wristguards
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1514,6 +1655,7 @@
 - id: 10410
   name: cursed shoulder spikes
   article: a
+  plural: cursed shoulder spikes
   flags:
   - cumulative
   - take
@@ -1521,6 +1663,8 @@
     weight: 97
 - id: 10411
   name: widow's mandibles
+  plural: widow's mandibles
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1529,6 +1673,7 @@
 - id: 10413
   name: zaogun flag
   article: a
+  plural: zaogun flags
   flags:
   - cumulative
   - take
@@ -1536,6 +1681,7 @@
     weight: 98
 - id: 10414
   name: zaogun shoulderplates
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1574,6 +1720,7 @@
 - id: 10420
   name: petrified scream
   article: a
+  plural: petrified scream
   flags:
   - cumulative
   - take
@@ -1582,6 +1729,7 @@
 - id: 10444
   name: dragon priest's wandtip
   article: a
+  plural: dragon priest's wandtips
   flags:
   - cumulative
   - take
@@ -1598,6 +1746,7 @@
 - id: 10450
   name: undead heart
   article: an
+  plural: undead hearts
   flags:
   - cumulative
   - take
@@ -1606,6 +1755,7 @@
 - id: 10452
   name: terramite shell
   article: a
+  plural: terramite shells
   flags:
   - cumulative
   - take
@@ -1613,6 +1763,8 @@
     weight: 150
 - id: 10454
   name: terramite legs
+  plural: terramite legs
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1653,6 +1805,7 @@
 - id: 11445
   name: bamboo stick
   article: a
+  plural: bamboo sticks
   flags:
   - cumulative
   - take
@@ -1660,6 +1813,7 @@
     weight: 112
 - id: 11446
   name: hair of a banshee
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1668,6 +1822,9 @@
 - id: 11447
   name: battle stone
   article: a
+  plural: battle stones
+  description: It seems to be perfect to shape a weapon from it. Someone could definitely
+    be interested in it
   flags:
   - cumulative
   - take
@@ -1675,6 +1832,8 @@
     weight: 150
 - id: 11448
   name: black wool
+  plural: black wool
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1682,6 +1841,9 @@
     weight: 118
 - id: 11449
   name: blood preservation
+  plural: blood preservation
+  show_count: false
+  description: Someone put a cocktail straw in it
   flags:
   - cumulative
   - take
@@ -1690,6 +1852,8 @@
 - id: 11450
   name: small notebook
   article: a
+  description: It contains a long list of 'saved maidens' and their addresses. Someone
+    might be interested in it
   flags:
   - cumulative
   - take
@@ -1746,6 +1910,7 @@
 - id: 11457
   name: dragon's tail
   article: a
+  plural: dragon tails
   flags:
   - cumulative
   - take
@@ -1754,6 +1919,8 @@
 - id: 11458
   name: geomancer's robe
   article: a
+  plural: geomancer robes
+  description: It's too tiny to be worn by humans
   flags:
   - cumulative
   - take
@@ -1762,6 +1929,7 @@
 - id: 11463
   name: geomancer's staff
   article: a
+  plural: geomancer staffs
   flags:
   - cumulative
   - take
@@ -1786,6 +1954,7 @@
 - id: 11466
   name: flask of embalming fluid
   article: a
+  plural: flasks of embalming fluid
   flags:
   - cumulative
   - usable
@@ -1804,6 +1973,7 @@
 - id: 11469
   name: hunter's quiver
   article: a
+  plural: hunter quivers
   flags:
   - cumulative
   - take
@@ -1820,6 +1990,7 @@
 - id: 11471
   name: kongra's shoulderpad
   article: a
+  plural: kongra shoulderpads
   flags:
   - cumulative
   - take
@@ -1836,6 +2007,7 @@
 - id: 11473
   name: purple robe
   article: a
+  description: It's too large to be worn by humans, but rather light
   flags:
   - cumulative
   - take
@@ -1852,6 +2024,7 @@
 - id: 11475
   name: necromantic robe
   article: a
+  description: A dark curse prevents you from wearing it
   flags:
   - cumulative
   - take
@@ -1859,6 +2032,8 @@
     weight: 220
 - id: 11476
   name: nettle spit
+  show_count: false
+  description: Yuck. This might only be interesting to botanists
   flags:
   - cumulative
   - take
@@ -1866,6 +2041,8 @@
     weight: 90
 - id: 11477
   name: orcish gear
+  show_count: false
+  description: The strong smell of orcish sweat sticks to it
   flags:
   - cumulative
   - take
@@ -1881,6 +2058,7 @@
     weight: 90
 - id: 11479
   name: orc leather
+  show_count: false
   flags:
   - cumulative
   - take
@@ -1905,6 +2083,7 @@
 - id: 11482
   name: piece of warrior armor
   article: a
+  plural: pieces of warrior armor
   flags:
   - cumulative
   - take
@@ -1913,6 +2092,7 @@
 - id: 11483
   name: piece of archer armor
   article: a
+  plural: pieces of archer armor
   flags:
   - cumulative
   - take
@@ -1921,6 +2101,7 @@
 - id: 11484
   name: pile of grave earth
   article: a
+  plural: piles of grave earth
   flags:
   - cumulative
   - take
@@ -1985,6 +2166,8 @@
 - id: 11492
   name: rope belt
   article: a
+  description: Though the name implies it, this simple and thin belt is not suited
+    to be used as rope
   flags:
   - cumulative
   - take
@@ -2001,6 +2184,7 @@
 - id: 11510
   name: scroll of heroic deeds
   article: a
+  plural: scrolls of heroic deeds
   flags:
   - cumulative
   - take
@@ -2009,6 +2193,7 @@
 - id: 11511
   name: banana sash
   article: a
+  plural: banana sashes
   flags:
   - cumulative
   - take
@@ -2017,6 +2202,7 @@
 - id: 11512
   name: small flask of eyedrops
   article: a
+  plural: small flasks of eyedrops
   flags:
   - cumulative
   - take
@@ -2040,6 +2226,9 @@
     weight: 36
 - id: 11515
   name: trollroot
+  plural: trollroot
+  show_count: false
+  description: Distinctive shape and flavour
   flags:
   - cumulative
   - take
@@ -2063,6 +2252,7 @@
     weight: 50
 - id: 11658
   name: draken sulphur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2070,6 +2260,7 @@
     weight: 68
 - id: 11659
   name: draken wristbands
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2102,6 +2293,7 @@
 - id: 11671
   name: eye of corruption
   article: an
+  plural: eyes of corruption
   flags:
   - cumulative
   - take
@@ -2110,6 +2302,7 @@
 - id: 11672
   name: tail of corruption
   article: a
+  plural: tails of corruption
   flags:
   - cumulative
   - take
@@ -2118,6 +2311,7 @@
 - id: 11673
   name: scale of corruption
   article: a
+  plural: scales of corruption
   flags:
   - cumulative
   - take
@@ -2141,6 +2335,7 @@
 - id: 11702
   name: brimstone fangs
   article: a
+  plural: brimstone fangs
   flags:
   - cumulative
   - take
@@ -2198,6 +2393,7 @@
 - id: 12313
   name: stampor talons
   article: a
+  plural: stampor talons
   flags:
   - cumulative
   - take
@@ -2245,6 +2441,8 @@
     weight: 300
 - id: 12544
   name: white deer antlers
+  plural: white deer antlers
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2252,6 +2450,8 @@
     weight: 300
 - id: 12545
   name: white deer skin
+  plural: white deer skin
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2276,6 +2476,7 @@
     weight: 300
 - id: 12730
   name: eye of a deepling
+  description: Did it just twitch...? No, must have been an optical illusion
   flags:
   - cumulative
   - take
@@ -2283,6 +2484,9 @@
     weight: 240
 - id: 12742
   name: yielowax
+  plural: yielowax
+  show_count: false
+  description: Fine wax for various different uses
   flags:
   - cumulative
   - take
@@ -2290,6 +2494,10 @@
     weight: 475
 - id: 12805
   name: yielocks
+  plural: yielocks
+  show_count: false
+  description: A piece of skin from a yielothax. Tiny hairs are visible on its surface
+    - and they seem to be alive
   flags:
   - cumulative
   - take
@@ -2305,6 +2513,8 @@
     weight: 375
 - id: 13844
   name: ice flower seeds
+  description: They seem to have strange effects on other plants and can also be grown
+    into an own plant
   flags:
   - cumulative
   - usable
@@ -2315,6 +2525,7 @@
 - id: 14008
   name: spellsinger's seal
   article: a
+  description: The seal used by the spellsingers of the deep
   flags:
   - cumulative
   - take
@@ -2323,6 +2534,7 @@
 - id: 14009
   name: key to the Drowned Library
   article: a
+  description: The strange shape of this key glistens softly in the light
   flags:
   - cumulative
   - usable
@@ -2333,6 +2545,7 @@
 - id: 14010
   name: deepling guard belt buckle
   article: a
+  description: A belt buckle snatched from a deepling guard
   flags:
   - cumulative
   - take
@@ -2348,6 +2561,7 @@
     weight: 240
 - id: 14012
   name: deepling warts
+  plural: deepling warts
   flags:
   - cumulative
   - take
@@ -2355,6 +2569,8 @@
     weight: 240
 - id: 14013
   name: deeptags
+  plural: deeptags
+  description: The identity of some deepling is written there
   flags:
   - cumulative
   - take
@@ -2362,6 +2578,7 @@
     weight: 240
 - id: 14017
   name: deepling scales
+  plural: deepling scales
   flags:
   - cumulative
   - take
@@ -2369,6 +2586,7 @@
     weight: 480
 - id: 14021
   name: Jaul's Pearl
+  description: The identity of some deepling is written there
   flags:
   - cumulative
   - take
@@ -2376,6 +2594,7 @@
     weight: 310
 - id: 14022
   name: Tanjis' Sight
+  description: The identity of some deepling is written there
   flags:
   - cumulative
   - take
@@ -2383,6 +2602,7 @@
     weight: 220
 - id: 14023
   name: Obujos' Shell
+  description: The identity of some deepling is written there
   flags:
   - cumulative
   - take
@@ -2407,6 +2627,7 @@
 - id: 14076
   name: swarmer antenna
   article: a
+  plural: swarmer antennas
   flags:
   - cumulative
   - take
@@ -2439,6 +2660,7 @@
 - id: 14080
   name: waspoid claw
   article: a
+  plural: waspoid claws
   flags:
   - cumulative
   - take
@@ -2447,6 +2669,7 @@
 - id: 14081
   name: waspoid wing
   article: a
+  plural: waspoid wings
   flags:
   - cumulative
   - take
@@ -2487,6 +2710,7 @@
 - id: 16131
   name: blazing bone
   article: a
+  plural: blazing bone
   flags:
   - cumulative
   - take
@@ -2541,6 +2765,7 @@
     weight: 260
 - id: 16138
   name: crystalline spikes
+  plural: crystalline spikes
   flags:
   - cumulative
   - take
@@ -2643,6 +2868,7 @@
 - id: 17822
   name: swampling moss
   article: a
+  plural: swampling mosses
   flags:
   - cumulative
   - take
@@ -2651,6 +2877,7 @@
 - id: 17823
   name: piece of swampling wood
   article: a
+  plural: pieces of swampling wood
   flags:
   - cumulative
   - take
@@ -2667,6 +2894,7 @@
 - id: 17827
   name: bloody dwarven beard
   article: a
+  plural: bloody dwarven beards
   flags:
   - cumulative
   - take
@@ -2675,6 +2903,8 @@
 - id: 17830
   name: bonecarving knife
   article: a
+  plural: bonecarving knives
+  description: The blade of this knife already assumes the colour of the carved bones
   flags:
   - cumulative
   - take
@@ -2683,6 +2913,7 @@
 - id: 17831
   name: bone fetish
   article: a
+  plural: bone fetishes
   flags:
   - cumulative
   - take
@@ -2691,6 +2922,8 @@
 - id: 17847
   name: wimp tooth chain
   article: a
+  plural: wimp teeth chain
+  description: It contains the teeth of many easy victims
   flags:
   - cumulative
   - take
@@ -2699,6 +2932,8 @@
 - id: 17848
   name: lost husher's staff
   article: a
+  plural: lost husher's staves
+  description: It contains the dark energy of the basalt spheres
   flags:
   - cumulative
   - take
@@ -2714,6 +2949,7 @@
     weight: 380
 - id: 17850
   name: holy ash
+  plural: holy ashes
   flags:
   - cumulative
   - take
@@ -2729,6 +2965,7 @@
     weight: 1100
 - id: 17853
   name: lost bracers
+  plural: lost bracers
   flags:
   - cumulative
   - take
@@ -2752,6 +2989,7 @@
 - id: 17856
   name: basalt fetish
   article: a
+  plural: basalt fetishes
   flags:
   - cumulative
   - take
@@ -2760,6 +2998,7 @@
 - id: 17857
   name: basalt figurine
   article: a
+  plural: basalt figurines
   flags:
   - cumulative
   - take
@@ -2768,6 +3007,8 @@
 - id: 18924
   name: tooth file
   article: a
+  plural: teeth file
+  description: This tooth file looks somewhat used
   flags:
   - cumulative
   - take
@@ -2776,6 +3017,7 @@
 - id: 18925
   name: lancet
   article: a
+  description: A razorsharp tool, commonly used by necromancers to dissect things
   flags:
   - cumulative
   - take
@@ -2784,6 +3026,7 @@
 - id: 18926
   name: horoscope
   article: a
+  description: A personal horoscope, inscribed with comments and formulas
   flags:
   - cumulative
   - take
@@ -2792,6 +3035,8 @@
 - id: 18927
   name: vampire's cape chain
   article: a
+  plural: vampire's cape chains
+  description: Torn off from a vampire cape during a fight
   flags:
   - cumulative
   - take
@@ -2799,6 +3044,9 @@
     weight: 620
 - id: 18928
   name: blood tincture in a vial
+  plural: blood tincture in a vial
+  show_count: false
+  description: Used for writing and spattering unholy items
   flags:
   - cumulative
   - usable
@@ -2808,6 +3056,8 @@
     weight: 630
 - id: 18929
   name: incantation notes
+  description: A used scrap of paper showing scribbles and notes for a formula or
+    incantation
   flags:
   - cumulative
   - usable
@@ -2817,6 +3067,9 @@
     weight: 440
 - id: 18930
   name: pieces of magic chalk
+  plural: pieces of magic chalk
+  show_count: false
+  description: Imbued with magic, this chalk is used for drawing incantation circles
   flags:
   - cumulative
   - usable
@@ -2835,6 +3088,7 @@
 - id: 18994
   name: elven hoof
   article: an
+  plural: elven hooves
   flags:
   - cumulative
   - take
@@ -2842,6 +3096,7 @@
     weight: 229
 - id: 18995
   name: venison
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2906,6 +3161,7 @@
 - id: 20198
   name: frazzle tongue
   article: a
+  plural: frazzle tongues
   flags:
   - cumulative
   - take
@@ -2914,6 +3170,7 @@
 - id: 20199
   name: frazzle skin
   article: a
+  plural: frazzle skins
   flags:
   - cumulative
   - take
@@ -2921,6 +3178,7 @@
     weight: 190
 - id: 20200
   name: silencer claws
+  show_count: false
   flags:
   - cumulative
   - take
@@ -2929,6 +3187,9 @@
 - id: 20201
   name: silencer resonating chamber
   article: a
+  plural: silencer resonating chambers
+  description: Blowing this fragile resonance chamber from an elevated place is likely
+    to attract other silencers
   flags:
   - cumulative
   - usable
@@ -2946,6 +3207,7 @@
 - id: 20203
   name: trapped bad dream monster
   article: a
+  plural: trapped bad dream monsters
   flags:
   - cumulative
   - take
@@ -3001,6 +3263,7 @@
 - id: 21103
   name: glooth injection tube
   article: a
+  plural: glooth injection tubes
   flags:
   - cumulative
   - take
@@ -3121,6 +3384,7 @@
 - id: 21974
   name: golden lotus brooch
   article: a
+  plural: golden lotus broochs
   flags:
   - cumulative
   - take
@@ -3129,6 +3393,7 @@
 - id: 21975
   name: peacock feather fan
   article: a
+  plural: peacock feather fans
   flags:
   - cumulative
   - take
@@ -3144,6 +3409,8 @@
     weight: 120
 - id: 22051
   name: werebadger claws
+  plural: werebadger claws
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3151,6 +3418,8 @@
     weight: 110
 - id: 22052
   name: werewolf fangs
+  plural: werewolf fangs
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3158,6 +3427,8 @@
     weight: 160
 - id: 22053
   name: wereboar hooves
+  plural: wereboar hooves
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3165,6 +3436,8 @@
     weight: 250
 - id: 22054
   name: wereboar tusks
+  plural: wereboar tusks
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3172,6 +3445,8 @@
     weight: 190
 - id: 22055
   name: werebadger skull
+  plural: werebadger skull
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3179,6 +3454,8 @@
     weight: 300
 - id: 22056
   name: werebear skull
+  plural: werebear skull
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3186,6 +3463,8 @@
     weight: 500
 - id: 22057
   name: werebear fur
+  plural: werebear fur
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3194,6 +3473,7 @@
 - id: 22184
   name: shamanic talisman
   article: a
+  plural: shamanic talismans
   flags:
   - cumulative
   - take
@@ -3202,6 +3482,8 @@
 - id: 22186
   name: raw meat
   article: a
+  plural: raw meats
+  description: It doesn't look appetizing. Perhaps it would taste better if roasted
   flags:
   - cumulative
   - usable
@@ -3212,6 +3494,7 @@
 - id: 22188
   name: ogre ear stud
   article: an
+  plural: ogre ear studs
   flags:
   - cumulative
   - take
@@ -3220,6 +3503,7 @@
 - id: 22189
   name: ogre nose ring
   article: an
+  plural: ogre nose rings
   flags:
   - cumulative
   - take
@@ -3236,6 +3520,7 @@
 - id: 22728
   name: vexclaw talon
   article: a
+  plural: vexclaw talons
   flags:
   - cumulative
   - take
@@ -3244,6 +3529,7 @@
 - id: 22729
   name: pair of hellflayer horns
   article: a
+  plural: pairs of hellflayer horns
   flags:
   - cumulative
   - take
@@ -3251,6 +3537,8 @@
     weight: 1200
 - id: 22730
   name: some grimeleech wings
+  plural: some grimeleech wings
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3259,6 +3547,7 @@
 - id: 22769
   name: Ferumbras' mana keg
   article: a
+  description: It is made of dark oak and crested with a large golden F
   flags:
   - usable
   - take
@@ -3266,6 +3555,8 @@
     weight: 1400
 - id: 23501
   name: condensed energy
+  plural: condensed energy
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3274,6 +3565,7 @@
 - id: 23502
   name: sparkion claw
   article: an
+  plural: sparkion claws
   flags:
   - cumulative
   - take
@@ -3282,6 +3574,7 @@
 - id: 23503
   name: sparkion tail
   article: a
+  plural: sparkion tails
   flags:
   - cumulative
   - take
@@ -3289,6 +3582,8 @@
     weight: 750
 - id: 23504
   name: sparkion legs
+  plural: sparkion legs
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3296,6 +3591,8 @@
     weight: 750
 - id: 23505
   name: sparkion stings
+  plural: sparkion stings
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3303,6 +3600,8 @@
     weight: 350
 - id: 23506
   name: plasma pearls
+  plural: plasma pearls
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3310,6 +3609,8 @@
     weight: 350
 - id: 23507
   name: crystallized anger
+  plural: crystallized anger
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3318,6 +3619,7 @@
 - id: 23508
   name: energy vein
   article: an
+  plural: energy veins
   flags:
   - cumulative
   - take
@@ -3335,6 +3637,7 @@
 - id: 23510
   name: odd organ
   article: an
+  plural: odd organs
   flags:
   - cumulative
   - take
@@ -3342,6 +3645,8 @@
     weight: 450
 - id: 23511
   name: curious matter
+  plural: curious matter
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3349,6 +3654,8 @@
     weight: 450
 - id: 23513
   name: strange proto matter
+  plural: strange proto matter
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3356,6 +3663,8 @@
     weight: 600
 - id: 23514
   name: volatile proto matter
+  plural: volatile proto matter
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3363,6 +3672,8 @@
     weight: 600
 - id: 23515
   name: dangerous proto matter
+  plural: dangerous proto matter
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3370,6 +3681,8 @@
     weight: 600
 - id: 23516
   name: instable proto matter
+  plural: instable proto matter
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3377,6 +3690,8 @@
     weight: 600
 - id: 23517
   name: solid rage
+  plural: solid rage
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3385,6 +3700,7 @@
 - id: 23518
   name: spark sphere
   article: a
+  plural: spark sphere
   flags:
   - cumulative
   - take
@@ -3392,6 +3708,8 @@
     weight: 500
 - id: 23519
   name: frozen lightning
+  plural: frozen lightning
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3399,6 +3717,8 @@
     weight: 700
 - id: 23520
   name: plasmatic lightning
+  plural: plasmatic lightning
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3407,6 +3727,7 @@
 - id: 23521
   name: crystal bone
   article: a
+  plural: crystal bones
   flags:
   - cumulative
   - take
@@ -3415,6 +3736,7 @@
 - id: 23522
   name: glistening bone
   article: a
+  plural: glistering bones
   flags:
   - cumulative
   - take
@@ -3423,6 +3745,7 @@
 - id: 23523
   name: energy ball
   article: an
+  plural: energy balls
   flags:
   - cumulative
   - take
@@ -3431,6 +3754,7 @@
 - id: 23524
   name: small energy ball
   article: a
+  plural: small energy balls
   flags:
   - cumulative
   - take
@@ -3439,6 +3763,8 @@
 - id: 23686
   name: devourer core
   article: a
+  description: The core of the devourer has the power to provide you with a powerful
+    charge that allows you to challenge him again imediately
   flags:
   - usable
   - take
@@ -3463,6 +3789,7 @@
 - id: 24381
   name: beetle carapace
   article: a
+  plural: beetle carapaces
   flags:
   - cumulative
   - take
@@ -3471,6 +3798,7 @@
 - id: 24384
   name: ancient belt buckle
   article: an
+  plural: ancient belt buckles
   flags:
   - cumulative
   - take
@@ -3495,6 +3823,7 @@
 - id: 24387
   name: tarnished rhino figurine
   article: a
+  plural: tarnished rhino figurines
   flags:
   - cumulative
   - take
@@ -3646,6 +3975,8 @@
     weight: 650
 - id: 25089
   name: colourful feathers
+  plural: colourful feathers
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3653,6 +3984,8 @@
     weight: 450
 - id: 25691
   name: wild flowers
+  plural: wild flowers
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3661,6 +3994,7 @@
 - id: 25693
   name: shimmering beetles
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3669,6 +4003,7 @@
 - id: 25694
   name: fairy wings
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3677,6 +4012,7 @@
 - id: 25695
   name: dandelion seeds
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3685,6 +4021,7 @@
 - id: 25696
   name: colourful snail shell
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3693,6 +4030,7 @@
 - id: 25697
   name: green bandage
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -3701,6 +4039,8 @@
 - id: 25701
   name: single human eye
   article: a
+  show_count: false
+  description: You see an oculus gift. For two dimensions only
   flags:
   - cumulative
   - take
@@ -3709,6 +4049,8 @@
 - id: 25702
   name: little bowl of myrrh
   article: a
+  show_count: false
+  description: It smells like mummy's spirit
   flags:
   - cumulative
   - take
@@ -3717,6 +4059,7 @@
 - id: 25742
   name: fig leaf
   article: a
+  description: For vital parts
   flags:
   - cumulative
   - take
@@ -3725,6 +4068,7 @@
 - id: 25743
   name: bed of nails
   article: a
+  description: Not for everyone
   flags:
   - cumulative
   - take
@@ -3733,6 +4077,7 @@
 - id: 25744
   name: torn shirt
   article: a
+  description: Someone's last shroud
   flags:
   - cumulative
   - take
@@ -3741,6 +4086,8 @@
 - id: 25745
   name: guidebook
   article: a
+  description: Someone's guidebook. It looks rather used and seems to have been read
+    many times
   flags:
   - take
   attributes:
@@ -3899,6 +4246,7 @@
 - id: 27618
   name: pristine worm head
   article: a
+  description: One of the heads of the Duke of the Depths
   flags:
   - cumulative
   - take
@@ -3907,6 +4255,7 @@
 - id: 27619
   name: giant tentacle
   article: a
+  description: A tentacle of the Duke of the Depths
   flags:
   - cumulative
   - take
@@ -3915,6 +4264,7 @@
 - id: 27620
   name: damaged worm head
   article: a
+  description: One of the heads of the Duke of the Depths
   flags:
   - cumulative
   - take
@@ -3923,6 +4273,7 @@
 - id: 27621
   name: huge shell
   article: a
+  description: The shell of the Baron from Below
   flags:
   - cumulative
   - take
@@ -3931,6 +4282,7 @@
 - id: 27622
   name: chitinous mouth
   article: a
+  description: The chitinous mouth of the Baron from Below
   flags:
   - cumulative
   - take
@@ -3939,6 +4291,7 @@
 - id: 27623
   name: slimy leg
   article: a
+  description: A slimy leg of the Baron from Below
   flags:
   - cumulative
   - take
@@ -3946,6 +4299,7 @@
     weight: 160
 - id: 27624
   name: longing eyes
+  description: The longing eyes of the Baron from Below
   flags:
   - cumulative
   - take
@@ -3954,6 +4308,8 @@
 - id: 27625
   name: harpoon of a giant snail
   article: a
+  description: The harpoon of the Count of the Core is hollow and contains lethal
+    poison
   flags:
   - cumulative
   - take
@@ -3962,6 +4318,7 @@
 - id: 27626
   name: chitinous mouth
   article: a
+  description: The mouth of the Count of the Core
   flags:
   - cumulative
   - take
@@ -3970,6 +4327,7 @@
 - id: 27627
   name: huge spiky snail shell
   article: a
+  description: The spikey shell of the Count of the Core
   flags:
   - cumulative
   - take
@@ -4018,6 +4376,7 @@
 - id: 28821
   name: patch of fine cloth
   article: a
+  description: A patch of fine cloth in the colours of the Order of the Falcon
   flags:
   - cumulative
   - take
@@ -4040,6 +4399,8 @@
     weight: 50
 - id: 28824
   name: grant of arms
+  description: Letter from the Order of the Falcon conferring on a person and his
+    or her descendants to bear the Falcon coat of arms
   flags:
   - cumulative
   - take
@@ -4048,6 +4409,7 @@
 - id: 29291
   name: chargeable compass
   article: a
+  description: This compass has been repaired. It can be charged anyways
   flags:
   - usable
   - multiuse
@@ -4057,6 +4419,7 @@
 - id: 29348
   name: poison gland
   article: a
+  description: This is from lucifuga aranea
   flags:
   - take
   attributes:
@@ -4101,6 +4464,7 @@
 - id: 30005
   name: dream essence egg
   article: a
+  description: Maybe the magical dream bird lays such eggs
   flags:
   - cumulative
   - usable
@@ -4278,6 +4642,7 @@
 - id: 30284
   name: percht handkerchief
   article: a
+  description: Dry your tears with this one
   flags:
   - cumulative
   - take
@@ -4722,6 +5087,7 @@
     weight: 229
 - id: 33922
   name: Cruelty's claw
+  plural: Cruelty's claws
   flags:
   - cumulative
   - take
@@ -4729,6 +5095,7 @@
     weight: 140
 - id: 33923
   name: Cruelty's chest
+  plural: Cruelty's chests
   flags:
   - cumulative
   - take
@@ -4736,6 +5103,7 @@
     weight: 140
 - id: 33924
   name: Greed's arm
+  plural: Greed's arms
   flags:
   - cumulative
   - take
@@ -4743,6 +5111,7 @@
     weight: 125
 - id: 33925
   name: Megalomania's skull
+  plural: Megalomania's skulls
   flags:
   - cumulative
   - take
@@ -4758,6 +5127,7 @@
 - id: 33927
   name: vial of Hatred
   article: a
+  plural: vials of Hatred
   flags:
   - cumulative
   - take
@@ -4765,6 +5135,7 @@
     weight: 110
 - id: 33928
   name: Megalomania's essence
+  plural: Megalomania's essences
   flags:
   - cumulative
   - take
@@ -4773,6 +5144,7 @@
 - id: 33929
   name: rod
   article: a
+  plural: rods
   flags:
   - cumulative
   - take
@@ -4781,6 +5153,7 @@
 - id: 33932
   name: head
   article: an
+  plural: heads
   flags:
   - cumulative
   - take
@@ -4789,6 +5162,7 @@
 - id: 33933
   name: apron
   article: an
+  plural: aprons
   flags:
   - cumulative
   - take
@@ -4797,6 +5171,7 @@
 - id: 33934
   name: telescope eye
   article: a
+  plural: telescope eyes
   flags:
   - cumulative
   - take
@@ -4805,6 +5180,7 @@
 - id: 33935
   name: crown
   article: a
+  plural: crowns
   flags:
   - cumulative
   - take
@@ -4813,6 +5189,7 @@
 - id: 33936
   name: hand
   article: a
+  plural: hands
   flags:
   - cumulative
   - take
@@ -4821,6 +5198,7 @@
 - id: 33937
   name: head
   article: a
+  plural: heads
   flags:
   - cumulative
   - take
@@ -4836,6 +5214,7 @@
 - id: 33943
   name: werehyaena nose
   article: a
+  plural: werehyaena noses
   flags:
   - cumulative
   - take
@@ -4844,6 +5223,7 @@
 - id: 33944
   name: werehyaena talisman
   article: a
+  plural: werehyaena talismans
   flags:
   - cumulative
   - take
@@ -4852,6 +5232,7 @@
 - id: 33945
   name: ivory carving
   article: a
+  plural: ivory carvings
   flags:
   - cumulative
   - take
@@ -4860,6 +5241,7 @@
 - id: 33947
   name: hard-boiled hydra egg
   article: a
+  plural: hard-boiled hydra eggs
   flags:
   - cumulative
   - take
@@ -4881,6 +5263,7 @@
     weight: 50
 - id: 33982
   name: crawler's essence
+  plural: crawler's essences
   flags:
   - cumulative
   - take
@@ -4917,6 +5300,7 @@
 - id: 34021
   name: figurine of Greed
   article: a
+  plural: figurines of Greed
   flags:
   - cumulative
   - take
@@ -4932,6 +5316,7 @@
 - id: 34101
   name: Utua's poison
   article: an
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4940,6 +5325,7 @@
 - id: 34102
   name: Yirkas' egg
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4948,6 +5334,7 @@
 - id: 34103
   name: Srezz' eye
   article: a
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4956,6 +5343,8 @@
 - id: 34138
   name: capricious heart
   article: a
+  plural: capricious hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4964,6 +5353,8 @@
 - id: 34139
   name: infernal heart
   article: an
+  plural: infernal hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4972,6 +5363,8 @@
 - id: 34140
   name: hazardous heart
   article: a
+  plural: hazardous hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4980,6 +5373,8 @@
 - id: 34141
   name: mould heart
   article: a
+  plural: mould hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4988,6 +5383,8 @@
 - id: 34142
   name: distorted heart
   article: a
+  plural: distorted hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -4996,6 +5393,8 @@
 - id: 34143
   name: vibrant heart
   article: a
+  plural: vibrant hearts
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5004,6 +5403,8 @@
 - id: 34144
   name: vibrant robe
   article: a
+  plural: vibrant robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5012,6 +5413,8 @@
 - id: 34145
   name: capricious robe
   article: a
+  plural: capricious robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5020,6 +5423,8 @@
 - id: 34146
   name: infernal robe
   article: an
+  plural: infernal robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5028,6 +5433,8 @@
 - id: 34147
   name: hazardous robe
   article: a
+  plural: hazardous robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5036,6 +5443,8 @@
 - id: 34148
   name: mould robe
   article: a
+  plural: mould robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5044,6 +5453,8 @@
 - id: 34149
   name: distorted robe
   article: a
+  plural: distorted robes
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5052,6 +5463,8 @@
 - id: 34160
   name: lion crest
   article: a
+  plural: lion crests
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5060,6 +5473,8 @@
 - id: 34161
   name: broken longbow
   article: a
+  plural: broken longbows
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5068,6 +5483,8 @@
 - id: 34162
   name: lion cloak patch
   article: a
+  plural: lion cloak patches
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5076,6 +5493,8 @@
 - id: 34163
   name: lion seal
   article: a
+  plural: lion seals
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5084,6 +5503,8 @@
 - id: 34164
   name: fur shred
   article: a
+  plural: fur shreds
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5092,6 +5513,7 @@
 - id: 35571
   name: small treasure chest
   article: a
+  plural: small treasure chests
   flags:
   - cumulative
   - take
@@ -5100,6 +5522,7 @@
 - id: 35572
   name: pirate coin
   article: a
+  plural: pirate coins
   flags:
   - cumulative
   - take
@@ -5108,6 +5531,7 @@
 - id: 35573
   name: pirat's tail
   article: a
+  plural: pirat's tails
   flags:
   - cumulative
   - take
@@ -5123,6 +5547,7 @@
 - id: 35588
   name: grappling hook
   article: a
+  plural: grappling hooks
   flags:
   - cumulative
   - take
@@ -5138,6 +5563,7 @@
 - id: 35610
   name: Tentugly's eye
   article: a
+  plural: Tentugly's eyes
   flags:
   - cumulative
   - take
@@ -5146,6 +5572,7 @@
 - id: 35611
   name: tentacle of Tentugly
   article: a
+  plural: tentacles of Tentugly
   flags:
   - cumulative
   - take
@@ -5160,6 +5587,7 @@
     weight: 320
 - id: 35613
   name: Ratmiral's hat
+  plural: Ratmiral's hats
   flags:
   - cumulative
   - take
@@ -5168,6 +5596,7 @@
 - id: 35614
   name: cheesy membership card
   article: a
+  plural: cheesy membership cards
   flags:
   - cumulative
   - take
@@ -5393,6 +5822,8 @@
 - id: 36805
   name: carnisylvan finger
   article: a
+  description: A broken finger from a dead carnisylvan. While wooden in its appearance,
+    its structure is more of a brittle human bone
   flags:
   - cumulative
   - usable
@@ -5403,6 +5834,7 @@
 - id: 36806
   name: carnisylvan bark
   article: a
+  description: What you took as bark from a dead carnisylvan appears to be human tissue
   flags:
   - cumulative
   - usable
@@ -5413,6 +5845,7 @@
 - id: 36807
   name: human teeth
   article: a
+  description: Human teeth from a dead carnisylvan
   flags:
   - cumulative
   - usable
@@ -5423,6 +5856,7 @@
 - id: 36808
   name: old royal diary
   article: an
+  description: An old royal diary that once belonged to Yselda of Bounac
   flags:
   - cumulative
   - take
@@ -5431,12 +5865,14 @@
 - id: 36809
   name: curl of hair
   article: a
+  description: A curl of hair from the megasylvan form of Yselda of Bounac
   flags:
   - cumulative
   - take
 - id: 36820
   name: bashmu fang
   article: a
+  description: Green venom is still dripping off it
   flags:
   - cumulative
   - take
@@ -5445,6 +5881,7 @@
 - id: 36821
   name: bashmu tongue
   article: a
+  description: It is blue, forked and very long
   flags:
   - cumulative
   - take
@@ -5453,6 +5890,7 @@
 - id: 36822
   name: scorpion charm
   article: a
+  description: It is made of bone
   flags:
   - cumulative
   - take
@@ -5461,6 +5899,7 @@
 - id: 36823
   name: bashmu feather
   article: a
+  description: It is pearly-white and quite big
   flags:
   - cumulative
   - take
@@ -5861,6 +6300,7 @@
     weight: 570
 - id: 43729
   name: werecrocodile tongue
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5868,6 +6308,7 @@
     weight: 280
 - id: 43730
   name: weretiger tooth
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5875,6 +6316,7 @@
     weight: 280
 - id: 43731
   name: werepanther claw
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5882,6 +6324,7 @@
     weight: 280
 - id: 43732
   name: silver moon coin
+  show_count: false
   flags:
   - usable
   - take
@@ -5889,6 +6332,7 @@
     weight: 280
 - id: 43733
   name: silver foxmouse coin
+  show_count: false
   flags:
   - usable
   - take
@@ -5896,6 +6340,7 @@
     weight: 280
 - id: 43734
   name: golden sun coin
+  show_count: false
   flags:
   - usable
   - take
@@ -5903,6 +6348,7 @@
     weight: 280
 - id: 43735
   name: golden tiger coin
+  show_count: false
   flags:
   - usable
   - take
@@ -5910,6 +6356,7 @@
     weight: 280
 - id: 43736
   name: moon pin
+  show_count: false
   flags:
   - cumulative
   - take
@@ -5917,6 +6364,7 @@
     weight: 280
 - id: 43737
   name: sun brooch
+  show_count: false
   flags:
   - cumulative
   - take

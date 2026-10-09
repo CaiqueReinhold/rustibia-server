@@ -1,4 +1,5 @@
 name: Orc Leader
+name_description: an orc leader
 life: 450
 speed: 115
 blood_type: blood

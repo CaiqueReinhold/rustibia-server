@@ -1,4 +1,5 @@
 name: Undead Mine Worker
+name_description: an undead mine worker
 life: 65
 speed: 75
 blood_type: blood

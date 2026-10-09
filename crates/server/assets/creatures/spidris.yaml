@@ -1,4 +1,5 @@
 name: Spidris
+name_description: Spidris
 life: 3700
 speed: 130
 blood_type: poison

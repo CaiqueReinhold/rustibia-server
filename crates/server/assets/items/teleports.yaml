@@ -16,6 +16,7 @@
 - id: 775
   name: mystic flame
   article: a
+  description: You feel drawn to the mesmerizing light.
   flags:
   - bottom
   - unmove
@@ -71,6 +72,7 @@
 - id: 1949
   name: magic forcefield
   article: a
+  description: You can see the other side through it.
   flags:
   - bottom
   - unmove
@@ -79,6 +81,7 @@
 - id: 1959
   name: mystic flame
   article: a
+  description: You feel drawn to the mesmerizing light.
   flags:
   - bottom
   - unmove
@@ -87,6 +90,7 @@
 - id: 5022
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove
@@ -95,6 +99,7 @@
 - id: 5023
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove
@@ -123,6 +128,7 @@
 - id: 11552
   name: magic crystal
   article: a
+  description: It is able to store memories and thoughts
   flags:
   - take
   - teleport
@@ -131,6 +137,7 @@
 - id: 11553
   name: magic portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -138,6 +145,7 @@
 - id: 11554
   name: magic portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -181,6 +189,7 @@
 - id: 21739
   name: water vortex
   article: a
+  description: It draws you nearer.
   flags:
   - border
   - usable
@@ -190,6 +199,7 @@
 - id: 21740
   name: water vortex
   article: a
+  description: It draws you nearer.
   flags:
   - bottom
   - usable
@@ -200,6 +210,7 @@
 - id: 21741
   name: hot geyser
   article: a
+  description: A hot current buffets you upward.
   flags:
   - bottom
   - unmove
@@ -216,6 +227,7 @@
 - id: 22106
   name: water vortex
   article: a
+  description: It draws you nearer.
   flags:
   - bottom
   - usable
@@ -226,12 +238,14 @@
 - id: 22747
   name: water vortex
   article: a
+  description: It draws you nearer.
   flags:
   - unmove
   - teleport
 - id: 22761
   name: vortex
   article: a
+  description: It draws you nearer.
   flags:
   - bottom
   - unmove
@@ -261,6 +275,7 @@
 - id: 25047
   name: death portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -268,6 +283,7 @@
 - id: 25048
   name: death portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -275,6 +291,7 @@
 - id: 25049
   name: earth portal
   article: an
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -282,6 +299,7 @@
 - id: 25050
   name: earth portal
   article: an
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -289,6 +307,7 @@
 - id: 25051
   name: energy portal
   article: an
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -296,6 +315,7 @@
 - id: 25052
   name: energy portal
   article: an
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -303,6 +323,7 @@
 - id: 25053
   name: fire portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -310,6 +331,7 @@
 - id: 25054
   name: fire portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -317,6 +339,7 @@
 - id: 25055
   name: holy portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -324,6 +347,7 @@
 - id: 25056
   name: holy portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -331,6 +355,7 @@
 - id: 25057
   name: ice portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -338,6 +363,7 @@
 - id: 25058
   name: ice portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -345,6 +371,7 @@
 - id: 27589
   name: teleport
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -352,6 +379,7 @@
 - id: 27590
   name: teleport
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -359,6 +387,7 @@
 - id: 27658
   name: energy portal
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -433,6 +462,7 @@
 - id: 34111
   name: magic forcefield
   article: a
+  description: You can see the other side through it.
   flags:
   - bottom
   - unmove
@@ -448,6 +478,7 @@
 - id: 36973
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove
@@ -456,6 +487,7 @@
 - id: 37000
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove
@@ -464,6 +496,7 @@
 - id: 37001
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove
@@ -472,6 +505,7 @@
 - id: 37065
   name: magic forcefield
   article: a
+  description: You can see the other side trough it.
   flags:
   - bottom
   - unmove

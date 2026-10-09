@@ -1,4 +1,5 @@
 name: Insectoid Scout
+name_description: an insectoid scout
 life: 230
 speed: 95
 blood_type: poison

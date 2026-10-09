@@ -1,4 +1,5 @@
 name: Orc
+name_description: an orc
 life: 70
 speed: 75
 blood_type: blood

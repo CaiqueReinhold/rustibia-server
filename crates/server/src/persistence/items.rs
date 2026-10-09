@@ -60,9 +60,17 @@ struct RawItemConfig {
     #[serde(default)]
     article: Option<String>,
     #[serde(default)]
+    plural: Option<String>,
+    #[serde(default = "shown")]
+    show_count: bool,
+    #[serde(default)]
     flags: Vec<String>,
     #[serde(default)]
     attributes: HashMap<String, serde_yaml::Value>,
+}
+
+fn shown() -> bool {
+    true
 }
 
 // ── Conversion ────────────────────────────────────────────────────────────────
@@ -262,14 +270,17 @@ fn convert(raw: RawItemConfig, shapes: &HashMap<AreaShapeId, Arc<AreaShape>>) ->
         .filter_map(|(k, v)| parse_attribute(k, v, shapes))
         .collect::<Vec<_>>();
 
-    ItemConfig::new(
+    let mut config = ItemConfig::new(
         raw.id,
         raw.name,
         raw.description,
         raw.article,
         raw.flags.iter().filter_map(|s| parse_flag(s)),
         attributes,
-    )
+    );
+    config.plural = raw.plural;
+    config.show_count = raw.show_count;
+    config
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -398,6 +409,38 @@ mod tests {
         assert_eq!(sword.attr_required_level(), Some(35));
         assert!(sword.can_be_worn_by(35, Vocation::Knight));
         assert!(!sword.can_be_worn_by(35, Vocation::Paladin));
+    }
+
+    #[test]
+    fn plural_show_count_and_description_survive_the_whole_load_path() {
+        let items = load_items_from_files(
+            [(
+                Path::new("other.yaml"),
+                "
+- id: 836
+  name: walnut
+  article: a
+  plural: walnuts
+- id: 1
+  name: thing
+  show_count: false
+  description: The dwarven emperor is sleeping there.
+",
+            )],
+            &HashMap::new(),
+        )
+        .unwrap();
+
+        let walnut = &items[&ItemId(836)];
+        assert_eq!(walnut.plural.as_deref(), Some("walnuts"));
+        assert!(walnut.show_count);
+        let thing = &items[&ItemId(1)];
+        assert_eq!(thing.plural, None);
+        assert!(!thing.show_count);
+        assert_eq!(
+            thing.description.as_deref(),
+            Some("The dwarven emperor is sleeping there.")
+        );
     }
 
     #[test]

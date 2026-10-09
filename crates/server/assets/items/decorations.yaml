@@ -62,21 +62,25 @@
 - id: 199
   name: spider victim
   article: a
+  description: This poor guy has been wrapped up in spider silk.
   flags:
   - unmove
 - id: 200
   name: spider victim
   article: a
+  description: This poor guy has been wrapped up in spider silk.
   flags:
   - unmove
 - id: 201
   name: spider victim
   article: a
+  description: This poor guy has been wrapped up in spider silk.
   flags:
   - unmove
 - id: 202
   name: spider victim
   article: a
+  description: This poor guy has been wrapped up in spider silk.
   flags:
   - unmove
 - id: 205
@@ -390,6 +394,7 @@
 - id: 867
   name: large hole
   article: a
+  description: It is loosely covered by some stones and earth.
   flags:
   - usable
   - unmove
@@ -1444,11 +1449,13 @@
 - id: 2603
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2604
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2605
@@ -1582,32 +1589,38 @@
 - id: 2630
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2631
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2633
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2634
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - usable
   - unmove
 - id: 2636
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2637
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - unmove
 - id: 2642
@@ -2309,6 +2322,7 @@
       decay_to: 3652
 - id: 3652
   name: wheat
+  description: It is not mature yet.
   flags:
   - unmove
   - avoid
@@ -2923,6 +2937,7 @@
 - id: 5057
   name: small snake head
   article: a
+  description: It is emitting poisonous clouds.
   flags:
   - unmove
 - id: 5058
@@ -2933,6 +2948,7 @@
 - id: 5059
   name: small snake head
   article: a
+  description: It is emitting poisonous clouds.
   flags:
   - unmove
 - id: 5060
@@ -3224,6 +3240,7 @@
 - id: 5462
   name: sugar cane
   article: a
+  description: It has just been harvested.
   flags:
   - unmove
   attributes:
@@ -3233,6 +3250,7 @@
 - id: 5463
   name: sugar cane
   article: a
+  description: It can be harvested.
   flags:
   - usable
   - unmove
@@ -3415,50 +3433,62 @@
     weight: 620
 - id: 5840
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5841
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5842
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5843
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5844
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5845
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5846
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5847
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5848
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5849
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5850
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5851
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - unmove
 - id: 5854
@@ -4877,6 +4907,8 @@
 - id: 7772
   name: branch
   article: a
+  description: Push it back to Zirella by holding the left mousebutton down on it
+    and pushing it over the grass.
   flags:
   - unmove
   attributes:
@@ -6199,6 +6231,7 @@
 - id: 8859
   name: ghost charm
   article: a
+  description: You can see the other side through it.
   flags:
   - bottom
   - unmove
@@ -6381,6 +6414,8 @@
 - id: 9108
   name: magical blending device
   article: a
+  description: Place ingredients in bowl, then pull lever to grind and blend them.
+    Only for smart magical recipes.
   flags:
   - unmove
 - id: 9120
@@ -7216,6 +7251,7 @@
 - id: 10876
   name: skull
   article: a
+  plural: skulls
   flags:
   - cumulative
   - unmove
@@ -8998,6 +9034,7 @@
 - id: 13656
   name: strange lamp
   article: a
+  description: This lamp is glowing very dimly.
   flags:
   - usable
   - unmove
@@ -9010,6 +9047,7 @@
 - id: 13658
   name: strange lamp
   article: a
+  description: This lamp is glowing very dimly.
   flags:
   - usable
   - unmove
@@ -9693,6 +9731,8 @@
 - id: 14237
   name: soft green chair
   article: a
+  description: The chair is tied to this strange machine. You could use this if you
+    had appropriate instructions.
   flags:
   - usable
   - unmove
@@ -10141,6 +10181,7 @@
   - avoid
 - id: 16246
   name: strange symbols
+  description: Another set of strange symbols.
   flags:
   - bottom
   - unmove
@@ -10417,6 +10458,7 @@
   - unmove
 - id: 17151
   name: freshly cut venorean spice
+  description: It has just been cut.
   flags:
   - unmove
   attributes:
@@ -10425,6 +10467,7 @@
       decay_to: 17152
 - id: 17152
   name: growing venorean spice
+  description: It's not mature yet.
   flags:
   - unmove
   - avoid
@@ -11262,6 +11305,9 @@
 - id: 19140
   name: grave stone
   article: a
+  description: 'You read: House of the Bronze Dragon. When the Silent Gong tolls three
+    times, the pillars of the earth will shake and the House of the Bronze Dragon
+    shall rise again.'
   flags:
   - usable
   - unmove
@@ -11448,6 +11494,7 @@
 - id: 19393
   name: stone tablet
   article: a
+  description: The sun with its burning grasp devours the nothingness twice.
   flags:
   - unmove
 - id: 19405
@@ -11850,6 +11897,7 @@
 - id: 20051
   name: traces of an ancient dream
   article: a
+  description: It is embedded in stone and must be carefully removed.
   flags:
   - usable
   - multiuse
@@ -11889,6 +11937,7 @@
 - id: 20122
   name: instable vortex
   article: an
+  description: This vortex seems suck you right in..
   flags:
   - bottom
   - unmove
@@ -11908,6 +11957,7 @@
     weight: 3000
 - id: 20128
   name: traces of an ancient dream
+  description: It grows new crystal spikes at a slow pace.
   flags:
   - usable
   - unmove
@@ -11922,6 +11972,7 @@
 - id: 20132
   name: sneeze bossom
   article: a
+  description: It hums a tune.
   flags:
   - bottom
   - usable
@@ -13160,12 +13211,14 @@
 - id: 21047
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
 - id: 21049
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - unmove
   - avoid
@@ -13327,6 +13380,8 @@
   - unmove
 - id: 21211
   name: active probing device
+  description: This thing looks highly instable, you better find a place to deploy
+    it soon
   flags:
   - usable
   - unmove
@@ -13335,6 +13390,7 @@
 - id: 21221
   name: jammed sewer grate
   article: a
+  description: This grate won't budge.
   flags:
   - usable
   - unmove
@@ -13389,6 +13445,8 @@
 - id: 21293
   name: note pinned on the wall
   article: a
+  description: 'You read: The magistrate is looking for help in an important mission.
+    Contact Ezebeth in the magistrate building for more information.'
   flags:
   - unmove
 - id: 21298
@@ -13427,6 +13485,8 @@
 - id: 21373
   name: forlorn shovel
   article: a
+  description: Apparently forgotten by someone who intended to use it with something
+    nearby.
   flags:
   - usable
   - multiuse
@@ -13434,6 +13494,7 @@
 - id: 21375
   name: lost rope
   article: a
+  description: 'There''s a note pinned to it: ''Never leave home without a rope!''.'
   flags:
   - usable
   - multiuse
@@ -13441,6 +13502,7 @@
 - id: 21388
   name: lion's mane flower
   article: a
+  description: It is a beautiful, orange-red flower with fringed petals.
   flags:
   - usable
   - unmove
@@ -13449,6 +13511,7 @@
 - id: 21391
   name: ornamented stone pedestal
   article: an
+  description: The surface is covered with strange carvings.
   flags:
   - usable
   - multiuse
@@ -13457,12 +13520,14 @@
 - id: 21393
   name: krailos
   article: a
+  description: krailos
   flags:
   - usable
   - unmove
 - id: 21396
   name: piece of a shell
   article: some
+  description: They're drying and dissolving in the sunlight as you watch
   flags:
   - unmove
   attributes:
@@ -13479,16 +13544,19 @@
   flags: []
 - id: 21416
   name: worn out pirate boots
+  description: They smell really, really bad.
   flags:
   - unmove
 - id: 21417
   name: worn dress
   article: a
+  description: It needs washing.
   flags:
   - unmove
 - id: 21418
   name: smelly leather legs
   article: a
+  description: No way anyone would want to wear those grimy, acid-stained legs again.
   flags:
   - unmove
 - id: 21419
@@ -13545,11 +13613,13 @@
 - id: 21427
   name: paladin's bow
   article: a
+  description: A simple bow, yet well crafted.
   flags:
   - unmove
 - id: 21428
   name: ununsed simple arrow
   article: a
+  plural: ununsed simple arrows
   flags:
   - cumulative
   - unmove
@@ -13566,16 +13636,19 @@
 - id: 21430
   name: simple dagger
   article: a
+  description: Many a knight has relied on this trusted weapon.
   flags:
   - unmove
 - id: 21431
   name: scorcher
   article: the
+  description: Ideal for young sorcerers to practise the ways of their magic.
   flags:
   - unmove
 - id: 21432
   name: lightest missile rune
   article: a
+  description: It stores a small amount of vibrant magical energy.
   flags:
   - cumulative
   - unmove
@@ -13584,11 +13657,13 @@
 - id: 21433
   name: chiller
   article: the
+  description: Ideally suited to teach young druids the first steps in their craft.
   flags:
   - unmove
 - id: 21434
   name: light stone shower rune
   article: a
+  description: It holds some fragment of the power of the earth.
   flags:
   - cumulative
   - unmove
@@ -13609,6 +13684,7 @@
 - id: 21468
   name: translation scroll
   article: a
+  description: With this scroll you might be able to translate the old temple inscriptions.
   flags:
   - usable
   - unmove
@@ -13617,6 +13693,7 @@
 - id: 21500
   name: water vortex
   article: a
+  description: It draws you nearer.
   flags:
   - unmove
   - avoid
@@ -13664,6 +13741,8 @@
 - id: 21815
   name: magma chunk
   article: a
+  description: A large chunk of magma. It is fiery hot but you could still throw it
+    if you are quick.
   flags:
   - usable
   - multiuse
@@ -13700,6 +13779,7 @@
 - id: 21833
   name: irrigation funnel
   article: an
+  description: It can be calibrated to give a measured amount of water to the ground.
   flags:
   - usable
   - unmove
@@ -13713,6 +13793,7 @@
 - id: 21867
   name: torn piece of cloth
   article: a
+  description: It looks as if it was torn by some sort of explosion.
   flags:
   - unmove
 - id: 21878
@@ -13722,6 +13803,7 @@
   - unmove
 - id: 21934
   name: black crystal shards
+  description: The remains of the evil crystal glitter balefully.
   flags:
   - unmove
   attributes:
@@ -13740,6 +13822,8 @@
 - id: 22059
   name: silvered trap
   article: a
+  description: It looks like a common leghold trap, but the jags are coated in silver.
+    The trap is closed and safe.
   flags:
   - unmove
 - id: 22076
@@ -14232,47 +14316,56 @@
   - unmove
 - id: 23154
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
   - avoid
 - id: 23155
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23156
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23157
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23158
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23159
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23160
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23161
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
 - id: 23162
   name: glowing dirt
+  description: This floor is very gluey.
   flags:
   - bottom
   - unmove
@@ -14308,14 +14401,17 @@
   - unmove
 - id: 23184
   name: viscous dirt
+  description: This floor is very gluey.
   flags:
   - unmove
 - id: 23185
   name: viscous dirt
+  description: This floor is very gluey.
   flags:
   - unmove
 - id: 23186
   name: viscous dirt
+  description: This floor is very gluey.
   flags:
   - unmove
 - id: 23214
@@ -14425,6 +14521,7 @@
 - id: 23485
   name: explosive barrel
   article: an
+  description: This barrel is highly explosive.
   flags:
   - usable
   attributes:
@@ -14432,6 +14529,7 @@
 - id: 23486
   name: explosive barrel
   article: an
+  description: This barrel is highly explosive.
   flags: []
   attributes:
     weight: 280
@@ -14967,161 +15065,197 @@
 - id: 24193
   name: symbol of Fardos
   article: a
+  description: It represents Fardos the Creator, one of the Tibian gods.
   flags:
   - unmove
 - id: 24194
   name: symbol of Fardos
   article: a
+  description: It represents Fardos the Creator, one of the Tibian gods.
   flags:
   - unmove
 - id: 24195
   name: sign of Uman
   article: a
+  description: It represents Uman the Wise, one of the Tibian gods.
   flags:
   - unmove
 - id: 24196
   name: sign of Uman
   article: a
+  description: It represents Uman the Wise, one of the Tibian gods.
   flags:
   - unmove
 - id: 24197
   name: sign of Zathroth
   article: a
+  description: It represents Zathroth the Destroyer, one of the Tibian gods.
   flags:
   - unmove
 - id: 24198
   name: sign of Zathroth
   article: a
+  description: It represents Zathroth the Destroyer, one of the Tibian gods.
   flags:
   - unmove
 - id: 24199
   name: sign of Uman and Zathroth
   article: a
+  description: It represents the unity of Uman the Wise and Zathroth the Destroyer,
+    two of the Tibian gods.
   flags:
   - unmove
 - id: 24200
   name: sign of Uman and Zathroth
   article: a
+  description: It represents the unity of Uman the Wise and Zathroth the Destroyer,
+    two of the Tibian gods.
   flags:
   - unmove
 - id: 24201
   name: symbol of Tibia
   article: a
+  description: It represents Tibia the Earth, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24202
   name: symbol of Tibia
   article: a
+  description: It represents Tibia the Earth, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24203
   name: symbol of Sula
   article: a
+  description: It represents Sula the Water, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24204
   name: symbol of Sula
   article: a
+  description: It represents Sula the Water, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24205
   name: symbol of Fire
   article: a
+  description: It represents the Fire, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24206
   name: symbol of Fire
   article: a
+  description: It represents the Fire, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24207
   name: symbol of Air
   article: a
+  description: It represents the Air, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24208
   name: symbol of Air
   article: a
+  description: It represents the Air, one of the Tibian elemental gods.
   flags:
   - unmove
 - id: 24209
   name: symbol of Fafnar
   article: a
+  description: It represents Fafnar the Destroying Sun, the Tibian sun gods.
   flags:
   - unmove
 - id: 24210
   name: symbol of Fafnar
   article: a
+  description: It represents Fafnar the Destroying Sun, the Tibian sun gods.
   flags:
   - unmove
 - id: 24211
   name: symbol of Suon
   article: a
+  description: It represents Suon the Benevolent Sun, the Tibian sun gods.
   flags:
   - unmove
 - id: 24212
   name: symbol of Suon
   article: a
+  description: It represents Suon the Benevolent Sun, the Tibian sun gods.
   flags:
   - unmove
 - id: 24213
   name: symbol of Suon and Fafnar
   article: a
+  description: It represents Suon the Benevolent Sun and Fafnar the Destroying Sun,
+    the Tibian sun gods.
   flags:
   - unmove
 - id: 24214
   name: symbol of Suon and Fafnar
   article: a
+  description: It represents Suon the Benevolent Sun and Fafnar the Destroying Sun,
+    the Tibian sun gods.
   flags:
   - unmove
 - id: 24215
   name: symbol of Crunor
   article: a
+  description: It represents Crunor the First Tree, one the Tibian gods.
   flags:
   - unmove
 - id: 24216
   name: symbol of Crunor
   article: a
+  description: It represents Crunor the First Tree, one the Tibian gods.
   flags:
   - unmove
 - id: 24217
   name: symbol of Nornur
   article: a
+  description: It represents Nornur, the Tibian god of Fate.
   flags:
   - unmove
 - id: 24218
   name: symbol of Nornur
   article: a
+  description: It represents Nornur, the Tibian god of Fate.
   flags:
   - unmove
 - id: 24219
   name: symbol of Bastesh
   article: a
+  description: It represents Bastesh, Mistress of the Sea, one of the Tibian gods.
   flags:
   - unmove
 - id: 24220
   name: symbol of Bastesh
   article: a
+  description: It represents Bastesh, Mistress of the Sea, one of the Tibian gods.
   flags:
   - unmove
 - id: 24221
   name: symbol of Urgith
   article: a
+  description: It represents Urgith, Lord of Undeath, one of the Tibian gods.
   flags:
   - unmove
 - id: 24222
   name: symbol of Urgith
   article: a
+  description: It represents Urgith, Lord of Undeath, one of the Tibian gods.
   flags:
   - unmove
 - id: 24223
   name: symbol of Toth
   article: a
+  description: It represents Toth, Guardian of the Dead, one of the Tibian gods.
   flags:
   - unmove
 - id: 24224
   name: symbol of Toth
   article: a
+  description: It represents Toth, Guardian of the Dead, one of the Tibian gods.
   flags:
   - unmove
 - id: 24225
@@ -15719,12 +15853,14 @@
 - id: 25098
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unmove
 - id: 25100
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unmove
@@ -15864,11 +16000,13 @@
 - id: 25395
   name: dream garlic
   article: a
+  description: It is glowing in the dark.
   flags:
   - unmove
 - id: 25396
   name: dream garlic
   article: a
+  description: It is glowing in the dark.
   flags:
   - unmove
 - id: 25412
@@ -15979,6 +16117,7 @@
 - id: 25458
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -15986,6 +16125,7 @@
 - id: 25459
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -15993,6 +16133,7 @@
 - id: 25464
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -16000,6 +16141,7 @@
 - id: 25465
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -16019,48 +16161,56 @@
 - id: 25503
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - top
   - unmove
 - id: 25504
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - top
   - unmove
 - id: 25505
   name: big rose
   article: a
+  description: The petals are glowing in the dark
   flags:
   - top
   - unmove
 - id: 25506
   name: big rose
   article: a
+  description: The petals are glowing in the dark
   flags:
   - top
   - unmove
 - id: 25639
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - top
   - unmove
 - id: 25640
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - top
   - unmove
 - id: 25641
   name: big rose
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - top
   - unmove
 - id: 25642
   name: big rose
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - top
   - unmove
@@ -16432,6 +16582,8 @@
 - id: 27492
   name: explosive barrel
   article: an
+  description: This dwarven barrel is highly explosive and instable. It's literally
+    only a matter of time until it goes off.
   flags: []
 - id: 27527
   name: unknown item
@@ -16495,16 +16647,19 @@
 - id: 27839
   name: joss stick
   article: a
+  description: An occult joss stick. Strangely it's still smoking.
   flags:
   - unmove
 - id: 27841
   name: banner
   article: a
+  description: A banner with the colours and heraldic animal of the Falcon Order.
   flags:
   - unmove
 - id: 27842
   name: banner
   article: a
+  description: A banner with the colours and heraldic animal of the Falcon Order.
   flags:
   - unmove
 - id: 27850
@@ -17810,18 +17965,24 @@
 - id: 30329
   name: ignited fireworks rocket
   article: an
+  description: Stand back! Fire hazard! (Can actually be used indoors. Who heeds those
+    warnings anyway.).
   flags:
   - usable
   - unmove
 - id: 30330
   name: ignited fireworks rocket
   article: an
+  description: Stand back! Fire hazard! (Can actually be used indoors. Who heeds those
+    warnings anyway.).
   flags:
   - usable
   - unmove
 - id: 30331
   name: ignited fireworks rocket
   article: an
+  description: Stand back! Fire hazard! (Can actually be used indoors. Who heeds those
+    warnings anyway.).
   flags:
   - usable
   - unmove
@@ -18567,6 +18728,7 @@
 - id: 31349
   name: mirror neuron
   article: a
+  description: Mirror, mirror on the wall.
   flags:
   - unmove
   - avoid
@@ -18599,6 +18761,7 @@
 - id: 31483
   name: throne of scarlett etzel
   article: a
+  description: The Top os this throne bears the likeness of a giant cobra.
   flags:
   - bottom
   - unmove
@@ -19613,6 +19776,7 @@
 - id: 38054
   name: water vortex
   article: a
+  description: A cold maelstrom pulls you down.
   flags:
   - bottom
   - usable
@@ -20235,6 +20399,7 @@
 - id: 39725
   name: water vortex
   article: a
+  description: A cold maelstrom pulls you down.
   flags:
   - bottom
   - usable

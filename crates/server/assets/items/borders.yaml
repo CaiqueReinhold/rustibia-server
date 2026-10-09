@@ -2863,61 +2863,73 @@
   - unmove
 - id: 5816
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5817
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5818
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5819
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5820
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5821
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5822
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5823
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5824
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5825
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5826
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
 - id: 5827
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - border
   - unmove
@@ -4029,12 +4041,14 @@
 - id: 7185
   name: small crack in the ice
   article: a
+  description: This would be a good place to destroy the ice.
   flags:
   - border
   - unmove
 - id: 7186
   name: small crack in the ice
   article: a
+  description: This would be a good place to destroy the ice.
   flags:
   - border
   - unpass
@@ -7899,6 +7913,7 @@
   - unmove
 - id: 12935
   name: mud
+  description: There is a hole in the ceiling.
   flags:
   - border
   - usable
@@ -10452,6 +10467,7 @@
 - id: 15822
   name: strange stone
   article: a
+  description: As long as it is immersed that deep you won't be able to get a whetstone.
   flags:
   - border
   - unpass
@@ -10463,6 +10479,7 @@
 - id: 15823
   name: strange stone
   article: a
+  description: As long as it is immersed that deep you won't be able to get a whetstone.
   flags:
   - border
   - unpass
@@ -10474,6 +10491,7 @@
 - id: 15824
   name: strange stone
   article: a
+  description: As long as it is immersed that deep you won't be able to get a whetstone.
   flags:
   - border
   - unpass
@@ -10485,6 +10503,7 @@
 - id: 15825
   name: strange stone
   article: a
+  description: With some luck you might be able to pluck a grindstone from the formation.
   flags:
   - border
   - usable
@@ -14075,6 +14094,7 @@
 - id: 21046
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - border
   - unmove
@@ -14082,6 +14102,7 @@
 - id: 21048
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - border
   - unmove
@@ -14656,6 +14677,7 @@
 - id: 21964
   name: hoard of dragon gold
   article: a
+  description: There is far too much gold here to carry.
   flags:
   - border
   - usable
@@ -18678,72 +18700,84 @@
 - id: 30706
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30707
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30708
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30709
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30710
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30711
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30712
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30713
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30714
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30715
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30716
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
 - id: 30717
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - border
   - unmove
@@ -22887,6 +22921,7 @@
 - id: 43902
   name: crack
   article: a
+  description: You see to be able to fit through there
   flags:
   - border
   - unmove

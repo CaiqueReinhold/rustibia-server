@@ -19185,6 +19185,7 @@
 - id: 22738
   name: stone wall
   article: a
+  description: A slight draft seems to be coming from this wall.
   flags:
   - bottom
   - usable
@@ -19597,6 +19598,7 @@
 - id: 24192
   name: monument wall
   article: a
+  description: This wall seems quite fragile.
   flags:
   - bottom
   - unpass
@@ -20027,6 +20029,7 @@
 - id: 24926
   name: monument
   article: a
+  description: This wall seems quite fragile.
   flags:
   - bottom
   - unpass
@@ -20306,6 +20309,7 @@
 - id: 25307
   name: tree with blue leaves
   article: a
+  description: A small door is embedded in its trunk.
   flags:
   - bottom
   - unpass
@@ -20313,6 +20317,7 @@
 - id: 25308
   name: tree with blue leaves
   article: a
+  description: A small door is embedded in its trunk.
   flags:
   - bottom
   - unpass
@@ -20320,6 +20325,7 @@
 - id: 25309
   name: tree with blue leaves
   article: a
+  description: A small door is embedded in its trunk.
   flags:
   - bottom
   - unpass
@@ -20327,6 +20333,7 @@
 - id: 25310
   name: tree with blue leaves
   article: a
+  description: A small door is embedded in its trunk.
   flags:
   - bottom
   - unpass

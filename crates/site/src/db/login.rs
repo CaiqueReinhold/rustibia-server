@@ -36,7 +36,7 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
     };
 
     let row = sqlx::query(
-        "SELECT id, account_id, name, vocation, pos_x, pos_y, pos_z, origin_x, origin_y, origin_z, \
+        "SELECT id, account_id, name, vocation, sex, pos_x, pos_y, pos_z, origin_x, origin_y, origin_z, \
          facing, life_cur, life_max, mana_cur, mana_max, capacity, speed, \
          outfit_id, outfit_head, outfit_body, outfit_legs, outfit_feet, inventory, admin \
          FROM players WHERE id = $1 AND deleted_at IS NULL",
@@ -86,6 +86,7 @@ pub async fn redeem(pool: &PgPool, token: &str) -> Result<Option<CharacterRecord
         admin: row.try_get("admin")?,
         name: row.try_get("name")?,
         vocation: row.try_get("vocation")?,
+        sex: row.try_get("sex")?,
         position: Coords {
             x: row.try_get("pos_x")?,
             y: row.try_get("pos_y")?,
@@ -189,6 +190,7 @@ mod tests {
         assert_eq!(record.id, character_id);
         assert_eq!(record.account_id, account_id);
         assert_eq!(record.name, "Rizael");
+        assert_eq!(record.sex, Sex::Male.as_i16());
         assert_eq!(record.position.x, template.pos_x);
         assert_eq!(record.origin.x, template.pos_x);
         assert_eq!(record.facing, template.facing);

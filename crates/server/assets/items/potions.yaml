@@ -1,6 +1,8 @@
 - id: 236
   name: strong health potion
   article: a
+  description: This potion can only be consumed by paladins and knights of level 50
+    or higher.
   flags:
   - cumulative
   - usable
@@ -16,6 +18,7 @@
 - id: 237
   name: strong mana potion
   article: a
+  description: This potion can only be consumed by players of level 50 or higher.
   flags:
   - cumulative
   - usable
@@ -31,6 +34,8 @@
 - id: 238
   name: great mana potion
   article: a
+  description: This potion can only be consumed by sorcerers, druids and paladins
+    of level 80 or higher.
   flags:
   - cumulative
   - usable
@@ -46,6 +51,7 @@
 - id: 239
   name: great health potion
   article: a
+  description: This potion can only be consumed by knights of level 80 or higher.
   flags:
   - cumulative
   - usable
@@ -91,6 +97,8 @@
 - id: 283
   name: empty potion flask
   article: an
+  description: Return it to a potion store for your deposit or refill it with a potion
+    keg or cask
   flags:
   - cumulative
   - usable
@@ -101,6 +109,8 @@
 - id: 284
   name: empty potion flask
   article: an
+  description: Return it to a potion store for your deposit or refill it with a potion
+    keg or cask
   flags:
   - cumulative
   - usable
@@ -111,6 +121,8 @@
 - id: 285
   name: empty potion flask
   article: an
+  description: Return it to a potion store for your deposit or refill it with a potion
+    keg or cask
   flags:
   - cumulative
   - usable
@@ -121,6 +133,8 @@
 - id: 7439
   name: berserk potion
   article: a
+  description: Drinking this potion temporarily increases your fighting skill while
+    decreasing your defense
   flags:
   - cumulative
   - usable
@@ -130,6 +144,7 @@
 - id: 7440
   name: mastermind potion
   article: a
+  description: Drinking this potion temporarily increases your magic skill
   flags:
   - cumulative
   - usable
@@ -139,6 +154,8 @@
 - id: 7443
   name: bullseye potion
   article: a
+  description: Drinking this potion temporarily increases your distance skill while
+    decreasing your defense
   flags:
   - cumulative
   - usable
@@ -148,6 +165,7 @@
 - id: 7642
   name: great spirit potion
   article: a
+  description: This potion can only be consumed by paladins of level 80 or higher
   flags:
   - cumulative
   - usable
@@ -166,6 +184,7 @@
 - id: 7643
   name: ultimate health potion
   article: an
+  description: This potion can only be consumed by knights of level 130 or higher
   flags:
   - cumulative
   - usable
@@ -206,6 +225,8 @@
 - id: 23373
   name: ultimate mana potion
   article: an
+  description: This potion can only be consumed by sorcerers and druids of level 130
+    or higher
   flags:
   - cumulative
   - usable
@@ -221,6 +242,7 @@
 - id: 23374
   name: ultimate spirit potion
   article: an
+  description: This potion can only be consumed by paladins of level 130 or higher
   flags:
   - cumulative
   - usable
@@ -239,6 +261,7 @@
 - id: 23375
   name: supreme health potion
   article: a
+  description: This potion can only be consumed by knights of level 200 or higher
   flags:
   - cumulative
   - usable
@@ -254,6 +277,8 @@
 - id: 35563
   name: magic shield potion
   article: a
+  description: This potion can only be consumed by druids and sorcerers of level 14
+    or higher
   flags:
   - cumulative
   - usable
@@ -263,6 +288,7 @@
 - id: 36723
   name: kooldown-aid
   article: a
+  description: Drinking this potion temporarily resets cooldowns for all spells
   flags:
   - cumulative
   - usable
@@ -272,6 +298,7 @@
 - id: 36724
   name: strike enhancement
   article: a
+  description: Drinking this potion temporarily increases critical hit chance
   flags:
   - cumulative
   - usable
@@ -280,6 +307,7 @@
     weight: 210
 - id: 36725
   name: stamina extension
+  description: Drinking this potion fills up stamina by one hour
   flags:
   - cumulative
   - usable
@@ -289,6 +317,8 @@
 - id: 36726
   name: charm upgrade
   article: a
+  description: Drinking this potion temporarily increases offensive charm trigger
+    chances except Cripple
   flags:
   - cumulative
   - usable
@@ -298,6 +328,8 @@
 - id: 36727
   name: wealth duplex
   article: a
+  description: Drinking this potion temporarily doubles the loot from every regular
+    monster you kill
   flags:
   - cumulative
   - usable
@@ -307,6 +339,7 @@
 - id: 36728
   name: bestiary betterment
   article: a
+  description: Drinking this potion temporarily makes kills count twice for the Bestiary
   flags:
   - cumulative
   - usable
@@ -316,6 +349,7 @@
 - id: 36729
   name: fire resilience
   article: a
+  description: Drinking this potion temporarily increases fire protection
   flags:
   - cumulative
   - usable
@@ -325,6 +359,7 @@
 - id: 36730
   name: ice resilience
   article: a
+  description: Drinking this potion temporarily increases ice protection
   flags:
   - cumulative
   - usable
@@ -334,6 +369,7 @@
 - id: 36731
   name: earth resilience
   article: a
+  description: Drinking this potion temporarily increases earth protection
   flags:
   - cumulative
   - usable
@@ -343,6 +379,7 @@
 - id: 36732
   name: energy resilience
   article: a
+  description: Drinking this potion temporarily increases energy protection
   flags:
   - cumulative
   - usable
@@ -352,6 +389,7 @@
 - id: 36733
   name: holy resilience
   article: a
+  description: Drinking this potion temporarily increases holy protection
   flags:
   - cumulative
   - usable
@@ -361,6 +399,7 @@
 - id: 36734
   name: death resilience
   article: a
+  description: Drinking this potion temporarily increases death protection
   flags:
   - cumulative
   - usable
@@ -370,6 +409,7 @@
 - id: 36735
   name: physical resilience
   article: a
+  description: Drinking this potion temporarily increases physical protection
   flags:
   - cumulative
   - usable
@@ -379,6 +419,7 @@
 - id: 36736
   name: fire amplification
   article: a
+  description: Drinking this potion temporarily amplifies fire damage against monsters
   flags:
   - cumulative
   - usable
@@ -388,6 +429,7 @@
 - id: 36737
   name: ice amplification
   article: a
+  description: Drinking this potion temporarily amplifies ice damage against monsters
   flags:
   - cumulative
   - usable
@@ -397,6 +439,7 @@
 - id: 36738
   name: earth amplification
   article: a
+  description: Drinking this potion temporarily amplifies earth damage against monsters
   flags:
   - cumulative
   - usable
@@ -406,6 +449,7 @@
 - id: 36739
   name: energy amplification
   article: a
+  description: Drinking this potion temporarily amplifies energy damage against monsters
   flags:
   - cumulative
   - usable
@@ -415,6 +459,7 @@
 - id: 36740
   name: holy amplification
   article: a
+  description: Drinking this potion temporarily amplifies holy damage against monsters
   flags:
   - cumulative
   - usable
@@ -424,6 +469,7 @@
 - id: 36741
   name: death amplification
   article: a
+  description: Drinking this potion temporarily amplifies death damage against monsters
   flags:
   - cumulative
   - usable
@@ -433,6 +479,8 @@
 - id: 36742
   name: physical amplification
   article: a
+  description: Drinking this potion temporarily amplifies physical damage against
+    monsters
   flags:
   - cumulative
   - usable

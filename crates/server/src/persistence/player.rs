@@ -5,6 +5,7 @@ use std::num::NonZeroU16;
 
 use rustibia_contract::{CharacterSave, Coords, Outfit, PoolValue, SkillRow, StoredItemRecord};
 
+use crate::entities::sex::Sex;
 use crate::entities::vocation::Vocation;
 use crate::entities::{
     agent::{Facing, OutfitColors, OutfitId, Pool},
@@ -25,6 +26,7 @@ pub struct PlayerSnapshot {
     pub facing: Facing,
     pub name: String,
     pub vocation: Vocation,
+    pub sex: Sex,
     pub life: Pool,
     pub mana: Pool,
     pub capacity: u32,
@@ -169,6 +171,7 @@ mod tests {
             admin: false,
             name: snapshot.name.clone(),
             vocation: 0,
+            sex: 1,
             position: save.position,
             origin: save.origin,
             facing: save.facing,

@@ -105,6 +105,7 @@ pub struct CreatureAbility {
 #[derive(Clone, Debug)]
 pub struct CreatureKind {
     pub name: String,
+    pub name_description: Option<String>,
     pub life: Pool,
     pub outfit: (OutfitId, OutfitColors),
     pub speed: u16,

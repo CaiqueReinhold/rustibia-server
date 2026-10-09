@@ -1,18 +1,21 @@
 - id: 114
   name: bed
   article: a
+  description: The dwarven emperor is sleeping there.
   flags:
   - unpass
   - unmove
 - id: 115
   name: bed
   article: a
+  description: The dwarven emperor is sleeping there.
   flags:
   - unpass
   - unmove
 - id: 116
   name: crate
   article: a
+  description: It contains the daily supply for Xodet's shop.
   flags:
   - unpass
   - unmove
@@ -249,6 +252,7 @@
 - id: 197
   name: large seashell
   article: a
+  description: Maybe there's something inside of it.
   flags:
   - bottom
   - usable
@@ -257,6 +261,7 @@
 - id: 198
   name: large seashell
   article: a
+  description: It is empty.
   flags:
   - bottom
   - unpass
@@ -374,6 +379,7 @@
 - id: 390
   name: lava hole
   article: a
+  description: It seems to be inactive.
   flags:
   - bottom
   - unpass
@@ -381,6 +387,7 @@
 - id: 391
   name: lava hole
   article: a
+  description: It emits heat and light.
   flags:
   - bottom
   - unpass
@@ -3783,11 +3790,13 @@
   - unmove
 - id: 2295
   name: wooden bars
+  description: They already have some cracks and look rather fragile.
   flags:
   - unpass
   - unmove
 - id: 2296
   name: wooden bars
+  description: They already have some cracks and look rather fragile.
   flags:
   - unpass
   - unmove
@@ -4131,6 +4140,7 @@
 - id: 2525
   name: small cask
   article: a
+  description: It is filled with the blood of the snake god.
   flags:
   - unpass
   - unmove
@@ -4311,6 +4321,7 @@
 - id: 2743
   name: block of wood
   article: a
+  description: It's a lumberjack's working place.
   flags:
   - unpass
   - unmove
@@ -4479,6 +4490,7 @@
 - id: 3263
   name: gemmed lamp
   article: a
+  description: It is the djinn leader's sleeping lamp.
   flags:
   - usable
   - unpass
@@ -4542,6 +4554,7 @@
 - id: 3501
   name: mailbox
   article: a
+  description: Royal Tibia Mail.
   flags:
   - bottom
   - unpass
@@ -6492,6 +6505,7 @@
 - id: 4850
   name: statue of the snake god
   article: the
+  description: It is emitting an eerie light.
   flags:
   - bottom
   - unpass
@@ -6499,6 +6513,7 @@
 - id: 4851
   name: smashed stone head
   article: a
+  description: It seems to repair itself rapidly.
   flags:
   - bottom
   - unpass
@@ -6779,6 +6794,7 @@
   - unmove
 - id: 4995
   name: canopic jar
+  description: You feel an eerie presence.
   flags:
   - unpass
   - unmove
@@ -8284,6 +8300,7 @@
 - id: 5538
   name: cask of brown ale
   article: a
+  description: It contains the legendary dwarvish brew.
   flags:
   - unpass
   - unmove
@@ -9532,6 +9549,7 @@
 - id: 7142
   name: bucket
   article: a
+  description: It is filled with mead.
   flags:
   - usable
   - unpass
@@ -9571,6 +9589,7 @@
 - id: 7174
   name: bear
   article: a
+  description: It seems to be sleeping tightly.
   flags:
   - usable
   - unpass
@@ -9578,6 +9597,7 @@
 - id: 7175
   name: bear
   article: a
+  description: It seems to have fallen into a really deep sleep.
   flags:
   - usable
   - unpass
@@ -9589,6 +9609,7 @@
 - id: 7176
   name: mammoth
   article: a
+  description: It is looking at you fiercely.
   flags:
   - usable
   - unpass
@@ -9596,6 +9617,7 @@
 - id: 7177
   name: mammoth
   article: a
+  description: It seems to be pretty much knocked out.
   flags:
   - unpass
   - unmove
@@ -9686,6 +9708,7 @@
 - id: 7252
   name: baby seal
   article: a
+  description: It is covered with paint.
   flags:
   - unpass
   - unmove
@@ -9905,6 +9928,7 @@
 - id: 7534
   name: sundial
   article: a
+  description: It seems strangely out of place in this surrounding.
   flags:
   - bottom
   - usable
@@ -10248,6 +10272,8 @@
 - id: 7753
   name: dead tree
   article: a
+  description: It is one of those Zirella mentioned. Rightclick it and select 'Use'
+    to break a branch from it.
   flags:
   - bottom
   - usable
@@ -11198,6 +11224,8 @@
 - id: 8091
   name: spell rune
   article: a
+  description: It is Yandur's healing rune. You can't remove it from his house, but
+    you may use it.
   flags:
   - usable
   - multiuse
@@ -12227,6 +12255,7 @@
 - id: 8771
   name: crate
   article: a
+  description: It contains food.
   flags:
   - usable
   - unpass
@@ -12408,6 +12437,7 @@
 - id: 8858
   name: ghost charm
   article: a
+  description: You can see the other side through it.
   flags:
   - unpass
   - unmove
@@ -12928,6 +12958,7 @@
 - id: 9158
   name: vortex of elemental water
   article: a
+  description: It contains the raw elemental force of water.
   flags:
   - usable
   - unpass
@@ -12935,6 +12966,7 @@
   - avoid
 - id: 9159
   name: pile of chaos matter
+  description: The chaos matter is sizzeling.
   flags:
   - usable
   - unpass
@@ -12943,6 +12975,7 @@
 - id: 9160
   name: metal locker
   article: a
+  description: It is a storage for glowing red power cores.
   flags:
   - usable
   - unpass
@@ -12951,6 +12984,7 @@
 - id: 9161
   name: glue dispenser
   article: a
+  description: The machine is constantly creating wonder glue.
   flags:
   - usable
   - unpass
@@ -12959,6 +12993,7 @@
 - id: 9162
   name: storage chest
   article: a
+  description: The chest is filled with crackling green power cores.
   flags:
   - usable
   - unpass
@@ -12967,6 +13002,7 @@
 - id: 9163
   name: amphora of grease
   article: an
+  description: The amphora is filled with thick and fetid grease.
   flags:
   - usable
   - unpass
@@ -12975,6 +13011,7 @@
 - id: 9164
   name: storage box
   article: a
+  description: It contains numerous bags of screws.
   flags:
   - usable
   - unpass
@@ -12983,6 +13020,7 @@
 - id: 9165
   name: toolbox
   article: a
+  description: Only some spare parts are left in this toolbox.
   flags:
   - usable
   - unpass
@@ -12991,6 +13029,7 @@
 - id: 9166
   name: screwdriver holder
   article: a
+  description: Some giant screwdrivers are held by this frame.
   flags:
   - usable
   - unpass
@@ -12999,6 +13038,7 @@
 - id: 9167
   name: energy generator
   article: an
+  description: This machine is constantly producing glowing energy nets.
   flags:
   - usable
   - unpass
@@ -13006,6 +13046,7 @@
 - id: 9168
   name: dusty box
   article: a
+  description: The box contains an assortment of v-belts.
   flags:
   - usable
   - unpass
@@ -13014,6 +13055,7 @@
 - id: 9169
   name: old crate
   article: an
+  description: This is a box full of yalahari gear wheels.
   flags:
   - usable
   - unpass
@@ -14805,6 +14847,7 @@
 - id: 10187
   name: rare crystal
   article: a
+  description: An extremely rare crystal you recovered from the Lost Mines.
   flags:
   - unpass
   - unmove
@@ -17404,6 +17447,7 @@
 - id: 12790
   name: peeing orc
   article: a
+  description: He doesn't seem to notice your presence.
   flags:
   - bottom
   - unpass
@@ -17421,6 +17465,7 @@
 - id: 12792
   name: elite orc guard
   article: a
+  description: No - you can't fool this one with an orc outfit. He needs to be distracted.
   flags:
   - bottom
   - unpass
@@ -18996,6 +19041,7 @@
 - id: 14152
   name: basket
   article: a
+  description: There are little puppies inside
   flags:
   - bottom
   - usable
@@ -19007,6 +19053,8 @@
 - id: 14157
   name: strong water vortex
   article: a
+  description: This continuous stream of water seems strong enough to cut even the
+    hardest of materials.
   flags:
   - usable
   - unpass
@@ -19021,6 +19069,8 @@
 - id: 14166
   name: crate
   article: a
+  description: This crate is full of fossilised coral. It needs to be obstructed in
+    time or it will corrode.
   flags:
   - unpass
   - unmove
@@ -19123,6 +19173,7 @@
 - id: 14757
   name: dragon's nest
   article: a
+  description: Young dragons will hatch soon.
   flags:
   - bottom
   - unpass
@@ -20056,6 +20107,7 @@
 - id: 15632
   name: giant carrot
   article: a
+  description: Someone turned it upside down.
   flags:
   - bottom
   - unpass
@@ -20766,6 +20818,7 @@
 - id: 16198
   name: skill trainer
   article: a
+  description: Use this statue to train your sword fighting and shielding skill offline.
   flags:
   - bottom
   - usable
@@ -20774,6 +20827,7 @@
 - id: 16199
   name: skill trainer
   article: a
+  description: Use this statue to train your axe fighting and shielding skill offline.
   flags:
   - bottom
   - usable
@@ -20782,6 +20836,7 @@
 - id: 16200
   name: skill trainer
   article: a
+  description: Use this statue to train your club fighting and shielding skill offline.
   flags:
   - bottom
   - usable
@@ -20790,6 +20845,8 @@
 - id: 16201
   name: skill trainer
   article: a
+  description: Use this statue to train your distance fighting and shielding skill
+    offline.
   flags:
   - bottom
   - usable
@@ -20798,6 +20855,7 @@
 - id: 16202
   name: skill trainer
   article: a
+  description: Use this statue to train your magic level and shielding skill offline.
   flags:
   - bottom
   - usable
@@ -23394,6 +23452,7 @@
 - id: 19068
   name: mysterious ornate chest
   article: a
+  description: This mysterious chest is strangely shaped and feels slightly unnatural.
   flags:
   - usable
   - unpass
@@ -23426,6 +23485,7 @@
 - id: 19092
   name: blazing altar basin
   article: a
+  description: Liquid fire is blazing inside.
   flags:
   - bottom
   - usable
@@ -23434,6 +23494,7 @@
 - id: 19093
   name: blazing altar basin
   article: a
+  description: Liquid fire is blazing inside.
   flags:
   - bottom
   - usable
@@ -23442,6 +23503,7 @@
 - id: 19094
   name: blazing altar basin
   article: a
+  description: Liquid fire is blazing inside.
   flags:
   - bottom
   - usable
@@ -23450,6 +23512,7 @@
 - id: 19095
   name: blazing altar basin
   article: a
+  description: Liquid fire is blazing inside.
   flags:
   - bottom
   - usable
@@ -23458,6 +23521,8 @@
 - id: 19112
   name: bloodgong statue
   article: a
+  description: A dragon statue holding a huge bronze gong. Its eyes shimmer bloodred
+    in the firelight.
   flags:
   - bottom
   - usable
@@ -23510,6 +23575,9 @@
 - id: 19141
   name: grave stone
   article: a
+  description: 'You read: Lady Takesha, benevolent and wise, beloved Mistress of House
+    Darkstone. With her ends the line of the Antishu. She always liked to be in the
+    middle of things.'
   flags:
   - bottom
   - usable
@@ -23518,6 +23586,8 @@
 - id: 19142
   name: monument
   article: a
+  description: 'You read: The noble Sir Forestcue-Greenborough, creator of the famous
+    Floating Gardens of Palace Dunesea.'
   flags:
   - bottom
   - usable
@@ -23604,6 +23674,8 @@
 - id: 19236
   name: world board
   article: the
+  description: This board will notify you of currently active mini world changes all
+    over Tibia.
   flags:
   - usable
   - unpass
@@ -23629,6 +23701,8 @@
 - id: 19245
   name: world board
   article: the
+  description: This board will notify you of currently active mini world changes all
+    over Tibia.
   flags:
   - usable
   - unpass
@@ -24518,6 +24592,7 @@
 - id: 20107
   name: cormo dementi
   article: a
+  description: It looks as if it swallowed something.
   flags:
   - bottom
   - usable
@@ -24526,6 +24601,7 @@
 - id: 20108
   name: blister egg plant
   article: a
+  description: This special urn seems to hum slightly.
   flags:
   - bottom
   - usable
@@ -24575,6 +24651,7 @@
 - id: 20115
   name: blister egg plant
   article: a
+  description: This special urn seems to hum slightly.
   flags:
   - bottom
   - unpass
@@ -24683,6 +24760,7 @@
 - id: 20237
   name: lava hole
   article: a
+  description: It seems to be inactive.
   flags:
   - bottom
   - unpass
@@ -24690,6 +24768,7 @@
 - id: 20238
   name: lava hole
   article: a
+  description: It seems to be inactive.
   flags:
   - bottom
   - unpass
@@ -25835,6 +25914,7 @@
 - id: 21153
   name: supply crate
   article: a
+  description: A supply crate filled with turnips.
   flags:
   - usable
   - unpass
@@ -25930,6 +26010,7 @@
   - unmove
 - id: 21296
   name: broken opticorder forge
+  description: A strangely shaped hollow rests in the center of this broken workbench.
   flags:
   - unpass
   - unmove
@@ -25945,6 +26026,8 @@
 - id: 21331
   name: voting results
   article: the
+  description: This board will notify you of all relevant voting results, courtesy
+    of the Rathleton Magistrate.
   flags:
   - usable
   - unpass
@@ -25952,6 +26035,8 @@
 - id: 21332
   name: voting results
   article: the
+  description: This board will notify you of all relevant voting results, courtesy
+    of the Rathleton Magistrate.
   flags:
   - usable
   - unpass
@@ -25959,6 +26044,7 @@
 - id: 21335
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - unpass
   - unmove
@@ -25966,6 +26052,7 @@
 - id: 21336
   name: slime slide
   article: a
+  description: You can see the other side through it.
   flags:
   - unpass
   - unmove
@@ -25980,6 +26067,7 @@
 - id: 21377
   name: dawnfire derb plant
   article: a
+  description: It glows slightly in the dark, like the dawning sun.
   flags:
   - usable
   - unpass
@@ -25998,6 +26086,7 @@
 - id: 21390
   name: slightly feline statue
   article: a
+  description: The stony face has lion-like features. Nothing is written on it.
   flags:
   - bottom
   - usable
@@ -26009,6 +26098,7 @@
 - id: 21394
   name: well with a lion-like face
   article: a
+  description: The water pouring out of the mouth has a faint glow.
   flags:
   - bottom
   - usable
@@ -26079,12 +26169,16 @@
 - id: 21503
   name: globe of the Tibian world
   article: a
+  description: You see the mainland, a lot of islands and huge white areas that are
+    not yet explored around them.
   flags:
   - unpass
   - unmove
 - id: 21572
   name: bloodstained crystal
   article: a
+  description: A medusa's head is engraved. It seems to be hollow, containing a fluid
+    and has a small opening.
   flags:
   - bottom
   - usable
@@ -26093,6 +26187,7 @@
 - id: 21573
   name: wooden grinder
   article: a
+  description: You find fine crystal dust on the floor around.
   flags:
   - bottom
   - usable
@@ -26112,6 +26207,7 @@
 - id: 21748
   name: orb of Life Everchanging
   article: the
+  description: Lights and sounds seem to shift inside of it each time you look away.
   flags:
   - usable
   - multiuse
@@ -26122,6 +26218,7 @@
 - id: 21749
   name: nacre altar
   article: a
+  description: The mother-of-pearl inlaid work shimmers in unearthly beauty.
   flags:
   - usable
   - multiuse
@@ -26137,6 +26234,7 @@
   - unmove
 - id: 21751
   name: stone snake shrine
+  description: The stone is much abraded by sea and age.
   flags:
   - bottom
   - usable
@@ -26145,6 +26243,7 @@
 - id: 21787
   name: broken nacre altar
   article: a
+  description: The altar slab has been defiled and the inlaid work removed.
   flags:
   - usable
   - multiuse
@@ -26162,6 +26261,7 @@
 - id: 21794
   name: ancient sundial
   article: an
+  description: It seems strangely out of place in this surrounding.
   flags:
   - bottom
   - usable
@@ -26171,6 +26271,7 @@
 - id: 21796
   name: nacre altar
   article: a
+  description: The mother-of-pearl inlaid work shimmers in unearthly beauty.
   flags:
   - usable
   - multiuse
@@ -26186,6 +26287,7 @@
 - id: 21798
   name: large seashell
   article: a
+  description: Maybe there's something inside of it.
   flags:
   - bottom
   - usable
@@ -26194,6 +26296,7 @@
 - id: 21799
   name: large seashell
   article: a
+  description: It is empty.
   flags:
   - bottom
   - usable
@@ -26202,6 +26305,7 @@
 - id: 21802
   name: wicker basket
   article: a
+  description: It can only hold one or two persons.
   flags:
   - usable
   - unpass
@@ -26239,6 +26343,7 @@
 - id: 21813
   name: orb of Earth Everpresent
   article: the
+  description: Lights and sounds seem to shift inside of it each time you look away.
   flags:
   - usable
   - multiuse
@@ -26257,6 +26362,7 @@
 - id: 21826
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - usable
   - multiuse
@@ -26265,6 +26371,7 @@
 - id: 21827
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - usable
   - multiuse
@@ -26273,18 +26380,21 @@
 - id: 21828
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - unpass
   - unmove
 - id: 21829
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - unpass
   - unmove
 - id: 21834
   name: water distilling machine
   article: a
+  description: It can test the water quality and distil it to pure water.
   flags:
   - bottom
   - usable
@@ -26293,6 +26403,7 @@
 - id: 21835
   name: water distilling machine
   article: a
+  description: It can test the water quality and distil it to pure water.
   flags:
   - bottom
   - usable
@@ -26301,6 +26412,8 @@
 - id: 21836
   name: edible rock fungus
   article: an
+  description: Apparently, the gloothworms love this mushroom shredded into flaky
+    powder.
   flags:
   - bottom
   - usable
@@ -26316,12 +26429,14 @@
 - id: 21844
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - unpass
   - unmove
 - id: 21845
   name: small gloothworm tubes
   article: a
+  description: They emit some kind of floss.
   flags:
   - unpass
   - unmove
@@ -26422,6 +26537,7 @@
 - id: 22063
   name: purple nightshade
   article: a
+  description: This rare flower will only bloom in the light of the moon.
   flags:
   - usable
   - unpass
@@ -26429,6 +26545,7 @@
 - id: 22064
   name: blooming purple nightshade
   article: a
+  description: This rare flower will only bloom in the light of the moon.
   flags:
   - usable
   - unpass
@@ -26904,6 +27021,7 @@
 - id: 22664
   name: sleeping hyaena
   article: a
+  description: It snores softly.
   flags:
   - usable
   - multiuse
@@ -26912,6 +27030,7 @@
 - id: 22676
   name: dragon's nest
   article: a
+  description: The young dragons have just hatched.
   flags:
   - bottom
   - usable
@@ -26920,6 +27039,7 @@
 - id: 22678
   name: opticorder analyser
   article: an
+  description: A strangely shaped hollow rests in the center of a desk.
   flags:
   - usable
   - unpass
@@ -26927,6 +27047,7 @@
 - id: 22679
   name: opticorder analyser
   article: an
+  description: A strangely shaped hollow rests in the center of a desk.
   flags:
   - usable
   - unpass
@@ -26934,6 +27055,8 @@
 - id: 22683
   name: crude treadmill
   article: a
+  description: Clogged up with mud, it needs at least two sturdy goblins to move it,
+    or a repair.
   flags:
   - bottom
   - usable
@@ -26942,6 +27065,7 @@
 - id: 22684
   name: greasy stone
   article: a
+  description: You see animal tracks. Maybe something lives underneath.
   flags:
   - bottom
   - usable
@@ -26950,6 +27074,7 @@
 - id: 22685
   name: dead goblin
   article: a
+  description: Filched for anything interesting, this corpse is of no use to you.
   flags:
   - unpass
   - unmove
@@ -26961,6 +27086,8 @@
 - id: 22686
   name: dead goblin
   article: a
+  description: This dead goblin seems starved and shrivelled by the horrible salts
+    in the earth.
   flags:
   - usable
   - unpass
@@ -26970,6 +27097,7 @@
 - id: 22687
   name: dead goblin
   article: a
+  description: This poor goblin died from exhaustion it seems.
   flags:
   - usable
   - unpass
@@ -26979,6 +27107,8 @@
 - id: 22689
   name: crude treadmill
   article: a
+  description: Clogged up with mud, it needs at least two sturdy goblins to move it,
+    or a repair.
   flags:
   - bottom
   - unpass
@@ -26990,6 +27120,7 @@
 - id: 22690
   name: greasy stone
   article: a
+  description: You see animal tracks. Maybe something lives underneath.
   flags:
   - bottom
   - unpass
@@ -27001,6 +27132,7 @@
 - id: 22691
   name: dead goblin
   article: a
+  description: Filched for anything interesting, this corpse is of no use to you.
   flags:
   - unpass
   - unmove
@@ -27009,6 +27141,8 @@
 - id: 22696
   name: crude water conveyor
   article: a
+  description: This mining tool now serves as a crude water wheel, but it seems to
+    be jammed and incrusted with salty mud.
   flags:
   - usable
   - unpass
@@ -27016,6 +27150,8 @@
 - id: 22697
   name: crude water conveyor
   article: a
+  description: This mining tool now serves as a crude water wheel, but it seems to
+    be jammed and incrusted with salty mud.
   flags:
   - unpass
   - unmove
@@ -27071,6 +27207,7 @@
 - id: 22885
   name: bird nest
   article: a
+  description: Something glitters between the eggs.
   flags:
   - top
   - usable
@@ -27246,6 +27383,8 @@
 - id: 23571
   name: wrecked opticorder forge
   article: a
+  description: A strangely shaped hollow rests in the center of this broken workbench.
+    You can see several broken devices beneath its socket.
   flags:
   - usable
   - unpass
@@ -27253,6 +27392,9 @@
 - id: 23730
   name: old desk
   article: an
+  description: It is cluttered with old parchments and writing utensils and partly
+    covered in spider webs. A strange moan seems to emerge from this desk and one
+    of the drawers is partly open.
   flags:
   - bottom
   - usable
@@ -27268,6 +27410,7 @@
 - id: 23814
   name: fertile soil
   article: a
+  description: This soil looks moist and fertile.
   flags:
   - bottom
   - unpass
@@ -27275,6 +27418,7 @@
 - id: 23815
   name: blooming birch
   article: a
+  description: This birch is in full bloom.
   flags:
   - bottom
   - unpass
@@ -27282,6 +27426,7 @@
 - id: 23816
   name: growing birch
   article: a
+  description: This small birch needs water to grow.
   flags:
   - bottom
   - unpass
@@ -27876,6 +28021,7 @@
 - id: 24414
   name: sewing table
   article: a
+  description: It has to be magical. The needles and scissors are moving by themselves.
   flags:
   - bottom
   - usable
@@ -28428,6 +28574,7 @@
 - id: 24842
   name: sewing table
   article: a
+  description: It has to be magical. The needles and scissors are moving by themselves.
   flags:
   - bottom
   - usable
@@ -28436,6 +28583,8 @@
 - id: 24843
   name: ancient inscription
   article: an
+  description: It displays a dragon relief and strange runes. It is already heavily
+    weathered.
   flags:
   - bottom
   - usable
@@ -28444,6 +28593,8 @@
 - id: 24844
   name: ancient inscription
   article: an
+  description: It displays a dragon relief and strange runes. It is already heavily
+    weathered.
   flags:
   - bottom
   - usable
@@ -28595,6 +28746,7 @@
 - id: 25091
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28602,6 +28754,7 @@
 - id: 25092
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28609,6 +28762,7 @@
 - id: 25093
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28616,6 +28770,7 @@
 - id: 25094
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28623,6 +28778,7 @@
 - id: 25095
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - usable
@@ -28631,6 +28787,7 @@
 - id: 25096
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28638,6 +28795,7 @@
 - id: 25097
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28645,6 +28803,7 @@
 - id: 25099
   name: time machine
   article: a
+  description: A strange mechanism designed to travel outside the boundaries of time.
   flags:
   - bottom
   - unpass
@@ -28848,6 +29007,7 @@
 - id: 25236
   name: weeping stone
   article: a
+  description: It has a sad face.
   flags:
   - bottom
   - usable
@@ -28856,6 +29016,7 @@
 - id: 25237
   name: weeping stone
   article: a
+  description: It is shedding bloody tears.
   flags:
   - bottom
   - usable
@@ -28897,6 +29058,7 @@
 - id: 25311
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28904,6 +29066,7 @@
 - id: 25312
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28911,6 +29074,7 @@
 - id: 25313
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - usable
@@ -28919,6 +29083,7 @@
 - id: 25314
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28926,6 +29091,7 @@
 - id: 25315
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28933,6 +29099,7 @@
 - id: 25316
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28940,6 +29107,7 @@
 - id: 25317
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28947,6 +29115,7 @@
 - id: 25318
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - usable
@@ -28955,6 +29124,7 @@
 - id: 25319
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28962,6 +29132,7 @@
 - id: 25320
   name: small plant house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside
   flags:
   - bottom
   - unpass
@@ -28969,6 +29140,7 @@
 - id: 25321
   name: small dwelling in a log
   article: a
+  description: Glowing mushrooms are growing on top of it like tiny lanterns.
   flags:
   - bottom
   - unpass
@@ -28976,6 +29148,7 @@
 - id: 25322
   name: small dwelling in a log
   article: a
+  description: Glowing mushrooms are growing on top of it like tiny lanterns.
   flags:
   - bottom
   - unpass
@@ -28983,6 +29156,7 @@
 - id: 25331
   name: mushroom house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside.
   flags:
   - bottom
   - unpass
@@ -28990,6 +29164,7 @@
 - id: 25332
   name: mushroom house
   article: a
+  description: As you take a closer look you discover some tiny fairies inside.
   flags:
   - bottom
   - unpass
@@ -29125,12 +29300,14 @@
 - id: 25383
   name: huge fly agaric
   article: a
+  description: It is glowing in the dark.
   flags:
   - unpass
   - unmove
 - id: 25384
   name: huge fly agaric
   article: a
+  description: It is glowing in the dark.
   flags:
   - unpass
   - unmove
@@ -29173,54 +29350,65 @@
 - id: 25397
   name: magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - unpass
   - unmove
 - id: 25398
   name: magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - unpass
   - unmove
 - id: 25399
   name: sunlight beech
   article: a
+  description: Its leaves are golden yellow.
   flags:
   - unpass
   - unmove
 - id: 25400
   name: sunlight beech
   article: a
+  description: Its leaves are golden yellow.
   flags:
   - unpass
   - unmove
 - id: 25401
   name: dusk beech
   article: a
+  description: Its leaves are delicate pink.
   flags:
   - unpass
   - unmove
 - id: 25402
   name: dusk beech
   article: a
+  description: Its leaves are delicate pink.
   flags:
   - unpass
   - unmove
 - id: 25403
   name: dream beech
   article: a
+  description: Its leaves are bright turquoise.
   flags:
   - unpass
   - unmove
 - id: 25404
   name: dream beech
   article: a
+  description: Its leaves are bright turquoise.
   flags:
   - unpass
   - unmove
 - id: 25405
   name: sentient oak
   article: a
+  description: It looks tired but satisfied.
   flags:
   - usable
   - unpass
@@ -29228,6 +29416,7 @@
 - id: 25406
   name: sentient oak
   article: a
+  description: It looks slightly strained.
   flags:
   - usable
   - unpass
@@ -29235,6 +29424,7 @@
 - id: 25407
   name: sentient oak
   article: a
+  description: It looks happy
   flags:
   - usable
   - unpass
@@ -29242,12 +29432,14 @@
 - id: 25408
   name: lampion tree
   article: a
+  description: A single blue blossom is hanging down from a branch.
   flags:
   - unpass
   - unmove
 - id: 25409
   name: lampion tree
   article: a
+  description: A single blue blossom is hanging down from a branch.
   flags:
   - unpass
   - unmove
@@ -29282,6 +29474,7 @@
 - id: 25446
   name: sentient stone
   article: a
+  description: It looks a bit grumpy
   flags:
   - bottom
   - usable
@@ -29290,6 +29483,7 @@
 - id: 25447
   name: sentient stone
   article: a
+  description: It looks a bit grumpy
   flags:
   - bottom
   - usable
@@ -29298,6 +29492,7 @@
 - id: 25448
   name: sentient stone
   article: a
+  description: It looks a bit grumpy
   flags:
   - bottom
   - usable
@@ -29306,6 +29501,7 @@
 - id: 25449
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29314,6 +29510,7 @@
 - id: 25450
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29322,6 +29519,7 @@
 - id: 25451
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29330,6 +29528,7 @@
 - id: 25452
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29338,6 +29537,7 @@
 - id: 25453
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29346,6 +29546,7 @@
 - id: 25454
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29354,6 +29555,7 @@
 - id: 25455
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29362,6 +29564,7 @@
 - id: 25456
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29370,6 +29573,7 @@
 - id: 25457
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29378,6 +29582,7 @@
 - id: 25460
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29386,6 +29591,7 @@
 - id: 25461
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29394,6 +29600,7 @@
 - id: 25462
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29402,6 +29609,7 @@
 - id: 25463
   name: sentient stone
   article: a
+  description: Its eyes are glowing with a ghostly light.
   flags:
   - bottom
   - usable
@@ -29410,12 +29618,14 @@
 - id: 25466
   name: fairy tree
   article: a
+  description: Hundreds of tiny lights are glowing in its crown.
   flags:
   - unpass
   - unmove
 - id: 25467
   name: fairy tree
   article: a
+  description: Hundreds of tiny lights are glowing in its crown.
   flags:
   - unpass
   - unmove
@@ -29488,12 +29698,14 @@
 - id: 25479
   name: dancing tree
   article: a
+  description: It looks like a wooden humanoid.
   flags:
   - unpass
   - unmove
 - id: 25480
   name: dancing tree
   article: a
+  description: It looks like a wooden humanoid.
   flags:
   - unpass
   - unmove
@@ -29524,54 +29736,63 @@
 - id: 25487
   name: purple wineberry
   article: a
+  description: It emits a rich sweetish scent.
   flags:
   - unpass
   - unmove
 - id: 25488
   name: purple wineberry
   article: a
+  description: It emits a rich sweetish scent.
   flags:
   - unpass
   - unmove
 - id: 25489
   name: purple wineberry
   article: a
+  description: It emits a rich sweetish scent.
   flags:
   - unpass
   - unmove
 - id: 25490
   name: purple wineberry
   article: a
+  description: It emits a rich sweetish scent.
   flags:
   - unpass
   - unmove
 - id: 25491
   name: dream bird tree
   article: a
+  description: It looks like a beautiful bird of paradise.
   flags:
   - unpass
   - unmove
 - id: 25492
   name: dream bird tree
   article: a
+  description: It looks like a beautiful bird of paradise.
   flags:
   - unpass
   - unmove
 - id: 25493
   name: dream bird tree
   article: a
+  description: It looks like a beautiful bird of paradise.
   flags:
   - unpass
   - unmove
 - id: 25494
   name: dream bird tree
   article: a
+  description: It looks like a beautiful bird of paradise.
   flags:
   - unpass
   - unmove
 - id: 25495
   name: moon sculpture
   article: a
+  description: It is a big crescent crystal clutched by a tree
   flags:
   - bottom
   - unpass
@@ -29579,6 +29800,7 @@
 - id: 25496
   name: moon sculpture
   article: a
+  description: It is a big crescent crystal clutched by a tree
   flags:
   - bottom
   - unpass
@@ -29586,6 +29808,7 @@
 - id: 25497
   name: moon sculpture
   article: a
+  description: It is a big crescent crystal clutched by a tree
   flags:
   - bottom
   - unpass
@@ -29593,6 +29816,7 @@
 - id: 25498
   name: moon sculpture
   article: a
+  description: It is a big crescent crystal clutched by a tree
   flags:
   - bottom
   - unpass
@@ -29600,24 +29824,28 @@
 - id: 25499
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - unpass
   - unmove
 - id: 25500
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - unpass
   - unmove
 - id: 25501
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - unpass
   - unmove
 - id: 25502
   name: rose arch
   article: a
+  description: The petals are glowing in the dark
   flags:
   - unpass
   - unmove
@@ -29645,24 +29873,28 @@
 - id: 25635
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - unpass
   - unmove
 - id: 25636
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - unpass
   - unmove
 - id: 25637
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - unpass
   - unmove
 - id: 25638
   name: rose arch
   article: a
+  description: The petals are glowing in the dark.
   flags:
   - unpass
   - unmove
@@ -29851,6 +30083,7 @@
   - unmove
 - id: 25802
   name: reward shrine
+  description: It depicts the two suns of Tibia, symbolising the course of a day.
   flags:
   - bottom
   - usable
@@ -29858,6 +30091,7 @@
   - unmove
 - id: 25803
   name: reward shrine
+  description: It depicts the two suns of Tibia, symbolising the course of a day.
   flags:
   - bottom
   - usable
@@ -30521,6 +30755,8 @@
 - id: 27510
   name: hollow geode
   article: a
+  description: This geode is hollow, it seems somehow connected to the platform next
+    to it.
   flags:
   - bottom
   - unpass
@@ -30550,6 +30786,7 @@
 - id: 27588
   name: opticorder rectifier
   article: an
+  description: A strangely shaped hollow rests in the center of a workbench.
   flags:
   - usable
   - unpass
@@ -30996,12 +31233,14 @@
 - id: 28199
   name: fiery metal eye
   article: a
+  description: This eye seems to be aware of its surroundings
   flags:
   - unpass
   - unmove
 - id: 28200
   name: fiery metal eye
   article: a
+  description: This eye seems to be aware of its surroundings
   flags:
   - unpass
   - unmove
@@ -31462,6 +31701,8 @@
 - id: 28558
   name: exercise dummy
   article: an
+  description: You can train your skills by using training weapons with this exercise
+    dummy.
   flags:
   - bottom
   - usable
@@ -31470,6 +31711,8 @@
 - id: 28565
   name: exercise dummy
   article: an
+  description: You can train your skills by using training weapons with this exercise
+    dummy.
   flags:
   - bottom
   - usable
@@ -31642,6 +31885,7 @@
 - id: 28879
   name: fiery metal eye
   article: a
+  description: This eye seems to be aware of its surroundings.
   flags:
   - usable
   - unpass
@@ -32131,6 +32375,7 @@
 - id: 29334
   name: ward stone
   article: a
+  description: It is engraved with a sun symbol.
   flags:
   - bottom
   - usable
@@ -32139,6 +32384,7 @@
 - id: 29335
   name: ward stone
   article: a
+  description: The engraved sun symbol is shining with a golden light.
   flags:
   - bottom
   - usable
@@ -32147,6 +32393,7 @@
 - id: 29336
   name: ward stone
   article: a
+  description: It is engraved with an ice crystal symbol.
   flags:
   - bottom
   - usable
@@ -32155,6 +32402,7 @@
 - id: 29337
   name: ward stone
   article: a
+  description: The engraved ice crystal symbol is shining with a bluish light.
   flags:
   - bottom
   - usable
@@ -32193,6 +32441,7 @@
 - id: 29352
   name: large pillar with a lock
   article: a
+  description: This pillar seems to have some kind of locking mechanism.
   flags:
   - bottom
   - usable
@@ -32201,6 +32450,7 @@
 - id: 29353
   name: onyx
   article: an
+  description: A single onyx lies on a small stand.
   flags:
   - usable
   - unpass
@@ -33421,6 +33671,8 @@
 - id: 30989
   name: intricate cobra shrine
   article: a
+  description: This shrine, seems to be a display for a single small amulet. A severe
+    warning is engraved on it.
   flags:
   - bottom
   - usable
@@ -33429,6 +33681,8 @@
 - id: 30990
   name: burial case
   article: a
+  description: This massive burial case is the last resting place of the honourable
+    knight Galthen.
   flags:
   - bottom
   - usable
@@ -33437,6 +33691,8 @@
 - id: 30991
   name: burial case
   article: a
+  description: This massive burial case is the last resting place of the honourable
+    knight Galthen.
   flags:
   - bottom
   - usable
@@ -33649,6 +33905,8 @@
 - id: 31114
   name: ancient tombstone
   article: a
+  description: Here lies Ultan, son of Atanna Her... li.. .. S... ura... erim (The
+    engraving is old and almost unreadable with age).
   flags:
   - bottom
   - unpass
@@ -33656,6 +33914,8 @@
 - id: 31115
   name: ancient tombstone
   article: a
+  description: Here lies Ultan, son of Atanna Her... li.. .. S... ura... erim (The
+    engraving is old and almost unreadable with age).
   flags:
   - bottom
   - unpass
@@ -33663,6 +33923,8 @@
 - id: 31116
   name: ancient tombstone
   article: a
+  description: Here lies Ultan, son of Atanna Her... li.. .. S... ura... erim (The
+    engraving is old and almost unreadable with age).
   flags:
   - bottom
   - unpass
@@ -33670,6 +33932,8 @@
 - id: 31117
   name: ancient tombstone
   article: a
+  description: Here lies Ultan, son of Atanna Her... li.. .. S... ura... erim (The
+    engraving is old and almost unreadable with age).
   flags:
   - bottom
   - unpass
@@ -33754,6 +34018,7 @@
 - id: 31165
   name: wounded shark
   article: a
+  description: It looks like it was bitten by an even larger marine predator.
   flags:
   - unpass
   - unmove
@@ -33943,6 +34208,8 @@
 - id: 31363
   name: gryphon egg shell
   article: a
+  description: It is gilded on the inside and filled with dark sand. Several incense
+    sticks were put into the sand, smouldering out slowly.
   flags:
   - unpass
   - unmove
@@ -33956,6 +34223,7 @@
 - id: 31365
   name: half burnt scroll
   article: a
+  description: It is heavily sooted.
   flags:
   - usable
   - unpass
@@ -34039,6 +34307,7 @@
 - id: 31478
   name: throne of scarlett etzel
   article: a
+  description: The Top os this throne bears the likeness of a giant cobra.
   flags:
   - bottom
   - unpass
@@ -34046,6 +34315,7 @@
 - id: 31479
   name: throne of scarlett etzel
   article: a
+  description: The Top os this throne bears the likeness of a giant cobra.
   flags:
   - bottom
   - unpass
@@ -34053,6 +34323,7 @@
 - id: 31480
   name: throne of scarlett etzel
   article: a
+  description: The Top os this throne bears the likeness of a giant cobra.
   flags:
   - bottom
   - unpass
@@ -34060,6 +34331,7 @@
 - id: 31481
   name: throne of scarlett etzel
   article: a
+  description: The Top os this throne bears the likeness of a giant cobra.
   flags:
   - top
   - unpass
@@ -34244,24 +34516,28 @@
 - id: 31916
   name: bed
   article: a
+  description: Sleeping human here.
   flags:
   - unpass
   - unmove
 - id: 31917
   name: bed
   article: a
+  description: Sleeping human here.
   flags:
   - unpass
   - unmove
 - id: 31918
   name: bed
   article: a
+  description: Sleeping human here.
   flags:
   - unpass
   - unmove
 - id: 31919
   name: bed
   article: a
+  description: Sleeping human here.
   flags:
   - unpass
   - unmove
@@ -34317,6 +34593,8 @@
 - id: 32014
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - unpass
   - unmove
@@ -34325,6 +34603,8 @@
 - id: 32015
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - usable
   - unpass
@@ -34334,6 +34614,8 @@
 - id: 32016
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - usable
   - unpass
@@ -34343,6 +34625,8 @@
 - id: 32017
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - usable
   - unpass
@@ -34352,6 +34636,8 @@
 - id: 32018
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - usable
   - unpass
@@ -34361,6 +34647,8 @@
 - id: 32019
   name: all knowing sausages
   article: a
+  description: The all knowing sausages know probably all mysteries of the world.
+    Too bad they only want to talk about schnitzel.
   flags:
   - usable
   - unpass
@@ -34604,6 +34892,8 @@
 - id: 32588
   name: loom
   article: a
+  description: The strands glow in an unearthly light. But one coil is empty, the
+    yarn there is missing.
   flags:
   - bottom
   - unpass
@@ -36142,6 +36432,7 @@
 - id: 37615
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass
@@ -36149,6 +36440,7 @@
 - id: 37616
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass
@@ -36156,6 +36448,7 @@
 - id: 37617
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass
@@ -36163,6 +36456,7 @@
 - id: 37618
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass
@@ -36170,6 +36464,7 @@
 - id: 37619
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass
@@ -36177,6 +36472,7 @@
 - id: 37620
   name: ambrosia buffet
   article: the
+  description: The food of the gods.
   flags:
   - usable
   - unpass

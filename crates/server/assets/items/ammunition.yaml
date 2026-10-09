@@ -258,6 +258,7 @@
 - id: 21470
   name: simple arrow
   article: a
+  plural: simple arrows
   flags:
   - cumulative
   - take

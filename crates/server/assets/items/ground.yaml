@@ -433,6 +433,7 @@
     floor_change: down
 - id: 386
   name: dirt floor
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -443,6 +444,7 @@
 - id: 387
   name: small hole
   article: a
+  description: It seems too narrow to climb through.
   flags:
   - ground
   - unmove
@@ -563,6 +565,7 @@
 - id: 419
   name: stone tile
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -572,6 +575,7 @@
 - id: 420
   name: stone tile
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -581,6 +585,7 @@
 - id: 421
   name: stone tile
   article: a
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -645,6 +650,7 @@
 - id: 430
   name: stone tile
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -654,6 +660,7 @@
 - id: 431
   name: stone tile
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -720,6 +727,7 @@
     floor_change: down
 - id: 452
   name: wooden floor
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -728,6 +736,7 @@
     tile_friction: 100
 - id: 453
   name: wooden floor
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -1556,6 +1565,7 @@
 - id: 563
   name: wooden floor
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -1565,6 +1575,7 @@
 - id: 564
   name: wooden floor
   article: a
+  description: It seems to be a switch.
   flags:
   - ground
   - unmove
@@ -3713,6 +3724,7 @@
     fluid_source: water
 - id: 4609
   name: shallow water
+  description: You see the silvery movement of fish.
   flags:
   - ground
   - unpass
@@ -3723,6 +3735,7 @@
     fluid_source: water
 - id: 4610
   name: shallow water
+  description: You see the silvery movement of fish.
   flags:
   - ground
   - unpass
@@ -3733,6 +3746,7 @@
     fluid_source: water
 - id: 4611
   name: shallow water
+  description: You see the silvery movement of fish.
   flags:
   - ground
   - unpass
@@ -4875,6 +4889,7 @@
     tile_friction: 90
 - id: 5814
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - ground
   - unpass
@@ -4883,6 +4898,7 @@
     tile_friction: 0
 - id: 5815
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - ground
   - unmove
@@ -5109,6 +5125,7 @@
     tile_friction: 160
 - id: 6594
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5120,6 +5137,7 @@
       decay_to: 799
 - id: 6595
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5131,6 +5149,7 @@
       decay_to: 6580
 - id: 6596
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5142,6 +5161,7 @@
       decay_to: 6581
 - id: 6597
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5153,6 +5173,7 @@
       decay_to: 6582
 - id: 6598
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5164,6 +5185,7 @@
       decay_to: 6583
 - id: 6599
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5175,6 +5197,7 @@
       decay_to: 6584
 - id: 6600
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5186,6 +5209,7 @@
       decay_to: 6585
 - id: 6601
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5197,6 +5221,7 @@
       decay_to: 6586
 - id: 6602
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5208,6 +5233,7 @@
       decay_to: 6587
 - id: 6603
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5219,6 +5245,7 @@
       decay_to: 6588
 - id: 6604
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5230,6 +5257,7 @@
       decay_to: 6589
 - id: 6605
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5241,6 +5269,7 @@
       decay_to: 6590
 - id: 6606
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5252,6 +5281,7 @@
       decay_to: 6591
 - id: 6607
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5263,6 +5293,7 @@
       decay_to: 6592
 - id: 6608
   name: snow
+  description: Someone must have walked here recently.
   flags:
   - ground
   - unmove
@@ -5778,6 +5809,7 @@
 - id: 7236
   name: ice hole
   article: an
+  description: You can see the movement of fish.
   flags:
   - ground
   - usable
@@ -5851,6 +5883,7 @@
     tile_friction: 100
 - id: 7354
   name: small lava cracks
+  description: The ground is steaming hot.
   flags:
   - ground
   - unmove
@@ -6123,6 +6156,8 @@
 - id: 7749
   name: loose stone pile
   article: a
+  description: Rightclick on your shovel, select 'Use' and then leftclick on this
+    stonepile to dig.
   flags:
   - ground
   - usable
@@ -6171,6 +6206,8 @@
     tile_friction: 150
 - id: 7762
   name: dirt floor
+  description: Rightclick your rope and select 'Use', then leftclick on this spot
+    to climb up again.
   flags:
   - ground
   - usable
@@ -6241,6 +6278,7 @@
     tile_friction: 120
 - id: 7886
   name: wooden floor
+  description: This is the border to the village of Rookgaard.
   flags:
   - ground
   - unmove
@@ -8958,6 +8996,7 @@
     tile_friction: 0
 - id: 12721
   name: bog water
+  description: The water of the bog seems slippery and tries to escape even your clothes.
   flags:
   - ground
   - usable
@@ -9094,6 +9133,7 @@
     tile_friction: 125
 - id: 12936
   name: mud
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -10153,6 +10193,7 @@
     tile_friction: 0
 - id: 14238
   name: mud
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -11135,6 +11176,7 @@
     tile_friction: 0
 - id: 17238
   name: muddy floor
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -11945,6 +11987,7 @@
 - id: 19491
   name: small brook
   article: a
+  description: You see the silvery movement of fish.
   flags:
   - ground
   - unpass
@@ -11955,6 +11998,7 @@
 - id: 19492
   name: small brook
   article: a
+  description: You see the silvery movement of fish.
   flags:
   - ground
   - unpass
@@ -13235,6 +13279,7 @@
 - id: 21374
   name: closed trapdoor
   article: a
+  description: It can only be opened from the other side.
   flags:
   - ground
   - usable
@@ -13301,6 +13346,7 @@
 - id: 21437
   name: stone tile with a socket
   article: a
+  description: The socket resembles a snake's mouth.
   flags:
   - ground
   - usable
@@ -13312,6 +13358,7 @@
 - id: 21440
   name: stone tile with a socket
   article: a
+  description: The socket resembles a scorpion's pincer.
   flags:
   - ground
   - usable
@@ -13323,6 +13370,7 @@
 - id: 21441
   name: stone tile with a socket
   article: a
+  description: The socket resembles a hyaena's maw.
   flags:
   - ground
   - usable
@@ -13334,6 +13382,7 @@
 - id: 21442
   name: stone tile with a socket
   article: a
+  description: The socket resembles a nest.
   flags:
   - ground
   - usable
@@ -13554,6 +13603,7 @@
 - id: 21501
   name: dirt floor
   article: a
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -14199,6 +14249,7 @@
 - id: 21965
   name: snow
   article: a
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -14209,6 +14260,7 @@
 - id: 21966
   name: rock soil
   article: a
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -14219,6 +14271,7 @@
 - id: 21967
   name: grass
   article: a
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -14229,6 +14282,7 @@
 - id: 21968
   name: ocean floor
   article: an
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -14525,6 +14579,8 @@
 - id: 22695
   name: crystallized salt
   article: a
+  description: The salt concentration is so high that crystals are sprouting towards
+    the sun. Maybe you can break some off.
   flags:
   - ground
   - usable
@@ -14847,6 +14903,7 @@
     tile_friction: 1
 - id: 23363
   name: rift floor
+  description: There is a hole in the ceiling.
   flags:
   - ground
   - usable
@@ -16148,6 +16205,7 @@
 - id: 27835
   name: painted stone floor
   article: a
+  description: A large white symbol has been painted accross the floor.
   flags:
   - ground
   - unmove
@@ -16157,6 +16215,7 @@
 - id: 27836
   name: painted stone floor
   article: a
+  description: A large white symbol has been painted accross the floor.
   flags:
   - ground
   - usable
@@ -16167,6 +16226,7 @@
 - id: 27837
   name: painted stone floor
   article: a
+  description: A large white symbol has been painted accross the floor.
   flags:
   - ground
   - unmove
@@ -16176,6 +16236,7 @@
 - id: 27838
   name: painted stone floor
   article: a
+  description: A large white symbol has been painted accross the floor.
   flags:
   - ground
   - unmove
@@ -16266,6 +16327,7 @@
 - id: 28291
   name: slate floor
   article: a
+  description: There is an inscription here but you cannot read it.
   flags:
   - ground
   - unmove
@@ -17007,6 +17069,7 @@
 - id: 30701
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - ground
   - unmove
@@ -17016,6 +17079,7 @@
 - id: 30702
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - ground
   - unmove
@@ -17025,6 +17089,7 @@
 - id: 30703
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - ground
   - unmove
@@ -17034,6 +17099,7 @@
 - id: 30704
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - ground
   - unmove
@@ -17043,6 +17109,7 @@
 - id: 30705
   name: reed
   article: a
+  description: It is trampled flat by many busy feet.
   flags:
   - ground
   - unmove

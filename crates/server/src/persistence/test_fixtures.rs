@@ -7,6 +7,7 @@ use std::sync::Arc;
 use crate::entities::agent::{OutfitColors, OutfitId};
 use crate::entities::npc::Npc;
 use crate::entities::player::PlayerId;
+use crate::entities::sex::Sex;
 use crate::entities::spells::{
     PowerCurve, Spell, SpellDelivery, SpellEffect, SpellGroup, SpellHealing, SpellId,
 };
@@ -72,6 +73,7 @@ pub fn a_character_record_json() -> serde_json::Value {
         "admin": false,
         "name": "Rizael",
         "vocation": 0,
+        "sex": 1,
         "position": { "x": 1028, "y": 1029, "z": 7 },
         "origin": { "x": 1028, "y": 1028, "z": 7 },
         "facing": 2,
@@ -92,6 +94,7 @@ pub fn a_test_snapshot(id: u32, account_id: i32) -> PlayerSnapshot {
         admin: false,
         name: "Rizael".to_string(),
         vocation: Vocation::Knight,
+        sex: Sex::Male,
         position: Position {
             x: 1028,
             y: 1028,
@@ -232,6 +235,7 @@ pub fn a_test_passive_creature(name: &str, life: u32) -> Agent {
 pub fn a_creature_kind(name: &str) -> CreatureKind {
     CreatureKind {
         name: name.to_string(),
+        name_description: None,
         life: Pool {
             current: 1,
             maximum: 1,

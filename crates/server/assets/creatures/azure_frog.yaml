@@ -1,4 +1,5 @@
 name: Azure Frog
+name_description: an azure frog
 life: 60
 speed: 100
 blood_type: blood

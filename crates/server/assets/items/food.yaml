@@ -1,6 +1,7 @@
 - id: 836
   name: walnut
   article: a
+  plural: walnuts
   flags:
   - cumulative
   - usable
@@ -13,6 +14,7 @@
 - id: 841
   name: peanut
   article: a
+  plural: peanuts
   flags:
   - cumulative
   - usable
@@ -25,6 +27,9 @@
 - id: 901
   name: marlin
   article: a
+  plural: marlins
+  description: This rare fish is almost too precious to simply be eaten. Maybe you
+    can find a collector
   flags:
   - cumulative
   - usable
@@ -37,6 +42,8 @@
 - id: 3250
   name: carrot of doom
   article: the
+  plural: carrots of doom
+  description: You can sense the evil power of the carrot
   flags:
   - cumulative
   - usable
@@ -48,6 +55,8 @@
       message: 2
 - id: 3577
   name: meat
+  plural: meat
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -60,6 +69,7 @@
 - id: 3578
   name: fish
   article: a
+  plural: fish
   flags:
   - cumulative
   - usable
@@ -71,6 +81,8 @@
       message: 6
 - id: 3579
   name: salmon
+  plural: salmons
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -83,6 +95,7 @@
 - id: 3580
   name: northern pike
   article: a
+  plural: northern pikes
   flags:
   - cumulative
   - usable
@@ -94,6 +107,7 @@
       message: 6
 - id: 3581
   name: shrimp
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -105,6 +119,7 @@
       message: 3
 - id: 3582
   name: ham
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -116,6 +131,9 @@
       message: 1
 - id: 3583
   name: dragon ham
+  plural: dragon ham
+  show_count: false
+  description: It still contains a small part of the power of a dragon
   flags:
   - cumulative
   - usable
@@ -128,6 +146,7 @@
 - id: 3584
   name: pear
   article: a
+  plural: pears
   flags:
   - cumulative
   - usable
@@ -140,6 +159,7 @@
 - id: 3585
   name: red apple
   article: a
+  plural: red apples
   flags:
   - cumulative
   - usable
@@ -152,6 +172,7 @@
 - id: 3586
   name: orange
   article: an
+  plural: oranges
   flags:
   - cumulative
   - usable
@@ -164,6 +185,7 @@
 - id: 3587
   name: banana
   article: a
+  plural: bananas
   flags:
   - cumulative
   - usable
@@ -176,6 +198,7 @@
 - id: 3588
   name: blueberry
   article: a
+  plural: blueberries
   flags:
   - cumulative
   - usable
@@ -188,6 +211,7 @@
 - id: 3589
   name: coconut
   article: a
+  plural: coconuts
   flags:
   - cumulative
   - usable
@@ -200,6 +224,7 @@
 - id: 3590
   name: cherry
   article: a
+  plural: cherries
   flags:
   - cumulative
   - usable
@@ -212,6 +237,7 @@
 - id: 3591
   name: strawberry
   article: a
+  plural: strawberries
   flags:
   - cumulative
   - usable
@@ -223,6 +249,8 @@
       message: 10
 - id: 3592
   name: grapes
+  plural: grapes
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -235,6 +263,7 @@
 - id: 3593
   name: melon
   article: a
+  plural: melons
   flags:
   - cumulative
   - usable
@@ -259,6 +288,7 @@
 - id: 3595
   name: carrot
   article: a
+  plural: carrots
   flags:
   - cumulative
   - usable
@@ -271,6 +301,7 @@
 - id: 3596
   name: tomato
   article: a
+  plural: tomatoes
   flags:
   - cumulative
   - usable
@@ -283,6 +314,7 @@
 - id: 3597
   name: corncob
   article: a
+  plural: corncobs
   flags:
   - cumulative
   - usable
@@ -307,6 +339,7 @@
 - id: 3599
   name: candy cane
   article: a
+  plural: candy canes
   flags:
   - cumulative
   - usable
@@ -318,6 +351,7 @@
       message: 6
 - id: 3600
   name: bread
+  plural: breads
   flags:
   - cumulative
   - usable
@@ -330,6 +364,7 @@
 - id: 3601
   name: roll
   article: a
+  plural: rolls
   flags:
   - cumulative
   - usable
@@ -342,6 +377,7 @@
 - id: 3602
   name: brown bread
   article: a
+  plural: brown breads
   flags:
   - cumulative
   - usable
@@ -363,6 +399,7 @@
 - id: 3604
   name: lump of dough
   article: a
+  plural: lumps of dough
   flags:
   - cumulative
   - usable
@@ -373,6 +410,7 @@
 - id: 3605
   name: bunch of wheat
   article: a
+  plural: bunches of wheat
   flags:
   - cumulative
   - usable
@@ -383,6 +421,7 @@
 - id: 3606
   name: egg
   article: an
+  plural: eggs
   flags:
   - cumulative
   - usable
@@ -394,6 +433,8 @@
       message: 3
 - id: 3607
   name: cheese
+  plural: cheese
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -406,6 +447,7 @@
 - id: 3723
   name: white mushroom
   article: a
+  plural: white mushrooms
   flags:
   - cumulative
   - usable
@@ -418,6 +460,7 @@
 - id: 3724
   name: red mushroom
   article: a
+  plural: red mushrooms
   flags:
   - cumulative
   - usable
@@ -430,6 +473,7 @@
 - id: 3725
   name: brown mushroom
   article: a
+  plural: brown mushrooms
   flags:
   - cumulative
   - usable
@@ -442,6 +486,7 @@
 - id: 3726
   name: orange mushroom
   article: an
+  plural: orange mushrooms
   flags:
   - cumulative
   - usable
@@ -454,6 +499,7 @@
 - id: 3727
   name: wood mushroom
   article: a
+  plural: wood mushrooms
   flags:
   - cumulative
   - usable
@@ -466,6 +512,7 @@
 - id: 3728
   name: dark mushroom
   article: a
+  plural: dark mushrooms
   flags:
   - cumulative
   - usable
@@ -477,6 +524,8 @@
       message: 6
 - id: 3729
   name: some mushrooms
+  plural: some mushrooms
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -488,6 +537,8 @@
       message: 6
 - id: 3730
   name: some mushrooms
+  plural: some mushrooms
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -500,6 +551,7 @@
 - id: 3731
   name: fire mushroom
   article: a
+  plural: fire mushrooms
   flags:
   - cumulative
   - usable
@@ -512,6 +564,7 @@
 - id: 3732
   name: green mushroom
   article: a
+  plural: green mushrooms
   flags:
   - cumulative
   - usable
@@ -524,6 +577,7 @@
 - id: 5096
   name: mango
   article: a
+  plural: mangoes
   flags:
   - cumulative
   - usable
@@ -546,6 +600,7 @@
 - id: 5678
   name: tortoise egg
   article: a
+  plural: tortoise eggs
   flags:
   - cumulative
   - usable
@@ -558,6 +613,7 @@
 - id: 6125
   name: tortoise egg from Nargor
   article: a
+  description: Handle with care and don't try to eat it
   flags:
   - usable
   - take
@@ -591,6 +647,7 @@
 - id: 6278
   name: cake
   article: a
+  description: It is nicely decorated with fruits and icing
   flags:
   - cumulative
   - usable
@@ -603,6 +660,8 @@
 - id: 6279
   name: party cake
   article: a
+  description: It is nicely decorated with fruits, icing and a candle. Someone is
+    caring about you
   flags:
   - cumulative
   - usable
@@ -648,6 +707,7 @@
 - id: 6541
   name: coloured egg
   article: a
+  plural: coloured eggs
   flags:
   - cumulative
   - usable
@@ -660,6 +720,7 @@
 - id: 6542
   name: coloured egg
   article: a
+  plural: coloured eggs
   flags:
   - cumulative
   - usable
@@ -672,6 +733,7 @@
 - id: 6543
   name: coloured egg
   article: a
+  plural: coloured eggs
   flags:
   - cumulative
   - usable
@@ -684,6 +746,7 @@
 - id: 6544
   name: coloured egg
   article: a
+  plural: coloured eggs
   flags:
   - cumulative
   - usable
@@ -696,6 +759,7 @@
 - id: 6545
   name: coloured egg
   article: a
+  plural: coloured eggs
   flags:
   - cumulative
   - usable
@@ -708,6 +772,7 @@
 - id: 6569
   name: candy
   article: a
+  plural: candies
   flags:
   - cumulative
   - usable
@@ -732,6 +797,7 @@
 - id: 7158
   name: rainbow trout
   article: a
+  plural: rainbow trouts
   flags:
   - cumulative
   - usable
@@ -744,6 +810,7 @@
 - id: 7159
   name: green perch
   article: a
+  plural: green perches
   flags:
   - cumulative
   - usable
@@ -756,6 +823,7 @@
 - id: 7372
   name: ice cream cone
   article: an
+  description: It's the famous "crispy chocolate chips" flavour
   flags:
   - cumulative
   - usable
@@ -768,6 +836,7 @@
 - id: 7373
   name: ice cream cone
   article: an
+  description: It's the famous "velvet vanilla" flavour
   flags:
   - cumulative
   - usable
@@ -780,6 +849,7 @@
 - id: 7374
   name: ice cream cone
   article: an
+  description: It's the famous "sweet strawberry" flavour
   flags:
   - cumulative
   - usable
@@ -792,6 +862,7 @@
 - id: 7375
   name: ice cream cone
   article: an
+  description: It's the famous "chilly cherry" flavour
   flags:
   - cumulative
   - usable
@@ -804,6 +875,7 @@
 - id: 7376
   name: ice cream cone
   article: an
+  description: It's the famous "mellow melon" flavour
   flags:
   - cumulative
   - usable
@@ -816,6 +888,7 @@
 - id: 7377
   name: ice cream cone
   article: an
+  description: It's the famous "blue-barian" flavour
   flags:
   - cumulative
   - usable
@@ -828,6 +901,7 @@
 - id: 8010
   name: potato
   article: a
+  plural: potatoes
   flags:
   - cumulative
   - usable
@@ -840,6 +914,7 @@
 - id: 8011
   name: plum
   article: a
+  plural: plums
   flags:
   - cumulative
   - usable
@@ -852,6 +927,7 @@
 - id: 8012
   name: raspberry
   article: a
+  plural: raspberries
   flags:
   - cumulative
   - usable
@@ -864,6 +940,7 @@
 - id: 8013
   name: lemon
   article: a
+  plural: lemons
   flags:
   - cumulative
   - usable
@@ -876,6 +953,7 @@
 - id: 8014
   name: cucumber
   article: a
+  plural: cucumbers
   flags:
   - cumulative
   - usable
@@ -888,6 +966,7 @@
 - id: 8015
   name: onion
   article: an
+  plural: onions
   flags:
   - cumulative
   - usable
@@ -900,6 +979,7 @@
 - id: 8016
   name: jalapeno pepper
   article: a
+  plural: jalapeno peppers
   flags:
   - cumulative
   - usable
@@ -912,6 +992,7 @@
 - id: 8017
   name: beetroot
   article: a
+  plural: beetroots
   flags:
   - cumulative
   - usable
@@ -946,6 +1027,7 @@
 - id: 8020
   name: baking tray
   article: a
+  description: There is cookie dough on it
   flags:
   - cumulative
   - usable
@@ -956,6 +1038,7 @@
 - id: 8177
   name: yummy gummy worm
   article: a
+  plural: yummy gummy worms
   flags:
   - cumulative
   - usable
@@ -968,6 +1051,7 @@
 - id: 8197
   name: bulb of garlic
   article: a
+  plural: bulbs of garlic
   flags:
   - cumulative
   - usable
@@ -980,6 +1064,7 @@
 - id: 9079
   name: rotworm stew
   article: a
+  description: It's hot, beefy and delicious. The perfect food for knights
   flags:
   - cumulative
   - usable
@@ -989,6 +1074,8 @@
 - id: 9080
   name: hydra tongue salad
   article: a
+  description: Though the hydra tongue is commonly considered a pest plant it tastes
+    surprisingly aromatic
   flags:
   - cumulative
   - usable
@@ -998,6 +1085,7 @@
 - id: 9081
   name: roasted dragon wings
   article: a
+  description: You know why it's called 'dragon' when you feel the fire in your throat
   flags:
   - cumulative
   - usable
@@ -1007,6 +1095,7 @@
 - id: 9082
   name: tropical fried terrorbird
   article: a
+  description: It's the ideal snack for a beach barbeque
   flags:
   - cumulative
   - usable
@@ -1016,6 +1105,7 @@
 - id: 9083
   name: banana chocolate shake
   article: a
+  description: Sweetness
   flags:
   - cumulative
   - usable
@@ -1025,6 +1115,8 @@
 - id: 9084
   name: veggie casserole
   article: a
+  description: This one would be quite healthy if it wasn't for all the melted cheese
+    on top
   flags:
   - cumulative
   - usable
@@ -1034,6 +1126,7 @@
 - id: 9085
   name: filled jalapeno peppers
   article: a
+  description: The creamy cheese makes a great combination with the spicy peppers
   flags:
   - cumulative
   - usable
@@ -1043,6 +1136,7 @@
 - id: 9086
   name: blessed steak
   article: a
+  description: It's nicely decorated with plums and pumpkin
   flags:
   - cumulative
   - usable
@@ -1052,6 +1146,7 @@
 - id: 9087
   name: carrot cake
   article: a
+  description: This spicy-sweet cake will probably put you into a sugar rush
   flags:
   - cumulative
   - usable
@@ -1061,6 +1156,7 @@
 - id: 9088
   name: northern fishburger
   article: a
+  description: It's only suited for those who like maritime food
   flags:
   - cumulative
   - usable
@@ -1082,6 +1178,7 @@
 - id: 10328
   name: bunch of ripe rice
   article: a
+  plural: bunches of ripe rice
   flags:
   - cumulative
   - usable
@@ -1092,6 +1189,7 @@
 - id: 10329
   name: rice ball
   article: a
+  plural: rice balls
   flags:
   - cumulative
   - usable
@@ -1103,6 +1201,8 @@
       message: 10
 - id: 10453
   name: terramite eggs
+  plural: terramite eggs
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1115,6 +1215,7 @@
 - id: 11459
   name: pineapple
   article: a
+  plural: pineapples
   flags:
   - cumulative
   - usable
@@ -1127,6 +1228,7 @@
 - id: 11460
   name: aubergine
   article: an
+  plural: aubergines
   flags:
   - cumulative
   - usable
@@ -1138,6 +1240,8 @@
       message: 6
 - id: 11461
   name: broccoli
+  plural: broccoli
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1150,6 +1254,7 @@
 - id: 11462
   name: cauliflower
   article: a
+  plural: cauliflowers
   flags:
   - cumulative
   - usable
@@ -1162,6 +1267,7 @@
 - id: 11584
   name: coconut shrimp bake
   article: a
+  description: It looks as if it was sealed with milky goodness
   flags:
   - cumulative
   - usable
@@ -1171,6 +1277,8 @@
 - id: 11586
   name: pot of blackjack
   article: a
+  description: Nomads state that this meal fills you with energy several times before
+    the pot is empty
   flags:
   - cumulative
   - usable
@@ -1180,6 +1288,8 @@
 - id: 11587
   name: demonic candy ball
   article: a
+  description: You're never sure what demonic candy balls will do, but they sure taste
+    sweet and exciting
   flags:
   - cumulative
   - usable
@@ -1189,6 +1299,8 @@
 - id: 11588
   name: sweet mangonaise elixir
   article: a
+  description: It's said to have incredible effects if you drink it while wearing
+    certain magical rings. So it will not work on every kind of them
   flags:
   - cumulative
   - usable
@@ -1197,6 +1309,8 @@
     weight: 300
 - id: 11681
   name: ectoplasmic sushi
+  plural: ectoplasmic sushi
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1209,6 +1323,7 @@
 - id: 11682
   name: dragonfruit
   article: a
+  plural: dragonfruits
   flags:
   - cumulative
   - usable
@@ -1220,6 +1335,8 @@
       message: 10
 - id: 11683
   name: peas
+  plural: peas
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1241,6 +1358,7 @@
 - id: 12310
   name: haunch of boar
   article: a
+  plural: haunches of boar
   flags:
   - cumulative
   - usable
@@ -1253,6 +1371,7 @@
 - id: 13992
   name: sandfish
   article: a
+  plural: sandfish
   flags:
   - cumulative
   - usable
@@ -1264,6 +1383,8 @@
       message: 6
 - id: 14084
   name: larvae
+  plural: larvae
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1276,6 +1397,7 @@
 - id: 14085
   name: deepling filet
   article: a
+  plural: deepling filets
   flags:
   - cumulative
   - usable
@@ -1288,6 +1410,8 @@
 - id: 14681
   name: anniversary cake
   article: an
+  description: It was created by Tibia's finest bakers for the celebration of 15 years
+    of Tibia
   flags:
   - cumulative
   - usable
@@ -1300,6 +1424,7 @@
 - id: 16103
   name: mushroom pie
   article: a
+  plural: mushroom pies
   flags:
   - cumulative
   - usable
@@ -1311,6 +1436,8 @@
       message: 6
 - id: 17457
   name: insectoid eggs
+  plural: insectoid eggs
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1323,6 +1450,8 @@
 - id: 17820
   name: soft cheese
   article: a
+  plural: soft cheese
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1334,6 +1463,8 @@
       message: 8
 - id: 17821
   name: rat cheese
+  plural: rat cheese
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1355,6 +1486,7 @@
 - id: 21143
   name: glooth sandwich
   article: a
+  plural: glooth sandwiches
   flags:
   - cumulative
   - usable
@@ -1367,6 +1499,7 @@
 - id: 21144
   name: bowl of glooth soup
   article: a
+  plural: bowls of glooth soup
   flags:
   - cumulative
   - usable
@@ -1379,6 +1512,7 @@
 - id: 21145
   name: bottle of glooth wine
   article: a
+  plural: bottles of glooth wine
   flags:
   - cumulative
   - usable
@@ -1391,6 +1525,7 @@
 - id: 21146
   name: glooth steak
   article: a
+  plural: glooth steaks
   flags:
   - cumulative
   - usable
@@ -1403,6 +1538,7 @@
 - id: 22185
   name: prickly pear
   article: a
+  plural: prickly pears
   flags:
   - cumulative
   - usable
@@ -1414,6 +1550,8 @@
       message: 10
 - id: 22187
   name: roasted meat
+  plural: roasted meat
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1426,6 +1564,7 @@
 - id: 23535
   name: energy bar
   article: an
+  plural: energy bars
   flags:
   - cumulative
   - usable
@@ -1438,6 +1577,7 @@
 - id: 23545
   name: energy drink
   article: an
+  plural: energy drinks
   flags:
   - cumulative
   - usable
@@ -1449,6 +1589,8 @@
       message: 4
 - id: 24382
   name: bug meat
+  plural: bug meat
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1461,6 +1603,7 @@
 - id: 24383
   name: cave turnip
   article: a
+  plural: cave turnips
   flags:
   - cumulative
   - usable
@@ -1473,6 +1616,8 @@
 - id: 24396
   name: birthday cake
   article: a
+  description: It was created by Tibia's finest bakers for the celebration of 20 years
+    of Tibia
   flags:
   - cumulative
   - usable
@@ -1485,6 +1630,7 @@
 - id: 24439
   name: shell
   article: a
+  plural: shells
   flags:
   - cumulative
   - usable
@@ -1497,6 +1643,8 @@
 - id: 24948
   name: bottle of Tibian Wine
   article: a
+  description: It was created by Tibia's finest vintagers for the celebration of 20
+    years of Tibia
   flags:
   - cumulative
   - usable
@@ -1508,6 +1656,8 @@
       message: 7
 - id: 25692
   name: fresh fruit
+  plural: fresh fruits
+  show_count: false
   flags:
   - cumulative
   - usable
@@ -1580,6 +1730,8 @@
 - id: 31332
   name: jar of honey
   article: a
+  description: Some honey palm blossoms are still floating in it, intensifying the
+    sweet flavour
   flags:
   - cumulative
   - usable
@@ -1704,6 +1856,7 @@
 - id: 32198
   name: filled milk churn
   article: a
+  description: A churn filled with delicious fresh milk
   flags:
   - cumulative
   - usable
@@ -1723,6 +1876,8 @@
 - id: 37530
   name: bottle of champagne
   article: a
+  description: It was created by Tibia's finest vintagers for the celebration of 25
+    years of Tibia
   flags:
   - cumulative
   - usable
@@ -1744,6 +1899,7 @@
 - id: 37532
   name: ice cream cone
   article: an
+  description: It is covered in colourful sprinkles
   flags:
   - cumulative
   - usable
@@ -1756,6 +1912,8 @@
 - id: 37533
   name: birthday layer cake
   article: a
+  description: It was created by Tibia's finest bakers for the celebration of 25 years
+    of Tibia
   flags:
   - cumulative
   - usable

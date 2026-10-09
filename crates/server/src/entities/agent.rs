@@ -228,6 +228,7 @@ impl Agent {
             player.admin,
             player.position,
             player.vocation,
+            player.sex,
             player.capacity,
             player.inventory,
             player.skills,
@@ -598,6 +599,7 @@ impl Agent {
             admin: player.admin(),
             name: player.name().to_owned(),
             vocation: player.vocation(),
+            sex: player.sex(),
             position,
             origin: self.origin.clone(),
             facing: self.facing,
@@ -619,6 +621,7 @@ mod tests {
     use crate::entities::map::GameMap;
     use crate::entities::player::PlayerId;
     use crate::entities::position::Position;
+    use crate::entities::sex::Sex;
     use crate::entities::skills::{SkillType, SkillValue};
     use crate::entities::vocation::Vocation;
     use crate::persistence::player::PlayerSnapshot;
@@ -654,6 +657,7 @@ mod tests {
                 maximum: 100,
             },
             vocation: Vocation::Knight,
+            sex: Sex::Male,
             capacity: 40000,
             speed: 100,
             outfit: (OutfitId(133), OutfitColors::new(1, 2, 3, 4)),

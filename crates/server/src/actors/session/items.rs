@@ -17,6 +17,7 @@ use crate::game::map_query::{
 };
 use crate::messages::ServerMessage;
 use crate::messages::TextMessageType;
+use crate::persistence::spells::SPELLS;
 
 impl SessionActor {
     pub(super) async fn handle_move_item(
@@ -182,15 +183,14 @@ impl SessionActor {
 
     pub(super) async fn handle_look(&self, position: Position) -> Result<()> {
         let map = self.shared_map.load();
-        let Some(player_pos) = map.agent_position(self.player_key) else {
-            return Ok(());
-        };
         let Some(placement) =
             resolve_client_coord(position, &map, &self.containers, self.player_key)
         else {
             return Ok(());
         };
-        let desc = get_look_description(&map, &placement, player_pos);
+        let Some(desc) = get_look_description(&map, &placement, self.player_key, &SPELLS) else {
+            return Ok(());
+        };
         self.connection
             .send_message(ServerMessage::TextMessage {
                 text: desc,
@@ -339,6 +339,22 @@ mod tests {
         session.handle_look(at).await.unwrap();
 
         assert!(connection_rx.try_recv().is_err());
+    }
+
+    #[tokio::test]
+    async fn a_look_at_your_own_tile_describes_yourself() {
+        let mut map = GameMap::new();
+        let at = Position::new(100, 100, 7);
+        let me = seat_player(&mut map, &at, 1);
+        let (session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+
+        session.handle_look(at).await.unwrap();
+
+        assert!(matches!(
+            connection_rx.try_recv(),
+            Ok(ConnectionCommand::SendPlayerMessage(ServerMessage::TextMessage { text, .. }))
+                if text == "You see yourself. You are a knight."
+        ));
     }
 
     fn searched(item_id: u16) -> ClientItemRef {

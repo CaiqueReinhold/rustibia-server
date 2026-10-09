@@ -11,6 +11,7 @@ use tracing::warn;
 use crate::actors::persistence::PersistenceActorHandle;
 use crate::entities::agent::{Facing, OutfitColors, OutfitId};
 use crate::entities::player::PlayerId;
+use crate::entities::sex::Sex;
 use crate::entities::vocation::Vocation;
 use crate::entities::{
     agent::Pool,
@@ -44,6 +45,9 @@ pub fn snapshot_from_record(
 
     let vocation = Vocation::from_i16(record.vocation)
         .ok_or_else(|| malformed(format!("unknown vocation {}", record.vocation)))?;
+
+    let sex = Sex::from_i16(record.sex)
+        .ok_or_else(|| malformed(format!("unknown sex {}", record.sex)))?;
 
     let mut skills: HashMap<SkillType, SkillValue> = HashMap::new();
     for row in record.skills {
@@ -89,6 +93,7 @@ pub fn snapshot_from_record(
         admin: record.admin,
         name: record.name,
         vocation,
+        sex,
         position: coords(record.position, "position")?,
         origin: coords(record.origin, "origin")?,
         facing: Facing::from_id(record.facing)
@@ -297,6 +302,7 @@ mod tests {
             admin: false,
             name: "Rizael".to_string(),
             vocation: 0,
+            sex: 1,
             position: Coords {
                 x: 1028,
                 y: 1029,
@@ -341,6 +347,7 @@ mod tests {
         assert_eq!(snapshot.id, PlayerId(7));
         assert_eq!(snapshot.account_id, 3);
         assert_eq!(snapshot.name, "Rizael");
+        assert_eq!(snapshot.sex, Sex::Male);
         assert_eq!(
             snapshot.position,
             Position {
@@ -369,6 +376,16 @@ mod tests {
             snapshot.outfit,
             (OutfitId(128), OutfitColors::new(78, 69, 58, 76))
         );
+    }
+
+    #[test]
+    fn an_unknown_sex_is_unavailable_not_rejected() {
+        let mut record = a_record();
+        record.sex = 7;
+
+        let err = snapshot_from_record(record, &no_items()).unwrap_err();
+
+        assert!(matches!(err, LoginError::Unavailable(_)), "got {err:?}");
     }
 
     #[test]
@@ -662,6 +679,7 @@ mod http_tests {
             (500, 600, 6)
         );
         assert_eq!(snapshot.name, "Rizael");
+        assert_eq!(snapshot.sex, Sex::Male);
     }
 
     #[tokio::test]

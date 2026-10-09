@@ -1,6 +1,7 @@
 - id: 306
   name: empty flower pot
   article: an
+  description: Nothing is planted in there.
   flags:
   - take
   attributes:
@@ -16,6 +17,7 @@
 - id: 651
   name: spellwand
   article: a
+  description: It might have some strange effects
   flags:
   - usable
   - multiuse
@@ -963,6 +965,7 @@
 - id: 2632
   name: wall mirror
   article: a
+  description: You look fine today.
   flags:
   - usable
   - take
@@ -1071,6 +1074,7 @@
 - id: 2775
   name: red cushioned chair kit
   article: a
+  description: Use it in your house to construct a red cushioned chair
   flags:
   - usable
   - avoid
@@ -1080,6 +1084,7 @@
 - id: 2776
   name: green cushioned chair kit
   article: a
+  description: Use it in your house to construct a green cushioned chair
   flags:
   - usable
   - avoid
@@ -1089,6 +1094,7 @@
 - id: 2777
   name: wooden chair kit
   article: a
+  description: Use it in your house to construct a wooden chair
   flags:
   - usable
   - avoid
@@ -1098,6 +1104,7 @@
 - id: 2778
   name: rocking chair kit
   article: a
+  description: Use it in your house to construct a rocking chair
   flags:
   - usable
   - avoid
@@ -1107,6 +1114,7 @@
 - id: 2779
   name: sofa chair kit
   article: a
+  description: Use it in your house to construct a sofa chair
   flags:
   - usable
   - avoid
@@ -1116,6 +1124,7 @@
 - id: 2780
   name: tusk chair kit
   article: a
+  description: Use it in your house to construct a tusk chair
   flags:
   - usable
   - avoid
@@ -1125,6 +1134,7 @@
 - id: 2781
   name: ivory chair kit
   article: an
+  description: Use it in your house to construct an ivory chair
   flags:
   - usable
   - avoid
@@ -1134,6 +1144,7 @@
 - id: 2782
   name: small table kit
   article: a
+  description: Use it in your house to construct a small table
   flags:
   - usable
   - avoid
@@ -1142,6 +1153,7 @@
     weight: 2500
 - id: 2783
   name: round table kit
+  description: Use it in your house to construct a round table
   flags:
   - usable
   - avoid
@@ -1150,6 +1162,7 @@
     weight: 3500
 - id: 2784
   name: square table kit
+  description: Use it in your house to construct a square table
   flags:
   - usable
   - avoid
@@ -1159,6 +1172,7 @@
 - id: 2785
   name: big table kit
   article: a
+  description: Use it in your house to construct a big table
   flags:
   - usable
   - avoid
@@ -1168,6 +1182,7 @@
 - id: 2786
   name: stone table kit
   article: a
+  description: Use it in your house to construct a stone table
   flags:
   - usable
   - avoid
@@ -1177,6 +1192,7 @@
 - id: 2787
   name: tusk table kit
   article: a
+  description: Use it in your house to construct a tusk table
   flags:
   - usable
   - avoid
@@ -1186,6 +1202,7 @@
 - id: 2788
   name: bamboo table kit
   article: a
+  description: Use it in your house to construct a bamboo table
   flags:
   - usable
   - avoid
@@ -1195,6 +1212,7 @@
 - id: 2789
   name: drawer kit
   article: a
+  description: Use it in your house to construct a drawer
   flags:
   - usable
   - avoid
@@ -1204,6 +1222,7 @@
 - id: 2790
   name: dresser kit
   article: a
+  description: Use it in your house to construct a dresser
   flags:
   - usable
   - avoid
@@ -1213,6 +1232,7 @@
 - id: 2791
   name: locker kit
   article: a
+  description: Use it in your house to construct a locker
   flags:
   - usable
   - avoid
@@ -1222,6 +1242,7 @@
 - id: 2792
   name: trough kit
   article: a
+  description: Use it in your house to construct a trough
   flags:
   - usable
   - avoid
@@ -1231,6 +1252,7 @@
 - id: 2793
   name: barrel kit
   article: a
+  description: Use it in your house to construct a barrel
   flags:
   - usable
   - avoid
@@ -1240,6 +1262,7 @@
 - id: 2794
   name: trunk kit
   article: a
+  description: Use it in your house to construct a trunk
   flags:
   - usable
   - avoid
@@ -1249,6 +1272,7 @@
 - id: 2795
   name: bamboo drawer kit
   article: a
+  description: Use it in your house to construct a bamboo drawer
   flags:
   - usable
   - avoid
@@ -1258,6 +1282,7 @@
 - id: 2796
   name: birdcage kit
   article: a
+  description: Use it in your house to construct a birdcage
   flags:
   - usable
   - avoid
@@ -1267,6 +1292,7 @@
 - id: 2797
   name: globe kit
   article: a
+  description: Use it in your house to construct a globe
   flags:
   - usable
   - avoid
@@ -1276,6 +1302,7 @@
 - id: 2798
   name: table lamp kit
   article: a
+  description: Use it in your house to construct a table lamp
   flags:
   - usable
   - avoid
@@ -1285,6 +1312,7 @@
 - id: 2799
   name: telescope kit
   article: a
+  description: Use it in your house to construct a telescope
   flags:
   - usable
   - avoid
@@ -1294,6 +1322,7 @@
 - id: 2800
   name: rocking horse kit
   article: a
+  description: Use it in your house to construct a rocking horse
   flags:
   - usable
   - avoid
@@ -1303,6 +1332,7 @@
 - id: 2801
   name: pendulum clock kit
   article: a
+  description: Use it in your house to construct a pendulum clock
   flags:
   - usable
   - avoid
@@ -1312,6 +1342,7 @@
 - id: 2802
   name: knight statue kit
   article: a
+  description: Use it in your house to construct a knight statue
   flags:
   - usable
   - avoid
@@ -1321,6 +1352,7 @@
 - id: 2803
   name: minotaur statue kit
   article: a
+  description: Use it in your house to construct a minotaur statue
   flags:
   - usable
   - avoid
@@ -1330,6 +1362,7 @@
 - id: 2804
   name: goblin statue kit
   article: a
+  description: Use it in your house to construct a goblin statue
   flags:
   - usable
   - avoid
@@ -1339,6 +1372,7 @@
 - id: 2805
   name: large amphora kit
   article: a
+  description: Use it in your house to construct a large amphora
   flags:
   - usable
   - avoid
@@ -1348,6 +1382,7 @@
 - id: 2806
   name: coal basin kit
   article: a
+  description: Use it in your house to construct a coal basin
   flags:
   - usable
   - avoid
@@ -1357,6 +1392,7 @@
 - id: 2807
   name: piano kit
   article: a
+  description: Use it in your house to construct a piano
   flags:
   - usable
   - avoid
@@ -1366,6 +1402,7 @@
 - id: 2808
   name: harp kit
   article: a
+  description: Use it in your house to construct a harp
   flags:
   - usable
   - avoid
@@ -1375,6 +1412,7 @@
 - id: 2809
   name: trunk chair kit
   article: a
+  description: Use it in your house to construct a trunk chair
   flags:
   - usable
   - avoid
@@ -1384,6 +1422,7 @@
 - id: 2810
   name: trunk table kit
   article: a
+  description: Use it in your house to construct a trunk table
   flags:
   - usable
   - avoid
@@ -1393,6 +1432,7 @@
 - id: 2811
   name: indoor plant kit
   article: an
+  description: Use it in your house to reveal an indoor plant
   flags:
   - usable
   - avoid
@@ -1487,6 +1527,8 @@
     weight: 2500
 - id: 2957
   name: post horn
+  description: It's property of the Postmaster's Guild and only rewarded to loyal
+    members
   flags:
   - usable
   - take
@@ -1563,6 +1605,7 @@
 - id: 2975
   name: birdcage
   article: a
+  description: The poor bird seems to have died from a heart attack.
   flags:
   - unpass
   attributes:
@@ -1570,6 +1613,7 @@
 - id: 2976
   name: birdcage
   article: a
+  description: You see a little bird inside.
   flags:
   - usable
   - unpass
@@ -1741,6 +1785,7 @@
 - id: 3209
   name: voodoo doll
   article: a
+  description: It looks like a little king
   flags:
   - take
   attributes:
@@ -1748,6 +1793,7 @@
 - id: 3213
   name: annihilation bear
   article: an
+  description: I braved the Annihilator and all I got is this lousy teddy bear
   flags:
   - take
   attributes:
@@ -1755,6 +1801,7 @@
 - id: 3215
   name: phoenix egg
   article: a
+  description: It seems to be burning from inside
   flags:
   - cumulative
   - take
@@ -1929,16 +1976,19 @@
 - id: 5046
   name: monkey statue
   article: a
+  description: The words 'See no evil' are engraved on it.
   flags:
   - unpass
 - id: 5055
   name: monkey statue
   article: a
+  description: The words 'Hear no evil' are engraved on it.
   flags:
   - unpass
 - id: 5056
   name: monkey statue
   article: a
+  description: The words 'Speak no evil' are engraved on it.
   flags:
   - unpass
 - id: 5080
@@ -1952,6 +2002,7 @@
 - id: 5086
   name: monkey statue 'see' kit
   article: a
+  description: Use it in your house to construct a monkey statue
   flags:
   - usable
   - avoid
@@ -1961,6 +2012,7 @@
 - id: 5087
   name: monkey statue 'hear' kit
   article: a
+  description: Use it in your house to construct a monkey statue
   flags:
   - usable
   - avoid
@@ -1970,6 +2022,7 @@
 - id: 5088
   name: monkey statue 'speak' kit
   article: a
+  description: Use it in your house to construct a monkey statue
   flags:
   - usable
   - avoid
@@ -2085,6 +2138,7 @@
 - id: 6114
   name: armor rack kit
   article: an
+  description: Use it in your house to construct an armor rack
   flags:
   - usable
   - avoid
@@ -2094,6 +2148,7 @@
 - id: 6115
   name: weapon rack kit
   article: a
+  description: Use it in your house to construct a weapon rack
   flags:
   - usable
   - avoid
@@ -2151,6 +2206,7 @@
 - id: 6371
   name: oven kit
   article: an
+  description: Use it in your house to construct an oven
   flags:
   - usable
   - avoid
@@ -2160,6 +2216,7 @@
 - id: 6372
   name: bookcase kit
   article: a
+  description: Use it in your house to construct a bookcase
   flags:
   - usable
   - avoid
@@ -2184,6 +2241,8 @@
 - id: 6498
   name: certificate
   article: a
+  description: You have mastered the Dream Challenge and may apply for joining the
+    order of the Nightmare Knights
   flags:
   - take
   attributes:
@@ -2260,6 +2319,8 @@
 - id: 6576
   name: fireworks rocket
   article: a
+  description: Do not use in your backpack or while asleep. Keep away from animals
+    or children
   flags:
   - usable
   - take
@@ -2394,6 +2455,7 @@
 - id: 7864
   name: chimney kit
   article: a
+  description: Use it in your house to construct a chimney
   flags:
   - usable
   - avoid
@@ -2402,6 +2464,7 @@
     weight: 8000
 - id: 8032
   name: spiderwebs
+  description: You can hang these on your walls
   flags:
   - take
   attributes:
@@ -2484,6 +2547,8 @@
 - id: 9027
   name: crystal of focus
   article: a
+  description: It is said to increase your ability to concentrate and take the right
+    decisions
   flags:
   - cumulative
   - take
@@ -2492,6 +2557,7 @@
 - id: 9028
   name: crystal of balance
   article: a
+  description: It is said to make you calmer and less afflicted by anger and anxiety
   flags:
   - cumulative
   - take
@@ -2514,6 +2580,7 @@
 - id: 9061
   name: crystal table kit
   article: a
+  description: Use it in your house to construct a crystal table
   flags:
   - usable
   - avoid
@@ -2562,6 +2629,8 @@
 - id: 9067
   name: crystal of power
   article: a
+  description: It is said to make you more resistant to weaknesses and to supply you
+    with energy
   flags:
   - cumulative
   - take
@@ -2584,6 +2653,7 @@
 - id: 9389
   name: fan doll of King Tibianus
   article: a
+  description: 'The small label reads: For my greatest admirer'
   flags:
   - take
   attributes:
@@ -2591,11 +2661,13 @@
 - id: 10208
   name: snowman
   article: a
+  description: Someone seems to have had a lot of fun decorating it.
   flags:
   - unpass
 - id: 10209
   name: lizard weapon rack kit
   article: a
+  description: Use it in your house to construct lizard weapon rack
   flags:
   - usable
   - avoid
@@ -2625,6 +2697,7 @@
 - id: 10216
   name: dragon statue kit
   article: a
+  description: Use it in your house to construct a dragon statue
   flags:
   - usable
   - avoid
@@ -2653,6 +2726,7 @@
 - id: 10288
   name: dragon throne kit
   article: a
+  description: Use it in your house to construct a dragon throne
   flags:
   - usable
   - avoid
@@ -2846,6 +2920,8 @@
 - id: 14029
   name: flower pot
   article: a
+  description: There is a fully grown winterblossom in it. This plant can't wither
+    anymore
   flags:
   - take
   attributes:
@@ -2853,6 +2929,8 @@
 - id: 14033
   name: flower pot
   article: a
+  description: There is a fully grown lizard tongue plant in it. This plant can't
+    wither anymore
   flags:
   - take
   attributes:
@@ -2860,6 +2938,8 @@
 - id: 14034
   name: flower pot
   article: a
+  description: There is a fully grown dryad's heart flower in it. This plant can't
+    wither anymore
   flags:
   - take
   attributes:
@@ -2867,6 +2947,8 @@
 - id: 14035
   name: flower pot
   article: a
+  description: There is a fully grown ember queen flower in it. This plant can't wither
+    anymore
   flags:
   - take
   attributes:
@@ -2874,6 +2956,8 @@
 - id: 14036
   name: flower pot
   article: a
+  description: There is a fully grown midnight bloom flower in it. This plant can't
+    wither anymore
   flags:
   - take
   attributes:
@@ -2881,6 +2965,8 @@
 - id: 14037
   name: flower pot
   article: a
+  description: There is a fully grown fairy dancer flower in it. This plant can't
+    wither anymore
   flags:
   - take
   attributes:
@@ -2888,6 +2974,8 @@
 - id: 14038
   name: flower pot
   article: a
+  description: There is a fully grown finger snapper plant in it. This plant can't
+    wither anymore
   flags:
   - take
   attributes:
@@ -2895,6 +2983,7 @@
 - id: 14153
   name: basket
   article: a
+  description: There are little puppies inside
   flags:
   - usable
   - take
@@ -2925,6 +3014,8 @@
 - id: 14241
   name: true heart of the sea
   article: a
+  description: A true Heart of the Sea, cut by Deeplings in depths of deepest black.
+    It feels cold and lifeless
   flags:
   - usable
   - take
@@ -2933,6 +3024,8 @@
 - id: 14242
   name: true heart of the sea
   article: a
+  description: A true Heart of the Sea, cut by Deeplings in depths of deepest black.
+    It feels cold and lifeless
   flags:
   - usable
   - take
@@ -2966,6 +3059,7 @@
 - id: 14686
   name: artist's brush
   article: an
+  description: Paint is dripping from its tip
   flags:
   - usable
   - multiuse
@@ -2975,6 +3069,7 @@
 - id: 14741
   name: easel kit
   article: an
+  description: Use it in your house to construct an easel
   flags:
   - usable
   - avoid
@@ -2984,6 +3079,7 @@
 - id: 14756
   name: cake cabinet kit
   article: a
+  description: Use it in your house to construct a cake cabinet
   flags:
   - usable
   - avoid
@@ -3177,6 +3273,7 @@
 - id: 17974
   name: venorean cabinet kit
   article: a
+  description: Use it in your house to construct a venorean cabinet
   flags:
   - usable
   - avoid
@@ -3186,6 +3283,7 @@
 - id: 17975
   name: venorean wardrobe kit
   article: a
+  description: Use it in your house to construct a wardrobe
   flags:
   - usable
   - avoid
@@ -3195,6 +3293,7 @@
 - id: 17977
   name: venorean drawer kit
   article: a
+  description: Use it in your house to construct a drawer
   flags:
   - usable
   - avoid
@@ -3374,6 +3473,7 @@
 - id: 22736
   name: rift carpet
   article: a
+  description: This carpet is extremely soft to the touch - and forever will be.
   flags:
   - border
   - usable
@@ -3381,6 +3481,7 @@
 - id: 22737
   name: folded rift carpet
   article: a
+  description: This carpet is extremely soft to the touch - and forever will be
   flags:
   - cumulative
   - usable
@@ -3404,21 +3505,25 @@
 - id: 23399
   name: mailbox
   article: a
+  description: Royal Tibia Mail
   flags:
   - unpass
 - id: 23400
   name: mailbox
   article: a
+  description: Royal Tibia Mail
   flags:
   - unpass
 - id: 23401
   name: ornate mailbox
   article: an
+  description: Royal Tibia Mail
   flags:
   - unpass
 - id: 23402
   name: ornate mailbox
   article: an
+  description: Royal Tibia Mail
   flags:
   - unpass
 - id: 23403
@@ -3547,12 +3652,14 @@
 - id: 23442
   name: baby dragon
   article: a
+  description: This baby dragon is looking at you very attentively
   flags:
   - usable
   - unpass
 - id: 23443
   name: baby dragon
   article: a
+  description: The baby dragon seems to hide from you
   flags:
   - usable
   - unpass
@@ -3563,36 +3670,44 @@
 - id: 23444
   name: hamster in a wheel
   article: a
+  description: This hamster sits very relaxed in his wheel and seems at ease with
+    the world
   flags:
   - usable
   - unpass
 - id: 23445
   name: hamster in a wheel
   article: a
+  description: This hamster is happily running about in his wheel
   flags:
   - usable
   - unpass
 - id: 23448
   name: lordly tapestry
   article: a
+  description: A tapestry of lordly caliber
   flags: []
 - id: 23449
   name: menacing tapestry
   article: a
+  description: The dark side is vigilant
   flags: []
 - id: 23450
   name: all-seeing tapestry
   article: an
+  description: Following your every move
   flags: []
 - id: 23451
   name: cat in a basket
   article: a
+  description: This cat is enjoying a carefree nap
   flags:
   - usable
   - unpass
 - id: 23452
   name: cat in a basket
   article: a
+  description: This cat takes her tidiness very seriously with a thoughtful catlick
   flags:
   - usable
   - unpass
@@ -3620,6 +3735,7 @@
 - id: 23536
   name: folded void carpet
   article: a
+  description: This carpet feels almost ethereally smooth to the touch
   flags:
   - cumulative
   - usable
@@ -3629,6 +3745,7 @@
 - id: 23537
   name: void carpet
   article: a
+  description: This carpet is extremely soft to the touch - and forever will be.
   flags:
   - border
   - usable
@@ -3638,6 +3755,7 @@
 - id: 23691
   name: fish in a tank
   article: a
+  description: A small fish is minding his own business in this tank
   flags:
   - usable
   - unpass
@@ -3664,6 +3782,7 @@
 - id: 23697
   name: dog house
   article: a
+  description: This dog is waiting quite eagerly for attention
   flags:
   - usable
   - unpass
@@ -3684,6 +3803,7 @@
 - id: 23703
   name: dog house
   article: a
+  description: This dog is lying down satisfied in his kennel
   flags:
   - unpass
   attributes:
@@ -3698,12 +3818,14 @@
 - id: 23708
   name: dog house
   article: a
+  description: This dog is lying down satisfied in his kennel
   flags:
   - usable
   - unpass
 - id: 23709
   name: dog house
   article: a
+  description: This dog is waiting qutite eagerly for attention
   flags:
   - unpass
   attributes:
@@ -3897,12 +4019,14 @@
 - id: 24432
   name: parrot
   article: a
+  description: The parrot is flapping its wings and screaks
   flags:
   - usable
   - unpass
 - id: 24433
   name: parrot
   article: a
+  description: The parrot is flapping its wings and screaks
   flags:
   - usable
   - unpass
@@ -3946,6 +4070,8 @@
 - id: 24950
   name: framed birthday card
   article: a
+  description: It displays a large letter T and was awarded during the festivities
+    of Tibia's 20th anniversary
   flags:
   - take
   attributes:
@@ -3953,6 +4079,8 @@
 - id: 24951
   name: gilded birthday cup
   article: a
+  description: It displays the number 20 and was awarded during the festivities of
+    Tibia's 20th anniversary
   flags:
   - take
   attributes:
@@ -4001,44 +4129,52 @@
 - id: 25213
   name: chameleon
   article: a
+  description: This chameleon is trying very hard to look absolutely unsuspicious
   flags:
   - usable
   - unpass
 - id: 25214
   name: chameleon
   article: a
+  description: This chameleon is trying very hard to look absolutely unsuspicious
   flags:
   - usable
   - unpass
 - id: 25215
   name: chameleon
   article: a
+  description: This chameleon is trying very hard to look absolutely unsuspicious
   flags:
   - usable
   - unpass
 - id: 25216
   name: blooming cactus
   article: a
+  description: A beautiful cactus in full bloom
   flags:
   - unpass
 - id: 25217
   name: bitter-smack leaf
   article: a
+  description: A full grown bitter-smack leaf
   flags:
   - unpass
 - id: 25218
   name: pink roses
   article: a
+  description: The characteristic scent of these roses instantly lifts your spirits
   flags:
   - unpass
 - id: 25219
   name: red roses
   article: a
+  description: The characteristic scent of these roses instantly lifts your spirits
   flags:
   - unpass
 - id: 25220
   name: yellow roses
   article: a
+  description: The characteristic scent of these roses instantly lifts your spirits
   flags:
   - unpass
 - id: 25221
@@ -4079,30 +4215,35 @@
 - id: 25720
   name: reward shrine
   article: a
+  description: It depicts the two suns of Tibia, symbolising the course of a day
   flags:
   - usable
   - unpass
 - id: 25721
   name: reward shrine
   article: a
+  description: It depicts the two suns of Tibia, symbolising the course of a day
   flags:
   - usable
   - unpass
 - id: 25722
   name: shiny reward shrine
   article: a
+  description: It depicts the two suns of Tibia, symbolising the course of a day
   flags:
   - usable
   - unpass
 - id: 25723
   name: shiny reward shrine
   article: a
+  description: It depicts the two suns of Tibia, symbolising the course of a day
   flags:
   - usable
   - unpass
 - id: 25879
   name: health cask
   article: a
+  description: This cask can be used to refill health potions
   flags:
   - usable
   - unpass
@@ -4111,6 +4252,7 @@
 - id: 25880
   name: strong health cask
   article: a
+  description: This cask can be used to refill strong health potions
   flags:
   - usable
   - unpass
@@ -4119,6 +4261,7 @@
 - id: 25881
   name: great health cask
   article: a
+  description: This cask can be used to refill great health potions
   flags:
   - usable
   - unpass
@@ -4127,6 +4270,7 @@
 - id: 25882
   name: ultimate health cask
   article: an
+  description: This cask can be used to refill ultimate health potions
   flags:
   - usable
   - unpass
@@ -4135,6 +4279,7 @@
 - id: 25883
   name: supreme health cask
   article: a
+  description: This cask can be used to refill supreme health potions
   flags:
   - usable
   - unpass
@@ -4143,6 +4288,7 @@
 - id: 25889
   name: mana cask
   article: a
+  description: This cask can be used to refill mana potions
   flags:
   - usable
   - unpass
@@ -4151,6 +4297,7 @@
 - id: 25890
   name: strong mana cask
   article: a
+  description: This cask can be used to refill strong mana potions
   flags:
   - usable
   - unpass
@@ -4159,6 +4306,7 @@
 - id: 25891
   name: great mana cask
   article: a
+  description: This cask can be used to refill great mana potions
   flags:
   - usable
   - unpass
@@ -4167,6 +4315,7 @@
 - id: 25892
   name: ultimate mana cask
   article: an
+  description: This cask can be used to refill ultimate mana potions
   flags:
   - usable
   - unpass
@@ -4175,6 +4324,7 @@
 - id: 25893
   name: supreme mana cask
   article: a
+  description: This cask can be used to refill supreme mana potions
   flags:
   - usable
   - unpass
@@ -4183,6 +4333,7 @@
 - id: 25899
   name: great spirit cask
   article: a
+  description: This cask can be used to refill great spirit potions
   flags:
   - usable
   - unpass
@@ -4191,6 +4342,7 @@
 - id: 25900
   name: ultimate spirit cask
   article: a
+  description: This cask can be used to refill ultimate spirit potions
   flags:
   - usable
   - unpass
@@ -4199,22 +4351,26 @@
 - id: 26076
   name: bath tub
   article: a
+  description: A very inviting bath tub filled with water
   flags:
   - unpass
 - id: 26077
   name: bath tub
   article: a
+  description: A very inviting bath tub filled with water
   flags:
   - usable
 - id: 26078
   name: spider in a terrarium
   article: a
+  description: A spider minding her own business
   flags:
   - usable
   - unpass
 - id: 26079
   name: spider in a terrarium
   article: a
+  description: A spider minding her own business
   flags:
   - unpass
   attributes:
@@ -4224,6 +4380,7 @@
 - id: 26080
   name: spider in a terrarium
   article: a
+  description: A spider minding her own business
   flags:
   - unpass
   attributes:
@@ -4233,24 +4390,28 @@
 - id: 26081
   name: hrodmiran weapons rack
   article: a
+  description: A sturdy weapons rack made from the finest hrodmiran wood
   flags:
   - usable
   - unpass
 - id: 26082
   name: hrodmiran weapons rack
   article: a
+  description: A sturdy weapons rack made from the finest hrodmiran wood
   flags:
   - usable
   - unpass
 - id: 26083
   name: hrodmiran weapons rack
   article: a
+  description: A sturdy weapons rack made from the finest hrodmiran wood
   flags:
   - usable
   - unpass
 - id: 26084
   name: hrodmiran weapons rack
   article: a
+  description: A sturdy weapons rack made from the finest hrodmiran wood
   flags:
   - usable
   - unpass
@@ -4265,6 +4426,7 @@
 - id: 26089
   name: verdant bed
   article: a
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -4281,6 +4443,7 @@
 - id: 26091
   name: verdant bed
   article: a
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -4297,6 +4460,7 @@
 - id: 26093
   name: verdant bed
   article: a
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -4313,6 +4477,7 @@
 - id: 26095
   name: verdant bed
   article: a
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -4347,6 +4512,7 @@
 - id: 26100
   name: bath tub
   article: a
+  description: A very inviting bath tub filled with water
   flags:
   - unpass
   - unmove
@@ -4513,6 +4679,7 @@
 - id: 26169
   name: terrarium
   article: a
+  description: A little snake is wiggling in the terrarium
   flags:
   - usable
   - unpass
@@ -4523,6 +4690,7 @@
 - id: 26170
   name: terrarium
   article: a
+  description: A little snake is wiggling in the terrarium
   flags:
   - usable
   - unpass
@@ -4533,12 +4701,14 @@
 - id: 26171
   name: terrarium
   article: a
+  description: A little snake is wiggling in the terrarium
   flags:
   - usable
   - unpass
 - id: 26172
   name: terrarium
   article: a
+  description: A little snake is wiggling in the terrarium
   flags:
   - usable
   - unpass
@@ -4597,24 +4767,32 @@
 - id: 26191
   name: your magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - usable
   - unpass
 - id: 26192
   name: your magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - usable
   - unpass
 - id: 26193
   name: your magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - usable
   - unpass
 - id: 26194
   name: your magical tree
   article: a
+  description: This certainly is no ordinary tree, yet it looks exactly like one and
+    smells invigoratingly fresh.
   flags:
   - usable
   - unpass
@@ -4755,24 +4933,28 @@
 - id: 27691
   name: ferumbras bust
   article: a
+  description: Something is missing.
   flags:
   - usable
   - unpass
 - id: 27692
   name: ferumbras bust
   article: a
+  description: Something is missing
   flags:
   - usable
   - unpass
 - id: 27693
   name: ferumbras bust
   article: a
+  description: Something is missing.
   flags:
   - usable
   - unpass
 - id: 27694
   name: ferumbras bust
   article: a
+  description: Something is missing
   flags:
   - usable
   - unpass
@@ -4822,36 +5004,48 @@
 - id: 28559
   name: ferumbras exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
 - id: 28560
   name: ferumbras exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
 - id: 28561
   name: demon exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
 - id: 28562
   name: demon exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
 - id: 28563
   name: monk exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
 - id: 28564
   name: monk exercise dummy
   article: a
+  description: You can train your skills by using training weapons with this expert
+    exercise dummy
   flags:
   - usable
   - unpass
@@ -4900,16 +5094,21 @@
 - id: 28688
   name: carnivorous plant
   article: a
+  description: Beware of the biting plant
   flags:
   - unpass
 - id: 28689
   name: carnivorous plant
   article: a
+  description: Beware of the biting plant
   flags:
   - unpass
 - id: 28690
   name: baby rotworm
   article: a
+  description: The rotworm is harmless in this juvenile stadium. But take care to
+    release it by time, otherwise it could get dangerous. At least it's your supplies
+    being threatened instead of you
   flags:
   - usable
   - unpass
@@ -4928,6 +5127,9 @@
 - id: 28692
   name: baby rotworm
   article: a
+  description: The rotworm is harmless in this juvenile stadium. But take care to
+    release it by time, otherwise it could get dangerous. At least it's your supplies
+    being threatened instead of you
   flags:
   - usable
   - unpass
@@ -4947,11 +5149,17 @@
 - id: 28694
   name: fennec
   article: a
+  description: Contrary to popular belief the fennec does not use his ears, which
+    are the largest amongst foxes, to fly, soar or stabilise his balance. They mainly
+    serve to dissipate heat
   flags:
   - unpass
 - id: 28695
   name: fennec
   article: a
+  description: Contrary to popular belief the fennec does not use his ears, which
+    are the largest amongst foxes, to fly, soar or stabilise his balance. They mainly
+    serve to dissipate heat.
   flags:
   - unpass
   attributes:
@@ -4961,31 +5169,43 @@
 - id: 28697
   name: bellflower
   article: a
+  description: Let the flower ring
   flags:
   - unpass
 - id: 28698
   name: forget-me-not
   article: a
+  description: Legends say that displanting forget-me-nots causes rain the next day
   flags:
   - unpass
 - id: 28699
   name: red geranium
   article: a
+  description: No lovely balcony would be complete without this plant
   flags:
   - unpass
 - id: 28701
   name: fennec
   article: a
+  description: Contrary to popular belief the fennec does not use his ears, which
+    are the largest amongst foxes, to fly, soar or stabilise his balance. They mainly
+    serve to dissipate heat
   flags:
   - unpass
 - id: 28913
   name: fennec
   article: a
+  description: Contrary to popular belief the fennec does not use his ears, which
+    are the largest amongst foxes, to fly, soar or stabilise his balance. They mainly
+    serve to dissipate heat
   flags:
   - unpass
 - id: 28914
   name: fennec
   article: a
+  description: Contrary to popular belief the fennec does not use his ears, which
+    are the largest amongst foxes, to fly, soar or stabilise his balance. They mainly
+    serve to dissipate heat
   flags:
   - unpass
 - id: 28920
@@ -5310,6 +5530,7 @@
 - id: 30371
   name: black raven kit
   article: a
+  description: Use it in your house to place a black raven
   flags:
   - usable
   - avoid
@@ -5319,6 +5540,7 @@
 - id: 30372
   name: grey raven kit
   article: a
+  description: Use it in your house to place a grey raven
   flags:
   - usable
   - avoid
@@ -5328,6 +5550,7 @@
 - id: 30373
   name: white raven kit
   article: a
+  description: Use it in your house to place a white raven
   flags:
   - usable
   - avoid
@@ -5497,12 +5720,14 @@
 - id: 31462
   name: jousting eagle baby
   article: a
+  description: Juding by the pinching of his beak, this one seems to be born to joust
   flags:
   - usable
   - unpass
 - id: 31463
   name: jousting eagle baby
   article: a
+  description: Juding by the pinching of his beak, this one seems to be born to joust
   flags:
   - usable
   - unpass
@@ -5513,12 +5738,14 @@
 - id: 31464
   name: cerberus champion puppy
   article: a
+  description: A true champion in the making
   flags:
   - usable
   - unpass
 - id: 31465
   name: cerberus champion puppy
   article: a
+  description: A true champion in the making
   flags:
   - usable
   - unpass
@@ -5670,6 +5897,7 @@
 - id: 31680
   name: baby hedgehog
   article: a
+  description: This baby hedgehog loves hurling into a tiny ball
   flags:
   - unpass
   attributes:
@@ -5679,12 +5907,14 @@
 - id: 31681
   name: baby hedgehog
   article: a
+  description: This baby hedgehog loves hurling into a tiny ball
   flags:
   - usable
   - unpass
 - id: 31682
   name: baby hedgehog
   article: a
+  description: This baby hedgehog loves hurling into a tiny ball
   flags:
   - unpass
   attributes:
@@ -5694,12 +5924,14 @@
 - id: 31683
   name: exalted sarcophagus
   article: an
+  description: Something inside this hungers to be set free
   flags:
   - usable
   - unpass
 - id: 31684
   name: exalted sarcophagus
   article: an
+  description: Something inside this hungers to be set free
   flags:
   - usable
   - unpass
@@ -5750,12 +5982,14 @@
 - id: 31703
   name: baby unicorn
   article: a
+  description: The purest eyes are blinking back at you
   flags:
   - usable
   - unpass
 - id: 31704
   name: baby unicorn
   article: a
+  description: The purest eyes are blinking back at you
   flags:
   - usable
   - unpass
@@ -5873,6 +6107,7 @@
 - id: 31955
   name: monkey
   article: a
+  description: It is cheerfully swinging back and forth
   flags:
   - usable
   - multiuse
@@ -5880,6 +6115,7 @@
 - id: 31956
   name: monkey
   article: a
+  description: It is cheerfully swinging back and forth
   flags:
   - usable
   - unpass
@@ -6849,12 +7085,14 @@
 - id: 32788
   name: baby seal
   article: a
+  description: Nobody can ever resist this cute little furball
   flags:
   - usable
   - unpass
 - id: 32789
   name: baby seal
   article: a
+  description: Nobody can ever resist this cute little furball
   flags:
   - unpass
   attributes:
@@ -6864,12 +7102,14 @@
 - id: 32790
   name: baby polar bear
   article: a
+  description: It looks very soft and cuddly
   flags:
   - usable
   - unpass
 - id: 32791
   name: baby polar bear
   article: a
+  description: It looks very soft and cuddly
   flags:
   - unpass
   attributes:
@@ -6879,12 +7119,14 @@
 - id: 32792
   name: baby polar bear
   article: a
+  description: It looks very soft and cuddly
   flags:
   - usable
   - unpass
 - id: 32793
   name: baby polar bear
   article: a
+  description: It looks very soft and cuddly
   flags:
   - usable
   - unpass
@@ -6930,6 +7172,7 @@
   - avoid
 - id: 32801
   name: bone bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -6951,6 +7194,7 @@
   - avoid
 - id: 32804
   name: bone bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -6991,18 +7235,21 @@
 - id: 32907
   name: Guzzlemaw Grub
   article: a
+  description: It rolls over and bares its teeth
   flags:
   - usable
   - unpass
 - id: 32908
   name: Baby Vulcongra
   article: a
+  description: It looks so cute devouring mushrooms and crystals
   flags:
   - usable
   - unpass
 - id: 32909
   name: Baby Brain Squid
   article: a
+  description: It splashes around happily
   flags:
   - usable
   - unpass
@@ -7285,11 +7532,13 @@
   - avoid
 - id: 33040
   name: bat
+  description: Its eyes are gleaming
   flags:
   - usable
   - unpass
 - id: 33041
   name: bat
+  description: Its eyes are gleaming
   flags:
   - unpass
   attributes:
@@ -7298,6 +7547,7 @@
       decay_to: 33040
 - id: 33042
   name: bat
+  description: Its eyes are gleaming
   flags:
   - unpass
   attributes:
@@ -7349,6 +7599,8 @@
 - id: 33330
   name: monolith of the planes kit
   article: a
+  description: Use it in your house to construct a monolith of the planes... hopefully
+    you know what you are doing
   flags:
   - usable
   - avoid
@@ -7357,6 +7609,7 @@
     weight: 750
 - id: 34026
   name: baby bonelord
+  description: It seems to sleep
   flags:
   - usable
   - unpass
@@ -7502,41 +7755,49 @@
   - unpass
 - id: 34064
   name: sculpture of a noblewoman
+  description: It is still a work in progress
   flags:
   - usable
   - unpass
 - id: 34065
   name: sculpture of a noblewoman
+  description: It is almost completed
   flags:
   - usable
   - unpass
 - id: 34066
   name: sculpture of a noblewoman
+  description: It is completed
   flags:
   - usable
   - unpass
 - id: 34067
   name: sculpture of a noblewoman
+  description: It is completed and carefully gilded
   flags:
   - usable
   - unpass
 - id: 34068
   name: sculpture of a noblewoman
+  description: It is still a work in progress
   flags:
   - usable
   - unpass
 - id: 34069
   name: sculpture of a noblewoman
+  description: It is almost completed
   flags:
   - usable
   - unpass
 - id: 34070
   name: sculpture of a noblewoman
+  description: It is completed
   flags:
   - usable
   - unpass
 - id: 34071
   name: sculpture of a noblewoman
+  description: It is completed and carefully gilded
   flags:
   - usable
   - unpass
@@ -7550,12 +7811,14 @@
 - id: 34270
   name: glowworms
   article: a
+  description: Some glowworms are said to be giving off a mysterious, soothing light
   flags:
   - usable
   - unpass
 - id: 34271
   name: glowworms
   article: a
+  description: Some glowworms are said to be giving off a mysterious, soothing light
   flags:
   - usable
   - unpass
@@ -7680,6 +7943,7 @@
   - avoid
 - id: 34313
   name: homely bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7694,6 +7958,7 @@
   - avoid
 - id: 34315
   name: homely bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7708,6 +7973,7 @@
   - avoid
 - id: 34317
   name: homely bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7722,6 +7988,7 @@
   - avoid
 - id: 34319
   name: homely bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7774,14 +8041,17 @@
 - id: 34332
   name: gilded crown
   article: a
+  description: This is a gilded replica of the famous crown
   flags: []
 - id: 35153
   name: baby elephant
+  description: It looks at you curiously
   flags:
   - usable
   - unpass
 - id: 35154
   name: baby elephant
+  description: It looks at you curiously
   flags:
   - unpass
   attributes:
@@ -7931,6 +8201,7 @@
   - avoid
 - id: 35190
   name: wrought-iron bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7945,6 +8216,7 @@
   - avoid
 - id: 35192
   name: wrought-iron bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7959,6 +8231,7 @@
   - avoid
 - id: 35203
   name: wrought-iron bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -7973,6 +8246,7 @@
   - avoid
 - id: 35205
   name: wrought-iron bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8066,6 +8340,7 @@
   - avoid
 - id: 35852
   name: magnificent bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8080,6 +8355,7 @@
   - avoid
 - id: 35854
   name: magnificent bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8094,6 +8370,7 @@
   - avoid
 - id: 35856
   name: magnificent bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8108,6 +8385,7 @@
   - avoid
 - id: 35858
   name: magnificent bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8144,6 +8422,7 @@
   - avoid
 - id: 35864
   name: ornate bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8158,6 +8437,7 @@
   - avoid
 - id: 35866
   name: ornate bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8172,6 +8452,7 @@
   - avoid
 - id: 35868
   name: ornate bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8186,6 +8467,7 @@
   - avoid
 - id: 35870
   name: ornate bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8222,6 +8504,7 @@
   - avoid
 - id: 35876
   name: vengothic bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8236,6 +8519,7 @@
   - avoid
 - id: 35878
   name: vengothic bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8250,6 +8534,7 @@
   - avoid
 - id: 35880
   name: vengothic bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8264,6 +8549,7 @@
   - avoid
 - id: 35882
   name: vengothic bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8423,6 +8709,7 @@
   - avoid
 - id: 35929
   name: grandiose bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8437,6 +8724,7 @@
   - avoid
 - id: 35931
   name: grandiose bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8451,6 +8739,7 @@
   - avoid
 - id: 35933
   name: grandiose bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8465,6 +8754,7 @@
   - avoid
 - id: 35935
   name: grandiose bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -8518,6 +8808,7 @@
 - id: 35949
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - usable
   - unpass
@@ -8528,6 +8819,7 @@
 - id: 35950
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - unpass
   attributes:
@@ -8537,6 +8829,7 @@
 - id: 35951
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - usable
   - unpass
@@ -8547,6 +8840,7 @@
 - id: 35952
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - unpass
   attributes:
@@ -8611,6 +8905,7 @@
 - id: 35969
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - usable
   - unpass
@@ -8621,6 +8916,7 @@
 - id: 35970
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - unpass
   attributes:
@@ -8630,6 +8926,7 @@
 - id: 35971
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - usable
   - unpass
@@ -8640,6 +8937,7 @@
 - id: 35972
   name: portable aqueduct
   article: a
+  description: This little fellow just keeps on swimming
   flags:
   - unpass
   attributes:
@@ -8932,6 +9230,7 @@
 - id: 36833
   name: arena badge replica
   article: an
+  description: A shiny reminder of the old days
   flags: []
 - id: 36838
   name: folded eldritch carpet
@@ -8965,6 +9264,8 @@
 - id: 36939
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -8973,6 +9274,8 @@
 - id: 36940
   name: the sylvan sapling carpet
   article: a
+  description: This carpet resembles the sylvan sapling prime artefact. It feels soft
+    to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -8980,6 +9283,8 @@
 - id: 36941
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -8988,6 +9293,8 @@
 - id: 36942
   name: the spatial almanach carpet
   article: a
+  description: This carpet resembles the spatial almanach prime artefact. It feels
+    soft to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -8995,6 +9302,8 @@
 - id: 36943
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9003,6 +9312,8 @@
 - id: 36944
   name: the book of death carpet
   article: a
+  description: This carpet resembles the book of death prime artefact. It feels soft
+    to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9010,6 +9321,8 @@
 - id: 36945
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9018,6 +9331,8 @@
 - id: 36946
   name: the supreme cube carpet
   article: a
+  description: This carpet resembles the supreme cube prime artefact. It feels soft
+    to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9025,6 +9340,8 @@
 - id: 36947
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9033,6 +9350,8 @@
 - id: 36948
   name: the ring of ending carpet
   article: a
+  description: This carpet resembles the ring of ending prime artefact. It feels soft
+    to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9040,6 +9359,8 @@
 - id: 36949
   name: cloth fragment
   article: a
+  description: This cloth resembles a prime artefact. It feels soft to the touch and
+    seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9048,6 +9369,8 @@
 - id: 36950
   name: the cobra amulet carpet
   article: a
+  description: This carpet resembles the cobra amulet prime artefact. It feels soft
+    to the touch and seems to have almost no weight.
   flags:
   - border
   - usable
@@ -9055,6 +9378,8 @@
 - id: 36951
   name: folded artefact carpet I
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9064,6 +9389,8 @@
 - id: 36952
   name: folded artefact carpet II
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9073,6 +9400,8 @@
 - id: 36953
   name: folded artefact carpet III
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9082,6 +9411,8 @@
 - id: 36954
   name: folded artefact carpet IV
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9091,6 +9422,8 @@
 - id: 36955
   name: folded artefact carpet V
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9100,6 +9433,8 @@
 - id: 36956
   name: folded artefact carpet VI
   article: a
+  description: This carpet resembles a prime artefact. It feels soft to the touch
+    and seems to have almost no weight
   flags:
   - cumulative
   - usable
@@ -9109,6 +9444,9 @@
 - id: 36958
   name: megasylvan plant
   article: a
+  description: This extraordinary plant sprang from a very rare megasylvan sapling.
+    The beautiful blossom is not its only vivid attribute, however, as strangely...
+    certain fruit in its vicinity will just disappear.
   flags:
   - usable
   - multiuse
@@ -9116,12 +9454,18 @@
 - id: 36959
   name: megasylvan plant
   article: a
+  description: This extraordinary plant sprang from a very rare megasylvan sapling.
+    The beautiful blossom is not its only vivid attribute, however, as strangely...
+    certain fruit in its vicinity will just disappear.
   flags:
   - usable
   - unpass
 - id: 36960
   name: megasylvan plant
   article: a
+  description: This extraordinary plant sprang from a very rare megasylvan sapling.
+    The beautiful blossom is not its only vivid attribute, however, as strangely...
+    certain fruit in its vicinity will just disappear.
   flags:
   - unpass
   attributes:
@@ -9152,6 +9496,7 @@
 - id: 36995
   name: gilded magic longsword
   article: a
+  description: This is a gilded replica of the famous magic longsword
   flags: []
   attributes:
     weight: 200
@@ -9219,6 +9564,7 @@
 - id: 37021
   name: dragon plant
   article: a
+  description: Now and then it roars hungrily
   flags:
   - usable
   - multiuse
@@ -9226,6 +9572,7 @@
 - id: 37022
   name: dragon plant
   article: a
+  description: Now and then it roars hungrily
   flags:
   - usable
   - unpass
@@ -9242,6 +9589,7 @@
   - avoid
 - id: 37024
   name: log bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9256,6 +9604,7 @@
   - avoid
 - id: 37026
   name: log bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9270,6 +9619,7 @@
   - avoid
 - id: 37028
   name: log bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9284,6 +9634,7 @@
   - avoid
 - id: 37030
   name: log bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9314,21 +9665,25 @@
 - id: 37161
   name: bronze cup
   article: a
+  plural: bronze cups
   flags:
   - usable
 - id: 37162
   name: silver cup
   article: a
+  plural: silver cups
   flags:
   - usable
 - id: 37163
   name: gold cup
   article: a
+  plural: gold cups
   flags:
   - usable
 - id: 37165
   name: gilded blessed shield
   article: a
+  description: This is a gilded replica of the famous blessed shield
   flags: []
 - id: 37174
   name: kraken chair
@@ -9412,6 +9767,7 @@
   - avoid
 - id: 37194
   name: kraken bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9426,6 +9782,7 @@
   - avoid
 - id: 37196
   name: kraken bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9440,6 +9797,7 @@
   - avoid
 - id: 37198
   name: kraken bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9454,6 +9812,7 @@
   - avoid
 - id: 37200
   name: kraken bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -9484,48 +9843,56 @@
 - id: 37205
   name: sculpture of an octoputz
   article: a
+  description: It is still a work in progress
   flags:
   - usable
   - unpass
 - id: 37206
   name: sculpture of an octoputz
   article: a
+  description: It is almost completed
   flags:
   - usable
   - unpass
 - id: 37207
   name: sculpture of an octoputz
   article: a
+  description: It is completed
   flags:
   - usable
   - unpass
 - id: 37208
   name: sculpture of an octoputz
   article: a
+  description: It is still a work in progress
   flags:
   - usable
   - unpass
 - id: 37209
   name: sculpture of an octoputz
   article: a
+  description: It is almost completed
   flags:
   - usable
   - unpass
 - id: 37210
   name: sculpture of an octoputz
   article: a
+  description: It is completed
   flags:
   - usable
   - unpass
 - id: 37211
   name: octoputz
   article: an
+  description: Juding by the pinching of his beak, this one seems to be born to joust
   flags:
   - usable
   - unpass
 - id: 37212
   name: octoputz
   article: an
+  description: Juding by the pinching of his beak, this one seems to be born to joust
   flags:
   - usable
   - unpass
@@ -10427,6 +10794,7 @@
 - id: 37562
   name: pile of presents kit
   article: a
+  description: Use it in your house to place a pile of presents
   flags:
   - usable
   - avoid
@@ -10436,6 +10804,7 @@
 - id: 37563
   name: pile of three presents kit
   article: a
+  description: Use it in your house to place a pile of three presents
   flags:
   - usable
   - avoid
@@ -10445,6 +10814,7 @@
 - id: 37564
   name: green and blue presents kit
   article: a
+  description: Use it in your house to place a green and a blue present
   flags:
   - usable
   - avoid
@@ -10454,6 +10824,7 @@
 - id: 37565
   name: green and red presents kit
   article: a
+  description: Use it in your house to place a green and a red present
   flags:
   - usable
   - avoid
@@ -10463,6 +10834,7 @@
 - id: 37566
   name: blue and red presents kit
   article: a
+  description: Use it in your house to place a blue and a red present
   flags:
   - usable
   - avoid
@@ -10472,6 +10844,7 @@
 - id: 37567
   name: blue present kit
   article: a
+  description: Use it in your house to place a blue present
   flags:
   - usable
   - avoid
@@ -10481,6 +10854,7 @@
 - id: 37568
   name: red present kit
   article: a
+  description: Use it in your house to place a red present
   flags:
   - usable
   - avoid
@@ -10490,6 +10864,7 @@
 - id: 37569
   name: small blue present kit
   article: a
+  description: Use it in your house to place a small blue present
   flags:
   - usable
   - avoid
@@ -10499,6 +10874,7 @@
 - id: 37570
   name: yellow present kit
   article: a
+  description: Use it in your house to place a yellow present
   flags:
   - usable
   - avoid
@@ -10508,6 +10884,7 @@
 - id: 37571
   name: another yellow present kit
   article: an
+  description: Use it in your house to place another yellow present
   flags:
   - usable
   - avoid
@@ -10582,6 +10959,7 @@
 - id: 37717
   name: dragon pinata kit
   article: a
+  description: Use it in your house to place a dragon pinata
   flags:
   - usable
   - avoid
@@ -10690,6 +11068,7 @@
   flags: []
 - id: 37786
   name: sleeping mat
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10697,6 +11076,7 @@
   - avoid
 - id: 37787
   name: sleeping mat
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10704,6 +11084,7 @@
   - avoid
 - id: 37788
   name: sleeping mat
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10711,6 +11092,7 @@
   - avoid
 - id: 37789
   name: sleeping mat
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10725,6 +11107,7 @@
   - avoid
 - id: 37791
   name: sleeping mat
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10769,11 +11152,13 @@
 - id: 37798
   name: Zaoan bonsai
   article: a
+  description: It looks and feels like a miniature tree
   flags:
   - unpass
 - id: 37799
   name: Zaoan pot bamboo
   article: a
+  description: Bamboo from the Zaoan plains
   flags:
   - unpass
 - id: 37800
@@ -10820,18 +11205,21 @@
 - id: 37811
   name: sculpture of a fox
   article: a
+  description: It symbolises the spirit of the fox. A mystic aura surrounds this sculpture
   flags:
   - usable
   - unpass
 - id: 37812
   name: sculpture of a fox
   article: a
+  description: It symbolises the spirit of the fox. A mystic aura surrounds this sculpture
   flags:
   - usable
   - unpass
 - id: 37813
   name: sculpture of a fox
   article: a
+  description: It symbolises the spirit of the fox. A mystic aura surrounds this sculpture
   flags:
   - unpass
   attributes:
@@ -10841,6 +11229,7 @@
 - id: 37814
   name: sculpture of a fox
   article: a
+  description: It symbolises the spirit of the fox. A mystic aura surrounds this sculpture
   flags:
   - unpass
   attributes:
@@ -10873,6 +11262,7 @@
 - id: 38640
   name: gilded horned helmet
   article: a
+  description: This is a gilded replica of the famous horned helmet
   flags: []
 - id: 38706
   name: observer tapestry
@@ -10951,6 +11341,7 @@
   - avoid
 - id: 39430
   name: knightly bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10965,6 +11356,7 @@
   - avoid
 - id: 39432
   name: knightly bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10979,6 +11371,7 @@
   - avoid
 - id: 39434
   name: knightly bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -10993,6 +11386,7 @@
   - avoid
 - id: 39436
   name: knightly bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11089,12 +11483,14 @@
 - id: 39508
   name: knightly guard
   article: a
+  description: This guard stands firm and will defend his post, no matter what
   flags:
   - usable
   - unpass
 - id: 39509
   name: knightly guard
   article: a
+  description: Looks like this guard has left his post
   flags:
   - unpass
   attributes:
@@ -11104,6 +11500,7 @@
 - id: 39510
   name: knightly guard
   article: a
+  description: This guard is about to return to his post
   flags:
   - unpass
   attributes:
@@ -11163,6 +11560,7 @@
 - id: 39668
   name: knightly guard
   article: a
+  description: This guard post has been left empty
   flags:
   - usable
   - unpass
@@ -11356,6 +11754,7 @@
 - id: 39695
   name: lucky dragon kit
   article: a
+  description: Use it in your house to place a lucky dragon
   flags:
   - usable
   - avoid
@@ -11365,6 +11764,8 @@
 - id: 39704
   name: small reward box
   article: a
+  description: It could be exchanged for Theons after the festivities of Tibia's 25th
+    anniversary
   flags:
   - cumulative
   - usable
@@ -11374,6 +11775,8 @@
 - id: 39705
   name: reward box
   article: a
+  description: It could be exchanged for Theons after the festivities of Tibia's 25th
+    anniversary
   flags:
   - cumulative
   - usable
@@ -11383,6 +11786,7 @@
 - id: 39706
   name: box full of balloons
   article: a
+  description: Use this to get the ballons no.0 to no.9
   flags:
   - cumulative
   - usable
@@ -11392,6 +11796,8 @@
 - id: 39710
   name: big reward box
   article: a
+  description: It could be exchanged for Theons after the festivities of Tibia's 25th
+    anniversary
   flags:
   - cumulative
   - usable
@@ -11401,6 +11807,7 @@
 - id: 39767
   name: gilded warlord sword
   article: a
+  description: This is a gilded replica of the famous warlord sword
   flags: []
 - id: 39768
   name: flower chair
@@ -11555,10 +11962,12 @@
 - id: 39799
   name: wall flowers
   article: a
+  description: The small blossoms are of a deep purple hue
   flags: []
 - id: 39800
   name: wall fern
   article: a
+  description: Its leaves are fresh and lush
   flags: []
 - id: 39801
   name: wall leaves
@@ -11578,11 +11987,14 @@
   - usable
 - id: 39805
   name: water nymph
+  description: Well, you almost see her. At the moment, she is hiding beneath the
+    water surface
   flags:
   - usable
   - unpass
 - id: 39806
   name: water nymph
+  description: She is just emerging from the water
   flags:
   - unpass
   attributes:
@@ -11591,11 +12003,13 @@
       decay_to: 39807
 - id: 39807
   name: water nymph
+  description: She is enjoying her bath between the lily pads
   flags:
   - usable
   - unpass
 - id: 39808
   name: water nymph
+  description: She is enjoying her bath between the lily pads
   flags:
   - unpass
   attributes:
@@ -11604,6 +12018,7 @@
       decay_to: 39810
 - id: 39809
   name: water nymph
+  description: She is submerging just now
   flags:
   - unpass
   attributes:
@@ -11612,6 +12027,7 @@
       decay_to: 39805
 - id: 39810
   name: water nymph
+  description: She is enjoying her bath between the lily pads
   flags:
   - usable
   - unpass
@@ -11650,6 +12066,7 @@
   - avoid
 - id: 42280
   name: seafarer bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11664,6 +12081,7 @@
   - avoid
 - id: 42282
   name: seafarer bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11678,6 +12096,7 @@
   - avoid
 - id: 42284
   name: seafarer bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11692,6 +12111,7 @@
   - avoid
 - id: 42286
   name: seafarer bed
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11919,6 +12339,7 @@
   - avoid
 - id: 42352
   name: opulent kline
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11933,6 +12354,7 @@
   - avoid
 - id: 42354
   name: opulent kline
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11947,6 +12369,7 @@
   - avoid
 - id: 42356
   name: opulent kline
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass
@@ -11961,6 +12384,7 @@
   - avoid
 - id: 42358
   name: opulent kline
+  description: Somebody is sleeping there
   flags:
   - usable
   - unpass

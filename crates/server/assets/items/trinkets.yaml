@@ -165,6 +165,7 @@
 - id: 3047
   name: magic light wand
   article: a
+  description: The wand glows
   flags:
   - usable
   - take
@@ -198,6 +199,7 @@
 - id: 4061
   name: stone of wisdom
   article: a
+  description: This rare artefact is a mere relic nowadays
   flags:
   - take
   attributes:
@@ -206,6 +208,8 @@
 - id: 4065
   name: statue of Devovorga
   article: a
+  description: In memory of her - half plant, half demon, incredibly powerful and
+    betrayed by her own creators
   flags:
   - take
   attributes:
@@ -235,6 +239,7 @@
 - id: 9034
   name: dracoyle statue
   article: a
+  description: This rare treasure is said to protect its owner from misery and curses
   flags:
   - take
   attributes:
@@ -246,6 +251,7 @@
 - id: 9035
   name: dracoyle statue
   article: a
+  description: This rare treasure can be charged with an enchanted emerald
   flags:
   - take
   attributes:
@@ -254,6 +260,7 @@
 - id: 9039
   name: dracoyle statue
   article: a
+  description: This rare treasure is said to protect its owner from misery and curses
   flags:
   - take
   attributes:
@@ -265,6 +272,7 @@
 - id: 9040
   name: dracoyle statue
   article: a
+  description: This rare treasure can be charged with an enchanted emerald
   flags:
   - take
   attributes:
@@ -273,6 +281,8 @@
 - id: 9042
   name: magical torch
   article: a
+  description: Light all important locations given to you by Lucius before one of
+    the basins stops burning
   flags:
   - usable
   - multiuse
@@ -324,6 +334,8 @@
 - id: 9626
   name: silver Fafnar trophy
   article: a
+  description: 'You read: |PLAYERNAME| helped to keep the fire basins burning and
+    is one of the lightbearers of |YEAR|'
   flags:
   - take
   attributes:
@@ -332,6 +344,8 @@
 - id: 9627
   name: silver Fafnar trophy
   article: a
+  description: 'You read: |PLAYERNAME| helped to keep the fire basins burning and
+    is one of the lightbearers of |YEAR|'
   flags:
   - take
   attributes:
@@ -384,6 +398,7 @@
 - id: 18327
   name: jade Zaoan queen
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the queen
   flags:
   - take
   attributes:
@@ -392,6 +407,7 @@
 - id: 18328
   name: jade Zaoan king
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the king
   flags:
   - take
   attributes:
@@ -400,6 +416,7 @@
 - id: 18329
   name: jade Zaoan bishop
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the bishop
   flags:
   - take
   attributes:
@@ -408,6 +425,7 @@
 - id: 18330
   name: jade Zaoan knight
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the knight
   flags:
   - take
   attributes:
@@ -416,6 +434,7 @@
 - id: 18331
   name: jade Zaoan rook
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the rook
   flags:
   - take
   attributes:
@@ -424,6 +443,7 @@
 - id: 18332
   name: jade Zaoan pawn
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the pawn
   flags:
   - take
   attributes:
@@ -432,6 +452,7 @@
 - id: 18333
   name: obsidian Zaoan queen
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the queen
   flags:
   - take
   attributes:
@@ -440,6 +461,7 @@
 - id: 18334
   name: obsidian Zaoan king
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the king
   flags:
   - take
   attributes:
@@ -448,6 +470,7 @@
 - id: 18335
   name: obsidian Zaoan bishop
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the bishop
   flags:
   - take
   attributes:
@@ -456,6 +479,7 @@
 - id: 18336
   name: obsidian Zaoan knight
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the knight
   flags:
   - take
   attributes:
@@ -464,6 +488,7 @@
 - id: 18337
   name: obsidian Zaoan rook
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the rook
   flags:
   - take
   attributes:
@@ -472,6 +497,7 @@
 - id: 18338
   name: obsidian Zaoan pawn
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the pawn
   flags:
   - take
   attributes:
@@ -537,6 +563,8 @@
 - id: 21383
   name: stone of insight
   article: a
+  description: This rare artefact can be traded with Milos or Trimegis for a fraction
+    of their knowledge
   flags:
   - take
   attributes:
@@ -545,6 +573,7 @@
 - id: 21947
   name: midnight panther doll
   article: a
+  description: It is said to be a symbol of perseverance and luck. Awarded by TibiaMagazine.com.ve
   flags:
   - usable
   - take
@@ -554,6 +583,7 @@
 - id: 21948
   name: midnight panther doll
   article: a
+  description: It is said to be a symbol of perseverance and luck. Awarded by TibiaMagazine.com.ve
   flags:
   - take
   attributes:
@@ -562,6 +592,7 @@
 - id: 23489
   name: brown pit demon
   article: a
+  description: Figurine 1 of 5
   flags:
   - take
   attributes:
@@ -570,6 +601,7 @@
 - id: 23490
   name: green pit demon
   article: a
+  description: Figurine 2 of 5
   flags:
   - take
   attributes:
@@ -578,6 +610,7 @@
 - id: 23491
   name: blue pit demon
   article: a
+  description: Figurine 3 of 5
   flags:
   - take
   attributes:
@@ -586,6 +619,7 @@
 - id: 23492
   name: black pit demon
   article: a
+  description: Figurine 4 of 5
   flags:
   - take
   attributes:
@@ -594,6 +628,7 @@
 - id: 23493
   name: red pit demon
   article: a
+  description: Figurine 5 of 5
   flags:
   - take
   attributes:
@@ -610,6 +645,8 @@
 - id: 23734
   name: ghostsilver lantern
   article: a
+  description: It is made of filigree silver braces and delicate indigo glass. But
+    it is dark at the moment
   flags:
   - usable
   - take
@@ -619,6 +656,8 @@
 - id: 23738
   name: ghostsilver lantern
   article: a
+  description: It is made of filigree silver braces and delicate indigo glass. It
+    glows with an otherworldly light
   flags:
   - usable
   - take
@@ -679,6 +718,8 @@
 - id: 32591
   name: soulforged lantern
   article: a
+  description: Forged of tormented souls, it might grant protection from the powers
+    of the Pale Worm, but it has a chance to burn out in the process
   flags:
   - usable
   - take
@@ -688,6 +729,7 @@
 - id: 34016
   name: lit torch
   article: a
+  description: It sparkles slightly
   flags:
   - usable
   - multiuse
@@ -707,6 +749,8 @@
     slot: 10
 - id: 34268
   name: baby Munster
+  description: Legends say that when he grew up, he accidentally swallowed his favourite
+    toy. Awarded by Rookie.com.pl
   flags:
   - usable
   - take
@@ -715,6 +759,8 @@
     slot: 10
 - id: 34269
   name: baby Munster
+  description: Legends say that when he grew up, he accidentally swallowed his favourite
+    toy. Awarded by Rookie.com.pl
   flags:
   - usable
   - take
@@ -724,6 +770,9 @@
 - id: 37111
   name: armillary sphere
   article: an
+  description: It's a sphere with models of the celestial bodies in the sky, used
+    when navigating. TibiaMaps.io have used this sphere on their adventures to explore
+    the Tibian lands
   flags:
   - usable
   - take
@@ -733,6 +782,9 @@
 - id: 37112
   name: armillary sphere
   article: an
+  description: It's a sphere with models of the celestial bodies in the sky, used
+    when navigating. TibiaMaps.io have used this sphere on their adventures to explore
+    the Tibian lands
   flags:
   - take
   attributes:
@@ -744,6 +796,9 @@
 - id: 37113
   name: armillary sphere
   article: an
+  description: It's a sphere with models of the celestial bodies in the sky, used
+    when navigating. TibiaMaps.io have used this sphere on their adventures to explore
+    the Tibian lands
   flags:
   - usable
   - take
@@ -753,6 +808,9 @@
 - id: 37114
   name: armillary sphere
   article: an
+  description: It's a sphere with models of the celestial bodies in the sky, used
+    when navigating. TibiaMaps.io have used this sphere on their adventures to explore
+    the Tibian lands
   flags:
   - take
   attributes:
@@ -850,6 +908,8 @@
 - id: 39703
   name: burnt down rainbow torch
   article: a
+  description: Give it some time. Thanks to the 25 years anniversary magic it will
+    be back to normal soon
   flags:
   - usable
   - take
@@ -862,6 +922,7 @@
 - id: 43740
   name: scarab ocarina
   article: a
+  description: It has a turquoise shimmer and was made from a real scarab shell.
   flags:
   - usable
   - take

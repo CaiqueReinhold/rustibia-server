@@ -7189,6 +7189,8 @@
   flags: []
 - id: 7763
   name: dead cockroach
+  description: If you killed this cockroach, rightclick it and select 'Open' to see
+    what it carried.
   flags:
   - container
   - usable
@@ -7626,6 +7628,7 @@
 - id: 8182
   name: Overlord's ashes
   article: the
+  description: Use an obsidian knife on it to get neutral matter.
   flags:
   - usable
   attributes:
@@ -8375,6 +8378,8 @@
   - unmove
 - id: 9582
   name: remains of a water elemental
+  description: Something is wobbling inside. Maybe with a fishing rod you could reach
+    it.
   flags:
   - container
   - usable
@@ -8386,6 +8391,7 @@
       decay_to: 9583
 - id: 9583
   name: remains of a water elemental
+  description: It has already been emptied of the treasure it held.
   flags:
   - container
   - usable
@@ -19833,6 +19839,8 @@
 - id: 22698
   name: purified soul
   article: a
+  description: This pure soul is powerful enough to destroy Sin Devourers. The soul
+    is fading away quickly though
   flags:
   - usable
   - multiuse
@@ -25121,72 +25129,84 @@
 - id: 31270
   name: jade Zaoan queen
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the queen.
   flags: []
   attributes:
     weight: 500
 - id: 31271
   name: jade Zaoan king
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the king.
   flags: []
   attributes:
     weight: 500
 - id: 31272
   name: jade Zaoan bishop
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the bishop.
   flags: []
   attributes:
     weight: 500
 - id: 31273
   name: jade Zaoan knight
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the knight.
   flags: []
   attributes:
     weight: 500
 - id: 31274
   name: jade Zaoan rook
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the rook.
   flags: []
   attributes:
     weight: 500
 - id: 31275
   name: jade Zaoan pawn
   article: a
+  description: A Zaoan chess figure made of jade. It depicts the pawn.
   flags: []
   attributes:
     weight: 500
 - id: 31276
   name: obsidian Zaoan queen
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the queen.
   flags: []
   attributes:
     weight: 500
 - id: 31277
   name: obsidian Zaoan king
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the king.
   flags: []
   attributes:
     weight: 500
 - id: 31278
   name: obsidian Zaoan bishop
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the bishop.
   flags: []
   attributes:
     weight: 500
 - id: 31279
   name: obsidian Zaoan knight
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the knight.
   flags: []
   attributes:
     weight: 500
 - id: 31280
   name: obsidian Zaoan rook
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the rook.
   flags: []
   attributes:
     weight: 500
 - id: 31281
   name: obsidian Zaoan pawn
   article: an
+  description: A Zaoan chess figure made of obsidian. It depicts the pawn.
   flags: []
   attributes:
     weight: 500

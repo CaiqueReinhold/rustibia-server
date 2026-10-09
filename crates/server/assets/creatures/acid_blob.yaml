@@ -1,4 +1,5 @@
 name: Acid Blob
+name_description: an acid blob
 life: 250
 speed: 90
 blood_type: poison

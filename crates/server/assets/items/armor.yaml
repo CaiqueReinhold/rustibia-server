@@ -296,6 +296,7 @@
 - id: 3566
   name: red robe
   article: a
+  description: The robe is artfully embroidered
   flags:
   - take
   attributes:
@@ -305,6 +306,7 @@
 - id: 3567
   name: blue robe
   article: a
+  description: It is a magic robe
   flags:
   - take
   attributes:
@@ -366,6 +368,7 @@
 - id: 7463
   name: mammoth fur cape
   article: a
+  description: It is imbued with protective magic
   flags:
   - take
   attributes:
@@ -375,6 +378,7 @@
 - id: 7991
   name: magician's robe
   article: a
+  description: This robe feels soft and light as a feather
   flags:
   - take
   attributes:
@@ -397,6 +401,7 @@
 - id: 8037
   name: dark lord's cape
   article: a
+  description: There is a dark aura surrounding it
   flags:
   - take
   attributes:
@@ -409,6 +414,7 @@
 - id: 8038
   name: robe of the ice queen
   article: a
+  description: The soft tissue shimmers
   flags:
   - take
   attributes:
@@ -421,6 +427,7 @@
 - id: 8039
   name: dragon robe
   article: a
+  description: It is covered with runic symbols
   flags:
   - take
   attributes:
@@ -433,6 +440,7 @@
 - id: 8040
   name: velvet mantle
   article: a
+  description: The smooth tissue seems to sparkle
   flags:
   - take
   attributes:
@@ -739,6 +747,8 @@
 - id: 9379
   name: heavy metal t-shirt
   article: a
+  description: Oddly enough it is not made of metal at all, but years without washing
+    grant it added protection
   flags:
   - take
   attributes:
@@ -748,6 +758,7 @@
 - id: 9400
   name: rain coat
   article: the
+  description: The wearer of this cape commands the forces of heaven
   flags:
   - usable
   - take
@@ -758,6 +769,7 @@
 - id: 9446
   name: rain coat
   article: the
+  description: The wearer of this cape commands the forces of heaven
   flags:
   - take
   attributes:
@@ -847,6 +859,7 @@
 - id: 11701
   name: old cape
   article: an
+  description: This old cape might be worth more than what it looks like
   flags:
   - take
   attributes:
@@ -1291,6 +1304,7 @@
 - id: 25779
   name: swan feather cloak
   article: a
+  description: It was carefully crafted out of one hundred swan maiden feathers
   flags:
   - take
   attributes:
@@ -1394,6 +1408,8 @@
 - id: 32099
   name: traditional shirt
   article: a
+  description: A traditional white Orcsoberfest shirt. Not worn by many orgres during
+    the actual festivities anymore, however
   flags:
   - take
   attributes:
@@ -1402,6 +1418,7 @@
 - id: 32585
   name: burial shroud
   article: a
+  description: It is made of faintly glowing yarn
   flags:
   - take
   attributes:
@@ -1536,6 +1553,7 @@
 - id: 40533
   name: broken Iks cuirass
   article: the
+  description: This cuirass once kept a brave warrior of the ancient Iks from harm
   flags:
   - cumulative
   - take

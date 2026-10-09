@@ -1,4 +1,5 @@
 name: Insectoid Worker
+name_description: an insectoid worker
 life: 950
 speed: 100
 blood_type: poison

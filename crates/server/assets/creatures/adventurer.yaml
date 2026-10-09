@@ -1,4 +1,5 @@
 name: Adventurer
+name_description: an adventurer
 life: 65
 speed: 53
 blood_type: blood

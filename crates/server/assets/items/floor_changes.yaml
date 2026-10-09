@@ -1,6 +1,7 @@
 - id: 166
   name: wooden coffin
   article: a
+  description: You can see stairs leading down.
   flags:
   - unmove
   - avoid
@@ -9,6 +10,7 @@
 - id: 167
   name: wooden coffin
   article: a
+  description: You can see stairs leading down.
   flags:
   - unmove
   - avoid
@@ -463,6 +465,7 @@
 - id: 7515
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:
@@ -470,6 +473,7 @@
 - id: 7516
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:
@@ -477,6 +481,7 @@
 - id: 7517
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:
@@ -484,6 +489,7 @@
 - id: 7518
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:
@@ -491,6 +497,7 @@
 - id: 7520
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:
@@ -498,6 +505,7 @@
 - id: 7521
   name: hole
   article: a
+  description: It seems too narrow to crawl trough.
   flags:
   - unmove
   attributes:

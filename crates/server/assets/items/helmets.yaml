@@ -1,6 +1,7 @@
 - id: 139
   name: mining helmet
   article: a
+  description: This is Budriks old mining helmet.
   flags:
   - take
   attributes:
@@ -58,6 +59,7 @@
 - id: 875
   name: mining helmet
   article: a
+  description: This is your personal mining helmet
   flags:
   - take
   attributes:
@@ -92,6 +94,7 @@
 - id: 3210
   name: hat of the mad
   article: a
+  description: You have a vague feeling that it looks somewhat silly
   flags:
   - take
   attributes:
@@ -104,6 +107,7 @@
 - id: 3226
   name: damaged helmet
   article: a
+  description: This item seems to have several parts missing
   flags:
   - take
   attributes:
@@ -113,6 +117,7 @@
 - id: 3229
   name: helmet of the ancients
   article: a
+  description: The gem of the helmet is burned out and should be replaced
   flags:
   - usable
   - multiuse
@@ -124,6 +129,7 @@
 - id: 3230
   name: full helmet of the ancients
   article: a
+  description: The gem is glowing with power
   flags:
   - take
   attributes:
@@ -190,6 +196,7 @@
 - id: 3365
   name: golden helmet
   article: a
+  description: It's the famous Helmet of the Stars
   flags:
   - take
   attributes:
@@ -208,6 +215,7 @@
 - id: 3368
   name: winged helmet
   article: a
+  description: It's the Helmet of Hermes
   flags:
   - take
   attributes:
@@ -280,6 +288,7 @@
 - id: 3387
   name: demon helmet
   article: a
+  description: You hear an evil whispering from inside
   flags:
   - take
   attributes:
@@ -307,6 +316,7 @@
 - id: 3392
   name: royal helmet
   article: a
+  description: An excellent masterpiece of a smith
   flags:
   - take
   attributes:
@@ -344,6 +354,7 @@
 - id: 3400
   name: dragon scale helmet
   article: a
+  description: It's made of dragon scales.
   flags:
   - take
   attributes:
@@ -407,6 +418,7 @@
 - id: 3574
   name: mystic turban
   article: a
+  description: Something is strange about this turban
   flags:
   - take
   attributes:
@@ -427,6 +439,7 @@
 - id: 3576
   name: post officer's hat
   article: a
+  description: This hat is the insignia of all Tibian post officers
   flags:
   - take
   attributes:
@@ -436,6 +449,7 @@
 - id: 5460
   name: helmet of the deep
   article: a
+  description: Enables underwater exploration
   flags:
   - take
   attributes:
@@ -453,6 +467,8 @@
     armor: 9
 - id: 5903
   name: Ferumbras' hat
+  description: It is the proof that Ferumbras has fallen. For now. The Edron Academy
+    should be interested in this
   flags:
   - take
   attributes:
@@ -462,6 +478,8 @@
 - id: 5917
   name: bandana
   article: a
+  description: It is quite fashionable as well as useful for anyone spending huge
+    amounts of time in the sun
   flags:
   - take
   attributes:
@@ -499,6 +517,7 @@
 - id: 7458
   name: fur cap
   article: a
+  description: It feels nice and warm on your ears
   flags:
   - take
   attributes:
@@ -508,6 +527,7 @@
 - id: 7459
   name: pair of earmuffs
   article: a
+  description: They feel nice and warm on your ears
   flags:
   - take
   attributes:
@@ -589,6 +609,7 @@
 - id: 9374
   name: odd hat
   article: an
+  description: It has to be one of the fabled helmets of light
   flags:
   - take
   attributes:
@@ -598,6 +619,7 @@
 - id: 9381
   name: helmet of ultimate terror
   article: a
+  description: There is evil inside
   flags:
   - take
   attributes:
@@ -607,6 +629,7 @@
 - id: 9382
   name: helmet of nature
   article: a
+  description: One can only hope nobody will ever insist on wearing that
   flags:
   - take
   attributes:
@@ -616,6 +639,7 @@
 - id: 9399
   name: mighty helm of green sparks
   article: a
+  description: This helmet spawns green stars. Awesome
   flags:
   - take
   attributes:
@@ -662,6 +686,7 @@
 - id: 11585
   name: helmet of the deep
   article: a
+  description: Enables underwater exploration
   flags:
   - take
   attributes:
@@ -698,6 +723,7 @@
 - id: 11700
   name: sedge hat
   article: a
+  description: This simple hat might be more worth than what it looks like
   flags:
   - take
   attributes:
@@ -719,6 +745,8 @@
 - id: 12809
   name: epic wisdom
   article: the
+  description: This hat was handcrafted by Uman the Wise and cursed by Zathroth the
+    Destroyer. It is awarded by TibiaWiki.com.br
   flags:
   - usable
   - take
@@ -728,6 +756,8 @@
 - id: 12810
   name: epic wisdom
   article: the
+  description: This hat was handcrafted by Uman the Wise and cursed by Zathroth the
+    Destroyer. It is awarded by TibiaWiki.com.br
   flags:
   - take
   attributes:
@@ -736,6 +766,7 @@
 - id: 13995
   name: depth galea
   article: a
+  description: Enables underwater exploration
   flags:
   - take
   attributes:
@@ -746,6 +777,7 @@
 - id: 14258
   name: depth galea
   article: a
+  description: Enables underwater exploration
   flags:
   - take
   attributes:
@@ -834,6 +866,7 @@
 - id: 22088
   name: enchanted werewolf helmet
   article: an
+  description: This helmet can only be worn by knights and amplifies axe fighting.
   flags:
   - take
   attributes:
@@ -842,6 +875,7 @@
 - id: 22113
   name: enchanted werewolf helmet
   article: an
+  description: This helmet can only be worn by knights and amplifies club fighting.
   flags:
   - take
   attributes:
@@ -850,6 +884,7 @@
 - id: 22114
   name: enchanted werewolf helmet
   article: an
+  description: This helmet can only be worn by paladins.
   flags:
   - take
   attributes:
@@ -858,6 +893,8 @@
 - id: 22115
   name: enchanted werewolf helmet
   article: an
+  description: This helmet can only be worn by wielders of magic such as sorcerers
+    or druids.
   flags:
   - take
   attributes:
@@ -866,6 +903,7 @@
 - id: 22116
   name: enchanted werewolf helmet
   article: an
+  description: This helmet can only be worn by knights and amplifies sword fighting.
   flags:
   - take
   attributes:
@@ -949,6 +987,8 @@
     - knight
 - id: 22153
   name: dark wizard's crown
+  description: It grants infinite power and knowledge to the one who wears it. Awarded
+    by TibiaMisterios.com.br
   flags:
   - usable
   - take
@@ -957,6 +997,8 @@
     slot: 1
 - id: 22154
   name: dark wizard's crown
+  description: It grants infinite power and knowledge to the one who wears it. Awarded
+    by TibiaMisterios.com.br
   flags:
   - usable
   - take
@@ -994,6 +1036,8 @@
 - id: 23474
   name: tiara of power
   article: a
+  description: It can only be wielded properly by sorcerers and druids of level 100
+    or higher.
   flags:
   - take
   attributes:
@@ -1006,6 +1050,8 @@
 - id: 23475
   name: tiara of power
   article: a
+  description: It can only be wielded properly by sorcerers and druids of level 100
+    or higher.
   flags:
   - take
   attributes:
@@ -1022,6 +1068,7 @@
 - id: 24397
   name: Ferumbras' Candy Hat
   article: a
+  description: It is a sweet candy replica of the famous Ferumbras' hat
   flags:
   - take
   attributes:
@@ -1031,6 +1078,7 @@
 - id: 24405
   name: rusty winged helmet
   article: a
+  description: It's the Helmet of Hermes but it clearly has seen better days
   flags:
   - take
   attributes:
@@ -1104,6 +1152,8 @@
     slot: 1
 - id: 27522
   name: blue spectacles
+  description: These spectacles have strange blue lenses which appear completely opaque,
+    yet provide perfectly clear vision
   flags:
   - usable
   - take
@@ -1192,6 +1242,7 @@
 - id: 31369
   name: gryphon mask
   article: a
+  description: It is carved from sequoia wood
   flags:
   - take
   attributes:
@@ -1200,6 +1251,7 @@
 - id: 31370
   name: silver mask
   article: a
+  description: It is slightly tarnished
   flags:
   - take
   attributes:
@@ -1208,6 +1260,7 @@
 - id: 31371
   name: ivory mask
   article: an
+  description: It is smoothly polished and cool to the touch
   flags:
   - take
   attributes:
@@ -1216,6 +1269,7 @@
 - id: 31372
   name: mirror mask
   article: a
+  description: It is composed of many small shards
   flags:
   - take
   attributes:
@@ -1248,6 +1302,8 @@
 - id: 32100
   name: traditional gamsbart hat
   article: a
+  description: This traditional Orcsoberfest gamsbart shows a bit of use but is still
+    in good shape and will clothe any sophisticated ogre just fine
   flags:
   - take
   attributes:
@@ -1256,6 +1312,8 @@
 - id: 32630
   name: spooky hood
   article: a
+  description: Every time you look away you have a strange feeling, as if something
+    watches you from its depths
   flags:
   - usable
   - take
@@ -1264,6 +1322,7 @@
     slot: 1
 - id: 32925
   name: golden crown
+  description: This is a golden replica of the famous crown
   flags:
   - take
   attributes:
@@ -1308,6 +1367,8 @@
 - id: 37164
   name: golden horned helmet
   article: a
+  plural: golden horned helmets
+  description: This is a golden replica of the famous horned helmet
   flags:
   - take
   attributes:
@@ -1325,6 +1386,7 @@
     slot: 1
 - id: 37609
   name: green demon helmet
+  description: You hear an evil whispering from inside
   flags:
   - take
   attributes:
@@ -1382,6 +1444,7 @@
 - id: 40532
   name: broken Iks headpiece
   article: the
+  description: This headpiece once protected a fierce warrior of the ancient Iks
   flags:
   - cumulative
   - take

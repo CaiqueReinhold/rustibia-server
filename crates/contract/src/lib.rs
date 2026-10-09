@@ -24,6 +24,7 @@ pub struct CharacterRecord {
     pub admin: bool,
     pub name: String,
     pub vocation: i16,
+    pub sex: i16,
     pub position: Coords,
     pub origin: Coords,
     pub facing: i16,
@@ -141,6 +142,7 @@ mod tests {
             admin: false,
             name: "Rizael".to_string(),
             vocation: 3,
+            sex: 1,
             position: Coords {
                 x: 1028,
                 y: 1029,
@@ -205,6 +207,7 @@ mod tests {
 
         assert_eq!(back.id, 7);
         assert_eq!(back.name, "Rizael");
+        assert_eq!(back.sex, 1);
         assert_eq!(back.position.x, 1028);
         assert_eq!(back.position.y, 1029);
         assert_eq!(back.facing, 2);

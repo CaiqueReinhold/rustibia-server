@@ -1,4 +1,5 @@
 name: Assassin
+name_description: an assassin
 life: 175
 speed: 112
 blood_type: blood

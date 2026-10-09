@@ -178,6 +178,8 @@
     armor: 1
 - id: 7464
   name: mammoth fur shorts
+  description: They offer little protection but will at least provide some comfort
+    and warmth
   flags:
   - take
   attributes:
@@ -215,6 +217,7 @@
     slot: 7
 - id: 9383
   name: trousers of the ancients
+  description: These atavistic trousers already served the forefathers of mankind
   flags:
   - take
   attributes:
@@ -312,6 +315,8 @@
 - id: 22087
   name: wereboar loincloth
   article: a
+  description: They offer little protection but will at least provide some comfort
+    and warmth
   flags:
   - take
   attributes:
@@ -321,6 +326,7 @@
 - id: 24402
   name: chocolatey dragon scale legs
   article: a
+  description: This is a chocolate replica of the famous dragon scale legs
   flags:
   - take
   attributes:
@@ -330,6 +336,7 @@
 - id: 24404
   name: tatty dragon scale legs
   article: a
+  description: They clearly have seen better days
   flags:
   - take
   attributes:
@@ -392,6 +399,8 @@
 - id: 32097
   name: lederhosen
   article: a
+  description: Made from dried and tanned orc skin, these traditional Orcsoberfest
+    leather trousers are sturdy and fit a wide range of orgers
   flags:
   - take
   attributes:
@@ -516,6 +525,7 @@
 - id: 40531
   name: broken Iks faulds
   article: the
+  description: These faulds were once worn by a proud warrior of the ancient Iks
   flags:
   - cumulative
   - take

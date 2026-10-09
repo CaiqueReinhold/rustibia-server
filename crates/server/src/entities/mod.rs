@@ -11,6 +11,7 @@ pub mod map;
 pub mod npc;
 pub mod player;
 pub mod position;
+pub mod sex;
 pub mod skills;
 pub mod spells;
 pub mod support;

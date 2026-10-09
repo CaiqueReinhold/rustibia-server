@@ -130,6 +130,7 @@
 - id: 3243
   name: gemmed lamp
   article: a
+  description: It is the djinn leader's sleeping lamp
   flags:
   - take
   attributes:
@@ -137,6 +138,7 @@
 - id: 3247
   name: djinn's lamp
   article: a
+  description: (This item has 2 charges left)
   flags:
   - take
   attributes:
@@ -162,6 +164,7 @@
 - id: 3454
   name: broom
   article: a
+  description: Don't use it without flying license. Not suitable for minors.
   flags:
   - usable
   - multiuse
@@ -378,6 +381,7 @@
 - id: 4872
   name: ice pick
   article: an
+  description: It might come in handy in cold regions
   flags:
   - usable
   - multiuse
@@ -387,6 +391,7 @@
 - id: 5467
   name: fire bug
   article: a
+  description: This strange creature has the tendency to set certain things on fire
   flags:
   - usable
   - multiuse
@@ -414,6 +419,7 @@
 - id: 5908
   name: obsidian knife
   article: an
+  description: Sharp and light, this is a useful tool for tanners, doctors and assassins
   flags:
   - usable
   - multiuse
@@ -423,6 +429,7 @@
 - id: 5941
   name: wooden stake
   article: a
+  description: It is a simple wooden stake
   flags:
   - usable
   - multiuse
@@ -432,6 +439,7 @@
 - id: 5942
   name: blessed wooden stake
   article: a
+  description: Many mighty priests of Tibia have blessed this stake
   flags:
   - usable
   - multiuse
@@ -456,6 +464,7 @@
 - id: 7785
   name: bricklayers' kit
   article: a
+  description: Use it on destroyed brick walls to repair them
   flags:
   - cumulative
   - usable
@@ -476,6 +485,7 @@
 - id: 9234
   name: worm punisher
   article: a
+  description: The hammer would be more effective when heated
   flags:
   - usable
   - multiuse
@@ -485,6 +495,7 @@
 - id: 9235
   name: golem disassembler
   article: a
+  description: It looks suspiciously similar to a crowbar
   flags:
   - usable
   - multiuse
@@ -503,6 +514,8 @@
 - id: 9594
   name: sneaky stabber of eliteness
   article: a
+  description: This nifty gadget can be used for many vital and less vital purposes.
+    If it's not jammed, that is
   flags:
   - usable
   - multiuse
@@ -512,6 +525,8 @@
 - id: 9595
   name: sneaky stabber of eliteness
   article: a
+  description: Argh! It's jammed right now! Should hopefully work again within a short
+    time though
   flags:
   - usable
   - multiuse
@@ -524,6 +539,8 @@
 - id: 9596
   name: squeezing gear of girlpower
   article: a
+  description: This nifty gadget can be used for many vital and less vital purposes.
+    If it's not jammed, that is
   flags:
   - usable
   - multiuse
@@ -533,6 +550,8 @@
 - id: 9597
   name: squeezing gear of girlpower
   article: a
+  description: Argh! It's jammed right now! Should hopefully work again within a short
+    time though
   flags:
   - usable
   - multiuse
@@ -545,6 +564,8 @@
 - id: 9598
   name: whacking driller of fate
   article: a
+  description: This nifty gadget can be used for many vital and less vital purposes.
+    If it's not jammed, that is
   flags:
   - usable
   - multiuse
@@ -554,6 +575,8 @@
 - id: 9599
   name: whacking driller of fate
   article: a
+  description: Argh! It's jammed right now! Should hopefully work again within a short
+    time though
   flags:
   - usable
   - multiuse
@@ -668,6 +691,7 @@
 - id: 31913
   name: baking tray
   article: a
+  description: There is reed flour dough on it
   flags:
   - cumulative
   - usable

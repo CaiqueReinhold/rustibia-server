@@ -234,6 +234,8 @@ pub struct ItemConfig {
     pub name: String,
     pub description: Option<String>,
     pub article: Option<String>,
+    pub plural: Option<String>,
+    pub show_count: bool,
     flags: ItemFlags,
     attributes: SmallVec<[ItemAttribute; 4]>,
 }
@@ -265,6 +267,8 @@ impl ItemConfig {
             name,
             description,
             article,
+            plural: None,
+            show_count: true,
             flags: flags.into_iter().collect(),
             attributes: SmallVec::from_iter(attributes),
         }

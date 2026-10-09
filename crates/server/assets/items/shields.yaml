@@ -1,6 +1,7 @@
 - id: 3059
   name: spellbook
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -59,6 +60,7 @@
 - id: 3414
   name: mastermind shield
   article: a
+  description: It's an enchanted shield
   flags:
   - take
   attributes:
@@ -86,6 +88,7 @@
 - id: 3417
   name: shield of honour
   article: a
+  description: A mighty shield awarded by the gods of Tibia
   flags:
   - take
   attributes:
@@ -113,6 +116,7 @@
 - id: 3420
   name: demon shield
   article: a
+  description: This powerful shield seems to be as light as air
   flags:
   - take
   attributes:
@@ -131,6 +135,7 @@
 - id: 3422
   name: great shield
   article: a
+  description: The shield is made of dragon scales
   flags:
   - take
   attributes:
@@ -140,6 +145,7 @@
 - id: 3423
   name: blessed shield
   article: a
+  description: The shield grants divine protection
   flags:
   - take
   attributes:
@@ -149,6 +155,7 @@
 - id: 3424
   name: ornamented shield
   article: an
+  description: Many gems sparkle on the shield
   flags:
   - take
   attributes:
@@ -194,6 +201,7 @@
 - id: 3429
   name: black shield
   article: a
+  description: An unholy creature covers the shield
   flags:
   - take
   attributes:
@@ -239,6 +247,7 @@
 - id: 3434
   name: vampire shield
   article: a
+  description: Dark powers enchant this shield
   flags:
   - take
   attributes:
@@ -284,6 +293,7 @@
 - id: 3439
   name: phoenix shield
   article: a
+  description: This shield feels warm to the touch
   flags:
   - take
   attributes:
@@ -356,6 +366,7 @@
 - id: 6390
   name: nightmare shield
   article: a
+  description: It was crafted by the ancient order of the nightmare knights
   flags:
   - take
   attributes:
@@ -365,6 +376,7 @@
 - id: 6432
   name: necromancer shield
   article: a
+  description: It is enchanted with unholy, necromantic powers
   flags:
   - take
   attributes:
@@ -383,6 +395,7 @@
 - id: 8072
   name: spellbook of enlightenment
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -397,6 +410,7 @@
 - id: 8073
   name: spellbook of warding
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -411,6 +425,7 @@
 - id: 8074
   name: spellbook of mind control
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -425,6 +440,7 @@
 - id: 8075
   name: spellbook of lost souls
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -439,6 +455,7 @@
 - id: 8076
   name: spellscroll of prophecies
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -453,6 +470,7 @@
 - id: 8077
   name: rainbow shield
   article: a
+  description: Strange elemental magic flows over this shield
   flags:
   - take
   attributes:
@@ -465,6 +483,8 @@
 - id: 8078
   name: fiery rainbow shield
   article: a
+  description: It has been temporarily imbued with fire magic and boosts your shielding
+    skill
   flags:
   - take
   attributes:
@@ -480,6 +500,8 @@
 - id: 8079
   name: icy rainbow shield
   article: an
+  description: It has been temporarily imbued with ice magic and has a greatly increased
+    shielding value
   flags:
   - take
   attributes:
@@ -495,6 +517,8 @@
 - id: 8080
   name: sparking rainbow shield
   article: a
+  description: It has been temporarily imbued with energy magic and increases your
+    speed
   flags:
   - take
   attributes:
@@ -510,6 +534,7 @@
 - id: 8081
   name: terran rainbow shield
   article: a
+  description: It has been temporarily imbued with earth magic and boosts your regeneration
   flags:
   - take
   attributes:
@@ -525,6 +550,7 @@
 - id: 8090
   name: spellbook of dark mysteries
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -539,6 +565,7 @@
 - id: 9372
   name: meat shield
   article: a
+  description: A sturdy shield made of old meat
   flags:
   - take
   attributes:
@@ -548,6 +575,8 @@
 - id: 9377
   name: shield of the white knight
   article: a
+  description: It seems a bit chunky, but what was good enough for a white knight
+    should be good for everyone
   flags:
   - take
   attributes:
@@ -557,6 +586,7 @@
 - id: 9380
   name: shield of care
   article: a
+  description: This shield will surely care for anyone who can bear it
   flags:
   - take
   attributes:
@@ -566,6 +596,8 @@
 - id: 9401
   name: shield Nevermourn
   article: the
+  description: It is said that the wearer of Nevermourn will never mourn. What a powerful
+    shield
   flags:
   - usable
   - take
@@ -576,6 +608,8 @@
 - id: 9447
   name: shield Nevermourn
   article: the
+  description: It is said that the wearer of Nevermourn will never mourn. What a powerful
+    shield
   flags:
   - usable
   - take
@@ -601,6 +635,7 @@
 - id: 11691
   name: snake god's wristguard
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -658,6 +693,7 @@
 - id: 14760
   name: mathmaster shield
   article: a
+  description: This is an emblem of wisdom. It was awarded by TibiaStat.com
   flags:
   - usable
   - take
@@ -667,6 +703,7 @@
 - id: 14761
   name: mathmaster shield
   article: a
+  description: This is an emblem of wisdom. It was awarded by TibiaStat.com
   flags:
   - usable
   - take
@@ -676,6 +713,7 @@
 - id: 14769
   name: spellbook of ancient arcana
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -690,6 +728,7 @@
 - id: 16107
   name: spellbook of vigilance
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -743,6 +782,7 @@
 - id: 20050
   name: strange good night songs
   article: a
+  description: It contains some hypnotic melodies that are hard to remember
   flags:
   - take
   attributes:
@@ -793,6 +833,7 @@
 - id: 20140
   name: eerie song book
   article: an
+  description: The songs in it are... special. Very special. Not for weak stomachs
   flags:
   - take
   attributes:
@@ -810,6 +851,7 @@
 - id: 21400
   name: spellbook of the novice
   article: a
+  description: It shows your spells and can also shield against attacks when worn
   flags:
   - usable
   - take
@@ -832,6 +874,8 @@
 - id: 22190
   name: painted gourd rattle
   article: a
+  description: It is filled with shark teeth and onyx chips and covered with strange
+    runes
   flags:
   - usable
   - take
@@ -841,6 +885,8 @@
 - id: 22650
   name: rattling gourd
   article: a
+  description: It is filled with shark teeth and onyx chips and attached to a short
+    stick
   flags:
   - usable
   - multiuse
@@ -851,6 +897,7 @@
 - id: 22651
   name: gourd
   article: a
+  description: It is attached to a short stick
   flags:
   - usable
   - multiuse
@@ -894,6 +941,9 @@
 - id: 22889
   name: shield of destiny
   article: a
+  description: Holding the divine intellect of Uman and the merciless destruction
+    instinct of Zathroth, the eternal balance remains on the hands of its owner. Granted
+    by TibiaRoyal.com
   flags:
   - usable
   - take
@@ -903,6 +953,9 @@
 - id: 22890
   name: shield of destiny
   article: a
+  description: Holding the divine intellect of Uman and the merciless destruction
+    instinct of Zathroth, the eternal balance remains on the hands of its owner. Granted
+    by TibiaRoyal.com
   flags:
   - usable
   - take
@@ -1006,6 +1059,7 @@
 - id: 25982
   name: mathmaster shield
   article: a
+  description: Souvenir from Thais Museum
   flags:
   - take
   attributes:
@@ -1014,6 +1068,7 @@
 - id: 26947
   name: Journal Shield
   article: a
+  description: Tibia's very first headline is written on it. Awarded by BomDiaTibia.com
   flags:
   - usable
   - take
@@ -1023,6 +1078,7 @@
 - id: 26948
   name: Journal Shield
   article: a
+  description: Tibia's very first headline is written on it. Awarded by BomDiaTibia.com
   flags:
   - usable
   - take
@@ -1082,6 +1138,7 @@
 - id: 28887
   name: journal shield
   article: a
+  description: Tibia's very first headline is written on it. Awarded by BomDiaTibia.com
   flags:
   - usable
   - take
@@ -1091,6 +1148,8 @@
 - id: 28915
   name: adamant shield
   article: an
+  description: It was forged with magical diamonds collected during the journey of
+    a true tibian. Awarded by TibiaLife.com.br
   flags:
   - usable
   - take
@@ -1100,6 +1159,8 @@
 - id: 28916
   name: adamant shield
   article: an
+  description: It was forged with magical diamonds collected during the journey of
+    a true tibian. Awarded by TibiaLife.com.br
   flags:
   - take
   attributes:
@@ -1111,6 +1172,8 @@
 - id: 28917
   name: adamant shield
   article: an
+  description: It was forged with magical diamonds collected during the journey of
+    a true tibian. Awarded by TibiaLife.com.br
   flags:
   - usable
   - take
@@ -1120,6 +1183,8 @@
 - id: 28918
   name: adamant shield
   article: an
+  description: It was forged with magical diamonds collected during the journey of
+    a true tibian. Awarded by TibiaLife.com.br
   flags:
   - take
   attributes:
@@ -1184,6 +1249,8 @@
 - id: 30181
   name: shield of endless search
   article: a
+  description: This is a tribute to every lost soul in the Tibia land. Awarded by
+    OrcSearch.com
   flags:
   - usable
   - take
@@ -1193,6 +1260,8 @@
 - id: 30182
   name: shield of endless search
   article: a
+  description: This is a tribute to every lost soul in the Tibia land. Awarded by
+    OrcSearch.com
   flags:
   - usable
   - take
@@ -1202,6 +1271,8 @@
 - id: 32102
   name: traditional stein
   article: a
+  description: A practical, classic mug which is typically used to serve beer during
+    the Orcsoberfest
   flags:
   - take
   attributes:
@@ -1358,6 +1429,7 @@
 - id: 36994
   name: golden blessed shield
   article: a
+  description: This is a golden replica of the famous blessed shield
   flags:
   - take
   attributes:
@@ -1366,6 +1438,7 @@
 - id: 37060
   name: shield of endless search
   article: a
+  description: Souvenir from Thais Museum
   flags:
   - take
   attributes:
@@ -1451,6 +1524,7 @@
 - id: 43517
   name: shield of destiny replica
   article: a
+  description: Souvenir from Thais Museum.
   flags:
   - take
   attributes:

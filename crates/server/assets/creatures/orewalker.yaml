@@ -1,4 +1,5 @@
 name: Orewalker
+name_description: an orewalker
 life: 7200
 speed: 190
 blood_type: blood
