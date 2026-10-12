@@ -128,6 +128,24 @@ impl Facing {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, FromRepr)]
+#[repr(u8)]
+pub enum AgentKind {
+    Player = 0,
+    Creature = 1,
+    Npc = 2,
+}
+
+impl AgentKind {
+    pub fn as_id(&self) -> u8 {
+        *self as u8
+    }
+
+    pub fn from_id(id: impl TryInto<u8>) -> Option<Self> {
+        Self::from_repr(id.try_into().ok()?)
+    }
+}
+
 #[derive(Clone, Debug)]
 enum AgentInner {
     Player(Arc<Player>),
@@ -214,6 +232,14 @@ impl Agent {
 
     pub fn is_npc(&self) -> bool {
         matches!(self.inner, AgentInner::Npc(..))
+    }
+
+    pub fn kind(&self) -> AgentKind {
+        match self.inner {
+            AgentInner::Player(..) => AgentKind::Player,
+            AgentInner::Creature(..) => AgentKind::Creature,
+            AgentInner::Npc(..) => AgentKind::Npc,
+        }
     }
 
     pub fn get_origin(&self) -> &Position {
@@ -965,6 +991,31 @@ mod tests {
         let restored = Agent::from_player(*snapshot);
 
         assert!(restored.target().is_none());
+    }
+
+    /// Its twin is `agent_kind_ids_match_the_server` in the client's `network/messages.rs`. If
+    /// the two disagree, the client offers to message a rat and to attack an NPC, and nothing
+    /// errors.
+    #[test]
+    fn the_agent_kind_wire_ids_are_pinned() {
+        assert_eq!(AgentKind::Player.as_id(), 0);
+        assert_eq!(AgentKind::Creature.as_id(), 1);
+        assert_eq!(AgentKind::Npc.as_id(), 2);
+        assert_eq!(AgentKind::from_id(3u8), None);
+    }
+
+    #[test]
+    fn an_agent_reports_the_kind_it_was_built_as() {
+        assert_eq!(
+            Agent::from_player(make_snapshot(1)).kind(),
+            AgentKind::Player
+        );
+        assert_eq!(
+            a_test_creature("Rat", 10, (1, 2)).kind(),
+            AgentKind::Creature
+        );
+        let npc = crate::persistence::test_fixtures::an_npc();
+        assert_eq!(Agent::from_npc(npc).kind(), AgentKind::Npc);
     }
 
     #[test]

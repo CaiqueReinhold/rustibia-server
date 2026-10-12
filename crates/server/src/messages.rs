@@ -7,7 +7,7 @@ use tokio_util::{
 use crate::{
     constants::view::{MAX_VISIBLE_ITEMS, VIEWPORT_SIZE},
     entities::{
-        agent::{AgentId, Facing, OutfitColors, OutfitId, Pool},
+        agent::{AgentId, AgentKind, Facing, OutfitColors, OutfitId, Pool},
         chat::{ChannelId, ChatMessageType, SayTarget},
         effects::{EffectId, MissileId},
         inventory::InventorySlot,
@@ -287,6 +287,7 @@ pub enum ServerMessage {
         name: String,
         life: u32,
         speed: u16,
+        kind: AgentKind,
     },
     TeleportAgent {
         agent_id: AgentId,
@@ -762,6 +763,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 name,
                 life,
                 speed,
+                kind,
             } => {
                 dst.put_u8(SRV_SPAWN_AGENT);
                 dst.put_u16_le(agent_id.0);
@@ -771,6 +773,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 dst.put_u32_le(life);
                 encode_outfit(outfit, dst);
                 dst.put_u16_le(speed);
+                dst.put_u8(kind.as_id());
             }
             ServerMessage::TeleportAgent { agent_id, position } => {
                 dst.put_u8(SRV_TELEPORT_AGENT);
@@ -1087,6 +1090,28 @@ mod tests {
     use tokio_util::bytes::BytesMut;
     use tokio_util::codec::Decoder;
     use tokio_util::codec::Encoder;
+
+    #[test]
+    fn spawn_agent_ends_with_its_kind() {
+        let mut buf = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::SpawnAgent {
+                    agent_id: AgentId(7),
+                    outfit: (OutfitId(21), OutfitColors::new(1, 2, 3, 4)),
+                    position: Position::new(100, 100, 7),
+                    facing: Facing::South,
+                    name: "Rat".to_string(),
+                    life: 20,
+                    speed: 100,
+                    kind: AgentKind::Npc,
+                },
+                &mut buf,
+            )
+            .unwrap();
+
+        assert_eq!(buf[buf.len() - 3..], [100, 0, 2]);
+    }
 
     /// The client repeats this enum and decodes these bytes; nothing links the two
     /// but this number.

@@ -521,7 +521,7 @@ mod tests {
     use rustibia_server::constants::view::{
         MAX_VISIBLE_ITEMS, PLAYER_VIEWPORT_HEIGHT, VIEW_LEFT, VIEW_RIGHT, VIEW_TOP, VIEWPORT_SIZE,
     };
-    use rustibia_server::entities::agent::{Facing, OutfitColors, OutfitId};
+    use rustibia_server::entities::agent::{AgentKind, Facing, OutfitColors, OutfitId};
     use rustibia_server::messages::SpellListEntry;
 
     fn a_world() -> World {
@@ -566,6 +566,7 @@ mod tests {
             name: "Rat".to_string(),
             life: 100,
             speed: 100,
+            kind: AgentKind::Creature,
         });
 
         assert_eq!(
@@ -593,6 +594,7 @@ mod tests {
             name: "Loadbot Aab".to_string(),
             life: 100,
             speed: 100,
+            kind: AgentKind::Player,
         });
 
         assert!(!world.agents.contains_key(&AgentId(1)));

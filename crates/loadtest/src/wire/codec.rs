@@ -1,6 +1,6 @@
 use rustibia_server::constants::view::{MAX_VISIBLE_ITEMS, VIEWPORT_SIZE};
 use rustibia_server::entities::{
-    agent::{AgentId, Facing, OutfitColors, OutfitId, Pool},
+    agent::{AgentId, AgentKind, Facing, OutfitColors, OutfitId, Pool},
     chat::{ChannelId, ChatMessageType, SayTarget},
     effects::{EffectId, MissileId},
     inventory::InventorySlot,
@@ -360,6 +360,10 @@ fn read_facing(buf: &mut BytesMut) -> Result<Facing, WireError> {
     }
 }
 
+fn read_agent_kind(buf: &mut BytesMut) -> Result<AgentKind, WireError> {
+    AgentKind::from_id(buf.try_get_u8()?).ok_or(WireError::Malformed { opcode: 0 })
+}
+
 fn read_chat_message_type(buf: &mut BytesMut) -> Result<ChatMessageType, WireError> {
     match buf.try_get_u8()? {
         0x01 => Ok(ChatMessageType::Local),
@@ -635,6 +639,7 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             let life = payload.try_get_u32_le()?;
             let outfit = read_outfit(payload)?;
             let speed = payload.try_get_u16_le()?;
+            let kind = read_agent_kind(payload)?;
             Ok(ServerMessage::SpawnAgent {
                 agent_id,
                 outfit,
@@ -643,6 +648,7 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
                 name,
                 life,
                 speed,
+                kind,
             })
         }
         SRV_TELEPORT_AGENT => {
@@ -1191,6 +1197,7 @@ mod tests {
                 name: "Rat".to_string(),
                 life: 20,
                 speed: 100,
+                kind: AgentKind::Npc,
             },
             ServerMessage::TeleportAgent {
                 agent_id: AgentId(9),

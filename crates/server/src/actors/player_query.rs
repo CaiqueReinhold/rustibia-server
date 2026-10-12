@@ -110,13 +110,14 @@ pub fn get_agent_desc(agent: &Agent, agent_id: AgentId, position: Position) -> S
         name: agent.name().to_owned(),
         life: agent.life().to_wire(),
         speed: agent.speed(),
+        kind: agent.kind(),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::agent::Agent;
+    use crate::entities::agent::{Agent, AgentKind};
     use crate::entities::map::MapTile;
     use crate::entities::skills::{SkillType, SkillValue};
     use crate::messages::ServerMessage;
@@ -271,5 +272,20 @@ mod tests {
             spells.iter().map(|entry| entry.id).collect::<Vec<_>>(),
             Vec::from([SpellId(1)])
         );
+    }
+
+    #[test]
+    fn an_agents_description_carries_its_kind() {
+        let rat = crate::persistence::test_fixtures::a_test_creature("Rat", 10, (1, 2));
+
+        let description = get_agent_desc(&rat, AgentId(4), Position::new(100, 100, 7));
+
+        assert!(matches!(
+            description,
+            ServerMessage::SpawnAgent {
+                kind: AgentKind::Creature,
+                ..
+            }
+        ));
     }
 }

@@ -394,7 +394,7 @@ mod tests {
     use crate::testing::TestListener;
     use crate::testing::*;
     use futures::{SinkExt, StreamExt};
-    use rustibia_server::entities::agent::{AgentId, Facing, OutfitColors, OutfitId};
+    use rustibia_server::entities::agent::{AgentId, AgentKind, Facing, OutfitColors, OutfitId};
     use rustibia_server::entities::items::{ContainerId, ItemId};
     use rustibia_server::entities::position::Position;
     use rustibia_server::entities::spells::SpellId;
@@ -892,6 +892,7 @@ mod tests {
                 name: "Rat".to_string(),
                 life: 100,
                 speed: 100,
+                kind: AgentKind::Creature,
             };
             let spells = vec![SpellListEntry {
                 id: spell_id,
