@@ -187,6 +187,7 @@ mod tests {
                         amount: 3,
                         content: None,
                         action_id: None,
+                        text: None,
                     },
                 }],
             }],

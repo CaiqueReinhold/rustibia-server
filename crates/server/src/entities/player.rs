@@ -190,7 +190,7 @@ impl Player {
                 .get(&InventorySlot::RightHand)
                 .filter(|it| it.config.has_flag(ItemFlag::AmmoContainer) && self.can_use(it))
                 .and_then(|quiv| {
-                    quiv.content.as_ref().and_then(|content| {
+                    quiv.content().and_then(|content| {
                         content.iter().find(|it| {
                             self.can_use(it)
                                 && it.config.attr_ammo_type().is_some_and(|at| {
@@ -364,7 +364,7 @@ mod tests {
             HashSet::from([ItemFlag::Container, ItemFlag::AmmoContainer]),
             vec![ItemAttribute::Capacity(2)],
         );
-        quiver.content = Some(Box::new(vec![flash_arrow, arrow]));
+        quiver.set_content(vec![flash_arrow, arrow]);
         let knight = a_knight_of_level(
             1,
             HashMap::from([
@@ -392,10 +392,10 @@ mod tests {
                 ItemAttribute::RequiredLevel(150),
             ],
         );
-        quiver.content = Some(Box::new(vec![item(
+        quiver.set_content(vec![item(
             HashSet::new(),
             vec![ItemAttribute::AmmoType(AmmoType::Arrow)],
-        )]));
+        )]);
         let knight = a_knight_of_level(
             1,
             HashMap::from([

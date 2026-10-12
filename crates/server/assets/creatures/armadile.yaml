@@ -2,7 +2,7 @@ name: Armadile
 name_description: an armadile
 life: 3800
 speed: 220
-blood_type: blood
+blood_type: undead
 armor: 66
 defense: 66
 experience: 2900

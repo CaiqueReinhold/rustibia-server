@@ -2,7 +2,7 @@ name: Morguthis
 name_description: Morguthis
 life: 4800
 speed: 160
-blood_type: blood
+blood_type: undead
 armor: 75
 defense: 75
 experience: 3000

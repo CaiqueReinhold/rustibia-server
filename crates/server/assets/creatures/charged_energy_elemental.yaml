@@ -1,7 +1,7 @@
 name: Charged Energy Elemental
 life: 500
 speed: 135
-blood_type: blood
+blood_type: energy
 armor: 25
 defense: 25
 experience: 450

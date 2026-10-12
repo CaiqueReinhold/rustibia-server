@@ -1,7 +1,7 @@
 name: Blazing Fire Elemental
 life: 650
 speed: 95
-blood_type: blood
+blood_type: fire
 armor: 20
 defense: 20
 experience: 450

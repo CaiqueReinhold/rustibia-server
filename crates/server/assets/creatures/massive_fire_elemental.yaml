@@ -1,7 +1,7 @@
 name: Massive Fire Elemental
 life: 1200
 speed: 105
-blood_type: blood
+blood_type: fire
 armor: 30
 defense: 30
 experience: 1400

@@ -1916,11 +1916,11 @@ mod tests {
             let mut pouch = a_pouch(ItemId(1990 + n as u16), 8);
             guids.push(pouch.guid);
             if n == pouches - 1 {
-                let content = pouch.content.as_mut().unwrap();
+                let content = pouch.content_mut().unwrap();
                 content.extend(beside_it.iter().cloned());
                 content.push(potion.clone());
             }
-            backpack.content.as_mut().unwrap().push(pouch);
+            backpack.content_mut().unwrap().push(pouch);
         }
 
         let mut snapshot = a_test_snapshot(1, 1);
@@ -1960,8 +1960,7 @@ mod tests {
                 backpack
                     .find_by_guid(guid)
                     .unwrap()
-                    .content
-                    .as_ref()
+                    .content()
                     .unwrap()
                     .iter()
                     .map(|it| (it.id(), it.amount))

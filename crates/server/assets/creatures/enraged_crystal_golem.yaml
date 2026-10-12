@@ -2,7 +2,7 @@ name: Enraged Crystal Golem
 name_description: enraged crystal golem
 life: 700
 speed: 100
-blood_type: blood
+blood_type: energy
 armor: 15
 defense: 15
 experience: 550

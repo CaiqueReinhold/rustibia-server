@@ -2,7 +2,7 @@ name: Ushuriel
 name_description: Ushuriel
 life: 31500
 speed: 220
-blood_type: blood
+blood_type: fire
 armor: 50
 defense: 45
 experience: 10000

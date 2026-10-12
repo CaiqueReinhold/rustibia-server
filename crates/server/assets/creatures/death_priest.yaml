@@ -1,7 +1,7 @@
 name: Death Priest
 life: 800
 speed: 110
-blood_type: blood
+blood_type: undead
 armor: 20
 defense: 20
 experience: 750

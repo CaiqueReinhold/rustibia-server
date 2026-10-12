@@ -8,7 +8,7 @@ use std::time::Instant;
 use thiserror::Error;
 use tracing::{info, warn};
 
-use crate::entities::items::{FluidType, Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
+use crate::entities::items::{FluidType, Item, ItemConfig, ItemFlag, ItemId};
 use crate::entities::map::{GameMap, MapTile};
 use crate::entities::position::Position;
 
@@ -371,20 +371,11 @@ fn make_item(item_id: ItemId, count: Option<u8>, content: Vec<Item>, items: &Ite
         });
         return Item::new_fluid(config, fluid);
     }
-    let content = if config.has_flag(ItemFlag::Container) {
-        Some(Box::new(content))
-    } else {
-        None
-    };
-    Item {
-        config,
-        guid: ItemGuid::new(),
-        amount: count.unwrap_or(1),
-        fluid: None,
-        content,
-        owner: None,
-        action_id: None,
+    let mut item = Item::new(config, count.unwrap_or(1));
+    if item.content().is_some() {
+        item.set_content(content);
     }
+    item
 }
 
 fn parse_item(
@@ -395,6 +386,7 @@ fn parse_item(
     let mut count = None;
     let mut action_id = None;
     let mut teleport = None;
+    let mut text = None;
 
     // Item attributes
     loop {
@@ -413,7 +405,10 @@ fn parse_item(
             Some(ATTR_UNIQUE_ID) | Some(ATTR_DEPOT_ID) => {
                 p.read_u16()?;
             }
-            Some(ATTR_TEXT) | Some(ATTR_DESC) | Some(ATTR_WRITTENBY) => {
+            Some(ATTR_TEXT) => {
+                text = Some(p.read_string()?);
+            }
+            Some(ATTR_DESC) | Some(ATTR_WRITTENBY) => {
                 p.read_string()?;
             }
             Some(ATTR_TELE_DEST) => {
@@ -454,6 +449,7 @@ fn parse_item(
 
     let mut item = make_item(item_id, count, content, items);
     item.action_id = action_id;
+    item.set_text(text.filter(|text| !text.is_empty()).map(Arc::from));
     Ok((item, teleport))
 }
 
@@ -652,6 +648,98 @@ mod tests {
             .map(|item| (item.id().0, item.action_id.map(|a| a.get())))
             .collect();
         assert_eq!(ids, vec![(100, None), (200, Some(1234))]);
+    }
+
+    fn a_string_node(id: u16, attribute: u8, text: &str) -> Vec<u8> {
+        let mut node = id.to_le_bytes().to_vec();
+        node.push(attribute);
+        node.extend((text.len() as u16).to_le_bytes());
+        node.extend(text.as_bytes());
+        node
+    }
+
+    fn texts_on(map: &GameMap) -> Vec<(u16, Option<String>)> {
+        map.iter_items(&TILE)
+            .unwrap()
+            .map(|item| (item.id().0, item.text().map(|text| text.to_string())))
+            .collect()
+    }
+
+    #[test]
+    fn a_text_reaches_the_item() {
+        let items: Items = HashMap::from([an_item(100), an_item(200)]);
+
+        let map = parse_otbm(
+            &a_map_with(&[a_string_node(200, 0x06, "Elm Street\nNorth")]),
+            &items,
+        )
+        .expect("the fixture parses");
+
+        assert_eq!(
+            texts_on(&map),
+            vec![(100, None), (200, Some("Elm Street\nNorth".to_string()))]
+        );
+    }
+
+    #[test]
+    fn a_text_reaches_an_item_inside_a_container() {
+        let items: Items = HashMap::from([
+            an_item(100),
+            an_item(200),
+            a_config(300, &[ItemFlag::Container]),
+        ]);
+        let mut bookcase = 300u16.to_le_bytes().to_vec();
+        bookcase.extend([NODE_START, 0x06]);
+        bookcase.extend(a_string_node(200, 0x06, "Chapter one"));
+        bookcase.push(NODE_END);
+
+        let map = parse_otbm(&a_map_with(&[bookcase]), &items).expect("the fixture parses");
+
+        let bookcase = map.iter_items(&TILE).unwrap().nth(1).unwrap();
+        let book = &bookcase.content().unwrap()[0];
+        assert_eq!(bookcase.text(), None);
+        assert_eq!(book.text().map(|text| &**text), Some("Chapter one"));
+    }
+
+    #[test]
+    fn an_empty_text_loads_as_none() {
+        let items: Items = HashMap::from([an_item(100), an_item(200)]);
+
+        let map = parse_otbm(&a_map_with(&[a_string_node(200, 0x06, "")]), &items)
+            .expect("the fixture parses");
+
+        assert_eq!(texts_on(&map), vec![(100, None), (200, None)]);
+    }
+
+    #[test]
+    fn a_description_or_a_writer_is_not_a_text() {
+        let items: Items = HashMap::from([an_item(100), an_item(200), an_item(201)]);
+
+        let map = parse_otbm(
+            &a_map_with(&[
+                a_string_node(200, 0x07, "a special thing"),
+                a_string_node(201, 0x13, "Bob"),
+            ]),
+            &items,
+        )
+        .expect("the fixture parses");
+
+        assert_eq!(texts_on(&map), vec![(100, None), (200, None), (201, None)]);
+    }
+
+    #[test]
+    fn a_fluid_item_keeps_its_text() {
+        let items: Items =
+            HashMap::from([an_item(100), a_config(2874, &[ItemFlag::LiquidContainer])]);
+        let mut vial = a_string_node(2874, 0x06, "Drink me");
+        vial.extend([0x0F, 9]);
+
+        let map = parse_otbm(&a_map_with(&[vial]), &items).expect("the fixture parses");
+
+        assert_eq!(
+            texts_on(&map),
+            vec![(100, None), (2874, Some("Drink me".to_string()))]
+        );
     }
 
     fn ground_of(map: &GameMap, pos: Position) -> Vec<u16> {

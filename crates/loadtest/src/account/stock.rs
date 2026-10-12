@@ -20,6 +20,7 @@ pub fn build_inventory(kit: &Inventory) -> HashMap<String, StoredItemRecord> {
                 amount: stack.amount.min(MAX_STACK_AMOUNT),
                 content: None,
                 action_id: None,
+                text: None,
             })
         })
         .collect();
@@ -32,6 +33,7 @@ pub fn build_inventory(kit: &Inventory) -> HashMap<String, StoredItemRecord> {
                 amount: 1,
                 content: Some(content),
                 action_id: None,
+                text: None,
             },
         ),
         (
@@ -41,6 +43,7 @@ pub fn build_inventory(kit: &Inventory) -> HashMap<String, StoredItemRecord> {
                 amount: 1,
                 content: None,
                 action_id: None,
+                text: None,
             },
         ),
     ])

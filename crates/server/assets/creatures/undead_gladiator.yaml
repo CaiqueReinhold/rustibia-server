@@ -2,7 +2,7 @@ name: Undead Gladiator
 name_description: an undead gladiator
 life: 1000
 speed: 110
-blood_type: blood
+blood_type: undead
 armor: 35
 defense: 35
 experience: 800

@@ -2,7 +2,7 @@ name: Madareth
 name_description: Madareth
 life: 75000
 speed: 165
-blood_type: blood
+blood_type: fire
 armor: 65
 defense: 65
 experience: 10000

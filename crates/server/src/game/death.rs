@@ -91,7 +91,7 @@ fn roll_player_drop_chance(corpse: &mut Item, agent: &mut Agent, rolls: &mut Rol
 
     let item = player.inventory_mut().take_slot(&InventorySlot::Backpack);
     if let Some(item) = item
-        && let Some(content) = &mut corpse.content
+        && let Some(content) = corpse.content_mut()
     {
         content.push(item);
     }
@@ -100,7 +100,7 @@ fn roll_player_drop_chance(corpse: &mut Item, agent: &mut Agent, rolls: &mut Rol
         if rolls.uniform(0, 100) < GAME_CONFIG.slot_drop_chance {
             let item = player.inventory_mut().take_slot(&slot);
             if let Some(item) = item
-                && let Some(content) = &mut corpse.content
+                && let Some(content) = corpse.content_mut()
             {
                 content.push(item);
             }
@@ -160,7 +160,7 @@ fn add_to_corpse(corpse: &mut Item, item_id: ItemId, amount: u32) -> bool {
     };
 
     let mut add_content = |item: Item| {
-        if let Some(content) = &mut corpse.content {
+        if let Some(content) = corpse.content_mut() {
             content.push(item);
         } else {
             error!("Corpse {} is not a container", corpse.id());

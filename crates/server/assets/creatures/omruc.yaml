@@ -2,7 +2,7 @@ name: Omruc
 name_description: Omruc
 life: 4300
 speed: 185
-blood_type: blood
+blood_type: undead
 armor: 60
 defense: 60
 experience: 2950

@@ -1,7 +1,7 @@
 name: Pirate Ghost
 life: 275
 speed: 85
-blood_type: blood
+blood_type: undead
 armor: 0
 defense: 0
 experience: 250

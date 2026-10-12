@@ -1,7 +1,7 @@
 name: Mechanical Fighter
 life: 420
 speed: 100
-blood_type: blood
+blood_type: undead
 armor: 199
 defense: 199
 experience: 255

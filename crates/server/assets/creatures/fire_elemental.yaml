@@ -1,7 +1,7 @@
 name: Fire Elemental
 life: 280
 speed: 95
-blood_type: blood
+blood_type: fire
 armor: 18
 defense: 18
 experience: 220

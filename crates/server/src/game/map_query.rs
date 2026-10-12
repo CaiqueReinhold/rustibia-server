@@ -274,8 +274,7 @@ pub fn find_carried_item(
 /// The first match anywhere below `container`, with the container holding it directly.
 fn find_in_contents(container: &Item, item_id: ItemId) -> Option<(&Item, &Item, usize)> {
     container
-        .content
-        .as_ref()?
+        .content()?
         .iter()
         .enumerate()
         .find_map(|(index, item)| {
@@ -372,7 +371,7 @@ pub fn item_at_placement<'a>(map: &'a GameMap, placement: &ItemPlacement) -> Opt
             guid,
             within,
             index,
-        } => find_item(map, within, guid)?.content.as_ref()?.get(*index),
+        } => find_item(map, within, guid)?.content()?.get(*index),
     }
 }
 
@@ -990,7 +989,7 @@ mod tests {
             .get(&InventorySlot::Backpack)
             .unwrap();
         let backpack_guid = backpack.guid;
-        let first_pouch_guid = backpack.content.as_ref().unwrap()[0].guid;
+        let first_pouch_guid = backpack.content().unwrap()[0].guid;
         let in_backpack = Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, key));
 
         let (_, third_pouch) = find_carried_item(&map, ItemId(1992), key).unwrap();
@@ -1027,8 +1026,7 @@ mod tests {
             .inventory
             .get_mut(&InventorySlot::Backpack)
             .unwrap()
-            .content
-            .as_mut()
+            .content_mut()
             .unwrap()
             .remove(3);
         let pouch_guid = pouch.guid;

@@ -818,7 +818,7 @@ mod tests {
             )),
             1,
         );
-        backpack.content.as_mut().unwrap().extend(items);
+        backpack.content_mut().unwrap().extend(items);
         backpack
     }
 
@@ -1109,8 +1109,7 @@ mod tests {
             .inventory()
             .get(&InventorySlot::Backpack)
             .unwrap()
-            .content
-            .as_ref()
+            .content()
             .unwrap();
         assert_eq!(
             content

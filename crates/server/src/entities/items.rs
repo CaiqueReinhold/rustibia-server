@@ -370,28 +370,33 @@ impl ItemConfig {
     }
 }
 
+#[derive(Debug, Clone, Default)]
+struct ItemExtra {
+    content: Option<Vec<Item>>,
+    text: Option<Arc<str>>,
+}
+
 #[derive(Debug, Clone)]
 pub struct Item {
     pub guid: ItemGuid,
     pub config: Arc<ItemConfig>,
     pub amount: u8,
     pub fluid: Option<FluidType>,
-    /// Boxed because only a container ever has one, and an inline `Vec` was 24 bytes on
-    /// every item — 17.7M of them sit inside the shipped map's tiles. The indirection is
-    /// the point, so `box_collection`'s usual advice does not apply.
-    #[allow(clippy::box_collection)]
-    pub content: Option<Box<Vec<Item>>>,
+    /// Boxed because few items have any of it, and inline the contents alone were 24 bytes
+    /// on every item — 17.7M of them sit inside the shipped map's tiles.
+    extra: Option<Box<ItemExtra>>,
     pub owner: Option<AgentKey>,
     pub action_id: Option<NonZeroU16>,
 }
 
 impl Item {
     pub fn new(config: Arc<ItemConfig>, amount: u8) -> Self {
-        let content = if config.has_flag(ItemFlag::Container) {
-            Some(Box::new(Vec::new()))
-        } else {
-            None
-        };
+        let extra = config.has_flag(ItemFlag::Container).then(|| {
+            Box::new(ItemExtra {
+                content: Some(Vec::new()),
+                text: None,
+            })
+        });
         let fluid = config
             .has_flag(ItemFlag::LiquidContainer)
             .then_some(FluidType::None);
@@ -400,7 +405,7 @@ impl Item {
             guid: ItemGuid::new(),
             amount,
             fluid,
-            content,
+            extra,
             owner: None,
             action_id: None,
         }
@@ -412,9 +417,43 @@ impl Item {
             guid: ItemGuid::new(),
             amount: 1,
             fluid: Some(fluid),
-            content: None,
+            extra: None,
             owner: None,
             action_id: None,
+        }
+    }
+
+    pub fn content(&self) -> Option<&[Item]> {
+        self.extra.as_ref()?.content.as_deref()
+    }
+
+    pub fn content_mut(&mut self) -> Option<&mut Vec<Item>> {
+        self.extra.as_mut()?.content.as_mut()
+    }
+
+    pub fn set_content(&mut self, content: Vec<Item>) {
+        self.extra.get_or_insert_default().content = Some(content);
+    }
+
+    pub fn copy_extra_from(&mut self, other: &Item) {
+        self.extra = other.extra.clone();
+    }
+
+    pub fn text(&self) -> Option<&Arc<str>> {
+        self.extra.as_ref()?.text.as_ref()
+    }
+
+    pub fn set_text(&mut self, text: Option<Arc<str>>) {
+        if let Some(text) = text {
+            self.extra.get_or_insert_default().text = Some(text);
+            return;
+        }
+        let emptied = self.extra.as_mut().is_some_and(|extra| {
+            extra.text = None;
+            extra.content.is_none()
+        });
+        if emptied {
+            self.extra = None;
         }
     }
 
@@ -428,15 +467,14 @@ impl Item {
 
     pub fn available_capacity(&self) -> Option<usize> {
         let cap = self.config.attr_capacity()? as usize;
-        let used = self.content.as_ref().map(|c| c.len()).unwrap_or(0);
+        let used = self.content().map_or(0, <[Item]>::len);
         Some(cap.saturating_sub(used))
     }
 
     pub fn total_weight(&self) -> u32 {
         let own = self.config.attr_weight().unwrap_or(0) * self.amount as u32;
         let inner = self
-            .content
-            .as_ref()
+            .content()
             .map_or(0, |items| items.iter().map(|i| i.total_weight()).sum());
         own + inner
     }
@@ -445,18 +483,14 @@ impl Item {
         if self.guid == *guid {
             return Some(self);
         }
-        self.content
-            .as_ref()?
-            .iter()
-            .find_map(|i| i.find_by_guid(guid))
+        self.content()?.iter().find_map(|i| i.find_by_guid(guid))
     }
 
     pub fn find_by_guid_mut(&mut self, guid: &ItemGuid) -> Option<&mut Item> {
         if self.guid == *guid {
             return Some(self);
         }
-        self.content
-            .as_mut()?
+        self.content_mut()?
             .iter_mut()
             .find_map(|i| i.find_by_guid_mut(guid))
     }
@@ -469,20 +503,23 @@ impl Item {
     /// established `amount < self.amount`.
     pub fn split_off(&mut self, amount: u8) -> Item {
         self.amount -= amount;
-        Item {
+        let mut part = Item {
             guid: ItemGuid::new(),
             config: self.config.clone(),
             amount,
             fluid: None,
-            content: None,
+            extra: None,
             owner: None,
             action_id: self.action_id,
-        }
+        };
+        part.set_text(self.text().cloned());
+        part
     }
 
     pub fn stacks_with(&self, other: &Item) -> bool {
         self.id() == other.id()
             && self.action_id == other.action_id
+            && self.text() == other.text()
             && self.config.has_flag(ItemFlag::Cumulative)
             && self.amount < MAX_STACK_AMOUNT
     }
@@ -502,15 +539,16 @@ impl Item {
         guid: &ItemGuid,
         amount: u8,
     ) -> Option<(Item, (ItemGuid, usize))> {
-        let content = self.content.as_mut()?;
+        let own_guid = self.guid;
+        let content = self.content_mut()?;
 
         if let Some(idx) = content.iter().position(|i| i.guid == *guid) {
             let held = content[idx].amount;
             return match held.cmp(&amount) {
                 std::cmp::Ordering::Greater => {
-                    Some((content[idx].split_off(amount), (self.guid, idx)))
+                    Some((content[idx].split_off(amount), (own_guid, idx)))
                 }
-                std::cmp::Ordering::Equal => Some((content.remove(idx), (self.guid, idx))),
+                std::cmp::Ordering::Equal => Some((content.remove(idx), (own_guid, idx))),
                 std::cmp::Ordering::Less => None,
             };
         }
@@ -686,6 +724,59 @@ mod tests {
 
         assert!(!a_stack(10).stacks_with(&marked));
         assert!(a_stack(10).stacks_with(&a_stack(10)));
+    }
+
+    #[test]
+    fn a_split_keeps_the_text() {
+        let mut stack = a_stack(10);
+        stack.set_text(Some(Arc::from("Elm Street")));
+
+        let split = stack.split_off(4);
+
+        assert_eq!(split.text().map(|text| &**text), Some("Elm Street"));
+    }
+
+    #[test]
+    fn stacks_with_different_texts_do_not_merge() {
+        let mut written = a_stack(10);
+        written.set_text(Some(Arc::from("Elm Street")));
+        let mut same = a_stack(10);
+        same.set_text(Some(Arc::from("Elm Street")));
+
+        assert!(!a_stack(10).stacks_with(&written));
+        assert!(same.stacks_with(&written));
+    }
+
+    #[test]
+    fn clearing_the_text_of_an_item_without_contents_frees_its_box() {
+        let mut sign = a_stack(1);
+        sign.set_text(Some(Arc::from("Elm Street")));
+
+        sign.set_text(None);
+
+        assert!(sign.extra.is_none());
+    }
+
+    #[test]
+    fn clearing_the_text_of_a_container_keeps_its_contents() {
+        let mut bag = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "bag".to_string(),
+                None,
+                None,
+                [ItemFlag::Container],
+                Vec::new(),
+            )),
+            1,
+        );
+        bag.set_content(vec![a_stack(3)]);
+        bag.set_text(Some(Arc::from("Property of Bob")));
+
+        bag.set_text(None);
+
+        assert_eq!(bag.text(), None);
+        assert_eq!(bag.content().map(<[Item]>::len), Some(1));
     }
 
     /// 17.7M items sit inside the shipped map's tiles, two of them inline in every `MapTile`.

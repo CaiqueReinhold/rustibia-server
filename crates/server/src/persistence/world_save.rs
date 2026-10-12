@@ -81,10 +81,10 @@ fn persistent(item: &Item) -> Option<StoredItemRecord> {
         item_id: item.id().0,
         amount: item.wire_subtype(),
         content: item
-            .content
-            .as_ref()
+            .content()
             .map(|children| children.iter().filter_map(persistent).collect()),
         action_id: item.action_id.map(NonZeroU16::get),
+        text: item.text().map(|text| text.to_string()),
     })
 }
 
@@ -158,7 +158,7 @@ mod tests {
         let (mut map, pos) = a_map();
         map.begin_tick(Tick(4));
         let mut bag = item(400);
-        bag.content = Some(Box::new(vec![item(300), item(200)]));
+        bag.set_content(vec![item(300), item(200)]);
         map.place_item(&pos, None, None, item(300)).unwrap();
         map.place_item(&pos, None, None, bag).unwrap();
 
@@ -169,6 +169,7 @@ mod tests {
             amount: 1,
             content: None,
             action_id: None,
+            text: None,
         };
         assert_eq!(
             rows,
@@ -185,11 +186,28 @@ mod tests {
                             amount: 1,
                             content: Some(vec![stored(200)]),
                             action_id: None,
+                            text: None,
                         },
                     }],
                 }],
             }]
         );
+    }
+
+    #[test]
+    fn a_moved_book_keeps_its_text_through_a_chunk_save() {
+        let (mut map, pos) = a_map();
+        map.begin_tick(Tick(4));
+        let mut book = item(200);
+        book.set_text(Some(Arc::from("Chapter one")));
+        map.place_item(&pos, None, None, book).unwrap();
+
+        let rows = chunk_rows(&map, Tick(0));
+        let saved = rows[0].tiles[0].items[0].item.clone();
+        let restored = restore_item(&catalogue(), saved.clone()).expect("it restores");
+
+        assert_eq!(saved.text.as_deref(), Some("Chapter one"));
+        assert_eq!(restored.text().map(|text| &**text), Some("Chapter one"));
     }
 
     #[test]

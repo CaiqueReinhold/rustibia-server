@@ -1,7 +1,7 @@
 name: Ghost
 life: 150
 speed: 80
-blood_type: blood
+blood_type: undead
 armor: 0
 defense: 0
 experience: 120

@@ -2,7 +2,7 @@ name: Ironblight
 name_description: Ironblight
 life: 6600
 speed: 143
-blood_type: blood
+blood_type: undead
 armor: 84
 defense: 84
 experience: 4400

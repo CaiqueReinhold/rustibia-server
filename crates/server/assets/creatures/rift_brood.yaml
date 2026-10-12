@@ -1,7 +1,7 @@
 name: Rift Brood
 life: 2950
 speed: 150
-blood_type: blood
+blood_type: energy
 armor: 30
 defense: 30
 experience: 1600

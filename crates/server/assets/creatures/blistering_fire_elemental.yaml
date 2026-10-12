@@ -1,7 +1,7 @@
 name: Blistering Fire Elemental
 life: 1500
 speed: 115
-blood_type: blood
+blood_type: fire
 armor: 20
 defense: 20
 experience: 1300

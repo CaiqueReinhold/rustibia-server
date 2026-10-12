@@ -1,7 +1,7 @@
 name: Lich
 life: 880
 speed: 105
-blood_type: blood
+blood_type: undead
 armor: 50
 defense: 50
 experience: 900

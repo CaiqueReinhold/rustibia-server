@@ -580,7 +580,7 @@ impl GameMap {
                 for existing_item in &mut tile.items {
                     if let Some(c) = existing_item.find_by_guid_mut(target) {
                         let cap = c.config.attr_capacity().unwrap();
-                        if let Some(content) = &mut c.content {
+                        if let Some(content) = c.content_mut() {
                             if content.len() >= cap as usize {
                                 return Err(MapError::ContainerIsFull);
                             }
@@ -626,7 +626,7 @@ impl GameMap {
         if item.guid == *guid {
             return Some((parent_guid, item));
         }
-        if let Some(content) = item.content.as_deref() {
+        if let Some(content) = item.content() {
             for inner in content {
                 if let Some(found) = Self::find_by_id_inner(inner, guid, Some(&item.guid)) {
                     return Some(found);

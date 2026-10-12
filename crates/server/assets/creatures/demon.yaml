@@ -1,7 +1,7 @@
 name: Demon
 life: 8200
 speed: 128
-blood_type: blood
+blood_type: fire
 armor: 44
 defense: 44
 experience: 6000

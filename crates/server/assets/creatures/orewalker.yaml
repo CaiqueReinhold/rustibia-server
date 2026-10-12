@@ -2,7 +2,7 @@ name: Orewalker
 name_description: an orewalker
 life: 7200
 speed: 190
-blood_type: blood
+blood_type: undead
 armor: 79
 defense: 79
 experience: 4800

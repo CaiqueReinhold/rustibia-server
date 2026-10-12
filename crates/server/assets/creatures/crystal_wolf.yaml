@@ -1,7 +1,7 @@
 name: Crystal Wolf
 life: 750
 speed: 100
-blood_type: blood
+blood_type: undead
 armor: 20
 defense: 20
 experience: 275

@@ -2,7 +2,7 @@ name: Evil Mastermind
 name_description: Evil Mastermind
 life: 1295
 speed: 175
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 675

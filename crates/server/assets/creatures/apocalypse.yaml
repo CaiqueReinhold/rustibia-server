@@ -2,7 +2,7 @@ name: Apocalypse
 name_description: Apocalypse
 life: 125000
 speed: 190
-blood_type: blood
+blood_type: fire
 armor: 188
 defense: 145
 experience: 30000

@@ -2,7 +2,7 @@ name: Zugurosh
 name_description: Zugurosh
 life: 90500
 speed: 170
-blood_type: blood
+blood_type: fire
 armor: 45
 defense: 55
 experience: 10000

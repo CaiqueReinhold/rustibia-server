@@ -157,7 +157,7 @@ fn a_container(id: ItemId, capacity: u8) -> Item {
 }
 
 /// A backpack holding four pouches of eight items each — 37 `Item`s over three levels of
-/// `Item.content`. Must stay nested: a flat inventory does not exercise the recursive clone.
+/// `Item::content`. Must stay nested: a flat inventory does not exercise the recursive clone.
 pub fn a_full_backpack() -> HashMap<InventorySlot, Item> {
     let coin = an_item_config(
         ItemId(2148),
@@ -166,10 +166,10 @@ pub fn a_full_backpack() -> HashMap<InventorySlot, Item> {
     );
 
     let mut backpack = a_container(ItemId(1988), 20);
-    let outer = backpack.content.as_mut().unwrap();
+    let outer = backpack.content_mut().unwrap();
     for pouch_id in 0..4u16 {
         let mut pouch = a_container(ItemId(1990 + pouch_id), 8);
-        let inner = pouch.content.as_mut().unwrap();
+        let inner = pouch.content_mut().unwrap();
         for n in 0..8u8 {
             inner.push(Item::new(Arc::clone(&coin), n + 1));
         }

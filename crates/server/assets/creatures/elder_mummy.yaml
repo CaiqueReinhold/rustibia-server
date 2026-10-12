@@ -2,7 +2,7 @@ name: Elder Mummy
 name_description: an elder mummy
 life: 850
 speed: 90
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 560

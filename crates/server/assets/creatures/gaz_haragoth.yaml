@@ -2,7 +2,7 @@ name: Gaz'haragoth
 name_description: Gaz'haragoth
 life: 350000
 speed: 200
-blood_type: blood
+blood_type: fire
 armor: 55
 defense: 65
 experience: 1000000

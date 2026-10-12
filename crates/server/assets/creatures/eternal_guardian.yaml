@@ -2,7 +2,7 @@ name: Eternal Guardian
 name_description: an eternal guardian
 life: 2500
 speed: 102
-blood_type: blood
+blood_type: undead
 armor: 62
 defense: 62
 experience: 1800

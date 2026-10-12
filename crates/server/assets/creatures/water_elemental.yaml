@@ -1,7 +1,7 @@
 name: Water Elemental
 life: 550
 speed: 110
-blood_type: blood
+blood_type: undead
 armor: 20
 defense: 20
 experience: 650

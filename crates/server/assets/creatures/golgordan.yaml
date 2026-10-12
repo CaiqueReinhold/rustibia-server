@@ -2,7 +2,7 @@ name: Golgordan
 name_description: Golgordan
 life: 40000
 speed: 175
-blood_type: blood
+blood_type: fire
 armor: 48
 defense: 54
 experience: 10000

@@ -2,7 +2,7 @@ name: Iron Servant
 name_description: an iron servant
 life: 350
 speed: 95
-blood_type: blood
+blood_type: energy
 armor: 17
 defense: 17
 experience: 210

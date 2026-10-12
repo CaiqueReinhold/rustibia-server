@@ -109,9 +109,9 @@ fn find_item(item: &Item, id: ItemId) -> Option<ItemGuid> {
     if item.id() == id {
         return Some(item.guid);
     }
-    item.content
-        .iter()
-        .flat_map(|content| content.iter())
+    item.content()
+        .into_iter()
+        .flatten()
         .find_map(|inner| find_item(inner, id))
 }
 
@@ -214,7 +214,7 @@ fn collect_coins(
     if let Some(worth) = coins.worth(item) {
         stacks.push((slot, item.guid, worth, item.amount));
     }
-    for inner in item.content.iter().flat_map(|content| content.iter()) {
+    for inner in item.content().into_iter().flatten() {
         collect_coins(slot, inner, coins, stacks);
     }
 }
@@ -273,7 +273,7 @@ mod tests {
             )),
             1,
         );
-        bag.content = Some(Box::new(content));
+        bag.set_content(content);
         bag
     }
 
@@ -476,8 +476,7 @@ mod tests {
             .get(&InventorySlot::Backpack)
             .unwrap();
         let content: Vec<_> = backpack
-            .content
-            .as_ref()
+            .content()
             .unwrap()
             .iter()
             .map(|item| (item.id(), item.amount))

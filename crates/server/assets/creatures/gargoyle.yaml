@@ -1,7 +1,7 @@
 name: Gargoyle
 life: 250
 speed: 100
-blood_type: blood
+blood_type: undead
 armor: 26
 defense: 26
 experience: 150

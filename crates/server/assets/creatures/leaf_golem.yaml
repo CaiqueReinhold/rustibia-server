@@ -1,7 +1,7 @@
 name: Leaf Golem
 life: 90
 speed: 70
-blood_type: blood
+blood_type: undead
 armor: 10
 defense: 10
 experience: 45

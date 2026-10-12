@@ -86,7 +86,7 @@ fn decayed_into(item: &Item, config: Arc<ItemConfig>) -> Item {
     };
     next.owner = item.owner;
     next.action_id = item.action_id;
-    next.content = item.content.clone();
+    next.copy_extra_from(item);
     next
 }
 
@@ -220,6 +220,7 @@ pub(super) fn transform(
 
     let mut new_item = Item::new(config.clone(), 1);
     new_item.action_id = old_item.action_id;
+    new_item.set_text(old_item.text().cloned());
     check_decay(ctx.scheduled, &new_item, item.placement.clone(), ctx.tick);
 
     if let Err(e) = insert_item_at(ctx, new_item.clone(), &item.placement, source_index) {
@@ -278,6 +279,7 @@ fn toggle_door(
     };
     let mut door = Item::new(new_door.clone(), 1);
     door.action_id = old_door.action_id;
+    door.set_text(old_door.text().cloned());
     if insert_item_at(ctx, door, &item.placement, source_index).is_err() {
         let guid = old_door.guid;
         if let Err(e) = insert_item_at(ctx, old_door, &item.placement, source_index) {
@@ -586,6 +588,26 @@ mod tests {
         (map, item)
     }
 
+    fn a_written_doorway(text: &str) -> (GameMap, ItemRef) {
+        let mut map = GameMap::new();
+        let mut tile = a_floor();
+        let mut door = Item::new(a_door_config(1630, false), 1);
+        door.set_text(Some(Arc::from(text)));
+        let item = ItemRef {
+            guid: door.guid,
+            placement: ItemPlacement::Map(DOOR),
+        };
+        tile.push_item(door);
+        map.insert_tile(DOOR, tile);
+        for (dx, dy) in [(1, 0), (0, 1), (0, -1), (-1, 0)] {
+            map.insert_tile(
+                Position::new((10 + dx) as u16, (10 + dy) as u16, 7),
+                a_floor(),
+            );
+        }
+        (map, item)
+    }
+
     fn a_player_at(map: &mut GameMap, pos: &Position, id: u32) -> AgentKey {
         map.insert_agent(
             crate::entities::agent::Agent::from_player(
@@ -742,6 +764,81 @@ mod tests {
         hole.action_id = std::num::NonZeroU16::new(105);
 
         assert_eq!(decayed_into(&hole, config(2)).action_id, hole.action_id);
+    }
+
+    #[test]
+    fn a_decayed_item_keeps_its_text() {
+        let config = |id| {
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                "sign".to_string(),
+                None,
+                None,
+                [],
+                Vec::new(),
+            ))
+        };
+        let mut sign = Item::new(config(1), 1);
+        sign.set_text(Some(Arc::from("Elm Street")));
+
+        assert_eq!(
+            decayed_into(&sign, config(2)).text().map(|text| &**text),
+            Some("Elm Street")
+        );
+    }
+
+    #[test]
+    fn a_transform_keeps_the_text() {
+        let into = *ITEM_CONFIGS.keys().min().expect("the catalogue is empty");
+        let pos = Position::new(10, 10, 7);
+        let mut sign = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(65000),
+                "sign".to_string(),
+                None,
+                None,
+                [ItemFlag::Ground],
+                Vec::new(),
+            )),
+            1,
+        );
+        sign.set_text(Some(Arc::from("Elm Street")));
+        let guid = sign.guid;
+        let mut tile = MapTile::new();
+        tile.push_item(sign);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), tile);
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+
+        transform(
+            &mut h.ctx(&mut map),
+            &ItemRef {
+                guid,
+                placement: ItemPlacement::Map(pos.clone()),
+            },
+            into,
+        )
+        .expect("the transform succeeds");
+
+        let after = map.iter_items(&pos).unwrap().next().unwrap();
+        assert_eq!(after.text().map(|text| &**text), Some("Elm Street"));
+    }
+
+    #[test]
+    fn a_toggled_door_keeps_its_text() {
+        let (map, door) = a_written_doorway("Private");
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+
+        toggle_door(&mut h.ctx(&mut map), &door, &a_door_config(1629, true)).unwrap();
+
+        let after = map
+            .iter_items(&DOOR)
+            .unwrap()
+            .find(|i| i.config.name == "door")
+            .unwrap();
+        assert_eq!(after.text().map(|text| &**text), Some("Private"));
     }
 
     #[test]

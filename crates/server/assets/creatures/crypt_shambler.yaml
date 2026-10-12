@@ -1,7 +1,7 @@
 name: Crypt Shambler
 life: 330
 speed: 70
-blood_type: blood
+blood_type: undead
 armor: 25
 defense: 25
 experience: 195

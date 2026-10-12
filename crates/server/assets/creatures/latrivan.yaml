@@ -2,7 +2,7 @@ name: Latrivan
 name_description: Latrivan
 life: 25000
 speed: 195
-blood_type: blood
+blood_type: fire
 armor: 35
 defense: 45
 experience: 10000

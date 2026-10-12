@@ -2,7 +2,7 @@ name: The Ravager
 name_description: The Ravager
 life: 53500
 speed: 170
-blood_type: blood
+blood_type: undead
 armor: 25
 defense: 30
 experience: 14980

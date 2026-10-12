@@ -2,7 +2,7 @@ name: The Collector
 name_description: The Collector
 life: 340
 speed: 97
-blood_type: blood
+blood_type: undead
 armor: 25
 defense: 26
 experience: 100

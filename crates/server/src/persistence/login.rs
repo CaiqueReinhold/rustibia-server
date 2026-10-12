@@ -178,13 +178,14 @@ pub(crate) fn restore_item(
         false => Item::new(config, stored.amount),
     };
     item.action_id = stored.action_id.and_then(NonZeroU16::new);
+    item.set_text(stored.text.map(Arc::from));
     if let Some(children) = stored.content {
-        item.content = Some(Box::new(
+        item.set_content(
             children
                 .into_iter()
                 .filter_map(|c| restore_item(items, c))
                 .collect(),
-        ));
+        );
     }
     Some(item)
 }
@@ -322,6 +323,7 @@ mod tests {
             amount: u8::MAX,
             content: None,
             action_id: None,
+            text: None,
         };
 
         let restored = restore_item(&HashMap::from([(ItemId(2874), vial_config)]), stored).unwrap();
@@ -347,6 +349,7 @@ mod tests {
             amount: 42,
             content: None,
             action_id: None,
+            text: None,
         };
 
         let restored = restore_item(&HashMap::from([(ItemId(3031), coin)]), stored).unwrap();
@@ -510,6 +513,7 @@ mod tests {
                 amount: 1,
                 content: None,
                 action_id: None,
+                text: None,
             },
         );
 
@@ -531,6 +535,7 @@ mod tests {
                 amount: 1,
                 content: None,
                 action_id: None,
+                text: None,
             },
         );
 

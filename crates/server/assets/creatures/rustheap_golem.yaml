@@ -1,7 +1,7 @@
 name: Rustheap Golem
 life: 2800
 speed: 125
-blood_type: blood
+blood_type: energy
 armor: 26
 defense: 33
 experience: 2300

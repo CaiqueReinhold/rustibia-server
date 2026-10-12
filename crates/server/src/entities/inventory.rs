@@ -130,8 +130,7 @@ impl Inventory {
                     .ok_or(ItemMovementError::ItemNotInPosition)?;
                 let cap = container.config.attr_capacity().unwrap();
                 let content = container
-                    .content
-                    .as_mut()
+                    .content_mut()
                     .ok_or(ItemMovementError::ItemNotInPosition)?;
                 if content.len() >= cap as usize {
                     return Err(ItemMovementError::ContainerIsFull);
@@ -253,7 +252,7 @@ fn find_available_container(item: &Item) -> Option<&ItemGuid> {
     if available > 0 {
         return Some(&item.guid);
     }
-    for child in item.content.as_deref()? {
+    for child in item.content()? {
         if let Some(guid) = find_available_container(child) {
             return Some(guid);
         }
@@ -415,7 +414,7 @@ mod tests {
     #[test]
     fn a_snapshot_totals_what_it_was_given() {
         let mut backpack = a_backpack();
-        backpack.content = Some(Box::new(vec![a_thing(5, 3)]));
+        backpack.set_content(vec![a_thing(5, 3)]);
         let inventory = Inventory::from_snapshot(
             HashMap::from([
                 (InventorySlot::Backpack, backpack),
@@ -469,7 +468,7 @@ mod tests {
     fn a_full_container_insert_leaves_the_total_untouched() {
         let mut backpack = a_backpack();
         let backpack_guid = backpack.guid;
-        backpack.content = Some(Box::new((0..20).map(|_| a_thing(1, 1)).collect()));
+        backpack.set_content((0..20).map(|_| a_thing(1, 1)).collect());
         let mut inventory = Inventory::from_snapshot(
             HashMap::from([(InventorySlot::Backpack, backpack)]),
             anyone(),
@@ -520,7 +519,7 @@ mod tests {
         let backpack_guid = backpack.guid;
         let coins = a_thing(5, 4);
         let coins_guid = coins.guid;
-        backpack.content = Some(Box::new(vec![coins]));
+        backpack.set_content(vec![coins]);
         let mut inventory = Inventory::from_snapshot(
             HashMap::from([(InventorySlot::Backpack, backpack)]),
             anyone(),
@@ -538,7 +537,7 @@ mod tests {
     #[test]
     fn taking_a_slot_drops_the_container_and_everything_in_it() {
         let mut backpack = a_backpack();
-        backpack.content = Some(Box::new(vec![a_thing(5, 4)]));
+        backpack.set_content(vec![a_thing(5, 4)]);
         let mut inventory = Inventory::from_snapshot(
             HashMap::from([
                 (InventorySlot::Backpack, backpack),

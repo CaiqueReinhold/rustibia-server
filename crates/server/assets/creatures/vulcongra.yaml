@@ -2,7 +2,7 @@ name: Vulcongra
 name_description: Vulcongra
 life: 1600
 speed: 160
-blood_type: blood
+blood_type: fire
 armor: 35
 defense: 35
 experience: 1100

@@ -1,7 +1,7 @@
 name: Lava Golem
 life: 9000
 speed: 210
-blood_type: blood
+blood_type: fire
 armor: 84
 defense: 84
 experience: 6200

@@ -1,7 +1,7 @@
 name: Damaged Crystal Golem
 life: 500
 speed: 90
-blood_type: blood
+blood_type: energy
 armor: 0
 defense: 0
 experience: 0

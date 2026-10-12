@@ -1,7 +1,7 @@
 name: Muddy Earth Elemental
 life: 650
 speed: 130
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 450

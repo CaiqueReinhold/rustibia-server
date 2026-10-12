@@ -1,7 +1,7 @@
 name: Clay Guardian
 life: 625
 speed: 105
-blood_type: blood
+blood_type: undead
 armor: 25
 defense: 25
 experience: 400

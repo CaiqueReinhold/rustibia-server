@@ -1,7 +1,7 @@
 name: Hellfire Fighter
 life: 3800
 speed: 110
-blood_type: blood
+blood_type: fire
 armor: 35
 defense: 35
 experience: 3900

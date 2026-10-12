@@ -1,7 +1,7 @@
 name: Grim Reaper
 life: 3900
 speed: 160
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 5500

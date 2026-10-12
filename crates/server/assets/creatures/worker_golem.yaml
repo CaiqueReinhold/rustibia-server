@@ -1,7 +1,7 @@
 name: Worker Golem
 life: 1470
 speed: 80
-blood_type: blood
+blood_type: energy
 armor: 35
 defense: 35
 experience: 1250

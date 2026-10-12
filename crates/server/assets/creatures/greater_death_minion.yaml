@@ -1,7 +1,7 @@
 name: Greater Death Minion
 life: 1500
 speed: 75
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 0

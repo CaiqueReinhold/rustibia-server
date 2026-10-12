@@ -1,7 +1,7 @@
 name: Souleater
 life: 1100
 speed: 100
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 1300

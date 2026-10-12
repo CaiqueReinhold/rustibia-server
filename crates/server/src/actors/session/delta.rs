@@ -208,15 +208,15 @@ mod tests {
             .inventory()
             .get(&InventorySlot::Backpack)
             .unwrap()
-            .content
-            .clone()
-            .unwrap();
+            .content()
+            .unwrap()
+            .to_vec();
         let mut world = WorldMap::new(map);
         {
             let mut player = world.player_mut(me).unwrap();
             let mut inventory = player.inventory_mut();
             for pouch in &pouches[..2] {
-                let coin = pouch.content.as_ref().unwrap()[0].guid;
+                let coin = pouch.content().unwrap()[0].guid;
                 inventory.remove(InventorySlot::Backpack, &coin, 1).unwrap();
             }
         }

@@ -2,7 +2,7 @@ name: Thalas
 name_description: Thalas
 life: 4100
 speed: 160
-blood_type: blood
+blood_type: undead
 armor: 40
 defense: 40
 experience: 2950

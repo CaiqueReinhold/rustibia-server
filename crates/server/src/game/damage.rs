@@ -163,7 +163,9 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
     let Some(attacked) = ctx.map.get_agent(attacked_key) else {
         return;
     };
-    let fluid = attacked.blood_type().get_fluid();
+    let Some(fluid) = attacked.blood_type().get_fluid() else {
+        return;
+    };
     fluids::place_pool(ctx, attacked_pos, fluid);
 }
 
@@ -173,12 +175,14 @@ mod tests {
     use crate::actors::persistence::PersistenceCommand;
     use crate::entities::agent::Agent;
     use crate::entities::combat::AttackPlan;
+    use crate::entities::creature::{BloodType, CreatureKind};
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::world_map::WorldMap;
     use crate::game::combat::plan_auto_attack;
     use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick};
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{a_creature_kind, a_test_creature, a_test_snapshot};
+    use std::sync::Arc;
 
     fn physical(value: u32) -> CombatDamage {
         CombatDamage {
@@ -342,6 +346,31 @@ mod tests {
             .unwrap()
             .any(|it| it.config.id == GAME_CONFIG.combat.pool_item_id);
         assert!(pooled);
+    }
+
+    #[test]
+    fn a_creature_without_blood_does_not_splash() {
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let skeleton = Agent::from_creature_kind(
+            Arc::new(CreatureKind {
+                blood_type: BloodType::Undead,
+                ..a_creature_kind("Skeleton")
+            }),
+            pos.clone(),
+        );
+        let skeleton = map.insert_agent(skeleton, &pos).unwrap();
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), skeleton, physical(3), None);
+
+        let pooled = map
+            .iter_items(&pos)
+            .unwrap()
+            .any(|it| it.config.id == GAME_CONFIG.combat.pool_item_id);
+        assert!(!pooled);
     }
 
     #[test]

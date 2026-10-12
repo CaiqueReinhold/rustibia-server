@@ -2,7 +2,7 @@ name: Infected Weeper
 name_description: an infected weeper
 life: 6800
 speed: 125
-blood_type: blood
+blood_type: fire
 armor: 45
 defense: 45
 experience: 4800

@@ -209,7 +209,7 @@ impl SessionActor {
         let Some(capacity) = item.config.attr_capacity() else {
             return Err(SessionError::InvalidState.into());
         };
-        let Some(ref content) = item.content else {
+        let Some(content) = item.content() else {
             return Err(SessionError::InvalidState.into());
         };
 
@@ -242,7 +242,7 @@ impl SessionActor {
         let items = {
             let map = self.shared_map.load();
             let Some(content) = find_item_in_reach(&map, guid, self.player_key)
-                .and_then(|(item, _)| item.content.as_ref())
+                .and_then(|(item, _)| item.content())
             else {
                 return Ok(());
             };
@@ -372,7 +372,7 @@ mod tests {
             .get(&InventorySlot::Backpack)
             .unwrap()
             .clone();
-        let pouch = backpack.content.as_ref().unwrap()[0].guid;
+        let pouch = backpack.content().unwrap()[0].guid;
         let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
 
         session

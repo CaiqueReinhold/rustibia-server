@@ -1,7 +1,7 @@
 name: Mummy
 life: 240
 speed: 75
-blood_type: blood
+blood_type: undead
 armor: 15
 defense: 15
 experience: 150

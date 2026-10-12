@@ -1,7 +1,7 @@
 name: Crystal Spider
 life: 1250
 speed: 115
-blood_type: blood
+blood_type: undead
 armor: 43
 defense: 43
 experience: 900

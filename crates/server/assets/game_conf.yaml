@@ -46,6 +46,8 @@ effect_ids:
   shield_hit: 3
   armor_hit: 4
   poison_hit: 17
+  undead_hit: 10
+  energy_creature_hit: 12
   ice_hit: 44
   earth_hit: 46
   fire_hit: 37

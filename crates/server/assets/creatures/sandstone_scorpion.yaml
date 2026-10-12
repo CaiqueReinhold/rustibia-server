@@ -1,7 +1,7 @@
 name: Sandstone Scorpion
 life: 900
 speed: 115
-blood_type: blood
+blood_type: undead
 armor: 40
 defense: 40
 experience: 680

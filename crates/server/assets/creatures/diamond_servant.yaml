@@ -1,7 +1,7 @@
 name: Diamond Servant
 life: 1000
 speed: 86
-blood_type: blood
+blood_type: energy
 armor: 25
 defense: 25
 experience: 700

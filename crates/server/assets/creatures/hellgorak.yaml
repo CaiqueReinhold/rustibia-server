@@ -2,7 +2,7 @@ name: Hellgorak
 name_description: Hellgorak
 life: 25850
 speed: 165
-blood_type: blood
+blood_type: fire
 armor: 70
 defense: 65
 experience: 10000

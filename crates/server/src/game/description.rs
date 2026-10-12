@@ -17,6 +17,7 @@ use crate::{
 
 const CARRIED: i32 = -1;
 const OTHER_FLOOR: i32 = 15;
+const READING_DISTANCE: i32 = 4;
 
 /// `None` when `viewer` is no longer on the map.
 pub fn get_look_description(
@@ -77,6 +78,16 @@ fn item_description(item: &Item, distance: i32, spells: &HashMap<SpellId, Arc<Sp
         }
     }
     text.push('.');
+
+    if let Some(written) = item.text() {
+        text.push('\n');
+        if distance <= READING_DISTANCE {
+            text.push_str("You read: ");
+            text.push_str(written);
+        } else {
+            text.push_str("You are too far away to read it.");
+        }
+    }
 
     if rune.is_none()
         && let Some(line) = requirement_line(config)
@@ -638,6 +649,77 @@ mod tests {
         assert_eq!(
             look_at(coin, 15, 1),
             "You see 15 gold coins.\nThey weigh 1.50 oz."
+        );
+    }
+
+    fn a_written(config: ItemConfig, text: &str, distance: i32) -> String {
+        let mut item = Item::new(Arc::new(config), 1);
+        item.set_text(Some(Arc::from(text)));
+        item_description(&item, distance, &HashMap::new())
+    }
+
+    fn a_sign(text: &str, distance: i32) -> String {
+        a_written(config("sign", Some("a"), vec![], vec![]), text, distance)
+    }
+
+    #[test]
+    fn a_text_is_read_within_four_tiles_and_when_carried() {
+        let expected = "You see a sign.\nYou read: Elm Street";
+        assert_eq!(a_sign("Elm Street", -1), expected);
+        assert_eq!(a_sign("Elm Street", 1), expected);
+        assert_eq!(a_sign("Elm Street", 4), expected);
+    }
+
+    #[test]
+    fn a_text_five_tiles_away_is_too_far_to_read() {
+        assert_eq!(
+            a_sign("Elm Street", 5),
+            "You see a sign.\nYou are too far away to read it."
+        );
+    }
+
+    #[test]
+    fn a_text_keeps_its_own_lines() {
+        assert_eq!(
+            a_sign("Depot\n\nOpen all day", 2),
+            "You see a sign.\nYou read: Depot\n\nOpen all day"
+        );
+    }
+
+    #[test]
+    fn the_text_comes_before_the_weight_and_the_description() {
+        let mut book = config(
+            "book",
+            Some("a"),
+            vec![ItemFlag::Take],
+            vec![ItemAttribute::Weight(1300)],
+        );
+        book.description = Some("It is dusty.".to_string());
+
+        assert_eq!(
+            a_written(book, "Chapter one", 1),
+            "You see a book.\nYou read: Chapter one\nIt weighs 13.00 oz.\nIt is dusty."
+        );
+    }
+
+    #[test]
+    fn a_text_on_another_floor_is_too_far_to_read() {
+        let mut map = GameMap::new();
+        let me = standing(
+            &mut map,
+            a_player(1, Sex::Male, 8),
+            Position::new(100, 100, 7),
+        );
+        let below = Position::new(100, 100, 8);
+        let mut sign = Item::new(Arc::new(config("sign", Some("a"), vec![], vec![])), 1);
+        sign.set_text(Some(Arc::from("Elm Street")));
+        let mut tile = MapTile::new();
+        tile.push_item(sign);
+        map.insert_tile(below.clone(), tile);
+
+        assert_eq!(
+            look(&map, me, below),
+            "You see a sign.\nYou are too far away to read it."
         );
     }
 

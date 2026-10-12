@@ -351,6 +351,9 @@ pub fn get_damage_visuals(
         CombatElement::Physical => match blood_type {
             Some(BloodType::Blood) => GAME_CONFIG.effect_ids.life_hit,
             Some(BloodType::Poison) => GAME_CONFIG.effect_ids.poison_hit,
+            Some(BloodType::Undead) => GAME_CONFIG.effect_ids.undead_hit,
+            Some(BloodType::Fire) => GAME_CONFIG.effect_ids.life_hit,
+            Some(BloodType::Energy) => GAME_CONFIG.effect_ids.energy_creature_hit,
             None => GAME_CONFIG.effect_ids.life_hit,
         },
         CombatElement::Ice => GAME_CONFIG.effect_ids.ice_hit,
@@ -365,6 +368,9 @@ pub fn get_damage_visuals(
         CombatElement::Physical => match blood_type {
             Some(BloodType::Blood) => GAME_CONFIG.text_colors.red,
             Some(BloodType::Poison) => GAME_CONFIG.text_colors.lightgreen,
+            Some(BloodType::Undead) => GAME_CONFIG.text_colors.lightgrey,
+            Some(BloodType::Fire) => GAME_CONFIG.text_colors.orange,
+            Some(BloodType::Energy) => GAME_CONFIG.text_colors.eletric_purple,
             None => GAME_CONFIG.text_colors.red,
         },
         CombatElement::Ice => GAME_CONFIG.text_colors.skyblue,
@@ -738,7 +744,7 @@ mod tests {
             ),
             1,
         );
-        quiver.content = Some(Box::new(vec![arrow]));
+        quiver.set_content(vec![arrow]);
         quiver
     }
 
@@ -907,7 +913,7 @@ mod tests {
     #[test]
     fn a_bow_with_a_quiver_plans_an_ammo_cost() {
         let quiver = a_quiver_of_arrows();
-        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid;
+        let arrow_guid = quiver.content().unwrap()[0].guid;
         let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(quiver))),
             a_test_creature("Rat", 10, (1, 2)),
@@ -1220,8 +1226,7 @@ mod tests {
             .inventory()
             .get(&InventorySlot::RightHand)
             .unwrap()
-            .content
-            .as_ref()
+            .content()
             .unwrap()[0]
             .amount;
         assert_eq!(arrows, 9);
@@ -1232,7 +1237,7 @@ mod tests {
     fn executing_a_shot_updates_the_quiver_rather_than_the_arrow() {
         let quiver = a_quiver_of_arrows();
         let quiver_guid = quiver.guid;
-        let arrow_guid = quiver.content.as_ref().unwrap()[0].guid;
+        let arrow_guid = quiver.content().unwrap()[0].guid;
         let (map, attacker, _) = duel(
             Agent::from_player(armed(Some(a_bow(None)), Some(quiver))),
             a_test_creature("Rat", 100, (1, 2)),
@@ -1552,8 +1557,7 @@ mod tests {
             .inventory()
             .get(&InventorySlot::RightHand)
             .unwrap()
-            .content
-            .as_ref()
+            .content()
             .unwrap()[0]
             .amount;
         assert_eq!(arrows, 9, "a miss still costs an arrow");

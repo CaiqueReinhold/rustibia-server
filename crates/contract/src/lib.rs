@@ -70,8 +70,8 @@ pub struct SkillRow {
 
 /// One item in a stored inventory, possibly a container with `content`.
 ///
-/// `content` and `action_id` are the optional fields in this crate, because the JSONB they
-/// mirror omits them rather than writing `null`.
+/// `content`, `action_id` and `text` are the optional fields in this crate, because the JSONB
+/// they mirror omits them rather than writing `null`.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StoredItemRecord {
     pub item_id: u16,
@@ -81,6 +81,8 @@ pub struct StoredItemRecord {
     pub content: Option<Vec<StoredItemRecord>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub action_id: Option<u16>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }
 
 fn one() -> u8 {
@@ -201,8 +203,10 @@ mod tests {
                         amount: 10,
                         content: None,
                         action_id: None,
+                        text: None,
                     }]),
                     action_id: None,
+                    text: None,
                 },
             )]),
             bank_balance: 0,
@@ -272,6 +276,7 @@ mod tests {
             amount: 5,
             content: None,
             action_id: None,
+            text: None,
         })
         .unwrap();
 
@@ -295,6 +300,7 @@ mod tests {
                 amount: 5,
                 content: None,
                 action_id: None,
+                text: None,
             }
         );
     }
@@ -306,6 +312,7 @@ mod tests {
             amount: 1,
             content: None,
             action_id: None,
+            text: None,
         })
         .unwrap();
 
@@ -321,6 +328,44 @@ mod tests {
             serde_json::from_str(r#"{"item_id":2970,"amount":1}"#).unwrap();
 
         assert_eq!(item.action_id, None);
+    }
+
+    #[test]
+    fn stored_item_omits_text_when_absent() {
+        let json = serde_json::to_string(&StoredItemRecord {
+            item_id: 2816,
+            amount: 1,
+            content: None,
+            action_id: None,
+            text: None,
+        })
+        .unwrap();
+
+        assert!(!json.contains("text"), "text must be omitted: {json}");
+    }
+
+    #[test]
+    fn stored_item_round_trips_its_text() {
+        let book = StoredItemRecord {
+            item_id: 2816,
+            amount: 1,
+            content: None,
+            action_id: None,
+            text: Some("Chapter one\nIt was dark.".to_string()),
+        };
+
+        let back: StoredItemRecord =
+            serde_json::from_str(&serde_json::to_string(&book).unwrap()).unwrap();
+
+        assert_eq!(back, book);
+    }
+
+    #[test]
+    fn stored_item_written_before_texts_still_reads() {
+        let item: StoredItemRecord =
+            serde_json::from_str(r#"{"item_id":2816,"amount":1}"#).unwrap();
+
+        assert_eq!(item.text, None);
     }
 
     #[test]

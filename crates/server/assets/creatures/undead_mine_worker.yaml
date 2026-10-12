@@ -2,7 +2,7 @@ name: Undead Mine Worker
 name_description: an undead mine worker
 life: 65
 speed: 75
-blood_type: blood
+blood_type: undead
 armor: 15
 defense: 15
 experience: 45

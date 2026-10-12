@@ -258,10 +258,7 @@ fn sellable(
     carried.into_iter().filter(move |item| {
         item.id() == id
             && item.fluid == fluid
-            && item
-                .content
-                .as_ref()
-                .is_none_or(|content| content.is_empty())
+            && item.content().is_none_or(|content| content.is_empty())
     })
 }
 
@@ -273,7 +270,7 @@ fn collect<'a>(container: &'a Item, found: &mut Vec<&'a Item>) {
 }
 
 fn contents(item: &Item) -> impl Iterator<Item = &Item> {
-    item.content.iter().flat_map(|content| content.iter())
+    item.content().into_iter().flatten()
 }
 
 #[cfg(test)]
@@ -305,7 +302,7 @@ mod tests {
             )),
             1,
         );
-        bag.content = Some(Box::new(content));
+        bag.set_content(content);
         bag
     }
 

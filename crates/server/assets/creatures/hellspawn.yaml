@@ -1,7 +1,7 @@
 name: Hellspawn
 life: 3500
 speed: 172
-blood_type: blood
+blood_type: fire
 armor: 44
 defense: 44
 experience: 2550

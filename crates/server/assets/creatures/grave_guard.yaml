@@ -1,7 +1,7 @@
 name: Grave Guard
 life: 720
 speed: 100
-blood_type: blood
+blood_type: undead
 armor: 35
 defense: 35
 experience: 485

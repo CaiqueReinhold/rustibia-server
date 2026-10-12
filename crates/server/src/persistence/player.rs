@@ -92,10 +92,10 @@ fn stored_item(item: &Item) -> StoredItemRecord {
         item_id: item.id().0,
         amount: item.wire_subtype(),
         content: item
-            .content
-            .as_ref()
+            .content()
             .map(|children| children.iter().map(stored_item).collect()),
         action_id: item.action_id.map(NonZeroU16::get),
+        text: item.text().map(|text| text.to_string()),
     }
 }
 
@@ -125,6 +125,32 @@ mod tests {
             .expect("the key restores");
 
         assert_eq!(restored.action_id, NonZeroU16::new(3001));
+    }
+
+    #[test]
+    fn a_book_keeps_its_text_through_a_save() {
+        use std::sync::Arc;
+
+        use crate::entities::items::{ItemConfig, ItemFlag, ItemId};
+        use crate::persistence::login::restore_item;
+
+        let book = Arc::new(ItemConfig::new(
+            ItemId(1),
+            "book".to_string(),
+            None,
+            None,
+            [ItemFlag::Take],
+            Vec::new(),
+        ));
+        let mut item = Item::new(Arc::clone(&book), 1);
+        item.set_text(Some(Arc::from("Chapter one")));
+
+        let stored = stored_item(&item);
+        let restored =
+            restore_item(&HashMap::from([(ItemId(1), book)]), stored.clone()).expect("it restores");
+
+        assert_eq!(stored.text.as_deref(), Some("Chapter one"));
+        assert_eq!(restored.text().map(|text| &**text), Some("Chapter one"));
     }
 
     #[test]
@@ -161,7 +187,7 @@ mod tests {
             Vec::new(),
         );
         let mut backpack = Item::new(Arc::clone(&bag), 1);
-        backpack.content = Some(Box::new(vec![Item::new(Arc::clone(&coin), 12)]));
+        backpack.set_content(vec![Item::new(Arc::clone(&coin), 12)]);
         let mut snapshot = a_test_snapshot(7, 3);
         snapshot.life.current = 37;
         snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
@@ -207,7 +233,7 @@ mod tests {
         );
         let restored_bag = &restored.inventory[&InventorySlot::Backpack];
         assert_eq!(restored_bag.id(), ItemId(1987));
-        let content = restored_bag.content.as_ref().unwrap();
+        let content = restored_bag.content().unwrap();
         assert_eq!((content[0].id(), content[0].amount), (ItemId(3031), 12));
     }
 }

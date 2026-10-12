@@ -1,7 +1,7 @@
 name: Rift Phantom
 life: 100
 speed: 80
-blood_type: blood
+blood_type: undead
 armor: 10
 defense: 10
 experience: 0

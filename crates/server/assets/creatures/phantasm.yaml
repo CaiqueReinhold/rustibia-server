@@ -1,7 +1,7 @@
 name: Phantasm
 life: 3950
 speed: 170
-blood_type: blood
+blood_type: undead
 armor: 80
 defense: 80
 experience: 4400

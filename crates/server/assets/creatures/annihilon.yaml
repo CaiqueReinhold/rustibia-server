@@ -2,7 +2,7 @@ name: Annihilon
 name_description: Annihilon
 life: 46500
 speed: 190
-blood_type: blood
+blood_type: fire
 armor: 60
 defense: 55
 experience: 15000

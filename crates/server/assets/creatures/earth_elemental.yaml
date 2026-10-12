@@ -2,7 +2,7 @@ name: Earth Elemental
 name_description: an earth elemental
 life: 650
 speed: 110
-blood_type: blood
+blood_type: undead
 armor: 25
 defense: 25
 experience: 450

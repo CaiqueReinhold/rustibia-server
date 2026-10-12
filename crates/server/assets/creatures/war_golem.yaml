@@ -1,7 +1,7 @@
 name: War Golem
 life: 4300
 speed: 120
-blood_type: blood
+blood_type: energy
 armor: 40
 defense: 40
 experience: 2750

@@ -1,7 +1,7 @@
 name: Metal Gargoyle
 life: 2100
 speed: 95
-blood_type: blood
+blood_type: energy
 armor: 26
 defense: 33
 experience: 1400

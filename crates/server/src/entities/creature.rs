@@ -23,13 +23,17 @@ pub type CreatureKindId = String;
 pub enum BloodType {
     Blood,
     Poison,
+    Undead,
+    Fire,
+    Energy,
 }
 
 impl BloodType {
-    pub fn get_fluid(&self) -> FluidType {
+    pub fn get_fluid(&self) -> Option<FluidType> {
         match self {
-            BloodType::Blood => FluidType::Blood,
-            BloodType::Poison => FluidType::Slime,
+            BloodType::Blood => Some(FluidType::Blood),
+            BloodType::Poison => Some(FluidType::Slime),
+            BloodType::Undead | BloodType::Fire | BloodType::Energy => None,
         }
     }
 }

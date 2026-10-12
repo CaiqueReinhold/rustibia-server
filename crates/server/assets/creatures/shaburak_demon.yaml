@@ -1,7 +1,7 @@
 name: Shaburak Demon
 life: 1500
 speed: 110
-blood_type: blood
+blood_type: fire
 armor: 15
 defense: 15
 experience: 900

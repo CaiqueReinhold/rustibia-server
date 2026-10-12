@@ -1,7 +1,7 @@
 name: Massive Energy Elemental
 life: 1100
 speed: 105
-blood_type: blood
+blood_type: energy
 armor: 20
 defense: 20
 experience: 950

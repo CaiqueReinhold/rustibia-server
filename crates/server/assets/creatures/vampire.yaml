@@ -1,7 +1,7 @@
 name: Vampire
 life: 475
 speed: 119
-blood_type: blood
+blood_type: undead
 armor: 30
 defense: 30
 experience: 305

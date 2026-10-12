@@ -2,7 +2,7 @@ name: Boogey
 name_description: Boogey
 life: 930
 speed: 200
-blood_type: blood
+blood_type: undead
 armor: 50
 defense: 50
 experience: 475

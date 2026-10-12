@@ -343,6 +343,7 @@ mod tests {
                                 amount: 1,
                                 content: None,
                                 action_id: None,
+                                text: None,
                             },
                         }],
                     })

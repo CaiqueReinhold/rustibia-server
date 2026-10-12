@@ -145,7 +145,7 @@ impl WorldMap {
                     let stack = match container {
                         Some(guid) => items
                             .find_map(|it| it.find_by_guid_mut(guid))
-                            .and_then(|found| found.content.as_mut())
+                            .and_then(|found| found.content_mut())
                             .and_then(|content| content.iter_mut().find(|it| it.stacks_with(item))),
                         None => items.find(|it| it.stacks_with(item)),
                     };
@@ -454,7 +454,7 @@ impl InventoryMut<'_> {
         let stack = match container {
             Some(guid) => slot_item
                 .find_by_guid_mut(guid)
-                .and_then(|found| found.content.as_mut())
+                .and_then(|found| found.content_mut())
                 .and_then(|content| content.iter_mut().find(|it| it.stacks_with(item))),
             None => Some(slot_item).filter(|it| it.stacks_with(item)),
         };
@@ -572,7 +572,7 @@ mod tests {
         let mut bag = a_bag();
         let coin = coins(1);
         let coin_guid = coin.guid;
-        bag.content.as_mut().unwrap().push(coin);
+        bag.content_mut().unwrap().push(coin);
         let bag_guid = bag.guid;
         map.inner_mut().place_item(&pos, None, None, bag).unwrap();
 
@@ -909,8 +909,8 @@ mod tests {
     #[test]
     fn removing_a_nested_item_marks_the_container_it_came_out_of() {
         let (mut map, key) = a_player_with_a_backpack();
-        let pouch = &backpack(&map, key).content.as_ref().unwrap()[0];
-        let (pouch_guid, coin_guid) = (pouch.guid, pouch.content.as_ref().unwrap()[0].guid);
+        let pouch = &backpack(&map, key).content().unwrap()[0];
+        let (pouch_guid, coin_guid) = (pouch.guid, pouch.content().unwrap()[0].guid);
 
         map.player_mut(key)
             .unwrap()
@@ -984,7 +984,7 @@ mod tests {
     fn stacking_into_a_container_on_a_tile_marks_the_container() {
         let (mut map, pos) = one_tile();
         let mut bag = a_bag();
-        bag.content.as_mut().unwrap().push(coins(10));
+        bag.content_mut().unwrap().push(coins(10));
         let bag_guid = bag.guid;
         map.inner_mut().place_item(&pos, None, None, bag).unwrap();
         let placement = ItemPlacement::Container {
@@ -1003,7 +1003,7 @@ mod tests {
     #[test]
     fn stacking_into_a_carried_container_marks_it_and_carries_the_weight() {
         let (mut map, key) = a_player_with_a_backpack();
-        let pouch_guid = backpack(&map, key).content.as_ref().unwrap()[0].guid;
+        let pouch_guid = backpack(&map, key).content().unwrap()[0].guid;
         let weight = map.get_player(key).unwrap().inventory().carried_weight();
         let placement = ItemPlacement::Container {
             guid: pouch_guid,
