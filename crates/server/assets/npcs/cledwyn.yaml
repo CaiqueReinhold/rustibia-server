@@ -1,0 +1,68 @@
+name: "Cledwyn"
+position: { x: 32190, y: 32293, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [114, 0, 76, 94]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Trading tokens! First-class bargains!"
+    - "Bespoke armor for all vocations! For the cost of some tokens only!"
+    - "Tokens! Bring your tokens!"
+shop:
+  - { id: 22521, buy: 100 }
+  - { id: 22522, buy: 100 }
+  - { id: 22523, buy: 100 }
+  - { id: 22535, buy: 100 }
+  - { id: 22531, buy: 100 }
+  - { id: 22518, buy: 100 }
+  - { id: 22519, buy: 100 }
+  - { id: 22520, buy: 100 }
+  - { id: 22534, buy: 100 }
+  - { id: 22530, buy: 100 }
+  - { id: 22527, buy: 100 }
+  - { id: 22528, buy: 100 }
+  - { id: 22529, buy: 100 }
+  - { id: 22537, buy: 100 }
+  - { id: 22533, buy: 100 }
+  - { id: 35563, buy: 1 }
+  - { id: 22524, buy: 100 }
+  - { id: 22525, buy: 100 }
+  - { id: 22526, buy: 100 }
+  - { id: 22536, buy: 100 }
+  - { id: 22532, buy: 100 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Blessings, Player! How may I be of service? Do you wish to trade some tokens, or would you like some information or talk? Should I enchant certain items for you?"
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["cledwyn"]
+    action: say
+    text: "Named after my grandfather. He was a gifted jeweller. Lost in the field looking for rare stones, alas."
+  - words: ["family"]
+    action: say
+    text: "You might find some O'Reilly in some other town, just like me. We're all vagabonds, really. <smiles winningly> Always on the move to trade precious tokens. ... There's a little family competition on who's the most successful token hunter, so if you should have any tokens with you, I'd be delighted to trade you some. <bows>"
+  - words: ["name"]
+    action: say
+    text: "<bows> Cledwyn O'Reilly, bespoke smith and token trader, at your service."
+  - words: ["city"]
+    action: say
+    text: "A most delightful place! You meet all sorts here. Some very pretty ladies, too. <winks> And I am looking forward to a good beer in the tavern after sunset."
+  - words: ["yana"]
+    action: say
+    text: "You already met her? Yes, she's my cousin. She also collects rare tokens, but unlike me she's interested in gold tokens. Call this passion something of a family trait."
+  - words: ["job"]
+    action: say
+    text: "Well, I'm a smith by trade, but my passion is to collect rare tokens made of metal or gemstones. It's something of a family trait. ... All of my family have a passion for some precious stone or metal, but as we're craftsmen, not warriors, we prefer to trade for what we want. ... At the moment, I'm rather interested in silver tokens. ... If you should happen to have any with you, I'll forge you a first-class armour in return for 100 of 'em."

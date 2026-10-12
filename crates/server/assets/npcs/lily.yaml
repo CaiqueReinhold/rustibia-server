@@ -1,0 +1,211 @@
+name: "Lily"
+position: { x: 32066, y: 32225, z: 7 }
+speed: 100
+outfit:
+  id: 138
+  colors: [78, 101, 86, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Are you injured or poisoned? Get your potions here! All natural, no artificial ingredients!"
+    - "Hey you, over there! Let's have a little chat, shall we?"
+    - "Oh, just in case you are looking for the marketplace and dungeons, just follow the path to the east."
+    - "Anyone got some cookies for me?"
+    - "Do you need help? Just ask me about anything you'd like to know!"
+    - "I'm buying all of your blueberries for my famous blueberry juice!"
+shop:
+  - { id: 7644, buy: 50 }
+  - { id: 3588, sell: 1 }
+  - { id: 130, sell: 1 }
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 7876, buy: 20 }
+  - { id: 2874, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome, {{ PLAYERNAME | capitalize }}! You look a little stressed today. If you like to view my offers of potions, just ask me for a trade. In case you're looking for the marketplace and dungeons, just follow the path to the east!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Take care, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "May Crunor bless you!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my offers. If you buy a potion, don't forget that there's a deposit of 5 gold on the empty flask."
+  - words: ["sell"]
+    action: say
+    text: "Just ask me for a trade to see what I buy from you. If you want to sell blueberries, ask me about them separately."
+  - words: ["stuff", "wares", "offer", "buy"]
+    action: say
+    text: "Just ask me for a trade to see my offers. If you want to sell blueberries, ask me about them separately."
+  - words: ["help", "information"]
+    action: say
+    text: "How can I help you? If you like to buy something, just ask me for a trade. We can also chat about Tibia. Or, I could give you general hints about the game."
+  - words: ["equip"]
+    action: say
+    text: "You definitely need a good weapon, an armor and a shield. Also, you should never leave for a dungeon without rope, shovel and torch."
+  - words: ["how are you"]
+    action: say
+    text: "I'm in tune with myself and with nature. Thank you."
+  - words: ["job"]
+    action: say
+    text: "I'm a druid, bound to the spirit of nature. My potions will help you if you feel bad. I also buy blueberries and cookies. Just ask me for a trade."
+  - words: ["name"]
+    action: say
+    text: "My name is Lily, like the flower. It also stands for purity, just like my potions are!"
+  - words: ["bank"]
+    action: say
+    text: "It's wise to store most of your gold at the bank below the academy. It's safer that way."
+  - words: ["citizen"]
+    action: say
+    text: "If you tell me the name of a citizen, I'll tell you what I know about him or her."
+  - words: ["antidote"]
+    action: say
+    text: "Antidote potions will cure poisoning. They also have a lovely blueberry taste. You only need them when you get poisoned deep down in a dungeon, else just go to the temple for a free heal!"
+  - words: ["poisoning"]
+    action: say
+    text: "Some creatures like snakes or poison spiders can poison you. That will diminish your health over a certain amount of time, so be careful when dealing with those creatures!"
+  - words: ["druid"]
+    action: say
+    text: "Being a druid is a wonderful profession. You control the forces of nature and can heal others."
+  - words: ["shop"]
+    action: say
+    text: "There are many shops around here which are owned by local citizens."
+  - words: ["temple"]
+    action: say
+    text: "The temple is just to the right. You can get a healing for free there if you are badly injured or poisoned."
+  - words: ["tibia"]
+    action: say
+    text: "Tibia is our beautiful world, created by the gods. Being a druid, I'm a worshipper of Crunor."
+  - words: ["crunor"]
+    action: say
+    text: "Crunor is the great lord of trees and the creator of all plants. Despite what some people believe, he didn't create the monsters, though."
+  - words: ["food"]
+    action: say
+    text: "Oh, I'm sorry honey, I don't sell food. If you are hungry, visit one of the farmers Billy and Willie. I buy blueberries and cookies, though."
+  - words: ["premium"]
+    action: say
+    text: "If you purchase premium time for your account, this opens up a lot of possibilities. ... For example, you will be able to travel off the mainland, ride a mount and benefit from offline training as well as having more outfits and magic spells to choose from."
+  - words: ["potion"]
+    action: say
+    text: "I can offer you homemade antidote potions and small health potions. Ask me for a trade if you like to see them."
+  - words: ["health"]
+    action: say
+    text: "Health potions will heal you for about 75 hit points. It can't hurt to carry one with you, just in case."
+  - words: ["king"]
+    action: say
+    text: "I think Tibia would be a better place without authorities who lead others to war. Can't we just all live in peace?"
+  - words: ["academy"]
+    action: say
+    text: "The academy is the big stone building in the town centre. If you're ready to leave Rookgaard, go there to see the oracle."
+  - words: ["rookgaard"]
+    action: say
+    text: "Well, in this village and its surroundings you can train your skills until you are level 8. Then you should see the oracle and head to the main continent."
+  - words: ["train"]
+    action: say
+    text: "To train your skills, simply help us fighting monsters."
+  - words: ["fight"]
+    action: say
+    text: "If you want to fight monsters, you should get better equipment from the merchants. You should also talk to one of the bridge guards to find suitable monsters for you."
+  - words: ["merchant"]
+    action: say
+    text: "To view the offers of a merchant, simply talk to him or her and ask for a trade. They will gladly show you their offers and also the things they buy from you."
+  - words: ["main"]
+    action: say
+    text: "The main continent is huge! The gods of Tibia created everything from great seas, deep jungles and large deserts."
+  - words: ["monster"]
+    action: say
+    text: "Sadly, our little village of Rookgaard is invaded by monsters. From the dungeons they creep to the surface and attack the city. We always need adventurers helping us to fight them."
+  - words: ["weapon"]
+    action: say
+    text: "If you are looking for weapons, you should visit Obi's shop east of here. Or, if you have a premium account, go to Lee'Delle for better offers."
+  - words: ["armor"]
+    action: say
+    text: "Armors? Best buy them at Dixi's little counter, just upstairs from Obi's shop. Or, if you have a premium account, go to Lee'Delle for better offers."
+  - words: ["shield"]
+    action: say
+    text: "Shields? Best buy them at Dixi's little counter, just upstairs from Obi's shop. Or, if you have a premium account, go to Lee'Delle for better offers."
+  - words: ["dungeon"]
+    action: say
+    text: "If you need information about the dungeons here, you should talk to one of the bridge guards. They will show you where to go."
+  - words: ["guard"]
+    action: say
+    text: "Our bridge guards are Dallheim and Zerbrus. You can find Dallheim if you follow the path to the right, then turn north at the temple."
+  - words: ["cookie"]
+    action: say
+    text: "Yum, cookies! If you have some for me, just ask me for a trade."
+  - words: ["money", "gold"]
+    action: say
+    text: "Earn gold by fighting monsters and picking up what they carry. Sell it to merchants to make profit!"
+  - words: ["deposit", "flask", "vial"]
+    action: say
+    text: "I will pay you 5 gold for every empty vial and potion flask. Just ask me for a trade."
+  - words: ["shovel", "rope", "torch"]
+    action: say
+    text: "You best buy such equipment at Al Dee's store in the North of the village. Or, if you have a premium account, go to Lee'Delle for better offers."
+  - words: ["cooki"]
+    action: say
+    text: "Oh yes, I love cookies! Will you accept 1 gold for it?"
+  - words: ["blueberry", "blueberries", "berry"]
+    action: say
+    text: "Oh, do you have blueberries for sale? I need them for my antidote potion. I give you 1 gold for 5 of them, yes?"
+  - words: ["obi"]
+    action: say
+    text: "He sells weapons. His shop is east of here."
+  - words: ["norma"]
+    action: say
+    text: "I don't know what to think about all this new bar. Rookgaard needs a little peace!"
+  - words: ["loui"]
+    action: say
+    text: "He used to help me gather blueberries. Then, one day, he suddenly stopped comming here. They say he went a little out of his mind."
+  - words: ["santiago"]
+    action: say
+    text: "We tried everything to fight that cockroach plague in his cellar, but natural anti-bug potions simply won't help. I guess those roaches need to be fought with stronger weapons."
+  - words: ["zirella"]
+    action: say
+    text: "That poor old woman. I wish I could help her."
+  - words: ["al dee"]
+    action: say
+    text: "Best tool shop in town, if you ask me."
+  - words: ["amber"]
+    action: say
+    text: "I heard that she's recovering below the academy. She has been on an exciting expedition. I haven't talked to her yet, though."
+  - words: ["cipfried"]
+    action: say
+    text: "Visiting Cipfried in the temple is a good idea if you are injured or poisoned. He can heal you."
+  - words: ["dixi"]
+    action: say
+    text: "She's Obi's granddaughter and deals with armors and shields, just upstairs from Obi's shop."
+  - words: ["hyacinth"]
+    action: say
+    text: "Hyacinth also sells small health potions. He lives outside the village, in a hidden place."
+  - words: ["lee'delle"]
+    action: say
+    text: "If you are a premium adventurer, you should check out Lee'Delle's shop. She lives in the western part of town, just across the bridge."
+  - words: ["lily"]
+    action: say
+    text: "Yes?"
+  - words: ["oracle"]
+    action: say
+    text: "You can find the oracle on the top floor of the academy, just above Seymour. Go there when you are level 8 to reach more areas of Tibia."
+  - words: ["paulie"]
+    action: say
+    text: "He takes care of the bank, keeping our money safe."
+  - words: ["seymour"]
+    action: say
+    text: "Seymour is a teacher running the academy. He has many important information about Tibia."
+  - words: ["tom"]
+    action: say
+    text: "He's the local tanner. You could try selling fresh corpses or leather to him."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "He is a great warrior. He can also tell you much about monsters and dungeons on this island."
+  - words: ["billy", "willie"]
+    action: say
+    text: "He's a farmer and sells food. Food will help you regain health when you are injured. Many monsters also carry food with them."

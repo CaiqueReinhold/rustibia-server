@@ -1,0 +1,49 @@
+name: "Tarun"
+position: { x: 32976, y: 32715, z: 7 }
+speed: 100
+outfit:
+  id: 146
+  colors: [0, 67, 0, 67]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 11514, sell: 110 }
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 21974, sell: 270 }
+  - { id: 239, buy: 225 }
+  - { id: 238, buy: 158 }
+  - { id: 7642, buy: 254 }
+  - { id: 266, buy: 50 }
+  - { id: 10304, sell: 475 }
+  - { id: 10321, sell: 100 }
+  - { id: 268, buy: 56 }
+  - { id: 7786, sell: 700 }
+  - { id: 21975, sell: 350 }
+  - { id: 10311, sell: 400 }
+  - { id: 5879, sell: 100 }
+  - { id: 236, buy: 115 }
+  - { id: 237, buy: 108 }
+  - { id: 23375, buy: 650 }
+  - { id: 3044, sell: 100 }
+  - { id: 7643, buy: 379 }
+  - { id: 23373, buy: 488 }
+  - { id: 23374, buy: 488 }
+  - { id: 2874, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Farewell."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Farewell."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just have a look."

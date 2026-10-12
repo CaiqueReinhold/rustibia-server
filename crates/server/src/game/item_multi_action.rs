@@ -18,6 +18,7 @@ use crate::{
         Mark, TickCtx,
         config::{GAME_CONFIG, MultiActionConfig, SandDiggingConfig},
         events::BroadcastMessage,
+        fluids,
         healing::execute_healing,
         item_action::{ItemActionError, transform},
         item_movement::{insert_item_at, remove_item_at, return_item},
@@ -57,7 +58,13 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
     let action = GAME_CONFIG
         .multi_action
         .tool_action(source_item_id)
-        .or_else(|| source_item.config.attr_multi_action());
+        .or_else(|| source_item.config.attr_multi_action())
+        .or_else(|| {
+            source_item
+                .config
+                .has_flag(ItemFlag::LiquidContainer)
+                .then_some(ItemMultiAction::Fluid)
+        });
 
     if ctx
         .map
@@ -143,6 +150,7 @@ fn route_multi_action(
                 Err(ItemActionError::ActionFailed)
             }
         },
+        ItemMultiAction::Fluid => fluids::use_fluid(ctx, agent_key, source, target),
     }
 }
 

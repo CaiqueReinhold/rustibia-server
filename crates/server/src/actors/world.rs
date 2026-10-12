@@ -22,6 +22,7 @@ use crate::actors::{
     session::SessionActorHandle,
 };
 use crate::config::CONFIG;
+use crate::entities::items::ItemId;
 use crate::entities::npc::Npc;
 use crate::entities::{
     agent::{Agent, AgentKey, Facing},
@@ -39,7 +40,7 @@ use crate::game::config::GAME_CONFIG;
 use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, creature_abilities,
     creature_behavior::CreatureAction, events::BroadcastMessage, experience, item_action,
-    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls,
+    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, shop,
     spells, support, systems, targeting,
 };
 use crate::persistence::npcs::{NPCS, NpcId};
@@ -102,6 +103,16 @@ pub enum WorldCommand {
         spell: SpellId,
         target: AreaTarget,
         param: Option<String>,
+    },
+    Trade {
+        agent_key: AgentKey,
+        trade: shop::Trade,
+        item_id: ItemId,
+        subtype: u8,
+        amount: u8,
+    },
+    CloseShop {
+        agent_key: AgentKey,
     },
     CastAbility {
         agent_key: AgentKey,
@@ -616,6 +627,20 @@ impl WorldActor {
                         });
                     }
                 });
+            }
+            WorldCommand::Trade {
+                agent_key,
+                trade,
+                item_id,
+                subtype,
+                amount,
+            } => {
+                self.with_ctx(broadcast_messages, |ctx| {
+                    shop::trade(ctx, agent_key, trade, item_id, subtype, amount)
+                });
+            }
+            WorldCommand::CloseShop { agent_key } => {
+                self.with_ctx(broadcast_messages, |ctx| shop::close_shop(ctx, agent_key));
             }
             WorldCommand::CastAbility {
                 agent_key,

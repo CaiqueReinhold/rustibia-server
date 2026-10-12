@@ -1,0 +1,33 @@
+name: "Pugwah"
+position: { x: 32810, y: 31251, z: 7 }
+speed: 100
+outfit:
+  id: 214
+  colors: [78, 86, 114, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3600, buy: 4 }
+  - { id: 3607, buy: 6 }
+  - { id: 3582, buy: 8 }
+  - { id: 3577, buy: 5 }
+  - { id: 2880, fluid: beer, buy: 3 }
+  - { id: 2880, fluid: lemonade, buy: 2 }
+  - { id: 2880, fluid: milk, buy: 2 }
+  - { id: 2880, fluid: wine, buy: 3 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

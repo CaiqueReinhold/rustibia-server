@@ -313,6 +313,11 @@ arguments:
   DESTINATIONS:
     edron: { cost: 40, position: { x: 20, y: 20, z: 7 } }
   RING: 9999
+shop:
+  - { id: 9001, buy: 50, sell: 10 }
+  - { id: 9002, buy: 3 }
+  - { id: 9003, sell: 5 }
+  - { id: 9003, fluid: milk, buy: 8 }
 keywords:
   - words: GREET
     action: engage
@@ -320,6 +325,9 @@ keywords:
   - words: GOODBYE
     action: dismiss
     text: Good bye.
+  - words: ["trade"]
+    action: trade
+    text: "Take a look, {{ PLAYERNAME }}."
   - words: ["sail"]
     action: say
     text: Where to?
@@ -409,7 +417,60 @@ keywords:
 /// Stands at (10, 10, 7) and sails to (20, 20, 7) for 40, or for item 9999 when asked `ferry`
 /// by a player carrying it. `no` answers at the root and, with a reset, under `edron`, so a test
 /// can tell which level matched. `count <n:int>` carries `n` to its children and `peek` reads `n`
-/// from the root, where it is undefined.
+/// from the root, where it is undefined. `trade` opens a shop selling torches for 50 (bought back
+/// for 10), arrows for 3, empty vials bought back for 5 and vials of milk sold for 8, from
+/// `a_shop_catalogue`.
 pub fn an_npc() -> Arc<Npc> {
-    Arc::new(parse_npc(std::path::Path::new("an_npc.yaml"), AN_NPC).unwrap())
+    Arc::new(
+        parse_npc(
+            std::path::Path::new("an_npc.yaml"),
+            AN_NPC,
+            &a_shop_catalogue(),
+        )
+        .unwrap(),
+    )
+}
+
+pub const A_TORCH: ItemId = ItemId(9001);
+pub const AN_ARROW: ItemId = ItemId(9002);
+pub const A_VIAL: ItemId = ItemId(9003);
+
+/// A torch carried one per slot, an arrow that stacks and a vial that holds a fluid, for
+/// `an_npc`'s shop.
+pub fn a_shop_catalogue() -> HashMap<ItemId, Arc<ItemConfig>> {
+    HashMap::from([
+        (
+            A_TORCH,
+            Arc::new(ItemConfig::new(
+                A_TORCH,
+                "torch".to_string(),
+                None,
+                None,
+                [ItemFlag::Take],
+                [ItemAttribute::Weight(500)],
+            )),
+        ),
+        (
+            AN_ARROW,
+            Arc::new(ItemConfig::new(
+                AN_ARROW,
+                "arrow".to_string(),
+                None,
+                None,
+                [ItemFlag::Take, ItemFlag::Cumulative],
+                [ItemAttribute::Weight(70)],
+            )),
+        ),
+        (
+            A_VIAL,
+            Arc::new(ItemConfig::new(
+                A_VIAL,
+                "vial".to_string(),
+                None,
+                None,
+                [ItemFlag::Take, ItemFlag::LiquidContainer],
+                [ItemAttribute::Weight(180)],
+            )),
+        ),
+    ])
 }

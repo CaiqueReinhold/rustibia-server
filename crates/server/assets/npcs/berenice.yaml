@@ -1,0 +1,31 @@
+name: "Berenice"
+position: { x: 32359, y: 32812, z: 7 }
+speed: 100
+outfit:
+  id: 140
+  colors: [5, 87, 104, 106]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 6108, buy: 150 }
+  - { id: 6087, sell: 100 }
+  - { id: 6090, sell: 800 }
+  - { id: 5021, buy: 80 }
+  - { id: 6088, sell: 250 }
+  - { id: 6089, sell: 400 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

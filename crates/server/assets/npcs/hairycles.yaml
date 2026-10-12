@@ -1,0 +1,53 @@
+name: "Hairycles"
+position: { x: 32826, y: 32574, z: 6 }
+speed: 100
+outfit:
+  id: 117
+  colors: [10, 20, 30, 40]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3587, buy: 2 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Be greeted, friend of the ape people. If you want to trade, just ask for my offers. If you are injured, ask for healing."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["busy"]
+    action: say
+    text: "Me great wizard. Me great doctor of ape people. Me know many plants. Me old and me have seen many things."
+  - words: ["wizard"]
+    action: say
+    text: "We see many things and learning quick. Merlkin magic learn quick, quick. We just watch and learn. Sometimes we try and learn."
+  - words: ["things"]
+    action: say
+    text: "Things not good now. Need helper to do mission for me people."
+  - words: ["ape people"]
+    action: say
+    text: "We be kongra, sibang and merlkin. Strange hairless ape people live in city called Port Hope."
+  - words: ["kongra"]
+    action: say
+    text: "Kongra verry strong. Kongra verry angry verry fast. Take care when kongra comes. Better climb on highest tree."
+  - words: ["sibang"]
+    action: say
+    text: "Sibang verry fast and funny. Sibang good gather food. Sibang know jungle well."
+  - words: ["merlkin"]
+    action: say
+    text: "Merlkin we are. Merlkin verry wise, merlkin learn many things quick. Teach other apes things a lot. Making heal and making magic."
+  - words: ["magic"]
+    action: say
+    text: "We see many things and learning quick. Merlkin magic learn quick, quick. We just watch and learn. Sometimes we try and learn."
+  - words: ["jungle"]
+    action: say
+    text: "Jungle is dangerous. Jungle also provides us food. Take care when in jungle and safe you be."

@@ -1,17 +1,14 @@
 use crate::entities::agent::AgentKey;
 use crate::entities::combat::{CombatDamage, CombatElement};
 use crate::entities::creature::CreatureAttackDamage;
-use crate::entities::items::{Item, ItemFlag};
 use crate::entities::player::Player;
-use crate::entities::position::{ItemPlacement, Position};
+use crate::entities::position::Position;
 use crate::game::TickCtx;
 use crate::game::combat::weapon_skill;
-use crate::game::config::GAME_CONFIG;
 use crate::game::death;
 use crate::game::events::BroadcastMessage;
-use crate::game::item_action::check_decay;
+use crate::game::fluids;
 use crate::game::random::Rolls;
-use crate::persistence::items::ITEM_CONFIGS;
 
 /// The target may no longer be in the map when this returns: a lethal hit reaps it. Anything
 /// a caller still needs to do to the target must happen before the call.
@@ -163,49 +160,13 @@ fn get_min_damage(attack_value: u16, level: u16, skill_value: u16) -> u32 {
 }
 
 fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey) {
-    let Some(config) = ITEM_CONFIGS.get(&GAME_CONFIG.combat.pool_item_id) else {
-        return;
-    };
     let Some(attacked) = ctx.map.get_agent(attacked_key) else {
         return;
     };
     let fluid = attacked.blood_type().get_fluid();
-
-    let (ground_depth, existing) = ctx
-        .map
-        .iter_items(attacked_pos)
-        .map(|items| {
-            let items: Vec<_> = items.collect();
-            let depth = items
-                .iter()
-                .take_while(|it| it.config.has_flag(ItemFlag::Ground))
-                .count();
-            let existing = items
-                .iter()
-                .find(|it| it.config.has_flag(ItemFlag::LiquidPool))
-                .map(|it| it.guid);
-            (depth, existing)
-        })
-        .unwrap_or((0, None));
-
-    let pool = Item::new_fluid(config.clone(), fluid);
-    let tick = ctx.tick;
-    let Ok(item) = ctx
-        .map
-        .place_item(attacked_pos, Some(ground_depth), None, pool)
-    else {
-        return;
-    };
-    check_decay(
-        ctx.scheduled,
-        item,
-        ItemPlacement::Map(attacked_pos.clone()),
-        tick,
-    );
-    if let Some(guid) = existing {
-        ctx.map.remove_item_from_tile(attacked_pos, &guid, 1);
-    }
+    fluids::place_pool(ctx, attacked_pos, fluid);
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -215,6 +176,7 @@ mod tests {
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::world_map::WorldMap;
     use crate::game::combat::plan_auto_attack;
+    use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick};
     use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
 

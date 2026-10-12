@@ -1,0 +1,28 @@
+name: "Stan"
+position: { x: 32944, y: 32110, z: 6 }
+speed: 100
+outfit:
+  id: 12
+  colors: [94, 128, 81, 128]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 654, buy: 1000 }
+  - { id: 6578, buy: 600 }
+  - { id: 6572, buy: 80 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

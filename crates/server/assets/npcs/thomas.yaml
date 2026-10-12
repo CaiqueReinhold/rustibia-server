@@ -1,0 +1,40 @@
+name: "Thomas"
+position: { x: 33256, y: 31838, z: 4 }
+speed: 100
+outfit:
+  id: 128
+  colors: [116, 11, 100, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 2838, buy: 15 }
+  - { id: 2844, sell: 20 }
+  - { id: 2837, buy: 15 }
+  - { id: 2818, buy: 12 }
+  - { id: 2842, sell: 100 }
+  - { id: 2846, sell: 15 }
+  - { id: 6386, buy: 30 }
+  - { id: 2839, buy: 15 }
+  - { id: 3509, buy: 10, sell: 8 }
+  - { id: 2843, sell: 30 }
+  - { id: 2814, buy: 8, sell: 5 }
+  - { id: 2817, buy: 8 }
+  - { id: 2815, buy: 5 }
+  - { id: 3059, buy: 150 }
+  - { id: 6538, buy: 30 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

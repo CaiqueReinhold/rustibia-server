@@ -1,0 +1,52 @@
+name: "Nah'Bob"
+position: { x: 33103, y: 32520, z: 2 }
+speed: 100
+outfit:
+  id: 80
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 7436, sell: 5000 }
+  - { id: 3567, sell: 10000 }
+  - { id: 3418, buy: 7000, sell: 1200 }
+  - { id: 3079, sell: 30000 }
+  - { id: 3301, sell: 500 }
+  - { id: 7412, sell: 18000 }
+  - { id: 3381, sell: 12000 }
+  - { id: 3385, sell: 2500 }
+  - { id: 3382, sell: 12000 }
+  - { id: 3419, sell: 8000 }
+  - { id: 3391, sell: 6000 }
+  - { id: 3302, sell: 9000 }
+  - { id: 3416, sell: 4000 }
+  - { id: 3320, sell: 8000 }
+  - { id: 3280, sell: 4000 }
+  - { id: 7454, sell: 3000 }
+  - { id: 3415, sell: 2000 }
+  - { id: 3284, sell: 1000 }
+  - { id: 3380, buy: 8000, sell: 900 }
+  - { id: 3313, buy: 3000, sell: 500 }
+  - { id: 3439, sell: 16000 }
+  - { id: 7410, sell: 20000 }
+  - { id: 3392, sell: 30000 }
+  - { id: 7451, sell: 10000 }
+  - { id: 3271, buy: 8000, sell: 1000 }
+  - { id: 7391, sell: 16000 }
+  - { id: 3279, buy: 10000, sell: 1200 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Bye now, Neutrala {{ PLAYERNAME | capitalize }}. Visit old Bob again one day!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Bye then."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "At your service, just browse through my wares."

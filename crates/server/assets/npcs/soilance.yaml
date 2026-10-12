@@ -1,0 +1,27 @@
+name: "Soilance"
+position: { x: 32821, y: 31222, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [79, 48, 57, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3582, buy: 5 }
+  - { id: 3577, buy: 3 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

@@ -351,10 +351,22 @@ impl PlayerMut<'_> {
 
     pub fn deposit(&mut self, amount: u64) {
         self.player.deposit(amount);
+        self.delta.mark_agent(self.key, AgentFlag::Bank);
     }
 
     pub fn withdraw(&mut self, amount: u64) -> bool {
-        self.player.withdraw(amount)
+        let withdrawn = self.player.withdraw(amount);
+        if withdrawn {
+            self.delta.mark_agent(self.key, AgentFlag::Bank);
+        }
+        withdrawn
+    }
+
+    pub fn set_shop(&mut self, npc: Option<AgentKey>) {
+        if self.player.shop() != npc {
+            self.player.set_shop(npc);
+            self.delta.mark_agent(self.key, AgentFlag::Shop);
+        }
     }
 }
 
@@ -1099,5 +1111,44 @@ mod tests {
         let _ = map.place_item(&Position::new(50, 50, 7), None, None, coins(1));
 
         assert_eq!(stamped(&map), 0);
+    }
+
+    #[test]
+    fn opening_a_shop_marks_it_and_reopening_the_same_one_does_not() {
+        let (mut map, pos) = one_tile();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &pos)
+            .unwrap();
+        let npc = map
+            .insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &pos)
+            .unwrap();
+
+        map.player_mut(player).unwrap().set_shop(Some(npc));
+        assert!(
+            map.take_delta()
+                .agents()
+                .any(|(key, dirty)| key == player && dirty.shop())
+        );
+
+        map.player_mut(player).unwrap().set_shop(Some(npc));
+        assert!(!map.take_delta().agents().any(|(_, dirty)| dirty.shop()));
+        assert_eq!(map.get_player(player).unwrap().shop(), Some(npc));
+    }
+
+    #[test]
+    fn a_deposit_and_a_withdrawal_mark_the_bank_and_a_refused_withdrawal_does_not() {
+        let (mut map, pos) = one_tile();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &pos)
+            .unwrap();
+
+        map.player_mut(player).unwrap().deposit(10);
+        assert!(map.take_delta().agents().any(|(_, dirty)| dirty.bank()));
+
+        assert!(!map.player_mut(player).unwrap().withdraw(11));
+        assert!(!map.take_delta().agents().any(|(_, dirty)| dirty.bank()));
+
+        assert!(map.player_mut(player).unwrap().withdraw(10));
+        assert!(map.take_delta().agents().any(|(_, dirty)| dirty.bank()));
     }
 }

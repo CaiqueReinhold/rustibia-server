@@ -1,0 +1,107 @@
+name: "Donald McRonald"
+position: { x: 32389, y: 32229, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [22, 94, 79, 117]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 8017, buy: 2 }
+  - { id: 3605, buy: 1 }
+  - { id: 3595, buy: 3 }
+  - { id: 3607, buy: 5 }
+  - { id: 3597, buy: 3 }
+  - { id: 8014, buy: 3 }
+  - { id: 3988, sell: 2 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["bloodblade"]
+    action: say
+    text: "A general in the army."
+  - words: ["eclesius"]
+    action: say
+    text: "He sometimes comes to shop our food."
+  - words: ["weather"]
+    action: say
+    text: "Weather is good enough to work on the fields."
+  - words: ["spooked"]
+    action: say
+    text: "I dont know."
+  - words: ["quentin"]
+    action: say
+    text: "A generous person."
+  - words: ["donald"]
+    action: say
+    text: "I am Donald."
+  - words: ["oswald"]
+    action: say
+    text: "He ignores us and we ignore him."
+  - words: ["muriel"]
+    action: say
+    text: "I don't trust sorcerers like you."
+  - words: ["gregor"]
+    action: say
+    text: "Knights always feel superior to us farmers."
+  - words: ["marvik"]
+    action: say
+    text: "Druids are a great help for us, they know much about nature."
+  - words: ["crops"]
+    action: say
+    text: "It is hard to grow but worth the effort."
+  - words: ["field"]
+    action: say
+    text: "My fields are enchanted by the druids and the wheat grows very quickly."
+  - words: ["frodo"]
+    action: say
+    text: "Frodo? He is a friend of mine."
+  - words: ["elane"]
+    action: say
+    text: "Too noble to care about us."
+  - words: ["lynda"]
+    action: say
+    text: "She has a good soul."
+  - words: ["name"]
+    action: say
+    text: "Donald McRonald."
+  - words: ["farm"]
+    action: say
+    text: "It is my farm, yes."
+  - words: ["time"]
+    action: say
+    text: "Who cares?"
+  - words: ["wife"]
+    action: say
+    text: "Sherry is my wife."
+  - words: ["city"]
+    action: say
+    text: "The city is to the north."
+  - words: ["mill"]
+    action: say
+    text: "I sometimes have to bring the wheat there."
+  - words: ["king"]
+    action: say
+    text: "King Tibianus is our king."
+  - words: ["gorn"]
+    action: say
+    text: "Hardly know him."
+  - words: ["job"]
+    action: say
+    text: "I run a farm, what else?!"
+  - words: ["sam"]
+    action: say
+    text: "A blacksmith, eh?"

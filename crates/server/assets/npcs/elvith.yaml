@@ -1,0 +1,77 @@
+name: "Elvith"
+position: { x: 32670, y: 31607, z: 7 }
+speed: 100
+outfit:
+  id: 159
+  colors: [76, 3, 0, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 14253, buy: 140 }
+  - { id: 2950, buy: 195 }
+  - { id: 2949, buy: 120 }
+  - { id: 2954, buy: 150 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Ashari {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Asha Thrazi, {{ PLAYERNAME | capitalize }}!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Asha Thrazi, {{ PLAYERNAME | capitalize }}!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I sell musical instruments of many kinds."
+  - words: ["instruments"]
+    action: say
+    text: "I sell lyres, lutes, drums, and simple fanfares."
+  - words: ["music"]
+    action: say
+    text: "Music is an attempt to condensate emotions in harmonies and save them for the times to come."
+  - words: ["time"]
+    action: say
+    text: "Time has its own song. Close your eyes and listen to the symphony of the seasons."
+  - words: ["song"]
+    action: say
+    text: "Everything is a song. Life, death, history ... everything. To listen to the song of something is the first step to understand it."
+  - words: ["melody"]
+    action: say
+    text: "Everything is a song. Life, death, history ... everything. To listen to the song of something is the first step to understand it."
+  - words: ["elf"]
+    action: say
+    text: "We are the most graceful of all races. We feel the music of the universe in our hearts and souls."
+  - words: ["kuridai"]
+    action: say
+    text: "They could dig some halls for a big musical event, but they won't listen to me about that matter."
+  - words: ["teshial"]
+    action: say
+    text: "I bet they were great musicians."
+  - words: ["crunor"]
+    action: say
+    text: "That is some god the humans worship. Our pople are not interested in this gods anymore."
+  - words: ["human"]
+    action: say
+    text: "They are too loud and don't even understand the concept of a melody."
+  - words: ["deraisim"]
+    action: say
+    text: "The other deraisim are too much concerned with mastering the nature so they don't listen to its music anymore."
+  - words: ["cenath"]
+    action: say
+    text: "The Cenath think they know the 'art' but the only true art is the music."
+  - words: ["troll"]
+    action: say
+    text: "I went down to the mines and tried to lighten up their spirit, the foolish creatures did not listen to my songs, though."
+  - words: ["magic"]
+    action: say
+    text: "Sorry, I don't feel like teaching magic today."
+  - words: ["hellgate"]
+    action: say
+    text: "For the worst of crimes, criminals are cast into hellgate. It is said no one can return from there. Since it is not actually forbidden to enter hellgate, you might convince Elathriel to grant you entrance."

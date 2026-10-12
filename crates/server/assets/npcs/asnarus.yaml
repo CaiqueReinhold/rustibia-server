@@ -1,0 +1,91 @@
+name: "Asnarus"
+position: { x: 33542, y: 32383, z: 7 }
+speed: 100
+outfit:
+  id: 104
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3203, buy: 375 }
+  - { id: 3447, buy: 2 }
+  - { id: 35848, buy: 400 }
+  - { id: 3446, buy: 4 }
+  - { id: 3350, buy: 400, sell: 100 }
+  - { id: 20204, sell: 500 }
+  - { id: 20184, sell: 1900 }
+  - { id: 3349, buy: 500, sell: 120 }
+  - { id: 15793, buy: 20 }
+  - { id: 20202, sell: 450 }
+  - { id: 3197, buy: 26 }
+  - { id: 35901, buy: 130 }
+  - { id: 16142, buy: 12 }
+  - { id: 774, buy: 5 }
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 3149, buy: 203 }
+  - { id: 16143, buy: 12 }
+  - { id: 3189, buy: 30 }
+  - { id: 763, buy: 5 }
+  - { id: 761, buy: 5 }
+  - { id: 20199, sell: 400 }
+  - { id: 20198, sell: 700 }
+  - { id: 20205, sell: 650 }
+  - { id: 239, buy: 225 }
+  - { id: 238, buy: 158 }
+  - { id: 7642, buy: 254 }
+  - { id: 266, buy: 50 }
+  - { id: 20206, sell: 350 }
+  - { id: 3182, buy: 16 }
+  - { id: 3158, buy: 30 }
+  - { id: 3180, buy: 116 }
+  - { id: 268, buy: 56 }
+  - { id: 7365, buy: 7 }
+  - { id: 3165, buy: 700 }
+  - { id: 7363, buy: 5 }
+  - { id: 3173, buy: 85 }
+  - { id: 20207, sell: 430 }
+  - { id: 3450, buy: 7 }
+  - { id: 16141, buy: 20 }
+  - { id: 35562, buy: 400 }
+  - { id: 35849, buy: 400 }
+  - { id: 7378, buy: 15 }
+  - { id: 762, buy: 5 }
+  - { id: 20183, sell: 3000 }
+  - { id: 20200, sell: 390 }
+  - { id: 20201, sell: 600 }
+  - { id: 7364, buy: 5 }
+  - { id: 3195, buy: 46 }
+  - { id: 3277, buy: 9, sell: 3 }
+  - { id: 35902, buy: 70 }
+  - { id: 3175, buy: 41 }
+  - { id: 236, buy: 115 }
+  - { id: 237, buy: 108 }
+  - { id: 23375, buy: 650 }
+  - { id: 14251, buy: 6 }
+  - { id: 3287, buy: 42 }
+  - { id: 3202, buy: 52 }
+  - { id: 20203, sell: 900 }
+  - { id: 7643, buy: 379 }
+  - { id: 23373, buy: 488 }
+  - { id: 23374, buy: 488 }
+  - { id: 2874, sell: 5 }
+  - { id: 14252, buy: 6 }
+  - { id: 3156, buy: 160 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

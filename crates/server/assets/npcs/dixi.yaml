@@ -1,0 +1,189 @@
+name: "Dixi"
+position: { x: 32105, y: 32207, z: 6 }
+speed: 100
+outfit:
+  id: 136
+  colors: [96, 99, 76, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "<clears throat> Get your armor and shields heeeeeeere! Upstairs!"
+    - "Need some help? Just ask me, I can show you around!"
+    - "Don't forget to protect yourself with a shield!"
+    - "Selling the finest armors on Rookgaard!"
+    - "Don't let these mean monsters hurt you - get better equipment now!"
+shop:
+  - { id: 3354, sell: 22 }
+  - { id: 3411, sell: 25 }
+  - { id: 3358, sell: 40 }
+  - { id: 3352, buy: 52, sell: 12 }
+  - { id: 3562, buy: 8 }
+  - { id: 3430, sell: 50 }
+  - { id: 3379, buy: 16, sell: 3 }
+  - { id: 3561, buy: 10 }
+  - { id: 3361, buy: 25, sell: 5 }
+  - { id: 3552, sell: 2 }
+  - { id: 3355, buy: 12, sell: 3 }
+  - { id: 3559, buy: 10, sell: 2 }
+  - { id: 3374, sell: 22 }
+  - { id: 3410, sell: 40 }
+  - { id: 3378, sell: 10 }
+  - { id: 3376, buy: 63, sell: 20 }
+  - { id: 3362, sell: 15 }
+  - { id: 3426, buy: 50, sell: 16 }
+  - { id: 3367, sell: 25 }
+  - { id: 3412, buy: 15 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Um yeah, good day."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Here, take a look and choose something nice for you!"
+  - words: ["name"]
+    action: say
+    text: "I'm Dixi."
+  - words: ["citizen"]
+    action: say
+    text: "<giggles> I love gossiping - err, I mean providing valuable information of course, just tell me a name! <winks>"
+  - words: ["job"]
+    action: say
+    text: "I'm helping my grandfather Obi with this shop. If you like to see my offers, simply ask me for a trade!"
+  - words: ["bank"]
+    action: say
+    text: "You can deposit your money there to keep it safe. However, you still need cash to buy something here."
+  - words: ["destiny"]
+    action: say
+    text: "The Island of Destiny can be reached via the oracle once you are level 8. This trip will help you choose your profession!"
+  - words: ["profession"]
+    action: say
+    text: "You will learn everything you need to know about professions once you reach the Island of Destiny."
+  - words: ["premium"]
+    action: say
+    text: "As a premium adventurer you can visit different regions on this island, trade with Lee'Delle and much more."
+  - words: ["equipment"]
+    action: say
+    text: "As an adventurer, you should always have at least a backpack, a rope, a shovel, a weapon, an armor and a shield."
+  - words: ["torch"]
+    action: say
+    text: "If you need a torch, go see Al Dee's store."
+  - words: ["weapon"]
+    action: say
+    text: "Oh, I'm sorry, but my grandfather Obi doesn't like seeing me waving around with pointy things. He sells weapons himself, just go downstairs!"
+  - words: ["food"]
+    action: say
+    text: "Are you hungry? Then you should visit Willie or Billy in the West of town. Norma also has yummy stuff! Oh, and you could pick blueberries or eat the food some monsters carry with them."
+  - words: ["potion"]
+    action: say
+    text: "Lily sells effective health potions and antidote potions against poison."
+  - words: ["academy"]
+    action: say
+    text: "The big building in the centre of Rookgaard. They have a library, a training centre, a bank and the room of the oracle. Seymore is the teacher there."
+  - words: ["king"]
+    action: say
+    text: "King Tibianus is a wise and noble monarch. This island of Rookgaard belongs to his kingdom."
+  - words: ["rookgaard"]
+    action: say
+    text: "Our lovely village will provide shelter for you. Once you are level 8, you can travel to mainland and choose a profession."
+  - words: ["mainland"]
+    action: say
+    text: "If you want to fight monsters in dungeons, you definitely need some good equipment such as a weapon, an armor and a shield."
+  - words: ["buy"]
+    action: say
+    text: "Just ask me for a trade to check out my offers."
+  - words: ["sell"]
+    action: say
+    text: "Just ask me for a trade to see what I buy from you."
+  - words: ["merchant"]
+    action: say
+    text: "To view the offers of a merchant, simply talk to him or her and ask for a trade."
+  - words: ["blueberr"]
+    action: say
+    text: "There are many blueberry bushes in and around this village. Just use them to your liking!"
+  - words: ["dungeon"]
+    action: say
+    text: "You need to make sure you have some basic equipment before you head into dungeons such as the sewers."
+  - words: ["sewer"]
+    action: say
+    text: "There is a sewer grate which you can use to enter the sewers just left of this building. Eww, this smell!"
+  - words: ["how are you"]
+    action: say
+    text: "I'm fine, thank you."
+  - words: ["help", "information"]
+    action: say
+    text: "How can I help you? I can give you general hints, information about citizens or talk about many other topics. Just ask me!"
+  - words: ["money", "gold"]
+    action: say
+    text: "I'm sorry honey, but I can't lend you gold. Earn it yourself by fighting monsters and picking up the things they carry. Sell it to merchants to make profit!"
+  - words: ["backpack", "rope", "shovel", "fishing"]
+    action: say
+    text: "You should never embark on an adventure without it. Ask Al Dee or Lee'Delle for it!"
+  - words: ["armor", "shield", "helmet"]
+    action: say
+    text: "Yes, I can sell that to you. Just ask me for a trade to see what I buy from you."
+  - words: ["offer", "stuff", "wares"]
+    action: say
+    text: "Me and my grandfather Obi sell equipment of all kinds. Just ask him or me for a trade if you like to see our offers."
+  - words: ["norma"]
+    action: say
+    text: "Norma used to sell equipment, but she finally earned enough money to fulfil one of her dreams - her own bar!"
+  - words: ["loui"]
+    action: say
+    text: "I never understand what he's talking about."
+  - words: ["santiago"]
+    action: say
+    text: "I'm glad that he's here. He does a great job!"
+  - words: ["zirella"]
+    action: say
+    text: "Sometimes, I help Zirella collecting wood. Her old back aches all the time. It's a shame her son Tom doesn't help her."
+  - words: ["al dee"]
+    action: say
+    text: "In Al Dee's shop you will find important general equipment such as ropes, shovels and torches."
+  - words: ["amber"]
+    action: say
+    text: "One day, I want to become a brave adventurer like her and leave this town!"
+  - words: ["billy"]
+    action: say
+    text: "Billy can be kind of scary. He swears a lot and doesn't talk to everybody."
+  - words: ["willie"]
+    action: say
+    text: "Uncle Willie and Billy are farmers, which means they are a good place to sell and buy food."
+  - words: ["cipfried"]
+    action: say
+    text: "He can heal you if you're injured or poisoned."
+  - words: ["dixi"]
+    action: say
+    text: "Did I hear my name somewhere?"
+  - words: ["hyacinth"]
+    action: say
+    text: "I think he's a bit strange, living alone outside this village. How can he dislike to chat with everybody here?"
+  - words: ["lee'delle"]
+    action: say
+    text: "Lee'Delle's shop is on the premium side of the village. You should visit it!"
+  - words: ["lily"]
+    action: say
+    text: "I always give my cookies and blueberries to Lily. She loves them! Also, she sells potions."
+  - words: ["oracle"]
+    action: say
+    text: "You can find the oracle on the top floor of the academy, just above Seymour. Go there when you are level 8 to find your destiny."
+  - words: ["paulie"]
+    action: say
+    text: "He is the local bank clerk."
+  - words: ["seymour"]
+    action: say
+    text: "Seymour is a loyal follower of the king and a teacher in the academy."
+  - words: ["tom"]
+    action: say
+    text: "I wish he would talk to his mother Zirella again. I feel so sorry for her. Anyway, as Tom is a tanner, you can sell leather and fresh corpses to him."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "He's one of our reliable guardsmen. Without them, many monsters would roam the village of Rookgaard!"

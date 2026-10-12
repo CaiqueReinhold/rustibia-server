@@ -1,0 +1,63 @@
+name: "Kroox"
+position: { x: 32651, y: 31887, z: 9 }
+speed: 100
+outfit:
+  id: 160
+  colors: [0, 120, 82, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3413, sell: 95 }
+  - { id: 3359, buy: 450, sell: 150 }
+  - { id: 3354, buy: 120, sell: 30 }
+  - { id: 3372, buy: 195, sell: 49 }
+  - { id: 3411, buy: 65, sell: 25 }
+  - { id: 3283, buy: 473, sell: 118 }
+  - { id: 3358, buy: 200, sell: 70 }
+  - { id: 3352, buy: 52, sell: 17 }
+  - { id: 3558, buy: 80, sell: 25 }
+  - { id: 3562, buy: 8, sell: 1 }
+  - { id: 3430, sell: 50 }
+  - { id: 3356, sell: 450 }
+  - { id: 3379, buy: 16, sell: 3 }
+  - { id: 3425, buy: 500, sell: 100 }
+  - { id: 3353, buy: 390, sell: 150 }
+  - { id: 3561, buy: 12, sell: 1 }
+  - { id: 3371, sell: 375 }
+  - { id: 3361, buy: 35, sell: 12 }
+  - { id: 3552, buy: 10, sell: 2 }
+  - { id: 3355, buy: 12, sell: 4 }
+  - { id: 3559, buy: 10, sell: 9 }
+  - { id: 3374, sell: 22 }
+  - { id: 3357, buy: 1200, sell: 400 }
+  - { id: 3557, sell: 115 }
+  - { id: 3410, buy: 125, sell: 45 }
+  - { id: 3377, buy: 260, sell: 75 }
+  - { id: 3462, sell: 5 }
+  - { id: 3375, buy: 110, sell: 16 }
+  - { id: 3351, buy: 580, sell: 293 }
+  - { id: 3409, buy: 240, sell: 80 }
+  - { id: 3378, buy: 90, sell: 25 }
+  - { id: 3376, buy: 63, sell: 20 }
+  - { id: 3362, buy: 50, sell: 15 }
+  - { id: 3426, buy: 50, sell: 16 }
+  - { id: 3367, buy: 265, sell: 66 }
+  - { id: 3431, buy: 260, sell: 85 }
+  - { id: 3369, sell: 696 }
+  - { id: 3412, buy: 15, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to Kroox Quality Armor, {{ PLAYERNAME | capitalize }}! Wanna take a look, ask me for a trade."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

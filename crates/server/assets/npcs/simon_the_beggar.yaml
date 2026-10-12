@@ -1,0 +1,96 @@
+name: "Simon The Beggar"
+position: { x: 32186, y: 32471, z: 7 }
+speed: 100
+outfit:
+  id: 153
+  colors: [116, 123, 123, 40]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Alms! Alms for the poor!"
+    - "Sir, Ma'am, have a gold coin to spare?"
+    - "I need help! Please help me!"
+shop:
+  - { id: 3457, buy: 50 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello {{ PLAYERNAME | capitalize }}. I am a poor man. Please help me."
+  - words: GOODBYE
+    action: dismiss
+    text: "Have a nice day."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Have a nice day."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["giant spider"]
+    action: say
+    text: "I know that terrible monster. It killed the fishers on the isle to the north."
+  - words: ["minotaurs"]
+    action: say
+    text: "Very rich monsters. But they are too strong for me. However, there are even stronger monsters."
+  - words: ["treasure"]
+    action: say
+    text: "I know there are two rooms. And I know you can pass only the first door. The second door can't be opened."
+  - words: ["dungeon"]
+    action: say
+    text: "I heard a lot about the Fibula Dungeon. But I never was there."
+  - words: ["village"]
+    action: say
+    text: "To the north is the village Fibula. A very small village."
+  - words: ["monster"]
+    action: say
+    text: "The strongest monster I know is the giant spider."
+  - words: ["beggar"]
+    action: say
+    text: "I have no gold and no job, so I am a beggar."
+  - words: ["dermot"]
+    action: say
+    text: "The magistrate of the village. I heard he is selling something for the Fibula Dungeon."
+  - words: ["fibula"]
+    action: say
+    text: "I hate Fibula. Too many wolves are here."
+  - words: ["shovel"]
+    action: say
+    text: "Hehe, don't you have a shovel? I can sell you a shovel if you want to return to Tibia, just ask me for a trade."
+  - words: ["jetty"]
+    action: say
+    text: "I hate this jetty. I have never seen a ship here."
+  - words: ["simon"]
+    action: say
+    text: "I am Simon. The poorest human all over the continent."
+  - words: ["tibia"]
+    action: say
+    text: "Hehe, don't you have a shovel? I can sell you a shovel if you want to return to Tibia, just ask me for a trade."
+  - words: ["timur"]
+    action: say
+    text: "I hate Timur. He is too expensive. But sometimes I find maces and hatchets. Timur is buying these items."
+  - words: ["flute"]
+    action: say
+    text: "Har, har. The stupid Dermot lost his flute. I know that some minotaurs have it in their treasure room."
+  - words: ["gold"]
+    action: say
+    text: "I need gold. I love gold. I need help."
+  - words: ["poor"]
+    action: say
+    text: "I have no job. I am a beggar."
+  - words: ["name"]
+    action: say
+    text: "My name is Simon. I am a very poor man."
+  - words: ["ship"]
+    action: say
+    text: "There is a large sea-monster outside. I think there is no gritty captain to sail in this quarter."
+  - words: ["wolf"]
+    action: say
+    text: "Please kill them ... ALL."
+  - words: ["job"]
+    action: say
+    text: "I have no job. I am a beggar."
+  - words: ["key"]
+    action: say
+    text: "Key? There are a lot of keys. Please change the topic."

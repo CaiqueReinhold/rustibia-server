@@ -1,0 +1,31 @@
+name: "Norbert"
+position: { x: 32952, y: 32103, z: 6 }
+speed: 100
+outfit:
+  id: 128
+  colors: [6, 79, 93, 13]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3562, buy: 8, sell: 1 }
+  - { id: 3379, buy: 16, sell: 3 }
+  - { id: 3561, buy: 12, sell: 1 }
+  - { id: 3361, buy: 35, sell: 12 }
+  - { id: 3378, buy: 90, sell: 25 }
+  - { id: 9586, buy: 5000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

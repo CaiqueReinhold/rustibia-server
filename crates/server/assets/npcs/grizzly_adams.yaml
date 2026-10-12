@@ -1,0 +1,80 @@
+name: "Grizzly Adams"
+position: { x: 32693, y: 32767, z: 6 }
+speed: 100
+outfit:
+  id: 144
+  colors: [116, 78, 94, 78]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 10297, sell: 50 }
+  - { id: 9633, sell: 100 }
+  - { id: 10272, sell: 35 }
+  - { id: 9657, sell: 55 }
+  - { id: 12316, sell: 550 }
+  - { id: 17818, sell: 150 }
+  - { id: 11514, sell: 110 }
+  - { id: 7398, sell: 500 }
+  - { id: 10398, sell: 15000 }
+  - { id: 12309, sell: 800 }
+  - { id: 18994, sell: 115 }
+  - { id: 9648, sell: 30 }
+  - { id: 12317, sell: 950 }
+  - { id: 11539, sell: 20 }
+  - { id: 12314, sell: 400 }
+  - { id: 10282, sell: 600 }
+  - { id: 10455, sell: 80 }
+  - { id: 10419, sell: 8000 }
+  - { id: 11489, sell: 280 }
+  - { id: 17461, sell: 65 }
+  - { id: 17462, sell: 50 }
+  - { id: 12315, sell: 250 }
+  - { id: 7401, sell: 500 }
+  - { id: 9662, sell: 420 }
+  - { id: 12039, sell: 750 }
+  - { id: 12040, sell: 300 }
+  - { id: 11491, sell: 500 }
+  - { id: 11490, sell: 410 }
+  - { id: 11487, sell: 140 }
+  - { id: 12172, sell: 50 }
+  - { id: 18993, sell: 70 }
+  - { id: 10311, sell: 400 }
+  - { id: 10456, sell: 20 }
+  - { id: 9631, sell: 280 }
+  - { id: 12312, sell: 280 }
+  - { id: 12313, sell: 150 }
+  - { id: 10454, sell: 60 }
+  - { id: 10452, sell: 170 }
+  - { id: 10273, sell: 95 }
+  - { id: 5907, buy: 35000 }
+  - { id: 10244, sell: 6000 }
+  - { id: 7397, sell: 3000 }
+  - { id: 7400, sell: 3000 }
+  - { id: 7395, sell: 1000 }
+  - { id: 7394, sell: 3000 }
+  - { id: 7396, sell: 20000 }
+  - { id: 7393, sell: 40000 }
+  - { id: 7399, sell: 10000 }
+  - { id: 10421, sell: 3000 }
+  - { id: 22101, sell: 9000 }
+  - { id: 22102, sell: 10000 }
+  - { id: 22103, sell: 11000 }
+  - { id: 27706, sell: 9000 }
+  - { id: 34219, sell: 12000 }
+  - { id: 9601, buy: 1000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to the 'Paw and Fur - Hunting Elite' {{ PLAYERNAME | capitalize }}. Feel free to do tasks for us."
+  - words: GOODBYE
+    action: dismiss
+    text: "Happy hunting, old chap!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Happy hunting, old chap!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

@@ -85,6 +85,14 @@ impl Payment {
         self.change += other.change;
         self
     }
+
+    pub fn taking(takes: Vec<(InventorySlot, ItemGuid, u8)>) -> Payment {
+        Payment { takes, change: 0 }
+    }
+
+    pub fn change(&self) -> u64 {
+        self.change
+    }
 }
 
 /// One `id` from anywhere in `inventory`, containers included.
@@ -133,6 +141,24 @@ pub fn plan_payment(inventory: &Inventory, coins: &Coins, cost: u64) -> Option<P
     }
 
     (remaining == 0).then_some(Payment { takes, change: 0 })
+}
+
+/// The payment, and how much of `cost` it leaves for the bank to cover.
+pub fn plan_payment_with_bank(
+    inventory: &Inventory,
+    coins: &Coins,
+    balance: u64,
+    cost: u64,
+) -> Option<(Payment, u64)> {
+    if let Some(payment) = plan_payment(inventory, coins, cost) {
+        return Some((payment, 0));
+    }
+    let held = coins_held(inventory, coins);
+    let from_bank = cost - held;
+    if from_bank > balance {
+        return None;
+    }
+    Some((plan_payment(inventory, coins, held)?, from_bank))
 }
 
 pub fn coins_held(inventory: &Inventory, coins: &Coins) -> u64 {
@@ -492,5 +518,56 @@ mod tests {
     #[test]
     fn every_configured_coin_is_in_the_item_catalogue() {
         Lazy::force(&COINS);
+    }
+
+    #[test]
+    fn coins_that_cover_the_cost_draw_nothing_from_the_bank() {
+        let coins = coins();
+        let inventory = an_inventory(vec![(
+            InventorySlot::Backpack,
+            a_bag(20, vec![a_coin(&coins, 1, 50)]),
+        )]);
+
+        assert_eq!(
+            plan_payment_with_bank(&inventory, &coins, 1_000, 30),
+            Some((plan_payment(&inventory, &coins, 30).unwrap(), 0))
+        );
+    }
+
+    #[test]
+    fn a_shortfall_is_drawn_from_the_bank_after_every_coin_is_spent() {
+        let coins = coins();
+        let gold = a_coin(&coins, 1, 50);
+        let platinum = a_coin(&coins, 100, 1);
+        let (gold_guid, platinum_guid) = (gold.guid, platinum.guid);
+        let inventory = an_inventory(vec![(
+            InventorySlot::Backpack,
+            a_bag(20, vec![platinum, gold]),
+        )]);
+
+        assert_eq!(
+            plan_payment_with_bank(&inventory, &coins, 300, 400),
+            Some((
+                Payment {
+                    takes: vec![
+                        (InventorySlot::Backpack, gold_guid, 50),
+                        (InventorySlot::Backpack, platinum_guid, 1),
+                    ],
+                    change: 0,
+                },
+                250
+            ))
+        );
+    }
+
+    #[test]
+    fn coins_and_bank_together_short_of_the_cost_plan_nothing() {
+        let coins = coins();
+        let inventory = an_inventory(vec![(
+            InventorySlot::Backpack,
+            a_bag(20, vec![a_coin(&coins, 100, 1)]),
+        )]);
+
+        assert_eq!(plan_payment_with_bank(&inventory, &coins, 300, 401), None);
     }
 }

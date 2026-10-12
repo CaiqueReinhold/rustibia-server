@@ -10,18 +10,22 @@ use thiserror::Error;
 
 use crate::config::CONFIG;
 use crate::entities::agent::{OutfitColors, OutfitId};
+use crate::entities::items::{FluidType, ItemConfig, ItemFlag, ItemId};
 use crate::entities::npc::{
-    self, GOODBYE_WORDS, GREET_WORDS, Keyword, Npc, NpcAction, SlotKind, WALK_AWAY_WORD, Word,
+    self, GOODBYE_WORDS, GREET_WORDS, Keyword, Npc, NpcAction, ShopOffer, SlotKind, WALK_AWAY_WORD,
+    Word,
 };
 use crate::entities::position::Position;
 use crate::entities::voices::Voices;
 use crate::game::TickDelta;
+use crate::persistence::items::ITEM_CONFIGS;
 use crate::persistence::yaml_files_in;
 
 pub type NpcId = String;
 
-pub static NPCS: Lazy<Arc<HashMap<NpcId, Arc<Npc>>>> =
-    Lazy::new(|| Arc::new(load_npcs(&CONFIG.npcs_dir_path).expect("failed to load npcs")));
+pub static NPCS: Lazy<Arc<HashMap<NpcId, Arc<Npc>>>> = Lazy::new(|| {
+    Arc::new(load_npcs(&CONFIG.npcs_dir_path, &ITEM_CONFIGS).expect("failed to load npcs"))
+});
 
 #[derive(Error, Debug)]
 pub enum NpcsLoadError {
@@ -53,6 +57,14 @@ pub enum NpcsLoadError {
     },
     #[error("{path} has an argument named `{name}`, which the game supplies")]
     ReservedArgument { path: PathBuf, name: String },
+    #[error("{path}: shop offer {id} {reason}")]
+    BadOffer {
+        path: PathBuf,
+        id: u16,
+        reason: &'static str,
+    },
+    #[error("{path} {reason}")]
+    BadShop { path: PathBuf, reason: &'static str },
 }
 
 #[derive(Deserialize)]
@@ -96,6 +108,7 @@ enum RawAction {
     Teleport,
     Deposit,
     Withdraw,
+    Trade,
 }
 
 #[derive(Deserialize)]
@@ -131,7 +144,63 @@ struct RawNpc {
     say: RawVoices,
     #[serde(default)]
     arguments: BTreeMap<String, Value>,
+    #[serde(default)]
+    shop: Vec<RawOffer>,
     keywords: Vec<RawKeyword>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawOffer {
+    id: ItemId,
+    #[serde(default)]
+    buy: Option<u32>,
+    #[serde(default)]
+    sell: Option<u32>,
+    #[serde(default)]
+    fluid: Option<String>,
+}
+
+fn convert_shop(
+    path: &Path,
+    raw: Vec<RawOffer>,
+    items: &HashMap<ItemId, Arc<ItemConfig>>,
+) -> Result<Vec<ShopOffer>, NpcsLoadError> {
+    let mut offers: Vec<ShopOffer> = Vec::with_capacity(raw.len());
+    for offer in raw {
+        let bad = |reason| NpcsLoadError::BadOffer {
+            path: path.to_path_buf(),
+            id: offer.id.0,
+            reason,
+        };
+        if offer.buy.is_none() && offer.sell.is_none() {
+            return Err(bad("has neither a buy nor a sell price"));
+        }
+        let config = items
+            .get(&offer.id)
+            .ok_or_else(|| bad("is not in the item catalogue"))?;
+        let fluid = match (&offer.fluid, config.has_flag(ItemFlag::LiquidContainer)) {
+            (None, false) => None,
+            (None, true) => Some(FluidType::None),
+            (Some(name), true) => {
+                Some(FluidType::from_name(name).ok_or_else(|| bad("names an unknown fluid"))?)
+            }
+            (Some(_), false) => return Err(bad("names a fluid but is not a liquid container")),
+        };
+        if offers
+            .iter()
+            .any(|known| known.id() == offer.id && known.fluid == fluid)
+        {
+            return Err(bad("is offered twice"));
+        }
+        offers.push(ShopOffer {
+            config: Arc::clone(config),
+            fluid,
+            buy: offer.buy,
+            sell: offer.sell,
+        });
+    }
+    Ok(offers)
 }
 
 fn convert_action(
@@ -190,6 +259,7 @@ fn convert_action(
         RawAction::Say => Ok(NpcAction::Say),
         RawAction::Engage => Ok(NpcAction::Engage),
         RawAction::Dismiss => Ok(NpcAction::Dismiss),
+        RawAction::Trade => Ok(NpcAction::Trade),
     }
 }
 
@@ -332,7 +402,11 @@ fn is_reserved(name: &str, arguments: &BTreeMap<String, Value>) -> bool {
     GAME_VARIABLES.contains(&name) || arguments.contains_key(name)
 }
 
-pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadError> {
+pub(crate) fn parse_npc(
+    path: &Path,
+    contents: &str,
+    items: &HashMap<ItemId, Arc<ItemConfig>>,
+) -> Result<Npc, NpcsLoadError> {
     let raw: RawNpc =
         serde_yaml::from_str(contents).map_err(|source| NpcsLoadError::ParseError {
             path: path.to_path_buf(),
@@ -352,6 +426,18 @@ pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadErro
 
     let mut environment = npc::environment();
     let keywords = convert_keywords(path, &mut environment, &raw.arguments, raw.keywords, None)?;
+    let shop = convert_shop(path, raw.shop, items)?;
+    let opens_shop = keywords.iter().any(|keyword| keyword.opens_shop());
+    let bad = |reason| NpcsLoadError::BadShop {
+        path: path.to_path_buf(),
+        reason,
+    };
+    if opens_shop && shop.is_empty() {
+        return Err(bad("has a trade keyword but no shop"));
+    }
+    if !opens_shop && !shop.is_empty() {
+        return Err(bad("has a shop that no trade keyword opens"));
+    }
 
     Ok(Npc {
         name: raw.name,
@@ -368,11 +454,15 @@ pub(crate) fn parse_npc(path: &Path, contents: &str) -> Result<Npc, NpcsLoadErro
         keywords,
         arguments: raw.arguments,
         environment,
+        shop,
     })
 }
 
 /// Each `.yaml` file in `dir` is one NPC, and its file stem is the `NpcId`.
-pub fn load_npcs(dir: impl AsRef<Path>) -> Result<HashMap<NpcId, Arc<Npc>>, NpcsLoadError> {
+pub fn load_npcs(
+    dir: impl AsRef<Path>,
+    items: &HashMap<ItemId, Arc<ItemConfig>>,
+) -> Result<HashMap<NpcId, Arc<Npc>>, NpcsLoadError> {
     let dir = dir.as_ref();
     let paths = yaml_files_in(dir).map_err(|source| NpcsLoadError::ReadError {
         path: dir.to_path_buf(),
@@ -392,7 +482,7 @@ pub fn load_npcs(dir: impl AsRef<Path>) -> Result<HashMap<NpcId, Arc<Npc>>, Npcs
                     path: path.clone(),
                     source,
                 })?;
-            Ok((id, Arc::new(parse_npc(&path, &contents)?)))
+            Ok((id, Arc::new(parse_npc(&path, &contents, items)?)))
         })
         .collect()
 }
@@ -448,7 +538,36 @@ keywords:
 "#;
 
     fn parse(document: &str) -> Result<Npc, NpcsLoadError> {
-        parse_npc(Path::new("test.yaml"), document)
+        parse_npc(Path::new("test.yaml"), document, &a_catalogue())
+    }
+
+    fn a_catalogue() -> HashMap<ItemId, Arc<ItemConfig>> {
+        let torch = ItemConfig::new(ItemId(9001), "torch".to_string(), None, None, [], []);
+        let vial = ItemConfig::new(
+            ItemId(9003),
+            "vial".to_string(),
+            None,
+            None,
+            [ItemFlag::LiquidContainer],
+            [],
+        );
+        HashMap::from([
+            (ItemId(9001), Arc::new(torch)),
+            (ItemId(9003), Arc::new(vial)),
+        ])
+    }
+
+    fn with_shop(shop: &str, keywords: &str) -> String {
+        with_keywords(keywords).replace("keywords:\n", &format!("shop:\n{shop}keywords:\n"))
+    }
+
+    const TRADE: &str = "  - words: [\"trade\"]\n    action: trade\n    text: Look.\n";
+
+    fn bad_shop(document: &str) -> &'static str {
+        match parse(document) {
+            Err(NpcsLoadError::BadShop { reason, .. }) => reason,
+            other => panic!("expected BadShop, got {other:?}"),
+        }
     }
 
     fn answering<'a>(
@@ -856,5 +975,113 @@ keywords:
     #[test]
     fn every_shipped_npc_loads() {
         Lazy::force(&NPCS);
+    }
+
+    #[test]
+    fn a_shop_loads_its_offers_with_their_items() {
+        let document = with_shop("  - { id: 9001, buy: 50, sell: 10 }\n", TRADE);
+
+        let npc = parse(&document).unwrap();
+
+        let offer = npc.offer(ItemId(9001), 0).unwrap();
+        assert_eq!(offer.config.name, "torch");
+        assert_eq!((offer.buy, offer.sell), (Some(50), Some(10)));
+    }
+
+    #[test]
+    fn a_liquid_container_is_offered_per_fluid_and_empty_without_one() {
+        let document = with_shop(
+            "  - { id: 9003, sell: 5 }\n  - { id: 9003, fluid: milk, buy: 8 }\n",
+            TRADE,
+        );
+
+        let npc = parse(&document).unwrap();
+
+        assert_eq!(
+            npc.offer(ItemId(9003), 0).map(|offer| offer.fluid),
+            Some(Some(FluidType::None))
+        );
+        assert_eq!(
+            npc.offer(ItemId(9003), FluidType::Milk as u8)
+                .map(|offer| offer.buy),
+            Some(Some(8))
+        );
+    }
+
+    #[test]
+    fn a_misplaced_or_unknown_or_repeated_fluid_is_refused() {
+        for shop in [
+            "  - { id: 9001, fluid: milk, buy: 5 }\n",
+            "  - { id: 9003, fluid: lava, buy: 5 }\n",
+            "  - { id: 9003, fluid: milk, buy: 5 }\n  - { id: 9003, fluid: milk, sell: 1 }\n",
+        ] {
+            assert!(
+                matches!(
+                    parse(&with_shop(shop, TRADE)),
+                    Err(NpcsLoadError::BadOffer { .. })
+                ),
+                "{shop}"
+            );
+        }
+    }
+
+    #[test]
+    fn an_offer_of_an_item_not_in_the_catalogue_is_refused() {
+        let document = with_shop("  - { id: 9002, buy: 5 }\n", TRADE);
+
+        assert!(matches!(
+            parse(&document),
+            Err(NpcsLoadError::BadOffer { id: 9002, .. })
+        ));
+    }
+
+    #[test]
+    fn an_offer_with_neither_price_or_offered_twice_is_refused() {
+        for shop in [
+            "  - { id: 9001 }\n",
+            "  - { id: 9001, buy: 5 }\n  - { id: 9001, sell: 1 }\n",
+        ] {
+            assert!(matches!(
+                parse(&with_shop(shop, TRADE)),
+                Err(NpcsLoadError::BadOffer { id: 9001, .. })
+            ));
+        }
+    }
+
+    #[test]
+    fn a_trade_keyword_without_a_shop_is_refused() {
+        bad_shop(&with_keywords(TRADE));
+    }
+
+    #[test]
+    fn a_shop_no_keyword_can_open_is_refused() {
+        let document = with_shop(
+            "  - { id: 9001, buy: 5 }\n",
+            "  - words: [\"sail\"]\n    action: say\n    text: Hm?\n",
+        );
+
+        bad_shop(&document);
+    }
+
+    #[test]
+    fn a_trade_keyword_under_another_opens_the_shop() {
+        let document = with_shop(
+            "  - { id: 9001, buy: 5 }\n",
+            concat!(
+                "  - words: [\"wares\"]\n    action: say\n    text: Want to see?\n    children:\n",
+                "      - words: [\"yes\"]\n        action: trade\n        text: Look.\n",
+            ),
+        );
+
+        parse(&document).unwrap();
+    }
+
+    #[test]
+    fn a_trade_with_a_failed_text_or_params_is_refused() {
+        for extra in ["    failed_text: No.\n", "    params: { cost: \"1\" }\n"] {
+            let document = with_shop("  - { id: 9001, buy: 5 }\n", &format!("{TRADE}{extra}"));
+
+            assert_eq!(bad_keyword(&document).0, "trade");
+        }
     }
 }

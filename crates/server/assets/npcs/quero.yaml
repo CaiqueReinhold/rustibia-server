@@ -1,0 +1,65 @@
+name: "Quero"
+position: { x: 32390, y: 32219, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [55, 30, 24, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 14253, buy: 140 }
+  - { id: 2950, buy: 195 }
+  - { id: 2949, buy: 120 }
+  - { id: 2954, buy: 150 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["benjamin"]
+    action: say
+    text: "He's nice."
+  - words: ["eclesius"]
+    action: say
+    text: "That name rings a bell, wait... I've last seen him several days ago when he went to buy some bread at the farm."
+  - words: ["music"]
+    action: say
+    text: "I love the music of the elves."
+  - words: ["elves"]
+    action: say
+    text: "They live in the northeast of Tibia."
+  - words: ["child"]
+    action: say
+    text: "Yes, I have a small daughter. Her room is upstairs."
+  - words: ["tooth"]
+    action: say
+    text: "I wonder why this matters to you. But yes, my daughter lost her first tooth a few days ago."
+  - words: ["name"]
+    action: say
+    text: "My name is Quero."
+  - words: ["time"]
+    action: say
+    text: "Sorry, I don't know what time it is."
+  - words: ["bard"]
+    action: say
+    text: "Selling instruments isn't enough to live on and I love music. That's why I wander through the lands from time to time."
+  - words: ["job"]
+    action: say
+    text: "I make instruments and sometimes I'm wandering through the lands of Tibia as a bard."
+  - words: ["elf"]
+    action: say
+    text: "They live in the northeast of Tibia."
+  - words: ["kid"]
+    action: say
+    text: "Yes, I have a small daughter. Her room is upstairs."

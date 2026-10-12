@@ -1,0 +1,72 @@
+name: "Mortimer"
+position: { x: 32500, y: 31627, z: 7 }
+speed: 100
+outfit:
+  id: 133
+  colors: [0, 115, 102, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 6108, buy: 150 }
+  - { id: 4867, buy: 500 }
+  - { id: 4863, buy: 250 }
+  - { id: 9605, buy: 800 }
+  - { id: 4852, buy: 750 }
+  - { id: 4871, sell: 50 }
+  - { id: 12510, sell: 250 }
+  - { id: 4839, sell: 500 }
+  - { id: 4831, sell: 500 }
+  - { id: 5021, buy: 80 }
+  - { id: 3207, sell: 250 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am the local representative of the explorer society."
+  - words: ["explorer society"]
+    action: say
+    text: "Our noble society is dedicated to exploring the unknown. No location is too remote for our members to travel there ... No beast is too wild to be hunted. No treasure buried too deep to be unearthed ... Only the most dedicated and fearless adventurers may join our ranks."
+  - words: ["base"]
+    action: say
+    text: "Currently we maintain public bases in Port Hope and Northport."
+  - words: ["portals"]
+    action: say
+    text: "The portals should be ready to be used now. If you have an orichalcum pearl with you, enter the portal."
+  - words: ["orichalcum"]
+    action: say
+    text: "Do you want to buy an orichalcum pearl for 80 gold?"
+  - words: ["parchment"]
+    action: say
+    text: "The examination of scrolls with lizard writings is a valuable source of information. We buy such scrolls for 500 gold. Are you interested to sell one?"
+  - words: ["scroll lizard"]
+    action: say
+    text: "The examination of scrolls with lizard writings is a valuable source of information. We buy such scrolls for 500 gold. Are you interested to sell one?"
+  - words: ["atlas"]
+    action: say
+    text: "Do you want to buy an atlas for 150 gold?"
+  - words: ["botanists container"]
+    action: say
+    text: "Do you want to buy a botanist container for 500 gold?"
+  - words: ["preparation kit"]
+    action: say
+    text: "Do you want to buy a preparation kit for 250 gold?"
+  - words: ["crown backpack"]
+    action: say
+    text: "Do you want to buy a crown backpack for 800 gold?"
+  - words: ["ectoplasm container"]
+    action: say
+    text: "Do you want to buy an ectoplasm container for 750 gold?"

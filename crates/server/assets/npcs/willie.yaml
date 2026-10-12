@@ -1,0 +1,160 @@
+name: "Willie"
+position: { x: 32068, y: 32204, z: 7 }
+speed: 100
+outfit:
+  id: 153
+  colors: [77, 63, 58, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Ah, what the heck.Make sure you know what you want before you bug me."
+    - "Buying and selling food!"
+    - "Make sure you know what you want before you bug me."
+    - "You, over there! Stop sniffing around my farm! Either trade with me or leave!"
+shop:
+  - { id: 3600, sell: 1 }
+  - { id: 3607, sell: 2 }
+  - { id: 3590, sell: 1 }
+  - { id: 3606, sell: 1 }
+  - { id: 3582, sell: 4 }
+  - { id: 3577, sell: 2 }
+  - { id: 3579, sell: 2 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hiho {{ PLAYERNAME | capitalize }}. I hope you're here to trade."
+  - words: GOODBYE
+    action: dismiss
+    text: "Yeah, bye {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Yeah go away!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Ya take a good look."
+  - words: ["offer", "sell", "buy", "food"]
+    action: say
+    text: "Haven't they taught you anything at school? Ask for a trade if you want to trade."
+  - words: ["information", "help", "hint"]
+    action: say
+    text: "Help yourself. Or ask the other citizens, I don't have time for that."
+  - words: ["how are you"]
+    action: say
+    text: "Fine enough."
+  - words: ["name"]
+    action: say
+    text: "Willie."
+  - words: ["job"]
+    action: say
+    text: "I'm a farmer and a cook."
+  - words: ["cook"]
+    action: say
+    text: "I try out old and new recipes. You can sell all food to me."
+  - words: ["recipe"]
+    action: say
+    text: "I'd love to try a banana pie but I lack the bananas. If you get me one, I'll reward you."
+  - words: ["citizen"]
+    action: say
+    text: "Which one?"
+  - words: ["rookgaard"]
+    action: say
+    text: "This island would be wonderful if there weren't a constant flood of newcomers."
+  - words: ["tibia"]
+    action: say
+    text: "If I were you, I'd stay here."
+  - words: ["spell"]
+    action: say
+    text: "I know how to spell."
+  - words: ["magic"]
+    action: say
+    text: "I'm a magician in the kitchen."
+  - words: ["weapon"]
+    action: say
+    text: "I'm not in the weapon business, so stop disturbing me."
+  - words: ["king"]
+    action: say
+    text: "I'm glad that we don't see many officials here."
+  - words: ["god"]
+    action: say
+    text: "I'm a farmer, not a preacher."
+  - words: ["sewer"]
+    action: say
+    text: "What about them? Do you live there?"
+  - words: ["dungeon"]
+    action: say
+    text: "I've got no time for your dungeon nonsense."
+  - words: ["rat"]
+    action: say
+    text: "My cousin Billy cooks rat stew. Yuck! Can you imagine that?"
+  - words: ["monster"]
+    action: say
+    text: "Are you afraid of monsters? I bet even the sight of a rat would let your knees tremble. Hahaha."
+  - words: ["time"]
+    action: say
+    text: "Do I look like a clock?"
+  - words: ["al dee"]
+    action: say
+    text: "Can't stand him."
+  - words: ["amber"]
+    action: say
+    text: "Quite a babe."
+  - words: ["billy"]
+    action: say
+    text: "Don't ever mention his name again! He can't even cook!"
+  - words: ["cipfried"]
+    action: say
+    text: "Our little monkey."
+  - words: ["dallheim"]
+    action: say
+    text: "Uhm, fine guy I think."
+  - words: ["dixi"]
+    action: say
+    text: "Boring little girl."
+  - words: ["hyacinth"]
+    action: say
+    text: "Overrated."
+  - words: ["lee'delle"]
+    action: say
+    text: "She thinks she owns this island with her underpriced offers."
+  - words: ["lily"]
+    action: say
+    text: "I don't like hippie girls."
+  - words: ["loui"]
+    action: say
+    text: "Leave me alone with that guy."
+  - words: ["norma"]
+    action: say
+    text: "About time we got a bar here."
+  - words: ["obi"]
+    action: say
+    text: "This old guy has only money on his mind."
+  - words: ["oracle"]
+    action: say
+    text: "Hopefully it gets you off this island soon so you can stop bugging me."
+  - words: ["paulie"]
+    action: say
+    text: "Uptight and correct in any situation."
+  - words: ["santiago"]
+    action: say
+    text: "If he wants to sacrifice all his free time for beginners, fine with me. Then they don't disturb me."
+  - words: ["seymour"]
+    action: say
+    text: "This joke of a man thinks he is sooo important."
+  - words: ["tom"]
+    action: say
+    text: "Decent guy."
+  - words: ["willie"]
+    action: say
+    text: "Yeah, so?"
+  - words: ["zerbrus"]
+    action: say
+    text: "Overrated."
+  - words: ["zirella"]
+    action: say
+    text: "Too old to be interesting for me."
+  - words: ["banana"]
+    action: say
+    text: "Have you found a banana for me?"

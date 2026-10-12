@@ -8,7 +8,7 @@ use std::time::Instant;
 use thiserror::Error;
 use tracing::{info, warn};
 
-use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
+use crate::entities::items::{FluidType, Item, ItemConfig, ItemFlag, ItemGuid, ItemId};
 use crate::entities::map::{GameMap, MapTile};
 use crate::entities::position::Position;
 
@@ -325,7 +325,7 @@ fn parse_tile(
             }
             Some(ATTR_ITEM) => {
                 let item_id = ItemId(p.read_u16()?);
-                tile.push_item(make_item(item_id, 1, Vec::new(), items));
+                tile.push_item(make_item(item_id, None, Vec::new(), items));
             }
             Some(b) => return Err(p.invalid_format(b, "parse_tile")),
         }
@@ -354,11 +354,23 @@ fn parse_tile(
     p.expect_node_end()
 }
 
-fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> Item {
+fn make_item(item_id: ItemId, count: Option<u8>, content: Vec<Item>, items: &Items) -> Item {
     let config = items
         .get(&item_id)
         .cloned()
         .unwrap_or_else(|| panic!("Map contains invalid item id: {item_id}"));
+    if config.holds_fluid() {
+        let fluid = count.map_or(Some(FluidType::None), FluidType::from_u8);
+        let fluid = fluid.unwrap_or_else(|| {
+            warn!(
+                item = item_id.0,
+                ?count,
+                "an unknown fluid on the map loads empty"
+            );
+            FluidType::None
+        });
+        return Item::new_fluid(config, fluid);
+    }
     let content = if config.has_flag(ItemFlag::Container) {
         Some(Box::new(content))
     } else {
@@ -367,7 +379,7 @@ fn make_item(item_id: ItemId, amount: u8, content: Vec<Item>, items: &Items) -> 
     Item {
         config,
         guid: ItemGuid::new(),
-        amount,
+        amount: count.unwrap_or(1),
         fluid: None,
         content,
         owner: None,
@@ -380,7 +392,7 @@ fn parse_item(
     items: &Items,
 ) -> Result<(Item, Option<Position>), MapRepositoryError> {
     let item_id = ItemId(p.read_u16()?);
-    let mut amount: u8 = 1;
+    let mut count = None;
     let mut action_id = None;
     let mut teleport = None;
 
@@ -389,7 +401,7 @@ fn parse_item(
         match p.read_data_byte()? {
             None => break,
             Some(ATTR_COUNT) | Some(ATTR_RUNE_CHARGES) => {
-                amount = p.read_u8()?;
+                count = Some(p.read_u8()?);
             }
             Some(ATTR_CHARGES) => {
                 // wand/weapon charges stored as u16 in TFS format
@@ -440,7 +452,7 @@ fn parse_item(
 
     p.expect_node_end()?;
 
-    let mut item = make_item(item_id, amount, content, items);
+    let mut item = make_item(item_id, count, content, items);
     item.action_id = action_id;
     Ok((item, teleport))
 }
@@ -546,6 +558,38 @@ mod tests {
         y: 202,
         z: 7,
     };
+
+    #[test]
+    fn a_fluid_items_count_is_its_fluid_and_without_one_it_is_empty() {
+        let items: Items = HashMap::from([
+            an_item(100),
+            a_config(2874, &[ItemFlag::LiquidContainer]),
+            a_config(2886, &[ItemFlag::LiquidPool]),
+        ]);
+        let mut milk = 2874u16.to_le_bytes().to_vec();
+        milk.extend([0x0F, 9]);
+        let empty = 2874u16.to_le_bytes().to_vec();
+        let mut blood = 2886u16.to_le_bytes().to_vec();
+        blood.extend([0x0F, 5]);
+
+        let map =
+            parse_otbm(&a_map_with(&[milk, empty, blood]), &items).expect("the fixture parses");
+
+        let fluids: Vec<_> = map
+            .iter_items(&TILE)
+            .unwrap()
+            .map(|item| item.fluid)
+            .collect();
+        assert_eq!(
+            fluids,
+            vec![
+                None,
+                Some(FluidType::Milk),
+                Some(FluidType::None),
+                Some(FluidType::Blood)
+            ]
+        );
+    }
 
     fn a_teleport_node(id: u16, x: u16, y: u16, z: u8) -> Vec<u8> {
         let mut node = id.to_le_bytes().to_vec();

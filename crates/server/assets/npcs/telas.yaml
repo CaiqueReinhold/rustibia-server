@@ -1,0 +1,50 @@
+name: "Telas"
+position: { x: 33276, y: 31800, z: 6 }
+speed: 100
+outfit:
+  id: 133
+  colors: [39, 0, 0, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 9632, sell: 200 }
+  - { id: 11447, sell: 290 }
+  - { id: 9656, sell: 190 }
+  - { id: 12600, sell: 20 }
+  - { id: 9028, sell: 1000 }
+  - { id: 9027, sell: 2000 }
+  - { id: 9067, sell: 3000 }
+  - { id: 9063, sell: 500 }
+  - { id: 16138, sell: 440 }
+  - { id: 12806, sell: 800 }
+  - { id: 9655, sell: 200 }
+  - { id: 8775, sell: 500 }
+  - { id: 5892, sell: 15000 }
+  - { id: 16130, sell: 570 }
+  - { id: 10298, sell: 320 }
+  - { id: 5889, sell: 3000 }
+  - { id: 5888, sell: 500 }
+  - { id: 9664, sell: 550 }
+  - { id: 5887, sell: 10000 }
+  - { id: 16133, sell: 400 }
+  - { id: 10310, sell: 500 }
+  - { id: 16137, sell: 590 }
+  - { id: 10315, sell: 100 }
+  - { id: 16135, sell: 330 }
+  - { id: 9654, sell: 460 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

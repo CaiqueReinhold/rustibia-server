@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use crate::entities::{
+    agent::AgentKey,
     combat::{AmmoType, CombatElement, WeaponType},
     effects::{AreaShape, EffectId},
     inventory::{Inventory, InventorySlot, Wearer},
@@ -36,6 +37,7 @@ pub struct Player {
     inventory: Arc<Inventory>,
     skills: HashMap<SkillType, SkillValue>,
     bank_balance: u64,
+    shop: Option<AgentKey>,
 }
 
 impl Player {
@@ -71,6 +73,7 @@ impl Player {
             )),
             skills,
             bank_balance,
+            shop: None,
         }
     }
 
@@ -250,6 +253,14 @@ impl Player {
         };
         self.bank_balance = left;
         true
+    }
+
+    pub fn shop(&self) -> Option<AgentKey> {
+        self.shop
+    }
+
+    pub(crate) fn set_shop(&mut self, npc: Option<AgentKey>) {
+        self.shop = npc;
     }
 }
 

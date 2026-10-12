@@ -67,6 +67,14 @@ fn item_description(item: &Item, distance: i32, spells: &HashMap<SpellId, Arc<Sp
     if config.has_flag(ItemFlag::LiquidPool) {
         text.push_str(" of ");
         text.push_str(fluid_name(item.fluid));
+    } else if config.has_flag(ItemFlag::LiquidContainer) {
+        match item.fluid.filter(|fluid| *fluid != FluidType::None) {
+            Some(fluid) => {
+                text.push_str(" of ");
+                text.push_str(fluid_name(Some(fluid)));
+            }
+            None => text.push_str(". It is empty"),
+        }
     }
     text.push('.');
 
@@ -509,6 +517,27 @@ mod tests {
         assert_eq!(
             item_description(&nothing, 2, &HashMap::new()),
             "You see a pool of unknown."
+        );
+    }
+
+    #[test]
+    fn a_liquid_container_names_its_fluid_or_says_it_is_empty() {
+        let vial = Arc::new(config(
+            "vial",
+            Some("a"),
+            vec![ItemFlag::LiquidContainer],
+            vec![],
+        ));
+        let milk = Item::new_fluid(Arc::clone(&vial), FluidType::Milk);
+        let empty = Item::new(vial, 1);
+
+        assert_eq!(
+            item_description(&milk, 2, &HashMap::new()),
+            "You see a vial of milk."
+        );
+        assert_eq!(
+            item_description(&empty, 2, &HashMap::new()),
+            "You see a vial. It is empty."
         );
     }
 

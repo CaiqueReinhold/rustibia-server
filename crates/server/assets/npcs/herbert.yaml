@@ -1,0 +1,28 @@
+name: "Herbert"
+position: { x: 32332, y: 32839, z: 7 }
+speed: 100
+outfit:
+  id: 132
+  colors: [97, 93, 36, 93]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3507, buy: 1 }
+  - { id: 3505, buy: 8 }
+  - { id: 3503, buy: 15 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

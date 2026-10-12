@@ -1,0 +1,40 @@
+name: "Miraia"
+position: { x: 33238, y: 32482, z: 7 }
+speed: 100
+outfit:
+  id: 150
+  colors: [114, 0, 7, 132]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3600, buy: 4 }
+  - { id: 3607, buy: 6 }
+  - { id: 3582, buy: 8 }
+  - { id: 7441, sell: 250 }
+  - { id: 3577, buy: 5 }
+  - { id: 2880, fluid: lemonade, buy: 3 }
+  - { id: 2880, fluid: milk, buy: 5 }
+  - { id: 2880, fluid: water, buy: 2 }
+  - { id: 169, buy: 100 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Daraman's blessings, {{ PLAYERNAME | capitalize }}. Welcome to the Enlightened Oasis. Sit down, have a drink or some food!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Daraman's blessings. Come back soon."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Daraman's blessings. Come back soon."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["drink"]
+    action: say
+    text: "I can offer you lemonade, camel milk, and water. If you'd like to see my offers, ask me for a trade."
+  - words: ["food"]
+    action: say
+    text: "Are you looking for food? I have bread, cheese, ham, and meat. If you'd like to see my offers, ask me for a trade."

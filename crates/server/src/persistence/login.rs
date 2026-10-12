@@ -16,7 +16,7 @@ use crate::entities::vocation::Vocation;
 use crate::entities::{
     agent::Pool,
     inventory::InventorySlot,
-    items::{FluidType, Item, ItemConfig, ItemFlag, ItemId},
+    items::{FluidType, Item, ItemConfig, ItemId},
     position::Position,
     skills::{SkillType, SkillValue},
 };
@@ -163,18 +163,18 @@ pub(crate) fn restore_item(
         }
     };
 
-    let mut item = match config.has_flag(ItemFlag::LiquidPool) {
-        true => match FluidType::from_u8(stored.amount) {
-            Some(fluid) => Item::new_fluid(config, fluid),
-            None => {
+    let mut item = match config.holds_fluid() {
+        true => {
+            let fluid = FluidType::from_u8(stored.amount).unwrap_or_else(|| {
                 warn!(
                     item_id = stored.item_id,
                     fluid = stored.amount,
-                    "skipping an unknown fluid"
+                    "an unknown saved fluid restores empty"
                 );
-                return None;
-            }
-        },
+                FluidType::None
+            });
+            Item::new_fluid(config, fluid)
+        }
         false => Item::new(config, stored.amount),
     };
     item.action_id = stored.action_id.and_then(NonZeroU16::new);
@@ -273,6 +273,62 @@ mod tests {
         assert_eq!(
             (restored.fluid, restored.amount),
             (Some(FluidType::Slime), 1)
+        );
+    }
+
+    #[test]
+    fn a_liquid_container_round_trips_its_fluid_through_the_amount() {
+        use crate::entities::items::{FluidType, ItemFlag};
+        use crate::persistence::player::to_character_save;
+        use crate::persistence::test_fixtures::a_test_snapshot;
+
+        let vial_config = Arc::new(ItemConfig::new(
+            ItemId(2874),
+            "vial".to_string(),
+            None,
+            None,
+            [ItemFlag::LiquidContainer],
+            Vec::new(),
+        ));
+        let mut snapshot = a_test_snapshot(7, 3);
+        snapshot.inventory = HashMap::from([(
+            InventorySlot::Backpack,
+            Item::new_fluid(Arc::clone(&vial_config), FluidType::Milk),
+        )]);
+        let stored = to_character_save(&snapshot).inventory.remove("3").unwrap();
+
+        let restored = restore_item(&HashMap::from([(ItemId(2874), vial_config)]), stored).unwrap();
+
+        assert_eq!(
+            (restored.fluid, restored.amount),
+            (Some(FluidType::Milk), 1)
+        );
+    }
+
+    #[test]
+    fn a_liquid_container_with_an_unknown_fluid_restores_empty() {
+        use crate::entities::items::{FluidType, ItemFlag};
+
+        let vial_config = Arc::new(ItemConfig::new(
+            ItemId(2874),
+            "vial".to_string(),
+            None,
+            None,
+            [ItemFlag::LiquidContainer],
+            Vec::new(),
+        ));
+        let stored = StoredItemRecord {
+            item_id: 2874,
+            amount: u8::MAX,
+            content: None,
+            action_id: None,
+        };
+
+        let restored = restore_item(&HashMap::from([(ItemId(2874), vial_config)]), stored).unwrap();
+
+        assert_eq!(
+            (restored.fluid, restored.amount),
+            (Some(FluidType::None), 1)
         );
     }
 

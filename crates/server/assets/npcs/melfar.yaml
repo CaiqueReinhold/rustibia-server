@@ -1,0 +1,31 @@
+name: "Melfar"
+position: { x: 32522, y: 31966, z: 7 }
+speed: 100
+outfit:
+  id: 69
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 11451, sell: 30 }
+  - { id: 9843, sell: 100 }
+  - { id: 11472, sell: 75 }
+  - { id: 11483, sell: 20 }
+  - { id: 11482, sell: 50 }
+  - { id: 11473, sell: 110 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Just great, another disturbance. Just what I need."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

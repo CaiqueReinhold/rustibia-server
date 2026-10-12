@@ -1,0 +1,78 @@
+name: "Vera"
+position: { x: 32140, y: 31671, z: 7 }
+speed: 100
+outfit:
+  id: 136
+  colors: [97, 116, 115, 114]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Have you moved to a new home? I'm the specialist for equipping it."
+shop:
+  - { id: 2893, buy: 4 }
+  - { id: 2394, buy: 25 }
+  - { id: 2659, buy: 25 }
+  - { id: 2469, buy: 10 }
+  - { id: 2472, buy: 10 }
+  - { id: 2471, buy: 10 }
+  - { id: 2664, buy: 40 }
+  - { id: 5928, buy: 50 }
+  - { id: 2983, buy: 6 }
+  - { id: 2981, buy: 5 }
+  - { id: 2396, buy: 25 }
+  - { id: 2647, buy: 25 }
+  - { id: 2393, buy: 30 }
+  - { id: 2984, buy: 5 }
+  - { id: 2653, buy: 25 }
+  - { id: 2640, buy: 50 }
+  - { id: 2985, buy: 5 }
+  - { id: 2644, buy: 25 }
+  - { id: 2395, buy: 25 }
+  - { id: 2656, buy: 25 }
+  - { id: 2398, buy: 25 }
+  - { id: 2400, buy: 25 }
+  - { id: 2399, buy: 25 }
+  - { id: 2401, buy: 25 }
+  - { id: 2389, buy: 20 }
+  - { id: 2387, buy: 20 }
+  - { id: 2390, buy: 20 }
+  - { id: 2386, buy: 20 }
+  - { id: 2388, buy: 20 }
+  - { id: 2391, buy: 20 }
+  - { id: 2392, buy: 20 }
+  - { id: 2478, buy: 1000 }
+  - { id: 872, buy: 50 }
+  - { id: 2876, buy: 3 }
+  - { id: 2632, buy: 40 }
+  - { id: 2980, buy: 40 }
+  - { id: 2667, buy: 25 }
+  - { id: 900, buy: 25 }
+  - { id: 2650, buy: 25 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["name"]
+    action: say
+    text: "My name is Vera. I sell furniture and equipment."
+  - words: ["job"]
+    action: say
+    text: "Have you moved to a new home? I'm the specialist for equipping it."
+  - words: ["news"]
+    action: say
+    text: "You mean my specials, don't you?"
+  - words: ["type"]
+    action: say
+    text: "I have beds, chairs, containers, decoration, flowers, instruments, pillows, pottery, statues, tapestries and tables. Which of those would you like to see?"

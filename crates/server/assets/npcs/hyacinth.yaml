@@ -1,0 +1,168 @@
+name: "Hyacinth"
+position: { x: 32139, y: 32171, z: 3 }
+speed: 100
+outfit:
+  id: 130
+  colors: [11, 123, 123, 94]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 7876, buy: 20 }
+  - { id: 2874, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, traveller {{ PLAYERNAME | capitalize }}. As you have found the way to my hut, how can I help you?"
+  - words: GOODBYE
+    action: dismiss
+    text: "May Crunor bless you."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "May Crunor bless you."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Here. Don't forget, if you buy potions, there's a deposit of 5 gold on the empty flask."
+  - words: ["time"]
+    action: say
+    text: "Time doesn't matter to me."
+  - words: ["name"]
+    action: say
+    text: "I'm Hyacinth."
+  - words: ["job"]
+    action: say
+    text: "I'm a druid and healer, a follower of Crunor."
+  - words: ["crunor"]
+    action: say
+    text: "May Crunor bless you and protect you on your journeys!"
+  - words: ["druid"]
+    action: say
+    text: "There are only two other druids on Rookgaard, Lily and Cipfried."
+  - words: ["bank"]
+    action: say
+    text: "Storage for worldly wealth."
+  - words: ["destiny"]
+    action: say
+    text: "Who knows what it will be? Only time will show."
+  - words: ["how are you"]
+    action: say
+    text: "Thank the gods, I'm fine."
+  - words: ["help"]
+    action: say
+    text: "What help do you seek? I sell health potions, ask me for a trade if you need one."
+  - words: ["spell"]
+    action: say
+    text: "I can't teach you magic. On the mainland you will learn spells early enough."
+  - words: ["magic"]
+    action: say
+    text: "I'm one of the few magic users on this isle. I can sense a follower of the dark path of magic hiding somewhere in the depths of the dungeons."
+  - words: ["tibia"]
+    action: say
+    text: "It is shaped by the will of the gods, so we don't have to question it."
+  - words: ["temple"]
+    action: say
+    text: "I used to be there with my old friend Cipfried to heal adventurers. After all these years, I prefer solitude now."
+  - words: ["god"]
+    action: say
+    text: "Teaching you about the gods would require too much time. But you can always read the books in the library."
+  - words: ["library"]
+    action: say
+    text: "The library is in the academy, north of the temple."
+  - words: ["academy"]
+    action: say
+    text: "A place to learn about Tibia."
+  - words: ["food"]
+    action: say
+    text: "Are you hungry? I'm sorry, I have no food here."
+  - words: ["potion"]
+    action: say
+    text: "Yes, I sell small health potions. Ask me for a trade if you need one."
+  - words: ["king"]
+    action: say
+    text: "I don't care about kings, queens, and the like."
+  - words: ["rookgaard"]
+    action: say
+    text: "I rarely visit the town. It's much better here."
+  - words: ["main"]
+    action: say
+    text: "There's a huge world waiting for you."
+  - words: ["monster"]
+    action: say
+    text: "Most of the so-called monsters of this isle are only creatures of the gods. There are some beasts that are truly monstrous on the mainland."
+  - words: ["blueberr"]
+    action: say
+    text: "Are you hungry? I'm sorry, I have no food here."
+  - words: ["dungeon"]
+    action: say
+    text: "The dungeons are dangerous for inexperienced adventurers."
+  - words: ["offer", "stuff", "wares", "buy", "sell"]
+    action: say
+    text: "Just ask me for a trade to check out my offers. I have only small health potions for sale, though."
+  - words: ["equipment", "rope", "backpack", "shovel", "shield", "armor", "helmet"]
+    action: say
+    text: "You'll have to buy that from the merchants in town. I'm just a simple druid and healer."
+  - words: ["deposit", "flask", "vial"]
+    action: say
+    text: "I'll pay you 5 gold for every empty vial and potion flask. Just ask me for a trade."
+  - words: ["obi"]
+    action: say
+    text: "A greedy and annoying person just like most people are."
+  - words: ["norma"]
+    action: say
+    text: "Now she has completely gotten out of her mind."
+  - words: ["loui"]
+    action: say
+    text: "He was a promising young druid when something happened to his mind. It's a sad story."
+  - words: ["santiago"]
+    action: say
+    text: "He does a good job out there."
+  - words: ["zirella"]
+    action: say
+    text: "I know her since she was little."
+  - words: ["al dee"]
+    action: say
+    text: "One of these greedy merchants."
+  - words: ["amber"]
+    action: say
+    text: "I saw her stranding with her raft."
+  - words: ["billy"]
+    action: say
+    text: "He's a farmer and behaves a little better than his cousin."
+  - words: ["willie"]
+    action: say
+    text: "An unpleasant person."
+  - words: ["cipfried"]
+    action: say
+    text: "His healing powers equal mine."
+  - words: ["dixi"]
+    action: say
+    text: "I think she's under bad influence."
+  - words: ["hyacinth"]
+    action: say
+    text: "That's my name."
+  - words: ["lee'delle"]
+    action: say
+    text: "She's actually quite nice."
+  - words: ["lily"]
+    action: say
+    text: "She's a druid. Since she started selling health potions, people visit me only rarely. Which is a good thing, but of course I'll help if I'm needed."
+  - words: ["oracle"]
+    action: say
+    text: "The oracle will lead you to your destiny once you are level 8."
+  - words: ["paulie"]
+    action: say
+    text: "I think that guy is new. He's a bank clerk."
+  - words: ["seymour"]
+    action: say
+    text: "He has some inner devils that torture him."
+  - words: ["tom"]
+    action: say
+    text: "Tom is the local tanner. That means he always needs fresh corpses or leather."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "A man of the sword."

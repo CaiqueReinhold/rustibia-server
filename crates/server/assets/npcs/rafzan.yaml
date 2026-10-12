@@ -1,0 +1,86 @@
+name: "Rafzan"
+position: { x: 33052, y: 32095, z: 6 }
+speed: 100
+outfit:
+  id: 540
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 17668, buy: 75 }
+  - { id: 2854, buy: 10 }
+  - { id: 2853, buy: 4 }
+  - { id: 17671, buy: 150 }
+  - { id: 3483, buy: 150, sell: 30 }
+  - { id: 17669, buy: 200 }
+  - { id: 17846, sell: 750 }
+  - { id: 17813, sell: 300 }
+  - { id: 17670, buy: 400 }
+  - { id: 17812, sell: 500 }
+  - { id: 3003, buy: 50, sell: 8 }
+  - { id: 2815, buy: 5 }
+  - { id: 3453, buy: 12 }
+  - { id: 3457, buy: 10, sell: 2 }
+  - { id: 17810, sell: 250 }
+  - { id: 17859, sell: 300 }
+  - { id: 2920, buy: 2 }
+  - { id: 17676, buy: 150 }
+  - { id: 3492, buy: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["task"]
+    action: say
+    text: "Are you here to get a task or to report you finished task?"
+  - words: ["name"]
+    action: say
+    text: "Me humble name is Rafzan. Good old goblin name meaning honest, generous and nice person, I swear!"
+  - words: ["goblin"]
+    action: say
+    text: "Most goblins so afraid of everything, that they fight everything. Me different. Me just want trade."
+  - words: ["human"]
+    action: say
+    text: "You humans are so big, strong, clever and beautiful. Me really feel little and green beside you. Must be sooo fun to be human. You surely always make profit!"
+  - words: ["profit"]
+    action: say
+    text: "To be honest to me human friend, me only heard about it, never seen one. I imagine it's something cute and cuddly."
+  - words: ["swamp"]
+    action: say
+    text: "Swamp is horrible. Slowly eating away at health of poor little goblin. No profit here at all. Me will die poor and desperate, probably eaten by giant mosquitoes."
+  - words: ["dwarf"]
+    action: say
+    text: "Beardmen are nasty. Always want to kill little goblin. No trade at all. Not good, not good."
+  - words: ["help"]
+    action: say
+    text: "So much to do, so little help. Me poor goblin desperately needs help. Me have a few tasks me need to be done. I can offer you all money I made if you only help me a little with stuff which is easy to strong smart human but impossible for poor, little me."
+  - words: ["thais"]
+    action: say
+    text: "Me heard Thais is big city with king! Must be strong and clever, to become chief of all humans. Me cannot imagine how many people you have to beat up to become king of all humans. Surely he makes lot of profit in his pretty city."
+  - words: ["elves"]
+    action: say
+    text: "They are mean and cruel. Humble goblin rarely trades with them. They would rather kill poor me if not too greedy for stuff only me can get them. Still, they rob me of it for a few spare coins and there is noooo profit for poor goblin."
+  - words: ["job"]
+    action: say
+    text: "Me job merchant is. Me trade with all kinds of things. Me not good trader though, so you get everything incredibly cheap! You might think me mad, but please don't rip off poor goblin too much. Me has four or five wives and dozens of kids to feed!"
+  - words: ["venore"]
+    action: say
+    text: "Humans so clever. Much, much smarter than poor, stupid goblin. They have big rich town. Goblin lives here poor and hungry. Me so impressed by you strong and smart humans. So much to learn from you. Poor goblin only sees pretty city from afar. Poor goblin too afraid to go there."
+  - words: ["gold"]
+    action: say
+    text: "Me have seen a gold coin once or twice. So bright and shiny it hurt me poor eyes. You surely are incredibly rich human who has even three or four coins at once! Perhaps you want to exchange them for some things me offer? Just don't rob me too much, me little stupid goblin, have no idea what stuff is worth... you look honest, you surely pay fair price like I ask and tell if it's too cheap."
+  - words: ["ratmen"]
+    action: say
+    text: "Furry guys are strange fellows. Always collecting things and stuff. Not easy to make them share, oh there is noooo profit for little, poor me to be made. They build underground dens that can stretch quite far. Rumour has it the corym have strange tunnels that connect their different networks all over the world."

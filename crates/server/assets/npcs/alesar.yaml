@@ -1,0 +1,50 @@
+name: "Alesar"
+position: { x: 33048, y: 32621, z: 5 }
+speed: 100
+outfit:
+  id: 80
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3432, buy: 5000, sell: 900 }
+  - { id: 3429, sell: 800 }
+  - { id: 7428, sell: 10000 }
+  - { id: 3383, buy: 1500, sell: 400 }
+  - { id: 3384, buy: 1000, sell: 250 }
+  - { id: 3322, sell: 2000 }
+  - { id: 7419, sell: 15000 }
+  - { id: 3281, sell: 17000 }
+  - { id: 7407, sell: 8000 }
+  - { id: 3284, buy: 5000 }
+  - { id: 3370, sell: 5000 }
+  - { id: 3318, sell: 2000 }
+  - { id: 3371, sell: 5000 }
+  - { id: 3574, sell: 150 }
+  - { id: 7421, sell: 22000 }
+  - { id: 7411, sell: 20000 }
+  - { id: 3299, sell: 50 }
+  - { id: 3307, sell: 150 }
+  - { id: 3297, buy: 6000, sell: 900 }
+  - { id: 3324, sell: 6000 }
+  - { id: 3373, sell: 500 }
+  - { id: 7413, sell: 4000 }
+  - { id: 3428, sell: 8000 }
+  - { id: 3434, sell: 15000 }
+  - { id: 3369, sell: 5000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Finally."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Finally."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "At your service, just browse through my wares."

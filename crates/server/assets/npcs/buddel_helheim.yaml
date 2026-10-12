@@ -23,6 +23,8 @@ arguments:
     - { x: 32021, y: 31294, z: 7 }
   KICK:
     - { x: 32468, y: 31176, z: 7 }
+shop:
+  - { id: 10302, sell: 45 }
 keywords:
   - words: GREET
     action: engage
@@ -33,6 +35,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: Good bye.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["svargrond"]
     condition: has_item(RING)
     action: say

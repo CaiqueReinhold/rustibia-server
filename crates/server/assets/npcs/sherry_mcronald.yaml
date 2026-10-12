@@ -1,0 +1,107 @@
+name: "Sherry McRonald"
+position: { x: 32391, y: 32237, z: 7 }
+speed: 100
+outfit:
+  id: 136
+  colors: [78, 94, 19, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Isn't this a beautiful day? Perfect for farming."
+shop:
+  - { id: 3600, sell: 2 }
+  - { id: 3607, buy: 5 }
+  - { id: 3590, buy: 1 }
+  - { id: 3593, buy: 8 }
+  - { id: 3594, buy: 10 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello {{ PLAYERNAME | capitalize }}! Welcome to our humble farm."
+  - words: GOODBYE
+    action: dismiss
+    text: "Grace our home with another visit soon, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "What a strange person."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["harkath bloodblade"]
+    action: say
+    text: "He is an impressive warrior as far as I can tell."
+  - words: ["tibianus"]
+    action: say
+    text: "King Tibianus granted us this farm to earn a living."
+  - words: ["eclesius"]
+    action: say
+    text: "Oh, he's a nice old man. He often comes and buys our goods. I haven't seen him since a while though."
+  - words: ["husband"]
+    action: say
+    text: "My husband Donald is busy on the fields almost all night and day."
+  - words: ["weather"]
+    action: say
+    text: "The weather is the best friend and the worst enemy of a farmer."
+  - words: ["spooked"]
+    action: say
+    text: "I don't know for sure. The miller claims that his mill is threatened by some monsters sometimes."
+  - words: ["quentin"]
+    action: say
+    text: "What a nice person he is."
+  - words: ["fields"]
+    action: say
+    text: "The druids helped us by placing a blessing on our fields."
+  - words: ["gregor"]
+    action: say
+    text: "We a mere peasants and don't know much about the guild leaders."
+  - words: ["marvik"]
+    action: say
+    text: "We a mere peasants and don't know much about the guild leaders."
+  - words: ["muriel"]
+    action: say
+    text: "We a mere peasants and don't know much about the guild leaders."
+  - words: ["oswald"]
+    action: say
+    text: "This lazy fellow has nothing better to do than to spread rumours."
+  - words: ["crops"]
+    action: say
+    text: "It's hard to harvest it, carry it to the mill in the north and make flour. If you can bake some bread I will buy it for 2 gold."
+  - words: ["elane"]
+    action: say
+    text: "We a mere peasants and don't know much about the guild leaders."
+  - words: ["frodo"]
+    action: say
+    text: "He is a friend of my husband."
+  - words: ["lynda"]
+    action: say
+    text: "She is sooo charming. I can't believe she is not married yet! Have you met her?"
+  - words: ["name"]
+    action: say
+    text: "I am Sherry McRonald."
+  - words: ["time"]
+    action: say
+    text: "Sorry, I don't have a watch."
+  - words: ["farm"]
+    action: say
+    text: "It is a hard work, but the city needs us."
+  - words: ["city"]
+    action: say
+    text: "The city needs our crops."
+  - words: ["mill"]
+    action: say
+    text: "The miller is a lazy fellow and afraid of his own mill, because he thinks it is spooked."
+  - words: ["king"]
+    action: say
+    text: "King Tibianus granted us this farm to earn a living."
+  - words: ["gorn"]
+    action: say
+    text: "He doesn't talk much to us."
+  - words: ["job"]
+    action: say
+    text: "I and my husband run this farm."
+  - words: ["sam"]
+    action: say
+    text: "He is too busy to care much about farmers like us."

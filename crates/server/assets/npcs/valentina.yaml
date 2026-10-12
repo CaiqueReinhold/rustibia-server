@@ -1,0 +1,77 @@
+name: "Valentina"
+position: { x: 32271, y: 32052, z: 7 }
+speed: 100
+outfit:
+  id: 157
+  colors: [116, 116, 98, 45]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Love is beautiful, we are loved."
+shop:
+  - { id: 21954, buy: 15 }
+  - { id: 649, buy: 20 }
+  - { id: 10202, buy: 500 }
+  - { id: 2856, buy: 10 }
+  - { id: 21955, buy: 500 }
+  - { id: 21953, buy: 1000 }
+  - { id: 6392, buy: 30 }
+  - { id: 6538, buy: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to Valentine's Store. Let's trade something?"
+  - words: GOODBYE
+    action: dismiss
+    text: "Please come back from time to time."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Please come back from time to time."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am known as the saleswoman of love, as a cupid."
+  - words: ["greenshore"]
+    action: say
+    text: "I grew up in Greenshore, I spent most of my time here and it is very likely that I will die here. Greenshore is a lovely place."
+  - words: ["monastery"]
+    action: say
+    text: "Sometimes, the wind takes the choral singing of the monks to our coast. I alway get goosebumps when I hear it. It's so beautiful."
+  - words: ["tibianus"]
+    action: say
+    text: "He has so many followers but <whispers> I think he is doing a bad job. He should do more against the crimes happening right in front of his nose."
+  - words: ["solitude"]
+    action: say
+    text: "It's not very far to the Isle of Solitude from here but there is simply no way. Isn't that a little bit odd?!?"
+  - words: ["flower"]
+    action: say
+    text: "All flowers around Greenshore have been grown by myself."
+  - words: ["carlin"]
+    action: say
+    text: "Sometimes, when the air is crystal clear, you can see it from the shore."
+  - words: ["rumour"]
+    action: say
+    text: "You must know, many people came here to look for an underground passage to the Isle of Solitude. The people of Greenshore believe that there is one but no one ever proved its existence."
+  - words: ["thais"]
+    action: say
+    text: "It's sad to see how it changed. As a child I used to go there regularly but today I avoid going there. It's no safe place for an old woman like me."
+  - words: ["ocean"]
+    action: say
+    text: "The ocean is part of Greenshore. The sound of the sea lapping against the shore, the salty air and the vastness when you look at the horizon <sigh> - it's so peaceful."
+  - words: ["story"]
+    action: say
+    text: "What should I tell you? I'm old and I've got many things to tell even if most of them apply to Greenshore and its surrounding, the ocean and its islands offshore."
+  - words: ["love"]
+    action: say
+    text: "Love is the most important thing in the world and I help you to express it. Just ask me about my offers and I'll tell you what you can buy."
+  - words: ["king"]
+    action: say
+    text: "He has so many followers but <whispers> I think he is doing a bad job. He should do more against the crimes happening right in front of his nose."
+  - words: ["sea"]
+    action: say
+    text: "The ocean is part of Greenshore. The sound of the sea lapping against the shore, the salty air and the vastness when you look at the horizon <sigh> - it's so peaceful."

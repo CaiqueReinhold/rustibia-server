@@ -1,0 +1,56 @@
+name: "Fadil"
+position: { x: 33219, y: 32396, z: 7 }
+speed: 100
+outfit:
+  id: 146
+  colors: [114, 94, 0, 94]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 23542, sell: 6000 }
+  - { id: 23543, sell: 6000 }
+  - { id: 23544, sell: 6000 }
+  - { id: 23501, sell: 260 }
+  - { id: 23521, sell: 250 }
+  - { id: 23507, sell: 400 }
+  - { id: 23511, sell: 430 }
+  - { id: 23515, sell: 300 }
+  - { id: 23523, sell: 300 }
+  - { id: 23508, sell: 270 }
+  - { id: 23519, sell: 270 }
+  - { id: 23522, sell: 250 }
+  - { id: 25697, sell: 180 }
+  - { id: 23516, sell: 300 }
+  - { id: 25702, sell: 500 }
+  - { id: 23510, sell: 410 }
+  - { id: 23506, sell: 250 }
+  - { id: 23520, sell: 270 }
+  - { id: 23529, sell: 8000 }
+  - { id: 23531, sell: 8000 }
+  - { id: 23533, sell: 8000 }
+  - { id: 25701, sell: 1000 }
+  - { id: 23524, sell: 250 }
+  - { id: 23517, sell: 310 }
+  - { id: 23518, sell: 350 }
+  - { id: 23502, sell: 290 }
+  - { id: 23504, sell: 310 }
+  - { id: 23505, sell: 280 }
+  - { id: 23503, sell: 300 }
+  - { id: 23513, sell: 300 }
+  - { id: 23514, sell: 300 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

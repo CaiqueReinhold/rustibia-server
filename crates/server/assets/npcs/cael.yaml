@@ -1,0 +1,31 @@
+name: "Cael"
+position: { x: 33028, y: 31513, z: 10 }
+speed: 100
+outfit:
+  id: 66
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "I wish I could learn more about this strange world."
+    - "Those different cultures are amazing."
+    - "What an interesting continent."
+shop:
+  - { id: 2965, buy: 5000 }
+  - { id: 2966, buy: 1000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}! You must have come around quite a bit. I'm always interested in learning new things about Zao."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Keep in mind you won't find better offers here. Just browse through my wares."

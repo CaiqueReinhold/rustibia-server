@@ -1,0 +1,51 @@
+name: "Penny"
+position: { x: 32318, y: 31937, z: 7 }
+speed: 100
+outfit:
+  id: 137
+  colors: [58, 116, 117, 59]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 6277, buy: 1 }
+  - { id: 3505, buy: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Farewell, and may Justice be with you!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Wait... will you take me a diamond when you're back?"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["name"]
+    action: say
+    text: "I am miss Penny, your secretary."
+  - words: ["penny"]
+    action: say
+    text: "Yep, Penny's my name. You seem to be as smart as you're talkative."
+  - words: ["job"]
+    action: say
+    text: "I'm a secretary. I'm organising all those papers and your mail."
+  - words: ["criminal"]
+    action: say
+    text: "<Sigh> It's an evil world, isn't it?"
+  - words: ["record"]
+    action: say
+    text: "<Sigh> It's an evil world, isn't it?"
+  - words: ["paper"]
+    action: say
+    text: "<Sigh> It's an evil world, isn't it?"
+  - words: ["mail"]
+    action: say
+    text: "You can get a letter from me."
+  - words: ["?"]
+    action: say
+    text: "Don't stare at me."

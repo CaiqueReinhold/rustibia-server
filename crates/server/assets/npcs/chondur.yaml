@@ -1,0 +1,30 @@
+name: "Chondur"
+position: { x: 32361, y: 32550, z: 7 }
+speed: 100
+outfit:
+  id: 154
+  colors: [38, 113, 119, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 9056, sell: 4000 }
+  - { id: 8531, sell: 10000 }
+  - { id: 3734, sell: 500 }
+  - { id: 5669, sell: 4000 }
+  - { id: 5668, sell: 4000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Be greeted, child."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

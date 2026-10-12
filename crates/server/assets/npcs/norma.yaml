@@ -1,0 +1,150 @@
+name: "Norma"
+position: { x: 32097, y: 32177, z: 7 }
+speed: 100
+outfit:
+  id: 136
+  colors: [78, 76, 72, 96]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Great drinks and snacks at fair prices!"
+    - "You know you want a party after all that tiring hunting!"
+    - "<sings> ... are a girl's best friieeend..."
+    - "Sing and dance at my bar! Yeah!"
+    - "Best place in town! Come to my bar!"
+shop:
+  - { id: 3600, buy: 3 }
+  - { id: 3607, buy: 5 }
+  - { id: 3606, buy: 2 }
+  - { id: 2880, fluid: beer, buy: 3 }
+  - { id: 2880, fluid: lemonade, buy: 2 }
+  - { id: 2880, fluid: milk, buy: 2 }
+  - { id: 2880, fluid: wine, buy: 3 }
+  - { id: 6279, buy: 50 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome, welcome! Have a seat! If you like a drink or something to eat, just ask me for a trade!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Come back soon!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Hey, where are you going? We've just started!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Take all the time you need to decide what you want!"
+  - words: ["name"]
+    action: say
+    text: "Well, my name is Norma."
+  - words: ["job"]
+    action: say
+    text: "I used to be a merchant, but being a barkeeper is so much more fun. It's been my dream since I was a little girl."
+  - words: ["merchant"]
+    action: say
+    text: "To view the offers of a merchant, simply talk to him or her and ask for a trade. They will gladly show you their offers and also the things they buy from you."
+  - words: ["how are you"]
+    action: say
+    text: "I've never been better! I love my new job!"
+  - words: ["weapon"]
+    action: say
+    text: "No sorry, I'm out of that business. Please ask Obi or Lee'Delle if you need a weapon."
+  - words: ["equipment"]
+    action: say
+    text: "As an adventurer, you should always have at least a backpack, a rope, a shovel, a weapon, an armor and a shield."
+  - words: ["monster"]
+    action: say
+    text: "Ah, the monsters are far away. Let's party now!"
+  - words: ["dungeon"]
+    action: say
+    text: "If you really want to talk about dungeons, visit Dallheim on the bridge near my bar."
+  - words: ["sewer"]
+    action: say
+    text: "Ewww, I don't even want to think about the smell from the sewers right now!"
+  - words: ["king"]
+    action: say
+    text: "Oooh, I wouldn't dare gossiping about the king. He might have his spies here somewhere, you know."
+  - words: ["tibia"]
+    action: say
+    text: "This is the world we live in, oh-oh-oh, and these are the hands we're given, oh-oh... oh, I'm sorry, I got carried away!"
+  - words: ["premium"]
+    action: say
+    text: "As a premium adventurer you have many advantages, you should check them out!"
+  - words: ["drink"]
+    action: say
+    text: "I serve the best drinks in town! What's it gonna be, lemonade? Wine? Milk? Beer? Just ask me for a trade!"
+  - words: ["temple"]
+    action: say
+    text: "The temple is a good place to visit if you're in urgent need for healing."
+  - words: ["help", "information"]
+    action: say
+    text: "Well, the only help I could give you are some general hints. And a delicious drink along with it."
+  - words: ["backpack", "rope", "shovel", "fishing"]
+    action: say
+    text: "No sorry, I'm out of that business. Please ask Al Dee or Lee'Delle if you need equipment."
+  - words: ["armor", "shield"]
+    action: say
+    text: "No sorry, I'm out of that business. Please ask Dixi or Lee'Delle if you need equipment."
+  - words: ["offer", "sell", "buy", "wares", "stuff"]
+    action: say
+    text: "Oh, would you like something to eat or drink? Ask me for a trade to see my offers!"
+  - words: ["mary"]
+    action: say
+    text: "<gets a dreamy look in her eyes>"
+  - words: ["al dee"]
+    action: say
+    text: "Al Dee treats his customers friendly, but he's badmouthing them once he had a few beers."
+  - words: ["amber"]
+    action: say
+    text: "I'm curious about her adventures. She really should come here more often!"
+  - words: ["billy"]
+    action: say
+    text: "He got lucky when Willie and him played a game of dice about who gets to farm on which side of the river. Ever since, Willie holds a grudge against him."
+  - words: ["willie"]
+    action: say
+    text: "Hehe, that guy doesn't pretend to be anyone that he isn't. He is what he is - rude, but honest."
+  - words: ["tom"]
+    action: say
+    text: "Oh shush! It's kinda disgusting when he walks in here with animal blood on his hands!"
+  - words: ["seymour"]
+    action: say
+    text: "What Seymour doesn't teach you is how much fun you can have here!"
+  - words: ["zirella"]
+    action: say
+    text: "I invited her to my bar, but she refused. Oh well, it was worth a try!"
+  - words: ["santiago"]
+    action: say
+    text: "I think that poor guy never gets a break from work. At least he never comes here."
+  - words: ["paulie"]
+    action: say
+    text: "That guy seriously needs some partying and a girlfriend."
+  - words: ["oracle"]
+    action: say
+    text: "The oracle is on the top floor of the academy. You should go there once you are level 8 to leave this island."
+  - words: ["obi"]
+    action: say
+    text: "I think it's rather strange that he lives here with his granddaughter. No one's ever seen the parents of Dixi."
+  - words: ["norma"]
+    action: say
+    text: "I hate that name, it sounds so boring. Almost like 'normal'. I think I should change my name to something more exciting. Like... Marylin! Oh, what a glamorous sound!"
+  - words: ["dixi"]
+    action: say
+    text: "She told me that she dreams of leaving this island to go on a big adventure."
+  - words: ["loui"]
+    action: say
+    text: "They tell me strange stories about him and some monsters in a hole. Weird!"
+  - words: ["lee'delle"]
+    action: say
+    text: "That girl thinks that she is soooo special and 'high society'. We used to be friends, but well, things change."
+  - words: ["hyacinth"]
+    action: say
+    text: "That's probably someone I'll never see in my bar."
+  - words: ["cipfried"]
+    action: say
+    text: "<giggles> That monk with his holier-than-thou attitude hasn't anything against a good mug of wine now and then."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "If you listen to him, you could get the impression my little bar is the devil himself. He says he has more work now keeping drunken adventurers in than monsters out of the city. Such an exaggeration!"

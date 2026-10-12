@@ -1,0 +1,91 @@
+name: "Lubo"
+position: { x: 32489, y: 32119, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [115, 39, 96, 118]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Stop by and rest a while, tired adventurer! Have a look at my wares!"
+shop:
+  - { id: 2854, buy: 25 }
+  - { id: 2855, buy: 6 }
+  - { id: 2875, buy: 3 }
+  - { id: 2873, buy: 4 }
+  - { id: 2927, buy: 8 }
+  - { id: 2917, buy: 2 }
+  - { id: 3481, buy: 280, sell: 75 }
+  - { id: 3304, buy: 260, sell: 50 }
+  - { id: 3483, buy: 150, sell: 40 }
+  - { id: 31334, buy: 25 }
+  - { id: 3308, buy: 35, sell: 6 }
+  - { id: 31489, buy: 50 }
+  - { id: 3456, buy: 50, sell: 15 }
+  - { id: 2856, buy: 10 }
+  - { id: 3585, buy: 3 }
+  - { id: 3003, buy: 50, sell: 15 }
+  - { id: 3453, buy: 50, sell: 10 }
+  - { id: 3457, buy: 50, sell: 8 }
+  - { id: 2906, buy: 20, sell: 6 }
+  - { id: 2901, fluid: water, buy: 10 }
+  - { id: 3459, sell: 15 }
+  - { id: 3492, buy: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to my adventurer shop, {{ PLAYERNAME | capitalize }}! What do you need? Ask me for a trade to look at my wares."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am selling equipment for adventurers. If you need anything, let me know."
+  - words: ["dog"]
+    action: say
+    text: "This is Ruffy my dog, please don't do him any harm."
+  - words: ["offer"]
+    action: say
+    text: "I sell torches, fishing rods, worms, ropes, water hoses, backpacks, apples, and maps."
+  - words: ["name"]
+    action: say
+    text: "I am Lubo, the owner of this shop."
+  - words: ["maps"]
+    action: say
+    text: "Oh! I'm sorry, I sold the last one just five minutes ago."
+  - words: ["hat"]
+    action: say
+    text: "My hat? Hanna made this one for me."
+  - words: ["finger"]
+    action: say
+    text: "Oh, you sure mean this old story about the mage Dago, who lost two fingers when he conjured a dragon."
+  - words: ["pet"]
+    action: say
+    text: "There are some strange stories about a magicians pet names. Ask Hoggle about it."
+  - words: ["mountain"]
+    action: say
+    text: "It is said that once there lived a great magician on the top of this mountain."
+  - words: ["magician"]
+    action: say
+    text: "I don't remember his name, but it's said that his banner was the black eye."
+  - words: ["weapon"]
+    action: say
+    text: "If you want to buy weapons, you'll have to go to a town or city."
+  - words: ["magic"]
+    action: say
+    text: "There's a lot of magic flowing in the mountain to the north."
+  - words: ["food"]
+    action: say
+    text: "I sell the best apples in Tibia."
+  - words: ["inn"]
+    action: say
+    text: "Frodo runs a nice inn in the near town Thais."

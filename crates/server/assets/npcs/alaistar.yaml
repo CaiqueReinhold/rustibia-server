@@ -1,0 +1,56 @@
+name: "Alaistar"
+position: { x: 33619, y: 31884, z: 4 }
+speed: 100
+outfit:
+  id: 133
+  colors: [19, 76, 60, 1]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 239, buy: 225 }
+  - { id: 238, buy: 158 }
+  - { id: 7642, buy: 254 }
+  - { id: 266, buy: 50 }
+  - { id: 268, buy: 56 }
+  - { id: 236, buy: 115 }
+  - { id: 237, buy: 108 }
+  - { id: 23375, buy: 650 }
+  - { id: 7643, buy: 379 }
+  - { id: 23373, buy: 488 }
+  - { id: 23374, buy: 488 }
+  - { id: 2874, sell: 5 }
+  - { id: 21204, sell: 210 }
+  - { id: 21201, sell: 240 }
+  - { id: 21199, sell: 170 }
+  - { id: 21182, sell: 125 }
+  - { id: 21103, sell: 350 }
+  - { id: 21193, sell: 260 }
+  - { id: 21198, sell: 430 }
+  - { id: 21202, sell: 110 }
+  - { id: 21200, sell: 140 }
+  - { id: 21196, sell: 390 }
+  - { id: 21195, sell: 130 }
+  - { id: 21801, sell: 260 }
+  - { id: 21747, sell: 400 }
+  - { id: 21800, sell: 150 }
+  - { id: 21194, sell: 160 }
+  - { id: 21197, sell: 320 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

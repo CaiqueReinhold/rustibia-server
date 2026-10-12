@@ -1,0 +1,42 @@
+name: "Aldo"
+position: { x: 32952, y: 32110, z: 6 }
+speed: 100
+outfit:
+  id: 128
+  colors: [40, 37, 116, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3354, buy: 120, sell: 30 }
+  - { id: 3372, buy: 195, sell: 49 }
+  - { id: 3352, buy: 52, sell: 17 }
+  - { id: 3558, buy: 80, sell: 25 }
+  - { id: 3353, buy: 390, sell: 150 }
+  - { id: 3552, buy: 10, sell: 2 }
+  - { id: 3355, buy: 12, sell: 4 }
+  - { id: 3559, buy: 10, sell: 9 }
+  - { id: 3374, sell: 22 }
+  - { id: 3557, sell: 115 }
+  - { id: 3551, buy: 2 }
+  - { id: 3462, sell: 5 }
+  - { id: 3375, buy: 110, sell: 16 }
+  - { id: 3351, buy: 580, sell: 293 }
+  - { id: 3376, buy: 63, sell: 20 }
+  - { id: 3362, buy: 50, sell: 15 }
+  - { id: 3367, buy: 265, sell: 66 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

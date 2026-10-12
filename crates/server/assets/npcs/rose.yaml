@@ -1,0 +1,30 @@
+name: "Rose"
+position: { x: 32970, y: 32034, z: 6 }
+speed: 100
+outfit:
+  id: 136
+  colors: [79, 77, 112, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 2988, buy: 300 }
+  - { id: 2983, buy: 6 }
+  - { id: 2981, buy: 5 }
+  - { id: 2984, buy: 5 }
+  - { id: 2985, buy: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

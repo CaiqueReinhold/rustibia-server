@@ -1,0 +1,30 @@
+name: "Lector"
+position: { x: 32354, y: 31794, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [79, 38, 0, 68]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3582, buy: 6 }
+  - { id: 3577, buy: 3 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to my humble meat shop, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Please come and buy again, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Please come and buy again, {{ PLAYERNAME | capitalize }}."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, take a good look at my meat."
+  - words: ["meat"]
+    action: say
+    text: "I can offer you ham or meat. If you'd like to check the quality of my wares, ask me for a trade."

@@ -1,0 +1,307 @@
+name: "Malunga"
+position: { x: 32345, y: 32809, z: 5 }
+speed: 100
+outfit:
+  id: 149
+  colors: [95, 78, 19, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "<mumble>"
+shop:
+  - { id: 9667, sell: 200 }
+  - { id: 17830, sell: 140 }
+  - { id: 10301, sell: 28 }
+  - { id: 16134, sell: 800 }
+  - { id: 9634, sell: 15 }
+  - { id: 14083, sell: 150 }
+  - { id: 14079, sell: 210 }
+  - { id: 17463, sell: 25 }
+  - { id: 17458, sell: 20 }
+  - { id: 14011, sell: 90 }
+  - { id: 14044, sell: 430 }
+  - { id: 14041, sell: 360 }
+  - { id: 14017, sell: 80 }
+  - { id: 14012, sell: 180 }
+  - { id: 12541, sell: 1000 }
+  - { id: 19110, sell: 35 }
+  - { id: 10306, sell: 360 }
+  - { id: 12730, sell: 150 }
+  - { id: 16132, sell: 650 }
+  - { id: 11671, sell: 390 }
+  - { id: 19111, sell: 25 }
+  - { id: 10449, sell: 700 }
+  - { id: 11467, sell: 60 }
+  - { id: 8143, sell: 500 }
+  - { id: 11446, sell: 350 }
+  - { id: 10283, sell: 55 }
+  - { id: 9659, sell: 85 }
+  - { id: 18997, sell: 30 }
+  - { id: 9683, sell: 115 }
+  - { id: 9637, sell: 500 }
+  - { id: 18926, sell: 40 }
+  - { id: 18929, sell: 90 }
+  - { id: 18925, sell: 90 }
+  - { id: 11680, sell: 300 }
+  - { id: 10308, sell: 50 }
+  - { id: 9668, sell: 150 }
+  - { id: 11475, sell: 250 }
+  - { id: 11481, sell: 30 }
+  - { id: 10420, sell: 250 }
+  - { id: 9663, sell: 420 }
+  - { id: 9641, sell: 45 }
+  - { id: 17823, sell: 30 }
+  - { id: 18930, sell: 210 }
+  - { id: 9693, sell: 10 }
+  - { id: 11484, sell: 25 }
+  - { id: 11485, sell: 10 }
+  - { id: 9640, sell: 50 }
+  - { id: 18996, sell: 120 }
+  - { id: 10291, sell: 30 }
+  - { id: 11673, sell: 680 }
+  - { id: 9651, sell: 25 }
+  - { id: 12601, sell: 175 }
+  - { id: 11513, sell: 70 }
+  - { id: 8031, sell: 10 }
+  - { id: 14082, sell: 450 }
+  - { id: 14078, sell: 340 }
+  - { id: 10309, sell: 600 }
+  - { id: 17822, sell: 20 }
+  - { id: 14076, sell: 130 }
+  - { id: 11672, sell: 240 }
+  - { id: 10281, sell: 80 }
+  - { id: 11666, sell: 5000 }
+  - { id: 9643, sell: 100 }
+  - { id: 18924, sell: 60 }
+  - { id: 10450, sell: 200 }
+  - { id: 18927, sell: 150 }
+  - { id: 18995, sell: 55 }
+  - { id: 14080, sell: 320 }
+  - { id: 14081, sell: 190 }
+  - { id: 10411, sell: 110 }
+  - { id: 10313, sell: 800 }
+  - { id: 12805, sell: 600 }
+  - { id: 12742, sell: 600 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings. I have only little time to spare, so the conversation will be short. I teach sorcerer spells and buy a few magical ingredients."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["summon sorcerer familiar"]
+    action: say
+    text: "Would you like to learn summon sorcerer familiar magic spell for 50000 gold?"
+  - words: ["restoration"]
+    action: say
+    text: "Would you like to learn restoration magic spell for 500000 gold?"
+  - words: ["expose weakness"]
+    action: say
+    text: "Would you like to learn expose weakness magic spell for 400000 gold?"
+  - words: ["sap strength"]
+    action: say
+    text: "Would you like to learn sap strength magic spell for 200000 gold?"
+  - words: ["strong energy strike"]
+    action: say
+    text: "Would you like to learn strong energy strike magic spell for 7500 gold?"
+  - words: ["strong flame strike"]
+    action: say
+    text: "Would you like to learn strong flame strike magic spell for 6000 gold?"
+  - words: ["strong haste"]
+    action: say
+    text: "Would you like to learn strong haste magic spell for 1300 gold?"
+  - words: ["great energy beam"]
+    action: say
+    text: "Would you like to learn great energy beam magic spell for 1800 gold?"
+  - words: ["great fire wave"]
+    action: say
+    text: "Would you like to learn great fire wave magic spell for 25000 gold?"
+  - words: ["great fireball"]
+    action: say
+    text: "Would you like to learn Great Fireball Rune spell for 1200 gold?"
+  - words: ["great light"]
+    action: say
+    text: "Would you like to learn great light magic spell for 500 gold?"
+  - words: ["ultimate light"]
+    action: say
+    text: "Would you like to learn ultimate light magic spell for 1600 gold?"
+  - words: ["ultimate healing"]
+    action: say
+    text: "Would you like to learn ultimate healing magic spell for 1000 gold?"
+  - words: ["intense healing"]
+    action: say
+    text: "Would you like to learn intense healing magic spell for 350 gold?"
+  - words: ["light magic missile"]
+    action: say
+    text: "Would you like to learn Light Magic Missile Rune spell for 500 gold?"
+  - words: ["heavy magic missile"]
+    action: say
+    text: "Would you like to learn Heavy Magic Missile Rune spell for 1500 gold?"
+  - words: ["cure poison"]
+    action: say
+    text: "Would you like to learn cure poison magic spell for 150 gold?"
+  - words: ["cancel magic shield"]
+    action: say
+    text: "Would you like to learn cancel magic shield magic spell for 450 gold?"
+  - words: ["magic wall"]
+    action: say
+    text: "Would you like to learn Magic Wall Rune spell for 2100 gold?"
+  - words: ["magic shield"]
+    action: say
+    text: "Would you like to learn magic shield magic spell for 450 gold?"
+  - words: ["magic rope"]
+    action: say
+    text: "Would you like to learn magic rope magic spell for 200 gold?"
+  - words: ["magic patch"]
+    action: say
+    text: "Would you like to learn magic patch magic spell for free?"
+  - words: ["summon creature"]
+    action: say
+    text: "Would you like to learn summon creature magic spell for 2000 gold?"
+  - words: ["energy bomb"]
+    action: say
+    text: "Would you like to learn Energy Bomb Rune spell for 2300 gold?"
+  - words: ["energy wall"]
+    action: say
+    text: "Would you like to learn Energy Wall Rune spell for 2500 gold?"
+  - words: ["energy field"]
+    action: say
+    text: "Would you like to learn Energy Field Rune spell for 700 gold?"
+  - words: ["energy wave"]
+    action: say
+    text: "Would you like to learn energy wave magic spell for 2500 gold?"
+  - words: ["energy beam"]
+    action: say
+    text: "Would you like to learn energy beam magic spell for 1000 gold?"
+  - words: ["energy strike"]
+    action: say
+    text: "Would you like to learn energy strike magic spell for 800 gold?"
+  - words: ["fire bomb"]
+    action: say
+    text: "Would you like to learn Fire Bomb Rune spell for 1500 gold?"
+  - words: ["fire wall"]
+    action: say
+    text: "Would you like to learn Fire Wall Rune spell for 2000 gold?"
+  - words: ["fire field"]
+    action: say
+    text: "Would you like to learn Fire Field Rune spell for 500 gold?"
+  - words: ["fire wave"]
+    action: say
+    text: "Would you like to learn fire wave magic spell for 850 gold?"
+  - words: ["fireball"]
+    action: say
+    text: "Would you like to learn Fireball Rune spell for 1600 gold?"
+  - words: ["flame strike"]
+    action: say
+    text: "Would you like to learn flame strike magic spell for 800 gold?"
+  - words: ["poison wall"]
+    action: say
+    text: "Would you like to learn Poison Wall Rune spell for 1600 gold?"
+  - words: ["poison field"]
+    action: say
+    text: "Would you like to learn Poison Field Rune spell for 300 gold?"
+  - words: ["soulfire"]
+    action: say
+    text: "Would you like to learn Soulfire Rune spell for 1800 gold?"
+  - words: ["stalagmite"]
+    action: say
+    text: "Would you like to learn Stalagmite Rune spell for 1400 gold?"
+  - words: ["thunderstorm"]
+    action: say
+    text: "Would you like to learn Thunderstorm Rune spell for 1100 gold?"
+  - words: ["explosion"]
+    action: say
+    text: "Would you like to learn Explosion Rune spell for 1800 gold?"
+  - words: ["disintegrate"]
+    action: say
+    text: "Would you like to learn Disintegrate Rune spell for 900 gold?"
+  - words: ["destroy field"]
+    action: say
+    text: "Would you like to learn Destroy Field Rune spell for 700 gold?"
+  - words: ["animate dead"]
+    action: say
+    text: "Would you like to learn animate dead magic spell for 1200 gold?"
+  - words: ["creature illusion"]
+    action: say
+    text: "Would you like to learn creature illusion magic spell for 1000 gold?"
+  - words: ["curse"]
+    action: say
+    text: "Would you like to learn curse magic spell for 6000 gold?"
+  - words: ["death strike"]
+    action: say
+    text: "Would you like to learn death strike magic spell for 800 gold?"
+  - words: ["electrify"]
+    action: say
+    text: "Would you like to learn electrify magic spell for 2500 gold?"
+  - words: ["ice strike"]
+    action: say
+    text: "Would you like to learn ice strike magic spell for 800 gold?"
+  - words: ["ignite"]
+    action: say
+    text: "Would you like to learn ignite magic spell for 1500 gold?"
+  - words: ["invisible"]
+    action: say
+    text: "Would you like to learn invisible magic spell for 2000 gold?"
+  - words: ["lightning"]
+    action: say
+    text: "Would you like to learn lightning magic spell for 5000 gold?"
+  - words: ["sudden death"]
+    action: say
+    text: "Would you like to learn Sudden Death Rune spell for 3000 gold?"
+  - words: ["terra strike"]
+    action: say
+    text: "Would you like to learn terra strike magic spell for 800 gold?"
+  - words: ["apprentice's strike"]
+    action: say
+    text: "Would you like to learn apprentice's strike magic spell for free?"
+  - words: ["buzz"]
+    action: say
+    text: "Would you like to learn buzz magic spell for free?"
+  - words: ["find fiend"]
+    action: say
+    text: "Would you like to learn find fiend magic spell for 1000 gold?"
+  - words: ["find person"]
+    action: say
+    text: "Would you like to learn find person magic spell for 80 gold?"
+  - words: ["haste"]
+    action: say
+    text: "Would you like to learn haste magic spell for 600 gold?"
+  - words: ["levitate"]
+    action: say
+    text: "Would you like to learn levitate magic spell for 500 gold?"
+  - words: ["light healing"]
+    action: say
+    text: "Would you like to learn light healing magic spell for free?"
+  - words: ["light"]
+    action: say
+    text: "Would you like to learn light magic spell for free?"
+  - words: ["scorch"]
+    action: say
+    text: "Would you like to learn scorch magic spell for free?"
+  - words: ["spells"]
+    action: say
+    text: "I can teach you attack spells, healing spells, support spells and spells for runes. What kind of spell do you wish to learn? I can also tell you which spells are available at your level."
+  - words: ["attack"]
+    action: say
+    text: "My attack spells are: Apprentice's Strike, Buzz, Creature Illusion, Curse, Death Strike, Electrify, Energy Beam, Energy Strike, Energy Wave, Fire Wave, Flame Strike, Great Energy Beam, Great Fire Wave, Ice Strike, Ignite, Invisible, Lightning, Scorch, Strong Energy Strike, Strong Flame Strike and Terra Strike."
+  - words: ["healing"]
+    action: say
+    text: "My healing spells are: Cure Poison, Intense Healing, Light Healing, Magic Patch, Restoration and Ultimate Healing."
+  - words: ["support"]
+    action: say
+    text: "My support spells are: Animate Dead, Cancel Magic Shield, Find Fiend, Find Person, Great Light, Haste, Levitate, Light, Magic Rope, Magic Shield, Strong Haste, Summon Creature, Summon Sorcerer Familiar and Ultimate Light."
+  - words: ["runes"]
+    action: say
+    text: "My rune spells are: Destroy Field Rune, Disintegrate Rune, Energy Bomb Rune, Energy Field Rune, Energy Wall Rune, Explosion Rune, Fire Bomb Rune, Fire Field Rune, Fire Wall Rune, Fireball Rune, Great Fireball Rune, Heavy Magic Missile Rune, Light Magic Missile Rune, Poison Field Rune, Poison Wall Rune, Soulfire Rune, Stalagmite Rune, Sudden Death Rune and Thunderstorm Rune."
+  - words: ["level"]
+    action: say
+    text: "I have spells for level 1, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 41, 45, 55, 70, 75, 80, 175, 200, 275 and 300."

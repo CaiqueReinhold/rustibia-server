@@ -1,0 +1,92 @@
+name: "Richard"
+position: { x: 32056, y: 31881, z: 5 }
+speed: 100
+outfit:
+  id: 472
+  colors: [97, 38, 41, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Don't forget to always have a rope with you! Buy one here, only the best quality!"
+    - "Don't complain to ME when you fell down a hole without a rope to get you out! You can buy one here now!"
+    - "Everything an adventurer needs!"
+    - "A rope is the adventurer's best friend!"
+    - "Fresh meat! Durable provisions! Ropes and shovels!"
+    - "Feeling like a bit of treasure-seeking? Buy a shovel or a pick and investigate likely-looking stone piles and cracks!"
+shop:
+  - { id: 2854, buy: 10 }
+  - { id: 2853, buy: 4 }
+  - { id: 3600, buy: 3 }
+  - { id: 3595, buy: 1 }
+  - { id: 3607, sell: 2 }
+  - { id: 3590, buy: 1 }
+  - { id: 3606, buy: 1 }
+  - { id: 3582, buy: 8 }
+  - { id: 3577, sell: 2 }
+  - { id: 3579, buy: 2 }
+  - { id: 3483, buy: 150, sell: 30 }
+  - { id: 3308, buy: 6 }
+  - { id: 3456, buy: 15 }
+  - { id: 3003, sell: 8 }
+  - { id: 3457, sell: 2 }
+  - { id: 2920, buy: 2 }
+  - { id: 2815, buy: 5 }
+  - { id: 3492, buy: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello there, mate. Here for a trade? My stock's just been refilled."
+  - words: GOODBYE
+    action: dismiss
+    text: "Have fun!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "And godspeed, too."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["name"]
+    action: say
+    text: "Richard. Just Richard. Lost my surname with my past in that storm. <winks>"
+  - words: ["dawnport"]
+    action: say
+    text: "This lovely island here. Once I didn't have to live off squirrels, it became quite enjoyable. Nasty things though live underground, so take care where you tread and ALWAYS have a rope with you!"
+  - words: ["rookgaard"]
+    action: say
+    text: "<shrugs> Never been, mate. Heard it's kinda cute, though."
+  - words: ["coltrayne"]
+    action: say
+    text: "You know, I really don't want to poke into someone else's private life. Suffice it to say that everyone has chapters of his life he doesn't want to mention. Judging by Coltrayne's looks, we're looking at a trilogy here."
+  - words: ["inigo"]
+    action: say
+    text: "Old Inigo was the one who found me, actually, and brought me to the outpost. I was half starved by then. He taught me how to make better traps and how to fish... I owe much to Inigo."
+  - words: ["garamond"]
+    action: say
+    text: "Can you believe how old he is? He won't say it, but I wouldn't be surprised if he had been around for loooooong time."
+  - words: ["squirrel"]
+    action: say
+    text: "Don't talk to ME about squirrels! <shudders> Had to live off them the first days, when they were the only thing to go into my self-made acorn traps. Nasty."
+  - words: ["mr morris"]
+    action: say
+    text: "Don't know what to make of him. Great researcher in all Dawnport matters, though. Always has a quest or two where he needs help, if you're looking for adventuring work."
+  - words: ["oressa"]
+    action: say
+    text: "Quiet little lady, her. Knows her way around the isle, looking for herbs and stuff but mostly spends her time in the temple, helping younglings like you choose a vocation."
+  - words: ["plunderpurse"]
+    action: say
+    text: "You know, on the day that ol' pirate decides to make off with all that gold in the bank, I'm gonna come with him. Should be much more fun landing on a strange island with some gold to spend on booze and babes! <winks>"
+  - words: ["hamish"]
+    action: say
+    text: "Tries to act tough, but he's quite a witty and decent bloke who wouldn't hurt a fly. We enjoy a good laugh together in the evenings."
+  - words: ["key"]
+    action: say
+    text: "I wouldn't be too surprised if the key had been stolen. As often as everybody left it lying around unattended, something like that was bound to happen sooner or later."
+  - words: ["job"]
+    action: say
+    text: "I was a carpenter, back on Main. Wanted my own little shop. Didn't sit with the old man. So I shipped to somewhere else. Terrible storm. Woke up on this island. Had to eat squirrels before the adventurers found me and took me in. End of story."
+  - words: ["rope"]
+    action: say
+    text: "Only the best quality, I assure you. A rope in need is a friend indeed! Imagine you stumble into a rat hole without a rope - heh, your bones will be gnawed clean before someone finds ya! Now, about that rope - ask me for equipment to see my wares. <winks>"

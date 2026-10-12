@@ -1,0 +1,38 @@
+name: "Captain Haba"
+position: { x: 31950, y: 31045, z: 6 }
+speed: 100
+outfit:
+  id: 98
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 939, buy: 50 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "You found the spot {{ PLAYERNAME | capitalize }}!! Grab yourself a helmet of the deep and go explore the caves down there."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "See ya, landlubber!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Here ya go! Use it on the crane when you see the monster. Then refill it every time you use the telescope."
+  - words: ["caves"]
+    action: say
+    text: "I'd go by myself and tear that beast's heart out if I were younger. I hope ya can do that for me. Now go and good luck to ya!"
+  - words: ["wares", "go"]
+    action: say
+    text: "Ya're a coward, aren't ya? Prove that I'm wrong and get your lazy bones up to the lookout!!"
+  - words: ["bait"]
+    action: say
+    text: "Just ask me for a trade if you need a bait."
+  - words: ["test"]
+    action: say
+    text: "I can give ya a challenge to test if ya have the guts to be a real sailor. Go up to the lookout and remain there for 24 hours during a storm! Harharhar!"

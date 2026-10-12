@@ -13,8 +13,8 @@ use crate::entities::combat::{AmmoType, CombatElement, WeaponType};
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
 use crate::entities::inventory::InventorySlot;
 use crate::entities::items::{
-    ClimbDirection, FloorChangeDirection, ItemAction, ItemAttribute, ItemConfig, ItemFlag, ItemId,
-    ItemMultiAction,
+    ClimbDirection, FloorChangeDirection, FluidType, ItemAction, ItemAttribute, ItemConfig,
+    ItemFlag, ItemId, ItemMultiAction,
 };
 use crate::entities::spells::SpellId;
 use crate::entities::vocation::{Vocation, VocationSet};
@@ -90,6 +90,7 @@ fn parse_flag(s: &str) -> Option<ItemFlag> {
         "avoid" => Some(ItemFlag::Avoid),
         "ammo_container" => Some(ItemFlag::AmmoContainer),
         "liquidpool" => Some(ItemFlag::LiquidPool),
+        "liquidcontainer" => Some(ItemFlag::LiquidContainer),
         "unreplaceable" => Some(ItemFlag::Unreplaceable),
         "teleport" => Some(ItemFlag::Teleport),
         "border" => Some(ItemFlag::Border),
@@ -249,6 +250,7 @@ fn parse_attribute(
             let set: VocationSet = vocations.into_iter().collect();
             (!set.is_empty()).then_some(ItemAttribute::Vocations(set))
         }
+        "fluid_source" => FluidType::from_name(value.as_str()?).map(ItemAttribute::FluidSource),
         _ => {
             let n = value.as_u64()? as u32;
             match key {
@@ -348,11 +350,61 @@ fn load_items_from_files<'a>(
 mod tests {
     use super::*;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
-    use crate::entities::items::ItemId;
+    use crate::entities::items::{FluidType, ItemId};
     use crate::entities::vocation::Vocation;
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
         parse_attribute(key, &serde_yaml::from_str(value).unwrap(), &HashMap::new())
+    }
+
+    #[test]
+    fn a_fluid_source_is_read_by_its_fluids_name() {
+        assert_eq!(
+            parse("fluid_source", "water"),
+            Some(ItemAttribute::FluidSource(FluidType::Water))
+        );
+        assert_eq!(parse("fluid_source", "lava"), None);
+    }
+
+    #[test]
+    fn a_liquid_container_survives_the_whole_load_path() {
+        let items = load_items_from_files(
+            [(
+                Path::new("containers.yaml"),
+                "
+- id: 2874
+  name: vial
+  flags:
+  - liquidcontainer
+  attributes:
+    fluid_source: milk
+",
+            )],
+            &HashMap::new(),
+        )
+        .unwrap();
+
+        let vial = &items[&ItemId(2874)];
+        assert!(vial.has_flag(ItemFlag::LiquidContainer));
+        assert_eq!(vial.attr_fluid_source(), Some(FluidType::Milk));
+    }
+
+    #[test]
+    fn every_shipped_fluid_source_names_a_fluid() {
+        for path in yaml_files_in(Path::new(&CONFIG.items_dir_path)).unwrap() {
+            let raws: Vec<RawItemConfig> =
+                serde_yaml::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
+            for raw in raws {
+                if let Some(value) = raw.attributes.get("fluid_source") {
+                    assert!(
+                        parse_attribute("fluid_source", value, &HashMap::new()).is_some(),
+                        "{}: item {} has fluid_source {value:?}",
+                        path.display(),
+                        raw.id
+                    );
+                }
+            }
+        }
     }
 
     #[test]

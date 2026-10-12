@@ -1,0 +1,33 @@
+name: "Liane"
+position: { x: 32333, y: 31786, z: 7 }
+speed: 100
+outfit:
+  id: 136
+  colors: [77, 98, 79, 114]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Welcome to the post office!"
+    - "Hey, send a letter to your friend now and then. Keep in touch, you know."
+    - "If you need help with letters or parcels, just ask me. I can explain everything."
+    - "No, no, no, there IS no parcel bug, I'm telling you!"
+shop:
+  - { id: 3507, buy: 1 }
+  - { id: 3505, buy: 8 }
+  - { id: 3503, buy: 15 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello. How may I help you {{ PLAYERNAME | capitalize }}? Ask me for a trade if you want to buy something. I can also explain the mail system."
+  - words: GOODBYE
+    action: dismiss
+    text: "It was a pleasure to help you, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "It was a pleasure to help you, {{ PLAYERNAME | capitalize }}."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Here. Don't forget that you need to buy a label too if you want to send a parcel. Always write the name of the receiver in the first line."

@@ -1,0 +1,59 @@
+name: "Arkulius"
+position: { x: 33280, y: 31845, z: 3 }
+speed: 100
+outfit:
+  id: 130
+  colors: [0, 79, 90, 117]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "...the arithmetical paradox has the same value in a metaphysical way, then..."
+    - "Oh my! Alverus!! Did you really...?!?! I have to recalculate it to make sure that I made no mistake."
+    - "<mumbles>"
+    - "...the minimum square deviation could cause a dislocation, in a matter of fact..."
+    - "...it could be possible to bring the sphere to a destination where..."
+    - "Yes, that's it! The elementary particle are corresponding to the... the ... UNBELIEVEABLE!!!"
+shop:
+  - { id: 945, sell: 2000 }
+  - { id: 946, sell: 5000 }
+  - { id: 942, sell: 5000 }
+  - { id: 941, sell: 2000 }
+  - { id: 944, sell: 2000 }
+  - { id: 947, sell: 5000 }
+  - { id: 940, sell: 2000 }
+  - { id: 954, sell: 5000 }
+  - { id: 948, sell: 5000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "At last! Good things come to those who wait."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye and please stay away, okay?"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "How dare you asking me this?!? I'm Arkulius - Master of Elements, the HEADMASTER of this academy!!"
+  - words: ["name"]
+    action: say
+    text: "I'm Arkulius - Master of Elements, the headmaster of this academy."
+  - words: ["help"]
+    action: say
+    text: "I have better things to do than helping you. See that ice statue over there? My dear friend Alverus needs to be revived!"
+  - words: ["time"]
+    action: say
+    text: "Time is an illusion and completely irrelevant to me."
+  - words: ["weapon"]
+    action: say
+    text: "Weapons are for those people who aren't able to use their heads or better what's INSIDE their heads. No offence <coughs>."
+  - words: ["pits of inferno"]
+    action: say
+    text: "Yeye, I believe you almost feel like home among all those brainless creatures!"

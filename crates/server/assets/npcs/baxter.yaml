@@ -1,0 +1,144 @@
+name: "Baxter"
+position: { x: 32322, y: 32189, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [77, 29, 29, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "People of Thais, bring honour to your king by fighting in the orc war!"
+    - "The orcs are preparing for war!!!"
+shop:
+  - { id: 7785, buy: 100 }
+  - { id: 11453, sell: 20 }
+  - { id: 11452, sell: 35 }
+  - { id: 11479, sell: 30 }
+  - { id: 10196, sell: 150 }
+  - { id: 11477, sell: 85 }
+  - { id: 11478, sell: 45 }
+  - { id: 11480, sell: 80 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "LONG LIVE KING TIBIANUS!"
+  - words: GOODBYE
+    action: dismiss
+    text: "LONG LIVE THE KING!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "LONG LIVE THE KING!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Do you bring freshly killed rats for a bounty of 1 gold each? By the way, I also buy orc teeth and other stuff you ripped from their bloody corp... I mean... well, you know what I mean."
+  - words: ["bricklayer kit"]
+    action: say
+    text: "You need one kit for each wall. Ask me for a trade if you need some."
+  - words: ["secret police"]
+    action: say
+    text: "Ask a higher official about that."
+  - words: ["first dragon"]
+    action: say
+    text: "My grandfather had seen it with his own eyes!"
+  - words: ["silver guard"]
+    action: say
+    text: "The best sorcerers, paladins, knights, or druids of our forces are chosen to serve as Silver Guards. They are the king's bodyguards."
+  - words: ["battlegroup"]
+    action: say
+    text: "There are the Dogs of War, the Red Guards, and the Silver Guards."
+  - words: ["dogs of war"]
+    action: say
+    text: "They are our main army."
+  - words: ["how are you"]
+    action: say
+    text: "I'm healthy and vigilant."
+  - words: ["excalibug"]
+    action: say
+    text: "Gorn and I searched for this weapon in the darkest corners of each dungeon, but we didn't find the slightest hint."
+  - words: ["red guard"]
+    action: say
+    text: "They are our special forces. Some serve as city guards, others as secret police."
+  - words: ["benjamin"]
+    action: say
+    text: "He was one of the king's best generals, now he's a bit ...uhm... forgetful."
+  - words: ["criminal"]
+    action: say
+    text: "Too many criminals roam our streets nowadays, the Red Guards will take care of them."
+  - words: ["eclesius"]
+    action: say
+    text: "He's harmless. But I doubt he'd be much help in the war against the orcs."
+  - words: ["chester"]
+    action: say
+    text: "This man is paranoid, but I guess that's useful in his job."
+  - words: ["subject"]
+    action: say
+    text: "We all live under the benevolent guidance of our king."
+  - words: ["orc war"]
+    action: say
+    text: "I have already told you about your mission! Haven't you wrote down everything in your logbook? Look in there if you need to refresh your memory."
+  - words: ["lunatic"]
+    action: say
+    text: "Take this!"
+  - words: ["castle"]
+    action: say
+    text: "His Royal Highness ordered that the castle be open for all his subjects."
+  - words: ["leader"]
+    action: say
+    text: "King Tibianus III is our wise and just leader!"
+  - words: ["harsky"]
+    action: say
+    text: "He's a soldier of the Silver Guards."
+  - words: ["stutch"]
+    action: say
+    text: "He's a soldier of the Silver Guards."
+  - words: ["partos"]
+    action: say
+    text: "He was wanted for a long time and was finally caught stealing some time ago."
+  - words: ["stupid"]
+    action: say
+    text: "Take this!"
+  - words: ["tyrant"]
+    action: say
+    text: "Take this!"
+  - words: ["guard"]
+    action: say
+    text: "Our brave army, which protects our city, consists of three battle groups."
+  - words: ["fruit"]
+    action: say
+    text: "I heard he stole some fruit he's obsessed with and got incautious."
+  - words: ["idiot"]
+    action: say
+    text: "Take this!"
+  - words: ["army"]
+    action: say
+    text: "Our brave army, which protects our city, consists of three battle groups."
+  - words: ["bozo"]
+    action: say
+    text: "The royal jester. I don't think he's funny."
+  - words: ["city"]
+    action: say
+    text: "Now that the king returned, we will clean the city from all dubious persons."
+  - words: ["gorn"]
+    action: say
+    text: "An old friend of mine. He was once a great warrior and adventurer. Now he's running a shop."
+  - words: ["king"]
+    action: say
+    text: "King Tibianus III is our wise and just leader!"
+  - words: ["news"]
+    action: say
+    text: "It's rumoured that Ferumbras is planning a new attack on this town."
+  - words: ["job"]
+    action: say
+    text: "I'm a proud member of the king's army. It's my duty to guard the castle. Sometimes I have to deal with less important work though."
+  - words: ["sam"]
+    action: say
+    text: "He's a fine blacksmith. Almost all of our weapons are made by him."
+  - words: ["tbi"]
+    action: say
+    text: "There is almost nothing known about that organisation."
+  - words: ["rat"]
+    action: say
+    text: "Do you bring freshly killed rats for a bounty of 1 gold each? Ask me for a trade if you want to sell them."

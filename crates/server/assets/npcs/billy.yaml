@@ -1,0 +1,189 @@
+name: "Billy"
+position: { x: 32050, y: 32206, z: 7 }
+speed: 100
+outfit:
+  id: 153
+  colors: [78, 63, 58, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Add one fresh dead rat and stir it well..."
+    - "Argh, if I only had a pan!"
+    - "Bread, cheese, ham and meat! All fresh!"
+    - "Buying fresh dead rats!"
+    - "Buying many types of food and ingredients, too!"
+    - "Hmm, hmm, now which ingredients do I need..."
+    - "Need food? I have plenty for sale!"
+shop:
+  - { id: 3600, buy: 3, sell: 1 }
+  - { id: 3595, sell: 1 }
+  - { id: 3607, buy: 5, sell: 2 }
+  - { id: 3590, sell: 1 }
+  - { id: 3994, sell: 2 }
+  - { id: 3606, sell: 1 }
+  - { id: 3582, buy: 8, sell: 4 }
+  - { id: 3577, buy: 5, sell: 2 }
+  - { id: 3579, sell: 2 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Howdy {{ PLAYERNAME | capitalize }}. I'm a farmer and cook, maybe I can interest you in a trade with food? You can also ask me for general hints about the game."
+  - words: GOODBYE
+    action: dismiss
+    text: "Bye."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "HOW RUDE!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Sure."
+  - words: ["name"]
+    action: say
+    text: "Billy."
+  - words: ["job"]
+    action: say
+    text: "I'm a farmer and a cook. I'd love to make pancakes, but I'm lacking a good pan."
+  - words: ["time"]
+    action: say
+    text: "I came here for peace and leisure, so leave me alone with 'time'."
+  - words: ["bank"]
+    action: say
+    text: "Rather give your money to me than leaving it at the bank. Hehe."
+  - words: ["how are you"]
+    action: say
+    text: "Thank you, I'm fine."
+  - words: ["information"]
+    action: say
+    text: "If you need information, I can provide you with general hints."
+  - words: ["help"]
+    action: say
+    text: "I'm a cook, not a priest. If you need information, I can provide you with general hints."
+  - words: ["cook"]
+    action: say
+    text: "I'm the best cook around. You can sell most types of food to me. Just ask me for a trade to see what I buy from you as well as my offers."
+  - words: ["citizen"]
+    action: say
+    text: "Which citizen?"
+  - words: ["rat"]
+    action: say
+    text: "If you bring me a fresh rat for my famous stew, ask me for a trade."
+  - words: ["shop"]
+    action: say
+    text: "Nah, this is not a real shop. I have some offers, though. If you're interested, just ask me for a trade. There are other merchants on Rookgaard as well."
+  - words: ["tibia"]
+    action: say
+    text: "There is so much to explore! Better hurry to get to the continent! Once you're level 8, look for the oracle."
+  - words: ["equipment"]
+    action: say
+    text: "As an adventurer, you should always have at least a backpack, a rope, a shovel, a weapon, an armor and a shield."
+  - words: ["academy"]
+    action: say
+    text: "There are lots and lots of dusty books. You can read them for some basic knowledge about the world. Then again, you could also ask around in the village."
+  - words: ["king"]
+    action: say
+    text: "The king and his tax collectors are far away. You'll meet them soon enough."
+  - words: ["weapon"]
+    action: say
+    text: "Ask Obi or Lee'Delle. They make a fortune here with all those wannabe heroes."
+  - words: ["rookgaard"]
+    action: say
+    text: "This island will prepare you for the main continent of Tibia. Learn to fight and grow stronger!"
+  - words: ["monster"]
+    action: say
+    text: "Don't be scared, you should be safe as long as you stay in town. Dangerous monsters are roaming the dungeons."
+  - words: ["dungeon"]
+    action: say
+    text: "You'll find a lot of dungeons if you look around. One example are the sewers below Rookgaard."
+  - words: ["sewer"]
+    action: say
+    text: "The local sewers are invested by rats. Fresh rats give a good stew, you can sell them to me."
+  - words: ["sell"]
+    action: say
+    text: "Just ask me for a trade to see what I buy from you. Food of almost any kind!"
+  - words: ["merchant"]
+    action: say
+    text: "To view the offers of a merchant, simply talk to him or her and ask for a trade."
+  - words: ["god"]
+    action: say
+    text: "That's right, I'm the god of cooking!"
+  - words: ["recipe"]
+    action: say
+    text: "I'd love to make pancakes, but I'm lacking a decent pan. If you get me one, I'll reward you."
+  - words: ["armor", "shield"]
+    action: say
+    text: "Armor and shields can be bought at Dixi's or at Lee'Delle's. Dixi runs that shop near Obi's."
+  - words: ["backpack", "shovel", "rope", "fishing"]
+    action: say
+    text: "Get that from Al Dee or Lee'Delle."
+  - words: ["money", "gold"]
+    action: say
+    text: "Well, no gold, no deal. Earn gold by fighting monsters and picking up the things they carry. Sell it to merchants to make profit!"
+  - words: ["magic", "spell"]
+    action: say
+    text: "I can spell but I don't know any spells."
+  - words: ["food", "buy", "stuff", "offer"]
+    action: say
+    text: "Just ask me for a trade to see my offers."
+  - words: ["obi"]
+    action: say
+    text: "I like him, we usually have a drink or two once a week and share stories about Willie."
+  - words: ["norma"]
+    action: say
+    text: "That girl is all about party now. I think she was fed up with equipment selling."
+  - words: ["loui"]
+    action: say
+    text: "Now that's one crazy fellow. I usually hear him scream about some hole."
+  - words: ["santiago"]
+    action: say
+    text: "He's a fisherman and somehow his hut is always infested with cockroaches."
+  - words: ["zirella"]
+    action: say
+    text: "That old hag always finds someone to do her work. I have no clue how she is doing that."
+  - words: ["al dee"]
+    action: say
+    text: "Decent guy. He sells general equipment such as ropes, shovels and so on."
+  - words: ["amber"]
+    action: say
+    text: "She's pretty indeed! I wonder if she likes bearded men."
+  - words: ["billy"]
+    action: say
+    text: "Gotta love that name."
+  - words: ["willie"]
+    action: say
+    text: "Don't listen to this old wannabe, I'm the best cook around."
+  - words: ["cipfried"]
+    action: say
+    text: "He never leaves the temple. He spends his time caring for those who newly arrive here. You can ask him for a heal if you are badly injured or poisoned."
+  - words: ["dixi"]
+    action: say
+    text: "That's Obi's granddaughter. She helps him out by selling armors and shields. I think she'll be a beauty when she's grown up."
+  - words: ["hyacinth"]
+    action: say
+    text: "I never see that guy around."
+  - words: ["lee'delle"]
+    action: say
+    text: "Her shop is super-duper exclusive. If you're a premium adventurer, check it out in the western part of town. Lotsa nice offers there."
+  - words: ["lily"]
+    action: say
+    text: "She lives in the very south of this town, selling her potions. Sweet - well, sweet-loving girl."
+  - words: ["oracle"]
+    action: say
+    text: "You can find the oracle on the top floor of the academy, just above Seymour. Go there when you are level 8."
+  - words: ["paulie"]
+    action: say
+    text: "He must have the most boring job there is."
+  - words: ["seymour"]
+    action: say
+    text: "I don't like his headmaster behaviour. Then again, he IS the headmaster of the academy."
+  - words: ["tom"]
+    action: say
+    text: "Tom the tanner buys what's too nasty or too old to eat, animal-wise. Dead wolves and such."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "He is one of the king's best men and here to protect us."
+  - words: ["pan"]
+    action: say
+    text: "Have you found a pan for me?"

@@ -13,6 +13,8 @@ say:
     - Whoah. That was a large shadow passing by.
 arguments:
   LIBERTY_BAY: { x: 32298, y: 32895, z: 6 }
+shop:
+  - { id: 5460, buy: 5000, sell: 5000 }
 keywords:
   - words: GREET
     action: engage
@@ -23,6 +25,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: Good bye.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["liberty bay"]
     action: say
     text: Do you want go back to Liberty Bay?

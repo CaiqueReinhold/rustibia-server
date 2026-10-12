@@ -1,0 +1,107 @@
+name: "Henricus"
+position: { x: 32316, y: 32267, z: 8 }
+speed: 100
+outfit:
+  id: 132
+  colors: [79, 0, 96, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 133, buy: 1000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, fellow believer {{ PLAYERNAME | capitalize }}!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Always be on guard, {{ PLAYERNAME | capitalize }}!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "This ungraceful haste is most suspicious!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["paladin"]
+    action: say
+    text: "It's a shame that only a few paladins still use their abilities to further the cause of the gods of good. Too many paladins have become selfish and greedy."
+  - words: ["knight"]
+    action: say
+    text: "Nowadays, most knights seem to have forgotten the noble cause to which all knights were bound in the past. Only a few have remained pious, serve the gods and follow their teachings."
+  - words: ["sorcerer"]
+    action: say
+    text: "Those who wield great power have to resist great temptations. We have the burden to eliminate all those who give in to the temptations."
+  - words: ["druid"]
+    action: say
+    text: "The druids here still follow the old rules. Sadly, the druids of Carlin have left the right path in the last years."
+  - words: ["dwarf"]
+    action: say
+    text: "The dwarfs are allied with Thais but follow their own obscure religion. Although dwarfs keep mostly to themselves, we have to observe this alliance closely."
+  - words: ["kazordoon"]
+    action: say
+    text: "The dwarfs are allied with Thais but follow their own obscure religion. Although dwarfs keep mostly to themselves, we have to observe this alliance closely."
+  - words: ["elves"]
+    action: say
+    text: "Those elves are hardly any more civilised than orcs. They can become a threat to mankind at any time."
+  - words: ["ab'dendriel"]
+    action: say
+    text: "Those elves are hardly any more civilised than orcs. They can become a threat to mankind at any time."
+  - words: ["venore"]
+    action: say
+    text: "Venore is somewhat difficult to handle. The merchants have a close eye on our activities in their city and our authority is limited there. However, we will use all of our influence to prevent a second Carlin."
+  - words: ["drefia"]
+    action: say
+    text: "Drefia used to be a city of sin and heresy, just like Carlin nowadays. One day, the gods decided to destroy this town and to erase all evil there."
+  - words: ["darashia"]
+    action: say
+    text: "Darashia is a godless town full of mislead fools. One day, it will surely share the fate of its sister town Drefia."
+  - words: ["demon"]
+    action: say
+    text: "Demons exist in many different shapes and levels of power. In general, they are servants of the dark gods and command great powers of destruction."
+  - words: ["carlin"]
+    action: say
+    text: "Carlin is a city of sin and heresy. After the reunion of Carlin with the kingdom, the inquisition will have much work to purify the city and its inhabitants."
+  - words: ["zathroth"]
+    action: say
+    text: "We can see his evil influence almost everywhere. Keep your eyes open or the dark one will lead you on the wrong way and destroy you."
+  - words: ["crunor"]
+    action: say
+    text: "The church of Crunor works closely together with the druid guild. This makes a cooperation sometimes difficult."
+  - words: ["gods"]
+    action: say
+    text: "We owe to the gods of good our creation and continuing existence. If it weren't for them, we would surely fall prey to the minions of the vile and dark gods."
+  - words: ["church"]
+    action: say
+    text: "The churches of the gods united to fight heresy and dark magic. They are the shield of the true believers, while the inquisition is the sword that fights all enemies of virtuousness."
+  - words: ["inquisitor"]
+    action: say
+    text: "The churches of the gods entrusted me with the enormous and responsible task to lead the inquisition. I leave the field work to inquisitors who I recruit from fitting people that cross my way."
+  - words: ["believer"]
+    action: say
+    text: "Belive on the gods and they will show you the path."
+  - words: ["job"]
+    action: say
+    text: "By edict of the churches I'm the Lord Inquisitor."
+  - words: ["name"]
+    action: say
+    text: "I'm Henricus, the Lord Inquisitor."
+  - words: ["ruthless seven"]
+    action: say
+    text: "They're one of the mightiest weapons that our enemies have at disposal. They're the leaders of some of the most powerful forces of demonkind."
+  - words: ["first dragon"]
+    action: say
+    text: "He was bested in combat, but the hero who killed him, was that humble that he never claimed the fame."
+  - words: ["vampire"]
+    action: say
+    text: "These rotting minions of evil prey upon humanity as wolfs prey upon sheep. Only true faith will drive them back. If you fail on your path of virtuousness, you will easily fall prey to those creatures of the night."
+  - words: ["ghost"]
+    action: say
+    text: "Most ghosts are evil spirits that may not enter the afterlife due to their sins. ... A few ghosts, though, are pious souls who stick to the world of the living to fulfil an unfinished duty."
+  - words: ["kurik"]
+    action: say
+    text: "Kurik has only few followers who aren't united in a church. Only a few books contain teachings of Kurik and carry his legacy for those interested."
+  - words: ["witch"]
+    action: say
+    text: "The witches refused to join the druid or the sorcerer guild. They stuck to their own believes and rejected any supervision and guidance by the churches. Of course, such behaviour led to corruption by the forces of darkness."

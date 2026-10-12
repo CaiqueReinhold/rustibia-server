@@ -1,0 +1,43 @@
+name: "Mehkesh"
+position: { x: 33130, y: 32811, z: 5 }
+speed: 100
+outfit:
+  id: 130
+  colors: [19, 92, 113, 20]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Potions brewed by the leading alchemists of the land!"
+shop:
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 239, buy: 225 }
+  - { id: 238, buy: 158 }
+  - { id: 7642, buy: 254 }
+  - { id: 266, buy: 50 }
+  - { id: 8761, buy: 200 }
+  - { id: 268, buy: 56 }
+  - { id: 236, buy: 115 }
+  - { id: 237, buy: 108 }
+  - { id: 23375, buy: 650 }
+  - { id: 7643, buy: 379 }
+  - { id: 23373, buy: 488 }
+  - { id: 23374, buy: 488 }
+  - { id: 2874, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Be mourned, {{ PLAYERNAME | capitalize }}, pilgrim in flesh. If you are looking for potions, seek no further."
+  - words: GOODBYE
+    action: dismiss
+    text: "May enlightenment be your path, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "May enlightenment be your path, {{ PLAYERNAME | capitalize }}."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Sure."

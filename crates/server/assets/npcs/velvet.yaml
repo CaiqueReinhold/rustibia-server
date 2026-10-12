@@ -1,0 +1,48 @@
+name: "Velvet"
+position: { x: 32943, y: 32104, z: 6 }
+speed: 100
+outfit:
+  id: 136
+  colors: [59, 96, 115, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 2394, buy: 25 }
+  - { id: 2659, buy: 25 }
+  - { id: 2396, buy: 25 }
+  - { id: 2647, buy: 25 }
+  - { id: 2393, buy: 30 }
+  - { id: 2653, buy: 25 }
+  - { id: 2644, buy: 25 }
+  - { id: 2395, buy: 25 }
+  - { id: 2656, buy: 25 }
+  - { id: 2398, buy: 25 }
+  - { id: 2400, buy: 25 }
+  - { id: 2399, buy: 25 }
+  - { id: 2401, buy: 25 }
+  - { id: 2389, buy: 20 }
+  - { id: 2387, buy: 20 }
+  - { id: 2390, buy: 20 }
+  - { id: 2386, buy: 20 }
+  - { id: 2388, buy: 20 }
+  - { id: 2391, buy: 20 }
+  - { id: 2392, buy: 20 }
+  - { id: 2667, buy: 25 }
+  - { id: 900, buy: 25 }
+  - { id: 2650, buy: 25 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

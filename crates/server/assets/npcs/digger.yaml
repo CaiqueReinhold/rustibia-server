@@ -1,0 +1,37 @@
+name: "Digger"
+position: { x: 32971, y: 32088, z: 6 }
+speed: 100
+outfit:
+  id: 9
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 283, sell: 5 }
+  - { id: 284, sell: 5 }
+  - { id: 285, sell: 5 }
+  - { id: 239, buy: 225 }
+  - { id: 238, buy: 158 }
+  - { id: 7642, buy: 254 }
+  - { id: 266, buy: 50 }
+  - { id: 268, buy: 56 }
+  - { id: 236, buy: 115 }
+  - { id: 237, buy: 108 }
+  - { id: 7643, buy: 379 }
+  - { id: 2874, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

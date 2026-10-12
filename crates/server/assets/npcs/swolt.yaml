@@ -1,0 +1,40 @@
+name: "Swolt"
+position: { x: 32993, y: 31542, z: 10 }
+speed: 100
+outfit:
+  id: 160
+  colors: [77, 80, 79, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3600, buy: 4 }
+  - { id: 10328, sell: 75 }
+  - { id: 3607, buy: 6 }
+  - { id: 11681, sell: 300 }
+  - { id: 3582, buy: 8 }
+  - { id: 3577, buy: 5 }
+  - { id: 2880, fluid: beer, buy: 2 }
+  - { id: 2880, fluid: water, buy: 1 }
+  - { id: 10453, sell: 50 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Take a look, but not a sip before you've paid. And I hope it stays like this and you don't get any strange ideas about rice."
+  - words: ["job"]
+    action: say
+    text: "Well, you see me standing behind a bar. Selling drinks. Food. And stuff. Now try figuring out what I could be making a living of down here."
+  - words: ["food", "offer", "drinks", "buy", "sell", "equipment", "goods", "stuff", "ware"]
+    action: say
+    text: "I can offer you bread, cheese, ham, or meat. And as drinks we serve beer and water. If you'd like to see what we have to offer, just ask me for a trade."

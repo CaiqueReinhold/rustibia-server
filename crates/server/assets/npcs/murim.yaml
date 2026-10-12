@@ -11,6 +11,10 @@ say:
   chance: 50000
   sentences:
     - Don't forget to deposit your money here in the Global Bank before you head out for adventure.
+shop:
+  - { id: 3507, buy: 1 }
+  - { id: 3505, buy: 8 }
+  - { id: 3503, buy: 15 }
 keywords:
   - words: GREET
     action: engage
@@ -21,6 +25,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: Have a nice day.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
 
   - words: ["balance"]
     condition: BALANCE >= 100000000

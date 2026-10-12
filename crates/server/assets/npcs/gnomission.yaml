@@ -1,0 +1,77 @@
+name: "Gnomission"
+position: { x: 33007, y: 31891, z: 9 }
+speed: 100
+outfit:
+  id: 493
+  colors: [41, 115, 100, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 5803, sell: 42000 }
+  - { id: 3341, sell: 42000 }
+  - { id: 7183, sell: 20000 }
+  - { id: 9616, sell: 20000 }
+  - { id: 11693, sell: 60000 }
+  - { id: 7416, sell: 30000 }
+  - { id: 645, sell: 15000 }
+  - { id: 3659, sell: 250 }
+  - { id: 3295, sell: 6000 }
+  - { id: 6561, sell: 20000 }
+  - { id: 9392, sell: 15000 }
+  - { id: 3068, sell: 10000 }
+  - { id: 3387, sell: 40000 }
+  - { id: 8039, sell: 50000 }
+  - { id: 3323, sell: 1500 }
+  - { id: 3398, sell: 40000 }
+  - { id: 9606, sell: 15000 }
+  - { id: 7453, sell: 55000 }
+  - { id: 3249, sell: 20000 }
+  - { id: 3013, sell: 2000 }
+  - { id: 9626, sell: 10000 }
+  - { id: 3306, sell: 1000 }
+  - { id: 8041, sell: 50000 }
+  - { id: 902, sell: 5000 }
+  - { id: 8021, sell: 10000 }
+  - { id: 16102, sell: 500 }
+  - { id: 16103, buy: 150 }
+  - { id: 5021, sell: 40 }
+  - { id: 3424, sell: 1500 }
+  - { id: 5080, sell: 30000 }
+  - { id: 16165, sell: 1500 }
+  - { id: 2848, sell: 2000 }
+  - { id: 2852, sell: 2000 }
+  - { id: 7417, sell: 45000 }
+  - { id: 9613, sell: 10000 }
+  - { id: 8029, sell: 12000 }
+  - { id: 9627, sell: 1000 }
+  - { id: 11607, sell: 5000 }
+  - { id: 11605, sell: 5000 }
+  - { id: 11609, sell: 5000 }
+  - { id: 11603, sell: 5000 }
+  - { id: 11679, sell: 7500 }
+  - { id: 3014, sell: 500 }
+  - { id: 16232, sell: 4000 }
+  - { id: 16236, sell: 3000 }
+  - { id: 4065, sell: 1500 }
+  - { id: 16240, sell: 2000 }
+  - { id: 5791, sell: 6000 }
+  - { id: 6527, sell: 42000 }
+  - { id: 8025, sell: 50000 }
+  - { id: 6103, sell: 30000 }
+  - { id: 8055, sell: 50000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello {{ PLAYERNAME | capitalize }}. You are probably eager to enter the warzones."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

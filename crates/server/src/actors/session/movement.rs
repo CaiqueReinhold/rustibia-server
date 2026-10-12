@@ -91,7 +91,7 @@ impl SessionActor {
             self.drop_unreachable_containers().await?;
 
             for (key, pos) in get_agents_in_expansion(&map, &to_position, &direction) {
-                self.introduce_agent(key, pos, &map).await?;
+                self.reveal_agent(key, pos, &map).await?;
             }
 
             let tiles = get_map_expansion(&map, &to_position, &direction);
@@ -405,5 +405,31 @@ mod tests {
             "the strip must hold the row that just came into view (y=93), not the \
              one already visible before the step (y=94)"
         );
+    }
+
+    /// A creature the client still knows, walking about outside the window, is sent no
+    /// moves; stepping back into its tile must re-send where it is now.
+    #[tokio::test]
+    async fn a_known_agent_coming_into_view_is_sent_where_it_stands() {
+        use crate::actors::connection::ConnectionCommand;
+
+        let mut map = GameMap::new();
+        let key = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let wanderer = seat_player(&mut map, &Position::new(100, 93, 7), 2);
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(key, map);
+        let local = session.agents.get_or_insert(wanderer);
+
+        session
+            .agent_moved(key, Direction::North, Position::new(100, 99, 7))
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert!(sent.iter().any(|c| matches!(
+            c,
+            ConnectionCommand::SendPlayerMessage(ServerMessage::TeleportAgent { agent_id, position })
+                if *agent_id == local && *position == Position::new(100, 93, 7)
+        )));
     }
 }

@@ -1,0 +1,106 @@
+name: "Karl"
+position: { x: 32317, y: 31797, z: 8 }
+speed: 100
+outfit:
+  id: 128
+  colors: [58, 49, 70, 115]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 6106, buy: 80 }
+  - { id: 2880, fluid: beer, buy: 20 }
+  - { id: 2874, fluid: beer, buy: 20 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Pshhhht! Not that loud ... but welcome."
+  - words: GOODBYE
+    action: dismiss
+    text: "Please come back, but don't tell others."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Please come back, but don't tell others."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["army"]
+    action: say
+    text: "Their army is the tool of opression. Hunting down every alcohol smuggler they can get."
+  - words: ["women"]
+    action: say
+    text: "Their army is the tool of opression. Hunting down every alcohol smuggler they can get."
+  - words: ["hard stuff"]
+    action: say
+    text: "Todd took all the money we could gather to buy us the best stuff on the whole continent."
+  - words: ["headquarters"]
+    action: say
+    text: "Well it's more a hidden tavern, so to say."
+  - words: ["hugo"]
+    action: say
+    text: "I think Todd mentioned a Hugo once."
+  - words: ["job"]
+    action: say
+    text: "I am the responsible for our ... uhm ... resistance."
+  - words: ["saloon"]
+    action: say
+    text: "I am the responsible for our ... uhm ... resistance."
+  - words: ["welcome"]
+    action: say
+    text: "I am the responsible for our ... uhm ... resistance."
+  - words: ["karl"]
+    action: say
+    text: "Who told you that???"
+  - words: ["king"]
+    action: say
+    text: "I'm sure if the king learns about our tragedy, he will support us with alcohol."
+  - words: ["thais"]
+    action: say
+    text: "I'm sure if the king learns about our tragedy, he will support us with alcohol."
+  - words: ["alcohol"]
+    action: say
+    text: "Those crazy women forbid us alcohol in the city! Imagine that!"
+  - words: ["laws"]
+    action: say
+    text: "Those crazy women forbid us alcohol in the city! Imagine that!"
+  - words: ["needs"]
+    action: say
+    text: "Those crazy women forbid us alcohol in the city! Imagine that!"
+  - words: ["opression"]
+    action: say
+    text: "Those crazy women forbid us alcohol in the city! Imagine that!"
+  - words: ["name"]
+    action: say
+    text: "I won't tell you my name."
+  - words: ["news"]
+    action: say
+    text: "Some travelers from Edron told about a great treasure guarded by cruel demons in the dungeons there."
+  - words: ["rumors"]
+    action: say
+    text: "Some travelers from Edron told about a great treasure guarded by cruel demons in the dungeons there."
+  - words: ["eloise"]
+    action: say
+    text: "Well, shes not that bad ... but some of her laws are."
+  - words: ["queen"]
+    action: say
+    text: "Well, shes not that bad ... but some of her laws are."
+  - words: ["resistance"]
+    action: say
+    text: "We fight the opression of the males and male needs by the women. This is our secret headquarters."
+  - words: ["smuggler"]
+    action: say
+    text: "We collected money and hired one of the best smuggler in the whole land. His name is Todd."
+  - words: ["special"]
+    action: say
+    text: "Carlin is known for its evergreen plants which the local druids have grown."
+  - words: ["tavern"]
+    action: say
+    text: "Our offers are limited but here a man can buy what a man needs."
+  - words: ["tim"]
+    action: say
+    text: "Ah, Tim was such a ladies' man in his youth. He has broken many hearts and the women fainted on account of his kisses. Today they faint on account of his breath."
+  - words: ["todd"]
+    action: say
+    text: "A true fighter for malehood. He will bring us all the hard stuff from Thais and even contact the king there to support us."

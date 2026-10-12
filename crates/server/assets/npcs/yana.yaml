@@ -1,0 +1,52 @@
+name: "Yana"
+position: { x: 32200, y: 32304, z: 6 }
+speed: 100
+outfit:
+  id: 471
+  colors: [0, 57, 0, 68]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Trading tokens! First-class equipment available!"
+shop:
+  - { id: 27451, buy: 50 }
+  - { id: 27449, buy: 50 }
+  - { id: 27455, buy: 50 }
+  - { id: 27452, buy: 50 }
+  - { id: 27456, buy: 50 }
+  - { id: 27454, buy: 50 }
+  - { id: 27453, buy: 50 }
+  - { id: 27458, buy: 50 }
+  - { id: 27450, buy: 50 }
+  - { id: 27457, buy: 50 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["cledwyn"]
+    action: say
+    text: "Yes, he's my cousin. He also collects rare tokens, but unlike me he's interested in silver tokens. Call this passion something of a family trait."
+  - words: ["family"]
+    action: say
+    text: "You might find my cousin Cledwyn downstairs on the main floor. We're all interested in rare tokens, always on the move to offer our services in exchange for these treasures. ... There's a kind of a competition on who's the most successful token hunter. If you should have any gold tokens with you, we could make a deal."
+  - words: ["name"]
+    action: say
+    text: "I'm Yana O'Reilly, bespoke smith and a token trader. It's a pleasure to meet you."
+  - words: ["yana"]
+    action: say
+    text: "Yes, that's my name. My mother chose it, it means prudence or cunningness in some old and almost forgotten Tibian language."
+  - words: ["job"]
+    action: say
+    text: "I'm collecting rare tokens made of metal or gemstones. At the moment, I'm interested in gold tokens. If you should happen to have some with you, I could exchange them for special weapons of different types."

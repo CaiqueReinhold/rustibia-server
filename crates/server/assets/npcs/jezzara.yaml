@@ -1,0 +1,42 @@
+name: "Jezzara"
+position: { x: 33126, y: 32821, z: 6 }
+speed: 100
+outfit:
+  id: 138
+  colors: [3, 44, 91, 97]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Food of various kinds, have a look."
+shop:
+  - { id: 3587, buy: 5 }
+  - { id: 8197, buy: 3 }
+  - { id: 3595, buy: 8 }
+  - { id: 3583, buy: 25 }
+  - { id: 3578, buy: 6 }
+  - { id: 3592, buy: 8 }
+  - { id: 3582, buy: 15 }
+  - { id: 8016, buy: 2 }
+  - { id: 3577, buy: 10 }
+  - { id: 3593, buy: 13 }
+  - { id: 8015, buy: 2 }
+  - { id: 3586, buy: 9 }
+  - { id: 3594, buy: 10 }
+  - { id: 3579, buy: 7 }
+  - { id: 3596, buy: 10 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Be mourned pilgrim in flesh. Talking of flesh, maybe you'd enjoy some food?"
+  - words: GOODBYE
+    action: dismiss
+    text: "May enlightenment be your path."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "May enlightenment be your path."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Sure, take a look at my offers."

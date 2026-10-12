@@ -1,0 +1,48 @@
+name: "Haroun"
+position: { x: 33109, y: 32525, z: 4 }
+speed: 100
+outfit:
+  id: 80
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3092, buy: 500, sell: 100 }
+  - { id: 3056, buy: 100, sell: 50 }
+  - { id: 3093, buy: 500, sell: 100 }
+  - { id: 3082, buy: 500, sell: 100 }
+  - { id: 3083, buy: 100, sell: 50 }
+  - { id: 3061, sell: 50 }
+  - { id: 3046, buy: 120, sell: 35 }
+  - { id: 3062, sell: 100 }
+  - { id: 3060, sell: 750 }
+  - { id: 3050, buy: 100, sell: 50 }
+  - { id: 3049, buy: 5000, sell: 200 }
+  - { id: 3081, buy: 25000, sell: 500 }
+  - { id: 3091, buy: 500, sell: 100 }
+  - { id: 3073, sell: 2000 }
+  - { id: 3072, sell: 1000 }
+  - { id: 16096, sell: 6500 }
+  - { id: 8093, sell: 1500 }
+  - { id: 3075, sell: 200 }
+  - { id: 16115, sell: 6000 }
+  - { id: 3071, sell: 3000 }
+  - { id: 8092, sell: 3600 }
+  - { id: 8094, sell: 4400 }
+  - { id: 3074, sell: 100 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Farewell! May the serene light of the enlightened one rest shine on your travels."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Farewell, human."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "At your service, just browse through my wares."

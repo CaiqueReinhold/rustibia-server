@@ -94,6 +94,7 @@ pub enum ItemFlag {
     Avoid,
     AmmoContainer,
     LiquidPool,
+    LiquidContainer,
     Unreplaceable,
     Teleport,
     Border,
@@ -182,6 +183,32 @@ impl FluidType {
         ];
         ALL.get(value as usize).copied()
     }
+
+    pub fn from_name(name: &str) -> Option<Self> {
+        Some(match name {
+            "water" => Self::Water,
+            "mana" => Self::Mana,
+            "beer" => Self::Beer,
+            "oil" => Self::Oil,
+            "blood" => Self::Blood,
+            "slime" => Self::Slime,
+            "mud" => Self::Mud,
+            "lemonade" => Self::Lemonade,
+            "milk" => Self::Milk,
+            "wine" => Self::Wine,
+            "life" => Self::Health,
+            "urine" => Self::Urine,
+            "rum" => Self::Rum,
+            "fruit_juice" => Self::FruitJuice,
+            "coconut_milk" => Self::CoconutMilk,
+            "tea" => Self::Tea,
+            "mead" => Self::Mead,
+            "ink" => Self::Ink,
+            "candy" => Self::Candy,
+            "chocolate" => Self::Chocolate,
+            _ => return None,
+        })
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -226,6 +253,7 @@ pub enum ItemAttribute {
     RequiredLevel(u16),
     Vocations(VocationSet),
     Field(Arc<ConditionSpec>),
+    FluidSource(FluidType),
 }
 
 #[derive(Debug)]
@@ -278,6 +306,10 @@ impl ItemConfig {
         self.flags.contains(flag)
     }
 
+    pub fn holds_fluid(&self) -> bool {
+        self.has_flag(ItemFlag::LiquidPool) || self.has_flag(ItemFlag::LiquidContainer)
+    }
+
     fn get_attributes(&self) -> impl Iterator<Item = &ItemAttribute> {
         self.attributes.iter()
     }
@@ -305,6 +337,7 @@ impl ItemConfig {
         attr_speed -> Speed: i16,
         attr_required_level -> RequiredLevel: u16,
         attr_vocations -> Vocations: VocationSet,
+        attr_fluid_source -> FluidSource: FluidType,
     }
 
     pub fn attr_decay(&self) -> Option<(TickDelta, ItemId)> {
@@ -359,11 +392,14 @@ impl Item {
         } else {
             None
         };
+        let fluid = config
+            .has_flag(ItemFlag::LiquidContainer)
+            .then_some(FluidType::None);
         Item {
             config,
             guid: ItemGuid::new(),
             amount,
-            fluid: None,
+            fluid,
             content,
             owner: None,
             action_id: None,
@@ -533,11 +569,43 @@ pub enum ItemMultiAction {
     Rune {
         spell: SpellId,
     },
+    Fluid,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_liquid_container_starts_empty_and_anything_else_holds_no_fluid() {
+        let config = |flags: Vec<ItemFlag>| {
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "vial".to_string(),
+                None,
+                None,
+                flags,
+                Vec::new(),
+            ))
+        };
+
+        assert_eq!(
+            Item::new(config(vec![ItemFlag::LiquidContainer]), 1).fluid,
+            Some(FluidType::None)
+        );
+        assert_eq!(Item::new(config(vec![]), 1).fluid, None);
+    }
+
+    #[test]
+    fn a_fluid_is_read_by_its_name() {
+        assert_eq!(
+            FluidType::from_name("fruit_juice"),
+            Some(FluidType::FruitJuice)
+        );
+        assert_eq!(FluidType::from_name("life"), Some(FluidType::Health));
+        assert_eq!(FluidType::from_name("none"), None);
+        assert_eq!(FluidType::from_name("lava"), None);
+    }
 
     #[test]
     fn a_fluid_byte_reads_back_as_its_fluid() {

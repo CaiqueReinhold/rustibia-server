@@ -1,0 +1,58 @@
+name: "Scott"
+position: { x: 32138, y: 31659, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [75, 38, 77, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Hey there, adventurer! Need a little rest in my inn? Have some food!"
+shop:
+  - { id: 3600, buy: 4 }
+  - { id: 3607, buy: 6 }
+  - { id: 3582, buy: 8 }
+  - { id: 3577, buy: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["name"]
+    action: say
+    text: "My name is Scott."
+  - words: ["senja"]
+    action: say
+    text: "It's a peaceful island. Cold and lonesome but I like it."
+  - words: ["job"]
+    action: say
+    text: "I'm the keeper of the inn. You can buy food here."
+  - words: ["tibia"]
+    action: say
+    text: "Oh, I'm happy to live in this world full of thrilling things."
+  - words: ["castle"]
+    action: say
+    text: "It is said that there are some secrets to discover around the mage's castle."
+  - words: ["carlin"]
+    action: say
+    text: "Sometimes I travel to Carlin and visit the market."
+  - words: ["thais"]
+    action: say
+    text: "It's a city in the south-west of Tibia."
+  - words: ["queen"]
+    action: say
+    text: "She is a strong and wise leader. We owe her protection from evil monsters."
+  - words: ["rumour"]
+    action: say
+    text: "A sailor from Carlin told me that the natives of the Ice Islands pray to different gods. I think 'Chyll' is one of them or was that the name of the northern winds?? Well, doesn't matter! Primitives! ... The only green fish I know is the one you can buy at Permaret in Edron as a 'special offer' and that would be your last meal. Trust me! ... I mean there are barbarians and barbarians, some are good, the others not. One call themselves 'Norsir' the others 'Raiders', but actually they are all the same. ... It seems that this was the reason why nobody has discovered the Ice Islands before. Something must have happened because at a moment's notice they disappeared. ... The wolves and bears protect them and tear their foes into pieces if they order them to. If you ask me, this is just gossip. ... That must be the reason why the Carlin traders are so interested in getting there. They sense gold in selling wood. ... He was writing strange things about suspicious inhabitants and something about a test to become one of them. It was very hard to read the letter, I think he was drunk as hell when he wrote it. ... I heard that they dig for valuable ore which was found in an old mine. I wonder why nobody of them has returned yet. Travellers told me that they recently moved into the caverns beneath the island. There, they are growing fresh grass and even flowers! How is that possible in a frozen cave? Some kind of magic has to be involved. ... I'm just not sure whether it is of the benevolent or the malicious kind."

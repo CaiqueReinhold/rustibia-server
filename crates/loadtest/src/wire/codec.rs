@@ -10,8 +10,8 @@ use rustibia_server::entities::{
     spells::{SpellGroup, SpellId, SpellTarget},
 };
 use rustibia_server::messages::{
-    ClientMessage, Color, FloatingTextType, ItemStack, ServerMessage, SkillProgress,
-    SpellListEntry, TextMessageType,
+    ClientMessage, Color, FloatingTextType, ItemStack, ServerMessage, ShopOfferEntry,
+    SkillProgress, SpellListEntry, TextMessageType,
 };
 use tokio_util::bytes::{Buf, BufMut, BytesMut, TryGetError};
 use tokio_util::codec::{Decoder, Encoder};
@@ -62,6 +62,9 @@ const CLI_CLOSE_CHANNEL: u8 = 15;
 const CLI_OPEN_PM_CHAT: u8 = 16;
 const CLI_SET_TARGET: u8 = 17;
 const CLI_CAST_SPELL: u8 = 18;
+const CLI_SHOP_BUY: u8 = 19;
+const CLI_SHOP_SELL: u8 = 20;
+const CLI_CLOSE_SHOP: u8 = 21;
 
 #[derive(Default)]
 pub struct LoadtestCodec {
@@ -239,6 +242,27 @@ impl Encoder<ClientMessage> for LoadtestCodec {
                 encode_spell_target(&target, dst);
                 encode_param(&param, dst);
             }
+            ClientMessage::ShopBuy {
+                item_id,
+                subtype,
+                amount,
+            } => {
+                dst.put_u8(CLI_SHOP_BUY);
+                dst.put_u16_le(item_id.0);
+                dst.put_u8(subtype);
+                dst.put_u8(amount);
+            }
+            ClientMessage::ShopSell {
+                item_id,
+                subtype,
+                amount,
+            } => {
+                dst.put_u8(CLI_SHOP_SELL);
+                dst.put_u16_le(item_id.0);
+                dst.put_u8(subtype);
+                dst.put_u8(amount);
+            }
+            ClientMessage::CloseShop => dst.put_u8(CLI_CLOSE_SHOP),
         }
 
         let payload_len = (dst.len() - len_offset - 2) as u16;
@@ -284,6 +308,8 @@ const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
 const SRV_DAMAGED_BY: u8 = 35;
 const SRV_DIED: u8 = 36;
+const SRV_SHOP: u8 = 37;
+const SRV_SHOP_CLOSED: u8 = 38;
 
 fn read_utf8(buf: &mut BytesMut, len: usize) -> Result<String, WireError> {
     if buf.len() < len {
@@ -794,6 +820,37 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             status: payload.try_get_u32_le()?,
         }),
         SRV_DIED => Ok(ServerMessage::PlayerDied),
+        SRV_SHOP => {
+            let npc_name = read_string(payload)?;
+            let money = payload.try_get_u64_le()?;
+            let offer_count = payload.try_get_u16_le()?;
+            let mut offers = Vec::with_capacity(offer_count as usize);
+            for _ in 0..offer_count {
+                offers.push(ShopOfferEntry {
+                    item_id: ItemId(payload.try_get_u16_le()?),
+                    subtype: payload.try_get_u8()?,
+                    weight: payload.try_get_u32_le()?,
+                    buy: payload.try_get_u32_le()?,
+                    sell: payload.try_get_u32_le()?,
+                });
+            }
+            let goods_count = payload.try_get_u16_le()?;
+            let mut goods = Vec::with_capacity(goods_count as usize);
+            for _ in 0..goods_count {
+                goods.push((
+                    ItemId(payload.try_get_u16_le()?),
+                    payload.try_get_u8()?,
+                    payload.try_get_u16_le()?,
+                ));
+            }
+            Ok(ServerMessage::Shop {
+                npc_name,
+                money,
+                offers,
+                goods,
+            })
+        }
+        SRV_SHOP_CLOSED => Ok(ServerMessage::ShopClosed),
         _ => Err(WireError::UnknownOpcode(opcode)),
     }
 }
@@ -811,7 +868,7 @@ mod tests {
     use rustibia_server::messages::GameMessageCodec as ServerCodec;
     use tokio_util::codec::Decoder;
 
-    const CLIENT_MESSAGE_VARIANTS: usize = 19;
+    const CLIENT_MESSAGE_VARIANTS: usize = 22;
 
     /// Exhaustive on purpose: a new `ClientMessage` variant fails to compile here
     /// until it is given an index. `every_client_message_variant_has_a_sample`
@@ -837,6 +894,9 @@ mod tests {
             ClientMessage::OpenPmChat { .. } => 16,
             ClientMessage::SetTarget { .. } => 17,
             ClientMessage::CastSpell { .. } => 18,
+            ClientMessage::ShopBuy { .. } => 19,
+            ClientMessage::ShopSell { .. } => 20,
+            ClientMessage::CloseShop => 21,
         }
     }
 
@@ -925,6 +985,17 @@ mod tests {
                 target: SpellTarget::Position(Position::new(5, 6, 7)),
                 param: None,
             },
+            ClientMessage::ShopBuy {
+                item_id: ItemId(3003),
+                subtype: 9,
+                amount: 7,
+            },
+            ClientMessage::ShopSell {
+                item_id: ItemId(3003),
+                subtype: 0,
+                amount: 100,
+            },
+            ClientMessage::CloseShop,
         ]
     }
 
@@ -956,7 +1027,7 @@ mod tests {
         }
     }
 
-    const SERVER_MESSAGE_VARIANTS: usize = 37;
+    const SERVER_MESSAGE_VARIANTS: usize = 39;
 
     /// Exhaustive for the same reason as `client_message_variant_index`.
     fn server_message_variant_index(message: &ServerMessage) -> usize {
@@ -998,6 +1069,8 @@ mod tests {
             ServerMessage::AgentSpeedUpdated { .. } => 34,
             ServerMessage::PlayerStatus { .. } => 35,
             ServerMessage::PlayerDied => 36,
+            ServerMessage::Shop { .. } => 37,
+            ServerMessage::ShopClosed => 38,
         }
     }
 
@@ -1227,6 +1300,28 @@ mod tests {
             },
             ServerMessage::PlayerStatus { status: 0x0A },
             ServerMessage::PlayerDied,
+            ServerMessage::Shop {
+                npc_name: "Xodet".to_string(),
+                money: 1240,
+                offers: vec![
+                    ShopOfferEntry {
+                        item_id: ItemId(3003),
+                        subtype: 9,
+                        weight: 1800,
+                        buy: 50,
+                        sell: 0,
+                    },
+                    ShopOfferEntry {
+                        item_id: ItemId(283),
+                        subtype: 0,
+                        weight: 0,
+                        buy: 0,
+                        sell: 5,
+                    },
+                ],
+                goods: vec![(ItemId(283), 0, 3)],
+            },
+            ServerMessage::ShopClosed,
         ]
     }
 

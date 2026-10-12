@@ -37,6 +37,10 @@ pub enum BroadcastMessage {
         agent_key: AgentKey,
         message: String,
     },
+    TradeDenied {
+        agent_key: AgentKey,
+        message: String,
+    },
     AgentWalkDenied {
         agent_key: AgentKey,
     },
@@ -164,6 +168,7 @@ impl BroadcastMessage {
             | Self::AgentWalkDenied { agent_key }
             | Self::AgentLostTarget { agent_key, .. }
             | Self::UseItemDenied { agent_key, .. }
+            | Self::TradeDenied { agent_key, .. }
             | Self::LogoutDenied { agent_key, .. }
             | Self::ExperienceGained { agent_key, .. }
             | Self::SkillUpgraded { agent_key, .. }

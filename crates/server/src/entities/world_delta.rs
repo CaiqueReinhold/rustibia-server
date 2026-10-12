@@ -18,6 +18,8 @@ pub(in crate::entities) enum AgentFlag {
     Status = 1 << 3,
     Capacity = 1 << 4,
     Facing = 1 << 5,
+    Shop = 1 << 6,
+    Bank = 1 << 7,
 }
 
 #[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
@@ -57,6 +59,14 @@ impl AgentDirty {
 
     pub fn facing(self) -> bool {
         self.has(AgentFlag::Facing)
+    }
+
+    pub fn shop(self) -> bool {
+        self.has(AgentFlag::Shop)
+    }
+
+    pub fn bank(self) -> bool {
+        self.has(AgentFlag::Bank)
     }
 
     pub fn skills(self) -> impl Iterator<Item = SkillType> {

@@ -1,0 +1,26 @@
+name: "Andrew Lyze"
+position: { x: 32759, y: 32631, z: 7 }
+speed: 100
+outfit:
+  id: 160
+  colors: [38, 43, 75, 58]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 25746, buy: 10000 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Well, bye then."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

@@ -1,0 +1,218 @@
+name: "Lee'Delle"
+position: { x: 32024, y: 32195, z: 7 }
+speed: 100
+outfit:
+  id: 140
+  colors: [78, 76, 72, 96]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Ask me if you need help!"
+    - "Buy and sell everything you want here!"
+    - "No need to run from shop to shop, my place is all that's needed!"
+    - "Special offers for premium customers!"
+shop:
+  - { id: 3274, buy: 18, sell: 7 }
+  - { id: 2854, buy: 9 }
+  - { id: 2853, buy: 4 }
+  - { id: 3337, sell: 5 }
+  - { id: 3354, sell: 22 }
+  - { id: 3411, sell: 25 }
+  - { id: 3358, sell: 40 }
+  - { id: 3352, buy: 49, sell: 12 }
+  - { id: 3562, buy: 7 }
+  - { id: 3430, sell: 50 }
+  - { id: 3267, buy: 4, sell: 2 }
+  - { id: 3379, buy: 14, sell: 3 }
+  - { id: 3483, buy: 140, sell: 30 }
+  - { id: 3268, buy: 7, sell: 4 }
+  - { id: 3276, sell: 25 }
+  - { id: 3561, buy: 9 }
+  - { id: 3300, sell: 35 }
+  - { id: 3361, buy: 22, sell: 5 }
+  - { id: 3552, sell: 2 }
+  - { id: 3355, buy: 11, sell: 3 }
+  - { id: 3559, buy: 9, sell: 2 }
+  - { id: 3374, sell: 22 }
+  - { id: 3286, sell: 30 }
+  - { id: 3308, sell: 6 }
+  - { id: 3410, sell: 40 }
+  - { id: 3272, buy: 13, sell: 5 }
+  - { id: 3003, buy: 45, sell: 8 }
+  - { id: 3273, buy: 22, sell: 12 }
+  - { id: 2815, buy: 5 }
+  - { id: 3453, buy: 10, sell: 3 }
+  - { id: 3294, buy: 26, sell: 10 }
+  - { id: 3457, buy: 9, sell: 2 }
+  - { id: 3293, buy: 7, sell: 2 }
+  - { id: 3277, buy: 9, sell: 3 }
+  - { id: 3378, sell: 10 }
+  - { id: 3376, buy: 58, sell: 20 }
+  - { id: 3362, sell: 15 }
+  - { id: 3426, buy: 47, sell: 16 }
+  - { id: 3264, sell: 25 }
+  - { id: 2920, buy: 2 }
+  - { id: 3367, sell: 25 }
+  - { id: 893, buy: 200 }
+  - { id: 3412, buy: 13, sell: 3 }
+  - { id: 3492, buy: 1 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Nice to see you, {{ PLAYERNAME | capitalize }}! Ask me for a trade if you like to see my exclusive offers."
+  - words: GOODBYE
+    action: dismiss
+    text: "Bye, bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Bye, bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Sure, take a look, honey."
+  - words: ["name"]
+    action: say
+    text: "My name is Lee'Delle."
+  - words: ["job"]
+    action: say
+    text: "I'm a merchant. If you like to see my offers, just ask me for a trade."
+  - words: ["bank"]
+    action: say
+    text: "Well, it's a good idea to leave most of your money in the bank and only take what you need. That way your gold is safe."
+  - words: ["cookie"]
+    action: say
+    text: "Oh no! I've got to watch what I eat. Lily loves cookies, though."
+  - words: ["merchant"]
+    action: say
+    text: "There are many merchants in this village. Just ask them for a trade to see their offers. But I can promise you - my offers are the best around!"
+  - words: ["how are you"]
+    action: say
+    text: "I'm fine. I'm delighted to welcome you as my customer."
+  - words: ["information"]
+    action: say
+    text: "What kind of information do you need? I could tell you about different topics such as equipment, monsters or Rookgaard in general."
+  - words: ["help"]
+    action: say
+    text: "How can I help you? Would you like to trade with me? I can also give you general hints. Or just ask me anything you'd like to know."
+  - words: ["tibia"]
+    action: say
+    text: "You should really take some time and travel around the marvellous areas of Tibia. There's everything - ice islands, deserts, jungles and mountains!"
+  - words: ["temple"]
+    action: say
+    text: "The temple is the place to go when you are very low on health or poisoned. Ask Cipfried for a heal - he usually notices emergencies by himself."
+  - words: ["health"]
+    action: say
+    text: "Health potions will heal you for about 75 hit points. It can't hurt to carry one with you, just in case."
+  - words: ["equipment"]
+    action: say
+    text: "Well, very important equipment would be a backpack, a rope, a shovel, a weapon, an armor and a shield. Maybe also a torch if you're heading into a dark dungeon."
+  - words: ["fishing"]
+    action: say
+    text: "I sell fishing rods and worms in case you want to go fishing. Simply ask me for a trade."
+  - words: ["weapon"]
+    action: say
+    text: "You could check out which weapons I offer by asking me for a trade. Don't be shy!"
+  - words: ["food"]
+    action: say
+    text: "Oh, I'm sorry, that's one of the things I don't have for sale. But Willie or Billy surely have something to eat for you."
+  - words: ["king"]
+    action: say
+    text: "The king supports our little village very much!"
+  - words: ["academy"]
+    action: say
+    text: "In the academy you can get a lot of information from books. You can also try out a few things by yourself."
+  - words: ["rookgaard"]
+    action: say
+    text: "Isn't it lovely here? You'll be surprised once you reach the mainland - so much to explore!"
+  - words: ["mainland"]
+    action: say
+    text: "Well, the mainland also consists of several continents. You can go there once you've reached level 8 and talked to the oracle."
+  - words: ["monster"]
+    action: say
+    text: "Good monsters to start with are rats. They live in the sewers under the village of Rookgaard."
+  - words: ["sell"]
+    action: say
+    text: "Just ask me for a trade to see what I buy from you."
+  - words: ["dungeon"]
+    action: say
+    text: "Be careful down there! Make sure you bought enough torches and a rope or you might get lost."
+  - words: ["sewer"]
+    action: say
+    text: "There are many sewer entrances throughout Rookgaard. If you want to know more details about monsters and dungeons, best talk to one of the guards."
+  - words: ["offer", "stuff", "wares", "buy"]
+    action: say
+    text: "Just ask me for a trade to see my offers. Apart from that, I also sell footballs."
+  - words: ["quest", "mission"]
+    action: say
+    text: "I really love flowers. My favourites are honey flowers. Sadly, they are very rare on this isle. If you can find one for me, I'll give you a little reward."
+  - words: ["armor", "shield"]
+    action: say
+    text: "You could check out which armors or shields I offer by asking me for a trade. Don't be shy!"
+  - words: ["backpack", "rope", "shovel", "torch"]
+    action: say
+    text: "Yes, I'm selling that. Simply ask me for a trade to view all my offers."
+  - words: ["money", "gold"]
+    action: say
+    text: "Well, no gold, no deal. Earn gold by fighting monsters and picking up the things they carry. Sell it to merchants to make profit!"
+  - words: ["obi"]
+    action: say
+    text: "He sells weapons. However, I can offer you better deals than him!"
+  - words: ["norma"]
+    action: say
+    text: "I'm glad she stopped selling stuff. There was too much of a competition going on!"
+  - words: ["loui"]
+    action: say
+    text: "Sometimes, I see him walking outside the village near some hole."
+  - words: ["santiago"]
+    action: say
+    text: "He dedicated his life to welcome newcomers to this island."
+  - words: ["zirella"]
+    action: say
+    text: "Poor old woman, her son Tom never visits her."
+  - words: ["al dee"]
+    action: say
+    text: "Al Dee has a general equipment store in the north-western part of the village."
+  - words: ["amber"]
+    action: say
+    text: "She lives under the academy. Always nice to chat with her!"
+  - words: ["billy"]
+    action: say
+    text: "He's a local farmer. If you need fresh food to regain health, it's a good place to go. He's only trading with premium adventurers, though."
+  - words: ["willie"]
+    action: say
+    text: "He's a local farmer. If you need fresh food to regain your health, it's a good place to go. However, many monsters carry also food such as meat. Or you could simply pick blueberries."
+  - words: ["cipfried"]
+    action: say
+    text: "Visiting Cipfried in the temple is a good idea if you are injured or poisoned. He can heal you."
+  - words: ["dixi"]
+    action: say
+    text: "She's Obi's granddaughter and deals with armors and shields, just as I do."
+  - words: ["hyacinth"]
+    action: say
+    text: "He mostly stays by himself. He's a hermit outside of town - good luck finding him."
+  - words: ["lily"]
+    action: say
+    text: "She buys all blueberries and cookies you can find."
+  - words: ["oracle"]
+    action: say
+    text: "You can find the oracle on the top floor of the academy, just above Seymour. Go there when you are level 8 to reach more areas of Tibia."
+  - words: ["paulie"]
+    action: say
+    text: "He is the bank clerk, just below the academy."
+  - words: ["seymour"]
+    action: say
+    text: "Seymour is a teacher running the academy. He has a lot of important information about Tibia."
+  - words: ["tom"]
+    action: say
+    text: "He's the local tanner. You could try selling fresh corpses or leather to him."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "He is a great warrior and our protector."
+  - words: ["football"]
+    action: say
+    text: "Do you want to buy a football for 111 gold?"
+  - words: ["honey flower"]
+    action: say
+    text: "Honey flowers are my favourites <sighs>."

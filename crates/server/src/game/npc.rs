@@ -145,6 +145,7 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
             text,
             failed_text,
         } => withdraw_from_bank(ctx, player_key, npc_key, text, failed_text, amount),
+        NpcResponse::Trade(text) => open_shop(ctx, player_key, npc_key, text),
     };
 
     let branch = match outcome {
@@ -217,6 +218,11 @@ fn dismiss_player(
     if let Some(mut npc) = ctx.map.agent_mut(npc_key) {
         npc.set_target(None, 0);
     }
+    if let Some(mut player) = ctx.map.player_mut(player_key)
+        && player.shop() == Some(npc_key)
+    {
+        player.set_shop(None);
+    }
     face_agent(ctx, npc_key, player_key);
     npc_say(ctx, npc_key, text);
     Outcome::Ended
@@ -226,6 +232,13 @@ fn say(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey, text: String)
     face_agent(ctx, npc_key, player_key);
     npc_say(ctx, npc_key, text);
     Outcome::Answered
+}
+
+fn open_shop(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey, text: String) -> Outcome {
+    if let Some(mut player) = ctx.map.player_mut(player_key) {
+        player.set_shop(Some(npc_key));
+    }
+    say(ctx, player_key, npc_key, text)
 }
 
 fn teleport_player(
@@ -425,6 +438,10 @@ mod tests {
                 .unwrap()
                 .keyword_branch()
                 .map(|branch| branch.word.as_str())
+        }
+
+        fn shop(&self) -> Option<AgentKey> {
+            self.map.get_player(self.player).unwrap().shop()
         }
 
         fn balance(&self) -> u64 {
@@ -810,5 +827,37 @@ mod tests {
             w.h.scheduled[0].at_tick,
             w.h.tick + GAME_CONFIG.chat.npc_reply_delay_ticks
         );
+    }
+
+    #[test]
+    fn trade_opens_the_npcs_shop_and_keeps_the_conversation() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+
+        w.hear(w.player, "trade");
+
+        assert_eq!(w.said().last(), Some(&"Take a look, Rizael."));
+        assert_eq!(w.shop(), Some(w.npc));
+        assert_eq!(w.map.get_agent(w.npc).unwrap().target(), Some(w.player));
+    }
+
+    #[test]
+    fn a_goodbye_closes_the_shop() {
+        let mut w = World::new(100, true);
+        w.hear(w.player, "hi");
+        w.hear(w.player, "trade");
+
+        w.hear(w.player, "bye");
+
+        assert_eq!(w.shop(), None);
+    }
+
+    #[test]
+    fn trade_before_a_greeting_opens_nothing() {
+        let mut w = World::new(100, true);
+
+        w.hear(w.player, "trade");
+
+        assert_eq!(w.shop(), None);
     }
 }

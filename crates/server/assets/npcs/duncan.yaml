@@ -1,0 +1,26 @@
+name: "Duncan"
+position: { x: 32330, y: 32605, z: 7 }
+speed: 100
+outfit:
+  id: 151
+  colors: [38, 23, 0, 116]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 5615, buy: 40 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hi, come closer. Have a look at my wares."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

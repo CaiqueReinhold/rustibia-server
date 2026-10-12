@@ -72,6 +72,11 @@ impl SessionActor {
             for skill in dirty.skills() {
                 self.send_skill(skill).await?;
             }
+            if dirty.shop() {
+                self.send_shop().await?;
+            } else if dirty.capacity() || dirty.bank() {
+                self.refresh_shop().await?;
+            }
         }
         Ok(())
     }
@@ -432,5 +437,88 @@ mod tests {
             .filter(|m| matches!(m, ServerMessage::PlayerStatus { .. }))
             .count();
         assert_eq!(statuses, 1);
+    }
+
+    use crate::entities::agent::AgentKey;
+    use crate::persistence::test_fixtures::{A_TORCH, an_npc};
+
+    fn a_player_at_a_shop() -> (WorldMap, AgentKey, AgentKey) {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let npc = map
+            .insert_agent(Agent::from_npc(an_npc()), &Position::new(100, 100, 7))
+            .unwrap();
+        (WorldMap::new(map), me, npc)
+    }
+
+    fn shop_messages(messages: Vec<ServerMessage>) -> Vec<ServerMessage> {
+        messages
+            .into_iter()
+            .filter(|m| matches!(m, ServerMessage::Shop { .. } | ServerMessage::ShopClosed))
+            .collect()
+    }
+
+    #[tokio::test]
+    async fn an_opened_shop_is_sent_whole() {
+        let (mut world, me, npc) = a_player_at_a_shop();
+        world.player_mut(me).unwrap().set_shop(Some(npc));
+        let delta = world.take_delta();
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(me, world.snapshot());
+        session.agents.get_or_insert(me);
+
+        session.apply_delta(&delta).await.unwrap();
+
+        match &shop_messages(sent(&mut connection_rx))[..] {
+            [
+                ServerMessage::Shop {
+                    npc_name, offers, ..
+                },
+            ] => {
+                assert_eq!(npc_name, "Captain Jack");
+                assert_eq!(offers[0].item_id, A_TORCH);
+                assert_eq!((offers[0].buy, offers[0].sell), (50, 10));
+            }
+            other => panic!("expected one Shop, got {other:?}"),
+        }
+    }
+
+    #[tokio::test]
+    async fn a_closed_shop_is_sent_as_closed() {
+        let (mut world, me, npc) = a_player_at_a_shop();
+        world.player_mut(me).unwrap().set_shop(Some(npc));
+        world.take_delta();
+        world.player_mut(me).unwrap().set_shop(None);
+        let delta = world.take_delta();
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(me, world.snapshot());
+        session.agents.get_or_insert(me);
+
+        session.apply_delta(&delta).await.unwrap();
+
+        assert_eq!(
+            shop_messages(sent(&mut connection_rx)),
+            vec![ServerMessage::ShopClosed]
+        );
+    }
+
+    #[tokio::test]
+    async fn the_bank_moving_resends_an_open_shop_and_not_a_closed_one() {
+        for open in [true, false] {
+            let (mut world, me, npc) = a_player_at_a_shop();
+            if open {
+                world.player_mut(me).unwrap().set_shop(Some(npc));
+            }
+            world.take_delta();
+            world.player_mut(me).unwrap().deposit(5);
+            let delta = world.take_delta();
+            let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+                SessionActor::for_test(me, world.snapshot());
+            session.agents.get_or_insert(me);
+
+            session.apply_delta(&delta).await.unwrap();
+
+            assert_eq!(shop_messages(sent(&mut connection_rx)).len(), open as usize);
+        }
     }
 }

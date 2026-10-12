@@ -5,7 +5,7 @@ use serde::de::DeserializeOwned;
 
 use crate::entities::{
     agent::{OutfitColors, OutfitId},
-    items::ItemId,
+    items::{FluidType, ItemConfig, ItemId},
     position::Position,
     voices::Voices,
 };
@@ -164,6 +164,7 @@ pub enum NpcAction {
     Withdraw {
         amount: String,
     },
+    Trade,
 }
 
 #[derive(Debug)]
@@ -187,6 +188,7 @@ pub enum NpcResponse {
         text: String,
         failed_text: String,
     },
+    Trade(String),
 }
 
 #[derive(Debug)]
@@ -343,11 +345,17 @@ impl Keyword {
                 text: self.text(env, &ctx)?,
                 failed_text: self.failed_text(env, &ctx)?,
             }),
+            NpcAction::Trade => self.text(env, &ctx).map(NpcResponse::Trade),
         }
     }
 
     pub fn children(&self) -> &[Arc<Keyword>] {
         &self.children
+    }
+
+    pub fn opens_shop(&self) -> bool {
+        matches!(self.action, NpcAction::Trade)
+            || self.children.iter().any(|child| child.opens_shop())
     }
 
     fn text(&self, env: &Environment, ctx: &Value) -> Result<String, Error> {
@@ -374,6 +382,25 @@ impl Keyword {
     }
 }
 
+#[derive(Debug, Clone)]
+pub struct ShopOffer {
+    pub config: Arc<ItemConfig>,
+    /// `Some` exactly when the item is a liquid container.
+    pub fluid: Option<FluidType>,
+    pub buy: Option<u32>,
+    pub sell: Option<u32>,
+}
+
+impl ShopOffer {
+    pub fn id(&self) -> ItemId {
+        self.config.id
+    }
+
+    pub fn subtype(&self) -> u8 {
+        self.fluid.map_or(0, |fluid| fluid as u8)
+    }
+}
+
 #[derive(Debug)]
 pub struct Npc {
     pub name: String,
@@ -386,6 +413,15 @@ pub struct Npc {
     pub keywords: Vec<Arc<Keyword>>,
     pub arguments: BTreeMap<String, Value>,
     pub environment: Environment<'static>,
+    pub shop: Vec<ShopOffer>,
+}
+
+impl Npc {
+    pub fn offer(&self, id: ItemId, subtype: u8) -> Option<&ShopOffer> {
+        self.shop
+            .iter()
+            .find(|offer| offer.id() == id && offer.subtype() == subtype)
+    }
 }
 
 #[cfg(test)]

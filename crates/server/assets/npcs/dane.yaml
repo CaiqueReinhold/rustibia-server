@@ -1,0 +1,49 @@
+name: "Dane"
+position: { x: 32308, y: 31838, z: 8 }
+speed: 100
+outfit:
+  id: 136
+  colors: [79, 97, 86, 96]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 2875, fluid: lemonade, buy: 12 }
+  - { id: 2875, fluid: milk, buy: 4 }
+  - { id: 2875, fluid: water, buy: 2 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to the wave cellar, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Please come back from time to time."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Please come back from time to time."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am the owner of this place of relaxation."
+  - words: ["wave cellar"]
+    action: say
+    text: "It's pretty, isn't it?"
+  - words: ["name"]
+    action: say
+    text: "I am Dane."
+  - words: ["offer"]
+    action: say
+    text: "I can offer you milk, water, and lemonade."
+  - words: ["alcohol"]
+    action: say
+    text: "Alcohol makes people too aggressive. We don't need such stuff in Carlin."
+  - words: ["beer"]
+    action: say
+    text: "Alcohol makes people too aggressive. We don't need such stuff in Carlin."
+  - words: ["wine"]
+    action: say
+    text: "Alcohol makes people too aggressive. We don't need such stuff in Carlin."

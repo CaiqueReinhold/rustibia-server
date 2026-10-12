@@ -1,0 +1,89 @@
+name: "Galuna"
+position: { x: 32343, y: 32245, z: 6 }
+speed: 100
+outfit:
+  id: 137
+  colors: [40, 96, 95, 96]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Bows, crossbows and ammunition on special sale today."
+shop:
+  - { id: 3447, buy: 3 }
+  - { id: 35848, buy: 400 }
+  - { id: 3446, buy: 4 }
+  - { id: 3350, buy: 400 }
+  - { id: 3349, buy: 500 }
+  - { id: 35562, buy: 400 }
+  - { id: 35849, buy: 400 }
+  - { id: 3277, buy: 10 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Oh, please come in, {{ PLAYERNAME | capitalize }}. What do you need? Distance weapons? I sell lots of them."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["the first dragon"]
+    action: say
+    text: "If you'd ask me - what you just did - it's only a myth."
+  - words: ["crossbows"]
+    action: say
+    text: "I don't buy used crossbows. If you want to buy one, just ask me for a trade."
+  - words: ["fletcher"]
+    action: say
+    text: "I am the local fletcher. I am selling bows, crossbows, and ammunition. Do you need anything?"
+  - words: ["eclesius"]
+    action: say
+    text: "I heard about him."
+  - words: ["paladin"]
+    action: say
+    text: "We are feared warriors and good marksmen. Ask Elane if want to know more about the guild."
+  - words: ["forest"]
+    action: say
+    text: "Tibia, a green island. Here it is wunderful to walk into the forests and to hunt with a bow."
+  - words: ["arrows"]
+    action: say
+    text: "I sell arrows for bows and bolts for crossbows. Ask me for a trade if you're interested to see my wares."
+  - words: ["elane"]
+    action: say
+    text: "She is the leader of all paladins."
+  - words: ["tibia"]
+    action: say
+    text: "Tibia, a green island. Here it is wunderful to walk into the forests and to hunt with a bow."
+  - words: ["thais"]
+    action: say
+    text: "We have visitors of all kind in Thais, only elves show up seldom."
+  - words: ["elves"]
+    action: say
+    text: "It is rumored that they live in the northeast of Tibia. They are the best in archery."
+  - words: ["bolts"]
+    action: say
+    text: "I sell arrows for bows and bolts for crossbows. Ask me for a trade if you're interested to see my wares."
+  - words: ["name"]
+    action: say
+    text: "I am Galuna, paladin and fletcher."
+  - words: ["time"]
+    action: say
+    text: "Don't bother me. Go and buy a watch."
+  - words: ["gorn"]
+    action: say
+    text: "I supplied him with my goods in the past, now I sell them myself."
+  - words: ["bows"]
+    action: say
+    text: "I don't buy used bows. If you want to buy one, just ask me for a trade."
+  - words: ["job"]
+    action: say
+    text: "I am the local fletcher. I am selling bows, crossbows, and ammunition. Do you need anything?"
+  - words: ["elf"]
+    action: say
+    text: "It is rumored that they live in the northeast of Tibia. They are the best in archery."

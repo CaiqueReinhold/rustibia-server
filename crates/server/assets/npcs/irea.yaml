@@ -1,0 +1,63 @@
+name: "Irea"
+position: { x: 32688, y: 31610, z: 7 }
+speed: 100
+outfit:
+  id: 64
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3447, buy: 3 }
+  - { id: 35848, buy: 400 }
+  - { id: 3446, buy: 4 }
+  - { id: 3350, buy: 400 }
+  - { id: 3349, buy: 500 }
+  - { id: 35562, buy: 400 }
+  - { id: 35849, buy: 400 }
+  - { id: 3277, buy: 10 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye!"
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye!"
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["conjure explosive arrow"]
+    action: say
+    text: "Would you like to learn conjure explosive arrow magic spell for 1000 gold?"
+  - words: ["conjure arrow"]
+    action: say
+    text: "Would you like to learn conjure arrow magic spell for 450 gold?"
+  - words: ["divine healing"]
+    action: say
+    text: "Would you like to learn divine healing magic spell for 3000 gold?"
+  - words: ["lesser ethereal spear"]
+    action: say
+    text: "Would you like to learn lesser ethereal spear magic spell for free?"
+  - words: ["arrow call"]
+    action: say
+    text: "Would you like to learn arrow call magic spell for free?"
+  - words: ["spells"]
+    action: say
+    text: "I can teach you attack spells, healing spells and support spells. What kind of spell do you wish to learn? I can also tell you which spells are available at your level."
+  - words: ["attack"]
+    action: say
+    text: "My attack spell is: Lesser Ethereal Spear."
+  - words: ["healing"]
+    action: say
+    text: "My healing spells are: Divine Healing."
+  - words: ["support"]
+    action: say
+    text: "My support spells are: Arrow Call, Conjure Arrow and Conjure Explosive Arrow."
+  - words: ["level"]
+    action: say
+    text: "I have spells for level 1, 13, 25 and 35."

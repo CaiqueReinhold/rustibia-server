@@ -1,0 +1,78 @@
+name: "Anerui"
+position: { x: 32670, y: 31658, z: 7 }
+speed: 100
+outfit:
+  id: 63
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3582, buy: 6 }
+  - { id: 3577, buy: 4 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Ashari {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Asha Thrazi."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Asha Thrazi."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am the mistress of the hunt. At this place you may buy the food our hunts provide."
+  - words: ["hunt"]
+    action: say
+    text: "Hunting is an art, practiced too often by diletantes. Every fool with a bow or a spear considers himself a hunter."
+  - words: ["bow"]
+    action: say
+    text: "Bow, arrow, and spear are the hunters' best friends. In the northeast of the town one of us may sell such tools."
+  - words: ["hunter"]
+    action: say
+    text: "Hunters live a life of freedom and closeness to nature, unlike a simple farmer or bugherder."
+  - words: ["nature"]
+    action: say
+    text: "Nature is not a friend but an unforgiving teacher, and the lessons we have to learn are endless."
+  - words: ["time"]
+    action: say
+    text: "Watch the sky, it will tell you."
+  - words: ["crunor"]
+    action: say
+    text: "I guess it's a human god for the human sight of nature. I have not much knowledge of this entity."
+  - words: ["teshial"]
+    action: say
+    text: "If they ever existed they are gone now."
+  - words: ["kuridai"]
+    action: say
+    text: "The Kuridai are too agressive not only to people but also to the enviroment. They lack any understanding of the balance that we know as nature."
+  - words: ["balance"]
+    action: say
+    text: "The balance of nature, of course. It's everywhere, so don't ask but observe and learn."
+  - words: ["deraisim"]
+    action: say
+    text: "We try to live in harmony with the forces of nature, may they be living or unliving."
+  - words: ["human"]
+    action: say
+    text: "The humans are a loud and ugly race. They lack any grace and are more kin to the orcs then to us."
+  - words: ["death"]
+    action: say
+    text: "Life and death are significant parts of the balance."
+  - words: ["life"]
+    action: say
+    text: "Life and death are significant parts of the balance."
+  - words: ["troll"]
+    action: say
+    text: "I despise their presence in our town, but it may be a necessary evil."
+  - words: ["elf"]
+    action: say
+    text: "That is the race to which I belong."
+  - words: ["cenath"]
+    action: say
+    text: "The magic they wield is all that matters to them."

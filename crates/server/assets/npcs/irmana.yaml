@@ -1,0 +1,69 @@
+name: "Irmana"
+position: { x: 32952, y: 32109, z: 5 }
+speed: 100
+outfit:
+  id: 140
+  colors: [78, 90, 13, 14]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 5883, sell: 120 }
+  - { id: 10299, sell: 15 }
+  - { id: 11448, sell: 300 }
+  - { id: 5912, sell: 200 }
+  - { id: 5913, sell: 100 }
+  - { id: 9689, sell: 30 }
+  - { id: 11456, sell: 120 }
+  - { id: 11684, sell: 20 }
+  - { id: 17819, sell: 40 }
+  - { id: 9658, sell: 160 }
+  - { id: 11458, sell: 80 }
+  - { id: 9690, sell: 90 }
+  - { id: 22007, sell: 70 }
+  - { id: 5877, sell: 100 }
+  - { id: 5910, sell: 200 }
+  - { id: 11470, sell: 180 }
+  - { id: 9691, sell: 60 }
+  - { id: 5876, sell: 150 }
+  - { id: 5878, sell: 80 }
+  - { id: 11475, sell: 250 }
+  - { id: 11486, sell: 430 }
+  - { id: 10279, sell: 15 }
+  - { id: 11473, sell: 110 }
+  - { id: 5948, sell: 200 }
+  - { id: 5911, sell: 300 }
+  - { id: 11492, sell: 66 }
+  - { id: 9045, sell: 1000 }
+  - { id: 11493, sell: 120 }
+  - { id: 10407, sell: 25 }
+  - { id: 10292, sell: 35 }
+  - { id: 3568, sell: 50 }
+  - { id: 10274, sell: 50 }
+  - { id: 9694, sell: 400 }
+  - { id: 5886, sell: 1000 }
+  - { id: 10293, sell: 50 }
+  - { id: 9684, sell: 120 }
+  - { id: 10307, sell: 150 }
+  - { id: 8923, sell: 800 }
+  - { id: 10318, sell: 30 }
+  - { id: 10317, sell: 380 }
+  - { id: 5909, sell: 100 }
+  - { id: 10295, sell: 20 }
+  - { id: 10319, sell: 15 }
+  - { id: 5914, sell: 150 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to the house of fashion, {{ PLAYERNAME | capitalize }}!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

@@ -16,6 +16,13 @@ arguments:
     - { x: 33293, y: 31957, z: 6 }
     - { x: 33294, y: 31955, z: 6 }
     - { x: 33294, y: 31958, z: 6 }
+shop:
+  - { id: 3578, buy: 5 }
+  - { id: 7159, sell: 100 }
+  - { id: 901, sell: 800 }
+  - { id: 3580, sell: 100 }
+  - { id: 7158, sell: 100 }
+  - { id: 12557, sell: 3000 }
 keywords:
   - words: GREET
     action: engage
@@ -26,6 +33,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: Good bye.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["edron"]
     action: say
     text: Do you seek a passage to Edron for 20 gold?

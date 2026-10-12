@@ -1,0 +1,47 @@
+name: "Yaman"
+position: { x: 32895, y: 31139, z: 7 }
+speed: 100
+outfit:
+  id: 103
+  colors: [0, 0, 0, 0]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3077, sell: 100 }
+  - { id: 3085, buy: 1000, sell: 100 }
+  - { id: 3097, buy: 2000, sell: 100 }
+  - { id: 3051, buy: 2000, sell: 100 }
+  - { id: 16118, sell: 6500 }
+  - { id: 3067, sell: 3000 }
+  - { id: 3052, buy: 900, sell: 50 }
+  - { id: 3048, buy: 25000, sell: 250 }
+  - { id: 3070, sell: 200 }
+  - { id: 16117, sell: 6000 }
+  - { id: 3078, sell: 50 }
+  - { id: 3069, sell: 1000 }
+  - { id: 8083, sell: 1500 }
+  - { id: 3084, buy: 700, sell: 100 }
+  - { id: 3098, buy: 2000, sell: 100 }
+  - { id: 3054, buy: 100, sell: 50 }
+  - { id: 3066, sell: 100 }
+  - { id: 8084, sell: 3600 }
+  - { id: 3045, buy: 100, sell: 30 }
+  - { id: 3065, sell: 2000 }
+  - { id: 3053, buy: 2000, sell: 100 }
+  - { id: 8082, sell: 4400 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Farewell, human."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Farewell, human."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "At your service, just browse through my wares."

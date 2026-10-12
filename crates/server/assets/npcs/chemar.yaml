@@ -24,6 +24,10 @@ arguments:
     kazor: { name: Kazordoon, cost: 80, position: { x: 32588, y: 31941, z: 0 } }
     issavi: { name: Issavi, cost: 100, position: { x: 33957, y: 31515, z: 0 } }
     marapur: { name: Marapur, cost: 70, position: { x: 33805, y: 32767, z: 2 } }
+shop:
+  - { id: 3507, buy: 1 }
+  - { id: 3505, buy: 8 }
+  - { id: 3503, buy: 15 }
 keywords:
   - words: GREET
     action: engage
@@ -34,6 +38,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["farmine", "zao", "edron", "svargrond", "femor hills", "hills", "kazordoon", "kazor", "issavi", "marapur"]
     action: say
     text: Do you seek a ride to {{ DESTINATIONS[WORD].name }} for {{ DESTINATIONS[WORD].cost }} gold?

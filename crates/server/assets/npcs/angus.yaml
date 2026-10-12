@@ -1,0 +1,36 @@
+name: "Angus"
+position: { x: 32670, y: 32730, z: 7 }
+speed: 100
+outfit:
+  id: 133
+  colors: [57, 132, 114, 113]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 6108, buy: 150 }
+  - { id: 4867, buy: 500 }
+  - { id: 4863, buy: 250 }
+  - { id: 9605, buy: 800 }
+  - { id: 4852, buy: 750 }
+  - { id: 4871, sell: 50 }
+  - { id: 12510, sell: 250 }
+  - { id: 4839, sell: 500 }
+  - { id: 5956, sell: 500 }
+  - { id: 5021, buy: 80 }
+  - { id: 3207, sell: 250 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, what can I do for you?"
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

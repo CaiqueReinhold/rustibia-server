@@ -14,6 +14,8 @@ say:
 arguments:
   CALASSA: { x: 31911, y: 32710, z: 6 }
   YALAHAR: { x: 32804, y: 31270, z: 6 }
+shop:
+  - { id: 5460, buy: 5000 }
 keywords:
   - words: GREET
     action: engage
@@ -24,6 +26,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: Good bye.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["calassa"]
     action: say
     text: Should I bring you to Calassa for 200 gold?

@@ -61,11 +61,8 @@ impl SessionActor {
         map: &GameMap,
     ) -> Result<()> {
         for (key, pos) in get_agents_in_viewport(map, position) {
-            if key == self.player_key {
-                continue;
-            }
-            if self.agents.get_local(&key).is_none() {
-                self.introduce_agent(key, pos, map).await?;
+            if key != self.player_key {
+                self.reveal_agent(key, pos, map).await?;
             }
         }
         Ok(())
@@ -111,6 +108,23 @@ impl SessionActor {
             self.forget_agent(key).await?;
         }
 
+        Ok(())
+    }
+
+    /// Introduces an agent the client does not know, or re-sends the position of one it does:
+    /// the client keeps an agent that left the window, but is sent none of its moves there.
+    pub(super) async fn reveal_agent(
+        &mut self,
+        agent_key: AgentKey,
+        position: Position,
+        map: &GameMap,
+    ) -> Result<()> {
+        let Some(agent_id) = self.agents.get_local(&agent_key) else {
+            return self.introduce_agent(agent_key, position, map).await;
+        };
+        self.connection
+            .send_message(ServerMessage::TeleportAgent { agent_id, position })
+            .await?;
         Ok(())
     }
 

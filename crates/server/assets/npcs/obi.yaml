@@ -1,0 +1,183 @@
+name: "Obi"
+position: { x: 32109, y: 32204, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [19, 63, 96, 38]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Only quality steel and wood used for my weapons!"
+    - "Buy your weapons here!"
+    - "Selling and buying all sorts of weapons, come and have a look!"
+    - "Give those monsters a good whipping with my weapons!"
+shop:
+  - { id: 3274, buy: 20, sell: 7 }
+  - { id: 3337, sell: 5 }
+  - { id: 3267, buy: 5, sell: 2 }
+  - { id: 3268, buy: 8, sell: 4 }
+  - { id: 3276, sell: 25 }
+  - { id: 3300, sell: 35 }
+  - { id: 3286, sell: 30 }
+  - { id: 3308, sell: 6 }
+  - { id: 3272, buy: 15, sell: 5 }
+  - { id: 3273, buy: 25, sell: 12 }
+  - { id: 3453, buy: 12, sell: 3 }
+  - { id: 3294, buy: 30, sell: 10 }
+  - { id: 3293, buy: 8, sell: 2 }
+  - { id: 3277, buy: 10, sell: 3 }
+  - { id: 3264, sell: 25 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello, hello, {{ PLAYERNAME | capitalize }}! Please come in, look, and buy! If you like to see my offers, ask me for a trade!"
+  - words: GOODBYE
+    action: dismiss
+    text: "Farewell, I hope you were satisfied with our service."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Um yeah, good day."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["help"]
+    action: say
+    text: "Well, how can I help you? Do you need some general hints? Or, if you're interested in a trade, just ask."
+  - words: ["information"]
+    action: say
+    text: "What kind of information do you need? I could tell you about different topics such as equipment, monsters or Rookgaard in general."
+  - words: ["torch"]
+    action: say
+    text: "Al Dee sells torches."
+  - words: ["dungeon"]
+    action: say
+    text: "Be careful down there! Make sure you bought enough torches and a rope or you might get lost."
+  - words: ["king"]
+    action: say
+    text: "The king encouraged salesmen to travel here, but only I dared to take the risk, and a risk it was!"
+  - words: ["name"]
+    action: say
+    text: "My name is Obi, just Obi, the honest merchant. If you like to trade, just ask."
+  - words: ["job"]
+    action: say
+    text: "I'm a merchant and the local weapon smith. If you like to see my quality wares or sell weapons to me, ask me for a trade."
+  - words: ["equipment"]
+    action: say
+    text: "As an adventurer you should always have at least a backpack, a rope, a shovel, a weapon, an armor and a shield."
+  - words: ["bank"]
+    action: say
+    text: "If I were you, I'd invest my money in quality steel rather than putting it in a so-called safe bank account!"
+  - words: ["mainland"]
+    action: say
+    text: "Well, the mainland also consists of several continents. You can go there once you are level 8 and have talked to the oracle."
+  - words: ["rookgaard"]
+    action: say
+    text: "Ah, Rookgaard. Home sweet home, that's what it became for me, but I will always miss Thais and Sam."
+  - words: ["thais"]
+    action: say
+    text: "Oh, Thais, I'll be back. One day, I'll be back."
+  - words: ["sam"]
+    action: say
+    text: "My good old cousin Sam. Oh, how I miss him."
+  - words: ["academy"]
+    action: say
+    text: "I think good practice is better than reading a boring book. Of course, you will need proper equipment to be able to get practice!"
+  - words: ["food"]
+    action: say
+    text: "told them to let me sell food, but no! Sorry, you have to ask Willie or Billy on the farms west of here."
+  - words: ["monster"]
+    action: say
+    text: "Good monsters to start with are rats. They live in the sewers under the village of Rookgaard."
+  - words: ["sewer"]
+    action: say
+    text: "There are many sewer entrances throughout Rookgaard. One is right outside this shop and to the left. For more details about monsters and dungeons, best talk to one of the guards."
+  - words: ["guard"]
+    action: say
+    text: "The bridge guard Dallheim is north of here, just follow the street, you can't miss it."
+  - words: ["merchant"]
+    action: say
+    text: "Sadly, not many merchants are as honest as I am."
+  - words: ["potion"]
+    action: say
+    text: "I wish I could help you with that, but no, I was told to stick to weapons. Go see Lily."
+  - words: ["blueberr"]
+    action: say
+    text: "There are many blueberry bushes in and around this village. Nature's for free."
+  - words: ["how are you"]
+    action: say
+    text: "I'm fine. It's a little hot near the crucible, but I enjoy the sound of forging weapons."
+  - words: ["sell"]
+    action: say
+    text: "Just ask me for a trade to see which things I buy from you."
+  - words: ["armor", "shield", "helmet"]
+    action: say
+    text: "Oh, just upstairs. My granddaughter Dixi is in charge of selling armors and shields."
+  - words: ["weapon"]
+    action: say
+    text: "Yes, I'm selling weapons. Just ask me for a trade to see my offers and the things I buy from you."
+  - words: ["gold", "money"]
+    action: say
+    text: "Well, no gold, no deal. Earn gold by fighting monsters and picking up the things they carry. Sell it to merchants to make profit!"
+  - words: ["rope", "shovel", "backpack", "fishing"]
+    action: say
+    text: "I wish I could help you with that, but no, I was told to stick to weapons. Go see Al Dee or Lee'Delle."
+  - words: ["buy", "stuff", "wares", "offer"]
+    action: say
+    text: "I sell weapons of all kinds. Just ask me for a trade if you like to see my offers."
+  - words: ["norma"]
+    action: say
+    text: "I don't know how anyone could give up the flourishing business she led. She should have listened to me and find someone who continues that business for her."
+  - words: ["loui"]
+    action: say
+    text: "I told him there was no danger, but he wouldn't listen to me, no one listens to me."
+  - words: ["santiago"]
+    action: say
+    text: "I suggested him opening a tourist guide company with me, Obi's and Santiago's, but he didn't approve. I really don't understand why."
+  - words: ["zirella"]
+    action: say
+    text: "An old woman shouldn't be treated like that, no way, that's bad."
+  - words: ["al dee"]
+    action: say
+    text: "Oh, this guy is so greedy, so greedy. Ripping off poor adventurers like you!"
+  - words: ["amber"]
+    action: say
+    text: "She is beautiful, very, very beautiful. I hope I can impress her somehow."
+  - words: ["billy"]
+    action: say
+    text: "He's just like his cousin Willie."
+  - words: ["willie"]
+    action: say
+    text: "This guy doesn't understand that he should entrust me with the food business, too. He really should do. Then he had time for his farm."
+  - words: ["cipfried"]
+    action: say
+    text: "He shouldn't heal people for free, no he shouldn't. That would be a great source of income for the village that could be invested in enhancing the smithy."
+  - words: ["dixi"]
+    action: say
+    text: "Oh, what an endearing little girl, and she's working so hard to help me, even without receiving payment. Such a sweet little girl!"
+  - words: ["hyacinth"]
+    action: say
+    text: "I don't like him, actually I dislike him deeply. He is so greedy that he doesn't want to share his profit he gains from health potions."
+  - words: ["lee'delle"]
+    action: say
+    text: "She ruins the market with her offers! This is bad for us honest merchants, really bad."
+  - words: ["lily"]
+    action: say
+    text: "I knew it! I knew she would try to get the monopoly on potions in this village! But no one has listened to me!"
+  - words: ["oracle"]
+    action: say
+    text: "The oracle, ah, such a weird being! It will lead you off this island once you are level 8, yes it will, mark my words."
+  - words: ["paulie"]
+    action: say
+    text: "I told everyone he will cause trouble. He talks people into giving him their money and putting it on the bank! They rather should leave it here with us honest merchants!"
+  - words: ["seymour"]
+    action: say
+    text: "He is the head of the local academy. I encouraged him to sponsor you, but no one listens to Obi, no one listens to me, as usual."
+  - words: ["tom"]
+    action: say
+    text: "Well, he just buys what no one else wants. Stuff that's long dead. I can live with that, yes, I can live with that."
+  - words: ["dallheim", "zerbrus"]
+    action: say
+    text: "What a hero, what a hero."

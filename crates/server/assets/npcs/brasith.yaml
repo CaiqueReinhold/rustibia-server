@@ -1,0 +1,71 @@
+name: "Brasith"
+position: { x: 32692, y: 31588, z: 7 }
+speed: 100
+outfit:
+  id: 159
+  colors: [41, 94, 97, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3587, buy: 2 }
+  - { id: 8758, buy: 200 }
+  - { id: 2875, fluid: milk, buy: 15 }
+  - { id: 11461, buy: 3 }
+  - { id: 8197, buy: 4 }
+  - { id: 3595, buy: 3 }
+  - { id: 11462, buy: 4 }
+  - { id: 3590, buy: 1 }
+  - { id: 3597, buy: 3 }
+  - { id: 3592, buy: 3 }
+  - { id: 5865, buy: 100 }
+  - { id: 3593, buy: 8 }
+  - { id: 8010, buy: 4 }
+  - { id: 3594, buy: 10 }
+  - { id: 3591, buy: 1 }
+  - { id: 2874, fluid: milk, buy: 15 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Ashari, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Asha Thrazi."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Asha Thrazi."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "You may buy all the things we grow or gather at this place."
+  - words: ["crunor"]
+    action: say
+    text: "We abandoned the gods a long time ago. A short time after they abandoned us."
+  - words: ["teshial"]
+    action: say
+    text: "They are lost, and if they still exist they are alone in the cold and the darkness."
+  - words: ["kuridai"]
+    action: say
+    text: "The Kuridai left the true path and can't see their error. Their way of living may have been suitable in the past, but if they don't come back to us, their path will lead into darkness."
+  - words: ["deraisim"]
+    action: say
+    text: "We have still much to learn but we are on the correct path at least."
+  - words: ["cenath"]
+    action: say
+    text: "The Cenath forgot as many as they learned. I doubt they find the wisdom they are looking for without the things they neglected in their pursuit of knowledge."
+  - words: ["troll"]
+    action: say
+    text: "I don't claim to understand this creatures but sometimes they are more close to the roots than we are."
+  - words: ["human"]
+    action: say
+    text: "They are so many, so planless, so divided. They choose a path I do not want for my own race."
+  - words: ["plants"]
+    action: say
+    text: "Life takes many forms. Plants are a very basic form of life. Its simplicity makes them close to the core of nature."
+  - words: ["tree"]
+    action: say
+    text: "Life takes many forms. Plants are a very basic form of life. Its simplicity makes them close to the core of nature."

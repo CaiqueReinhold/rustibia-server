@@ -1,0 +1,181 @@
+name: "Sam"
+position: { x: 32361, y: 32198, z: 7 }
+speed: 100
+outfit:
+  id: 131
+  colors: [38, 113, 67, 95]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Hello there, adventurer! Need a deal in weapons or armor? I'm your man!"
+shop:
+  - { id: 3274, buy: 20, sell: 7 }
+  - { id: 3266, buy: 235, sell: 80 }
+  - { id: 3305, buy: 350, sell: 120 }
+  - { id: 3413, sell: 95 }
+  - { id: 3337, sell: 5 }
+  - { id: 3338, buy: 75, sell: 20 }
+  - { id: 3359, buy: 450, sell: 150 }
+  - { id: 3354, buy: 120, sell: 30 }
+  - { id: 3372, buy: 195, sell: 49 }
+  - { id: 3411, buy: 65, sell: 25 }
+  - { id: 3283, buy: 473, sell: 118 }
+  - { id: 3358, buy: 200, sell: 70 }
+  - { id: 3352, buy: 52, sell: 17 }
+  - { id: 3558, buy: 80, sell: 25 }
+  - { id: 3270, buy: 5, sell: 1 }
+  - { id: 3562, buy: 8, sell: 1 }
+  - { id: 3430, sell: 50 }
+  - { id: 3304, buy: 260, sell: 50 }
+  - { id: 3267, buy: 5, sell: 2 }
+  - { id: 3275, sell: 260 }
+  - { id: 3379, buy: 16, sell: 3 }
+  - { id: 3425, buy: 500, sell: 100 }
+  - { id: 3280, sell: 1000 }
+  - { id: 3269, sell: 400 }
+  - { id: 3268, buy: 8, sell: 4 }
+  - { id: 3276, sell: 25 }
+  - { id: 3353, buy: 390, sell: 150 }
+  - { id: 3561, buy: 12, sell: 1 }
+  - { id: 3300, sell: 35 }
+  - { id: 3361, buy: 35, sell: 12 }
+  - { id: 3552, buy: 10, sell: 2 }
+  - { id: 3355, buy: 12, sell: 4 }
+  - { id: 3559, buy: 10, sell: 9 }
+  - { id: 3374, sell: 22 }
+  - { id: 3285, buy: 160, sell: 51 }
+  - { id: 3286, buy: 90, sell: 30 }
+  - { id: 3366, sell: 6400 }
+  - { id: 3282, buy: 430, sell: 100 }
+  - { id: 3316, sell: 350 }
+  - { id: 3357, buy: 1200, sell: 400 }
+  - { id: 3557, sell: 115 }
+  - { id: 3410, buy: 125, sell: 45 }
+  - { id: 3272, buy: 15, sell: 5 }
+  - { id: 3273, buy: 35, sell: 12 }
+  - { id: 3377, buy: 260, sell: 75 }
+  - { id: 3294, buy: 26, sell: 10 }
+  - { id: 3293, buy: 7, sell: 3 }
+  - { id: 3462, sell: 5 }
+  - { id: 3375, buy: 110, sell: 16 }
+  - { id: 3271, buy: 8000, sell: 240 }
+  - { id: 3351, buy: 580, sell: 293 }
+  - { id: 3409, buy: 240, sell: 80 }
+  - { id: 3378, buy: 90, sell: 25 }
+  - { id: 3336, sell: 10 }
+  - { id: 3376, buy: 63, sell: 20 }
+  - { id: 3362, buy: 50, sell: 15 }
+  - { id: 3426, buy: 50, sell: 16 }
+  - { id: 3264, buy: 85, sell: 25 }
+  - { id: 3298, buy: 25, sell: 2 }
+  - { id: 3265, buy: 950, sell: 450 }
+  - { id: 3367, buy: 265, sell: 66 }
+  - { id: 3431, buy: 260, sell: 85 }
+  - { id: 3279, buy: 10000, sell: 470 }
+  - { id: 3412, buy: 15, sell: 5 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Welcome to my shop, adventurer {{ PLAYERNAME | capitalize }}! I trade with weapons and armor."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye and come again, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye and come again."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["job"]
+    action: say
+    text: "I am the blacksmith. If you need weapons or armor - just ask me."
+  - words: ["excalibug"]
+    action: say
+    text: "It is rumoured to be a weapon beyond mortal craftsmanship."
+  - words: ["ferumbras"]
+    action: say
+    text: "A threat for mankind! Buy weapons to be ready to face him."
+  - words: ["tibianus"]
+    action: say
+    text: "The king supports Tibia's economy a lot."
+  - words: ["eclesius"]
+    action: say
+    text: "Yes, I know that guy. He's a good customer at Frodo's. We don't really chat though."
+  - words: ["quentin"]
+    action: say
+    text: "He is a monk of some kind!"
+  - words: ["dungeon"]
+    action: say
+    text: "Below our city are the sewers and I heard about a passage to the deeper dungeons."
+  - words: ["monster"]
+    action: say
+    text: "Yeah, these awful beasts. They live in the forests near the city and in the sewers and dungeons."
+  - words: ["general"]
+    action: say
+    text: "A warrior who is a joy for Banor."
+  - words: ["harkath"]
+    action: say
+    text: "A warrior who is a joy for Banor."
+  - words: ["passage"]
+    action: say
+    text: "Don't ask me. I have never been there."
+  - words: ["sandals"]
+    action: say
+    text: "Sandals? I don't sell those. I only wear some myself, they're in the chest beside my bed. But they're not for sale, of course!"
+  - words: ["muriel"]
+    action: say
+    text: "Sorcerers seldom need my skills."
+  - words: ["baxter"]
+    action: say
+    text: "A fine warrior."
+  - words: ["gregor"]
+    action: say
+    text: "His guild relies heavily on my wares."
+  - words: ["donald"]
+    action: say
+    text: "The McRonalds are the local farmers, aren't they?"
+  - words: ["marvik"]
+    action: say
+    text: "I never visited his ... cave or whatever it's called."
+  - words: ["oswald"]
+    action: say
+    text: "Oswald isn't one of the most liked people in this city."
+  - words: ["frodo"]
+    action: say
+    text: "I don't like crowded places like his bar."
+  - words: ["lugri"]
+    action: say
+    text: "I just know some rumours that he is a follower of evil."
+  - words: ["elane"]
+    action: say
+    text: "Oh, I hardly know her."
+  - words: ["sewer"]
+    action: say
+    text: "Below our city are the sewers and I heard about a passage to the deeper dungeons."
+  - words: ["lynda"]
+    action: say
+    text: "Uhm! <blushes>"
+  - words: ["name"]
+    action: say
+    text: "My name is Samuel, but you can call me Sam."
+  - words: ["king"]
+    action: say
+    text: "The king supports Tibia's economy a lot."
+  - words: ["bozo"]
+    action: say
+    text: "He is funny now and then."
+  - words: ["gorn"]
+    action: say
+    text: "He can tell a tale or two about his adventures with baxter in their younger days."
+  - words: ["army"]
+    action: say
+    text: "I supply the army with weapons and armor."
+  - words: ["news"]
+    action: say
+    text: "I know nothing of interest."
+  - words: ["sam"]
+    action: say
+    text: "I was named after my grandfather."

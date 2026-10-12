@@ -11,6 +11,10 @@ say:
   chance: 0
 arguments:
   PEMARET: { x: 33288, y: 31956, z: 6 }
+shop:
+  - { id: 3057, buy: 50000, sell: 45000 }
+  - { id: 3080, sell: 50000 }
+  - { id: 3084, buy: 700 }
 keywords:
   - words: GREET
     action: engage
@@ -21,6 +25,9 @@ keywords:
   - words: WALK_AWAY
     action: dismiss
     text: It was a pleasure to help you, {{ PLAYERNAME | capitalize }}.
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
   - words: ["cormaya", "back", "passage", "pemaret"]
     action: say
     text: Should I teleport you back to Pemaret?

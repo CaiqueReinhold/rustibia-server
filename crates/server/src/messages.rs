@@ -43,6 +43,9 @@ const CLI_CLOSE_CHANNEL: u8 = 15;
 const CLI_OPEN_PM_CHAT: u8 = 16;
 const CLI_SET_TARGET: u8 = 17;
 const CLI_CAST_SPELL: u8 = 18;
+const CLI_SHOP_BUY: u8 = 19;
+const CLI_SHOP_SELL: u8 = 20;
+const CLI_CLOSE_SHOP: u8 = 21;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum ClientMessage {
@@ -103,6 +106,17 @@ pub enum ClientMessage {
         target: SpellTarget,
         param: Option<String>,
     },
+    ShopBuy {
+        item_id: ItemId,
+        subtype: u8,
+        amount: u8,
+    },
+    ShopSell {
+        item_id: ItemId,
+        subtype: u8,
+        amount: u8,
+    },
+    CloseShop,
 }
 
 // server
@@ -143,6 +157,8 @@ const SRV_AGENT_SPEED_UPDATED: u8 = 33;
 const SRV_PLAYER_STATUS: u8 = 34;
 const SRV_DAMAGED_BY: u8 = 35;
 const SRV_DIED: u8 = 36;
+const SRV_SHOP: u8 = 37;
+const SRV_SHOP_CLOSED: u8 = 38;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum TextMessageType {
@@ -161,6 +177,15 @@ pub struct SkillProgress {
 pub enum FloatingTextType {
     HitPoints,
     CreatureSay,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ShopOfferEntry {
+    pub item_id: ItemId,
+    pub subtype: u8,
+    pub weight: u32,
+    pub buy: u32,
+    pub sell: u32,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -339,6 +364,13 @@ pub enum ServerMessage {
         status: u32,
     },
     PlayerDied,
+    Shop {
+        npc_name: String,
+        money: u64,
+        offers: Vec<ShopOfferEntry>,
+        goods: Vec<(ItemId, u8, u16)>,
+    },
+    ShopClosed,
 }
 
 #[derive(Error, Debug)]
@@ -491,6 +523,17 @@ impl Decoder for GameMessageCodec {
                 target: decode_spell_target(buf)?,
                 param: decode_param(buf)?,
             })),
+            CLI_SHOP_BUY => Ok(Some(ClientMessage::ShopBuy {
+                item_id: ItemId(buf.get_u16_le()),
+                subtype: buf.get_u8(),
+                amount: buf.get_u8(),
+            })),
+            CLI_SHOP_SELL => Ok(Some(ClientMessage::ShopSell {
+                item_id: ItemId(buf.get_u16_le()),
+                subtype: buf.get_u8(),
+                amount: buf.get_u8(),
+            })),
+            CLI_CLOSE_SHOP => Ok(Some(ClientMessage::CloseShop)),
             _ => Err(MessageDecodeError::WrongSequence),
         }
     }
@@ -891,6 +934,33 @@ impl Encoder<ServerMessage> for GameMessageCodec {
             }
             ServerMessage::PlayerDied => {
                 dst.put_u8(SRV_DIED);
+            }
+            ServerMessage::Shop {
+                npc_name,
+                money,
+                offers,
+                goods,
+            } => {
+                dst.put_u8(SRV_SHOP);
+                encode_string(&npc_name, dst);
+                dst.put_u64_le(money);
+                dst.put_u16_le(offers.len() as u16);
+                for offer in offers {
+                    dst.put_u16_le(offer.item_id.0);
+                    dst.put_u8(offer.subtype);
+                    dst.put_u32_le(offer.weight);
+                    dst.put_u32_le(offer.buy);
+                    dst.put_u32_le(offer.sell);
+                }
+                dst.put_u16_le(goods.len() as u16);
+                for (item_id, subtype, amount) in goods {
+                    dst.put_u16_le(item_id.0);
+                    dst.put_u8(subtype);
+                    dst.put_u16_le(amount);
+                }
+            }
+            ServerMessage::ShopClosed => {
+                dst.put_u8(SRV_SHOP_CLOSED);
             }
         }
 
@@ -2096,5 +2166,91 @@ mod tests {
                 2, // group
             ]
         );
+    }
+
+    /// The literal frame the client's `shop_decodes_the_servers_frame`
+    /// (rustibia-client, src/network/messages.rs) reads; nothing else links the two layouts.
+    #[test]
+    fn shop_encodes_a_known_frame() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::Shop {
+                    npc_name: "Xo".to_string(),
+                    money: 1240,
+                    offers: vec![ShopOfferEntry {
+                        item_id: ItemId(2874),
+                        subtype: 9,
+                        weight: 180,
+                        buy: 8,
+                        sell: 0,
+                    }],
+                    goods: vec![(ItemId(2874), 9, 2)],
+                },
+                &mut dst,
+            )
+            .unwrap();
+
+        assert_eq!(
+            &dst[..],
+            &[
+                37, 0,        // payload length
+                SRV_SHOP, //
+                2, 0, b'X', b'o', // npc name
+                0xD8, 0x04, 0, 0, 0, 0, 0, 0, // money 1240
+                1, 0, // one offer
+                0x3A, 0x0B, 9, // item 2874 holding milk
+                180, 0, 0, 0, // weight
+                8, 0, 0, 0, // buy
+                0, 0, 0, 0, // sell
+                1, 0, // one good
+                0x3A, 0x0B, 9, 2, 0, // item 2874 holding milk, two carried
+            ]
+        );
+    }
+
+    #[test]
+    fn shop_closed_is_a_bare_opcode() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(ServerMessage::ShopClosed, &mut dst)
+            .unwrap();
+
+        assert_eq!(&dst[..], &[1, 0, SRV_SHOP_CLOSED]);
+    }
+
+    /// The frames the client's `shop_requests_encode` writes.
+    #[test]
+    fn shop_requests_decode() {
+        let cases = [
+            (
+                vec![19u8, 0x3A, 0x0B, 9, 7],
+                ClientMessage::ShopBuy {
+                    item_id: ItemId(2874),
+                    subtype: 9,
+                    amount: 7,
+                },
+            ),
+            (
+                vec![20u8, 0xBB, 0x0B, 0, 100],
+                ClientMessage::ShopSell {
+                    item_id: ItemId(3003),
+                    subtype: 0,
+                    amount: 100,
+                },
+            ),
+            (vec![21u8], ClientMessage::CloseShop),
+        ];
+        for (payload, expected) in cases {
+            let mut buf = BytesMut::new();
+            buf.put_u16_le(payload.len() as u16);
+            buf.put_slice(&payload);
+
+            assert_eq!(
+                GameMessageCodec {}.decode(&mut buf).unwrap(),
+                Some(expected)
+            );
+            assert!(buf.is_empty());
+        }
     }
 }

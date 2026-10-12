@@ -1,0 +1,33 @@
+name: "Gnomerrow"
+position: { x: 32787, y: 31788, z: 10 }
+speed: 100
+outfit:
+  id: 493
+  colors: [131, 131, 131, 132]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 0
+shop:
+  - { id: 3447, buy: 3 }
+  - { id: 35848, buy: 400 }
+  - { id: 3446, buy: 4 }
+  - { id: 3350, buy: 400 }
+  - { id: 3349, buy: 500 }
+  - { id: 35562, buy: 400 }
+  - { id: 35849, buy: 400 }
+  - { id: 3277, buy: 10 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Greetings, {{ PLAYERNAME | capitalize }}."
+  - words: GOODBYE
+    action: dismiss
+    text: "Good bye, {{ PLAYERNAME | capitalize }}."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "Good bye."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."

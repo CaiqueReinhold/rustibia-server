@@ -1,0 +1,146 @@
+name: "Benjamin"
+position: { x: 32349, y: 32219, z: 7 }
+speed: 100
+outfit:
+  id: 128
+  colors: [116, 79, 117, 76]
+walk_range: 2
+talk_range: 3
+say:
+  cooldown: 300
+  chance: 50000
+  sentences:
+    - "Welcome to the post office!"
+    - "If you need help with letters or parcels, just ask me. I can explain everything."
+    - "Hey, send a letter to your friend now and then. Keep in touch, you know."
+shop:
+  - { id: 3507, buy: 1 }
+  - { id: 3505, buy: 8 }
+  - { id: 3503, buy: 15 }
+keywords:
+  - words: GREET
+    action: engage
+    text: "Hello. How may I help you {{ PLAYERNAME | capitalize }}? Ask me for a trade if you want to buy something. I can also explain the mail system."
+  - words: GOODBYE
+    action: dismiss
+    text: "It was a pleasure to help you."
+  - words: WALK_AWAY
+    action: dismiss
+    text: "It was a pleasure to help you."
+  - words: ["trade", "offers"]
+    action: trade
+    text: "Of course, just browse through my wares."
+  - words: ["ferumbras"]
+    action: say
+    text: "TO THE ARMS! MAN THE WALLS! FERUMBRAS IS NEAR!"
+  - words: ["excalibug"]
+    action: say
+    text: "I don't remember that someone named like that is living here."
+  - words: ["receiver"]
+    action: say
+    text: "Well, the receiver - or addressee - is the person you want to send mail to. Always make sure to enter his or her name correctly."
+  - words: ["eclesius"]
+    action: say
+    text: "I know him because he always forgets to write the name of the recipient on his parcels and letters. The hardest part is to find out who he actually wanted to send it to."
+  - words: ["tibianus"]
+    action: say
+    text: "Ah, King Tibianus, our wise ruler. He has been sick for some time, hasn't he?"
+  - words: ["letters"]
+    action: say
+    text: "If you want to buy a letter, ask me for a trade. Or do you want me to explain how letters work?"
+  - words: ["explain"]
+    action: say
+    text: "With a letter you can send a message to another Tibian's depot. If you want to send it to 'Ben' in Thais, use the letter - so that a form opens - and write 'Ben' in the first line. Write your message below that. ... Then drag your letter on one of the blue mailboxes here to send it."
+  - words: ["parcels"]
+    action: say
+    text: "If you want to buy a parcel, ask me for a trade. Or do you want me to explain how parcels work?"
+  - words: ["general"]
+    action: say
+    text: "TO THE ARMS! MAN THE WALLS! FERUMBRAS IS NEAR!"
+  - words: ["harkath"]
+    action: say
+    text: "Oh, young Harkath will be a fine warrior some day."
+  - words: ["quentin"]
+    action: say
+    text: "Ooooh, nice man, visits me often... I think."
+  - words: ["office"]
+    action: say
+    text: "I'm always in my office. You are welcome to visit me here at any time."
+  - words: ["carlin"]
+    action: say
+    text: "You can send letters and parcels to Carlin."
+  - words: ["baxter"]
+    action: say
+    text: "This naughty child, always stealing apples!"
+  - words: ["gregor"]
+    action: say
+    text: "Never heard of him."
+  - words: ["marvik"]
+    action: say
+    text: "He's always talking about healing me even though I'm fine... I believe he is a bit nuts, poor man."
+  - words: ["muriel"]
+    action: say
+    text: "This Muriel has a lot of correspondence."
+  - words: ["sherry"]
+    action: say
+    text: "I don't drink alcohol while I'm on duty."
+  - words: ["depot"]
+    action: say
+    text: "Each major city has at least one depot. Just step in front of one of the lockers and you can store items inside. Your mail will also arrive there. It doesn't matter which depot you stored it in - you can retrieve all your items from any depot in any city!"
+  - words: ["label"]
+    action: say
+    text: "If you want to buy a label, ask me for a trade. Or do you want me to explain how labels work?"
+  - words: ["thais"]
+    action: say
+    text: "This is the town you are currently in."
+  - words: ["elane"]
+    action: say
+    text: "Oh, she lives next door."
+  - words: ["frodo"]
+    action: say
+    text: "Frodo... Frodo... ? Uhm... isn't that the guy that brings me food at lunchtime?"
+  - words: ["kevin"]
+    action: say
+    text: "That name sounds familiar... who might that be..."
+  - words: ["lugri"]
+    action: say
+    text: "NO! NO! NO! GO AWAY!."
+  - words: ["lynda"]
+    action: say
+    text: "She's SO pretty!"
+  - words: ["quero"]
+    action: say
+    text: "I love his music! He's my best friend and I visit him as often as I can."
+  - words: ["xodet"]
+    action: say
+    text: "The young sorcerer is a good businessman."
+  - words: ["send"]
+    action: say
+    text: "Drag and drop a letter or a parcel on the blue mailbox to send it. However, you need to include the name of the receiver. If the sending fails, you most likely made a mistake."
+  - words: ["name"]
+    action: say
+    text: "My name is Benjamin."
+  - words: ["join"]
+    action: say
+    text: "Uh... oh... Uhm... Join what?"
+  - words: ["army"]
+    action: say
+    text: "TO THE ARMS! MAN THE WALLS! FERUMBRAS IS NEAR!"
+  - words: ["news"]
+    action: say
+    text: "Sorry, I don't read the letters we deliver."
+  - words: ["bozo"]
+    action: say
+    text: "He hangs around here quite often. He says that I inspire him."
+  - words: ["gorn"]
+    action: say
+    text: "He sells equipment."
+  - words: ["king"]
+    action: say
+    text: "The king? Oops, I... can't remember his name..."
+  - words: ["job"]
+    action: say
+    text: "I'm working here at the post office. If you have questions about the Royal Tibia Mail System or the depots, ask me."
+  - words: ["sam"]
+    action: say
+    text: "Ham? No thanks, I already ate fish."

@@ -7,6 +7,7 @@ mod combat;
 mod delta;
 mod items;
 mod movement;
+mod shop;
 mod view;
 
 use std::sync::Arc;
@@ -40,6 +41,7 @@ use crate::entities::position::Direction;
 use crate::entities::world_delta::WorldDelta;
 use crate::game::Tick;
 use crate::game::events::BroadcastMessage;
+use crate::game::shop::Trade;
 use crate::local_id::LocalIdMap;
 use crate::messages::TextMessageType;
 use crate::messages::{ClientMessage, ServerMessage};
@@ -351,6 +353,23 @@ impl SessionActor {
                 target,
                 param,
             } => self.handle_cast_spell(spell_id, target, param).await,
+            ClientMessage::ShopBuy {
+                item_id,
+                subtype,
+                amount,
+            } => {
+                self.handle_trade(Trade::Buy, item_id, subtype, amount)
+                    .await
+            }
+            ClientMessage::ShopSell {
+                item_id,
+                subtype,
+                amount,
+            } => {
+                self.handle_trade(Trade::Sell, item_id, subtype, amount)
+                    .await
+            }
+            ClientMessage::CloseShop => self.handle_close_shop().await,
         }
     }
 
@@ -368,6 +387,7 @@ impl SessionActor {
             } => self.player_spawned(agent_key, position).await,
             BroadcastMessage::MoveItemDenied { message, .. } => self.deny(&message).await,
             BroadcastMessage::UseItemDenied { message, .. } => self.deny(&message).await,
+            BroadcastMessage::TradeDenied { message, .. } => self.deny(&message).await,
             BroadcastMessage::OpenContainer { item, .. } => self.open_container(item).await,
             BroadcastMessage::AgentWalkDenied { .. } => self.walk_denied().await,
             BroadcastMessage::AgentDespawned { agent_key, .. } => {
