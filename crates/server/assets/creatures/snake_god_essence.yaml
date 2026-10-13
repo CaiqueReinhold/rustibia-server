@@ -42,6 +42,9 @@ abilities:
       shape: radius6
     effect_id: 15
 corpse: 11429
+change_target:
+  interval: 40
+  chance: 10
 say:
   cooldown: 40
   chance: 10000

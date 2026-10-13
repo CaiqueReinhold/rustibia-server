@@ -13,11 +13,11 @@ use crate::entities::items::ItemFlag;
 use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, Position, Rect};
 use crate::entities::targeting::TargetMode;
-use crate::game::Tick;
 use crate::game::config::GAME_CONFIG;
 use crate::game::map_query::{can_throw, iter_visible_floors};
 use crate::game::pathfinding::{self, Goal};
 use crate::game::random::Rolls;
+use crate::game::{Tick, TickDelta};
 
 // Separate from WorldCommand to limit what creatures can do
 #[derive(Debug, Clone)]
@@ -45,6 +45,7 @@ pub struct CreatureState {
     next_wander_tick: Tick,
     next_say_tick: Tick,
     next_dance_tick: Tick,
+    next_change_target_tick: Tick,
     ability_cooldowns: Vec<(CreatureAbilityId, Tick)>,
 }
 
@@ -67,6 +68,10 @@ impl CreatureState {
             .push((ability.id, current_tick + ability.cooldown));
     }
 
+    fn stamp_change_target(&mut self, current_tick: Tick, kind: &CreatureKind) {
+        self.next_change_target_tick = current_tick + kind.change_target.interval;
+    }
+
     fn next_ability_tick(&self, id: CreatureAbilityId) -> Tick {
         self.ability_cooldowns
             .iter()
@@ -83,6 +88,13 @@ pub struct CreatureBehaviourContext<'a> {
     pub roll: Rolls,
     pub world_tick: Tick,
     pub state: &'a mut CreatureState,
+}
+
+#[derive(Debug)]
+enum TargetSearchStrategy {
+    Nearest,
+    Damage,
+    Random,
 }
 
 /// The creatures worth deciding for: those within `AGENT_DESPAWN_RADIUS` of a player on any
@@ -177,7 +189,17 @@ fn act(state: CreatureBehavior, ctx: CreatureBehaviourContext) -> Option<Creatur
 }
 
 fn idle(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
-    if let Some(target) = search_target(ctx.creature, ctx.map) {
+    if let Some(target) = search_target(
+        ctx.creature,
+        ctx.map,
+        TargetSearchStrategy::Nearest,
+        &mut ctx.roll,
+    ) {
+        let kind = ctx
+            .map
+            .get_agent(ctx.creature)
+            .and_then(|a| a.get_creature_kind())?;
+        ctx.state.stamp_change_target(ctx.world_tick, kind);
         return Some(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(target),
@@ -232,8 +254,17 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
                 }
             }
             pathfinding::Step::Unreachable => {
-                if let Some(new_target) = search_target(ctx.creature, ctx.map) {
+                if let Some(new_target) = search_target(
+                    ctx.creature,
+                    ctx.map,
+                    TargetSearchStrategy::Nearest,
+                    &mut ctx.roll,
+                ) {
                     if new_target != target_key {
+                        ctx.state.stamp_change_target(
+                            ctx.world_tick,
+                            agent.get_creature_kind().expect("Agent must be a creature"),
+                        );
                         return Some(CreatureAction::SetTarget {
                             agent_key: ctx.creature,
                             target: Some(new_target),
@@ -267,7 +298,12 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
         }
     }
 
-    // TODO: roll change target
+    if let Some(new_target) = change_target(&mut ctx) {
+        return Some(CreatureAction::SetTarget {
+            agent_key: ctx.creature,
+            target: Some(new_target),
+        });
+    }
 
     if let Some(sentence) = say(&mut ctx) {
         return Some(CreatureAction::Say {
@@ -279,76 +315,31 @@ fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     None
 }
 
-fn approach(
-    map: &GameMap,
-    creature: AgentKey,
-    from: &Position,
-    target: &Position,
-    target_distance: u16,
-    roll: &mut Rolls,
-) -> pathfinding::Step {
-    let bounds = Rect::radius(from, SIGHT_RANGE);
-    if target_distance <= 1 {
-        return pathfinding::next_step(
-            map,
-            creature,
-            &Goal::adjacent(target.clone()),
-            &bounds,
-            |pos| !avoids(map, pos),
-        );
-    }
-
-    if from.distance(target) < target_distance && can_throw(map, from, target, true) {
-        return escape_step(map, creature, from, target, false, roll)
-            .map_or(pathfinding::Step::Arrived, pathfinding::Step::Move);
-    }
-
-    pathfinding::next_step(
-        map,
-        creature,
-        &Goal::InSight {
-            of: target.clone(),
-            range: target_distance,
-        },
-        &bounds,
-        |pos| !avoids(map, pos),
-    )
-}
-
-fn dance(
-    ctx: &mut CreatureBehaviourContext,
-    from: &Position,
-    target: &Position,
-) -> Option<Direction> {
-    if ctx.state.next_dance_tick > ctx.world_tick {
-        return None;
-    }
-    ctx.state.stamp_dance(ctx.world_tick);
-    let dance_chance = ctx
-        .map
-        .get_agent(ctx.creature)?
-        .get_creature_kind()?
-        .dance_chance;
-    if !ctx
-        .roll
-        .chance(u32::from(dance_chance) * MAX_DROP_CHANCE / 100)
-    {
-        return None;
-    }
-    dance_step(ctx.map, ctx.creature, from, target, &mut ctx.roll)
-}
-
 fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     let map = ctx.map;
     let agent = map.get_agent(ctx.creature)?;
     let from = map.agent_position(ctx.creature)?;
     let to = map.agent_position(agent.target()?)?;
 
-    if agent.next_walk_tick() <= ctx.world_tick {
-        let direction = escape_step(map, ctx.creature, from, to, true, &mut ctx.roll)?;
+    if agent.next_walk_tick() <= ctx.world_tick
+        && let Some(direction) = escape_step(map, ctx.creature, from, to, true, &mut ctx.roll)
+    {
         return Some(CreatureAction::Walk {
             agent_key: ctx.creature,
             direction,
+        });
+    }
+
+    if let Some(agent_key) = search_target(
+        ctx.creature,
+        map,
+        TargetSearchStrategy::Nearest,
+        &mut ctx.roll,
+    ) && Some(agent_key) != agent.target()
+    {
+        return Some(CreatureAction::SetTarget {
+            agent_key: ctx.creature,
+            target: Some(agent_key),
         });
     }
 
@@ -361,8 +352,18 @@ fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     )
 }
 
-fn returning(ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
-    if let Some(target) = search_target(ctx.creature, ctx.map) {
+fn returning(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+    if let Some(target) = search_target(
+        ctx.creature,
+        ctx.map,
+        TargetSearchStrategy::Nearest,
+        &mut ctx.roll,
+    ) {
+        let kind = ctx
+            .map
+            .get_agent(ctx.creature)
+            .and_then(|a| a.get_creature_kind())?;
+        ctx.state.stamp_change_target(ctx.world_tick, kind);
         return Some(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(target),
@@ -436,7 +437,16 @@ fn say(ctx: &mut CreatureBehaviourContext) -> Option<String> {
     None
 }
 
-fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
+fn random(roll: &mut Rolls, candidates: Vec<(AgentKey, Position)>) -> Option<AgentKey> {
+    roll.category_roll(&candidates).map(|(key, _)| *key)
+}
+
+fn search_target(
+    creature: AgentKey,
+    map: &GameMap,
+    strategy: TargetSearchStrategy,
+    roll: &mut Rolls,
+) -> Option<AgentKey> {
     let from = map.agent_position(creature)?;
     let viewport = Rect::radius(from, SIGHT_RANGE);
     let candidates: Vec<(AgentKey, Position)> = map
@@ -449,21 +459,77 @@ fn search_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
         return None;
     }
 
-    let reachable = pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
-    candidates
-        .iter()
-        .filter_map(|(key, pos)| {
-            let ticks = reachable.cost_to(map, &Goal::adjacent(pos.clone()))?;
-            Some((*key, ticks, from.distance(pos)))
-        })
-        .min_by_key(|(_, ticks, distance)| (*ticks, *distance))
-        .map(|(key, ..)| key)
-        .or_else(|| {
+    match strategy {
+        TargetSearchStrategy::Random => {
+            let reachable =
+                pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
+            let range = map
+                .get_agent(creature)
+                .and_then(|a| a.get_creature_kind())
+                .map(|ck| ck.target_distance)?;
+            let reachable_candidates: Vec<(AgentKey, Position)> = candidates
+                .iter()
+                .filter(|(_, pos)| {
+                    reachable
+                        .cost_to(
+                            map,
+                            &Goal::InSight {
+                                of: pos.clone(),
+                                range,
+                            },
+                        )
+                        .is_some()
+                })
+                .cloned()
+                .collect();
+            random(roll, reachable_candidates)
+        }
+        TargetSearchStrategy::Damage => {
+            let agent = map.get_agent(creature)?;
+            let weighted_candidates: Vec<&(AgentKey, u64)> = agent
+                .participation()
+                .participants()
+                .iter()
+                .filter(|(part_key, _)| candidates.iter().any(|(cand_key, _)| part_key == cand_key))
+                .collect();
+            if !weighted_candidates.is_empty() {
+                let weights: Vec<u64> = weighted_candidates.iter().map(|(_, w)| *w).collect();
+                let index = roll.weighted(&weights);
+                if let Ok(index) = index {
+                    return weighted_candidates.get(index).map(|(key, _)| *key);
+                }
+            }
+            random(roll, candidates)
+        }
+        TargetSearchStrategy::Nearest => {
+            let reachable =
+                pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
+            let range = map
+                .get_agent(creature)
+                .and_then(|a| a.get_creature_kind())
+                .map(|ck| ck.target_distance)?;
             candidates
                 .iter()
-                .min_by_key(|(_, pos)| from.distance(pos))
-                .map(|(key, _)| *key)
-        })
+                .filter_map(|(key, pos)| {
+                    let ticks = reachable.cost_to(
+                        map,
+                        &Goal::InSight {
+                            of: pos.clone(),
+                            range,
+                        },
+                    )?;
+                    Some((*key, ticks, from.distance(pos)))
+                })
+                .min_by_key(|(_, ticks, distance)| (*ticks, *distance))
+                .map(|(key, ..)| key)
+                .or_else(|| {
+                    candidates
+                        .iter()
+                        .min_by_key(|(_, pos)| from.distance(pos))
+                        .map(|(key, _)| *key)
+                })
+        }
+    }
 }
 
 fn use_ability(
@@ -490,6 +556,101 @@ fn use_ability(
     }
 
     None
+}
+
+fn approach(
+    map: &GameMap,
+    creature: AgentKey,
+    from: &Position,
+    target: &Position,
+    target_distance: u16,
+    roll: &mut Rolls,
+) -> pathfinding::Step {
+    let bounds = Rect::radius(from, SIGHT_RANGE);
+    if target_distance <= 1 {
+        return pathfinding::next_step(
+            map,
+            creature,
+            &Goal::adjacent(target.clone()),
+            &bounds,
+            |pos| !avoids(map, pos),
+        );
+    }
+
+    if from.distance(target) < target_distance && can_throw(map, from, target, true) {
+        return escape_step(map, creature, from, target, false, roll)
+            .map_or(pathfinding::Step::Arrived, pathfinding::Step::Move);
+    }
+
+    pathfinding::next_step(
+        map,
+        creature,
+        &Goal::InSight {
+            of: target.clone(),
+            range: target_distance,
+        },
+        &bounds,
+        |pos| !avoids(map, pos),
+    )
+}
+
+fn dance(
+    ctx: &mut CreatureBehaviourContext,
+    from: &Position,
+    target: &Position,
+) -> Option<Direction> {
+    if ctx.state.next_dance_tick > ctx.world_tick {
+        return None;
+    }
+    ctx.state.stamp_dance(ctx.world_tick);
+    let dance_chance = ctx
+        .map
+        .get_agent(ctx.creature)?
+        .get_creature_kind()?
+        .dance_chance;
+    if !ctx
+        .roll
+        .chance(u32::from(dance_chance) * MAX_DROP_CHANCE / 100)
+    {
+        return None;
+    }
+    dance_step(ctx.map, ctx.creature, from, target, &mut ctx.roll)
+}
+
+fn change_target(ctx: &mut CreatureBehaviourContext) -> Option<AgentKey> {
+    if ctx.state.next_change_target_tick > ctx.world_tick {
+        return None;
+    }
+    let kind = ctx
+        .map
+        .get_agent(ctx.creature)
+        .and_then(|a| a.get_creature_kind())?;
+
+    ctx.state.stamp_change_target(ctx.world_tick, kind);
+    if kind.change_target.interval == TickDelta(0)
+        || ctx.roll.uniform(1, 100) > kind.change_target.chance
+    {
+        return None;
+    }
+
+    let strategy = if ctx
+        .roll
+        .chance(GAME_CONFIG.combat.change_target_random_chance * MAX_DROP_CHANCE / 100)
+    {
+        TargetSearchStrategy::Random
+    } else {
+        TargetSearchStrategy::Damage
+    };
+
+    let new_target = search_target(ctx.creature, ctx.map, strategy, &mut ctx.roll);
+
+    if let Some(new_target) = new_target
+        && ctx.map.get_agent(ctx.creature).and_then(|a| a.target()) == Some(new_target)
+    {
+        return None;
+    }
+
+    new_target
 }
 
 /// One rung of the escape ladder: up to four candidate steps as `(dx, dy)` offsets.
@@ -784,6 +945,15 @@ mod tests {
         })
     }
 
+    fn nearest_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
+        search_target(
+            creature,
+            map,
+            TargetSearchStrategy::Nearest,
+            &mut Rolls::new(0),
+        )
+    }
+
     #[test]
     fn a_creature_wanders_onto_open_ground() {
         let mut map = a_corridor(14..=16);
@@ -807,7 +977,7 @@ mod tests {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15);
 
-        assert_eq!(search_target(rat, &map), None);
+        assert_eq!(nearest_target(rat, &map), None);
     }
 
     #[test]
@@ -817,7 +987,7 @@ mod tests {
         put_creature(&mut map, 16);
         put_creature(&mut map, 12);
 
-        assert_eq!(search_target(rat, &map), None);
+        assert_eq!(nearest_target(rat, &map), None);
     }
 
     #[test]
@@ -827,7 +997,7 @@ mod tests {
         let far = put_player(&mut map, 10, 1);
         let near = put_player(&mut map, 18, 2);
 
-        let found = search_target(rat, &map);
+        let found = nearest_target(rat, &map);
 
         assert_eq!(found, Some(near));
         assert_ne!(found, Some(far));
@@ -843,7 +1013,7 @@ mod tests {
         put_player(&mut map, 18, 2);
         block_walking(&mut map, 17);
 
-        assert_eq!(search_target(rat, &map), Some(walkable));
+        assert_eq!(nearest_target(rat, &map), Some(walkable));
     }
 
     /// Nothing is reachable, so the fallback runs and picks on straight-line distance
@@ -857,7 +1027,7 @@ mod tests {
         block_walking(&mut map, 17);
         block_walking(&mut map, 13);
 
-        assert_eq!(search_target(rat, &map), Some(near));
+        assert_eq!(nearest_target(rat, &map), Some(near));
     }
 
     /// Distance is Chebyshev, not the axis sum: the diagonal player is three tiles out and
@@ -874,7 +1044,7 @@ mod tests {
             .unwrap();
         block_walking(&mut map, 13);
 
-        assert_eq!(search_target(rat, &map), Some(diagonal));
+        assert_eq!(nearest_target(rat, &map), Some(diagonal));
     }
 
     #[test]
@@ -884,7 +1054,7 @@ mod tests {
         put_player(&mut map, 18, 1);
         block_sight(&mut map, 17);
 
-        assert_eq!(search_target(rat, &map), None);
+        assert_eq!(nearest_target(rat, &map), None);
     }
 
     /// The wall hides one player and the other is picked, so the previous test is failing
@@ -897,7 +1067,7 @@ mod tests {
         let visible = put_player(&mut map, 12, 2);
         block_sight(&mut map, 17);
 
-        assert_eq!(search_target(rat, &map), Some(visible));
+        assert_eq!(nearest_target(rat, &map), Some(visible));
     }
 
     /// Sight reaches 8 tiles, so x = 24 is one past it from x = 15.
@@ -907,7 +1077,7 @@ mod tests {
         let rat = put_creature(&mut map, 15);
         put_player(&mut map, 24, 1);
 
-        assert_eq!(search_target(rat, &map), None);
+        assert_eq!(nearest_target(rat, &map), None);
         assert!(
             Rect::radius(&Position::new(15, 10, 7), SIGHT_RANGE)
                 .contains(&Position::new(23, 10, 7)),
@@ -1016,7 +1186,7 @@ mod tests {
             active_creatures(&map).contains(&upstairs),
             "a creature the player can see must keep deciding"
         );
-        assert_eq!(search_target(upstairs, &map), None);
+        assert_eq!(nearest_target(upstairs, &map), None);
     }
 
     /// Without this a creature stops mid-chase the moment it leaves the box, which reads as the

@@ -68,6 +68,12 @@ pub struct ConditionAttack {
     pub missile_id: Option<MissileId>,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+pub struct ChangeTarget {
+    pub interval: TickDelta,
+    pub chance: u32,
+}
+
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CreatureFlag {
@@ -123,11 +129,10 @@ pub struct CreatureKind {
     pub loot_table: Vec<LootEntry>,
     pub flee_threshold: Option<u32>,
     pub target_distance: u16,
-    /// Percent chance, per roll, that a creature holding its distance sidesteps around its
-    /// target.
     pub dance_chance: u8,
     pub say: Voices,
     pub flags: Vec<CreatureFlag>,
+    pub change_target: ChangeTarget,
 }
 
 impl CreatureKind {

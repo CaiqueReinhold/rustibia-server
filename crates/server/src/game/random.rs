@@ -1,6 +1,9 @@
 use once_cell::sync::Lazy;
 use rand::{RngExt, SeedableRng, rngs::Xoshiro256PlusPlus, seq::IndexedRandom};
-use rand_distr::{Distribution, Normal};
+use rand_distr::{
+    Distribution, Normal,
+    weighted::{Error, WeightedIndex},
+};
 
 use crate::constants::items::MAX_DROP_CHANCE;
 
@@ -56,6 +59,11 @@ impl Rolls {
             } else {
                 0
             }
+    }
+
+    pub fn weighted(&mut self, weights: &[u64]) -> Result<usize, Error> {
+        let dist = WeightedIndex::new(weights)?;
+        Ok(dist.sample(&mut self.rng))
     }
 }
 

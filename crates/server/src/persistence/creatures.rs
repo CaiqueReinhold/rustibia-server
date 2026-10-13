@@ -11,8 +11,8 @@ use crate::config::CONFIG;
 use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
 use crate::entities::creature::{
-    AbilityEffect, BloodType, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
-    CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, LootEntry,
+    AbilityEffect, BloodType, ChangeTarget, ConditionAttack, CreatureAbility, CreatureAbilityId,
+    CreatureAttack, CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, LootEntry,
 };
 
 use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
@@ -181,6 +181,7 @@ struct RawCreature {
     say: RawCreatureVoices,
     #[serde(default)]
     flags: Vec<CreatureFlag>,
+    change_target: ChangeTarget,
 }
 
 fn melee_distance() -> u16 {
@@ -354,6 +355,7 @@ impl RawCreature {
                 sentences: self.say.sentences,
             },
             flags: self.flags,
+            change_target: self.change_target,
         })
     }
 }
@@ -455,6 +457,9 @@ abilities:
       min: 50
       max: 100
 corpse: 5973
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000
@@ -555,6 +560,9 @@ melee:
       max: 40
     interval: 80
 corpse: 5973
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000
@@ -628,7 +636,7 @@ say:
     #[test]
     fn a_creature_without_abilities_loads_with_none() {
         let contents = A_CREATURE.split("abilities:").next().unwrap().to_string()
-            + "corpse: 5973\nsay:\n  cooldown: 100\n  chance: 10000\n  sentences: []\n";
+            + "corpse: 5973\nchange_target:\n  interval: 80\n  chance: 10\nsay:\n  cooldown: 100\n  chance: 10000\n  sentences: []\n";
 
         assert!(a_creature(&contents).abilities.is_empty());
     }

@@ -48,6 +48,9 @@ abilities:
     effect_id: 14
 corpse: 13973
 flee_threshold: 50
+change_target:
+  interval: 100
+  chance: 0
 say:
   cooldown: 100
   chance: 10000

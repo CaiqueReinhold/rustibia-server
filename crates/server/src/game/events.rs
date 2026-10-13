@@ -24,6 +24,7 @@ pub enum BroadcastMessage {
         direction: Direction,
         from_position: Position,
         to_position: Position,
+        stack: u8,
     },
     MoveItemDenied {
         agent_key: AgentKey,
@@ -48,6 +49,7 @@ pub enum BroadcastMessage {
         agent_key: AgentKey,
         from_position: Position,
         to_position: Position,
+        stack: u8,
     },
     AgentDespawned {
         agent_key: AgentKey,

@@ -1,4 +1,5 @@
 name: Ancient Scarab
+name_description: an ancient scarab
 life: 1000
 speed: 109
 blood_type: poison
@@ -8,7 +9,8 @@ experience: 720
 outfit:
   id: 79
   colors: [0, 0, 0, 0]
-flags: [immune_paralysis]
+flags:
+  - immune_paralysis
 melee:
   damage:
     min: 0
@@ -41,8 +43,12 @@ abilities:
       type: target
       range: 7
     speed:
-      min: { factor: -1.0, flat: 44 }
-      max: { factor: -1.0, flat: 149 }
+      min:
+        factor: -0.7
+        flat: 0
+      max:
+        factor: -0.7
+        flat: 0
     duration_ticks: 500
     missile_id: 15
     effect_id: 21
@@ -59,7 +65,7 @@ abilities:
     target:
       type: area
       origin: self
-      shape: circle5
+      shape: circle3
     effect_id: 21
   - cooldown: 40
     chance: 15000
@@ -67,48 +73,55 @@ abilities:
     target:
       type: self
     speed:
-      min: { factor: 0.0, flat: 130 }
-      max: { factor: 0.0, flat: 130 }
+      min:
+        factor: 0.26
+        flat: 0
+      max:
+        factor: 0.26
+        flat: 0
     duration_ticks: 100
     effect_id: 14
 corpse: 6021
 dance_chance: 20
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 0
 loot:
-  - item_id: 3031 # gold coin
+  - item_id: 3031  # gold coin
+    chance: 50000
     amount: 100
+  - item_id: 3031  # gold coin
     chance: 50000
-  - item_id: 3031 # gold coin
     amount: 87
-    chance: 50000
-  - item_id: 3046 # magic light wand
+  - item_id: 3046  # magic light wand
     chance: 10300
-  - item_id: 3042 # scarab coin
-    amount: 2
+  - item_id: 3042  # scarab coin
     chance: 8100
-  - item_id: 9631 # scarab pincers
+    amount: 2
+  - item_id: 9631  # scarab pincers
     chance: 7140
-  - item_id: 3032 # small emerald
+  - item_id: 3032  # small emerald
+    chance: 6000
     amount: 3
+  - item_id: 3033  # small amethyst
     chance: 6000
-  - item_id: 3033 # small amethyst
     amount: 4
-    chance: 6000
-  - item_id: 3357 # plate armor
+  - item_id: 3357  # plate armor
     chance: 5000
-  - item_id: 3018 # scarab amulet
+  - item_id: 3018  # scarab amulet
     chance: 3510
-  - item_id: 3025 # ancient amulet
+  - item_id: 3025  # ancient amulet
     chance: 2670
-  - item_id: 236 # strong health potion
+  - item_id: 236  # strong health potion
     chance: 1660
-  - item_id: 8084 # springsprout rod
+  - item_id: 8084  # springsprout rod
     chance: 1000
-  - item_id: 3440 # scarab shield
+  - item_id: 3440  # scarab shield
     chance: 500
-  - item_id: 830 # terra hood
+  - item_id: 830  # terra hood
     chance: 400
-  - item_id: 3328 # daramian waraxe
+  - item_id: 3328  # daramian waraxe
     chance: 300

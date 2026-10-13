@@ -15,6 +15,9 @@ melee:
   element: physical
 corpse: 3578
 flee_threshold: 25
+change_target:
+  interval: 80
+  chance: 0
 say:
   cooldown: 100
   chance: 10000

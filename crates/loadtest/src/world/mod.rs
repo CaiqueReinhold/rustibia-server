@@ -186,6 +186,7 @@ impl World {
                 agent_id,
                 direction,
                 from,
+                ..
             } => {
                 if *agent_id != self.agent_id
                     && let Some(agent) = self.agents.get_mut(agent_id)
@@ -193,7 +194,9 @@ impl World {
                     agent.position = from.clone() + *direction;
                 }
             }
-            ServerMessage::TeleportAgent { agent_id, position } => {
+            ServerMessage::TeleportAgent {
+                agent_id, position, ..
+            } => {
                 if *agent_id == self.agent_id {
                     self.position = position.clone();
                 } else if let Some(agent) = self.agents.get_mut(agent_id) {
@@ -567,6 +570,7 @@ mod tests {
             life: 100,
             speed: 100,
             kind: AgentKind::Creature,
+            stack: 0,
         });
 
         assert_eq!(
@@ -595,6 +599,7 @@ mod tests {
             life: 100,
             speed: 100,
             kind: AgentKind::Player,
+            stack: 0,
         });
 
         assert!(!world.agents.contains_key(&AgentId(1)));
@@ -610,6 +615,7 @@ mod tests {
             agent_id: AgentId(2),
             direction: Direction::East,
             from: Position::new(103, 100, 7),
+            stack: 0,
         });
 
         assert_eq!(
@@ -626,6 +632,7 @@ mod tests {
         world.apply(&ServerMessage::TeleportAgent {
             agent_id: AgentId(1),
             position: Position::new(200, 200, 7),
+            stack: 0,
         });
 
         assert_eq!(world.position, Position::new(200, 200, 7));

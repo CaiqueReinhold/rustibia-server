@@ -34,6 +34,9 @@ abilities:
       max: 30
 corpse: 9048
 dance_chance: 15
+change_target:
+  interval: 100
+  chance: 0
 say:
   cooldown: 100
   chance: 10000

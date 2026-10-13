@@ -266,10 +266,13 @@ fn teleport_player(
         return Outcome::Answered;
     };
 
-    if let Err(e) = ctx.map.move_agent(player_key, &to) {
-        error!("NPC teleport to {to:?} failed: {e:?}");
-        return Outcome::Ignored;
-    }
+    let stack = match ctx.map.move_agent(player_key, &to) {
+        Ok(stack) => stack,
+        Err(e) => {
+            error!("NPC teleport to {to:?} failed: {e:?}");
+            return Outcome::Ignored;
+        }
+    };
     pay(ctx, player_key, payment, &COINS);
 
     if let Some(mut npc) = ctx.map.agent_mut(npc_key) {
@@ -279,6 +282,7 @@ fn teleport_player(
         agent_key: player_key,
         from_position: from,
         to_position: to,
+        stack,
     });
     Outcome::Ended
 }

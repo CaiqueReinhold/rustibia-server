@@ -16,6 +16,9 @@ melee:
 corpse: 2472
 target_distance: 5
 dance_chance: 100
+change_target:
+  interval: 100
+  chance: 8
 say:
   cooldown: 100
   chance: 0

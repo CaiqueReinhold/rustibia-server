@@ -278,6 +278,7 @@ pub enum ServerMessage {
         agent_id: AgentId,
         direction: Direction,
         from: Position,
+        stack: u8,
     },
     SpawnAgent {
         agent_id: AgentId,
@@ -288,10 +289,12 @@ pub enum ServerMessage {
         life: u32,
         speed: u16,
         kind: AgentKind,
+        stack: u8,
     },
     TeleportAgent {
         agent_id: AgentId,
         position: Position,
+        stack: u8,
     },
     ChatMessage {
         author: String,
@@ -749,11 +752,13 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 agent_id,
                 direction,
                 from,
+                stack,
             } => {
                 dst.put_u8(SRV_MOVE_AGENT);
                 dst.put_u16_le(agent_id.0);
                 encode_direction(&direction, dst);
                 encode_position(from, dst);
+                dst.put_u8(stack);
             }
             ServerMessage::SpawnAgent {
                 agent_id,
@@ -764,6 +769,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 life,
                 speed,
                 kind,
+                stack,
             } => {
                 dst.put_u8(SRV_SPAWN_AGENT);
                 dst.put_u16_le(agent_id.0);
@@ -774,11 +780,17 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 encode_outfit(outfit, dst);
                 dst.put_u16_le(speed);
                 dst.put_u8(kind.as_id());
+                dst.put_u8(stack);
             }
-            ServerMessage::TeleportAgent { agent_id, position } => {
+            ServerMessage::TeleportAgent {
+                agent_id,
+                position,
+                stack,
+            } => {
                 dst.put_u8(SRV_TELEPORT_AGENT);
                 dst.put_u16_le(agent_id.0);
                 encode_position(position, dst);
+                dst.put_u8(stack);
             }
             ServerMessage::ChatMessage {
                 author,
@@ -1091,8 +1103,11 @@ mod tests {
     use tokio_util::codec::Decoder;
     use tokio_util::codec::Encoder;
 
+    /// The client's `decodes_a_spawn_agent_frame` reads back these bytes. If the two disagree
+    /// co-located agents draw in the wrong order or the decoder rejects every spawn.
+    #[rustfmt::skip]
     #[test]
-    fn spawn_agent_ends_with_its_kind() {
+    fn encode_spawn_agent_frame() {
         let mut buf = BytesMut::new();
         GameMessageCodec {}
             .encode(
@@ -1105,12 +1120,77 @@ mod tests {
                     life: 20,
                     speed: 100,
                     kind: AgentKind::Npc,
+                    stack: 3,
                 },
                 &mut buf,
             )
             .unwrap();
 
-        assert_eq!(buf[buf.len() - 3..], [100, 0, 2]);
+        assert_eq!(&buf[..], &[
+            28, 0,
+            SRV_SPAWN_AGENT,
+            7, 0,
+            100, 0, 100, 0, 7,
+            3,
+            3, 0, b'R', b'a', b't',
+            20, 0, 0, 0,
+            21, 0, 1, 2, 3, 4,
+            100, 0,
+            2,
+            3,
+        ]);
+    }
+
+    /// The client's `decodes_a_move_agent_frame` reads back these bytes.
+    #[rustfmt::skip]
+    #[test]
+    fn encode_move_agent_frame() {
+        let mut buf = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::MoveAgent {
+                    agent_id: AgentId(7),
+                    direction: Direction::East,
+                    from: Position::new(100, 100, 7),
+                    stack: 2,
+                },
+                &mut buf,
+            )
+            .unwrap();
+
+        assert_eq!(&buf[..], &[
+            10, 0,
+            SRV_MOVE_AGENT,
+            7, 0,
+            0x01,
+            100, 0, 100, 0, 7,
+            2,
+        ]);
+    }
+
+    /// The client's `decodes_a_teleport_agent_frame` reads back these bytes.
+    #[rustfmt::skip]
+    #[test]
+    fn encode_teleport_agent_frame() {
+        let mut buf = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::TeleportAgent {
+                    agent_id: AgentId(7),
+                    position: Position::new(101, 100, 7),
+                    stack: 1,
+                },
+                &mut buf,
+            )
+            .unwrap();
+
+        assert_eq!(&buf[..], &[
+            9, 0,
+            SRV_TELEPORT_AGENT,
+            7, 0,
+            101, 0, 100, 0, 7,
+            1,
+        ]);
     }
 
     /// The client repeats this enum and decodes these bytes; nothing links the two

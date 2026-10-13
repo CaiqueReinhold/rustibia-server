@@ -101,7 +101,12 @@ pub fn get_spell_list(map: &GameMap, key: AgentKey) -> Option<ServerMessage> {
     Some(spell_list_for(player.vocation(), &SPELLS))
 }
 
-pub fn get_agent_desc(agent: &Agent, agent_id: AgentId, position: Position) -> ServerMessage {
+pub fn get_agent_desc(
+    agent: &Agent,
+    agent_id: AgentId,
+    position: Position,
+    stack: u8,
+) -> ServerMessage {
     ServerMessage::SpawnAgent {
         agent_id,
         outfit: agent.outfit(),
@@ -111,6 +116,7 @@ pub fn get_agent_desc(agent: &Agent, agent_id: AgentId, position: Position) -> S
         life: agent.life().to_wire(),
         speed: agent.speed(),
         kind: agent.kind(),
+        stack,
     }
 }
 
@@ -278,7 +284,7 @@ mod tests {
     fn an_agents_description_carries_its_kind() {
         let rat = crate::persistence::test_fixtures::a_test_creature("Rat", 10, (1, 2));
 
-        let description = get_agent_desc(&rat, AgentId(4), Position::new(100, 100, 7));
+        let description = get_agent_desc(&rat, AgentId(4), Position::new(100, 100, 7), 0);
 
         assert!(matches!(
             description,

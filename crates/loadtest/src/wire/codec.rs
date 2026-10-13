@@ -625,10 +625,12 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             let agent_id = AgentId(payload.try_get_u16_le()?);
             let direction = read_direction(payload)?;
             let from = read_position(payload)?;
+            let stack = payload.try_get_u8()?;
             Ok(ServerMessage::MoveAgent {
                 agent_id,
                 direction,
                 from,
+                stack,
             })
         }
         SRV_SPAWN_AGENT => {
@@ -640,6 +642,7 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             let outfit = read_outfit(payload)?;
             let speed = payload.try_get_u16_le()?;
             let kind = read_agent_kind(payload)?;
+            let stack = payload.try_get_u8()?;
             Ok(ServerMessage::SpawnAgent {
                 agent_id,
                 outfit,
@@ -649,12 +652,18 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
                 life,
                 speed,
                 kind,
+                stack,
             })
         }
         SRV_TELEPORT_AGENT => {
             let agent_id = AgentId(payload.try_get_u16_le()?);
             let position = read_position(payload)?;
-            Ok(ServerMessage::TeleportAgent { agent_id, position })
+            let stack = payload.try_get_u8()?;
+            Ok(ServerMessage::TeleportAgent {
+                agent_id,
+                position,
+                stack,
+            })
         }
         SRV_CHAT_MESSAGE => {
             let author = read_string(payload)?;
@@ -1188,6 +1197,7 @@ mod tests {
                 agent_id: AgentId(9),
                 direction: Direction::SouthWest,
                 from: Position::new(10, 10, 7),
+                stack: 2,
             },
             ServerMessage::SpawnAgent {
                 agent_id: AgentId(9),
@@ -1198,10 +1208,12 @@ mod tests {
                 life: 20,
                 speed: 100,
                 kind: AgentKind::Npc,
+                stack: 3,
             },
             ServerMessage::TeleportAgent {
                 agent_id: AgentId(9),
                 position: Position::new(11, 11, 7),
+                stack: 1,
             },
             ServerMessage::ChatMessage {
                 author: "Rizael".to_string(),

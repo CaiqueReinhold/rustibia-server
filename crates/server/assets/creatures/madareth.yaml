@@ -74,6 +74,9 @@ abilities:
 corpse: 7893
 flee_threshold: 1000
 dance_chance: 15
+change_target:
+  interval: 100
+  chance: 8
 say:
   cooldown: 20
   chance: 5000

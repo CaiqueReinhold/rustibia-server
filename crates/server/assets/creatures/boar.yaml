@@ -16,6 +16,9 @@ melee:
 corpse: 12321
 flee_threshold: 30
 dance_chance: 10
+change_target:
+  interval: 80
+  chance: 0
 say:
   cooldown: 20
   chance: 5000

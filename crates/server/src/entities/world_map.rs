@@ -112,7 +112,7 @@ impl WorldMap {
         self.map.remove_agent(key)
     }
 
-    pub fn move_agent(&mut self, key: AgentKey, new_pos: &Position) -> Result<(), MapError> {
+    pub fn move_agent(&mut self, key: AgentKey, new_pos: &Position) -> Result<u8, MapError> {
         self.map.move_agent(key, new_pos)
     }
 
@@ -173,12 +173,12 @@ impl WorldMap {
         key: AgentKey,
         new_pos: &Position,
         facing: Facing,
-    ) -> Result<(), MapError> {
-        self.map.move_agent(key, new_pos)?;
+    ) -> Result<u8, MapError> {
+        let stack = self.map.move_agent(key, new_pos)?;
         if let Some(agent) = self.map.get_agent_mut(key) {
             agent.set_facing(facing);
         }
-        Ok(())
+        Ok(stack)
     }
 }
 

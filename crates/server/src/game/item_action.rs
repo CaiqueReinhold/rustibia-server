@@ -359,13 +359,15 @@ fn climb(
         .ok_or(ItemActionError::InvalidState)?
         .clone();
 
-    ctx.map
+    let stack = ctx
+        .map
         .move_agent(agent_key, &landing)
         .map_err(|_| ItemActionError::InvalidState)?;
     ctx.events.push(BroadcastMessage::AgentTeleported {
         agent_key,
         from_position: from,
         to_position: landing.clone(),
+        stack,
     });
     on_step(ctx, agent_key, &landing);
     Ok(())

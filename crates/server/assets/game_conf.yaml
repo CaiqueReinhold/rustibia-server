@@ -85,6 +85,7 @@ combat:
   attack_group_cooldown: 40
   healing_group_cooldown: 20
   support_group_cooldown: 20
+  change_target_random_chance: 50
 
 money:
   gold_coin_id: 3031

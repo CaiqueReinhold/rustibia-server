@@ -43,11 +43,14 @@ pub fn parse_command(ctx: &mut TickCtx, command: &str, agent_key: AgentKey) -> b
             };
 
             let pos = Position::new(x, y, z);
-            if ctx.map.can_move(&pos, agent_key) && ctx.map.move_agent(agent_key, &pos).is_ok() {
+            if ctx.map.can_move(&pos, agent_key)
+                && let Ok(stack) = ctx.map.move_agent(agent_key, &pos)
+            {
                 ctx.events.push(BroadcastMessage::AgentTeleported {
                     agent_key,
                     from_position: current_pos,
                     to_position: pos,
+                    stack,
                 });
             }
 

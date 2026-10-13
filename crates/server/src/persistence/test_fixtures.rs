@@ -5,6 +5,7 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 use crate::entities::agent::{OutfitColors, OutfitId};
+use crate::entities::creature::ChangeTarget;
 use crate::entities::npc::Npc;
 use crate::entities::player::PlayerId;
 use crate::entities::sex::Sex;
@@ -265,6 +266,10 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
             sentences: vec!["sentence".to_owned()],
         },
         flags: vec![],
+        change_target: ChangeTarget {
+            interval: TickDelta(80),
+            chance: 10,
+        },
     }
 }
 

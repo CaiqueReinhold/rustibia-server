@@ -8,53 +8,51 @@ experience: 700
 outfit:
   id: 34
   colors: [0, 0, 0, 0]
+flags:
+  - immune_paralysis
 melee:
   damage:
     min: 0
     max: 120
   element: physical
 abilities:
-  - cooldown: 80
+  - cooldown: 40
+    chance: 15000
+    type: attack
+    element: fire
+    damage:
+      min: 60
+      max: 140
+    target:
+      type: area
+      origin: target
+      shape: circle2
+    missile_id: 4
+    effect_id: 7
+  - cooldown: 40
     chance: 10000
     type: attack
     element: fire
     damage:
       min: 100
-      max: 200
-    condition:
-      type: decaying
-      element: fire
-      damage:
-        min: 40
-        max: 60
-      interval: 180
+      max: 170
     target:
       type: area
       origin: self
-      shape: small_wave
-    effect_id: 16
-  - cooldown: 40
-    chance: 8000
-    type: attack
-    element: fire
-    damage:
-      min: 50
-      max: 120
-    target:
-      type: area
-      origin: target
-      shape: circle3
-    missile_id: 4
+      shape: wave8_3
     effect_id: 7
-  - cooldown: 80
+  - cooldown: 40
     chance: 15000
     type: heal
     life:
-      min: 50
-      max: 100
+      min: 40
+      max: 70
 corpse: 5973
 flee_threshold: 300
 dance_chance: 20
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000
@@ -62,47 +60,47 @@ say:
     - GROOAAARRR
     - FCHHHHH
 loot:
-  - item_id: 3031 # gold coin
+  - item_id: 3031  # gold coin
     chance: 90082
     amount: 105
-  - item_id: 3583 # dragon ham
+  - item_id: 3583  # dragon ham
     chance: 65143
-  - item_id: 3409 # steel shield
+  - item_id: 3409  # steel shield
     chance: 14893
-  - item_id: 3349 # crossbow
+  - item_id: 3349  # crossbow
     chance: 10085
-  - item_id: 11457 # dragon's tail
+  - item_id: 11457  # dragon's tail
     chance: 9883
-  - item_id: 3449 # burst arrow
+  - item_id: 3449  # burst arrow
     chance: 7976
     amount: 10
-  - item_id: 3285 # longsword
+  - item_id: 3285  # longsword
     chance: 4027
-  - item_id: 3351 # steel helmet
+  - item_id: 3351  # steel helmet
     chance: 3005
-  - item_id: 3301 # broadsword
+  - item_id: 3301  # broadsword
     chance: 1995
-  - item_id: 3557 # plate legs
+  - item_id: 3557  # plate legs
     chance: 1909
-  - item_id: 236 # strong health potion
+  - item_id: 236  # strong health potion
     chance: 1055
-  - item_id: 3071 # wand of inferno
+  - item_id: 3071  # wand of inferno
     chance: 1053
-  - item_id: 5920 # green dragon scale
+  - item_id: 5920  # green dragon scale
     chance: 1038
-  - item_id: 5877 # green dragon leather
+  - item_id: 5877  # green dragon leather
     chance: 1018
-  - item_id: 3275 # double axe
+  - item_id: 3275  # double axe
     chance: 1008
-  - item_id: 3322 # dragon hammer
+  - item_id: 3322  # dragon hammer
     chance: 517
-  - item_id: 3297 # serpent sword
+  - item_id: 3297  # serpent sword
     chance: 504
-  - item_id: 3028 # small diamond
+  - item_id: 3028  # small diamond
     chance: 384
-  - item_id: 3416 # dragon shield
+  - item_id: 3416  # dragon shield
     chance: 301
-  - item_id: 3061 # life crystal
+  - item_id: 3061  # life crystal
     chance: 113
-  - item_id: 7430 # dragonbone staff
+  - item_id: 7430  # dragonbone staff
     chance: 102

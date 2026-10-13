@@ -571,6 +571,7 @@ mod tests {
                 direction: Direction::East,
                 from_position: from,
                 to_position: to,
+                stack: 0,
             },
         );
 
@@ -596,6 +597,7 @@ mod tests {
                 direction: Direction::SouthEast,
                 from_position: from,
                 to_position: to,
+                stack: 0,
             },
         );
 
@@ -623,6 +625,7 @@ mod tests {
                 agent_key: AgentKey::default(),
                 from_position: Position::new(100, 100, 7),
                 to_position: Position::new(105, 100, 7),
+                stack: 0,
             },
         );
 

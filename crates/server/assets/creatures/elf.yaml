@@ -1,10 +1,11 @@
 name: Elf
+name_description: an elf
 life: 100
 speed: 95
 blood_type: blood
 armor: 6
 defense: 6
-experience: 30
+experience: 42
 outfit:
   id: 62
   colors: [0, 0, 0, 0]
@@ -15,18 +16,21 @@ melee:
   element: physical
 abilities:
   - cooldown: 40
-    chance: 15000
+    chance: 10000
     type: attack
     element: physical
     damage:
-      min: 5
-      max: 30
+      min: 0
+      max: 25
     target:
       type: target
-      range: 6
+      range: 7
     missile_id: 3
 corpse: 6003
 dance_chance: 10
+change_target:
+  interval: 80
+  chance: 0
 say:
   cooldown: 100
   chance: 10000
@@ -37,26 +41,26 @@ say:
     - Flee as long as you can.
     - Death to the defilers!
 loot:
-  - item_id: 3031 # gold coin
-    amount: 30
+  - item_id: 3031  # gold coin
     chance: 44661
-  - item_id: 8011 # plum
-    amount: 2
+    amount: 30
+  - item_id: 8011  # plum
     chance: 20013
-  - item_id: 3376 # studded helmet
+    amount: 2
+  - item_id: 3376  # studded helmet
     chance: 15055
-  - item_id: 3552 # leather boots
+  - item_id: 3552  # leather boots
     chance: 11113
-  - item_id: 3285 # longsword
+  - item_id: 3285  # longsword
     chance: 10918
-  - item_id: 3378 # studded armor
+  - item_id: 3378  # studded armor
     chance: 9010
-  - item_id: 3410 # plate shield
+  - item_id: 3410  # plate shield
     chance: 8957
-  - item_id: 3447 # arrow
-    amount: 5
+  - item_id: 3447  # arrow
     chance: 7026
-  - item_id: 9635 # elvish talisman
+    amount: 3
+  - item_id: 9635  # elvish talisman
     chance: 1984
-  - item_id: 5921 # heaven blossom
+  - item_id: 5921  # heaven blossom
     chance: 1011

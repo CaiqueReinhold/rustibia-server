@@ -345,13 +345,15 @@ fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), 
         .rope_spot_ids
         .contains(&target_item_id)
     {
-        ctx.map
+        let stack = ctx
+            .map
             .move_agent(agent_key, &target_pos)
             .map_err(|_| ItemActionError::ActionFailed)?;
         ctx.events.push(BroadcastMessage::AgentTeleported {
             agent_key,
             from_position: pos.clone(),
             to_position: target_pos,
+            stack,
         });
         return Ok(());
     } else if GAME_CONFIG
@@ -366,13 +368,14 @@ fn rope(ctx: &mut TickCtx, agent_key: AgentKey, target: &ItemRef) -> Result<(), 
             .ok()
             .and_then(|mut agents_iter| agents_iter.next().cloned());
         if let Some(last_agent) = last_agent {
-            if ctx.map.move_agent(last_agent, &target_pos).is_err() {
+            let Ok(stack) = ctx.map.move_agent(last_agent, &target_pos) else {
                 return Err(ItemActionError::ActionFailed);
-            }
+            };
             ctx.events.push(BroadcastMessage::AgentTeleported {
                 agent_key: last_agent,
                 from_position: pos.clone(),
                 to_position: target_pos,
+                stack,
             });
             return Ok(());
         }

@@ -187,6 +187,7 @@ pub struct CombatConfig {
     pub attack_group_cooldown: TickDelta,
     pub healing_group_cooldown: TickDelta,
     pub support_group_cooldown: TickDelta,
+    pub change_target_random_chance: u32,
 }
 
 #[derive(Deserialize)]

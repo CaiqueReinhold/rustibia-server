@@ -26,6 +26,9 @@ abilities:
       range: 7
     missile_id: 12
 corpse: 771
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000

@@ -893,6 +893,7 @@ mod tests {
                 life: 100,
                 speed: 100,
                 kind: AgentKind::Creature,
+                stack: 0,
             };
             let spells = vec![SpellListEntry {
                 id: spell_id,

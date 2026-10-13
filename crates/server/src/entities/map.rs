@@ -316,7 +316,8 @@ impl GameMap {
         self.agents.remove(key).map(|agent| (agent, pos))
     }
 
-    pub fn move_agent(&mut self, key: AgentKey, new_pos: &Position) -> Result<(), MapError> {
+    /// Returns the agent's stack index on `new_pos`.
+    pub fn move_agent(&mut self, key: AgentKey, new_pos: &Position) -> Result<u8, MapError> {
         let old_pos = self
             .agent_positions
             .get(&key)
@@ -328,8 +329,9 @@ impl GameMap {
         }
         let new_tile = self.get_tile_mut(new_pos)?;
         new_tile.agents.push(key);
+        let stack = u8::try_from(new_tile.agents.len() - 1).unwrap_or(u8::MAX);
         self.agent_positions.insert(key, new_pos.clone());
-        Ok(())
+        Ok(stack)
     }
 
     pub fn agent_position(&self, key: AgentKey) -> Option<&Position> {
@@ -358,6 +360,19 @@ impl GameMap {
     ) -> Result<impl Iterator<Item = &AgentKey> + '_, MapError> {
         let tile = self.get_tile(pos)?;
         Ok(tile.agents.iter())
+    }
+
+    /// Where `key` stands among `pos`'s agents, bottom first; one past the top if it is not there.
+    pub fn stack_index(&self, key: AgentKey, pos: &Position) -> u8 {
+        let Ok(tile) = self.get_tile(pos) else {
+            return 0;
+        };
+        let index = tile
+            .agents
+            .iter()
+            .position(|k| *k == key)
+            .unwrap_or(tile.agents.len());
+        u8::try_from(index).unwrap_or(u8::MAX)
     }
 
     /// Splits `rect` into the chunks it covers, each clamped to its own bounds. A chunk the map
@@ -1282,6 +1297,34 @@ mod tests {
         );
         // The tile in the neighbouring chunk exists but must be unaffected.
         assert_eq!(map.iter_agents_at(&b).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn move_agent_returns_the_index_it_arrived_at() {
+        let (from, to) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(from.clone(), MapTile::new());
+        map.insert_tile(to.clone(), MapTile::new());
+        let first = map.insert_agent(new_creature(), &from).unwrap();
+        let second = map.insert_agent(new_creature(), &from).unwrap();
+
+        assert_eq!(map.move_agent(first, &to).unwrap(), 0);
+        assert_eq!(map.move_agent(second, &to).unwrap(), 1);
+    }
+
+    #[test]
+    fn stack_index_counts_from_the_bottom_and_answers_past_the_top_for_a_stranger() {
+        let (here, there) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), MapTile::new());
+        map.insert_tile(there.clone(), MapTile::new());
+        let bottom = map.insert_agent(new_creature(), &here).unwrap();
+        let top = map.insert_agent(new_creature(), &here).unwrap();
+        let elsewhere = map.insert_agent(new_creature(), &there).unwrap();
+
+        assert_eq!(map.stack_index(bottom, &here), 0);
+        assert_eq!(map.stack_index(top, &here), 1);
+        assert_eq!(map.stack_index(elsewhere, &here), 2);
     }
 
     #[test]

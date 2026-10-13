@@ -122,8 +122,13 @@ impl SessionActor {
         let Some(agent_id) = self.agents.get_local(&agent_key) else {
             return self.introduce_agent(agent_key, position, map).await;
         };
+        let stack = map.stack_index(agent_key, &position);
         self.connection
-            .send_message(ServerMessage::TeleportAgent { agent_id, position })
+            .send_message(ServerMessage::TeleportAgent {
+                agent_id,
+                position,
+                stack,
+            })
             .await?;
         Ok(())
     }
@@ -141,8 +146,9 @@ impl SessionActor {
             return Ok(());
         }
         let agent_id = self.agents.get_or_insert(agent_key);
+        let stack = map.stack_index(agent_key, &position);
         self.connection
-            .send_message(get_agent_desc(agent, agent_id, position))
+            .send_message(get_agent_desc(agent, agent_id, position, stack))
             .await?;
         Ok(())
     }

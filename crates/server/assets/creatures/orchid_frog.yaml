@@ -16,6 +16,9 @@ melee:
   element: physical
 corpse: 6079
 dance_chance: 10
+change_target:
+  interval: 100
+  chance: 20
 say:
   cooldown: 100
   chance: 10000

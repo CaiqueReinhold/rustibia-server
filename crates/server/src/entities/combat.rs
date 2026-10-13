@@ -123,6 +123,10 @@ impl Participation {
             })
             .collect()
     }
+
+    pub fn participants(&self) -> &[(AgentKey, u64)] {
+        &self.0
+    }
 }
 
 #[cfg(test)]

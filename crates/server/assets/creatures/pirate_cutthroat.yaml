@@ -36,6 +36,9 @@ abilities:
     effect_id: 5
 corpse: 18198
 dance_chance: 10
+change_target:
+  interval: 80
+  chance: 15
 say:
   cooldown: 100
   chance: 10000

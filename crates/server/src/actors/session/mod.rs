@@ -379,8 +379,12 @@ impl SessionActor {
                 agent_key,
                 direction,
                 to_position,
+                stack,
                 ..
-            } => self.agent_moved(agent_key, direction, to_position).await,
+            } => {
+                self.agent_moved(agent_key, direction, to_position, stack)
+                    .await
+            }
             BroadcastMessage::PlayerSpawned {
                 agent_key,
                 position,
@@ -396,8 +400,9 @@ impl SessionActor {
             BroadcastMessage::AgentTeleported {
                 agent_key,
                 to_position,
+                stack,
                 ..
-            } => self.agent_teleported(agent_key, to_position).await,
+            } => self.agent_teleported(agent_key, to_position, stack).await,
             BroadcastMessage::LogoutDenied { .. } => self.logout_denied().await,
             BroadcastMessage::AgentSaid {
                 agent_key,

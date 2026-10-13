@@ -85,6 +85,7 @@ impl SessionActor {
         agent_key: AgentKey,
         direction: Direction,
         to_position: Position,
+        stack: u8,
     ) -> Result<()> {
         let map = self.shared_map.load();
         if self.player_key == agent_key {
@@ -111,6 +112,7 @@ impl SessionActor {
                         agent_id,
                         direction,
                         from,
+                        stack,
                     })
                     .await?;
             } else {
@@ -133,6 +135,7 @@ impl SessionActor {
         &mut self,
         agent_key: AgentKey,
         to_position: Position,
+        stack: u8,
     ) -> Result<()> {
         let map = self.shared_map.load();
         if agent_key == self.player_key {
@@ -147,6 +150,7 @@ impl SessionActor {
                 .send_message(ServerMessage::TeleportAgent {
                     agent_id: self_id,
                     position: to_position.clone(),
+                    stack,
                 })
                 .await?;
 
@@ -165,6 +169,7 @@ impl SessionActor {
                         .send_message(ServerMessage::TeleportAgent {
                             agent_id,
                             position: to_position,
+                            stack,
                         })
                         .await?;
                 } else {
@@ -375,7 +380,7 @@ mod tests {
             SessionActor::for_test(key, map);
 
         session
-            .agent_moved(key, Direction::North, Position::new(100, 99, 7))
+            .agent_moved(key, Direction::North, Position::new(100, 99, 7), 0)
             .await
             .unwrap();
 
@@ -421,15 +426,48 @@ mod tests {
         let local = session.agents.get_or_insert(wanderer);
 
         session
-            .agent_moved(key, Direction::North, Position::new(100, 99, 7))
+            .agent_moved(key, Direction::North, Position::new(100, 99, 7), 0)
             .await
             .unwrap();
 
         let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
         assert!(sent.iter().any(|c| matches!(
             c,
-            ConnectionCommand::SendPlayerMessage(ServerMessage::TeleportAgent { agent_id, position })
+            ConnectionCommand::SendPlayerMessage(ServerMessage::TeleportAgent { agent_id, position, .. })
                 if *agent_id == local && *position == Position::new(100, 93, 7)
+        )));
+    }
+
+    #[tokio::test]
+    async fn agents_coming_into_view_are_sent_their_own_stack_indices() {
+        use crate::actors::connection::ConnectionCommand;
+        use crate::entities::agent::Agent;
+        use crate::persistence::test_fixtures::a_test_snapshot;
+
+        let stood = Position::new(100, 93, 7);
+        let mut map = GameMap::new();
+        let key = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let bottom = seat_player(&mut map, &stood, 2);
+        map.insert_agent(Agent::from_player(a_test_snapshot(3, 1)), &stood)
+            .unwrap();
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(key, map);
+        let known = session.agents.get_or_insert(bottom);
+
+        session
+            .agent_moved(key, Direction::North, Position::new(100, 99, 7), 0)
+            .await
+            .unwrap();
+
+        let sent: Vec<_> = std::iter::from_fn(|| connection_rx.try_recv().ok()).collect();
+        assert!(sent.iter().any(|c| matches!(
+            c,
+            ConnectionCommand::SendPlayerMessage(ServerMessage::TeleportAgent { agent_id, stack: 0, .. })
+                if *agent_id == known
+        )));
+        assert!(sent.iter().any(|c| matches!(
+            c,
+            ConnectionCommand::SendPlayerMessage(ServerMessage::SpawnAgent { stack: 1, .. })
         )));
     }
 }

@@ -47,6 +47,9 @@ abilities:
 corpse: 6044
 target_distance: 4
 dance_chance: 30
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000

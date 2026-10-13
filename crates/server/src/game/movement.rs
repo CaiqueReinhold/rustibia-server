@@ -70,18 +70,22 @@ pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
         .agent_mut(agent_key)
         .unwrap()
         .stamp_walk(ctx.tick + walk_ticks);
-    if let Err(e) = ctx
+    let stack = match ctx
         .map
         .step_agent(agent_key, &new_pos, direction_to_facing(&direction))
     {
-        error!("agent {agent_key:?} could not walk to {new_pos}: {e:?}");
-        return;
-    }
+        Ok(stack) => stack,
+        Err(e) => {
+            error!("agent {agent_key:?} could not walk to {new_pos}: {e:?}");
+            return;
+        }
+    };
     ctx.events.push(BroadcastMessage::AgentMoved {
         agent_key,
         direction,
         from_position: current_pos,
         to_position: new_pos.clone(),
+        stack,
     });
 
     on_step(ctx, agent_key, &new_pos);
@@ -105,15 +109,19 @@ pub fn push(ctx: &mut TickCtx, agent_key: AgentKey, direction: Direction) {
         .agent_mut(agent_key)
         .unwrap()
         .stamp_walk(ctx.tick + walk_ticks);
-    if let Err(e) = ctx.map.step_agent(agent_key, &to, facing) {
-        error!("agent {agent_key:?} could not be pushed to {to}: {e:?}");
-        return;
-    }
+    let stack = match ctx.map.step_agent(agent_key, &to, facing) {
+        Ok(stack) => stack,
+        Err(e) => {
+            error!("agent {agent_key:?} could not be pushed to {to}: {e:?}");
+            return;
+        }
+    };
     ctx.events.push(BroadcastMessage::AgentMoved {
         agent_key,
         direction,
         from_position: from,
         to_position: to.clone(),
+        stack,
     });
     on_step(ctx, agent_key, &to);
 }
@@ -151,14 +159,18 @@ fn relocate(ctx: &mut TickCtx, agent_key: AgentKey, from: &Position, to: &Positi
         warn!("agent {agent_key:?} cannot be moved from {from} to {to}: there is no tile");
         return;
     }
-    if let Err(e) = ctx.map.move_agent(agent_key, to) {
-        error!("agent {agent_key:?} could not be moved from {from} to {to}: {e:?}");
-        return;
-    }
+    let stack = match ctx.map.move_agent(agent_key, to) {
+        Ok(stack) => stack,
+        Err(e) => {
+            error!("agent {agent_key:?} could not be moved from {from} to {to}: {e:?}");
+            return;
+        }
+    };
     ctx.events.push(BroadcastMessage::AgentTeleported {
         agent_key,
         from_position: from.clone(),
         to_position: to.clone(),
+        stack,
     });
     step_onto(ctx, agent_key, to, depth + 1);
 }
@@ -509,6 +521,43 @@ mod tests {
 
         assert_eq!(map.agent_position(player), Some(&destination));
         assert_eq!(teleports(&h), 1);
+    }
+
+    #[test]
+    fn a_push_onto_an_occupied_tile_reports_the_index_it_arrived_at() {
+        let (mut map, player) = a_walk(&[], Vec::new());
+        map.insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &EAST)
+            .unwrap();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        push(&mut h.ctx(&mut map), player, Direction::East);
+
+        assert!(h.events.iter().any(|e| matches!(
+            e,
+            BroadcastMessage::AgentMoved { agent_key, stack: 1, .. } if *agent_key == player
+        )));
+    }
+
+    #[test]
+    fn a_teleport_onto_an_occupied_tile_reports_the_index_it_arrived_at() {
+        let destination = Position::new(50, 50, 7);
+        let (mut map, player) = a_walk(
+            std::slice::from_ref(&destination),
+            vec![(EAST, a_teleport())],
+        );
+        map.insert_teleport(EAST, destination.clone());
+        map.insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &destination)
+            .unwrap();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        walk(&mut h.ctx(&mut map), Direction::East, player);
+
+        assert!(h.events.iter().any(|e| matches!(
+            e,
+            BroadcastMessage::AgentTeleported { agent_key, stack: 1, .. } if *agent_key == player
+        )));
     }
 
     #[test]

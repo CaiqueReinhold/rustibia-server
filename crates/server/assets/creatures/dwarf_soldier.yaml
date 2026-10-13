@@ -27,6 +27,9 @@ abilities:
     missile_id: 2
 corpse: 6014
 dance_chance: 10
+change_target:
+  interval: 80
+  chance: 10
 say:
   cooldown: 100
   chance: 10000

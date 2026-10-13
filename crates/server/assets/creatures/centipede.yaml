@@ -22,6 +22,9 @@ melee:
     interval: 80
 corpse: 6050
 dance_chance: 10
+change_target:
+  interval: 100
+  chance: 0
 say:
   cooldown: 100
   chance: 0

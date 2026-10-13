@@ -19,6 +19,9 @@ corpse: 5013
 flee_threshold: 2
 target_distance: 6
 dance_chance: 10
+change_target:
+  interval: 80
+  chance: 8
 say:
   cooldown: 100
   chance: 0
