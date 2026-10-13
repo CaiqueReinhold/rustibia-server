@@ -842,9 +842,9 @@ mod tests {
         assert!(!active_creatures(&map).contains(&npc));
     }
     use crate::entities::Bounds;
-    use crate::entities::agent::Agent;
+    use crate::entities::agent::{Agent, Pool};
     use crate::entities::combat::CombatElement;
-    use crate::entities::creature::{AbilityEffect, CreatureAbility, CreatureAttack};
+    use crate::entities::creature::{AbilityEffect, ChangeTarget, CreatureAbility, CreatureAttack};
     use crate::entities::creature::{CreatureAttackDamage, CreatureFlag, CreatureKind};
     use crate::entities::items::ItemId;
     use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag};
@@ -1991,5 +1991,342 @@ mod tests {
             Tick(100),
             7
         )));
+    }
+
+    fn search(
+        map: &GameMap,
+        creature: AgentKey,
+        strategy: TargetSearchStrategy,
+        seed: u64,
+    ) -> Option<AgentKey> {
+        search_target(creature, map, strategy, &mut Rolls::new(seed))
+    }
+
+    #[test]
+    fn a_random_search_reaches_every_player_it_can_walk_to() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let west = put_player(&mut map, 12, 1);
+        let east = put_player(&mut map, 18, 2);
+
+        let picked: HashSet<AgentKey> = (0..64)
+            .filter_map(|seed| search(&map, rat, TargetSearchStrategy::Random, seed))
+            .collect();
+
+        assert_eq!(picked, HashSet::from([west, east]));
+    }
+
+    #[test]
+    fn a_random_search_skips_a_player_it_cannot_walk_to() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let walkable = put_player(&mut map, 12, 1);
+        put_player(&mut map, 18, 2);
+        block_walking(&mut map, 17);
+
+        assert!(
+            (0..64).all(|seed| search(&map, rat, TargetSearchStrategy::Random, seed)
+                == Some(walkable))
+        );
+    }
+
+    #[test]
+    fn a_damage_search_picks_among_those_who_dealt_damage() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let attacker = put_player(&mut map, 12, 1);
+        put_player(&mut map, 18, 2);
+        map.get_agent_mut(rat).unwrap().record_damage(attacker, 50);
+
+        assert!(
+            (0..64).all(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed)
+                == Some(attacker))
+        );
+    }
+
+    #[test]
+    fn a_damage_search_favours_whoever_dealt_more() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let scratch = put_player(&mut map, 12, 1);
+        let heavy = put_player(&mut map, 18, 2);
+        let agent = map.get_agent_mut(rat).unwrap();
+        agent.record_damage(scratch, 1);
+        agent.record_damage(heavy, 99);
+
+        let picks: Vec<AgentKey> = (0..256)
+            .filter_map(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed))
+            .collect();
+        let heavy_picks = picks.iter().filter(|key| **key == heavy).count();
+
+        assert_eq!(picks.len(), 256);
+        assert!(
+            heavy_picks > 200,
+            "99 of every 100 damage should win nearly every roll, won {heavy_picks} of 256"
+        );
+    }
+
+    #[test]
+    fn a_damage_search_ignores_an_attacker_it_cannot_see() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let visible = put_player(&mut map, 12, 1);
+        let hidden = put_player(&mut map, 19, 2);
+        block_sight(&mut map, 17);
+        map.get_agent_mut(rat).unwrap().record_damage(hidden, 50);
+
+        assert!(
+            (0..64)
+                .all(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed) == Some(visible))
+        );
+    }
+
+    const CHANGE_INTERVAL: TickDelta = TickDelta(80);
+
+    /// A melee creature at (15, 10) holding the player to its east, so `in_combat` walks
+    /// nowhere and falls through to the target change. Returns the creature and its target.
+    fn a_switcher(map: &mut GameMap, chance: u32, interval: TickDelta) -> (AgentKey, AgentKey) {
+        let creature = a_kind_in_melee(
+            map,
+            CreatureKind {
+                change_target: ChangeTarget { interval, chance },
+                ..a_creature_kind("Rat")
+            },
+        );
+        let target = map.get_agent(creature).unwrap().target().unwrap();
+        (creature, target)
+    }
+
+    fn put_bystander(map: &mut GameMap) -> AgentKey {
+        map.insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &at(14, 10))
+            .unwrap()
+    }
+
+    fn new_target(action: &Option<CreatureAction>) -> Option<AgentKey> {
+        match action {
+            Some(CreatureAction::SetTarget { target, .. }) => *target,
+            _ => None,
+        }
+    }
+
+    fn is_set_target(action: &Option<CreatureAction>) -> bool {
+        matches!(action, Some(CreatureAction::SetTarget { .. }))
+    }
+
+    fn decisions(map: &GameMap, creature: AgentKey, tick: Tick) -> Vec<Option<CreatureAction>> {
+        (0..64)
+            .map(|seed| decide_at(map, creature, &mut CreatureState::default(), tick, seed))
+            .collect()
+    }
+
+    #[test]
+    fn a_won_roll_switches_to_another_player_and_never_to_the_current_one() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 100, CHANGE_INTERVAL);
+        let bystander = put_bystander(&mut map);
+
+        let actions = decisions(&map, rat, Tick(100));
+
+        assert!(actions.iter().any(is_set_target));
+        assert!(
+            actions
+                .iter()
+                .filter(|action| is_set_target(action))
+                .all(|action| new_target(action) == Some(bystander))
+        );
+    }
+
+    #[test]
+    fn a_zero_chance_never_changes_target() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 0, CHANGE_INTERVAL);
+        put_bystander(&mut map);
+
+        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+    }
+
+    #[test]
+    fn a_zero_interval_never_changes_target() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 100, TickDelta(0));
+        put_bystander(&mut map);
+
+        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+    }
+
+    #[test]
+    fn a_creature_with_one_player_in_view_keeps_it() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 100, CHANGE_INTERVAL);
+
+        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+    }
+
+    #[test]
+    fn a_lost_roll_spends_the_interval() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 0, CHANGE_INTERVAL);
+        put_bystander(&mut map);
+        let mut state = CreatureState::default();
+
+        decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert_eq!(state.next_change_target_tick, Tick(100) + CHANGE_INTERVAL);
+    }
+
+    #[test]
+    fn a_target_change_waits_out_its_interval() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, _) = a_switcher(&mut map, 100, CHANGE_INTERVAL);
+        put_bystander(&mut map);
+        let due = Tick(100) + CHANGE_INTERVAL;
+        let decide = |tick: Tick, seed: u64| {
+            let mut state = CreatureState {
+                next_change_target_tick: due,
+                ..CreatureState::default()
+            };
+            decide_at(&map, rat, &mut state, tick, seed)
+        };
+
+        assert!(!(0..64).any(|seed| is_set_target(&decide(Tick(due.0 - 1), seed))));
+        assert!((0..64).any(|seed| is_set_target(&decide(due, seed))));
+    }
+
+    fn change_interval_of(map: &GameMap, creature: AgentKey) -> TickDelta {
+        map.get_agent(creature)
+            .unwrap()
+            .get_creature_kind()
+            .unwrap()
+            .change_target
+            .interval
+    }
+
+    #[test]
+    fn taking_a_target_while_idle_starts_the_interval() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let player = put_player(&mut map, 17, 1);
+        let mut state = CreatureState::default();
+
+        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert_eq!(new_target(&action), Some(player));
+        assert_eq!(
+            state.next_change_target_tick,
+            Tick(100) + change_interval_of(&map, rat)
+        );
+    }
+
+    #[test]
+    fn taking_a_target_on_the_way_home_starts_the_interval() {
+        let mut map = a_corridor(5..=25);
+        let origin = Position::new(15 + GAME_CONFIG.movement.wander_distance + 1, 10, 7);
+        let rat = map
+            .insert_agent(
+                Agent::from_creature_kind(Arc::new(a_creature_kind("Rat")), origin),
+                &at(15, 10),
+            )
+            .unwrap();
+        let player = put_player(&mut map, 13, 1);
+        let mut state = CreatureState::default();
+
+        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert_eq!(new_target(&action), Some(player));
+        assert_eq!(
+            state.next_change_target_tick,
+            Tick(100) + change_interval_of(&map, rat)
+        );
+    }
+
+    #[test]
+    fn a_creature_that_cannot_reach_its_target_takes_one_it_can_and_starts_the_interval() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let walkable = put_player(&mut map, 12, 1);
+        let walled_off = put_player(&mut map, 18, 2);
+        block_walking(&mut map, 17);
+        map.get_agent_mut(rat)
+            .unwrap()
+            .set_target(Some(walled_off), 1);
+        let mut state = CreatureState::default();
+
+        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert_eq!(new_target(&action), Some(walkable));
+        assert_eq!(
+            state.next_change_target_tick,
+            Tick(100) + change_interval_of(&map, rat)
+        );
+    }
+
+    /// Mid-step, so `fleeing` has no escape step to take and reaches its retarget.
+    fn a_frightened_creature_mid_step(map: &mut GameMap, target: AgentKey) -> AgentKey {
+        let rat = put_frightened_creature(map, 15, 10);
+        let agent = map.get_agent_mut(rat).unwrap();
+        agent.set_target(Some(target), 1);
+        agent.stamp_walk(Tick(200));
+        rat
+    }
+
+    #[test]
+    fn a_fleeing_creature_runs_from_whoever_is_nearest() {
+        let mut map = a_field(5..=25, 5..=15);
+        let far = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(20, 10))
+            .unwrap();
+        let near = map
+            .insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &at(13, 10))
+            .unwrap();
+        let rat = a_frightened_creature_mid_step(&mut map, far);
+
+        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+
+        assert_eq!(new_target(&action), Some(near));
+    }
+
+    #[test]
+    fn a_fleeing_creature_that_sees_nobody_keeps_its_target() {
+        let mut map = a_field(5..=25, 5..=15);
+        let hidden = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &at(18, 10))
+            .unwrap();
+        map.place_item(
+            &at(16, 10),
+            None,
+            None,
+            an_item(3, HashSet::from([ItemFlag::Unpass])),
+        )
+        .unwrap();
+        let rat = a_frightened_creature_mid_step(&mut map, hidden);
+
+        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+
+        assert!(!is_set_target(&action), "got {action:?}");
+    }
+
+    #[test]
+    fn a_fleeing_creature_with_nowhere_to_run_still_casts() {
+        let mut map = a_field(15..=16, 10..=10);
+        let rat = a_kind_in_melee(
+            &mut map,
+            CreatureKind {
+                life: Pool {
+                    current: 10,
+                    maximum: 10,
+                },
+                flee_threshold: Some(5),
+                abilities: vec![an_attack_ability(MAX_DROP_CHANCE)],
+                ..a_creature_kind("Rat")
+            },
+        );
+        map.get_agent_mut(rat).unwrap().remove_life(6);
+
+        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+
+        assert!(
+            matches!(action, Some(CreatureAction::CastAbility { .. })),
+            "expected a cast, got {action:?}"
+        );
     }
 }
