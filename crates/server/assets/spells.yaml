@@ -190,7 +190,7 @@ spells:
           missile_id: 36
           sorting: closest
   - id: 9
-    name: Bersek
+    name: Berserk
     words: exori
     group: attack
     cooldown_ticks: 80
@@ -213,7 +213,7 @@ spells:
       effect_id: 10
       weapon_required: true
   - id: 10
-    name: Fierce Bersek
+    name: Fierce Berserk
     words: exori gran
     group: attack
     cooldown_ticks: 120

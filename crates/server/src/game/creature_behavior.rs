@@ -4,7 +4,7 @@ use tracing::error;
 
 use crate::constants::items::MAX_DROP_CHANCE;
 use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
-use crate::entities::agent::{Agent, AgentKey};
+use crate::entities::agent::{Agent, AgentKey, Facing};
 use crate::entities::creature::{
     AbilityEffect, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
     CreatureKind,
@@ -14,7 +14,7 @@ use crate::entities::map::GameMap;
 use crate::entities::position::{Direction, Position, Rect};
 use crate::entities::targeting::TargetMode;
 use crate::game::config::GAME_CONFIG;
-use crate::game::map_query::{can_throw, iter_visible_floors};
+use crate::game::map_query::{can_throw, face_target, iter_visible_floors};
 use crate::game::pathfinding::{self, Goal};
 use crate::game::random::Rolls;
 use crate::game::{Tick, TickDelta};
@@ -88,6 +88,7 @@ pub struct CreatureBehaviourContext<'a> {
     pub roll: Rolls,
     pub world_tick: Tick,
     pub state: &'a mut CreatureState,
+    pub actions: &'a mut Vec<CreatureAction>,
 }
 
 #[derive(Debug)]
@@ -133,7 +134,7 @@ pub fn active_creatures(map: &GameMap) -> HashSet<AgentKey> {
     active
 }
 
-pub fn decide_action(ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+pub fn decide_action(ctx: CreatureBehaviourContext) {
     act(get_state(&ctx), ctx)
 }
 
@@ -179,7 +180,7 @@ fn get_state(ctx: &CreatureBehaviourContext) -> CreatureBehavior {
     CreatureBehavior::Idle
 }
 
-fn act(state: CreatureBehavior, ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+fn act(state: CreatureBehavior, ctx: CreatureBehaviourContext) {
     match state {
         CreatureBehavior::Idle => idle(ctx),
         CreatureBehavior::InCombat => in_combat(ctx),
@@ -188,7 +189,7 @@ fn act(state: CreatureBehavior, ctx: CreatureBehaviourContext) -> Option<Creatur
     }
 }
 
-fn idle(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+fn idle(mut ctx: CreatureBehaviourContext) {
     if let Some(target) = search_target(
         ctx.creature,
         ctx.map,
@@ -198,133 +199,161 @@ fn idle(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
         let kind = ctx
             .map
             .get_agent(ctx.creature)
-            .and_then(|a| a.get_creature_kind())?;
+            .and_then(|a| a.get_creature_kind())
+            .expect("Agent must be a creature");
         ctx.state.stamp_change_target(ctx.world_tick, kind);
-        return Some(CreatureAction::SetTarget {
+        ctx.actions.push(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(target),
         });
+        return;
     }
 
     if let Some(wander_dir) = wander(&mut ctx) {
-        return Some(CreatureAction::Walk {
+        ctx.actions.push(CreatureAction::Walk {
             agent_key: ctx.creature,
             direction: wander_dir,
         });
     }
 
     if let Some(sentence) = say(&mut ctx) {
-        return Some(CreatureAction::Say {
+        ctx.actions.push(CreatureAction::Say {
             agent_key: ctx.creature,
             message: sentence,
         });
     }
-
-    None
 }
 
-fn in_combat(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
-    let agent = ctx.map.get_agent(ctx.creature)?;
-    let position = ctx.map.agent_position(ctx.creature)?;
-    let target_key = agent.target()?;
-    let target_position = ctx.map.agent_position(target_key)?;
-    let target_distance = agent.get_creature_kind()?.target_distance;
+fn in_combat(mut ctx: CreatureBehaviourContext) {
+    let Some(agent) = ctx.map.get_agent(ctx.creature) else {
+        return;
+    };
+    let Some(position) = ctx.map.agent_position(ctx.creature) else {
+        return;
+    };
+    let Some(target_key) = agent.target() else {
+        return;
+    };
+    let Some(target_position) = ctx.map.agent_position(target_key) else {
+        return;
+    };
+    let target_distance = agent
+        .get_creature_kind()
+        .expect("Agent must be a creature")
+        .target_distance;
 
     if agent.next_walk_tick() <= ctx.world_tick {
-        match approach(
-            ctx.map,
-            ctx.creature,
-            position,
-            target_position,
-            target_distance,
-            &mut ctx.roll,
-        ) {
-            pathfinding::Step::Move(direction) => {
-                return Some(CreatureAction::Walk {
-                    agent_key: ctx.creature,
-                    direction,
-                });
-            }
-            pathfinding::Step::Arrived => {
-                if let Some(direction) = dance(&mut ctx, position, target_position) {
-                    return Some(CreatureAction::Walk {
+        let kind = agent.get_creature_kind().expect("Agent must be creature");
+        if kind.change_target.chance > 0
+            && let Some(agent_key) = body_blocked(ctx.map, ctx.creature)
+        {
+            ctx.state.stamp_change_target(ctx.world_tick, kind);
+            ctx.actions.push(CreatureAction::SetTarget {
+                agent_key: ctx.creature,
+                target: Some(agent_key),
+            });
+        } else {
+            match approach(
+                ctx.map,
+                ctx.creature,
+                position,
+                target_position,
+                target_distance,
+                &mut ctx.roll,
+            ) {
+                pathfinding::Step::Move(direction) => {
+                    ctx.actions.push(CreatureAction::Walk {
                         agent_key: ctx.creature,
                         direction,
                     });
                 }
-            }
-            pathfinding::Step::Unreachable => {
-                if let Some(new_target) = search_target(
-                    ctx.creature,
-                    ctx.map,
-                    TargetSearchStrategy::Nearest,
-                    &mut ctx.roll,
-                ) {
-                    if new_target != target_key {
-                        ctx.state.stamp_change_target(
-                            ctx.world_tick,
-                            agent.get_creature_kind().expect("Agent must be a creature"),
-                        );
-                        return Some(CreatureAction::SetTarget {
+                pathfinding::Step::Arrived => {
+                    if let Some(direction) = dance(&mut ctx, position, target_position) {
+                        ctx.actions.push(CreatureAction::Walk {
                             agent_key: ctx.creature,
-                            target: Some(new_target),
+                            direction,
                         });
-                    } else if !can_throw(ctx.map, position, target_position, true) {
-                        return Some(CreatureAction::SetTarget {
+                    }
+                }
+                pathfinding::Step::Unreachable => {
+                    if let Some(new_target) = search_target(
+                        ctx.creature,
+                        ctx.map,
+                        TargetSearchStrategy::Nearest,
+                        &mut ctx.roll,
+                    ) {
+                        if new_target != target_key {
+                            ctx.state.stamp_change_target(
+                                ctx.world_tick,
+                                agent.get_creature_kind().expect("Agent must be a creature"),
+                            );
+                            ctx.actions.push(CreatureAction::SetTarget {
+                                agent_key: ctx.creature,
+                                target: Some(new_target),
+                            });
+                        } else if !can_throw(ctx.map, position, target_position, true) {
+                            ctx.actions.push(CreatureAction::SetTarget {
+                                agent_key: ctx.creature,
+                                target: None,
+                            });
+                        }
+                    } else {
+                        ctx.actions.push(CreatureAction::SetTarget {
                             agent_key: ctx.creature,
                             target: None,
                         });
                     }
-                } else {
-                    return Some(CreatureAction::SetTarget {
-                        agent_key: ctx.creature,
-                        target: None,
-                    });
                 }
             }
         }
     }
 
-    if agent.is_hostile() {
-        let ability = use_ability(
-            ctx.creature,
-            agent,
-            ctx.state,
-            ctx.world_tick,
-            &mut ctx.roll,
-        );
-        if ability.is_some() {
-            return ability;
-        }
-    }
-
     if let Some(new_target) = change_target(&mut ctx) {
-        return Some(CreatureAction::SetTarget {
+        ctx.actions.push(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(new_target),
         });
     }
 
+    if agent.is_hostile()
+        && let Some(ability) = use_ability(
+            ctx.creature,
+            agent,
+            ctx.state,
+            ctx.world_tick,
+            &mut ctx.roll,
+        )
+    {
+        ctx.actions.push(ability);
+    }
+
     if let Some(sentence) = say(&mut ctx) {
-        return Some(CreatureAction::Say {
+        ctx.actions.push(CreatureAction::Say {
             agent_key: ctx.creature,
             message: sentence,
         });
     }
-
-    None
 }
 
-fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+fn fleeing(mut ctx: CreatureBehaviourContext) {
     let map = ctx.map;
-    let agent = map.get_agent(ctx.creature)?;
-    let from = map.agent_position(ctx.creature)?;
-    let to = map.agent_position(agent.target()?)?;
+    let Some(agent) = map.get_agent(ctx.creature) else {
+        return;
+    };
+    let Some(from) = map.agent_position(ctx.creature) else {
+        return;
+    };
+    let Some(target) = agent.target() else {
+        return;
+    };
+    let Some(to) = map.agent_position(target) else {
+        return;
+    };
 
     if agent.next_walk_tick() <= ctx.world_tick
         && let Some(direction) = escape_step(map, ctx.creature, from, to, true, &mut ctx.roll)
     {
-        return Some(CreatureAction::Walk {
+        ctx.actions.push(CreatureAction::Walk {
             agent_key: ctx.creature,
             direction,
         });
@@ -337,41 +366,45 @@ fn fleeing(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
         &mut ctx.roll,
     ) && Some(agent_key) != agent.target()
     {
-        return Some(CreatureAction::SetTarget {
+        ctx.actions.push(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(agent_key),
         });
     }
 
-    use_ability(
+    if let Some(ability) = use_ability(
         ctx.creature,
         agent,
         ctx.state,
         ctx.world_tick,
         &mut ctx.roll,
-    )
+    ) {
+        ctx.actions.push(ability);
+    }
 }
 
-fn returning(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
+fn returning(mut ctx: CreatureBehaviourContext) {
+    let Some(agent) = ctx.map.get_agent(ctx.creature) else {
+        return;
+    };
+    let Some(position) = ctx.map.agent_position(ctx.creature) else {
+        return;
+    };
+
     if let Some(target) = search_target(
         ctx.creature,
         ctx.map,
         TargetSearchStrategy::Nearest,
         &mut ctx.roll,
     ) {
-        let kind = ctx
-            .map
-            .get_agent(ctx.creature)
-            .and_then(|a| a.get_creature_kind())?;
+        let kind = agent.get_creature_kind().expect("Agent must be a creature");
         ctx.state.stamp_change_target(ctx.world_tick, kind);
-        return Some(CreatureAction::SetTarget {
+        ctx.actions.push(CreatureAction::SetTarget {
             agent_key: ctx.creature,
             target: Some(target),
         });
+        return;
     }
-
-    let agent = ctx.map.get_agent(ctx.creature)?;
-    let position = ctx.map.agent_position(ctx.creature)?;
 
     match pathfinding::next_step(
         ctx.map,
@@ -385,15 +418,13 @@ fn returning(mut ctx: CreatureBehaviourContext) -> Option<CreatureAction> {
     ) {
         pathfinding::Step::Arrived => {}
         pathfinding::Step::Move(direction) => {
-            return Some(CreatureAction::Walk {
+            ctx.actions.push(CreatureAction::Walk {
                 agent_key: ctx.creature,
                 direction,
             });
         }
-        pathfinding::Step::Unreachable => return idle(ctx),
+        pathfinding::Step::Unreachable => idle(ctx),
     }
-
-    None
 }
 
 fn wander(ctx: &mut CreatureBehaviourContext) -> Option<Direction> {
@@ -651,6 +682,30 @@ fn change_target(ctx: &mut CreatureBehaviourContext) -> Option<AgentKey> {
     }
 
     new_target
+}
+
+fn body_blocked(map: &GameMap, creature: AgentKey) -> Option<AgentKey> {
+    let agent = map.get_agent(creature)?;
+    let pos = map.agent_position(creature)?;
+    let target = agent.target()?;
+    let target_pos = map.agent_position(target)?;
+
+    if pos.distance(target_pos) <= 1 {
+        return None;
+    }
+
+    let new_pos = match face_target(agent.facing(), pos, target_pos) {
+        Facing::North => pos.checked_offset(0, -1)?,
+        Facing::East => pos.checked_offset(1, 0)?,
+        Facing::South => pos.checked_offset(0, 1)?,
+        Facing::West => pos.checked_offset(-1, 0)?,
+    };
+
+    map.iter_agents_at(&new_pos)
+        .ok()?
+        .filter(|key| map.get_agent(**key).is_some_and(|a| a.is_player()))
+        .last()
+        .copied()
 }
 
 /// One rung of the escape ladder: up to four candidate steps as `(dx, dy)` offsets.
@@ -942,7 +997,57 @@ mod tests {
             roll: Rolls::new(seed),
             world_tick: Tick(100),
             state: &mut state,
+            actions: &mut Vec::new(),
         })
+    }
+
+    fn decide_at(
+        map: &GameMap,
+        creature: AgentKey,
+        state: &mut CreatureState,
+        tick: Tick,
+        seed: u64,
+    ) -> Vec<CreatureAction> {
+        let mut actions = Vec::new();
+        decide_action(CreatureBehaviourContext {
+            creature,
+            map,
+            roll: Rolls::new(seed),
+            world_tick: tick,
+            state,
+            actions: &mut actions,
+        });
+        actions
+    }
+
+    fn is_walk(actions: &[CreatureAction]) -> bool {
+        actions
+            .iter()
+            .any(|action| matches!(action, CreatureAction::Walk { .. }))
+    }
+
+    fn is_cast(actions: &[CreatureAction]) -> bool {
+        actions
+            .iter()
+            .any(|action| matches!(action, CreatureAction::CastAbility { .. }))
+    }
+
+    fn is_set_target(actions: &[CreatureAction]) -> bool {
+        actions
+            .iter()
+            .any(|action| matches!(action, CreatureAction::SetTarget { .. }))
+    }
+
+    /// The target the world is left holding: it applies a decision's actions in order.
+    fn new_target(actions: &[CreatureAction]) -> Option<AgentKey> {
+        actions
+            .iter()
+            .rev()
+            .find_map(|action| match action {
+                CreatureAction::SetTarget { target, .. } => Some(*target),
+                _ => None,
+            })
+            .flatten()
     }
 
     fn nearest_target(creature: AgentKey, map: &GameMap) -> Option<AgentKey> {
@@ -1149,17 +1254,20 @@ mod tests {
 
         let mut states: std::collections::HashMap<AgentKey, CreatureState> =
             std::collections::HashMap::new();
+        let mut actions = Vec::new();
         let start = std::time::Instant::now();
         for key in &active {
             let state = states.entry(*key).or_default();
-            std::hint::black_box(decide_action(CreatureBehaviourContext {
+            decide_action(CreatureBehaviourContext {
                 creature: *key,
                 map: &map,
                 roll: Rolls::new(1),
                 world_tick: Tick(100),
                 state,
-            }));
+                actions: &mut actions,
+            });
         }
+        std::hint::black_box(actions);
         println!("gated decide pass: {:>9.1?}", start.elapsed());
     }
 
@@ -1443,20 +1551,14 @@ mod tests {
         map.get_agent_mut(rat).unwrap().set_target(Some(player), 1);
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: rat,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
         assert!(
-            matches!(
+            actions.iter().any(|action| matches!(
                 action,
-                Some(CreatureAction::Walk { agent_key, direction: West }) if agent_key == rat
-            ),
-            "expected a step away from the player, got {action:?}"
+                CreatureAction::Walk { agent_key, direction: West } if *agent_key == rat
+            )),
+            "expected a step away from the player, got {actions:?}"
         );
     }
 
@@ -1477,23 +1579,17 @@ mod tests {
         map.get_agent_mut(rat).unwrap().set_target(Some(player), 1);
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: rat,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
         assert!(
-            matches!(
+            actions.iter().any(|action| matches!(
                 action,
-                Some(CreatureAction::Walk {
+                CreatureAction::Walk {
                     direction: East,
                     ..
-                })
-            ),
-            "expected a step towards the player, got {action:?}"
+                }
+            )),
+            "expected a step towards the player, got {actions:?}"
         );
     }
 
@@ -1549,18 +1645,14 @@ mod tests {
         let demon = a_caster_in_melee(&mut map, an_attack_ability(MAX_DROP_CHANCE));
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: demon,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, demon, &mut state, Tick(100), 7);
 
         assert!(
-            matches!(action, Some(CreatureAction::CastAbility { ability_id, .. })
-                if ability_id == CreatureAbilityId(0)),
-            "expected a cast, got {action:?}"
+            actions.iter().any(
+                |action| matches!(action, CreatureAction::CastAbility { ability_id, .. }
+                if *ability_id == CreatureAbilityId(0))
+            ),
+            "expected a cast, got {actions:?}"
         );
     }
 
@@ -1572,17 +1664,11 @@ mod tests {
         let demon = a_caster_in_melee(&mut map, an_attack_ability(0));
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: demon,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, demon, &mut state, Tick(100), 7);
 
         assert!(
-            !matches!(action, Some(CreatureAction::CastAbility { .. })),
-            "a zero chance must never cast, got {action:?}"
+            !is_cast(&actions),
+            "a zero chance must never cast, got {actions:?}"
         );
         assert_eq!(
             state.next_ability_tick(CreatureAbilityId(0)),
@@ -1603,17 +1689,11 @@ mod tests {
         );
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: demon,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(120),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, demon, &mut state, Tick(120), 7);
 
         assert!(
-            !matches!(action, Some(CreatureAction::CastAbility { .. })),
-            "the attack group is still on cooldown, got {action:?}"
+            !is_cast(&actions),
+            "the attack group is still on cooldown, got {actions:?}"
         );
         assert_eq!(state.next_ability_tick(CreatureAbilityId(0)), Tick(0));
     }
@@ -1631,17 +1711,11 @@ mod tests {
         );
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: deer,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, deer, &mut state, Tick(100), 7);
 
         assert!(
-            !matches!(action, Some(CreatureAction::CastAbility { .. })),
-            "a passive creature must never cast, got {action:?}"
+            !is_cast(&actions),
+            "a passive creature must never cast, got {actions:?}"
         );
     }
 
@@ -1663,17 +1737,11 @@ mod tests {
         let player = put_player(&mut map, 18, 1);
         let mut state = CreatureState::default();
 
-        let action = decide_action(CreatureBehaviourContext {
-            creature: deer,
-            map: &map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut state,
-        });
+        let actions = decide_at(&map, deer, &mut state, Tick(100), 7);
 
         assert!(
-            matches!(action, Some(CreatureAction::SetTarget { target: Some(t), .. }) if t == player),
-            "expected the deer to target the player, got {action:?}"
+            new_target(&actions) == Some(player),
+            "expected the deer to target the player, got {actions:?}"
         );
     }
 
@@ -1710,17 +1778,11 @@ mod tests {
     }
 
     fn walked(map: &GameMap, creature: AgentKey) -> Option<Direction> {
-        let action = decide_action(CreatureBehaviourContext {
-            creature,
-            map,
-            roll: Rolls::new(7),
-            world_tick: Tick(100),
-            state: &mut CreatureState::default(),
-        });
-        match action {
-            Some(CreatureAction::Walk { direction, .. }) => Some(direction),
+        let actions = decide_at(map, creature, &mut CreatureState::default(), Tick(100), 7);
+        actions.iter().find_map(|action| match action {
+            CreatureAction::Walk { direction, .. } => Some(*direction),
             _ => None,
-        }
+        })
     }
 
     #[test]
@@ -1930,26 +1992,6 @@ mod tests {
         )
     }
 
-    fn decide_at(
-        map: &GameMap,
-        creature: AgentKey,
-        state: &mut CreatureState,
-        tick: Tick,
-        seed: u64,
-    ) -> Option<CreatureAction> {
-        decide_action(CreatureBehaviourContext {
-            creature,
-            map,
-            roll: Rolls::new(seed),
-            world_tick: tick,
-            state,
-        })
-    }
-
-    fn is_walk(action: &Option<CreatureAction>) -> bool {
-        matches!(action, Some(CreatureAction::Walk { .. }))
-    }
-
     #[test]
     fn a_creature_that_always_stands_never_dances() {
         let mut map = a_field(5..=25, 5..=15);
@@ -2102,18 +2144,7 @@ mod tests {
             .unwrap()
     }
 
-    fn new_target(action: &Option<CreatureAction>) -> Option<AgentKey> {
-        match action {
-            Some(CreatureAction::SetTarget { target, .. }) => *target,
-            _ => None,
-        }
-    }
-
-    fn is_set_target(action: &Option<CreatureAction>) -> bool {
-        matches!(action, Some(CreatureAction::SetTarget { .. }))
-    }
-
-    fn decisions(map: &GameMap, creature: AgentKey, tick: Tick) -> Vec<Option<CreatureAction>> {
+    fn decisions(map: &GameMap, creature: AgentKey, tick: Tick) -> Vec<Vec<CreatureAction>> {
         (0..64)
             .map(|seed| decide_at(map, creature, &mut CreatureState::default(), tick, seed))
             .collect()
@@ -2125,14 +2156,14 @@ mod tests {
         let (rat, _) = a_switcher(&mut map, 100, CHANGE_INTERVAL);
         let bystander = put_bystander(&mut map);
 
-        let actions = decisions(&map, rat, Tick(100));
+        let decided = decisions(&map, rat, Tick(100));
 
-        assert!(actions.iter().any(is_set_target));
+        assert!(decided.iter().any(|actions| is_set_target(actions)));
         assert!(
-            actions
+            decided
                 .iter()
-                .filter(|action| is_set_target(action))
-                .all(|action| new_target(action) == Some(bystander))
+                .filter(|actions| is_set_target(actions))
+                .all(|actions| new_target(actions) == Some(bystander))
         );
     }
 
@@ -2142,7 +2173,11 @@ mod tests {
         let (rat, _) = a_switcher(&mut map, 0, CHANGE_INTERVAL);
         put_bystander(&mut map);
 
-        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+        assert!(
+            !decisions(&map, rat, Tick(100))
+                .iter()
+                .any(|actions| is_set_target(actions))
+        );
     }
 
     #[test]
@@ -2151,7 +2186,11 @@ mod tests {
         let (rat, _) = a_switcher(&mut map, 100, TickDelta(0));
         put_bystander(&mut map);
 
-        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+        assert!(
+            !decisions(&map, rat, Tick(100))
+                .iter()
+                .any(|actions| is_set_target(actions))
+        );
     }
 
     #[test]
@@ -2159,7 +2198,11 @@ mod tests {
         let mut map = a_field(5..=25, 5..=15);
         let (rat, _) = a_switcher(&mut map, 100, CHANGE_INTERVAL);
 
-        assert!(!decisions(&map, rat, Tick(100)).iter().any(is_set_target));
+        assert!(
+            !decisions(&map, rat, Tick(100))
+                .iter()
+                .any(|actions| is_set_target(actions))
+        );
     }
 
     #[test]
@@ -2208,9 +2251,9 @@ mod tests {
         let player = put_player(&mut map, 17, 1);
         let mut state = CreatureState::default();
 
-        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
-        assert_eq!(new_target(&action), Some(player));
+        assert_eq!(new_target(&actions), Some(player));
         assert_eq!(
             state.next_change_target_tick,
             Tick(100) + change_interval_of(&map, rat)
@@ -2230,9 +2273,9 @@ mod tests {
         let player = put_player(&mut map, 13, 1);
         let mut state = CreatureState::default();
 
-        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
-        assert_eq!(new_target(&action), Some(player));
+        assert_eq!(new_target(&actions), Some(player));
         assert_eq!(
             state.next_change_target_tick,
             Tick(100) + change_interval_of(&map, rat)
@@ -2251,9 +2294,9 @@ mod tests {
             .set_target(Some(walled_off), 1);
         let mut state = CreatureState::default();
 
-        let action = decide_at(&map, rat, &mut state, Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
-        assert_eq!(new_target(&action), Some(walkable));
+        assert_eq!(new_target(&actions), Some(walkable));
         assert_eq!(
             state.next_change_target_tick,
             Tick(100) + change_interval_of(&map, rat)
@@ -2280,9 +2323,9 @@ mod tests {
             .unwrap();
         let rat = a_frightened_creature_mid_step(&mut map, far);
 
-        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
 
-        assert_eq!(new_target(&action), Some(near));
+        assert_eq!(new_target(&actions), Some(near));
     }
 
     #[test]
@@ -2300,9 +2343,9 @@ mod tests {
         .unwrap();
         let rat = a_frightened_creature_mid_step(&mut map, hidden);
 
-        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
 
-        assert!(!is_set_target(&action), "got {action:?}");
+        assert!(!is_set_target(&actions), "got {actions:?}");
     }
 
     #[test]
@@ -2322,11 +2365,194 @@ mod tests {
         );
         map.get_agent_mut(rat).unwrap().remove_life(6);
 
-        let action = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+        let actions = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+
+        assert!(is_cast(&actions), "expected a cast, got {actions:?}");
+    }
+
+    /// A hunter at (15, 10) chasing a player four tiles east, with no target change due, so
+    /// any `SetTarget` it decides on came from someone standing in its way.
+    fn a_chaser(map: &mut GameMap, kind: CreatureKind) -> (AgentKey, CreatureState) {
+        let creature = put_hunter(map, kind, at(15, 10), at(19, 10));
+        let state = CreatureState {
+            next_change_target_tick: Tick(u64::MAX),
+            ..CreatureState::default()
+        };
+        (creature, state)
+    }
+
+    fn put_blocker(map: &mut GameMap, x: u16, y: u16) -> AgentKey {
+        map.insert_agent(Agent::from_player(a_test_snapshot(2, 1)), &at(x, y))
+            .unwrap()
+    }
+
+    #[test]
+    fn a_player_standing_in_the_way_takes_the_target_and_starts_the_interval() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, mut state) = a_chaser(&mut map, a_creature_kind("Rat"));
+        let blocker = put_blocker(&mut map, 16, 10);
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
 
         assert!(
-            matches!(action, Some(CreatureAction::CastAbility { .. })),
-            "expected a cast, got {action:?}"
+            matches!(
+                actions.first(),
+                Some(CreatureAction::SetTarget { agent_key, target })
+                    if *agent_key == rat && *target == Some(blocker)
+            ),
+            "got {actions:?}"
         );
+        assert!(!is_walk(&actions), "got {actions:?}");
+        assert_eq!(
+            state.next_change_target_tick,
+            Tick(100) + change_interval_of(&map, rat)
+        );
+    }
+
+    #[test]
+    fn a_body_blocked_creature_still_casts() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (demon, mut state) = a_chaser(
+            &mut map,
+            CreatureKind {
+                abilities: vec![an_attack_ability(MAX_DROP_CHANCE)],
+                ..a_creature_kind("Demon")
+            },
+        );
+        let blocker = put_blocker(&mut map, 16, 10);
+
+        let actions = decide_at(&map, demon, &mut state, Tick(100), 7);
+
+        assert!(
+            matches!(
+                actions.as_slice(),
+                [
+                    CreatureAction::SetTarget { target, .. },
+                    CreatureAction::CastAbility { .. },
+                    ..
+                ] if *target == Some(blocker)
+            ),
+            "the cast must follow the switch, got {actions:?}"
+        );
+    }
+
+    #[test]
+    fn a_player_beside_the_way_is_walked_past() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, mut state) = a_chaser(&mut map, a_creature_kind("Rat"));
+        put_blocker(&mut map, 16, 11);
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+        assert!(is_walk(&actions), "got {actions:?}");
+    }
+
+    #[test]
+    fn a_creature_that_never_changes_target_walks_around_a_player_in_the_way() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, mut state) = a_chaser(
+            &mut map,
+            CreatureKind {
+                change_target: ChangeTarget {
+                    interval: CHANGE_INTERVAL,
+                    chance: 0,
+                },
+                ..a_creature_kind("Rat")
+            },
+        );
+        put_blocker(&mut map, 16, 10);
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+        assert!(is_walk(&actions), "got {actions:?}");
+    }
+
+    #[test]
+    fn another_creature_in_the_way_does_not_take_the_target() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, mut state) = a_chaser(&mut map, a_creature_kind("Rat"));
+        map.insert_agent(
+            Agent::from_creature_kind(Arc::new(a_creature_kind("Rat")), at(16, 10)),
+            &at(16, 10),
+        )
+        .unwrap();
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+    }
+
+    #[test]
+    fn a_creature_beside_its_target_ignores_the_player_next_to_it() {
+        let mut map = a_field(5..=25, 5..=15);
+        let rat = put_hunter(&mut map, a_creature_kind("Rat"), at(15, 10), at(16, 11));
+        put_blocker(&mut map, 16, 10);
+        map.insert_agent(Agent::from_player(a_test_snapshot(3, 1)), &at(15, 11))
+            .unwrap();
+        let mut state = CreatureState {
+            next_change_target_tick: Tick(u64::MAX),
+            ..CreatureState::default()
+        };
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+    }
+
+    #[test]
+    fn a_ranged_creature_holding_its_distance_is_still_body_blocked() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (archer, mut state) = a_chaser(
+            &mut map,
+            CreatureKind {
+                target_distance: ARCHER_DISTANCE,
+                ..a_creature_kind("Archer")
+            },
+        );
+        let blocker = put_blocker(&mut map, 16, 10);
+
+        let actions = decide_at(&map, archer, &mut state, Tick(100), 7);
+
+        assert_eq!(new_target(&actions), Some(blocker), "got {actions:?}");
+    }
+
+    #[test]
+    fn a_creature_mid_step_is_not_body_blocked() {
+        let mut map = a_field(5..=25, 5..=15);
+        let (rat, mut state) = a_chaser(&mut map, a_creature_kind("Rat"));
+        put_blocker(&mut map, 16, 10);
+        map.get_agent_mut(rat).unwrap().stamp_walk(Tick(200));
+
+        let actions = decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+    }
+
+    #[test]
+    fn a_creature_that_sees_but_cannot_reach_its_only_target_still_casts() {
+        let mut map = a_corridor(5..=25);
+        let pos = Position::new(15, 10, 7);
+        let rat = map
+            .insert_agent(
+                Agent::from_creature_kind(
+                    Arc::new(CreatureKind {
+                        abilities: vec![an_attack_ability(MAX_DROP_CHANCE)],
+                        ..a_creature_kind("Rat")
+                    }),
+                    pos.clone(),
+                ),
+                &pos,
+            )
+            .unwrap();
+        let player = put_player(&mut map, 18, 1);
+        block_walking(&mut map, 17);
+        map.get_agent_mut(rat).unwrap().set_target(Some(player), 1);
+
+        let actions = decide_at(&map, rat, &mut CreatureState::default(), Tick(100), 7);
+
+        assert!(!is_set_target(&actions), "got {actions:?}");
+        assert!(is_cast(&actions), "got {actions:?}");
     }
 }

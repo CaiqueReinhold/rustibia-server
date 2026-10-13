@@ -12,7 +12,7 @@ use crate::entities::agent::AgentKey;
 use crate::entities::map::GameMap;
 use crate::game::Tick;
 use crate::game::creature_behavior::{
-    CreatureAction, CreatureBehaviourContext, CreatureState, active_creatures, decide_action,
+    CreatureBehaviourContext, CreatureState, active_creatures, decide_action,
 };
 use crate::game::random::Rolls;
 use crate::telemetry;
@@ -80,24 +80,26 @@ impl CreatureBehaviorActor {
             };
             let active = active_creatures(&map);
             let mut considered = 0usize;
-            let actions = active
+            let mut actions = Vec::new();
+
+            for agent_key in active
                 .iter()
                 .filter(|agent_key| agent_key.data().as_ffi() % BEHAVIOUR_BUCKETS == bucket)
-                .flat_map(|agent_key| {
-                    considered += 1;
-                    let creature_state = states
-                        .entry(*agent_key)
-                        .or_insert_with(CreatureState::default);
-                    let roll = Rolls::stream(global_seed, tick.0, agent_key.data().as_ffi());
-                    decide_action(CreatureBehaviourContext {
-                        creature: *agent_key,
-                        map: &map,
-                        roll,
-                        world_tick: tick,
-                        state: creature_state,
-                    })
-                })
-                .collect::<Vec<CreatureAction>>();
+            {
+                considered += 1;
+                let creature_state = states
+                    .entry(*agent_key)
+                    .or_insert_with(CreatureState::default);
+                let roll = Rolls::stream(global_seed, tick.0, agent_key.data().as_ffi());
+                decide_action(CreatureBehaviourContext {
+                    creature: *agent_key,
+                    map: &map,
+                    roll,
+                    world_tick: tick,
+                    state: creature_state,
+                    actions: &mut actions,
+                });
+            }
             if bucket == 0 {
                 states.retain(|agent_key, _| map.get_agent(*agent_key).is_some());
             }
