@@ -1095,7 +1095,11 @@ mod tests {
             None,
             None,
             Item::new(
-                a_config(ItemId(6), HashSet::from([ItemFlag::Unpass]), Vec::new()),
+                a_config(
+                    ItemId(6),
+                    HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight]),
+                    Vec::new(),
+                ),
                 1,
             ),
         )

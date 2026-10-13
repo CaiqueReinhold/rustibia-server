@@ -10693,6 +10693,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 15877
   name: stone
   article: a
@@ -10700,6 +10701,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 15886
   name: stone
   article: a
@@ -10707,6 +10709,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 15887
   name: stone
   article: a
@@ -10714,6 +10717,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 16288
   name: muddy floor
   flags:
@@ -14311,6 +14315,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 21277
   name: reinforced pillar
   article: a
@@ -14318,6 +14323,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 21278
   name: strong chain
   article: a
@@ -14325,6 +14331,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 21279
   name: strong chain
   article: a
@@ -14332,6 +14339,7 @@
   - border
   - unpass
   - unmove
+  - unsight
 - id: 21282
   name: strong chain
   article: a

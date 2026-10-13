@@ -733,7 +733,7 @@ mod tests {
                     "wall".to_string(),
                     None,
                     None,
-                    HashSet::from([ItemFlag::Unpass]),
+                    HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight]),
                     Vec::new(),
                 )),
                 1,
@@ -745,6 +745,34 @@ mod tests {
                 !can_throw(&map, &from, &target, true),
                 "a wall two tiles towards ({dx}, {dy}) let the line through"
             );
+        }
+    }
+
+    #[test]
+    fn only_an_unsight_item_blocks_a_throw() {
+        use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemId};
+        use crate::entities::map::MapTile;
+        use std::sync::Arc;
+
+        let from = Position::new(100, 100, 7);
+        let target = Position::new(104, 100, 7);
+        for (flag, blocks) in [(ItemFlag::Unpass, false), (ItemFlag::Unsight, true)] {
+            let mut tile = MapTile::new();
+            tile.push_item(Item::new(
+                Arc::new(ItemConfig::new(
+                    ItemId(1),
+                    "thing".to_string(),
+                    None,
+                    None,
+                    [flag],
+                    Vec::new(),
+                )),
+                1,
+            ));
+            let mut map = GameMap::new();
+            map.insert_tile(Position::new(102, 100, 7), tile);
+
+            assert_eq!(!can_throw(&map, &from, &target, true), blocks, "{flag:?}");
         }
     }
 

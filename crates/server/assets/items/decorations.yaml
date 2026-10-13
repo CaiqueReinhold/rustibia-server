@@ -10003,6 +10003,7 @@
   flags:
   - top
   - unmove
+  - unsight
 - id: 15518
   name: cave painting
   article: a
@@ -10480,36 +10481,43 @@
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17190
   name: stone pillar
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17191
   name: stone pillar
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17192
   name: stone pillar
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17193
   name: stone pillar
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17194
   name: stone pillar
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17228
   name: wooden treadmill
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17235
   name: wooden ramp
   article: a
@@ -10629,6 +10637,7 @@
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17346
   name: ornate tapestry
   article: an
@@ -10762,6 +10771,7 @@
   article: a
   flags:
   - unmove
+  - unsight
 - id: 17525
   name: oculus
   article: an
@@ -10863,10 +10873,12 @@
   name: beams
   flags:
   - unmove
+  - unsight
 - id: 17833
   name: beams
   flags:
   - unmove
+  - unsight
 - id: 17834
   name: copper roof
   article: a
@@ -11684,11 +11696,13 @@
   article: a
   flags:
   - unmove
+  - unsight
 - id: 19603
   name: thick ruined foundation
   article: a
   flags:
   - unmove
+  - unsight
 - id: 19649
   name: chimney
   article: a
@@ -11858,6 +11872,7 @@
   article: a
   flags:
   - unmove
+  - unsight
 - id: 19921
   name: sleepless twine
   article: a
@@ -13896,6 +13911,7 @@
   flags:
   - bottom
   - unmove
+  - unsight
   - avoid
 - id: 22165
   name: wall
@@ -13903,6 +13919,7 @@
   flags:
   - bottom
   - unmove
+  - unsight
   - avoid
 - id: 22263
   name: cooking pillar
@@ -18786,6 +18803,7 @@
   name: unknown item
   flags:
   - unmove
+  - unsight
   - avoid
 - id: 31734
   name: unknown item
@@ -18890,6 +18908,7 @@
   name: burning wall
   flags:
   - unmove
+  - unsight
   - avoid
 - id: 32042
   name: unknown

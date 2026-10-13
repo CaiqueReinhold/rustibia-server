@@ -216,7 +216,9 @@
   article: a
   flags:
   - unmove
+  - unsight
   - avoid
+  - unpass
   attributes:
     decay:
       duration: 400
@@ -227,15 +229,17 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 2130
   name: rush wood
   article: a
   flags:
   - unmove
   - avoid
+  - unpass
   attributes:
     decay:
-      duration: 400
+      duration: 600
       decay_to: 0
 - id: 2131
   name: fire field

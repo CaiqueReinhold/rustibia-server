@@ -1137,7 +1137,7 @@ spells:
     }
 
     #[test]
-    fn every_shipped_field_spell_creates_a_field() {
+    fn every_shipped_field_spell_creates_a_field_or_a_wall_that_decays() {
         for spell in SPELLS.values() {
             let SpellEffect::Field(field) = &spell.effect else {
                 continue;
@@ -1150,9 +1150,11 @@ spells:
                         spell.name, field.item
                     )
                 });
+            let decaying_wall = item.has_flag(crate::entities::items::ItemFlag::Unpass)
+                && item.attr_decay().is_some();
             assert!(
-                item.attr_field().is_some(),
-                "{} creates {} ({}), which is not a field",
+                item.attr_field().is_some() || decaying_wall,
+                "{} creates {} ({}), which is neither a field nor a wall that decays",
                 spell.name,
                 item.name,
                 field.item

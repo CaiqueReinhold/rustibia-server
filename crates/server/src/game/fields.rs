@@ -24,6 +24,15 @@ pub fn can_hold_field(map: &GameMap, pos: &Position) -> bool {
     has_ground
 }
 
+pub fn can_place_field(map: &GameMap, pos: &Position, field: &ItemConfig) -> bool {
+    can_hold_field(map, pos)
+        && !(field.has_flag(ItemFlag::Unpass)
+            && (map.get_floor_change(pos).is_some()
+                || map
+                    .iter_agents_at(pos)
+                    .is_ok_and(|mut agents| agents.next().is_some())))
+}
+
 pub fn create_fields(
     ctx: &mut TickCtx,
     owner: AgentKey,
@@ -31,7 +40,7 @@ pub fn create_fields(
     area: &[Position],
 ) {
     for pos in area {
-        if can_hold_field(ctx.map, pos) {
+        if can_place_field(ctx.map, pos, field) {
             replace_field(ctx, owner, field, pos);
         }
     }
@@ -77,7 +86,7 @@ mod tests {
     use crate::entities::agent::Agent;
     use crate::entities::combat::CombatElement;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
-    use crate::entities::items::{ItemAttribute, ItemId};
+    use crate::entities::items::{FloorChangeDirection, ItemAttribute, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::world_map::WorldMap;
     use crate::game::events::BroadcastMessage;
@@ -210,6 +219,36 @@ mod tests {
         map.insert_tile(AT, MapTile::new());
 
         assert!(!can_hold_field(&map, &AT));
+    }
+
+    #[test]
+    fn a_wall_field_is_kept_off_a_tile_someone_stands_on_and_off_stairs() {
+        let wall = a_config(5, vec![ItemFlag::Unpass], Vec::new());
+
+        let (mut occupied, caster) = a_map(Vec::new());
+        occupied
+            .insert_agent(a_test_creature("Rat", 100, (1, 2)), &AT)
+            .unwrap();
+        let (stairs, _) = a_map(vec![a_config(
+            4,
+            Vec::new(),
+            vec![ItemAttribute::FloorChange(FloorChangeDirection::Down)],
+        )]);
+        let (clear, _) = a_map(Vec::new());
+
+        assert!(!can_place_field(&occupied, &AT, &wall));
+        assert!(!can_place_field(&stairs, &AT, &wall));
+        assert!(can_place_field(&clear, &AT, &wall));
+        assert!(can_place_field(
+            &occupied,
+            &AT,
+            &a_field_config(6, Vec::new())
+        ));
+
+        let mut occupied = WorldMap::new(occupied);
+        let mut h = TestHarness::seeded(1);
+        create_fields(&mut h.ctx(&mut occupied), caster, &wall, &[AT]);
+        assert_eq!(ids_at(&occupied, &AT), vec![ItemId(1)]);
     }
 
     #[test]

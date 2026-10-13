@@ -80,6 +80,7 @@ fn parse_flag(s: &str) -> Option<ItemFlag> {
         "ground" => Some(ItemFlag::Ground),
         "unmove" => Some(ItemFlag::Unmove),
         "unpass" => Some(ItemFlag::Unpass),
+        "unsight" => Some(ItemFlag::Unsight),
         "take" => Some(ItemFlag::Take),
         "cumulative" => Some(ItemFlag::Cumulative),
         "fullbank" => Some(ItemFlag::FullBank),

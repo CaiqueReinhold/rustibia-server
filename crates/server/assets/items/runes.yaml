@@ -102,6 +102,8 @@
   - take
   attributes:
     weight: 105
+    rune:
+      spell: 100
 - id: 3157
   name: spell rune
   article: a
@@ -366,6 +368,8 @@
   - take
   attributes:
     weight: 70
+    rune:
+      spell: 99
 - id: 3181
   name: spell rune
   article: a
@@ -654,6 +658,8 @@
   - take
   attributes:
     weight: 21
+    rune:
+      spell: 96
 - id: 21351
   name: light stone shower rune
   article: a
@@ -664,6 +670,8 @@
   - take
   attributes:
     weight: 210
+    rune:
+      spell: 98
 - id: 21352
   name: lightest missile rune
   article: a
@@ -674,3 +682,5 @@
   - take
   attributes:
     weight: 210
+    rune:
+      spell: 97

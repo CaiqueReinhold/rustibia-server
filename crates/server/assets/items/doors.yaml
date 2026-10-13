@@ -5658,6 +5658,7 @@
   - usable
   - unpass
   - unmove
+  - unsight
 - id: 30033
   name: gate of expertise
   article: a
@@ -5870,6 +5871,7 @@
   - usable
   - unpass
   - unmove
+  - unsight
 - id: 30772
   name: closed door
   article: a
@@ -6516,6 +6518,7 @@
   - usable
   - unpass
   - unmove
+  - unsight
 - id: 39351
   name: closed door
   article: a

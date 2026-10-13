@@ -318,6 +318,20 @@ impl Conditions {
         self.conditions.len() != before
     }
 
+    pub fn cure_paralysis(&mut self) -> bool {
+        let before = self.conditions.len();
+        self.conditions.retain(|c| {
+            !matches!(
+                c,
+                Condition::Speed {
+                    effect: SpeedEffect::Paralysis,
+                    ..
+                }
+            )
+        });
+        self.conditions.len() != before
+    }
+
     pub fn extend_magic_shield(&mut self, until: Tick) -> bool {
         let existing = self.conditions.iter_mut().find_map(|c| match c {
             Condition::MagicShield { until } => Some(until),
@@ -610,6 +624,19 @@ mod tests {
             conditions.status() & (PARALYZED_BIT | HASTED_BIT),
             PARALYZED_BIT
         );
+    }
+
+    #[test]
+    fn curing_paralysis_leaves_a_haste_alone() {
+        let mut conditions = Conditions::new();
+        conditions.apply_speed(SpeedEffect::Haste, 30);
+        assert!(!conditions.cure_paralysis());
+        assert_eq!(conditions.speed_change(), 30);
+
+        conditions.apply_speed(SpeedEffect::Paralysis, -80);
+        assert!(conditions.cure_paralysis());
+        assert_eq!(conditions.speed_change(), 0);
+        assert_eq!(conditions.status() & PARALYZED_BIT, 0);
     }
 
     #[test]

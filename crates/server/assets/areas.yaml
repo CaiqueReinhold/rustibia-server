@@ -229,3 +229,13 @@ areas:
     - " XXX "
     - "  X  "
     - "  0  "
+  ring_burst3:
+    - "   XXX   "
+    - "  XXXXX  "
+    - " XXXXXXX "
+    - "XXX   XXX"
+    - "XXX 0 XXX"
+    - "XXX   XXX"
+    - " XXXXXXX "
+    - "  XXXXX  "
+    - "   XXX   "

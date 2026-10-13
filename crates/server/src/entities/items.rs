@@ -84,6 +84,7 @@ pub enum ItemFlag {
     Ground,
     Unmove,
     Unpass,
+    Unsight,
     Take,
     FullBank,
     Bottom,

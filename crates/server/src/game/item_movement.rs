@@ -481,7 +481,12 @@ mod tests {
                 "wall".to_string(),
                 None,
                 None,
-                HashSet::from([ItemFlag::Ground, ItemFlag::FullBank, ItemFlag::Unpass]),
+                HashSet::from([
+                    ItemFlag::Ground,
+                    ItemFlag::FullBank,
+                    ItemFlag::Unpass,
+                    ItemFlag::Unsight,
+                ]),
                 Vec::new(),
             )),
             1,

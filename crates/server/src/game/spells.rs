@@ -22,7 +22,7 @@ use crate::{
         Tick, TickCtx,
         combat::{execute_attack, plan_spell_attack},
         events::BroadcastMessage,
-        fields::{can_hold_field, create_fields},
+        fields::{can_hold_field, can_place_field, create_fields},
         healing::{execute_healing, plan_healing_spell},
         map_query::{can_target, can_throw},
         random::Rolls,
@@ -546,7 +546,13 @@ fn healing_spell(
     spell_healing: &SpellHealing,
 ) -> Result<(), SpellCastingDenyReason> {
     let plan = plan_healing_spell(ctx.map, agent_key, ctx.roll, spell_healing, target, param)?;
+    let healed: SmallVec<[AgentKey; 1]> = plan.restores.iter().map(|(key, _)| *key).collect();
     execute_healing(ctx, plan);
+    for key in healed {
+        if let Some(mut agent) = ctx.map.agent_mut(key) {
+            agent.conditions(|c| c.cure_paralysis());
+        }
+    }
     Ok(())
 }
 
@@ -593,6 +599,9 @@ fn field_spell(
             agent_key,
             "field spell names an item not in the catalogue",
         ))?;
+    if !can_place_field(ctx.map, &aim, config) {
+        return Err(SpellCastingDenyReason::NotEnoughRoom);
+    }
 
     let area: Vec<Position> = delta
         .iter()
@@ -621,6 +630,7 @@ mod tests {
 
     use super::*;
     use crate::entities::agent::Facing;
+    use crate::entities::conditions::SpeedEffect;
     use crate::entities::effects::AreaShape;
     use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
@@ -798,6 +808,31 @@ mod tests {
         );
 
         assert!(matches!(result, Err(SpellCastingDenyReason::IdNotFound)));
+    }
+
+    #[test]
+    fn a_heal_lifts_its_targets_paralysis() {
+        let (map, caster) = a_caster_at(&Position::new(100, 100, 7));
+        let mut map = WorldMap::new(map);
+        let base = map.get_agent(caster).unwrap().speed();
+        map.agent_mut(caster)
+            .unwrap()
+            .conditions(|c| c.apply_speed(SpeedEffect::Paralysis, -60));
+        map.take_delta();
+        let mut h = TestHarness::seeded(1);
+
+        cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &a_spell(1, 0, Vec::new()),
+            AreaTarget::None,
+            None,
+            CastSource::Words,
+        )
+        .unwrap();
+
+        assert_eq!(map.get_agent(caster).unwrap().speed(), base);
+        assert!(map.delta().agent(caster).speed());
     }
 
     #[test]

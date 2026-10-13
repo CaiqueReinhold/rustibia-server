@@ -282,6 +282,20 @@ mod tests {
         .unwrap();
     }
 
+    fn wall(map: &mut GameMap, x: u16, y: u16) {
+        map.place_item(
+            &Position::new(x, y, FLOOR),
+            None,
+            None,
+            an_item(
+                2,
+                HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight]),
+                Vec::new(),
+            ),
+        )
+        .unwrap();
+    }
+
     fn at(x: u16, y: u16) -> Position {
         Position::new(x, y, FLOOR)
     }
@@ -634,7 +648,7 @@ mod tests {
     fn a_tile_in_range_behind_a_wall_does_not_meet_a_sight_goal() {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15, 10);
-        block(&mut map, 17, 10, ItemFlag::Unpass);
+        wall(&mut map, 17, 10);
         let (within, in_sight) = around_the_wall();
 
         assert_eq!(
@@ -652,7 +666,7 @@ mod tests {
     fn a_sight_goal_walks_out_from_behind_a_wall() {
         let mut map = a_room(5..=25, 5..=15);
         let rat = put_creature(&mut map, 15, 10);
-        block(&mut map, 17, 10, ItemFlag::Unpass);
+        wall(&mut map, 17, 10);
         let (_, in_sight) = around_the_wall();
 
         let step = next_step(&map, rat, &in_sight, &everywhere(), anywhere);
@@ -664,7 +678,7 @@ mod tests {
     fn a_sight_goal_costs_only_the_tiles_that_see_its_target() {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15, 10);
-        block(&mut map, 17, 10, ItemFlag::Unpass);
+        wall(&mut map, 17, 10);
         let (within, in_sight) = around_the_wall();
 
         let reachable = reachable_from(&map, rat, &everywhere(), anywhere);

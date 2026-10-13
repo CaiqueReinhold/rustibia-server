@@ -984,7 +984,7 @@ mod tests {
             &Position::new(x, 10, 7),
             None,
             None,
-            an_item(3, HashSet::from([ItemFlag::Unpass])),
+            an_item(3, HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight])),
         )
         .unwrap();
     }
@@ -1936,7 +1936,7 @@ mod tests {
                     &at(x, y),
                     None,
                     None,
-                    an_item(3, HashSet::from([ItemFlag::Unpass])),
+                    an_item(3, HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight])),
                 )
                 .unwrap();
             }
@@ -2338,7 +2338,7 @@ mod tests {
             &at(16, 10),
             None,
             None,
-            an_item(3, HashSet::from([ItemFlag::Unpass])),
+            an_item(3, HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight])),
         )
         .unwrap();
         let rat = a_frightened_creature_mid_step(&mut map, hidden);

@@ -598,12 +598,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 921
   name: stone wall
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 938
   name: ship's telescope
   article: a
@@ -1231,36 +1233,42 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1613
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1614
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1615
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1617
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1618
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1734
   name: framework window
   article: a
@@ -1366,12 +1374,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1750
   name: sail
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 1751
   name: rudder of the boat
   article: a
@@ -4294,24 +4304,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 2739
   name: tanned brown bear fur
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 2740
   name: tanned brown bear fur
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 2741
   name: tanned brown bear fur
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 2742
   name: pile of chopped wood
   article: a
@@ -8168,12 +8182,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5474
   name: iron maiden
   article: an
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5475
   name: pillory
   article: a
@@ -8604,24 +8620,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5778
   name: target board
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5787
   name: training dummy
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5788
   name: training dummy
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 5866
   name: rubble
   flags:
@@ -11730,12 +11750,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 8570
   name: gate
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 8571
   name: stone gargoyle
   article: a
@@ -11797,12 +11819,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 8617
   name: gate
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 8618
   name: mechanism
   article: a
@@ -14060,24 +14084,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 9964
   name: defense construction
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 9965
   name: defense construction
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 9966
   name: defense construction
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 9968
   name: scale roof
   article: a
@@ -14405,12 +14433,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10045
   name: lance
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10050
   name: wagon
   article: a
@@ -14579,36 +14609,42 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10091
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10092
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10093
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10094
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10095
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10096
   name: stacke
   article: a
@@ -14964,24 +15000,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10379
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10380
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10381
   name: banner
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 10434
   name: large pile of bones
   article: a
@@ -15716,6 +15756,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11050
   name: torch
   article: a
@@ -15813,11 +15854,13 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11068
   name: timbers
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11083
   name: well
   article: a
@@ -15985,6 +16028,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11186
   name: alter
   article: an
@@ -16035,6 +16079,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11210
   name: dragon statue
   article: a
@@ -16102,6 +16147,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11336
   name: corrupted plantation
   article: a
@@ -16436,24 +16482,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11574
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11576
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11577
   name: palisade
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11592
   name: unknown item
   flags:
@@ -16491,11 +16541,13 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11769
   name: timbers
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 11811
   name: soup kettle
   article: a
@@ -19183,11 +19235,13 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 14878
   name: crystals
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 14940
   name: green crystal stalagmite
   article: a
@@ -19719,23 +19773,27 @@
   article: a
   flags:
   - unpass
+  - unsight
 - id: 15240
   name: crystal wall
   article: a
   flags:
   - unpass
+  - unsight
 - id: 15270
   name: crystal wall
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 15271
   name: crystal wall
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 15273
   name: crystal wall
   article: a
@@ -21362,31 +21420,37 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17184
   name: stone pillars
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17185
   name: stone pillars
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17186
   name: stone pillars
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17187
   name: stone pillars
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17188
   name: stone pillars
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17226
   name: mud pile
   article: a
@@ -21510,22 +21574,26 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17343
   name: golden statue
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17344
   name: golden statue
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17345
   name: unknown item
   flags:
   - unpass
+  - unsight
 - id: 17373
   name: areca palm
   article: an
@@ -22352,31 +22420,37 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17875
   name: wet timbers
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17877
   name: wet timber
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17878
   name: wet timber
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17879
   name: wet timbers
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17880
   name: wet timbers
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17887
   name: low stone wall
   article: a
@@ -22462,6 +22536,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 17929
   name: small wooden fence
   article: a
@@ -22560,48 +22635,56 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18375
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18376
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18377
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18378
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18379
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18380
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18381
   name: spike of a crystal drill
   article: the
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18386
   name: assassin
   article: an
@@ -22614,36 +22697,42 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18401
   name: sand
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18402
   name: sand
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18403
   name: sand
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18404
   name: sand
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18405
   name: sand
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 18427
   name: mining crane
   article: a
@@ -23878,12 +23967,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 19601
   name: thick ruined foundation
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 19671
   name: dark cypress
   article: a
@@ -24500,6 +24591,7 @@
   - multiuse
   - unpass
   - unmove
+  - unsight
 - id: 20091
   name: bed chamber
   article: a
@@ -24879,18 +24971,21 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20321
   name: dream junk
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20322
   name: dream junk
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20358
   name: frozen ursagrodon
   flags:
@@ -24996,12 +25091,14 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20422
   name: city foundation
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20423
   name: wall
   article: a
@@ -25014,6 +25111,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20433
   name: buttress
   article: a
@@ -25059,24 +25157,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20479
   name: city foundation
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20486
   name: city wall
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20487
   name: city wall
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20497
   name: street lamp
   article: a
@@ -25115,24 +25217,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20506
   name: gear wheels
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20507
   name: gear wheels
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20508
   name: gear wheels
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20518
   name: sewer pipe
   article: a
@@ -25244,24 +25350,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20597
   name: broken bars
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20598
   name: broken bars
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20613
   name: broken bars
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20642
   name: massive metal statue
   article: a
@@ -25490,42 +25600,49 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20806
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20823
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20824
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20825
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20828
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20836
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 20849
   name: roof
   article: a
@@ -31752,6 +31869,7 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 28661
   name: writing desk
   article: a
@@ -32089,120 +32207,140 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29181
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29187
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29188
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29193
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29198
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29199
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29205
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29206
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29211
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29216
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29217
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29223
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29224
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29229
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29234
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29235
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29241
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29242
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29247
   name: roof
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 29274
   name: dream catcher pole
   flags:
@@ -33284,24 +33422,28 @@
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 30641
   name: door casing
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 30642
   name: door casing
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 30643
   name: door casing
   article: a
   flags:
   - unpass
   - unmove
+  - unsight
 - id: 30646
   name: granite pillar
   article: a
@@ -34559,12 +34701,14 @@
   - usable
   - unpass
   - unmove
+  - unsight
 - id: 31959
   name: unknown
   flags:
   - usable
   - unpass
   - unmove
+  - unsight
 - id: 32001
   name: event item
   flags:

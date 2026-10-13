@@ -477,7 +477,7 @@ impl GameMap {
             .map(|tile| {
                 tile.items
                     .iter()
-                    .find(|it| it.config.has_flag(ItemFlag::Unpass))
+                    .find(|it| it.config.has_flag(ItemFlag::Unsight))
                     .is_none()
             })
             .unwrap_or(true)

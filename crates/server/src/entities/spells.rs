@@ -113,13 +113,11 @@ pub struct SpellAttack {
     pub power: PowerCurve,
     pub effect_id: EffectId,
     pub missile_id: Option<MissileId>,
-    #[allow(dead_code)]
     pub chain: Option<ChainAttack>,
     pub weapon_required: bool,
 }
 
 #[derive(Debug, Clone, PartialEq)]
-#[allow(dead_code)]
 pub struct ChainAttack {
     pub num_targets: u16,
     pub damage_factor: f32,
