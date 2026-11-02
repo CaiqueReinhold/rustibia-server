@@ -40,8 +40,8 @@ use crate::game::config::GAME_CONFIG;
 use crate::game::{
     Tick, TickCtx, TickDelta, chat, conditions, creature_abilities,
     creature_behavior::CreatureAction, events::BroadcastMessage, experience, item_action,
-    item_movement, item_multi_action, item_multi_action::UseTarget, movement, random::Rolls, shop,
-    spells, support, systems, targeting,
+    item_movement, item_multi_action, item_multi_action::UseTarget, movement, npc, random::Rolls,
+    shop, spells, support, systems, targeting,
 };
 use crate::persistence::npcs::{NPCS, NpcId};
 use crate::persistence::{creatures::CREATURE_KINDS, spawns::SpawnPoint, spells::SPELLS};
@@ -140,6 +140,9 @@ pub enum WorldCommand {
     ConditionExpired {
         agent_key: AgentKey,
         kind: TimedCondition,
+    },
+    AnimateNpc {
+        agent_key: AgentKey,
     },
     Shutdown {
         done: oneshot::Sender<()>,
@@ -329,11 +332,23 @@ impl WorldActor {
     fn seed_npcs(&mut self, npcs: &HashMap<NpcId, Arc<Npc>>) {
         for (id, npc) in npcs {
             let origin = npc.origin.clone();
-            if let Err(e) = self
+            match self
                 .map
                 .insert_agent(Agent::from_npc(Arc::clone(npc)), &origin)
             {
-                error!("Failed to place NPC '{id}' at {origin:?}: {e:?}");
+                Ok(agent_key) => {
+                    self.command_queue.push(ScheduledCommand {
+                        at_tick: Tick(
+                            self.roll
+                                .uniform(1, GAME_CONFIG.npc.wander_ticks.0 as u32)
+                                .into(),
+                        ),
+                        command: WorldCommand::AnimateNpc { agent_key },
+                    });
+                }
+                Err(e) => {
+                    error!("Failed to place NPC '{id}' at {origin:?}: {e:?}");
+                }
             }
         }
         info!("Seeded {} NPCs", npcs.len());
@@ -502,6 +517,7 @@ impl WorldActor {
     fn run_systems(&mut self, broadcast_messages: &mut Vec<BroadcastMessage>) {
         self.with_ctx(broadcast_messages, |ctx| {
             systems::combat_system(ctx);
+            systems::npc_walk_away_system(ctx);
         });
     }
 
@@ -683,6 +699,9 @@ impl WorldActor {
                 .with_ctx(broadcast_messages, |ctx| {
                     conditions::expire_condition(ctx, agent_key, kind)
                 }),
+            WorldCommand::AnimateNpc { agent_key } => self.with_ctx(broadcast_messages, |ctx| {
+                npc::animate(ctx, agent_key);
+            }),
         };
     }
 

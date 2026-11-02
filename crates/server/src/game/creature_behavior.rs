@@ -140,7 +140,7 @@ pub fn decide_action(ctx: CreatureBehaviourContext) {
 
 // private
 
-const WANDER_DIRECTIONS: [Direction; 4] = [
+pub const WANDER_DIRECTIONS: [Direction; 4] = [
     Direction::North,
     Direction::East,
     Direction::South,
@@ -811,7 +811,7 @@ fn avoids(map: &GameMap, pos: &Position) -> bool {
         .is_ok_and(|mut items| items.any(|item| item.config.has_flag(ItemFlag::Avoid)))
 }
 
-fn will_enter(map: &GameMap, creature: AgentKey, pos: &Position) -> bool {
+pub fn will_enter(map: &GameMap, creature: AgentKey, pos: &Position) -> bool {
     map.can_move(pos, creature) && !avoids(map, pos)
 }
 

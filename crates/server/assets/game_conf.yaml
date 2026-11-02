@@ -29,6 +29,10 @@ movement:
   wander_distance: 10
   min_speed: 40
 
+npc:
+  wander_ticks: 40
+  wander_chance: 50000
+
 chat:
   server_channels:
     - id: 1

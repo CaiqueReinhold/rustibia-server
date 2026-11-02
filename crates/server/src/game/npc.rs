@@ -13,11 +13,12 @@ use crate::{
         position::Position,
     },
     game::{
-        TickCtx,
+        TickCtx, TickDelta, chat,
         config::GAME_CONFIG,
+        creature_behavior::{WANDER_DIRECTIONS, will_enter},
         events::BroadcastMessage,
         money::{COINS, coins_held, give_change, pay, plan_item_payment, plan_payment},
-        movement::face_agent,
+        movement::{self, face_agent},
         random::Rolls,
     },
 };
@@ -344,13 +345,74 @@ fn npc_say(ctx: &mut TickCtx, npc_key: AgentKey, text: String) {
     });
 }
 
+pub fn animate(ctx: &mut TickCtx, npc_key: AgentKey) {
+    let Some(agent) = ctx.map.get_agent(npc_key) else {
+        return;
+    };
+    let Some(npc_def) = agent.get_npc() else {
+        return;
+    };
+    let idle = agent.target().is_none();
+    let say_due = agent.next_say_tick() <= ctx.tick;
+    let walk_due = agent.next_walk_tick() <= ctx.tick;
+    let cooldown = npc_def.say.cooldown;
+
+    let message = if say_due && idle && ctx.roll.chance(npc_def.say.chance) {
+        ctx.roll.category_roll(&npc_def.say.sentences).cloned()
+    } else {
+        None
+    };
+    let direction = if walk_due
+        && idle
+        && ctx.roll.chance(GAME_CONFIG.npc.wander_chance)
+        && let Some(npc_pos) = ctx.map.agent_position(npc_key)
+    {
+        let available: Vec<_> = WANDER_DIRECTIONS
+            .into_iter()
+            .filter(|dir| {
+                let pos = npc_pos.clone() + *dir;
+                will_enter(ctx.map, npc_key, &pos)
+                    && npc_def.origin.distance(&pos) <= npc_def.walk_range
+            })
+            .collect();
+        ctx.roll.category_roll(&available).copied()
+    } else {
+        None
+    };
+
+    if let Some(message) = message {
+        chat::say(ctx, npc_key, message);
+    }
+    if let Some(direction) = direction {
+        movement::walk(ctx, direction, npc_key);
+    }
+
+    let Some(mut agent) = ctx.map.agent_mut(npc_key) else {
+        return;
+    };
+    if say_due {
+        agent.stamp_say(ctx.tick + cooldown);
+    }
+    if walk_due {
+        agent.stamp_walk(ctx.tick + GAME_CONFIG.npc.wander_ticks);
+    }
+    let at_tick = agent
+        .next_walk_tick()
+        .min(agent.next_say_tick())
+        .max(ctx.tick + TickDelta(1));
+    ctx.scheduled.push(ScheduledCommand {
+        at_tick,
+        command: WorldCommand::AnimateNpc { agent_key: npc_key },
+    });
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::actors::world::WorldCommand;
     use crate::entities::{
         inventory::InventorySlot,
-        items::{Item, ItemConfig, ItemFlag},
+        items::{Item, ItemAttribute, ItemConfig, ItemFlag},
         map::{GameMap, MapTile},
         world_map::WorldMap,
     };
@@ -863,5 +925,169 @@ mod tests {
         w.hear(w.player, "trade");
 
         assert_eq!(w.shop(), None);
+    }
+
+    fn ground() -> MapTile {
+        let mut tile = MapTile::new();
+        tile.push_item(Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "grass".to_string(),
+                None,
+                None,
+                [ItemFlag::Ground],
+                [ItemAttribute::TileFriction(100)],
+            )),
+            1,
+        ));
+        tile
+    }
+
+    fn engaged() -> World {
+        let mut w = World::new(0, false);
+        w.hear(w.player, "hi");
+        w.h.scheduled.clear();
+        w
+    }
+
+    fn walk_away_check(w: &mut World) {
+        crate::game::systems::npc_walk_away_system(&mut w.h.ctx(&mut w.map));
+    }
+
+    fn npc_target(w: &World) -> Option<AgentKey> {
+        w.map.get_agent(w.npc).unwrap().target()
+    }
+
+    #[test]
+    fn a_player_leaving_talk_range_is_dismissed() {
+        let mut w = engaged();
+        let away = Position { x: 14, ..HERE };
+        w.map.inner_mut().insert_tile(away.clone(), MapTile::new());
+        w.map.move_agent(w.player, &away).unwrap();
+
+        walk_away_check(&mut w);
+
+        assert_eq!(npc_target(&w), None);
+        assert_eq!(w.said(), ["Walked off."]);
+    }
+
+    #[test]
+    fn a_player_on_another_floor_is_dismissed() {
+        let mut w = engaged();
+        let above = Position { z: 6, ..HERE };
+        w.map.inner_mut().insert_tile(above.clone(), MapTile::new());
+        w.map.move_agent(w.player, &above).unwrap();
+
+        walk_away_check(&mut w);
+
+        assert_eq!(npc_target(&w), None);
+    }
+
+    #[test]
+    fn a_player_within_talk_range_stays_engaged() {
+        let mut w = engaged();
+        let near = Position { x: 13, ..HERE };
+        w.map.inner_mut().insert_tile(near.clone(), MapTile::new());
+        w.map.move_agent(w.player, &near).unwrap();
+
+        walk_away_check(&mut w);
+
+        assert_eq!(npc_target(&w), Some(w.player));
+        assert!(w.said().is_empty());
+    }
+
+    #[test]
+    fn a_player_who_left_the_map_frees_the_npc() {
+        let mut w = engaged();
+        w.map.remove_agent(w.player);
+
+        walk_away_check(&mut w);
+
+        assert_eq!(npc_target(&w), None);
+    }
+
+    fn grounded_npc() -> (WorldMap, TestHarness, AgentKey) {
+        let mut map = GameMap::new();
+        for x in 0..=20 {
+            for y in 0..=20 {
+                map.insert_tile(Position { x, y, z: 7 }, ground());
+            }
+        }
+        let npc = map.insert_agent(Agent::from_npc(an_npc()), &HERE).unwrap();
+        (WorldMap::new(map), TestHarness::new(), npc)
+    }
+
+    #[test]
+    fn a_wandering_npc_stays_within_walk_range_of_its_origin() {
+        let (mut map, mut h, npc) = grounded_npc();
+        let walk_range = an_npc().walk_range;
+        let mut moved = false;
+
+        for _ in 0..200 {
+            animate(&mut h.ctx(&mut map), npc);
+            let pos = map.agent_position(npc).unwrap();
+            assert!(HERE.is_within(pos, walk_range), "wandered to {pos:?}");
+            moved |= *pos != HERE;
+            h.tick += GAME_CONFIG.npc.wander_ticks;
+        }
+
+        assert!(moved);
+    }
+
+    #[test]
+    fn an_npc_in_conversation_does_not_wander() {
+        let (mut map, mut h, npc) = grounded_npc();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &HERE)
+            .unwrap();
+        map.agent_mut(npc).unwrap().set_target(Some(player), 0);
+
+        for _ in 0..200 {
+            animate(&mut h.ctx(&mut map), npc);
+            h.tick += GAME_CONFIG.npc.wander_ticks;
+        }
+
+        assert_eq!(map.agent_position(npc), Some(&HERE));
+    }
+
+    #[test]
+    fn an_npc_reschedules_its_animation_after_the_current_tick() {
+        let (mut map, mut h, npc) = grounded_npc();
+
+        animate(&mut h.ctx(&mut map), npc);
+
+        assert!(h.scheduled.iter().any(|scheduled| matches!(
+            scheduled.command,
+            WorldCommand::AnimateNpc { agent_key } if agent_key == npc
+        ) && scheduled.at_tick > h.tick));
+    }
+
+    fn chatter(map: &mut WorldMap, h: &mut TestHarness, npc: AgentKey) -> usize {
+        for _ in 0..50 {
+            animate(&mut h.ctx(map), npc);
+            h.tick += an_npc().say.cooldown;
+        }
+        h.events
+            .iter()
+            .filter(|event| matches!(event, BroadcastMessage::AgentSaid { agent_key, .. } if *agent_key == npc))
+            .count()
+    }
+
+    #[test]
+    fn an_idle_npc_chatters() {
+        let (mut map, mut h, npc) = grounded_npc();
+
+        assert!(chatter(&mut map, &mut h, npc) > 0);
+    }
+
+    #[test]
+    fn an_npc_in_conversation_does_not_chatter() {
+        let (mut map, mut h, npc) = grounded_npc();
+        let player = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &HERE)
+            .unwrap();
+        map.agent_mut(npc).unwrap().set_target(Some(player), 0);
+
+        assert_eq!(chatter(&mut map, &mut h, npc), 0);
     }
 }

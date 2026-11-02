@@ -175,6 +175,7 @@ pub struct Agent {
     next_walk_tick: Tick,
     next_auto_attack_tick: Tick,
     next_use_tick: Tick,
+    next_say_tick: Tick,
 }
 
 pub fn walk_ticks(speed: u16, tile_friction: u16, diagonal: bool) -> TickDelta {
@@ -269,6 +270,7 @@ impl Agent {
             base_speed: player.speed,
             next_walk_tick: Tick(0),
             next_use_tick: Tick(0),
+            next_say_tick: Tick(0),
             next_auto_attack_tick: Tick(0),
             target: None,
             target_seq: 0,
@@ -298,6 +300,7 @@ impl Agent {
             facing: Facing::South,
             next_walk_tick: Tick(0),
             next_use_tick: Tick(0),
+            next_say_tick: Tick(0),
             next_auto_attack_tick: Tick(0),
             target: None,
             target_seq: 0,
@@ -337,6 +340,7 @@ impl Agent {
             facing: Facing::South,
             next_walk_tick: Tick(0),
             next_use_tick: Tick(0),
+            next_say_tick: Tick(0),
             next_auto_attack_tick: Tick(0),
             target: None,
             target_seq: 0,
@@ -573,6 +577,10 @@ impl Agent {
         self.next_use_tick
     }
 
+    pub fn next_say_tick(&self) -> Tick {
+        self.next_say_tick
+    }
+
     pub fn next_spell_tick(&self, spell_id: SpellId) -> Tick {
         self.spell_cooldowns
             .iter()
@@ -612,6 +620,10 @@ impl Agent {
 
     pub fn stamp_use_item(&mut self, current_tick: Tick) {
         self.next_use_tick = current_tick + GAME_CONFIG.action.use_item_cooldown_ticks;
+    }
+
+    pub fn stamp_say(&mut self, next_say_tick: Tick) {
+        self.next_say_tick = next_say_tick;
     }
 
     pub fn keyword_branch(&self) -> Option<&Branch> {

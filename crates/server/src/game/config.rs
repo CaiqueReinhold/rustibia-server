@@ -49,6 +49,7 @@ pub struct GameConfig {
     pub skills: SkillsConfig,
     pub vocation: VocationsConfig,
     pub money: MoneyConfig,
+    pub npc: NpcConfig,
 }
 
 #[derive(Deserialize)]
@@ -247,6 +248,12 @@ pub struct VocationConfig {
     pub life_gain_level: u32,
     pub mana_gain_level: u32,
     pub capacity_gain_level: u32,
+}
+
+#[derive(Deserialize)]
+pub struct NpcConfig {
+    pub wander_ticks: TickDelta,
+    pub wander_chance: u32,
 }
 
 pub fn load_game_config(path: impl AsRef<Path>) -> Result<GameConfig, GameConfigLoadError> {

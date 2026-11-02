@@ -313,7 +313,7 @@ speed: 100
 outfit: { id: 314, colors: [0, 0, 0, 0] }
 walk_range: 3
 talk_range: 3
-say: { cooldown: 300, chance: 50000 }
+say: { cooldown: 300, chance: 50000, sentences: ["Ahoy!"] }
 arguments:
   DESTINATIONS:
     edron: { cost: 40, position: { x: 20, y: 20, z: 7 } }
@@ -330,6 +330,9 @@ keywords:
   - words: GOODBYE
     action: dismiss
     text: Good bye.
+  - words: WALK_AWAY
+    action: dismiss
+    text: Walked off.
   - words: ["trade"]
     action: trade
     text: "Take a look, {{ PLAYERNAME }}."

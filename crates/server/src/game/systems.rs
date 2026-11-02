@@ -2,8 +2,9 @@ use crate::{
     entities::{
         agent::{Agent, AgentKey},
         conditions::TimedCondition,
+        npc::WALK_AWAY_WORD,
     },
-    game::{TickCtx, combat, conditions, movement, targeting},
+    game::{TickCtx, combat, conditions, movement, npc, targeting},
 };
 
 pub fn combat_system(ctx: &mut TickCtx) {
@@ -50,6 +51,31 @@ fn drive_auto_attack(ctx: &mut TickCtx, agent_key: AgentKey) {
         attacker.stamp_auto_attack(ctx.tick);
     }
     combat::execute_attack(ctx, plan);
+}
+
+pub fn npc_walk_away_system(ctx: &mut TickCtx) {
+    let engaged: Vec<(AgentKey, AgentKey)> = ctx
+        .map
+        .iter_agents()
+        .filter(|(_, agent)| agent.is_npc())
+        .filter_map(|(key, agent)| Some((key, agent.target()?)))
+        .collect();
+
+    for (npc_key, player_key) in engaged {
+        let Some(npc_pos) = ctx.map.agent_position(npc_key) else {
+            continue;
+        };
+        let Some(player_pos) = ctx.map.agent_position(player_key) else {
+            targeting::lose_target(ctx, npc_key);
+            continue;
+        };
+        let Some(npc_def) = ctx.map.get_agent(npc_key).and_then(|a| a.get_npc()) else {
+            continue;
+        };
+        if !npc_pos.is_within(player_pos, npc_def.talk_range) {
+            npc::respond_player(ctx, player_key, npc_key, WALK_AWAY_WORD);
+        }
+    }
 }
 
 #[cfg(test)]

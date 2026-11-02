@@ -268,6 +268,10 @@ impl AgentMut<'_> {
         self.agent.stamp_use_item(tick);
     }
 
+    pub fn stamp_say(&mut self, tick: Tick) {
+        self.agent.stamp_say(tick);
+    }
+
     pub fn stamp_auto_attack(&mut self, tick: Tick) {
         self.agent.stamp_auto_attack(tick);
     }
