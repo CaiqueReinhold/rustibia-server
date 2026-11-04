@@ -43,8 +43,12 @@ fn required_ticks_in(cfg: &SkillsConfig, vocation: Vocation, skill: &SkillType, 
     }
 }
 
-fn bp_from(current_ticks: u64, current_cost: u64, next_cost: u64) -> u16 {
-    if next_cost <= current_cost {
+fn is_ceiling(next_cost: u64) -> bool {
+    next_cost == 0 || next_cost == u64::MAX
+}
+
+fn bp_from(current_ticks: u64, next_cost: u64) -> u16 {
+    if is_ceiling(next_cost) {
         return 10_000;
     }
 
@@ -64,7 +68,6 @@ fn progress_bp_in(
 ) -> u16 {
     bp_from(
         value.current_ticks,
-        required_ticks_in(cfg, vocation, skill, value.value),
         required_ticks_in(cfg, vocation, skill, value.value.saturating_add(1)),
     )
 }
@@ -79,11 +82,10 @@ fn advance(skill: &mut SkillValue, ticks: u64, required: impl Fn(u16) -> u64) ->
     skill.current_ticks = skill.current_ticks.saturating_add(ticks);
 
     let mut gained = 0u16;
-    loop {
-        let current_cost = required(skill.value);
-        let next_cost = required(skill.value.saturating_add(1));
+    while skill.value < u16::MAX {
+        let next_cost = required(skill.value + 1);
 
-        if next_cost <= current_cost || skill.current_ticks < next_cost {
+        if is_ceiling(next_cost) || skill.current_ticks < next_cost {
             break;
         }
 
@@ -226,11 +228,14 @@ vocations:
         }
     }
 
-    /// A flat curve: every level costs the same. The "stopped rising" guard
-    /// reads this as a ceiling, which is what the last test below asserts --
-    /// so it cannot be used as a fixture for ordinary levelling.
+    /// Every level costs the same.
     fn flat(_level: u16) -> u64 {
         100
+    }
+
+    /// Rises until level 12, then saturates.
+    fn saturating(level: u16) -> u64 {
+        if level > 12 { u64::MAX } else { linear(level) }
     }
 
     /// Strictly rising, and cheap to reason about: level N costs N * 100.
@@ -298,17 +303,62 @@ vocations:
         assert_eq!(s.current_ticks, 100);
     }
 
-    /// TFS's exit condition: a curve that stops rising means the skill is maxed.
-    /// Without it a flat curve would consume the whole award one level at a time
-    /// and, at zero cost, never terminate at all.
     #[test]
-    fn a_curve_that_stops_rising_is_a_ceiling() {
+    fn a_flat_curve_keeps_levelling() {
         let mut s = skill(10, 0);
 
-        let gained = advance(&mut s, u64::MAX, flat);
+        let gained = advance(&mut s, 350, flat);
 
-        assert_eq!(gained, 0, "flat from the start, so already at the ceiling");
+        assert_eq!(gained, 3);
+        assert_eq!(s.value, 13);
+        assert_eq!(s.current_ticks, 50);
+    }
+
+    #[test]
+    fn a_saturated_cost_is_a_ceiling() {
+        let mut s = skill(10, 0);
+
+        let gained = advance(&mut s, u64::MAX, saturating);
+
+        assert_eq!(gained, 2, "levels 11 and 12, then the cost saturates");
+        assert_eq!(s.value, 12);
+    }
+
+    #[test]
+    fn a_zero_cost_is_a_ceiling() {
+        let mut s = skill(10, 0);
+
+        assert_eq!(advance(&mut s, u64::MAX, |_| 0), 0);
         assert_eq!(s.value, 10);
+    }
+
+    /// Steps 2 and 3 both cost 100, so a guard on the curve rising strands
+    /// every character at level 2.
+    #[test]
+    fn experience_levels_through_the_flat_step_into_level_three() {
+        let mut s = skill(1, 0);
+
+        let gained = advance(&mut s, 889, |level| {
+            required_ticks(Vocation::Knight, &SkillType::Level, level)
+        });
+
+        assert_eq!(gained, 4);
+        assert_eq!(s.value, 5);
+        assert_eq!(s.current_ticks, 89);
+        assert_eq!(total_experience(&s), 889);
+    }
+
+    #[test]
+    fn a_character_stranded_at_level_two_catches_up_on_its_next_gain() {
+        let mut s = skill(2, 789);
+
+        let gained = advance(&mut s, 1, |level| {
+            required_ticks(Vocation::Knight, &SkillType::Level, level)
+        });
+
+        assert_eq!(gained, 3);
+        assert_eq!(s.value, 5);
+        assert_eq!(s.current_ticks, 90);
     }
 
     /// Experience matches TFS's published table: 100 to reach level 2, 200 for
@@ -381,26 +431,31 @@ vocations:
 
     #[test]
     fn no_progress_is_an_empty_bar_and_the_threshold_is_a_full_one() {
-        assert_eq!(bp_from(0, 50, 55), 0);
-        assert_eq!(bp_from(55, 50, 55), 10_000);
+        assert_eq!(bp_from(0, 55), 0);
+        assert_eq!(bp_from(55, 55), 10_000);
     }
 
     #[test]
     fn partial_progress_keeps_two_decimals() {
-        assert_eq!(bp_from(27, 50, 55), 4909);
+        assert_eq!(bp_from(27, 55), 4909);
     }
 
-    /// A curve that has stopped rising is `advance`'s ceiling condition. The bar
-    /// has to read it the same way or a maxed skill draws as empty forever.
+    /// The bar has to read `advance`'s ceiling the same way or a maxed skill
+    /// draws as empty forever.
     #[test]
     fn a_ceiling_reads_as_a_full_bar() {
-        assert_eq!(bp_from(0, 100, 100), 10_000);
-        assert_eq!(bp_from(u64::MAX, 100, 90), 10_000);
+        assert_eq!(bp_from(0, u64::MAX), 10_000);
+        assert_eq!(bp_from(0, 0), 10_000);
+    }
+
+    #[test]
+    fn a_step_costing_the_same_as_the_last_is_not_a_ceiling() {
+        assert_eq!(bp_from(50, 100), 5_000);
     }
 
     #[test]
     fn ticks_past_the_threshold_clamp() {
-        assert_eq!(bp_from(200, 50, 55), 10_000);
+        assert_eq!(bp_from(200, 55), 10_000);
     }
 
     /// Above `u64::MAX / 10_000` a u64 multiply saturates and the ratio stops
@@ -409,8 +464,8 @@ vocations:
     fn progress_past_the_u64_multiply_boundary_still_tracks() {
         let next_cost = 5_000_000_000_000_000;
 
-        assert_eq!(bp_from(next_cost / 2, 1, next_cost), 5_000);
-        assert_eq!(bp_from(next_cost / 100 * 98, 1, next_cost), 9_800);
+        assert_eq!(bp_from(next_cost / 2, next_cost), 5_000);
+        assert_eq!(bp_from(next_cost / 100 * 98, next_cost), 9_800);
     }
 
     /// Level 11 -> 12 costs a knight 55; the step into 11 cost 50. Measuring 27
