@@ -5501,7 +5501,7 @@
     range: 3
     mana_cost: 1
     weapon_type: wand
-    attack: 3
+    attack: 5
     element: fire
     missile_id: 4
     level: 1
@@ -5519,7 +5519,7 @@
     range: 3
     mana_cost: 1
     weapon_type: rod
-    attack: 3
+    attack: 5
     element: ice
     missile_id: 37
     level: 1
