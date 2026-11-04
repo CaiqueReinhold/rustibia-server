@@ -228,6 +228,8 @@ impl VocationCurves {
 
 #[derive(Deserialize)]
 pub struct SkillsConfig {
+    pub exp_rate: f32,
+    pub skill_rate: f32,
     pub min_level: u16,
     pub base: SkillBases,
     pub vocations: VocationCurves,

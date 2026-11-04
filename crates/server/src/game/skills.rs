@@ -133,6 +133,10 @@ pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, tick
         return;
     };
 
+    let ticks = match &skill {
+        SkillType::Level => (ticks as f64 * GAME_CONFIG.skills.exp_rate as f64) as u64,
+        _ => (ticks as f64 * GAME_CONFIG.skills.skill_rate as f64) as u64,
+    };
     let gained = advance(skill_value, ticks, |level| {
         required_ticks(vocation, &skill, level)
     });

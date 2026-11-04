@@ -4,11 +4,57 @@ multi_action:
   machete_ids: [3308]
   pick_ids: [3456]
   rope_spot_ids: [386, 421, 12935, 12936, 14238, 17238, 21501, 21965, 21966, 21967, 21968, 23363]
-  opened_hole_ids: [21342, 294, 369, 370, 385, 394, 411, 412, 413, 432, 433, 435, 482, 483, 594, 595, 609, 610, 615, 868, 874, 1156, 4824, 7515, 7516, 7517, 7518, 7519, 7520, 7521, 7522, 7737, 7755, 7762, 7767, 7768, 8144, 8690, 8709, 12203, 12961, 17239, 19220, 23364]
+  opened_hole_ids:
+    [
+      21342,
+      294,
+      369,
+      370,
+      385,
+      394,
+      411,
+      412,
+      413,
+      432,
+      433,
+      435,
+      482,
+      483,
+      594,
+      595,
+      609,
+      610,
+      615,
+      868,
+      874,
+      1156,
+      4824,
+      7515,
+      7516,
+      7517,
+      7518,
+      7519,
+      7520,
+      7521,
+      7522,
+      7737,
+      7755,
+      7762,
+      7767,
+      7768,
+      8144,
+      8690,
+      8709,
+      12203,
+      12961,
+      17239,
+      19220,
+      23364,
+    ]
   diggable_ids: [593, 606, 608, 614, 867, 21341]
-  machete_cuts: {3696: 3695, 3702: 3701, 17153: 17151}
+  machete_cuts: { 3696: 3695, 3702: 3701, 17153: 17151 }
   machete_clears: [2130, 3635, 30224]
-  pick_grounds: {354: 394, 355: 394}
+  pick_grounds: { 354: 394, 355: 394 }
   sand_digging:
     sand_ids: [231]
     hole_into: 615
@@ -97,6 +143,8 @@ money:
   crystal_coin_id: 3043
 
 skills:
+  exp_rate: 2.0
+  skill_rate: 3.0
   min_level: 10
   base:
     melee: 50
@@ -117,10 +165,38 @@ slot_drop_chance: 10
 death_loss_percent: 10
 
 vocation:
-  knight:   { life_regen_amount: 10, mana_regen_amount: 5,  life_gain_level: 15, mana_gain_level: 5,  capacity_gain_level: 2500 }
-  paladin:  { life_regen_amount: 7,  mana_regen_amount: 7,  life_gain_level: 10, mana_gain_level: 15, capacity_gain_level: 2000 }
-  sorcerer: { life_regen_amount: 5,  mana_regen_amount: 10, life_gain_level: 5,  mana_gain_level: 30, capacity_gain_level: 1000 }
-  druid:    { life_regen_amount: 5,  mana_regen_amount: 10, life_gain_level: 5,  mana_gain_level: 30, capacity_gain_level: 1000 }
+  knight:
+    {
+      life_regen_amount: 10,
+      mana_regen_amount: 5,
+      life_gain_level: 15,
+      mana_gain_level: 5,
+      capacity_gain_level: 2500,
+    }
+  paladin:
+    {
+      life_regen_amount: 7,
+      mana_regen_amount: 7,
+      life_gain_level: 10,
+      mana_gain_level: 15,
+      capacity_gain_level: 2000,
+    }
+  sorcerer:
+    {
+      life_regen_amount: 5,
+      mana_regen_amount: 10,
+      life_gain_level: 5,
+      mana_gain_level: 30,
+      capacity_gain_level: 1000,
+    }
+  druid:
+    {
+      life_regen_amount: 5,
+      mana_regen_amount: 10,
+      life_gain_level: 5,
+      mana_gain_level: 30,
+      capacity_gain_level: 1000,
+    }
 
 action_messages:
   - Burp.
