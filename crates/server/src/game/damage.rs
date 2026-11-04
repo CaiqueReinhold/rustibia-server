@@ -58,6 +58,13 @@ pub fn apply_damage(
     let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
     let life = agent.life().current;
 
+    if ctx.map.get_agent(target).is_some_and(|a| a.is_player())
+        && source
+            .and_then(|key| ctx.map.get_agent(key))
+            .is_some_and(|a| a.is_player())
+    {
+        damage.value /= 2;
+    }
     damage.value = damage.value.min(life);
     if damage.value == 0 {
         if damage.blocked_shield || damage.blocked_armor {
