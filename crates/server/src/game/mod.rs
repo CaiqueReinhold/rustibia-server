@@ -158,6 +158,13 @@ pub struct TestHarness {
 }
 
 #[cfg(test)]
+impl Default for TestHarness {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+#[cfg(test)]
 impl TestHarness {
     pub fn new() -> Self {
         let (persistence, persistence_rx) = PersistenceActorHandle::for_test();
