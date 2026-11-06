@@ -399,10 +399,14 @@ impl SessionActor {
             }
             BroadcastMessage::AgentTeleported {
                 agent_key,
+                from_position,
                 to_position,
                 stack,
                 ..
-            } => self.agent_teleported(agent_key, to_position, stack).await,
+            } => {
+                self.agent_teleported(agent_key, from_position, to_position, stack)
+                    .await
+            }
             BroadcastMessage::LogoutDenied { .. } => self.logout_denied().await,
             BroadcastMessage::AgentSaid {
                 agent_key,

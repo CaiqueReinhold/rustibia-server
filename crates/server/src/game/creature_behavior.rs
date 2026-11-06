@@ -483,7 +483,6 @@ fn search_target(
     let candidates: Vec<(AgentKey, Position)> = map
         .iter_agents_in_rect(&viewport, from.z)
         .filter(|(key, _)| map.get_agent(*key).is_some_and(Agent::is_player))
-        .filter(|(_, pos)| can_throw(map, from, pos, true))
         .collect();
 
     if candidates.is_empty() {
@@ -556,6 +555,7 @@ fn search_target(
                 .or_else(|| {
                     candidates
                         .iter()
+                        .filter(|(_, pos)| can_throw(map, from, pos, true))
                         .min_by_key(|(_, pos)| from.distance(pos))
                         .map(|(key, _)| *key)
                 })

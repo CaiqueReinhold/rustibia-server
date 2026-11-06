@@ -183,6 +183,7 @@ pub struct TextColors {
 pub struct CombatConfig {
     pub auto_attack_ticks: TickDelta,
     pub pool_item_id: ItemId,
+    pub splash_item_id: ItemId,
     pub human_corpse_item_id: ItemId,
     pub unarmed_skill: u16,
     pub attack_group_cooldown: TickDelta,

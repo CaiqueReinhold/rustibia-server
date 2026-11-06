@@ -1,7 +1,7 @@
 use crate::{
     entities::{
         agent::AgentKey,
-        items::{FluidType, Item, ItemFlag, ItemRef},
+        items::{FluidType, Item, ItemFlag, ItemId, ItemRef},
         map::GameMap,
         position::{ItemPlacement, Position},
     },
@@ -167,7 +167,7 @@ fn pour(
     at: &Position,
 ) -> Result<(), ItemActionError> {
     refill(ctx, source, FluidType::None)?;
-    match place_pool(ctx, at, fluid) {
+    match place_pool(ctx, at, GAME_CONFIG.combat.pool_item_id, fluid) {
         true => Ok(()),
         false => Err(ItemActionError::ActionFailed),
     }
@@ -185,8 +185,13 @@ fn refill(ctx: &mut TickCtx, container: &ItemRef, fluid: FluidType) -> Result<()
 
 /// Lays a pool of `fluid` on `pos` above its ground, replacing a pool already there. `false` when
 /// nothing could be placed.
-pub(super) fn place_pool(ctx: &mut TickCtx, pos: &Position, fluid: FluidType) -> bool {
-    let Some(config) = ITEM_CONFIGS.get(&GAME_CONFIG.combat.pool_item_id) else {
+pub(super) fn place_pool(
+    ctx: &mut TickCtx,
+    pos: &Position,
+    item_id: ItemId,
+    fluid: FluidType,
+) -> bool {
+    let Some(config) = ITEM_CONFIGS.get(&item_id) else {
         return false;
     };
     let (ground_depth, existing) = ctx

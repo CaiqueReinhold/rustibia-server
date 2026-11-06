@@ -12,7 +12,7 @@ pub mod view {
     pub const MAX_FLOOR: u8 = 15;
     pub const BASE_FLOOR: u8 = 7;
     pub const UNDERGROUND_REACH: u8 = 2;
-    pub const AGENT_DESPAWN_RADIUS: (u16, u16) = (38, 30);
+    pub const AGENT_DESPAWN_RADIUS: (u16, u16) = (27, 21);
 
     #[cfg(test)]
     mod tests {

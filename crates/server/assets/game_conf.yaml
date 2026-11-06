@@ -130,6 +130,7 @@ text_colors:
 combat:
   auto_attack_ticks: 40
   pool_item_id: 2886
+  splash_item_id: 2889
   unarmed_skill: 15
   human_corpse_item_id: 111
   attack_group_cooldown: 40

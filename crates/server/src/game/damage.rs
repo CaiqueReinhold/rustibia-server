@@ -5,6 +5,7 @@ use crate::entities::player::Player;
 use crate::entities::position::Position;
 use crate::game::TickCtx;
 use crate::game::combat::weapon_skill;
+use crate::game::config::GAME_CONFIG;
 use crate::game::death;
 use crate::game::events::BroadcastMessage;
 use crate::game::fluids;
@@ -58,13 +59,6 @@ pub fn apply_damage(
     let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
     let life = agent.life().current;
 
-    if ctx.map.get_agent(target).is_some_and(|a| a.is_player())
-        && source
-            .and_then(|key| ctx.map.get_agent(key))
-            .is_some_and(|a| a.is_player())
-    {
-        damage.value /= 2;
-    }
     damage.value = damage.value.min(life);
     if damage.value == 0 {
         if damage.blocked_shield || damage.blocked_armor {
@@ -173,7 +167,7 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
     let Some(fluid) = attacked.blood_type().get_fluid() else {
         return;
     };
-    fluids::place_pool(ctx, attacked_pos, fluid);
+    fluids::place_pool(ctx, attacked_pos, GAME_CONFIG.combat.splash_item_id, fluid);
 }
 
 #[cfg(test)]
@@ -186,7 +180,6 @@ mod tests {
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::world_map::WorldMap;
     use crate::game::combat::plan_auto_attack;
-    use crate::game::config::GAME_CONFIG;
     use crate::game::{TestHarness, Tick};
     use crate::persistence::test_fixtures::{a_creature_kind, a_test_creature, a_test_snapshot};
     use std::sync::Arc;
@@ -351,7 +344,7 @@ mod tests {
         let pooled = map
             .iter_items(&pos)
             .unwrap()
-            .any(|it| it.config.id == GAME_CONFIG.combat.pool_item_id);
+            .any(|it| it.config.id == GAME_CONFIG.combat.splash_item_id);
         assert!(pooled);
     }
 
@@ -376,7 +369,7 @@ mod tests {
         let pooled = map
             .iter_items(&pos)
             .unwrap()
-            .any(|it| it.config.id == GAME_CONFIG.combat.pool_item_id);
+            .any(|it| it.config.id == GAME_CONFIG.combat.splash_item_id);
         assert!(!pooled);
     }
 
@@ -391,7 +384,7 @@ mod tests {
         let pooled = map
             .iter_items(&pos)
             .unwrap()
-            .any(|it| it.config.id == GAME_CONFIG.combat.pool_item_id);
+            .any(|it| it.config.id == GAME_CONFIG.combat.splash_item_id);
         assert!(!pooled);
     }
 
@@ -489,16 +482,14 @@ mod tests {
         apply_damage(&mut h.ctx(&mut map), rat, physical(500), Some(second));
 
         assert!(map.get_agent(rat).is_none());
-        let ticks = |key| {
-            map.get_player(key)
-                .unwrap()
-                .skills()
-                .get(&crate::entities::skills::SkillType::Level)
-                .unwrap()
-                .current_ticks
+        let level = crate::entities::skills::SkillType::Level;
+        let experience = |key| {
+            crate::game::skills::total_experience(
+                map.get_player(key).unwrap().skills().get(&level).unwrap(),
+            )
         };
-        assert_eq!(ticks(first), 40);
-        assert_eq!(ticks(second), 60);
+        assert_eq!(experience(first), crate::game::skills::rated(&level, 40));
+        assert_eq!(experience(second), crate::game::skills::rated(&level, 60));
     }
 
     fn planned_damage(plan: &AttackPlan) -> Option<&CombatDamage> {

@@ -147,7 +147,7 @@ impl WorldMap {
                             .find_map(|it| it.find_by_guid_mut(guid))
                             .and_then(|found| found.content_mut())
                             .and_then(|content| content.iter_mut().find(|it| it.stacks_with(item))),
-                        None => items.find(|it| it.stacks_with(item)),
+                        None => items.last().filter(|it| it.stacks_with(item)),
                     };
                     stack.map_or(0, |stack| stack.top_up_from(item))
                 };
@@ -982,6 +982,22 @@ mod tests {
         assert_eq!((moved, incoming.amount), (5, 0));
         assert_eq!(map.get_top_item(&pos).unwrap().amount, 15);
         assert!(map.delta().tile_dirty(&pos));
+    }
+
+    #[test]
+    fn a_stack_buried_under_another_item_is_not_topped_up() {
+        let (mut map, pos) = one_tile();
+        map.inner_mut()
+            .place_item(&pos, None, None, coins(10))
+            .unwrap();
+        map.inner_mut()
+            .place_item(&pos, None, None, a_bag())
+            .unwrap();
+
+        let moved = map.stack_onto(&ItemPlacement::Map(pos.clone()), &mut coins(5));
+
+        assert_eq!(moved, 0);
+        assert!(map.delta().is_empty());
     }
 
     #[test]

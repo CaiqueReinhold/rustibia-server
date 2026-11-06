@@ -124,6 +124,23 @@ fn percent_of(amount: u64, percent: u32) -> u64 {
     (amount as u128 * percent.min(100) as u128 / 100) as u64
 }
 
+fn rate(skill: &SkillType) -> f64 {
+    match skill {
+        SkillType::Level => GAME_CONFIG.skills.exp_rate as f64,
+        _ => GAME_CONFIG.skills.skill_rate as f64,
+    }
+}
+
+pub fn rated(skill: &SkillType, ticks: u64) -> u64 {
+    (ticks as f64 * rate(skill)) as u64
+}
+
+/// The fewest raw ticks that `rated` turns into at least `ticks`.
+#[cfg(test)]
+pub fn unrated(skill: &SkillType, ticks: u64) -> u64 {
+    (ticks as f64 / rate(skill)).ceil() as u64
+}
+
 pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, ticks: u64) {
     let Some(mut player) = ctx.map.player_mut(agent_key) else {
         return;
@@ -133,10 +150,7 @@ pub fn tick_skill(ctx: &mut TickCtx, agent_key: AgentKey, skill: SkillType, tick
         return;
     };
 
-    let ticks = match &skill {
-        SkillType::Level => (ticks as f64 * GAME_CONFIG.skills.exp_rate as f64) as u64,
-        _ => (ticks as f64 * GAME_CONFIG.skills.skill_rate as f64) as u64,
-    };
+    let ticks = rated(&skill, ticks);
     let gained = advance(skill_value, ticks, |level| {
         required_ticks(vocation, &skill, level)
     });
@@ -213,6 +227,8 @@ mod tests {
     fn curves() -> SkillsConfig {
         serde_yaml::from_str(
             "
+exp_rate: 1.0
+skill_rate: 1.0
 min_level: 10
 base: { melee: 50, distance: 30, magic: 1600, shielding: 100 }
 vocations:
@@ -607,7 +623,7 @@ vocations:
             &mut h.ctx(&mut map),
             key,
             SkillType::Level,
-            exp_for_level(2),
+            unrated(&SkillType::Level, exp_for_level(2)),
         );
 
         let player = map.get_player(key).unwrap();

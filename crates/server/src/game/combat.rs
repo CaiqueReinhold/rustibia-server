@@ -322,8 +322,13 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
             .push(BroadcastMessage::AreaEffectAppeared { area_effect: area });
     }
 
-    for (target, dmg) in plan.damage.into_iter() {
+    let is_player = |map: &GameMap, key| map.get_agent(key).is_some_and(|a| a.is_player());
+    let player_attacker = is_player(ctx.map, plan.attacker);
+    for (target, mut dmg) in plan.damage.into_iter() {
         let landed = dmg.value > 0;
+        if player_attacker && is_player(ctx.map, target) {
+            dmg.value /= 2;
+        }
         apply_damage(ctx, target, dmg, Some(plan.attacker));
         if landed && let Some(spec) = &plan.condition {
             conditions::apply_condition(ctx, target, spec, Some(plan.attacker));
@@ -1144,6 +1149,41 @@ mod tests {
         let mut roll = Rolls::new(1);
 
         assert!(plan_auto_attack(&map, attacker, &mut roll, Tick(0)).is_none());
+    }
+
+    #[test]
+    fn a_player_hitting_a_player_deals_half() {
+        let (map, attacker, target) = duel(
+            Agent::from_player(a_test_snapshot(1, 1)),
+            Agent::from_player(a_test_snapshot(2, 2)),
+        );
+        let before = map.get_agent(target).unwrap().life().current;
+        let plan = AttackPlan {
+            attacker,
+            damage: [(
+                target,
+                CombatDamage {
+                    element: CombatElement::Physical,
+                    value: 40,
+                    blocked_shield: false,
+                    blocked_armor: false,
+                },
+            )]
+            .into_iter()
+            .collect(),
+            cost: AttackCost::None,
+            trains: None,
+            missile: None,
+            area_effect: None,
+            missed: false,
+            condition: None,
+        };
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        execute_attack(&mut h.ctx(&mut map), plan);
+
+        assert_eq!(map.get_agent(target).unwrap().life().current, before - 20);
     }
 
     /// The `Magic` skill entry is required: `tick_skill` marks nothing for a skill the player

@@ -49,6 +49,7 @@ mod tests {
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
     use crate::game::events::BroadcastMessage;
+    use crate::game::skills::{rated, total_experience, unrated};
     use crate::persistence::test_fixtures::{
         a_test_creature, a_test_creature_worth, a_test_snapshot,
     };
@@ -84,14 +85,22 @@ mod tests {
             .record_damage(attacker, damage);
     }
 
-    fn level(map: &GameMap, key: AgentKey) -> (u16, u64) {
-        let value = map
-            .get_player(key)
-            .unwrap()
-            .skills()
-            .get(&SkillType::Level)
-            .unwrap();
-        (value.value, value.current_ticks)
+    fn level(map: &GameMap, key: AgentKey) -> u16 {
+        map.get_player(key).unwrap().level()
+    }
+
+    fn experience(map: &GameMap, key: AgentKey) -> u64 {
+        let value = map.get_player(key).unwrap().skills();
+        total_experience(value.get(&SkillType::Level).unwrap())
+    }
+
+    fn rated_exp(raw: u64) -> u64 {
+        rated(&SkillType::Level, raw)
+    }
+
+    /// A pool whose whole value, once rated, reaches level 2 from a fresh snapshot.
+    fn a_level_worth() -> u32 {
+        unrated(&SkillType::Level, 100) as u32
     }
 
     fn upgraded(msgs: &[BroadcastMessage], key: AgentKey) -> bool {
@@ -119,7 +128,7 @@ mod tests {
 
     #[test]
     fn a_kill_that_levels_still_reports_the_experience_it_awarded() {
-        let (mut map, rat) = a_victim(100);
+        let (mut map, rat) = a_victim(a_level_worth());
         let hunter = add_player(&mut map, 1, Position::new(11, 10, 7));
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
@@ -128,14 +137,17 @@ mod tests {
         award(&mut h.ctx(&mut map), rat);
 
         assert!(upgraded(&h.events, hunter));
-        assert_eq!(awarded(&h.events, hunter), Some(100));
+        assert_eq!(
+            awarded(&h.events, hunter),
+            Some(rated_exp(a_level_worth() as u64))
+        );
     }
 
     /// `a_test_snapshot` starts at level 1 with no progress, and the step into level 2
     /// costs exactly 100 experience.
     #[test]
     fn a_solo_killer_takes_the_whole_pool_and_levels() {
-        let (mut map, rat) = a_victim(100);
+        let (mut map, rat) = a_victim(a_level_worth());
         let hunter = add_player(&mut map, 1, Position::new(11, 10, 7));
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
@@ -143,13 +155,15 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, hunter), (2, 0));
+        assert_eq!(level(&map, hunter), 2);
+        assert_eq!(experience(&map, hunter), rated_exp(a_level_worth() as u64));
         assert!(upgraded(&h.events, hunter));
     }
 
     #[test]
     fn a_share_short_of_a_level_reports_progress_instead() {
-        let (mut map, rat) = a_victim(50);
+        let worth = a_level_worth() / 2;
+        let (mut map, rat) = a_victim(worth);
         let hunter = add_player(&mut map, 1, Position::new(11, 10, 7));
         hit(&mut map, rat, hunter, 100);
         let mut h = TestHarness::new();
@@ -157,7 +171,8 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, hunter), (1, 50));
+        assert_eq!(level(&map, hunter), 1);
+        assert_eq!(experience(&map, hunter), rated_exp(worth as u64));
         assert!(progressed(&h.events, hunter));
         assert!(!upgraded(&h.events, hunter));
     }
@@ -174,8 +189,8 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, first), (1, 40));
-        assert_eq!(level(&map, second), (1, 60));
+        assert_eq!(experience(&map, first), rated_exp(40));
+        assert_eq!(experience(&map, second), rated_exp(60));
     }
 
     /// A creature contributor earns nothing, but its damage stays in the denominator,
@@ -192,12 +207,13 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, hunter), (1, 50));
+        assert_eq!(experience(&map, hunter), rated_exp(50));
     }
 
     #[test]
     fn a_departed_attacker_is_skipped_but_still_dilutes() {
-        let (mut map, rat) = a_victim(100);
+        let worth = a_level_worth();
+        let (mut map, rat) = a_victim(worth);
         let hunter = add_player(&mut map, 1, Position::new(11, 10, 7));
         let quitter = add_player(&mut map, 2, Position::new(12, 10, 7));
         hit(&mut map, rat, hunter, 50);
@@ -208,7 +224,7 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, hunter), (1, 50));
+        assert_eq!(experience(&map, hunter), rated_exp(worth as u64 / 2));
         assert_eq!(h.events.len(), 1);
     }
 
@@ -222,7 +238,7 @@ mod tests {
         let mut map = WorldMap::new(map);
         award(&mut h.ctx(&mut map), rat);
 
-        assert_eq!(level(&map, hunter), (1, 0));
+        assert_eq!(experience(&map, hunter), 0);
         assert!(h.events.is_empty());
     }
 

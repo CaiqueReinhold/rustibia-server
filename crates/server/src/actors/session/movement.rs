@@ -134,6 +134,7 @@ impl SessionActor {
     pub(super) async fn agent_teleported(
         &mut self,
         agent_key: AgentKey,
+        from_position: Position,
         to_position: Position,
         stack: u8,
     ) -> Result<()> {
@@ -160,10 +161,7 @@ impl SessionActor {
                 return Ok(());
             };
 
-            if iter_visible_floors(my_pos.z)
-                .find(|z| *z == to_position.z)
-                .is_some()
-            {
+            if iter_visible_floors(my_pos.z).any(|z| z == to_position.z) {
                 if let Some(agent_id) = self.agents.get_local(&agent_key) {
                     self.connection
                         .send_message(ServerMessage::TeleportAgent {
@@ -175,6 +173,16 @@ impl SessionActor {
                 } else {
                     self.introduce_agent(agent_key, to_position, &map).await?;
                 }
+            } else if iter_visible_floors(my_pos.z).any(|z| z == from_position.z)
+                && let Some(agent_id) = self.agents.get_local(&agent_key)
+            {
+                self.connection
+                    .send_message(ServerMessage::TeleportAgent {
+                        agent_id,
+                        position: to_position,
+                        stack,
+                    })
+                    .await?;
             }
 
             Ok(())

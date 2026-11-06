@@ -96,7 +96,7 @@ impl SessionActor {
             .iter_global()
             .filter(|key| {
                 **key != self.player_key
-                    && map.agent_position(**key).is_some_and(|agent_pos| {
+                    && map.agent_position(**key).is_none_or(|agent_pos| {
                         !Rect::radius(pos, AGENT_DESPAWN_RADIUS).contains(agent_pos)
                             || pos.z.abs_diff(agent_pos.z) > 2
                     })
@@ -469,6 +469,28 @@ mod tests {
         session.forget_agent(victim).await.unwrap();
 
         assert!(connection_rx.try_recv().is_err());
+    }
+
+    /// `AgentDespawned` is routed by the window, so an agent that leaves the map outside it
+    /// is only ever forgotten here.
+    #[tokio::test]
+    async fn an_agent_gone_from_the_map_is_forgotten() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let departed = seat_player(&mut map, &Position::new(115, 100, 7), 2);
+        map.remove_agent(departed);
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) = SessionActor::for_test(me, map);
+        let local = session.agents.get_or_insert(departed);
+
+        session.remove_agents_not_in_reach().await.unwrap();
+
+        assert!(matches!(
+            connection_rx.try_recv(),
+            Ok(ConnectionCommand::SendPlayerMessage(
+                ServerMessage::RemoveAgent { agent_id }
+            )) if agent_id == local
+        ));
+        assert!(session.agents.get_local(&departed).is_none());
     }
 
     #[tokio::test]

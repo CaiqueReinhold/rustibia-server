@@ -226,7 +226,7 @@ pub fn move_item(
     }
 
     // --- Remove from source ---
-    let Ok((source_item, source_index)) = remove_item_at(ctx, &source, amount) else {
+    let Ok((mut source_item, source_index)) = remove_item_at(ctx, &source, amount) else {
         ctx.events.push(BroadcastMessage::MoveItemDenied {
             agent_key: agent,
             message: "Can't move this".to_string(),
@@ -235,18 +235,22 @@ pub fn move_item(
     };
 
     // --- Add to target ---
-    let result = if let ItemPlacement::Inventory(slot, agent) = &to {
-        displace_inventory_items(
+    let mut result = top_up_at(ctx, &mut source_item, &to);
+    if result.is_ok() && source_item.amount == 0 {
+        return;
+    }
+    if result.is_ok()
+        && let ItemPlacement::Inventory(slot, agent) = &to
+    {
+        result = displace_inventory_items(
             ctx,
             *agent,
             *slot,
             &source_item,
             &source.placement,
             source_item.config.attr_inventory(),
-        )
-    } else {
-        Ok(())
-    };
+        );
+    }
 
     let result = result.and_then(|_| insert_item_at(ctx, source_item.clone(), &to, None));
 
@@ -269,6 +273,24 @@ pub fn move_item(
             },
         });
     }
+}
+
+/// Moves as much of `item` as fits onto a like stack at `placement`, leaving the rest in `item`.
+fn top_up_at(
+    ctx: &mut TickCtx,
+    item: &mut Item,
+    placement: &ItemPlacement,
+) -> Result<(), ItemMovementError> {
+    if let PlacementSite::Slot(_, agent) = placement.site()
+        && !ctx
+            .map
+            .get_player(agent)
+            .is_some_and(|player| player.can_carry(item.total_weight()))
+    {
+        return Err(ItemMovementError::NotEnoughCap);
+    }
+    ctx.map.stack_onto(placement, item);
+    Ok(())
 }
 
 /// Into the first backpack container with room; `Err` when there is none.
@@ -403,6 +425,7 @@ pub fn remove_item_at(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::constants::items::MAX_STACK_AMOUNT;
     use crate::entities::agent::Agent;
     use crate::entities::items::{ItemAttribute, ItemConfig};
     use crate::entities::items::{ItemGuid, ItemId};
@@ -1128,6 +1151,166 @@ mod tests {
             player.inventory().carried_weight(),
             before + 160,
             "the merged flask weighs nothing"
+        );
+    }
+
+    /// Player beside `ground` lying on (11,10), carrying a one-slot backpack holding `carried`.
+    fn move_into_a_full_backpack(
+        ground: Item,
+        carried: Item,
+    ) -> (WorldMap, AgentKey, Position, Vec<BroadcastMessage>) {
+        let (here, source) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let (guid, amount) = (ground.guid, ground.amount);
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_ground_tile());
+        let mut source_tile = a_ground_tile();
+        source_tile.push_item(ground);
+        map.insert_tile(source.clone(), source_tile);
+        let backpack = a_backpack_with(1, vec![carried]);
+        let container_guid = backpack.guid;
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.inventory = HashMap::from([(InventorySlot::Backpack, backpack)]);
+        let agent = map
+            .insert_agent(Agent::from_player(snapshot), &here)
+            .unwrap();
+
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+        move_item(
+            &mut h.ctx(&mut map),
+            agent,
+            ItemRef {
+                guid,
+                placement: ItemPlacement::Map(source.clone()),
+            },
+            amount,
+            ItemPlacement::Container {
+                guid: container_guid,
+                within: Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, agent)),
+                index: 0,
+            },
+        );
+        (map, agent, source, h.events)
+    }
+
+    fn backpack_amounts(map: &WorldMap, agent: AgentKey) -> Vec<u8> {
+        map.get_player(agent)
+            .unwrap()
+            .inventory()
+            .get(&InventorySlot::Backpack)
+            .unwrap()
+            .content()
+            .unwrap()
+            .iter()
+            .map(|it| it.amount)
+            .collect()
+    }
+
+    #[test]
+    fn a_stack_moved_into_a_container_tops_up_the_like_stack_there() {
+        let (map, agent, source, events) = move_into_a_full_backpack(a_flask(3), a_flask(2));
+
+        assert!(events.is_empty(), "the move was refused: {events:?}");
+        assert_eq!(backpack_amounts(&map, agent), vec![5]);
+        assert!(
+            map.get_top_item(&source)
+                .is_some_and(|it| it.config.has_flag(ItemFlag::Ground)),
+            "the flasks are still on the ground"
+        );
+        assert_eq!(
+            map.get_player(agent).unwrap().inventory().carried_weight(),
+            10 + 5 * 160
+        );
+    }
+
+    #[test]
+    fn what_overflows_a_topped_up_stack_with_no_room_goes_back_to_the_source() {
+        let (map, agent, source, events) = move_into_a_full_backpack(a_flask(60), a_flask(60));
+
+        assert!(
+            events
+                .iter()
+                .any(|b| matches!(b, BroadcastMessage::MoveItemDenied { .. })),
+            "the overflow was not refused: {events:?}"
+        );
+        assert_eq!(backpack_amounts(&map, agent), vec![MAX_STACK_AMOUNT]);
+        assert_eq!(map.get_top_item(&source).map(|it| it.amount), Some(20));
+    }
+
+    fn arrows(amount: u8) -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3447),
+                "arrow".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
+                vec![
+                    ItemAttribute::Weight(70),
+                    ItemAttribute::Inventory(InventorySlot::Trinket),
+                ],
+            )),
+            amount,
+        )
+    }
+
+    #[test]
+    fn a_stack_dropped_on_a_like_stack_on_the_ground_tops_it_up() {
+        let (mut map, agent, source, target, guid) = a_player_beside(arrows(1));
+        map.place_item(&target, None, None, arrows(4)).unwrap();
+        let mut map = WorldMap::new(map);
+
+        let events = drop_onto(&mut map, agent, source.clone(), guid, target.clone());
+
+        assert!(events.is_empty(), "the drop was refused: {events:?}");
+        assert_eq!(map.get_top_item(&target).map(|it| it.amount), Some(5));
+        assert!(
+            map.get_top_item(&target).is_some_and(|it| it.guid != guid),
+            "a second stack was laid on top"
+        );
+        assert!(map.get_item_by_id(&source, &guid).is_none());
+    }
+
+    #[test]
+    fn a_stack_moved_onto_a_like_stack_in_an_equipment_slot_tops_it_up() {
+        let (here, source) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_ground_tile());
+        let mut source_tile = a_ground_tile();
+        let loose = arrows(3);
+        let guid = loose.guid;
+        source_tile.push_item(loose);
+        map.insert_tile(source.clone(), source_tile);
+        let worn = arrows(10);
+        let worn_guid = worn.guid;
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.inventory = HashMap::from([(InventorySlot::Trinket, worn)]);
+        let agent = map
+            .insert_agent(Agent::from_player(snapshot), &here)
+            .unwrap();
+
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+        move_item(
+            &mut h.ctx(&mut map),
+            agent,
+            ItemRef {
+                guid,
+                placement: ItemPlacement::Map(source.clone()),
+            },
+            3,
+            ItemPlacement::Inventory(InventorySlot::Trinket, agent),
+        );
+
+        assert!(h.events.is_empty(), "the move was refused: {:?}", h.events);
+        let inventory = map.get_player(agent).unwrap().inventory();
+        let slot = inventory.get(&InventorySlot::Trinket).unwrap();
+        assert_eq!((slot.guid, slot.amount), (worn_guid, 13));
+        assert_eq!(inventory.carried_weight(), 13 * 70);
+        assert!(
+            map.get_top_item(&source)
+                .is_some_and(|it| it.config.has_flag(ItemFlag::Ground)),
+            "something was left on or displaced to the ground"
         );
     }
 

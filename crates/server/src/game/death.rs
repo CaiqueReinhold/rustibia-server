@@ -13,7 +13,7 @@ use crate::game::events::BroadcastMessage;
 use crate::game::item_action::check_decay;
 use crate::game::item_movement::insert_item_at;
 use crate::game::random::Rolls;
-use crate::game::{experience, skills, targeting};
+use crate::game::{experience, fluids, skills, targeting};
 use crate::persistence::items::ITEM_CONFIGS;
 
 pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
@@ -58,6 +58,9 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
         roll_creature_loot(&mut corpse, creature, ctx.roll);
     } else {
         roll_player_drop_chance(&mut corpse, &mut agent, ctx.roll);
+    }
+    if let Some(fluid) = agent.blood_type().get_fluid() {
+        fluids::place_pool(ctx, &position, GAME_CONFIG.combat.pool_item_id, fluid);
     }
     let placement = ItemPlacement::Map(position.clone());
     check_decay(ctx.scheduled, &corpse, placement.clone(), ctx.tick);
@@ -197,15 +200,25 @@ fn add_to_corpse(corpse: &mut Item, item_id: ItemId, amount: u32) -> bool {
 mod tests {
     use super::*;
     use crate::entities::agent::Agent;
+    use crate::entities::creature::BloodType;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
+    use crate::entities::skills::SkillType;
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
+    use crate::game::skills::unrated;
     use crate::game::{Tick, TickDelta};
     use crate::persistence::test_fixtures::{
         a_creature_kind, a_test_creature, a_test_creature_worth, a_test_snapshot,
     };
     use std::sync::Arc;
+
+    fn spawns_booked(h: &TestHarness) -> Vec<&ScheduledCommand> {
+        h.scheduled
+            .iter()
+            .filter(|c| matches!(c.command, WorldCommand::SpawnCreature { .. }))
+            .collect()
+    }
 
     /// A creature the spawn table put there, so it books a replacement when it dies.
     fn a_spawned_creature(origin: Position, respawn_ticks: TickDelta) -> Agent {
@@ -231,7 +244,7 @@ mod tests {
 
         assert!(
             matches!(
-                h.scheduled.as_slice(),
+                spawns_booked(&h).as_slice(),
                 [ScheduledCommand {
                     at_tick: Tick(650),
                     command: WorldCommand::SpawnCreature {
@@ -243,6 +256,48 @@ mod tests {
             ),
             "{:?}",
             h.scheduled
+        );
+    }
+
+    fn pool_left_by(blood_type: BloodType) -> Vec<ItemId> {
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let kind = CreatureKind {
+            blood_type,
+            ..a_creature_kind("Orc")
+        };
+        let orc = map
+            .insert_agent(Agent::from_creature_kind(Arc::new(kind), pos.clone()), &pos)
+            .unwrap();
+        let life = map.get_agent(orc).unwrap().life().current;
+        map.get_agent_mut(orc).unwrap().remove_life(life);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        reap(&mut h.ctx(&mut map), orc);
+
+        map.iter_items(&pos)
+            .unwrap()
+            .map(|it| it.config.id)
+            .collect()
+    }
+
+    #[test]
+    fn a_bleeding_creature_dies_onto_a_full_pool_under_its_corpse() {
+        let items = pool_left_by(BloodType::Blood);
+
+        assert_eq!(items.first(), Some(&GAME_CONFIG.combat.pool_item_id));
+        assert_eq!(items.len(), 2, "{items:?}");
+    }
+
+    #[test]
+    fn a_bloodless_creature_dies_onto_no_pool() {
+        let items = pool_left_by(BloodType::Undead);
+
+        assert!(
+            !items.contains(&GAME_CONFIG.combat.pool_item_id),
+            "{items:?}"
         );
     }
 
@@ -262,7 +317,7 @@ mod tests {
         reap(&mut h.ctx(&mut map), rat);
 
         assert!(map.get_agent(rat).is_none(), "it should still be reaped");
-        assert!(h.scheduled.is_empty());
+        assert!(spawns_booked(&h).is_empty());
     }
 
     #[test]
@@ -368,7 +423,10 @@ mod tests {
         map.insert_tile(rat_pos.clone(), MapTile::new());
         map.insert_tile(hunter_pos.clone(), MapTile::new());
         let rat = map
-            .insert_agent(a_test_creature_worth("Rat", 0, (1, 2), 100), &rat_pos)
+            .insert_agent(
+                a_test_creature_worth("Rat", 0, (1, 2), unrated(&SkillType::Level, 100) as u32),
+                &rat_pos,
+            )
             .unwrap();
         let hunter = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &hunter_pos)
