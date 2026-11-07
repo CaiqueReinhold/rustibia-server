@@ -7,13 +7,13 @@ use crate::actors::session::{SessionActor, SessionError};
 use crate::actors::world::WorldCommand;
 use crate::entities::agent::AgentId;
 use crate::entities::inventory::InventorySlot;
-use crate::entities::items::{ClientItemRef, ContainerId, ItemFlag, ItemGuid, ItemId, ItemRef};
+use crate::entities::items::{ClientItemRef, ContainerId, ItemGuid, ItemId, ItemRef};
 use crate::entities::position::{ItemPlacement, Position};
 use crate::game::description::get_look_description;
 use crate::game::item_multi_action::UseTarget;
 use crate::game::map_query::{
-    find_item, find_item_in_reach, find_parent_container, item_at_placement, resolve_client_coord,
-    retrieve_item, tile_stack,
+    find_item, find_item_in_reach, find_parent_container, resolve_client_coord, retrieve_item,
+    tile_stack,
 };
 use crate::messages::ServerMessage;
 use crate::messages::TextMessageType;
@@ -38,31 +38,9 @@ impl SessionActor {
         };
         let item_guid = item.guid;
 
-        let Some(mut target) = resolve_client_coord(to, &map, &self.containers, player_key) else {
+        let Some(target) = resolve_client_coord(to, &map, &self.containers, player_key) else {
             return Ok(());
         };
-        {
-            // Dropping onto a container already in that slot puts the item inside it rather than
-            // beside it. And droping into any container always puts item in the first slot.
-            let target_item = item_at_placement(&map, &target);
-            target = match (target, target_item) {
-                (ItemPlacement::Container { within, .. }, Some(occupant))
-                    if occupant.config.has_flag(ItemFlag::Container) =>
-                {
-                    ItemPlacement::Container {
-                        guid: occupant.guid,
-                        within,
-                        index: 0,
-                    }
-                }
-                (ItemPlacement::Container { guid, within, .. }, _) => ItemPlacement::Container {
-                    guid,
-                    within,
-                    index: 0,
-                },
-                (target, _) => target,
-            };
-        }
 
         self.world
             .send(WorldCommand::MoveItem {

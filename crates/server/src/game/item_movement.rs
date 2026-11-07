@@ -8,10 +8,10 @@ use crate::{
         combat::WeaponType,
         inventory::InventorySlot,
         items::{Item, ItemFlag, ItemRef},
-        map::MapError,
+        map::{GameMap, MapError},
         position::{ItemPlacement, PlacementSite, Rect},
     },
-    game::map_query::{can_throw, find_item},
+    game::map_query::{can_throw, find_item, item_at_placement},
 };
 
 use super::TickCtx;
@@ -150,6 +150,7 @@ pub fn move_item(
     }
 
     let item = find_item(ctx.map, &source.placement, &source.guid);
+    let to = destination(ctx.map, to, item);
 
     // Validate source item: Unmove flag and stack amount.
     if let Some(item) = item
@@ -272,6 +273,34 @@ pub fn move_item(
                 e => e.to_string(),
             },
         });
+    }
+}
+
+/// A container in the slot `to` names takes `moving` inside it. Every move into a container lands
+/// in its first slot.
+fn destination(map: &GameMap, to: ItemPlacement, moving: Option<&Item>) -> ItemPlacement {
+    let takes = |occupant: &&Item| {
+        occupant.config.has_flag(ItemFlag::Container)
+            && moving.is_some_and(|it| {
+                it.guid != occupant.guid
+                    && (!occupant.config.has_flag(ItemFlag::AmmoContainer)
+                        || it.config.attr_ammo_type().is_some())
+            })
+    };
+    match item_at_placement(map, &to).filter(takes).map(|it| it.guid) {
+        Some(guid) => ItemPlacement::Container {
+            guid,
+            within: Box::new(to),
+            index: 0,
+        },
+        None => match to {
+            ItemPlacement::Container { guid, within, .. } => ItemPlacement::Container {
+                guid,
+                within,
+                index: 0,
+            },
+            to => to,
+        },
     }
 }
 
@@ -1312,6 +1341,150 @@ mod tests {
                 .is_some_and(|it| it.config.has_flag(ItemFlag::Ground)),
             "something was left on or displaced to the ground"
         );
+    }
+
+    /// Player beside `ground` lying on (11,10), wearing `worn`, moves it to `to`.
+    fn move_beside(
+        ground: Item,
+        worn: Vec<(InventorySlot, Item)>,
+        to: impl FnOnce(AgentKey) -> ItemPlacement,
+    ) -> (WorldMap, AgentKey, Position, Vec<BroadcastMessage>) {
+        let (here, source) = (Position::new(10, 10, 7), Position::new(11, 10, 7));
+        let guid = ground.guid;
+        let mut map = GameMap::new();
+        map.insert_tile(here.clone(), a_ground_tile());
+        let mut source_tile = a_ground_tile();
+        source_tile.push_item(ground);
+        map.insert_tile(source.clone(), source_tile);
+        let mut snapshot = a_test_snapshot(1, 1);
+        snapshot.inventory = worn.into_iter().collect();
+        let agent = map
+            .insert_agent(Agent::from_player(snapshot), &here)
+            .unwrap();
+
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+        move_item(
+            &mut h.ctx(&mut map),
+            agent,
+            ItemRef {
+                guid,
+                placement: ItemPlacement::Map(source.clone()),
+            },
+            1,
+            to(agent),
+        );
+        (map, agent, source, h.events)
+    }
+
+    fn content_of(map: &WorldMap, agent: AgentKey, container: ItemGuid) -> Vec<ItemGuid> {
+        map.get_player(agent)
+            .unwrap()
+            .inventory()
+            .slots()
+            .values()
+            .find_map(|slot| slot.find_by_guid(&container))
+            .and_then(|it| it.content())
+            .unwrap()
+            .iter()
+            .map(|it| it.guid)
+            .collect()
+    }
+
+    #[test]
+    fn an_item_moved_onto_a_worn_container_goes_inside_it() {
+        let flask = a_flask(1);
+        let flask_guid = flask.guid;
+        let backpack = a_backpack_with(4, vec![a_movable_item(1)]);
+        let backpack_guid = backpack.guid;
+
+        let (map, agent, _, events) =
+            move_beside(flask, vec![(InventorySlot::Backpack, backpack)], |agent| {
+                ItemPlacement::Inventory(InventorySlot::Backpack, agent)
+            });
+
+        assert!(events.is_empty(), "the move was refused: {events:?}");
+        assert_eq!(
+            guid_in(&map, agent, InventorySlot::Backpack),
+            Some(backpack_guid)
+        );
+        assert_eq!(content_of(&map, agent, backpack_guid)[0], flask_guid);
+    }
+
+    #[test]
+    fn an_item_moved_onto_a_container_in_a_container_slot_goes_inside_it() {
+        let flask = a_flask(1);
+        let flask_guid = flask.guid;
+        let pouch = a_backpack_with(4, Vec::new());
+        let pouch_guid = pouch.guid;
+        let bag = a_backpack_with(4, vec![a_movable_item(1), pouch]);
+        let bag_guid = bag.guid;
+        let backpack = a_backpack_with(4, vec![bag]);
+        let backpack_guid = backpack.guid;
+
+        let (map, agent, _, events) =
+            move_beside(flask, vec![(InventorySlot::Backpack, backpack)], |agent| {
+                ItemPlacement::Container {
+                    guid: bag_guid,
+                    within: Box::new(ItemPlacement::Inventory(InventorySlot::Backpack, agent)),
+                    index: 1,
+                }
+            });
+
+        assert!(events.is_empty(), "the move was refused: {events:?}");
+        assert_eq!(content_of(&map, agent, pouch_guid), vec![flask_guid]);
+        assert_eq!(content_of(&map, agent, bag_guid).len(), 2);
+        assert_eq!(content_of(&map, agent, backpack_guid), vec![bag_guid]);
+    }
+
+    #[test]
+    fn ammunition_moved_onto_a_worn_quiver_goes_inside_it() {
+        let ammo = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3447),
+                "arrow".to_string(),
+                None,
+                None,
+                HashSet::from([ItemFlag::Cumulative, ItemFlag::Take]),
+                vec![
+                    ItemAttribute::Weight(70),
+                    ItemAttribute::Inventory(InventorySlot::Trinket),
+                    ItemAttribute::AmmoType(crate::entities::combat::AmmoType::Arrow),
+                ],
+            )),
+            1,
+        );
+        let ammo_guid = ammo.guid;
+        let quiver = a_quiver();
+        let quiver_guid = quiver.guid;
+
+        let (map, agent, _, events) =
+            move_beside(ammo, vec![(InventorySlot::RightHand, quiver)], |agent| {
+                ItemPlacement::Inventory(InventorySlot::RightHand, agent)
+            });
+
+        assert!(events.is_empty(), "the move was refused: {events:?}");
+        assert_eq!(content_of(&map, agent, quiver_guid), vec![ammo_guid]);
+    }
+
+    #[test]
+    fn a_shield_moved_onto_a_worn_quiver_takes_its_place() {
+        let shield = an_item_for(InventorySlot::RightHand);
+        let shield_guid = shield.guid;
+        let quiver = a_quiver();
+        let quiver_guid = quiver.guid;
+
+        let (map, agent, source, events) =
+            move_beside(shield, vec![(InventorySlot::RightHand, quiver)], |agent| {
+                ItemPlacement::Inventory(InventorySlot::RightHand, agent)
+            });
+
+        assert!(events.is_empty(), "the move was refused: {events:?}");
+        assert_eq!(
+            guid_in(&map, agent, InventorySlot::RightHand),
+            Some(shield_guid)
+        );
+        assert!(map.get_item_by_id(&source, &quiver_guid).is_some());
     }
 
     /// `insert_item_at` replaces whatever a bare slot holds and drops the loser, so a
