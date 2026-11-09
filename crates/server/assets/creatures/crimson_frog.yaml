@@ -8,6 +8,9 @@ experience: 20
 outfit:
   id: 226
   colors: [94, 78, 77, 112]
+modifiers:
+  fire: 1.1
+  ice: 0.9
 melee:
   damage:
     min: 0

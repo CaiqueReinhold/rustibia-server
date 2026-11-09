@@ -54,7 +54,11 @@ pub fn apply_damage(
         return;
     };
 
-    // TODO: apply element modifier
+    if let Some(kind) = agent.get_creature_kind() {
+        let rolled = damage.value;
+        damage.value = (rolled as f64 * kind.damage_modifier(damage.element)).round() as u32;
+        damage.blocked_armor |= rolled > 0 && damage.value == 0;
+    }
 
     let blood_type = agent.get_creature_kind().map(|c| c.blood_type.clone());
     let life = agent.life().current;
@@ -174,7 +178,7 @@ fn draw_blood(ctx: &mut TickCtx, attacked_pos: &Position, attacked_key: AgentKey
 mod tests {
     use super::*;
     use crate::actors::persistence::PersistenceCommand;
-    use crate::entities::agent::Agent;
+    use crate::entities::agent::{Agent, Pool};
     use crate::entities::combat::AttackPlan;
     use crate::entities::creature::{BloodType, CreatureKind};
     use crate::entities::map::{GameMap, MapTile};
@@ -386,6 +390,108 @@ mod tests {
             .unwrap()
             .any(|it| it.config.id == GAME_CONFIG.combat.splash_item_id);
         assert!(!pooled);
+    }
+
+    fn a_demon(pos: &Position) -> (GameMap, AgentKey) {
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let demon = Agent::from_creature_kind(
+            Arc::new(CreatureKind {
+                life: Pool {
+                    current: 100,
+                    maximum: 100,
+                },
+                elemental_modifiers: vec![
+                    (CombatElement::Fire, 0.0),
+                    (CombatElement::Holy, 1.12),
+                    (CombatElement::Death, 0.1),
+                ],
+                ..a_creature_kind("Demon")
+            }),
+            pos.clone(),
+        );
+        let demon = map.insert_agent(demon, pos).unwrap();
+        (map, demon)
+    }
+
+    #[test]
+    fn an_elemental_modifier_scales_the_hit_and_its_report() {
+        let (map, demon) = a_demon(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(
+            &mut h.ctx(&mut map),
+            demon,
+            CombatDamage {
+                element: CombatElement::Holy,
+                ..physical(50)
+            },
+            None,
+        );
+
+        assert_eq!(map.get_agent(demon).unwrap().life().current, 44);
+        assert_eq!(reported_damage(&h.events), Some(56));
+    }
+
+    #[test]
+    fn an_element_with_no_modifier_lands_unchanged() {
+        let (map, demon) = a_demon(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), demon, physical(50), None);
+
+        assert_eq!(map.get_agent(demon).unwrap().life().current, 50);
+    }
+
+    #[test]
+    fn an_immune_creature_takes_nothing() {
+        let (map, demon) = a_demon(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), demon, fire(50), None);
+
+        assert_eq!(map.get_agent(demon).unwrap().life().current, 100);
+        assert!(h.events.iter().any(|m| matches!(
+            m,
+            BroadcastMessage::DamageTaken { damage, .. } if damage.value == 0 && damage.blocked_armor
+        )));
+    }
+
+    #[test]
+    fn a_hit_the_modifier_rounds_to_zero_is_reported_as_blocked() {
+        let (map, demon) = a_demon(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(
+            &mut h.ctx(&mut map),
+            demon,
+            CombatDamage {
+                element: CombatElement::Death,
+                ..physical(4)
+            },
+            None,
+        );
+
+        assert_eq!(map.get_agent(demon).unwrap().life().current, 100);
+        assert!(h.events.iter().any(|m| matches!(
+            m,
+            BroadcastMessage::DamageTaken { damage, .. } if damage.value == 0 && damage.blocked_armor
+        )));
+    }
+
+    #[test]
+    fn a_zero_roll_on_an_immune_creature_stays_silent() {
+        let (map, demon) = a_demon(&Position::new(10, 10, 7));
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), demon, fire(0), None);
+
+        assert!(h.events.is_empty());
     }
 
     #[test]

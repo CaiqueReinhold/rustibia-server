@@ -133,6 +133,7 @@ pub struct CreatureKind {
     pub say: Voices,
     pub flags: Vec<CreatureFlag>,
     pub change_target: ChangeTarget,
+    pub elemental_modifiers: Vec<(CombatElement, f64)>,
 }
 
 impl CreatureKind {
@@ -145,5 +146,13 @@ impl CreatureKind {
             .iter()
             .find(|a| a.id == id)
             .map(|a| &a.effect)
+    }
+
+    pub fn damage_modifier(&self, element: CombatElement) -> f64 {
+        self.elemental_modifiers
+            .iter()
+            .find(|(el, _)| *el == element)
+            .map(|(_, modifier)| *modifier)
+            .unwrap_or(1.0)
     }
 }

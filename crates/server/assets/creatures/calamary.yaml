@@ -11,6 +11,11 @@ outfit:
 flags:
   - immune_paralysis
   - passive
+modifiers:
+  energy: 1.05
+  physical: 1.05
+  fire: 0.0
+  ice: 0.0
 melee:
   damage:
     min: 0

@@ -11,6 +11,11 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+modifiers:
+  fire: 1.3
+  energy: 0.5
+  ice: 0.5
+  earth: 0.0
 melee:
   damage:
     min: 0

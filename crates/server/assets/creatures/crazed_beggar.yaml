@@ -8,6 +8,12 @@ experience: 35
 outfit:
   id: 153
   colors: [40, 19, 21, 97]
+modifiers:
+  death: 1.1
+  earth: 1.1
+  physical: 0.95
+  holy: 0.9
+  energy: 0.8
 melee:
   damage:
     min: 0

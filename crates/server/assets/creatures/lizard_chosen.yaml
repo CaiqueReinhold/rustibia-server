@@ -8,6 +8,11 @@ experience: 2200
 outfit:
   id: 344
   colors: [0, 0, 0, 0]
+modifiers:
+  fire: 0.9
+  ice: 0.9
+  energy: 0.8
+  earth: 0.0
 melee:
   damage:
     min: 0

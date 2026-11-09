@@ -9,6 +9,11 @@ experience: 110
 outfit:
   id: 4
   colors: [0, 0, 0, 0]
+modifiers:
+  death: 1.1
+  earth: 1.1
+  holy: 0.9
+  energy: 0.8
 melee:
   damage:
     min: 0

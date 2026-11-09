@@ -8,6 +8,11 @@ experience: 165
 outfit:
   id: 70
   colors: [0, 0, 0, 0]
+modifiers:
+  death: 1.05
+  fire: 1.05
+  earth: 0.8
+  physical: 0.8
 melee:
   damage:
     min: 0

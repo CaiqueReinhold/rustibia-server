@@ -10,6 +10,8 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - passive
+modifiers:
+  fire: 1.05
 melee:
   damage:
     min: 0

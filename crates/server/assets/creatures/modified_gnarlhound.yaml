@@ -10,6 +10,14 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - passive
+modifiers:
+  energy: 0.1
+  fire: 0.1
+  ice: 0.1
+  physical: 0.1
+  death: 0.0
+  earth: 0.0
+  holy: 0.0
 melee:
   damage:
     min: 0

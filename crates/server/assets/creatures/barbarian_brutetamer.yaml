@@ -10,6 +10,12 @@ outfit:
   colors: [78, 97, 95, 121]
 flags:
   - immune_paralysis
+modifiers:
+  physical: 1.2
+  death: 1.01
+  holy: 0.9
+  energy: 0.8
+  ice: 0.5
 melee:
   damage:
     min: 0

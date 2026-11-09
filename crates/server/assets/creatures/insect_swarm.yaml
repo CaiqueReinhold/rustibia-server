@@ -9,6 +9,9 @@ experience: 40
 outfit:
   id: 349
   colors: [0, 0, 0, 0]
+modifiers:
+  fire: 1.1
+  earth: 0.0
 melee:
   damage:
     min: 0

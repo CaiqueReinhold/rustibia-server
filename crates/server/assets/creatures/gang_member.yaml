@@ -8,6 +8,8 @@ experience: 70
 outfit:
   id: 151
   colors: [114, 19, 23, 40]
+modifiers:
+  death: 1.05
 melee:
   damage:
     min: 0

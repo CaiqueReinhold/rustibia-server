@@ -9,6 +9,11 @@ experience: 10000
 outfit:
   id: 12
   colors: [119, 71, 118, 34]
+modifiers:
+  death: 1.12
+  ice: 1.1
+  energy: 0.65
+  fire: 0.0
 melee:
   damage:
     min: 0

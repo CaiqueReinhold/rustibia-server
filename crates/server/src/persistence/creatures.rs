@@ -63,6 +63,14 @@ pub enum CreaturesLoadError {
     Support { path: PathBuf, source: SupportError },
     #[error("{path} has a dance_chance of {value}, above 100")]
     DanceChance { path: PathBuf, value: u8 },
+    #[error("{path} has a {element:?} modifier of {value}, which must be a finite number from 0")]
+    BadModifier {
+        path: PathBuf,
+        element: CombatElement,
+        value: f64,
+    },
+    #[error("{path} has a mana modifier, which no damage this server deals would read")]
+    ManaModifier { path: PathBuf },
 }
 
 #[derive(Deserialize)]
@@ -182,6 +190,8 @@ struct RawCreature {
     #[serde(default)]
     flags: Vec<CreatureFlag>,
     change_target: ChangeTarget,
+    #[serde(default)]
+    modifiers: HashMap<CombatElement, f64>,
 }
 
 fn melee_distance() -> u16 {
@@ -314,6 +324,23 @@ impl RawCreature {
             });
         }
 
+        if self.modifiers.contains_key(&CombatElement::Mana) {
+            return Err(CreaturesLoadError::ManaModifier {
+                path: path.to_path_buf(),
+            });
+        }
+        if let Some((&element, &value)) = self
+            .modifiers
+            .iter()
+            .find(|(_, value)| !value.is_finite() || **value < 0.0)
+        {
+            return Err(CreaturesLoadError::BadModifier {
+                path: path.to_path_buf(),
+                element,
+                value,
+            });
+        }
+
         let abilities = self
             .abilities
             .into_iter()
@@ -356,6 +383,7 @@ impl RawCreature {
             },
             flags: self.flags,
             change_target: self.change_target,
+            elemental_modifiers: self.modifiers.into_iter().collect(),
         })
     }
 }
@@ -639,6 +667,59 @@ say:
             + "corpse: 5973\nchange_target:\n  interval: 80\n  chance: 10\nsay:\n  cooldown: 100\n  chance: 10000\n  sentences: []\n";
 
         assert!(a_creature(&contents).abilities.is_empty());
+    }
+
+    #[test]
+    fn modifiers_reach_the_kind_and_default_to_none() {
+        assert!(a_creature(A_CREATURE).elemental_modifiers.is_empty());
+
+        let kind = a_creature(&A_CREATURE.replace(
+            "corpse: 5973",
+            "modifiers:\n  holy: 1.12\n  fire: 0.0\ncorpse: 5973",
+        ));
+        assert_eq!(kind.damage_modifier(CombatElement::Holy), 1.12);
+        assert_eq!(kind.damage_modifier(CombatElement::Fire), 0.0);
+        assert_eq!(kind.damage_modifier(CombatElement::Ice), 1.0);
+    }
+
+    #[test]
+    fn a_negative_modifier_is_refused() {
+        let contents = A_CREATURE.replace("corpse: 5973", "modifiers:\n  ice: -0.5\ncorpse: 5973");
+        let error = parse_creature(Path::new("test.yaml"), &contents, &shape("probe"))
+            .expect_err("a negative modifier would heal the creature it hits");
+
+        assert!(
+            matches!(
+                error,
+                CreaturesLoadError::BadModifier {
+                    element: CombatElement::Ice,
+                    ..
+                }
+            ),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_mana_modifier_is_refused() {
+        let contents = A_CREATURE.replace("corpse: 5973", "modifiers:\n  mana: 0.5\ncorpse: 5973");
+        let error = parse_creature(Path::new("test.yaml"), &contents, &shape("probe"))
+            .expect_err("a mana modifier would load and do nothing");
+
+        assert!(
+            matches!(error, CreaturesLoadError::ManaModifier { .. }),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn an_unknown_element_in_modifiers_is_refused() {
+        let contents = A_CREATURE.replace("corpse: 5973", "modifiers:\n  drown: 0.5\ncorpse: 5973");
+
+        assert!(matches!(
+            parse_creature(Path::new("test.yaml"), &contents, &shape("probe")),
+            Err(CreaturesLoadError::ParseError { .. })
+        ));
     }
 
     #[test]

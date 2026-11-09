@@ -8,6 +8,10 @@ experience: 90
 outfit:
   id: 128
   colors: [97, 116, 95, 95]
+modifiers:
+  physical: 1.2
+  holy: 1.05
+  death: 0.95
 melee:
   damage:
     min: 0

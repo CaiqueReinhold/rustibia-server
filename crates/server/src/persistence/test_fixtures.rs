@@ -270,6 +270,7 @@ pub fn a_creature_kind(name: &str) -> CreatureKind {
             interval: TickDelta(80),
             chance: 10,
         },
+        elemental_modifiers: vec![],
     }
 }
 

@@ -8,6 +8,9 @@ experience: 215
 outfit:
   id: 100
   colors: [0, 0, 0, 0]
+modifiers:
+  death: 0.0
+  earth: 0.0
 melee:
   damage:
     min: 0

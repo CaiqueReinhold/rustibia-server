@@ -8,6 +8,8 @@ experience: 12
 outfit:
   id: 30
   colors: [0, 0, 0, 0]
+modifiers:
+  fire: 1.2
 melee:
   damage:
     min: 0

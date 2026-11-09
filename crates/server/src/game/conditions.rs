@@ -90,6 +90,14 @@ pub fn apply_condition(
     spec: &ConditionSpec,
     source: Option<AgentKey>,
 ) {
+    let immune = ctx
+        .map
+        .get_agent(target)
+        .and_then(|agent| agent.get_creature_kind())
+        .is_some_and(|kind| kind.damage_modifier(spec.element) == 0.0);
+    if immune {
+        return;
+    }
     let rolled = ctx.roll.damage_roll(spec.damage.min, spec.damage.max);
     if rolled == 0 {
         return;
@@ -168,6 +176,7 @@ mod tests {
     use super::*;
     use crate::entities::Bounds;
     use crate::entities::conditions::TimedCondition;
+    use crate::entities::creature::CreatureKind;
     use crate::entities::world_map::WorldMap;
     use crate::entities::{
         agent::Agent,
@@ -175,7 +184,8 @@ mod tests {
         position::Position,
     };
     use crate::game::{TestHarness, Tick, TickDelta};
-    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{a_creature_kind, a_test_creature, a_test_snapshot};
+    use std::sync::Arc;
 
     fn a_fed_player(fed_for: u64) -> (GameMap, AgentKey, u32) {
         let position = Position::new(10, 10, 7);
@@ -488,5 +498,28 @@ mod tests {
         assert_eq!(rat.life().current, 100);
         assert_eq!(rat.conditions().status(), status);
         assert!(h.scheduled.is_empty());
+    }
+
+    #[test]
+    fn a_creature_immune_to_the_element_is_not_afflicted() {
+        let position = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(position.clone(), MapTile::new());
+        let demon = Agent::from_creature_kind(
+            Arc::new(CreatureKind {
+                elemental_modifiers: vec![(CombatElement::Fire, 0.0)],
+                ..a_creature_kind("Demon")
+            }),
+            position.clone(),
+        );
+        let demon = map.insert_agent(demon, &position).unwrap();
+        let mut map = WorldMap::new(map);
+        let status = map.get_agent(demon).unwrap().conditions().status();
+        let mut h = TestHarness::seeded(1);
+
+        apply_condition(&mut h.ctx(&mut map), demon, &a_burn(20, false), None);
+
+        assert_eq!(map.get_agent(demon).unwrap().conditions().status(), status);
+        assert!(h.scheduled.is_empty() && h.events.is_empty());
     }
 }

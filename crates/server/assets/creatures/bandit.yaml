@@ -8,6 +8,9 @@ experience: 65
 outfit:
   id: 129
   colors: [58, 40, 24, 95]
+modifiers:
+  physical: 1.1
+  death: 1.05
 melee:
   damage:
     min: 0
