@@ -50,10 +50,15 @@ pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {
     let Some((_, decay_to)) = item.config.attr_decay() else {
         return;
     };
-    let Some(config) = ITEM_CONFIGS.get(&decay_to) else {
-        if decay_to != ItemId(0) {
-            error!("Config not found for item id {decay_to}");
+    if decay_to == ItemId(0) {
+        let amount = item.amount;
+        if remove_item_at(ctx, &item_ref, amount).is_err() {
+            ctx.rollback_to(mark);
         }
+        return;
+    }
+    let Some(config) = ITEM_CONFIGS.get(&decay_to) else {
+        error!("Config not found for item id {decay_to}");
         return;
     };
 
@@ -433,7 +438,7 @@ fn eat_food(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::items::{ItemConfig, ItemId};
+    use crate::entities::items::{ItemAttribute, ItemConfig, ItemId};
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::entities::world_map::WorldMap;
@@ -914,6 +919,41 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn an_item_that_decays_to_nothing_is_removed() {
+        let pos = Position::new(10, 10, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(pos.clone(), MapTile::new());
+        let fading = Arc::new(ItemConfig::new(
+            ItemId(1),
+            "energy field".to_string(),
+            None,
+            None,
+            [],
+            vec![ItemAttribute::Decay {
+                duration: TickDelta(1),
+                decay_to: ItemId(0),
+            }],
+        ));
+        let guid = map
+            .place_item(&pos, None, None, Item::new(fading, 1))
+            .unwrap()
+            .guid;
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::new();
+
+        decay_item(
+            &mut h.ctx(&mut map),
+            ItemRef {
+                guid,
+                placement: ItemPlacement::Map(pos.clone()),
+            },
+        );
+
+        assert_eq!(map.iter_items(&pos).unwrap().count(), 0);
+        assert!(h.scheduled.is_empty());
     }
 
     #[test]

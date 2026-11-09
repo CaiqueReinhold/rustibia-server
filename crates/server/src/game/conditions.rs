@@ -185,7 +185,7 @@ pub fn tick_damage_over_time(
 mod tests {
     use super::*;
     use crate::entities::Bounds;
-    use crate::entities::conditions::TimedCondition;
+    use crate::entities::conditions::{DamageStep, TimedCondition};
     use crate::entities::creature::CreatureKind;
     use crate::entities::world_map::WorldMap;
     use crate::entities::{
@@ -399,7 +399,7 @@ mod tests {
         map.inner_mut()
             .get_agent_mut(player)
             .unwrap()
-            .record_damage(rat, damage);
+            .record_damage(rat, damage, Tick(0));
         (map, player)
     }
 
@@ -496,6 +496,56 @@ mod tests {
         assert_eq!(map.get_agent(rat).unwrap().life().current, 100);
         assert_eq!(h.scheduled.len(), 1);
         assert_eq!(h.scheduled[0].at_tick, Tick(250));
+    }
+
+    #[test]
+    fn a_condition_ends_with_its_last_hit() {
+        let (mut map, rat) = a_rat_at(&Position::new(10, 10, 7));
+        let shock = ConditionSpec {
+            element: CombatElement::Energy,
+            interval: TickDelta(200),
+            schedule: SpecSchedule::Stepped(Arc::from([
+                DamageStep {
+                    count: 1,
+                    value: 30,
+                },
+                DamageStep {
+                    count: 1,
+                    value: 25,
+                },
+            ])),
+            delayed: false,
+        };
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(50);
+
+        apply_condition(&mut h.ctx(&mut map), rat, &shock, None);
+
+        let agent = map.get_agent(rat).unwrap();
+        assert_eq!(agent.life().current, 70);
+        assert!(
+            agent
+                .conditions()
+                .has_damage_over_time(CombatElement::Energy)
+        );
+        assert_eq!(h.scheduled.len(), 1);
+        assert_eq!(h.scheduled[0].at_tick, Tick(250));
+        let WorldCommand::DamageOverTimeTick { generation, .. } = h.scheduled[0].command else {
+            panic!("expected the condition's next hit to be booked");
+        };
+
+        h.scheduled.clear();
+        h.tick = Tick(250);
+        tick_damage_over_time(&mut h.ctx(&mut map), rat, CombatElement::Energy, generation);
+
+        let agent = map.get_agent(rat).unwrap();
+        assert_eq!(agent.life().current, 45);
+        assert!(
+            !agent
+                .conditions()
+                .has_damage_over_time(CombatElement::Energy)
+        );
+        assert!(h.scheduled.is_empty());
     }
 
     #[test]

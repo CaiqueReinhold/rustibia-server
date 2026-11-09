@@ -8,6 +8,8 @@ experience: 22
 outfit:
   id: 36
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_poison
 modifiers:
   fire: 1.1
   earth: 0.0

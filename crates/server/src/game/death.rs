@@ -431,7 +431,9 @@ mod tests {
         let hunter = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &hunter_pos)
             .unwrap();
-        map.get_agent_mut(rat).unwrap().record_damage(hunter, 100);
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(hunter, 100, Tick(0));
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);
@@ -534,8 +536,12 @@ mod tests {
         let player = map
             .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &player_at)
             .unwrap();
-        map.get_agent_mut(player).unwrap().record_damage(rat, 20);
-        map.get_agent_mut(player).unwrap().record_damage(wolf, 30);
+        map.get_agent_mut(player)
+            .unwrap()
+            .record_damage(rat, 20, Tick(0));
+        map.get_agent_mut(player)
+            .unwrap()
+            .record_damage(wolf, 30, Tick(0));
         let mut h = TestHarness::seeded(1);
 
         let mut map = WorldMap::new(map);

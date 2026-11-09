@@ -30,6 +30,18 @@ pub struct ConditionSpec {
     pub delayed: bool,
 }
 
+impl ConditionSpec {
+    pub fn deals_damage(&self) -> bool {
+        match &self.schedule {
+            SpecSchedule::Decaying { damage, .. } => damage.max > 0,
+            SpecSchedule::Flat { damage, count } => damage.max > 0 && *count > 0,
+            SpecSchedule::Stepped(steps) => {
+                steps.iter().any(|step| step.count > 0 && step.value > 0)
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ConditionAttack {
     pub condition: ConditionSpec,
@@ -457,6 +469,12 @@ impl Conditions {
         self.conditions.len() != before
     }
 
+    pub fn has_damage_over_time(&self, element: CombatElement) -> bool {
+        self.conditions
+            .iter()
+            .any(|c| matches!(c, Condition::DamageOverTime(dot) if dot.element() == element))
+    }
+
     pub fn apply_damage_over_time(&mut self, mut incoming: DamageOverTime) -> Option<u32> {
         let generation = self.next_generation;
         let existing = self
@@ -755,6 +773,50 @@ mod tests {
         assert!(conditions.expire_speed(second));
         assert_eq!(conditions.speed_change(), 0);
         assert_eq!(conditions.status() & HASTED_BIT, 0);
+    }
+
+    #[test]
+    fn a_spec_deals_damage_only_when_some_hit_can_be_non_zero() {
+        let spec = |schedule| ConditionSpec {
+            element: CombatElement::Fire,
+            interval: TickDelta(20),
+            schedule,
+            delayed: false,
+        };
+        let zero = Bounds { min: 0, max: 0 };
+        let some = Bounds { min: 0, max: 5 };
+        let step = |count, value| DamageStep { count, value };
+
+        assert!(
+            spec(SpecSchedule::Decaying {
+                damage: some,
+                start: None
+            })
+            .deals_damage()
+        );
+        assert!(
+            !spec(SpecSchedule::Decaying {
+                damage: zero,
+                start: None
+            })
+            .deals_damage()
+        );
+        assert!(
+            spec(SpecSchedule::Flat {
+                damage: some,
+                count: 3
+            })
+            .deals_damage()
+        );
+        assert!(
+            !spec(SpecSchedule::Flat {
+                damage: some,
+                count: 0
+            })
+            .deals_damage()
+        );
+        assert!(spec(SpecSchedule::Stepped(Arc::from([step(0, 9), step(2, 1)]))).deals_damage());
+        assert!(!spec(SpecSchedule::Stepped(Arc::from([step(3, 0), step(0, 9)]))).deals_damage());
     }
 
     #[test]

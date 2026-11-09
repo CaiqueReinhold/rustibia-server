@@ -9,6 +9,8 @@ experience: 415
 outfit:
   id: 237
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_fire
 modifiers:
   ice: 1.1
   physical: 1.1

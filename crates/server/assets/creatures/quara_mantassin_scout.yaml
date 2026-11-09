@@ -8,6 +8,8 @@ experience: 100
 outfit:
   id: 72
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_fire
 modifiers:
   energy: 1.1
   fire: 0.0

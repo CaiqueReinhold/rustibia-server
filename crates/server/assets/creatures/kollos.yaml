@@ -9,6 +9,9 @@ experience: 2400
 outfit:
   id: 458
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_fire
+  - walk_on_poison
 modifiers:
   death: 1.05
   ice: 1.05

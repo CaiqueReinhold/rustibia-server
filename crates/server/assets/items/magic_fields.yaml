@@ -141,13 +141,14 @@
       duration: 1960
       decay_to: 0
     field:
-      type: flat
+      type: stepped
       element: energy
-      damage:
-        min: 25
-        max: 25
       interval: 200
-      count: 1
+      steps:
+      - count: 1
+        damage: 30
+      - count: 1
+        damage: 25
 - id: 2123
   name: fire field
   article: a

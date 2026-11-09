@@ -35,13 +35,24 @@ pub enum Step {
     Unreachable,
 }
 
+/// Ordered by how much a walker objects, so the worst item on a tile is the `max`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum TileEntry {
+    Free,
+    Harmful,
+    Refused,
+}
+
+/// What entering a `Harmful` tile adds, in steps of the walker's own cost for that tile.
+pub const HARMFUL_FIELD_STEPS: u64 = 18;
+
 /// The first step of the walk that reaches `goal` in the fewest ticks.
 pub fn next_step(
     map: &GameMap,
     walker: AgentKey,
     goal: &Goal,
     bounds: &Rect,
-    enters: impl Fn(&Position) -> bool,
+    entry: impl Fn(&Position) -> TileEntry,
 ) -> Step {
     let Some(from) = map.agent_position(walker) else {
         return Step::Unreachable;
@@ -55,7 +66,7 @@ pub fn next_step(
 
     let found = astar(
         from,
-        |pos| successors(map, walker, pos, bounds, &enters),
+        |pos| successors(map, walker, pos, bounds, &entry),
         |pos| heuristic(goal, pos),
         |pos| goal_is_met(map, goal, pos),
     );
@@ -76,7 +87,7 @@ pub fn reachable_from(
     map: &GameMap,
     walker: AgentKey,
     bounds: &Rect,
-    enters: impl Fn(&Position) -> bool,
+    entry: impl Fn(&Position) -> TileEntry,
 ) -> Reachable {
     let Some(origin) = map.agent_position(walker).cloned() else {
         return Reachable {
@@ -85,7 +96,7 @@ pub fn reachable_from(
     };
 
     let mut costs: HashMap<Position, TickDelta> =
-        dijkstra_all(&origin, |pos| successors(map, walker, pos, bounds, &enters))
+        dijkstra_all(&origin, |pos| successors(map, walker, pos, bounds, &entry))
             .into_iter()
             .map(|(pos, (_parent, cost))| (pos, cost))
             .collect();
@@ -124,7 +135,7 @@ fn successors(
     walker: AgentKey,
     from: &Position,
     bounds: &Rect,
-    enters: &impl Fn(&Position) -> bool,
+    entry: &impl Fn(&Position) -> TileEntry,
 ) -> Vec<(Position, TickDelta)> {
     // Equal-cost routes break ties on `ALL_DIRECTIONS`' order, which is what keeps a
     // chase reproducible from its seed.
@@ -132,11 +143,16 @@ fn successors(
         .iter()
         .filter_map(|direction| {
             let to = from.clone() + *direction;
-            if !bounds.contains(&to) || !enters(&to) {
+            if !bounds.contains(&to) {
                 return None;
             }
+            let surcharge = match entry(&to) {
+                TileEntry::Refused => return None,
+                TileEntry::Free => 0,
+                TileEntry::Harmful => HARMFUL_FIELD_STEPS,
+            };
             let cost = step_cost(map, walker, &to, direction.is_diagonal())?;
-            Some((to, cost))
+            Some((to, TickDelta(cost.0 * (1 + surcharge))))
         })
         .collect()
 }
@@ -304,8 +320,24 @@ mod tests {
         Rect::new(0, 0, u16::MAX, u16::MAX)
     }
 
-    fn anywhere(_: &Position) -> bool {
-        true
+    fn anywhere(_: &Position) -> TileEntry {
+        TileEntry::Free
+    }
+
+    fn refused_at(pos: &Position, refused: Position) -> TileEntry {
+        if *pos == refused {
+            TileEntry::Refused
+        } else {
+            TileEntry::Free
+        }
+    }
+
+    fn harmful_at(pos: &Position, harmful: Position) -> TileEntry {
+        if *pos == harmful {
+            TileEntry::Harmful
+        } else {
+            TileEntry::Free
+        }
     }
 
     fn walk_ticks(map: &GameMap, walker: AgentKey, friction: u16, diagonal: bool) -> TickDelta {
@@ -387,7 +419,7 @@ mod tests {
         let rat = put_creature(&mut map, 15, 10);
 
         let step = next_step(&map, rat, &Goal::Tile(at(17, 10)), &everywhere(), |pos| {
-            *pos != at(16, 10)
+            refused_at(pos, at(16, 10))
         });
 
         assert!(
@@ -401,9 +433,50 @@ mod tests {
         let mut map = a_corridor(5..=25);
         let rat = put_creature(&mut map, 15, 10);
 
-        let reachable = reachable_from(&map, rat, &everywhere(), |pos| *pos != at(16, 10));
+        let reachable = reachable_from(&map, rat, &everywhere(), |pos| refused_at(pos, at(16, 10)));
 
         assert_eq!(reachable.cost_to(&map, &Goal::Tile(at(17, 10))), None);
+    }
+
+    #[test]
+    fn a_harmful_tile_is_walked_around_when_the_detour_is_short() {
+        let mut map = a_room(5..=25, 8..=12);
+        let rat = put_creature(&mut map, 15, 10);
+
+        let step = next_step(&map, rat, &Goal::Tile(at(17, 10)), &everywhere(), |pos| {
+            harmful_at(pos, at(16, 10))
+        });
+
+        assert!(
+            matches!(step, Step::Move(direction) if direction != Direction::East),
+            "expected a route around the harmful tile, got {step:?}"
+        );
+    }
+
+    #[test]
+    fn a_harmful_tile_is_crossed_when_it_is_the_only_way() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15, 10);
+
+        let step = next_step(&map, rat, &Goal::Tile(at(17, 10)), &everywhere(), |pos| {
+            harmful_at(pos, at(16, 10))
+        });
+
+        assert_eq!(step, Step::Move(Direction::East));
+    }
+
+    #[test]
+    fn a_harmful_tile_costs_eighteen_extra_steps() {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15, 10);
+        let step = walk_ticks(&map, rat, FAST, false);
+
+        let reachable = reachable_from(&map, rat, &everywhere(), |pos| harmful_at(pos, at(16, 10)));
+
+        assert_eq!(
+            reachable.cost_to(&map, &Goal::Tile(at(17, 10))),
+            Some(TickDelta(step.0 * (2 + HARMFUL_FIELD_STEPS)))
+        );
     }
 
     #[test]

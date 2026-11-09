@@ -10,6 +10,9 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+  - walk_on_fire
+  - walk_on_energy
+  - walk_on_poison
 modifiers:
   fire: 0.95
   holy: 0.95

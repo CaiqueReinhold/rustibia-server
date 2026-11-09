@@ -8,6 +8,8 @@ experience: 120
 outfit:
   id: 54
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_energy
 modifiers:
   death: 1.05
   physical: 1.05

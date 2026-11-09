@@ -8,6 +8,8 @@ experience: 1200
 outfit:
   id: 77
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_fire
 modifiers:
   energy: 1.25
   earth: 1.1

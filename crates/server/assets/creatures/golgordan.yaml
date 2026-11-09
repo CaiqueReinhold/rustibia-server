@@ -9,6 +9,10 @@ experience: 10000
 outfit:
   id: 12
   colors: [128, 62, 95, 15]
+flags:
+  - walk_on_fire
+  - walk_on_energy
+  - walk_on_poison
 modifiers:
   ice: 1.1
   fire: 1.05

@@ -63,6 +63,7 @@ pub enum SupportKind {
     Haste,
     Paralyse,
     MagicShield,
+    CancelMagicShield,
     Cure,
 }
 
@@ -72,6 +73,7 @@ impl SupportKind {
             "haste" => Some(Self::Haste),
             "paralyse" => Some(Self::Paralyse),
             "magic_shield" => Some(Self::MagicShield),
+            "cancel_magic_shield" => Some(Self::CancelMagicShield),
             "cure" => Some(Self::Cure),
             _ => None,
         }
@@ -82,6 +84,7 @@ impl SupportKind {
             Self::Haste => "haste",
             Self::Paralyse => "paralyse",
             Self::MagicShield => "magic_shield",
+            Self::CancelMagicShield => "cancel_magic_shield",
             Self::Cure => "cure",
         }
     }
@@ -136,6 +139,18 @@ pub fn build_support(
             Ok(SupportEffect::MagicShield {
                 duration: duration_ticks.ok_or_else(|| missing("duration_ticks"))?,
             })
+        }
+        SupportKind::CancelMagicShield => {
+            if speed.is_some() {
+                return Err(unexpected("speed"));
+            }
+            if duration_ticks.is_some() {
+                return Err(unexpected("duration_ticks"));
+            }
+            if element.is_some() {
+                return Err(unexpected("element"));
+            }
+            Ok(SupportEffect::CancelMagicShield)
         }
         SupportKind::Cure => {
             if speed.is_some() {

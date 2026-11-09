@@ -8,6 +8,8 @@ experience: 1666
 outfit:
   id: 245
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_poison
 modifiers:
   holy: 1.25
   ice: 0.9

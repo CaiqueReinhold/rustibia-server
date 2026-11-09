@@ -293,8 +293,8 @@ impl AgentMut<'_> {
         self.agent.set_target(target, seq);
     }
 
-    pub fn record_damage(&mut self, attacker: AgentKey, damage: u32) {
-        self.agent.record_damage(attacker, damage);
+    pub fn record_damage(&mut self, attacker: AgentKey, damage: u32, at: Tick) {
+        self.agent.record_damage(attacker, damage, at);
     }
 
     pub fn clear_participation(&mut self) {
@@ -741,7 +741,7 @@ mod tests {
         agent.stamp_use(Tick(5));
         agent.stamp_auto_attack(Tick(5));
         agent.set_target(None, 0);
-        agent.record_damage(key, 3);
+        agent.record_damage(key, 3, Tick(0));
 
         assert!(map.delta().is_empty());
         assert_eq!(map.get_agent(key).unwrap().next_walk_tick(), Tick(5));

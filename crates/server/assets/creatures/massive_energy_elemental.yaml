@@ -10,6 +10,8 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+  - walk_on_fire
+  - walk_on_energy
 modifiers:
   earth: 1.05
   death: 0.99

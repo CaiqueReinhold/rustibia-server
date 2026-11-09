@@ -83,6 +83,11 @@ pub fn apply_support(ctx: &mut TickCtx, target: AgentKey, effect: &SupportEffect
                 conditions::schedule_expiry(ctx, target, TimedCondition::MagicShield);
             }
         }
+        SupportEffect::CancelMagicShield => {
+            if let Some(mut agent) = ctx.map.agent_mut(target) {
+                agent.conditions(|c| c.remove_magic_shield());
+            }
+        }
         SupportEffect::Cure { element } => {
             if let Some(mut agent) = ctx.map.agent_mut(target) {
                 agent.conditions(|c| c.cure(*element));
@@ -437,6 +442,40 @@ mod tests {
         let conditions = map.get_agent(player).unwrap().conditions();
         assert!(conditions.is_magic_shielded(Tick(4099)));
         assert!(!conditions.is_magic_shielded(Tick(4100)));
+    }
+
+    #[test]
+    fn cancelling_the_magic_shield_removes_it_at_once() {
+        let (map, player) = a_player();
+        let mut map = WorldMap::new(map);
+        map.agent_mut(player)
+            .unwrap()
+            .conditions(|c| c.extend_magic_shield(Tick(4000)));
+        map.take_delta();
+        let spell = a_support_spell(
+            SpellGroup::Support,
+            TargetMode::Caster,
+            SupportEffect::CancelMagicShield,
+        );
+        let mut h = TestHarness::seeded(1);
+
+        cast_spell(
+            &mut h.ctx(&mut map),
+            player,
+            &spell,
+            AreaTarget::None,
+            None,
+            CastSource::Words,
+        )
+        .unwrap();
+
+        assert!(
+            !map.get_agent(player)
+                .unwrap()
+                .conditions()
+                .is_magic_shielded(Tick(0))
+        );
+        assert!(map.delta().agent(player).status());
     }
 
     #[test]

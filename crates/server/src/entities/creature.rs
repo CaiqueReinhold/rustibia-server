@@ -71,6 +71,9 @@ pub struct ChangeTarget {
 pub enum CreatureFlag {
     ImmuneParalysis,
     Passive,
+    WalkOnFire,
+    WalkOnEnergy,
+    WalkOnPoison,
 }
 
 #[derive(Clone, Debug)]
@@ -131,6 +134,15 @@ pub struct CreatureKind {
 impl CreatureKind {
     pub fn has_flag(&self, flag: CreatureFlag) -> bool {
         self.flags.contains(&flag)
+    }
+
+    pub fn walks_on(&self, element: CombatElement) -> bool {
+        match element {
+            CombatElement::Fire => self.has_flag(CreatureFlag::WalkOnFire),
+            CombatElement::Energy => self.has_flag(CreatureFlag::WalkOnEnergy),
+            CombatElement::Earth => self.has_flag(CreatureFlag::WalkOnPoison),
+            _ => false,
+        }
     }
 
     pub fn get_ability_effect(&self, id: CreatureAbilityId) -> Option<&AbilityEffect> {

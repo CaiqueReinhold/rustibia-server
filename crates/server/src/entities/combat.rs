@@ -7,6 +7,7 @@ use crate::entities::{
     items::ItemRef,
     skills::SkillType,
 };
+use crate::game::Tick;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -86,26 +87,36 @@ pub struct AttackPlan {
 }
 
 #[derive(Debug, Clone, Default)]
-pub struct Participation(SmallVec<[(AgentKey, u64); 4]>);
+pub struct Participation(SmallVec<[(AgentKey, u64, Tick); 4]>);
 
 impl Participation {
-    pub fn record(&mut self, attacker: AgentKey, damage: u32) {
-        match self.0.iter_mut().find(|(key, _)| *key == attacker) {
-            Some((_, total)) => *total = total.saturating_add(damage as u64),
-            None => self.0.push((attacker, damage as u64)),
+    pub fn record(&mut self, attacker: AgentKey, damage: u32, at: Tick) {
+        match self.0.iter_mut().find(|(key, ..)| *key == attacker) {
+            Some((_, total, last_hit)) => {
+                *total = total.saturating_add(damage as u64);
+                *last_hit = at;
+            }
+            None => self.0.push((attacker, damage as u64, at)),
         }
     }
 
+    pub fn last_hit(&self, attacker: AgentKey) -> Option<Tick> {
+        self.0
+            .iter()
+            .find(|(key, ..)| *key == attacker)
+            .map(|(.., last_hit)| *last_hit)
+    }
+
     pub fn contains(&self, attacker: AgentKey) -> bool {
-        self.0.iter().any(|(key, _)| *key == attacker)
+        self.0.iter().any(|(key, ..)| *key == attacker)
     }
 
     pub fn forget(&mut self, attacker: AgentKey) {
-        self.0.retain(|(key, _)| *key != attacker);
+        self.0.retain(|(key, ..)| *key != attacker);
     }
 
     pub fn total(&self) -> u64 {
-        self.0.iter().map(|(_, damage)| *damage).sum()
+        self.0.iter().map(|(_, damage, _)| *damage).sum()
     }
 
     /// `floor(pool * damage / total)` per contributor.
@@ -117,14 +128,14 @@ impl Participation {
 
         self.0
             .iter()
-            .filter_map(|(key, damage)| {
+            .filter_map(|(key, damage, _)| {
                 let share = (pool as u64 * *damage) / total;
                 (share > 0).then_some((*key, share))
             })
             .collect()
     }
 
-    pub fn participants(&self) -> &[(AgentKey, u64)] {
+    pub fn participants(&self) -> &[(AgentKey, u64, Tick)] {
         &self.0
     }
 }
@@ -139,10 +150,22 @@ mod tests {
     }
 
     #[test]
+    fn the_last_hit_is_remembered_per_attacker() {
+        let mut table = Participation::default();
+        table.record(key(1), 10, Tick(5));
+        table.record(key(2), 10, Tick(7));
+        table.record(key(1), 10, Tick(9));
+
+        assert_eq!(table.last_hit(key(1)), Some(Tick(9)));
+        assert_eq!(table.last_hit(key(2)), Some(Tick(7)));
+        assert_eq!(table.last_hit(key(3)), None);
+    }
+
+    #[test]
     fn repeat_damage_from_one_attacker_accumulates() {
         let mut table = Participation::default();
-        table.record(key(1), 30);
-        table.record(key(1), 12);
+        table.record(key(1), 30, Tick(0));
+        table.record(key(1), 12, Tick(0));
 
         assert_eq!(table.total(), 42);
         assert_eq!(table.shares(100), vec![(key(1), 100)]);
@@ -151,8 +174,8 @@ mod tests {
     #[test]
     fn two_attackers_stay_distinct() {
         let mut table = Participation::default();
-        table.record(key(1), 10);
-        table.record(key(2), 30);
+        table.record(key(1), 10, Tick(0));
+        table.record(key(2), 30, Tick(0));
 
         assert_eq!(table.total(), 40);
         assert_eq!(table.shares(40), vec![(key(1), 10), (key(2), 30)]);
@@ -161,7 +184,7 @@ mod tests {
     #[test]
     fn a_solo_killer_takes_the_whole_pool() {
         let mut table = Participation::default();
-        table.record(key(1), 7);
+        table.record(key(1), 7, Tick(0));
 
         assert_eq!(table.shares(500), vec![(key(1), 500)]);
     }
@@ -169,8 +192,8 @@ mod tests {
     #[test]
     fn a_three_to_one_contribution_splits_seventy_five_twenty_five() {
         let mut table = Participation::default();
-        table.record(key(1), 75);
-        table.record(key(2), 25);
+        table.record(key(1), 75, Tick(0));
+        table.record(key(2), 25, Tick(0));
 
         assert_eq!(table.shares(400), vec![(key(1), 300), (key(2), 100)]);
     }
@@ -178,9 +201,9 @@ mod tests {
     #[test]
     fn the_floor_loses_the_remainder_rather_than_over_paying() {
         let mut table = Participation::default();
-        table.record(key(1), 1);
-        table.record(key(2), 1);
-        table.record(key(3), 1);
+        table.record(key(1), 1, Tick(0));
+        table.record(key(2), 1, Tick(0));
+        table.record(key(3), 1, Tick(0));
 
         let shares = table.shares(10);
 
@@ -191,8 +214,8 @@ mod tests {
     #[test]
     fn a_share_that_floors_to_zero_is_not_returned() {
         let mut table = Participation::default();
-        table.record(key(1), 999);
-        table.record(key(2), 1);
+        table.record(key(1), 999, Tick(0));
+        table.record(key(2), 1, Tick(0));
 
         assert_eq!(table.shares(100), vec![(key(1), 99)]);
     }
@@ -208,7 +231,7 @@ mod tests {
     #[test]
     fn a_zero_pool_yields_no_shares() {
         let mut table = Participation::default();
-        table.record(key(1), 10);
+        table.record(key(1), 10, Tick(0));
 
         assert!(table.shares(0).is_empty());
     }
@@ -217,7 +240,7 @@ mod tests {
     fn four_attackers_do_not_spill_to_the_heap() {
         let mut table = Participation::default();
         for n in 1..=4 {
-            table.record(key(n), 10);
+            table.record(key(n), 10, Tick(0));
         }
 
         assert!(!table.0.spilled());
@@ -226,9 +249,9 @@ mod tests {
     #[test]
     fn forgetting_an_attacker_keeps_the_others() {
         let mut table = Participation::default();
-        table.record(key(1), 10);
-        table.record(key(2), 30);
-        table.record(key(3), 5);
+        table.record(key(1), 10, Tick(0));
+        table.record(key(2), 30, Tick(0));
+        table.record(key(3), 5, Tick(0));
 
         table.forget(key(2));
 
@@ -240,7 +263,7 @@ mod tests {
     #[test]
     fn forgetting_an_absent_attacker_changes_nothing() {
         let mut table = Participation::default();
-        table.record(key(1), 10);
+        table.record(key(1), 10, Tick(0));
 
         table.forget(key(2));
 

@@ -10,6 +10,7 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+  - walk_on_energy
 modifiers:
   physical: 0.9
   fire: 0.8

@@ -2364,3 +2364,17 @@ spells:
         count: 10
       effect_id: 16
       missile_id: 4
+  - id: 109
+    name: Cancel Magic Shield
+    words: exana vita
+    group: support
+    cooldown_ticks: 40
+    mana: 50
+    level: 14
+    icon: 125
+    vocations: [sorcerer, druid]
+    effect:
+      type: cancel_magic_shield
+      target:
+        type: self
+      effect_id: 13

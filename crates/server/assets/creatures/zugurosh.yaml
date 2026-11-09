@@ -11,6 +11,9 @@ outfit:
   colors: [3, 18, 38, 72]
 flags:
   - immune_paralysis
+  - walk_on_fire
+  - walk_on_energy
+  - walk_on_poison
 modifiers:
   ice: 1.15
   earth: 1.08

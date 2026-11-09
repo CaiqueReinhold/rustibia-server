@@ -10,6 +10,7 @@ outfit:
   colors: [94, 77, 78, 79]
 flags:
   - immune_paralysis
+  - walk_on_fire
 modifiers:
   death: 1.1
   earth: 1.1

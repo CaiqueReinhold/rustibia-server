@@ -5,6 +5,7 @@ use tracing::error;
 use crate::constants::items::MAX_DROP_CHANCE;
 use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
 use crate::entities::agent::{Agent, AgentKey, Facing};
+use crate::entities::combat::CombatElement;
 use crate::entities::conditions::ConditionAttack;
 use crate::entities::creature::{
     AbilityEffect, CreatureAbility, CreatureAbilityId, CreatureAttack, CreatureKind,
@@ -15,7 +16,7 @@ use crate::entities::position::{Direction, Position, Rect};
 use crate::entities::targeting::TargetMode;
 use crate::game::config::GAME_CONFIG;
 use crate::game::map_query::{can_throw, face_target, iter_visible_floors};
-use crate::game::pathfinding::{self, Goal};
+use crate::game::pathfinding::{self, Goal, TileEntry};
 use crate::game::random::Rolls;
 use crate::game::{Tick, TickDelta};
 
@@ -40,6 +41,13 @@ pub enum CreatureAction {
     },
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct BlockedChase {
+    target: AgentKey,
+    since: Tick,
+    provoked: bool,
+}
+
 #[derive(Debug, Default)]
 pub struct CreatureState {
     next_wander_tick: Tick,
@@ -47,6 +55,7 @@ pub struct CreatureState {
     next_dance_tick: Tick,
     next_change_target_tick: Tick,
     ability_cooldowns: Vec<(CreatureAbilityId, Tick)>,
+    chase: Option<BlockedChase>,
 }
 
 impl CreatureState {
@@ -70,6 +79,39 @@ impl CreatureState {
 
     fn stamp_change_target(&mut self, current_tick: Tick, kind: &CreatureKind) {
         self.next_change_target_tick = current_tick + kind.change_target.interval;
+    }
+
+    fn ignores_fields(&self, target: AgentKey) -> bool {
+        self.chase
+            .is_some_and(|chase| chase.target == target && chase.provoked)
+    }
+
+    fn keep_chase_on(&mut self, target: Option<AgentKey>) {
+        if self.chase.is_some_and(|chase| Some(chase.target) != target) {
+            self.chase = None;
+        }
+    }
+
+    fn provoke(&mut self, target: AgentKey, targets_last_hit: Option<Tick>) {
+        if let Some(chase) = self.chase.as_mut()
+            && chase.target == target
+            && targets_last_hit.is_some_and(|hit| hit > chase.since)
+        {
+            chase.provoked = true;
+        }
+    }
+
+    fn note_chase(&mut self, target: AgentKey, step: pathfinding::Step, tick: Tick) {
+        let current = self.chase.filter(|chase| chase.target == target);
+        self.chase = match step {
+            pathfinding::Step::Arrived => None,
+            pathfinding::Step::Move(_) => current.filter(|chase| chase.provoked),
+            pathfinding::Step::Unreachable => Some(current.unwrap_or(BlockedChase {
+                target,
+                since: tick,
+                provoked: false,
+            })),
+        };
     }
 
     fn next_ability_tick(&self, id: CreatureAbilityId) -> Tick {
@@ -135,6 +177,11 @@ pub fn active_creatures(map: &GameMap) -> HashSet<AgentKey> {
 }
 
 pub fn decide_action(ctx: CreatureBehaviourContext) {
+    let target = ctx
+        .map
+        .get_agent(ctx.creature)
+        .and_then(|agent| agent.target());
+    ctx.state.keep_chase_on(target);
     act(get_state(&ctx), ctx)
 }
 
@@ -253,14 +300,19 @@ fn in_combat(mut ctx: CreatureBehaviourContext) {
                 target: Some(agent_key),
             });
         } else {
-            match approach(
+            ctx.state
+                .provoke(target_key, agent.participation().last_hit(target_key));
+            let step = approach(
                 ctx.map,
                 ctx.creature,
                 position,
                 target_position,
                 target_distance,
+                ctx.state.ignores_fields(target_key),
                 &mut ctx.roll,
-            ) {
+            );
+            ctx.state.note_chase(target_key, step, ctx.world_tick);
+            match step {
                 pathfinding::Step::Move(direction) => {
                     ctx.actions.push(CreatureAction::Walk {
                         agent_key: ctx.creature,
@@ -414,7 +466,7 @@ fn returning(mut ctx: CreatureBehaviourContext) {
             GAME_CONFIG.movement.wander_distance,
         ),
         &Rect::radius(position, SIGHT_RANGE),
-        |pos| !avoids(ctx.map, pos),
+        |pos| field_entry(ctx.map, ctx.creature, pos, false),
     ) {
         pathfinding::Step::Arrived => {}
         pathfinding::Step::Move(direction) => {
@@ -491,8 +543,9 @@ fn search_target(
 
     match strategy {
         TargetSearchStrategy::Random => {
-            let reachable =
-                pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
+            let reachable = pathfinding::reachable_from(map, creature, &viewport, |pos| {
+                field_entry(map, creature, pos, false)
+            });
             let range = map
                 .get_agent(creature)
                 .and_then(|a| a.get_creature_kind())
@@ -516,11 +569,14 @@ fn search_target(
         }
         TargetSearchStrategy::Damage => {
             let agent = map.get_agent(creature)?;
-            let weighted_candidates: Vec<&(AgentKey, u64)> = agent
+            let weighted_candidates: Vec<(AgentKey, u64)> = agent
                 .participation()
                 .participants()
                 .iter()
-                .filter(|(part_key, _)| candidates.iter().any(|(cand_key, _)| part_key == cand_key))
+                .filter(|(part_key, ..)| {
+                    candidates.iter().any(|(cand_key, _)| part_key == cand_key)
+                })
+                .map(|(key, damage, _)| (*key, *damage))
                 .collect();
             if !weighted_candidates.is_empty() {
                 let weights: Vec<u64> = weighted_candidates.iter().map(|(_, w)| *w).collect();
@@ -532,8 +588,9 @@ fn search_target(
             random(roll, candidates)
         }
         TargetSearchStrategy::Nearest => {
-            let reachable =
-                pathfinding::reachable_from(map, creature, &viewport, |pos| !avoids(map, pos));
+            let reachable = pathfinding::reachable_from(map, creature, &viewport, |pos| {
+                field_entry(map, creature, pos, false)
+            });
             let range = map
                 .get_agent(creature)
                 .and_then(|a| a.get_creature_kind())
@@ -595,6 +652,7 @@ fn approach(
     from: &Position,
     target: &Position,
     target_distance: u16,
+    ignores_fields: bool,
     roll: &mut Rolls,
 ) -> pathfinding::Step {
     let bounds = Rect::radius(from, SIGHT_RANGE);
@@ -604,7 +662,7 @@ fn approach(
             creature,
             &Goal::adjacent(target.clone()),
             &bounds,
-            |pos| !avoids(map, pos),
+            |pos| field_entry(map, creature, pos, ignores_fields),
         );
     }
 
@@ -621,7 +679,7 @@ fn approach(
             range: target_distance,
         },
         &bounds,
-        |pos| !avoids(map, pos),
+        |pos| field_entry(map, creature, pos, ignores_fields),
     )
 }
 
@@ -806,13 +864,47 @@ fn can_attack_from(map: &GameMap, agent: &Agent, from: &Position, target: &Posit
     in_range && can_throw(map, from, target, true)
 }
 
-fn avoids(map: &GameMap, pos: &Position) -> bool {
-    map.iter_items(pos)
-        .is_ok_and(|mut items| items.any(|item| item.config.has_flag(ItemFlag::Avoid)))
+fn field_entry(map: &GameMap, walker: AgentKey, pos: &Position, ignores_fields: bool) -> TileEntry {
+    let Ok(items) = map.iter_items(pos) else {
+        return TileEntry::Free;
+    };
+    items
+        .map(|item| match item.config.attr_field() {
+            Some(spec) if spec.deals_damage() => {
+                field_hazard(map, walker, spec.element, ignores_fields)
+            }
+            _ if item.config.has_flag(ItemFlag::Avoid) => TileEntry::Refused,
+            _ => TileEntry::Free,
+        })
+        .max()
+        .unwrap_or(TileEntry::Free)
+}
+
+fn field_hazard(
+    map: &GameMap,
+    walker: AgentKey,
+    element: CombatElement,
+    ignores_fields: bool,
+) -> TileEntry {
+    let Some(agent) = map.get_agent(walker) else {
+        return TileEntry::Refused;
+    };
+    let unharmed = agent
+        .get_creature_kind()
+        .is_some_and(|kind| kind.damage_modifier(element) == 0.0 || kind.walks_on(element));
+    if unharmed {
+        TileEntry::Free
+    } else if !ignores_fields {
+        TileEntry::Refused
+    } else if agent.conditions().has_damage_over_time(element) {
+        TileEntry::Free
+    } else {
+        TileEntry::Harmful
+    }
 }
 
 pub fn will_enter(map: &GameMap, creature: AgentKey, pos: &Position) -> bool {
-    map.can_move(pos, creature) && !avoids(map, pos)
+    map.can_move(pos, creature) && field_entry(map, creature, pos, false) == TileEntry::Free
 }
 
 fn escape_ladder(offset_x: i32, offset_y: i32) -> [Rung; 5] {
@@ -899,6 +991,7 @@ mod tests {
     use crate::entities::Bounds;
     use crate::entities::agent::{Agent, Pool};
     use crate::entities::combat::CombatElement;
+    use crate::entities::conditions::{ConditionSpec, DamageOverTime, SpecSchedule};
     use crate::entities::creature::{AbilityEffect, ChangeTarget, CreatureAbility, CreatureAttack};
     use crate::entities::creature::{CreatureAttackDamage, CreatureFlag, CreatureKind};
     use crate::entities::items::ItemId;
@@ -989,6 +1082,48 @@ mod tests {
         .unwrap();
     }
 
+    fn a_field_item(element: CombatElement, damage: u32, flags: HashSet<ItemFlag>) -> Item {
+        an_item_with(
+            4,
+            flags,
+            vec![ItemAttribute::Field(Arc::new(ConditionSpec {
+                element,
+                interval: TickDelta(20),
+                schedule: SpecSchedule::Flat {
+                    damage: Bounds {
+                        min: damage,
+                        max: damage,
+                    },
+                    count: 3,
+                },
+                delayed: false,
+            }))],
+        )
+    }
+
+    fn lay(map: &mut GameMap, x: u16, item: Item) {
+        map.place_item(&Position::new(x, 10, 7), None, None, item)
+            .unwrap();
+    }
+
+    fn burn(map: &mut GameMap, x: u16) {
+        lay(
+            map,
+            x,
+            a_field_item(CombatElement::Fire, 10, HashSet::new()),
+        );
+    }
+
+    fn put_kind(map: &mut GameMap, x: u16, kind: CreatureKind) -> AgentKey {
+        let at = Position::new(x, 10, 7);
+        map.insert_agent(Agent::from_creature_kind(Arc::new(kind), at.clone()), &at)
+            .unwrap()
+    }
+
+    fn entry_at(map: &GameMap, walker: AgentKey, x: u16, ignores_fields: bool) -> TileEntry {
+        field_entry(map, walker, &Position::new(x, 10, 7), ignores_fields)
+    }
+
     fn wander_from(map: &GameMap, creature: AgentKey, seed: u64) -> Option<Direction> {
         let mut state = CreatureState::default();
         wander(&mut CreatureBehaviourContext {
@@ -1075,6 +1210,287 @@ mod tests {
         block_walking(&mut map, 16);
 
         assert!((0..64).all(|seed| wander_from(&map, rat, seed).is_none()));
+    }
+
+    #[test]
+    fn a_damaging_field_is_refused_by_a_creature_that_has_not_been_provoked() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+        burn(&mut map, 16);
+
+        assert_eq!(entry_at(&map, rat, 16, false), TileEntry::Refused);
+    }
+
+    #[test]
+    fn a_provoked_creature_finds_a_damaging_field_harmful() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+        burn(&mut map, 16);
+
+        assert_eq!(entry_at(&map, rat, 16, true), TileEntry::Harmful);
+    }
+
+    #[test]
+    fn a_provoked_creature_already_burning_crosses_fire_freely() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+        burn(&mut map, 16);
+        map.get_agent_mut(rat)
+            .unwrap()
+            .conditions_mut()
+            .apply_damage_over_time(DamageOverTime::flat(
+                CombatElement::Fire,
+                None,
+                TickDelta(20),
+                10,
+                3,
+            ));
+
+        assert_eq!(entry_at(&map, rat, 16, true), TileEntry::Free);
+        assert_eq!(entry_at(&map, rat, 16, false), TileEntry::Refused);
+    }
+
+    #[test]
+    fn a_creature_that_walks_on_fire_enters_a_fire_field() {
+        let mut map = a_corridor(14..=16);
+        let walker = put_kind(
+            &mut map,
+            15,
+            CreatureKind {
+                flags: vec![CreatureFlag::WalkOnFire],
+                ..a_creature_kind("Imp")
+            },
+        );
+        burn(&mut map, 16);
+
+        assert_eq!(entry_at(&map, walker, 16, false), TileEntry::Free);
+    }
+
+    #[test]
+    fn a_creature_immune_to_fire_enters_a_fire_field() {
+        let mut map = a_corridor(14..=16);
+        let elemental = put_kind(
+            &mut map,
+            15,
+            CreatureKind {
+                elemental_modifiers: vec![(CombatElement::Fire, 0.0)],
+                ..a_creature_kind("Fire Elemental")
+            },
+        );
+        burn(&mut map, 16);
+
+        assert_eq!(entry_at(&map, elemental, 16, false), TileEntry::Free);
+    }
+
+    #[test]
+    fn a_damaging_field_is_judged_by_its_element_even_when_flagged_avoid() {
+        let mut map = a_corridor(14..=16);
+        let walker = put_kind(
+            &mut map,
+            15,
+            CreatureKind {
+                flags: vec![CreatureFlag::WalkOnEnergy],
+                ..a_creature_kind("Spark")
+            },
+        );
+        lay(
+            &mut map,
+            16,
+            a_field_item(CombatElement::Energy, 10, HashSet::from([ItemFlag::Avoid])),
+        );
+
+        assert_eq!(entry_at(&map, walker, 16, false), TileEntry::Free);
+    }
+
+    #[test]
+    fn a_harmless_field_falls_back_to_the_avoid_flag() {
+        let mut map = a_corridor(14..=17);
+        let rat = put_creature(&mut map, 15);
+        lay(
+            &mut map,
+            16,
+            a_field_item(CombatElement::Fire, 0, HashSet::new()),
+        );
+        lay(
+            &mut map,
+            17,
+            a_field_item(CombatElement::Fire, 0, HashSet::from([ItemFlag::Avoid])),
+        );
+
+        assert_eq!(entry_at(&map, rat, 16, false), TileEntry::Free);
+        assert_eq!(entry_at(&map, rat, 17, false), TileEntry::Refused);
+    }
+
+    #[test]
+    fn a_creature_never_wanders_onto_a_damaging_field() {
+        let mut map = a_corridor(14..=16);
+        let rat = put_creature(&mut map, 15);
+        burn(&mut map, 14);
+        burn(&mut map, 16);
+
+        assert!((0..64).all(|seed| wander_from(&map, rat, seed).is_none()));
+    }
+
+    fn a_key(n: u64) -> AgentKey {
+        AgentKey::from(slotmap::KeyData::from_ffi((1 << 32) | n))
+    }
+
+    fn provoked_against(target: AgentKey) -> CreatureState {
+        let mut state = CreatureState::default();
+        state.note_chase(target, pathfinding::Step::Unreachable, Tick(100));
+        state.provoke(target, Some(Tick(101)));
+        assert!(state.ignores_fields(target));
+        state
+    }
+
+    #[test]
+    fn a_path_found_before_any_hit_forgets_when_the_block_began() {
+        let mage = a_key(1);
+        let mut state = CreatureState::default();
+        state.note_chase(mage, pathfinding::Step::Unreachable, Tick(100));
+        state.note_chase(mage, pathfinding::Step::Move(Direction::East), Tick(102));
+        state.note_chase(mage, pathfinding::Step::Unreachable, Tick(110));
+
+        state.provoke(mage, Some(Tick(105)));
+
+        assert!(!state.ignores_fields(mage));
+    }
+
+    #[test]
+    fn a_provoked_creature_keeps_ignoring_fields_while_it_closes_in() {
+        let mage = a_key(1);
+        let mut state = provoked_against(mage);
+
+        state.note_chase(mage, pathfinding::Step::Move(Direction::East), Tick(104));
+
+        assert!(state.ignores_fields(mage));
+    }
+
+    #[test]
+    fn arriving_ends_the_provocation() {
+        let mage = a_key(1);
+        let mut state = provoked_against(mage);
+
+        state.note_chase(mage, pathfinding::Step::Arrived, Tick(110));
+
+        assert!(!state.ignores_fields(mage));
+    }
+
+    #[test]
+    fn a_target_change_ends_the_provocation() {
+        let (mage, knight) = (a_key(1), a_key(2));
+        let mut state = provoked_against(mage);
+
+        state.keep_chase_on(Some(knight));
+        state.keep_chase_on(Some(mage));
+
+        assert!(!state.ignores_fields(mage));
+    }
+
+    #[test]
+    fn losing_the_target_ends_the_provocation() {
+        let mage = a_key(1);
+        let mut state = provoked_against(mage);
+
+        state.keep_chase_on(None);
+
+        assert!(!state.ignores_fields(mage));
+    }
+
+    /// A rat at 15 chasing a mage at 18 down a corridor with fire at 16, so the field is the
+    /// only way. Fire does not block sight, so the rat keeps the mage as its target.
+    fn a_walled_off_chase() -> (GameMap, AgentKey, AgentKey) {
+        let mut map = a_corridor(5..=25);
+        let rat = put_creature(&mut map, 15);
+        let mage = put_player(&mut map, 18, 1);
+        burn(&mut map, 16);
+        map.get_agent_mut(rat).unwrap().set_target(Some(mage), 1);
+        (map, rat, mage)
+    }
+
+    fn steps_east(actions: &[CreatureAction]) -> bool {
+        actions.iter().any(|action| {
+            matches!(
+                action,
+                CreatureAction::Walk {
+                    direction: Direction::East,
+                    ..
+                }
+            )
+        })
+    }
+
+    #[test]
+    fn a_walled_off_creature_waits_at_the_field() {
+        let (map, rat, _) = a_walled_off_chase();
+        let mut state = CreatureState::default();
+
+        assert!(!steps_east(&decide_at(&map, rat, &mut state, Tick(100), 7)));
+        assert!(!steps_east(&decide_at(&map, rat, &mut state, Tick(102), 7)));
+    }
+
+    #[test]
+    fn a_creature_hit_by_its_target_while_walled_off_crosses() {
+        let (mut map, rat, mage) = a_walled_off_chase();
+        let mut state = CreatureState::default();
+        decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(mage, 5, Tick(101));
+
+        assert!(steps_east(&decide_at(&map, rat, &mut state, Tick(102), 7)));
+    }
+
+    #[test]
+    fn a_hit_taken_before_the_mage_stepped_behind_the_field_does_not_count() {
+        let (mut map, rat, mage) = a_walled_off_chase();
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(mage, 5, Tick(90));
+        let mut state = CreatureState::default();
+
+        decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        assert!(!steps_east(&decide_at(&map, rat, &mut state, Tick(102), 7)));
+    }
+
+    #[test]
+    fn a_hit_from_someone_other_than_its_target_does_not_send_it_through() {
+        let (mut map, rat, _) = a_walled_off_chase();
+        let knight = put_player(&mut map, 5, 2);
+        let mut state = CreatureState::default();
+        decide_at(&map, rat, &mut state, Tick(100), 7);
+
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(knight, 5, Tick(101));
+
+        assert!(!steps_east(&decide_at(&map, rat, &mut state, Tick(102), 7)));
+    }
+
+    #[test]
+    fn a_creature_that_walks_on_fire_crosses_without_being_hit() {
+        let mut map = a_corridor(5..=25);
+        let imp = put_kind(
+            &mut map,
+            15,
+            CreatureKind {
+                flags: vec![CreatureFlag::WalkOnFire],
+                ..a_creature_kind("Imp")
+            },
+        );
+        let mage = put_player(&mut map, 18, 1);
+        burn(&mut map, 16);
+        map.get_agent_mut(imp).unwrap().set_target(Some(mage), 1);
+
+        assert!(steps_east(&decide_at(
+            &map,
+            imp,
+            &mut CreatureState::default(),
+            Tick(100),
+            7
+        )));
     }
 
     #[test]
@@ -2078,7 +2494,9 @@ mod tests {
         let rat = put_creature(&mut map, 15);
         let attacker = put_player(&mut map, 12, 1);
         put_player(&mut map, 18, 2);
-        map.get_agent_mut(rat).unwrap().record_damage(attacker, 50);
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(attacker, 50, Tick(0));
 
         assert!(
             (0..64).all(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed)
@@ -2093,8 +2511,8 @@ mod tests {
         let scratch = put_player(&mut map, 12, 1);
         let heavy = put_player(&mut map, 18, 2);
         let agent = map.get_agent_mut(rat).unwrap();
-        agent.record_damage(scratch, 1);
-        agent.record_damage(heavy, 99);
+        agent.record_damage(scratch, 1, Tick(0));
+        agent.record_damage(heavy, 99, Tick(0));
 
         let picks: Vec<AgentKey> = (0..256)
             .filter_map(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed))
@@ -2115,7 +2533,9 @@ mod tests {
         let visible = put_player(&mut map, 12, 1);
         let hidden = put_player(&mut map, 19, 2);
         block_sight(&mut map, 17);
-        map.get_agent_mut(rat).unwrap().record_damage(hidden, 50);
+        map.get_agent_mut(rat)
+            .unwrap()
+            .record_damage(hidden, 50, Tick(0));
 
         assert!(
             (0..64)

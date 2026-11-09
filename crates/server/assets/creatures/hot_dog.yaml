@@ -8,6 +8,8 @@ experience: 190
 outfit:
   id: 32
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_fire
 modifiers:
   physical: 1.2
   holy: 1.05

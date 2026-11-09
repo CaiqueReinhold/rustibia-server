@@ -1380,13 +1380,13 @@ mod tests {
             .unwrap();
         map.get_agent_mut(victim)
             .unwrap()
-            .record_damage(quitter, 20);
+            .record_damage(quitter, 20, Tick(0));
         map.get_agent_mut(victim)
             .unwrap()
-            .record_damage(creature, 30);
+            .record_damage(creature, 30, Tick(0));
         map.get_agent_mut(creature)
             .unwrap()
-            .record_damage(quitter, 10);
+            .record_damage(quitter, 10, Tick(0));
         (map, quitter, victim, creature)
     }
 

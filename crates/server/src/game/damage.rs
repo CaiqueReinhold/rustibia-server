@@ -83,7 +83,7 @@ pub fn apply_damage(
     if let Some(mut agent) = ctx.map.agent_mut(target) {
         agent.remove_life(applied);
         if let Some(source) = source {
-            agent.record_damage(source, applied);
+            agent.record_damage(source, applied, ctx.tick);
         }
     }
 
@@ -505,6 +505,21 @@ mod tests {
         let table = map.get_agent(rat).unwrap().participation();
         assert_eq!(table.total(), 30);
         assert_eq!(table.shares(100), vec![(hunter, 100)]);
+    }
+
+    #[test]
+    fn a_hit_stamps_its_tick_on_the_attackers_participation() {
+        let (map, rat, hunter) = an_attacked_creature(100);
+        let mut h = TestHarness::seeded(1);
+        h.tick = Tick(42);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), rat, physical(30), Some(hunter));
+
+        assert_eq!(
+            map.get_agent(rat).unwrap().participation().last_hit(hunter),
+            Some(Tick(42))
+        );
     }
 
     #[test]

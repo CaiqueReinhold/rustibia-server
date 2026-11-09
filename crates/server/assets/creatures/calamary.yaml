@@ -11,6 +11,8 @@ outfit:
 flags:
   - immune_paralysis
   - passive
+  - walk_on_fire
+  - walk_on_poison
 modifiers:
   energy: 1.05
   physical: 1.05

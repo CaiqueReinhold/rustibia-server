@@ -8,6 +8,8 @@ experience: 515
 outfit:
   id: 239
   colors: [0, 0, 0, 0]
+flags:
+  - walk_on_poison
 modifiers:
   ice: 0.9
   energy: 0.8

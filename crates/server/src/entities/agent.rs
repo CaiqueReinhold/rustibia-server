@@ -483,8 +483,8 @@ impl Agent {
         &self.participation
     }
 
-    pub fn record_damage(&mut self, attacker: AgentKey, damage: u32) {
-        self.participation.record(attacker, damage);
+    pub fn record_damage(&mut self, attacker: AgentKey, damage: u32, at: Tick) {
+        self.participation.record(attacker, damage, at);
     }
 
     pub fn clear_participation(&mut self) {
@@ -922,9 +922,9 @@ mod tests {
             .unwrap();
 
         let mut agent = Agent::from_player(make_snapshot(1));
-        agent.record_damage(first, 10);
-        agent.record_damage(second, 30);
-        agent.record_damage(first, 10);
+        agent.record_damage(first, 10, Tick(0));
+        agent.record_damage(second, 30, Tick(0));
+        agent.record_damage(first, 10, Tick(0));
 
         assert_eq!(agent.participation().total(), 50);
         assert_eq!(
@@ -947,7 +947,7 @@ mod tests {
             .unwrap();
 
         let mut agent = Agent::from_player(make_snapshot(1));
-        agent.record_damage(attacker, 50);
+        agent.record_damage(attacker, 50, Tick(0));
         assert_eq!(agent.participation().total(), 50);
 
         let snapshot = agent.to_snapshot(Position::new(1, 1, 7)).unwrap();

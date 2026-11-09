@@ -31,6 +31,7 @@ pub enum SupportEffect {
     MagicShield {
         duration: TickDelta,
     },
+    CancelMagicShield,
     Cure {
         element: CombatElement,
     },

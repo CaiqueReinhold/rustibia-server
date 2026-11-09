@@ -11,6 +11,7 @@ outfit:
   colors: [0, 0, 0, 0]
 flags:
   - immune_paralysis
+  - walk_on_poison
 modifiers:
   fire: 1.05
   energy: 0.9

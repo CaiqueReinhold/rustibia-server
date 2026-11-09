@@ -47,9 +47,9 @@ mod tests {
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::entities::world_map::WorldMap;
-    use crate::game::TestHarness;
     use crate::game::events::BroadcastMessage;
     use crate::game::skills::{rated, total_experience, unrated};
+    use crate::game::{TestHarness, Tick};
     use crate::persistence::test_fixtures::{
         a_test_creature, a_test_creature_worth, a_test_snapshot,
     };
@@ -82,7 +82,7 @@ mod tests {
     fn hit(map: &mut GameMap, victim: AgentKey, attacker: AgentKey, damage: u32) {
         map.get_agent_mut(victim)
             .unwrap()
-            .record_damage(attacker, damage);
+            .record_damage(attacker, damage, Tick(0));
     }
 
     fn level(map: &GameMap, key: AgentKey) -> u16 {

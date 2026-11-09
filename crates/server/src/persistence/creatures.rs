@@ -861,6 +861,19 @@ say:
     }
 
     #[test]
+    fn walk_on_flags_reach_the_kind_as_elements() {
+        let kind = a_creature(&A_CREATURE.replace(
+            "speed: 86\n",
+            "speed: 86\nflags: [walk_on_fire, walk_on_poison]\n",
+        ));
+
+        assert!(kind.walks_on(CombatElement::Fire));
+        assert!(kind.walks_on(CombatElement::Earth));
+        assert!(!kind.walks_on(CombatElement::Energy));
+        assert!(!kind.walks_on(CombatElement::Physical));
+    }
+
+    #[test]
     fn a_paralysing_ability_loads_as_support() {
         let contents = A_CREATURE.replace(
             "abilities:\n",
