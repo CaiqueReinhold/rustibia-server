@@ -1,7 +1,15 @@
+use std::sync::Arc;
+
 use smallvec::SmallVec;
 
 use crate::{
-    entities::{Bounds, agent::AgentKey, combat::CombatElement},
+    entities::{
+        Bounds,
+        agent::AgentKey,
+        combat::CombatElement,
+        effects::{EffectId, MissileSource},
+        targeting::TargetMode,
+    },
     game::{Tick, TickDelta, config::GAME_CONFIG},
 };
 
@@ -17,16 +25,30 @@ const MAGIC_SHIELD_BIT: u32 = 1 << 7;
 #[derive(Debug, Clone, PartialEq)]
 pub struct ConditionSpec {
     pub element: CombatElement,
-    pub damage: Bounds,
     pub interval: TickDelta,
     pub schedule: SpecSchedule,
     pub delayed: bool,
 }
 
+#[derive(Clone, Debug)]
+pub struct ConditionAttack {
+    pub condition: ConditionSpec,
+    pub target: TargetMode,
+    pub effect_id: Option<EffectId>,
+    pub missile_id: Option<MissileSource>,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum SpecSchedule {
-    Decaying { start: Option<u32> },
-    Flat { count: u32 },
+    Decaying { damage: Bounds, start: Option<u32> },
+    Flat { damage: Bounds, count: u32 },
+    Stepped(Arc<[DamageStep]>),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct DamageStep {
+    pub count: u32,
+    pub value: u32,
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
@@ -61,6 +83,11 @@ enum Schedule {
     Flat {
         value: u32,
         remaining: u32,
+    },
+    Stepped {
+        steps: Arc<[DamageStep]>,
+        step: usize,
+        left: u32,
     },
 }
 
@@ -115,6 +142,25 @@ impl DamageOverTime {
         )
     }
 
+    pub fn stepped(
+        element: CombatElement,
+        source: Option<AgentKey>,
+        interval: TickDelta,
+        steps: Arc<[DamageStep]>,
+    ) -> Self {
+        let left = steps.first().map_or(0, |step| step.count);
+        Self::new(
+            element,
+            source,
+            interval,
+            Schedule::Stepped {
+                steps,
+                step: 0,
+                left,
+            },
+        )
+    }
+
     fn new(
         element: CombatElement,
         source: Option<AgentKey>,
@@ -138,6 +184,20 @@ impl DamageOverTime {
         match self.schedule {
             Schedule::Decaying { total, dealt, .. } => total.saturating_sub(dealt),
             Schedule::Flat { value, remaining } => value * remaining,
+            Schedule::Stepped {
+                ref steps,
+                step,
+                left,
+            } => {
+                let Some(current) = steps.get(step) else {
+                    return 0;
+                };
+                current.value * left
+                    + steps[step + 1..]
+                        .iter()
+                        .map(|later| later.value * later.count)
+                        .sum::<u32>()
+            }
         }
     }
 
@@ -173,6 +233,14 @@ impl DamageOverTime {
                 }
                 *remaining -= 1;
                 Some(*value)
+            }
+            Schedule::Stepped { steps, step, left } => {
+                while *left == 0 {
+                    *step += 1;
+                    *left = steps.get(*step)?.count;
+                }
+                *left -= 1;
+                Some(steps[*step].value)
             }
         }
     }
@@ -526,6 +594,35 @@ mod tests {
         }
 
         assert_eq!(hits, [10, 10, 10, 10, 10, 10, 10]);
+    }
+
+    #[test]
+    fn a_stepped_schedule_deals_each_step_in_turn() {
+        let steps = [
+            DamageStep {
+                count: 1,
+                value: 45,
+            },
+            DamageStep {
+                count: 0,
+                value: 99,
+            },
+            DamageStep {
+                count: 2,
+                value: 30,
+            },
+        ];
+        let mut dot =
+            DamageOverTime::stepped(CombatElement::Death, None, TickDelta(60), steps.into());
+        assert_eq!(dot.remaining(), 105);
+
+        let mut hits = Vec::new();
+        while let Some(hit) = dot.next_hit() {
+            hits.push(hit);
+            assert_eq!(dot.remaining(), 105 - hits.iter().sum::<u32>());
+        }
+
+        assert_eq!(hits, [45, 30, 30]);
     }
 
     /// TFS caps an authored `start` at the attack's `max` and lets the list overshoot the

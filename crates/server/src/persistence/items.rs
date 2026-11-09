@@ -543,9 +543,11 @@ mod tests {
             ),
             Some(ItemAttribute::Field(Arc::new(ConditionSpec {
                 element: CombatElement::Fire,
-                damage: Bounds { min: 20, max: 20 },
                 interval: TickDelta(200),
-                schedule: SpecSchedule::Flat { count: 7 },
+                schedule: SpecSchedule::Flat {
+                    damage: Bounds { min: 20, max: 20 },
+                    count: 7
+                },
                 delayed: false,
             })))
         );
@@ -569,7 +571,10 @@ mod tests {
         assert!(field.has_flag(ItemFlag::Unreplaceable));
         assert_eq!(
             field.attr_field().map(|spec| spec.schedule.clone()),
-            Some(SpecSchedule::Decaying { start: Some(5) })
+            Some(SpecSchedule::Decaying {
+                damage: Bounds { min: 100, max: 100 },
+                start: Some(5)
+            })
         );
     }
 

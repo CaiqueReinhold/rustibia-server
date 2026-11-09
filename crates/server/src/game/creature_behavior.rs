@@ -5,9 +5,9 @@ use tracing::error;
 use crate::constants::items::MAX_DROP_CHANCE;
 use crate::constants::view::{AGENT_DESPAWN_RADIUS, SIGHT_RANGE};
 use crate::entities::agent::{Agent, AgentKey, Facing};
+use crate::entities::conditions::ConditionAttack;
 use crate::entities::creature::{
-    AbilityEffect, ConditionAttack, CreatureAbility, CreatureAbilityId, CreatureAttack,
-    CreatureKind,
+    AbilityEffect, CreatureAbility, CreatureAbilityId, CreatureAttack, CreatureKind,
 };
 use crate::entities::items::ItemFlag;
 use crate::entities::map::GameMap;

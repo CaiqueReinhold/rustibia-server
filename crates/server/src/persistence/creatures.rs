@@ -10,12 +10,13 @@ use thiserror::Error;
 use crate::config::CONFIG;
 use crate::entities::agent::{OutfitColors, OutfitId, Pool};
 use crate::entities::combat::CombatElement;
+use crate::entities::conditions::ConditionAttack;
 use crate::entities::creature::{
-    AbilityEffect, BloodType, ChangeTarget, ConditionAttack, CreatureAbility, CreatureAbilityId,
-    CreatureAttack, CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, LootEntry,
+    AbilityEffect, BloodType, ChangeTarget, CreatureAbility, CreatureAbilityId, CreatureAttack,
+    CreatureAttackDamage, CreatureFlag, CreatureKind, CreatureKindId, LootEntry,
 };
 
-use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
+use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId, MissileSource};
 use crate::entities::items::ItemId;
 use crate::entities::support::SupportCast;
 use crate::entities::voices::Voices;
@@ -250,7 +251,7 @@ fn parse_ability(
                     condition: condition.into_spec(true),
                     target,
                     effect_id: attack.effect_id,
-                    missile_id: attack.missile_id,
+                    missile_id: attack.missile_id.map(MissileSource::Fixed),
                 }),
                 (None, _, None) => return Err(bad("deals no damage and applies no condition")),
             };
@@ -604,12 +605,14 @@ say:
 
         let condition = kind.melee.condition.as_ref().unwrap();
         assert_eq!(condition.element, CombatElement::Earth);
-        assert_eq!(condition.damage, Bounds { min: 40, max: 40 });
         assert_eq!(condition.interval, TickDelta(80));
-        assert!(matches!(
+        assert_eq!(
             condition.schedule,
-            SpecSchedule::Decaying { start: None }
-        ));
+            SpecSchedule::Decaying {
+                damage: Bounds { min: 40, max: 40 },
+                start: None
+            }
+        );
     }
 
     #[test]
@@ -621,7 +624,7 @@ say:
 
         assert!(matches!(
             kind.melee.condition.as_ref().unwrap().schedule,
-            SpecSchedule::Flat { count: 7 }
+            SpecSchedule::Flat { count: 7, .. }
         ));
     }
 
@@ -915,7 +918,13 @@ say:
             panic!("not a condition attack");
         };
 
-        assert_eq!(attack.condition.damage, Bounds { min: 440, max: 520 });
+        assert!(matches!(
+            attack.condition.schedule,
+            SpecSchedule::Decaying {
+                damage: Bounds { min: 440, max: 520 },
+                ..
+            }
+        ));
     }
 
     #[test]
@@ -935,6 +944,35 @@ say:
 
         assert!(
             matches!(error, CreaturesLoadError::BadAttack { .. }),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_creature_cannot_throw_its_weapon() {
+        let contents = A_CREATURE.replace(
+            "abilities:\n",
+            "abilities:
+  - cooldown: 40
+    chance: 30000
+    type: attack
+    condition:
+      type: decaying
+      element: earth
+      damage:
+        min: 10
+        max: 10
+      interval: 80
+    target:
+      type: self
+    missile_id: weapon
+",
+        );
+        let error = parse_creature(Path::new("test.yaml"), &contents, &shape("probe"))
+            .expect_err("a creature has no weapon to throw");
+
+        assert!(
+            matches!(error, CreaturesLoadError::ParseError { .. }),
             "unexpected error: {error}"
         );
     }

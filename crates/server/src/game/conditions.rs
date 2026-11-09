@@ -98,18 +98,28 @@ pub fn apply_condition(
     if immune {
         return;
     }
-    let rolled = ctx.roll.damage_roll(spec.damage.min, spec.damage.max);
-    if rolled == 0 {
-        return;
-    }
-    let dot = match spec.schedule {
-        SpecSchedule::Decaying { start } => {
-            DamageOverTime::decaying(spec.element, source, spec.interval, rolled, start)
-        }
-        SpecSchedule::Flat { count } => {
-            DamageOverTime::flat(spec.element, source, spec.interval, rolled, count)
+    let dot = match &spec.schedule {
+        SpecSchedule::Decaying { damage, start } => DamageOverTime::decaying(
+            spec.element,
+            source,
+            spec.interval,
+            ctx.roll.damage_roll(damage.min, damage.max),
+            *start,
+        ),
+        SpecSchedule::Flat { damage, count } => DamageOverTime::flat(
+            spec.element,
+            source,
+            spec.interval,
+            ctx.roll.damage_roll(damage.min, damage.max),
+            *count,
+        ),
+        SpecSchedule::Stepped(steps) => {
+            DamageOverTime::stepped(spec.element, source, spec.interval, steps.clone())
         }
     };
+    if dot.remaining() == 0 {
+        return;
+    }
 
     let Some(mut agent) = ctx.map.agent_mut(target) else {
         return;
@@ -450,12 +460,14 @@ mod tests {
     fn a_burn(damage: u32, delayed: bool) -> ConditionSpec {
         ConditionSpec {
             element: CombatElement::Fire,
-            damage: Bounds {
-                min: damage,
-                max: damage,
-            },
             interval: TickDelta(200),
-            schedule: SpecSchedule::Flat { count: 7 },
+            schedule: SpecSchedule::Flat {
+                damage: Bounds {
+                    min: damage,
+                    max: damage,
+                },
+                count: 7,
+            },
             delayed,
         }
     }

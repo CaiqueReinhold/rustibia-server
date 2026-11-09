@@ -7,7 +7,7 @@ use crate::{
         agent::{Agent, AgentKey},
         combat::{AttackCost, AttackPlan, CombatDamage, CombatElement, WeaponType},
         creature::BloodType,
-        effects::{AreaEffect, EffectId, Missile},
+        effects::{AreaEffect, EffectId, Missile, MissileId, MissileSource},
         inventory::InventorySlot,
         items::{ItemFlag, ItemRef},
         map::GameMap,
@@ -148,13 +148,8 @@ pub fn plan_auto_attack(
     }
 
     let missile = if let Some(player) = agent.get_player()
-        && let Some(missile) = player.weapon().and_then(|weapon| {
-            weapon.config.attr_missile_id().or_else(|| {
-                player
-                    .weapon_ammo()
-                    .and_then(|it| it.config.attr_missile_id())
-            })
-        }) {
+        && let Some(missile) = thrown_missile(player)
+    {
         let to_position = if missed {
             miss_position(map, &from, &to, roll)
         } else {
@@ -182,6 +177,34 @@ pub fn plan_auto_attack(
             .get_creature_kind()
             .and_then(|kind| kind.melee.condition.clone()),
     })
+}
+
+fn thrown_missile(player: &Player) -> Option<MissileId> {
+    player.weapon().and_then(|weapon| {
+        weapon.config.attr_missile_id().or_else(|| {
+            player
+                .weapon_ammo()
+                .and_then(|it| it.config.attr_missile_id())
+        })
+    })
+}
+
+pub fn weapon_missile(player: &Player) -> Option<MissileId> {
+    let missiles = &GAME_CONFIG.weapon_missiles;
+    match player.weapon_type() {
+        WeaponType::Sword => Some(missiles.sword),
+        WeaponType::Axe => Some(missiles.axe),
+        WeaponType::Club => Some(missiles.club),
+        WeaponType::Bow | WeaponType::Crossbow | WeaponType::Distance => thrown_missile(player),
+        WeaponType::None | WeaponType::Wand | WeaponType::Rod => None,
+    }
+}
+
+pub fn spell_missile(source: MissileSource, player: &Player) -> Option<MissileId> {
+    match source {
+        MissileSource::Fixed(missile) => Some(missile),
+        MissileSource::Weapon => weapon_missile(player),
+    }
 }
 
 pub fn plan_spell_attack(
@@ -230,6 +253,7 @@ pub fn plan_spell_attack(
 
     let missile = spell
         .missile_id
+        .and_then(|source| spell_missile(source, player))
         .zip(targets.aim.clone())
         .map(|(missile_id, to)| Missile {
             missile_id,
@@ -634,6 +658,56 @@ mod tests {
         )
     }
 
+    fn an_axe() -> Item {
+        Item::new(
+            a_config(
+                ItemId(16),
+                HashSet::new(),
+                vec![
+                    ItemAttribute::WeaponType(WeaponType::Axe),
+                    ItemAttribute::WeaponAttack(10),
+                ],
+            ),
+            1,
+        )
+    }
+
+    fn a_spear(missile: MissileId) -> Item {
+        Item::new(
+            a_config(
+                ItemId(17),
+                HashSet::new(),
+                vec![
+                    ItemAttribute::WeaponType(WeaponType::Distance),
+                    ItemAttribute::WeaponAttack(25),
+                    ItemAttribute::MissileId(missile),
+                ],
+            ),
+            1,
+        )
+    }
+
+    fn a_wand_with_missile(missile: MissileId) -> Item {
+        Item::new(
+            a_config(
+                ItemId(18),
+                HashSet::new(),
+                vec![
+                    ItemAttribute::WeaponType(WeaponType::Wand),
+                    ItemAttribute::ManaCost(5),
+                    ItemAttribute::WeaponAttack(10),
+                    ItemAttribute::MissileId(missile),
+                ],
+            ),
+            1,
+        )
+    }
+
+    fn weapon_missile_of(snapshot: PlayerSnapshot) -> Option<MissileId> {
+        let agent = Agent::from_player(snapshot);
+        weapon_missile(agent.get_player().unwrap())
+    }
+
     fn an_arrow(missile: Option<MissileId>) -> Item {
         let mut attrs = vec![ItemAttribute::AmmoType(AmmoType::Arrow)];
         if let Some(missile) = missile {
@@ -822,9 +896,11 @@ mod tests {
             missed: false,
             condition: Some(ConditionSpec {
                 element: CombatElement::Fire,
-                damage: Bounds { min: 40, max: 40 },
                 interval: TickDelta(180),
-                schedule: SpecSchedule::Decaying { start: None },
+                schedule: SpecSchedule::Decaying {
+                    damage: Bounds { min: 40, max: 40 },
+                    start: None,
+                },
                 delayed: true,
             }),
         };
@@ -866,9 +942,11 @@ mod tests {
             missed: false,
             condition: Some(ConditionSpec {
                 element: CombatElement::Fire,
-                damage: Bounds { min: 40, max: 40 },
                 interval: TickDelta(180),
-                schedule: SpecSchedule::Decaying { start: None },
+                schedule: SpecSchedule::Decaying {
+                    damage: Bounds { min: 40, max: 40 },
+                    start: None,
+                },
                 delayed: true,
             }),
         };
@@ -1346,6 +1424,55 @@ mod tests {
     fn an_unarmed_player_plans_no_missile() {
         let (map, attacker, _) = duel(
             Agent::from_player(a_test_snapshot(1, 1)),
+            a_test_creature("Rat", 10, (1, 2)),
+        );
+        let mut roll = Rolls::new(1);
+
+        let plan = plan_auto_attack(&map, attacker, &mut roll, Tick(0)).unwrap();
+
+        assert!(plan.missile.is_none());
+    }
+
+    #[test]
+    fn a_melee_weapon_throws_the_configured_missile_for_its_type() {
+        assert_eq!(
+            weapon_missile_of(armed(Some(a_weapon_with_attack(10)), None)),
+            Some(GAME_CONFIG.weapon_missiles.sword)
+        );
+        assert_eq!(
+            weapon_missile_of(armed(Some(an_axe()), None)),
+            Some(GAME_CONFIG.weapon_missiles.axe)
+        );
+    }
+
+    #[test]
+    fn a_thrown_or_shot_weapon_throws_what_it_would_auto_attack_with() {
+        assert_eq!(
+            weapon_missile_of(armed(Some(a_spear(MissileId(1))), None)),
+            Some(MissileId(1))
+        );
+        assert_eq!(
+            weapon_missile_of(armed(
+                Some(a_bow(None)),
+                Some(a_quiver_holding(an_arrow(Some(MissileId(42)))))
+            )),
+            Some(MissileId(42))
+        );
+    }
+
+    #[test]
+    fn bare_hands_and_a_wand_throw_nothing() {
+        assert_eq!(weapon_missile_of(armed(None, None)), None);
+        assert_eq!(
+            weapon_missile_of(armed(Some(a_wand_with_missile(MissileId(5))), None)),
+            None
+        );
+    }
+
+    #[test]
+    fn a_sword_swing_launches_no_missile() {
+        let (map, attacker, _) = duel(
+            Agent::from_player(armed(Some(a_weapon_with_attack(10)), None)),
             a_test_creature("Rat", 10, (1, 2)),
         );
         let mut roll = Rolls::new(1);

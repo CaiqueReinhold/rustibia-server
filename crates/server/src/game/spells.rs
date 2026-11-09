@@ -6,6 +6,7 @@ use crate::{
     entities::{
         agent::{Agent, AgentKey},
         combat::{AttackCost, AttackPlan, CombatDamage},
+        conditions::ConditionAttack,
         effects::{AreaEffect, Missile},
         map::GameMap,
         player::Player,
@@ -20,7 +21,8 @@ use crate::{
     },
     game::{
         Tick, TickCtx,
-        combat::{execute_attack, plan_spell_attack},
+        combat::{execute_attack, plan_spell_attack, spell_missile},
+        conditions::apply_condition,
         events::BroadcastMessage,
         fields::{can_hold_field, can_place_field, create_fields},
         healing::{execute_healing, plan_healing_spell},
@@ -489,6 +491,7 @@ fn execute_effect(
         SpellEffect::Healing(healing) => healing_spell(ctx, agent_key, &target, param, healing),
         SpellEffect::Support(support) => support_spell(ctx, agent_key, &target, param, support),
         SpellEffect::Field(field) => field_spell(ctx, agent_key, &target, param, field),
+        SpellEffect::Condition(attack) => condition_spell(ctx, agent_key, &target, param, attack),
     }?;
 
     let mut agent = ctx
@@ -572,6 +575,57 @@ fn support_spell(
     Ok(())
 }
 
+fn condition_spell(
+    ctx: &mut TickCtx,
+    agent_key: AgentKey,
+    target: &AreaTarget,
+    param: Option<&str>,
+    attack: &ConditionAttack,
+) -> Result<(), SpellCastingDenyReason> {
+    let mut targets = resolve_targets(
+        ctx.map,
+        agent_key,
+        &attack.target,
+        target,
+        param,
+        TargetFilter::Any,
+    )?;
+    targets.keys.retain(|key| *key != agent_key);
+    if matches!(attack.target, TargetMode::Aimed) && targets.keys.is_empty() {
+        return Err(SpellCastingDenyReason::InvalidTarget);
+    }
+
+    let missile_id = attack
+        .missile_id
+        .and_then(|source| spell_missile(source, ctx.map.get_player(agent_key)?));
+    if let Some(aim) = &targets.aim
+        && let Some(from) = ctx.map.agent_position(agent_key).cloned()
+    {
+        if let Some(missile_id) = missile_id {
+            ctx.events.push(BroadcastMessage::MissileLaunched {
+                missile: Missile {
+                    missile_id,
+                    from,
+                    to: aim.clone(),
+                },
+            });
+        }
+        if let (Some(effect_id), Some(delta)) = (attack.effect_id, targets.delta) {
+            ctx.events.push(BroadcastMessage::AreaEffectAppeared {
+                area_effect: AreaEffect {
+                    effect_id,
+                    origin: aim.clone(),
+                    delta,
+                },
+            });
+        }
+    }
+    for key in targets.keys {
+        apply_condition(ctx, key, &attack.condition, Some(agent_key));
+    }
+    Ok(())
+}
+
 fn field_spell(
     ctx: &mut TickCtx,
     agent_key: AgentKey,
@@ -629,14 +683,21 @@ mod tests {
     use std::sync::Arc;
 
     use super::*;
+    use crate::entities::Bounds;
     use crate::entities::agent::Facing;
-    use crate::entities::conditions::SpeedEffect;
+    use crate::entities::combat::CombatElement;
+    use crate::entities::combat::WeaponType;
+    use crate::entities::conditions::{ConditionSpec, SpecSchedule, SpeedEffect};
     use crate::entities::effects::AreaShape;
-    use crate::entities::items::{Item, ItemConfig, ItemFlag, ItemId};
+    use crate::entities::effects::EffectId;
+    use crate::entities::effects::{MissileId, MissileSource};
+    use crate::entities::inventory::InventorySlot;
+    use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemFlag, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::skills::SkillValue;
     use crate::entities::vocation::Vocation;
     use crate::game::TestHarness;
+    use crate::game::TickDelta;
     use crate::persistence::test_fixtures::{a_spell, a_test_creature, a_test_snapshot};
 
     fn a_caster_at(position: &Position) -> (GameMap, AgentKey) {
@@ -833,6 +894,189 @@ mod tests {
 
         assert_eq!(map.get_agent(caster).unwrap().speed(), base);
         assert!(map.delta().agent(caster).speed());
+    }
+
+    #[test]
+    fn a_condition_spell_afflicts_its_target_without_a_hit_and_never_its_caster() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_caster_at(&position);
+        let rat = beside(&mut map, &position, a_test_creature("Rat", 100, (1, 2)));
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.effect = SpellEffect::Condition(ConditionAttack {
+            condition: ConditionSpec {
+                element: CombatElement::Fire,
+                interval: TickDelta(60),
+                schedule: SpecSchedule::Flat {
+                    damage: Bounds { min: 10, max: 10 },
+                    count: 3,
+                },
+                delayed: true,
+            },
+            target: TargetMode::Aimed,
+            effect_id: None,
+            missile_id: Some(MissileSource::Fixed(MissileId(4))),
+        });
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        let on_self = cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::Agent(caster),
+            None,
+            CastSource::Words,
+        );
+        assert!(matches!(
+            on_self,
+            Err(SpellCastingDenyReason::InvalidTarget)
+        ));
+
+        cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::Agent(rat),
+            None,
+            CastSource::Words,
+        )
+        .unwrap();
+
+        assert_eq!(map.get_agent(rat).unwrap().life().current, 100);
+        assert!(
+            h.events
+                .iter()
+                .any(|e| matches!(e, BroadcastMessage::MissileLaunched { .. }))
+        );
+        assert!(
+            !h.events
+                .iter()
+                .any(|e| matches!(e, BroadcastMessage::DamageTaken { .. }))
+        );
+        assert!(h.scheduled.iter().any(|s| matches!(
+            s.command,
+            WorldCommand::DamageOverTimeTick { agent_key, .. } if agent_key == rat
+        )));
+    }
+
+    fn a_player_holding(weapon: Option<Item>, at: &Position) -> (GameMap, AgentKey) {
+        let mut snapshot = a_test_snapshot(1, 1);
+        if let Some(weapon) = weapon {
+            snapshot.inventory.insert(InventorySlot::LeftHand, weapon);
+        }
+        let mut map = GameMap::new();
+        map.insert_tile(at.clone(), MapTile::new());
+        let key = map.insert_agent(Agent::from_player(snapshot), at).unwrap();
+        (map, key)
+    }
+
+    fn an_axe() -> Item {
+        Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(16),
+                "axe".to_string(),
+                None,
+                None,
+                Vec::new(),
+                vec![
+                    ItemAttribute::WeaponType(WeaponType::Axe),
+                    ItemAttribute::WeaponAttack(10),
+                ],
+            )),
+            1,
+        )
+    }
+
+    fn launched(events: &[BroadcastMessage]) -> Vec<MissileId> {
+        events
+            .iter()
+            .filter_map(|e| match e {
+                BroadcastMessage::MissileLaunched { missile } => Some(missile.missile_id),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_weapon_attack_throws_the_casters_axe() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_player_holding(Some(an_axe()), &position);
+        let rat = beside(&mut map, &position, a_test_creature("Rat", 100, (1, 2)));
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.effect = SpellEffect::Attack(SpellAttack {
+            target: TargetMode::Aimed,
+            element: CombatElement::Physical,
+            power: PowerCurve {
+                base_power: 1.0,
+                level_factor: 0.0,
+                magic_factor: 0.0,
+                melee_factor: 0.0,
+                spread_min: 0.0,
+                spread_max: 0.0,
+                flat: 0.0,
+            },
+            effect_id: EffectId(1),
+            missile_id: Some(MissileSource::Weapon),
+            chain: None,
+            weapon_required: true,
+        });
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::Agent(rat),
+            None,
+            CastSource::Words,
+        )
+        .unwrap();
+
+        assert_eq!(
+            launched(&h.events),
+            [crate::game::config::GAME_CONFIG.weapon_missiles.axe]
+        );
+    }
+
+    #[test]
+    fn a_weapon_condition_cast_bare_handed_throws_nothing_but_still_lands() {
+        let position = Position::new(100, 100, 7);
+        let (mut map, caster) = a_player_holding(None, &position);
+        let rat = beside(&mut map, &position, a_test_creature("Rat", 100, (1, 2)));
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.effect = SpellEffect::Condition(ConditionAttack {
+            condition: ConditionSpec {
+                element: CombatElement::Physical,
+                interval: TickDelta(40),
+                schedule: SpecSchedule::Flat {
+                    damage: Bounds { min: 10, max: 10 },
+                    count: 3,
+                },
+                delayed: true,
+            },
+            target: TargetMode::Aimed,
+            effect_id: None,
+            missile_id: Some(MissileSource::Weapon),
+        });
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness::seeded(1);
+
+        cast_spell(
+            &mut h.ctx(&mut map),
+            caster,
+            &spell,
+            AreaTarget::Agent(rat),
+            None,
+            CastSource::Words,
+        )
+        .unwrap();
+
+        assert!(launched(&h.events).is_empty());
+        assert!(h.scheduled.iter().any(|s| matches!(
+            s.command,
+            WorldCommand::DamageOverTimeTick { agent_key, .. } if agent_key == rat
+        )));
     }
 
     #[test]

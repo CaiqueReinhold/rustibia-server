@@ -110,6 +110,11 @@ effect_ids:
   healing_spell: 13
   mana_hit: 2
 
+weapon_missiles:
+  sword: 25
+  axe: 26
+  club: 27
+
 text_colors:
   blue: [0, 0, 255]
   lightgreen: [0, 255, 0]

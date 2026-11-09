@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 use crate::entities::Bounds;
 use crate::entities::combat::CombatElement;
-use crate::entities::conditions::{ConditionSpec, SpecSchedule};
+use crate::entities::conditions::{ConditionSpec, DamageStep, SpecSchedule};
 use crate::game::TickDelta;
 
 #[derive(Deserialize)]
@@ -36,27 +36,69 @@ pub(crate) enum RawConditionSpec {
         interval: TickDelta,
         count: u32,
     },
+    Stepped {
+        element: CombatElement,
+        interval: TickDelta,
+        steps: Vec<RawDamageStep>,
+    },
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct RawDamageStep {
+    count: u32,
+    damage: u32,
 }
 
 impl RawConditionSpec {
     pub(crate) fn into_spec(self, delayed: bool) -> ConditionSpec {
-        let (element, damage, interval, schedule) = match self {
+        let (element, interval, schedule) = match self {
             RawConditionSpec::Decaying {
                 element,
                 damage,
                 interval,
                 start,
-            } => (element, damage, interval, SpecSchedule::Decaying { start }),
+            } => (
+                element,
+                interval,
+                SpecSchedule::Decaying {
+                    damage: damage.into(),
+                    start,
+                },
+            ),
             RawConditionSpec::Flat {
                 element,
                 damage,
                 interval,
                 count,
-            } => (element, damage, interval, SpecSchedule::Flat { count }),
+            } => (
+                element,
+                interval,
+                SpecSchedule::Flat {
+                    damage: damage.into(),
+                    count,
+                },
+            ),
+            RawConditionSpec::Stepped {
+                element,
+                interval,
+                steps,
+            } => (
+                element,
+                interval,
+                SpecSchedule::Stepped(
+                    steps
+                        .into_iter()
+                        .map(|step| DamageStep {
+                            count: step.count,
+                            value: step.damage,
+                        })
+                        .collect(),
+                ),
+            ),
         };
         ConditionSpec {
             element,
-            damage: damage.into(),
             interval,
             schedule,
             delayed,

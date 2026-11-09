@@ -4,7 +4,8 @@ use crate::{
     entities::{
         agent::AgentId,
         combat::CombatElement,
-        effects::{EffectId, MissileId},
+        conditions::ConditionAttack,
+        effects::{EffectId, MissileId, MissileSource},
         items::ItemId,
         position::Position,
         support::SupportCast,
@@ -79,6 +80,7 @@ impl Spell {
             SpellEffect::Healing(healing) => &healing.target,
             SpellEffect::Support(support) => &support.target,
             SpellEffect::Field(field) => &field.target,
+            SpellEffect::Condition(attack) => &attack.target,
         };
         matches!(
             target,
@@ -112,7 +114,7 @@ pub struct SpellAttack {
     pub element: CombatElement,
     pub power: PowerCurve,
     pub effect_id: EffectId,
-    pub missile_id: Option<MissileId>,
+    pub missile_id: Option<MissileSource>,
     pub chain: Option<ChainAttack>,
     pub weapon_required: bool,
 }
@@ -147,6 +149,7 @@ pub enum SpellEffect {
     Healing(SpellHealing),
     Support(SupportCast),
     Field(SpellField),
+    Condition(ConditionAttack),
 }
 
 #[derive(Debug)]

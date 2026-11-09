@@ -899,9 +899,11 @@ mod tests {
             (
                 ItemAttribute::Field(Arc::new(ConditionSpec {
                     element: CombatElement::Fire,
-                    damage: Bounds { min: 1, max: 1 },
                     interval: TickDelta(1),
-                    schedule: SpecSchedule::Flat { count: 1 },
+                    schedule: SpecSchedule::Flat {
+                        damage: Bounds { min: 1, max: 1 },
+                        count: 1,
+                    },
                     delayed: false,
                 })),
                 "field",

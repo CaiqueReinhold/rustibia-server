@@ -10,6 +10,12 @@ pub struct EffectId(pub u16);
 #[repr(transparent)]
 pub struct MissileId(pub u16);
 
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+pub enum MissileSource {
+    Fixed(MissileId),
+    Weapon,
+}
+
 #[derive(Debug, Clone)]
 pub struct Missile {
     pub missile_id: MissileId,

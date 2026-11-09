@@ -9,7 +9,8 @@ use thiserror::Error;
 
 use crate::config::CONFIG;
 use crate::entities::combat::CombatElement;
-use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId};
+use crate::entities::conditions::ConditionAttack;
+use crate::entities::effects::{AreaShape, AreaShapeId, EffectId, MissileId, MissileSource};
 use crate::entities::items::ItemId;
 use crate::entities::spells::{
     ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
@@ -20,6 +21,7 @@ use crate::entities::targeting::TargetMode;
 use crate::entities::vocation::Vocation;
 use crate::game::TickDelta;
 use crate::persistence::areas::AREA_SHAPES;
+use crate::persistence::conditions::RawConditionSpec;
 use crate::persistence::support::{
     RawSpeedFormula, RawSupportFields, SupportError, SupportKind, build_support,
 };
@@ -136,7 +138,7 @@ struct RawAttack {
     flat: f64,
     effect_id: EffectId,
     #[serde(default)]
-    missile_id: Option<MissileId>,
+    missile_id: Option<RawMissileSource>,
     #[serde(default)]
     chain: Option<RawChain>,
     #[serde(default)]
@@ -175,12 +177,45 @@ struct RawSupport {
 }
 
 #[derive(Deserialize)]
+#[serde(untagged)]
+enum RawMissileSource {
+    Fixed(MissileId),
+    Keyword(MissileKeyword),
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum MissileKeyword {
+    Weapon,
+}
+
+impl From<RawMissileSource> for MissileSource {
+    fn from(raw: RawMissileSource) -> Self {
+        match raw {
+            RawMissileSource::Fixed(missile) => MissileSource::Fixed(missile),
+            RawMissileSource::Keyword(MissileKeyword::Weapon) => MissileSource::Weapon,
+        }
+    }
+}
+
+#[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RawField {
     target: serde_yaml::Value,
     item: ItemId,
     #[serde(default)]
     missile_id: Option<MissileId>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawCondition {
+    target: serde_yaml::Value,
+    condition: RawConditionSpec,
+    #[serde(default)]
+    effect_id: Option<EffectId>,
+    #[serde(default)]
+    missile_id: Option<RawMissileSource>,
 }
 
 #[derive(Deserialize)]
@@ -343,7 +378,7 @@ fn parse_effect(
                     attack.flat,
                 )?,
                 effect_id: attack.effect_id,
-                missile_id: attack.missile_id,
+                missile_id: attack.missile_id.map(Into::into),
                 chain: attack
                     .chain
                     .map(|chain| parse_chain(id, name, chain))
@@ -376,6 +411,15 @@ fn parse_effect(
                 target: parse_target(id, name, field.target, shapes)?,
                 item: field.item,
                 missile_id: field.missile_id,
+            }))
+        }
+        "condition" => {
+            let attack: RawCondition = serde_yaml::from_value(value)?;
+            Ok(SpellEffect::Condition(ConditionAttack {
+                target: parse_target(id, name, attack.target, shapes)?,
+                condition: attack.condition.into_spec(true),
+                effect_id: attack.effect_id,
+                missile_id: attack.missile_id.map(Into::into),
             }))
         }
         other => {
@@ -471,6 +515,8 @@ pub(crate) fn load_spells_from_str(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::conditions::{DamageStep, SpecSchedule};
+    use crate::entities::effects::MissileSource;
     use crate::entities::targeting::AreaOrigin;
     use crate::persistence::areas::load_areas;
 
@@ -1098,6 +1144,131 @@ spells:
                     ..
                 }
             ),
+            "unexpected error: {error}"
+        );
+    }
+
+    #[test]
+    fn a_condition_spell_carries_its_schedule_and_its_visuals() {
+        let spells = load_spells_from_str(
+            r#"
+spells:
+  - id: 9
+    name: Test Curse
+    words: probe
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 1
+    icon: 1
+    vocations: []
+    effect:
+      type: condition
+      target: { type: target, range: 3 }
+      condition:
+        type: stepped
+        element: death
+        interval: 60
+        steps:
+          - { count: 1, damage: 45 }
+          - { count: 2, damage: 30 }
+      effect_id: 39
+"#,
+            &HashMap::new(),
+        )
+        .unwrap();
+
+        let SpellEffect::Condition(attack) = &spells[&SpellId(9)].effect else {
+            panic!("not a condition spell");
+        };
+        assert_eq!(attack.condition.element, CombatElement::Death);
+        assert_eq!(attack.condition.interval, TickDelta(60));
+        assert!(attack.condition.delayed);
+        assert_eq!(
+            attack.condition.schedule,
+            SpecSchedule::Stepped(
+                [
+                    DamageStep {
+                        count: 1,
+                        value: 45
+                    },
+                    DamageStep {
+                        count: 2,
+                        value: 30
+                    },
+                ]
+                .into()
+            )
+        );
+        assert_eq!(attack.effect_id, Some(EffectId(39)));
+        assert_eq!(attack.missile_id, None);
+        assert!(!spells[&SpellId(9)].is_aimable());
+    }
+
+    fn a_spell_throwing(missile: &str, effect: &str) -> String {
+        format!(
+            r#"
+spells:
+  - id: 9
+    name: Probe
+    words: probe
+    group: attack
+    cooldown_ticks: 40
+    mana: 0
+    level: 1
+    icon: 1
+    vocations: []
+    effect:
+{effect}
+      missile_id: {missile}
+"#
+        )
+    }
+
+    const AN_ATTACK: &str = "      type: attack
+      target: { type: target, range: 3 }
+      base_power: 1
+      level_factor: 0
+      spread_min: 0
+      spread_max: 0
+      effect_id: 1";
+
+    const A_CONDITION: &str = "      type: condition
+      target: { type: target, range: 1 }
+      condition: { type: flat, element: physical, damage: { min: 1, max: 1 }, interval: 40, count: 1 }";
+
+    #[test]
+    fn an_attack_missile_is_a_number_or_the_weapon() {
+        for (written, expected) in [
+            ("28", MissileSource::Fixed(MissileId(28))),
+            ("weapon", MissileSource::Weapon),
+        ] {
+            let spells =
+                load_spells_from_str(&a_spell_throwing(written, AN_ATTACK), &HashMap::new())
+                    .unwrap();
+            assert_eq!(attack(&only_spell(&spells)).missile_id, Some(expected));
+        }
+    }
+
+    #[test]
+    fn a_condition_missile_can_follow_the_weapon() {
+        let spells =
+            load_spells_from_str(&a_spell_throwing("weapon", A_CONDITION), &HashMap::new())
+                .unwrap();
+
+        let SpellEffect::Condition(attack) = &spells[&SpellId(9)].effect else {
+            panic!("not a condition spell");
+        };
+        assert_eq!(attack.missile_id, Some(MissileSource::Weapon));
+    }
+
+    #[test]
+    fn a_missile_that_is_neither_a_number_nor_the_weapon_is_refused() {
+        let error = load_spells_from_str(&a_spell_throwing("weapons", AN_ATTACK), &HashMap::new())
+            .expect_err("a misspelt missile must not load as no missile");
+
+        assert!(
+            matches!(error, SpellsLoadError::ParseError(_)),
             "unexpected error: {error}"
         );
     }

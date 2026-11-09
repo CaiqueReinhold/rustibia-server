@@ -70,6 +70,8 @@
   - take
   attributes:
     weight: 210
+    rune:
+      spell: 107
 - id: 3154
   name: spell rune
   article: a
@@ -532,6 +534,8 @@
   - take
   attributes:
     weight: 70
+    rune:
+      spell: 108
 - id: 3196
   name: spell rune
   article: a

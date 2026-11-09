@@ -5,7 +5,7 @@ use crate::{
         Bounds,
         agent::{OutfitColors, OutfitId, Pool},
         combat::CombatElement,
-        conditions::ConditionSpec,
+        conditions::{ConditionAttack, ConditionSpec},
         effects::{EffectId, MissileId},
         items::{FluidType, ItemId},
         spells::SpellGroup,
@@ -55,14 +55,6 @@ pub struct CreatureAttackDamage {
 #[derive(Clone, Debug)]
 pub struct CreatureAttack {
     pub damage: CreatureAttackDamage,
-    pub target: TargetMode,
-    pub effect_id: Option<EffectId>,
-    pub missile_id: Option<MissileId>,
-}
-
-#[derive(Clone, Debug)]
-pub struct ConditionAttack {
-    pub condition: ConditionSpec,
     pub target: TargetMode,
     pub effect_id: Option<EffectId>,
     pub missile_id: Option<MissileId>,

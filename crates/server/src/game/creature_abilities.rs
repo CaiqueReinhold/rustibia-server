@@ -6,7 +6,7 @@ use crate::{
         agent::AgentKey,
         combat::{AttackCost, AttackPlan, CombatDamage},
         creature::{AbilityEffect, CreatureAbilityId, CreatureAttack},
-        effects::{AreaEffect, EffectId, Missile, MissileId},
+        effects::{AreaEffect, EffectId, Missile, MissileId, MissileSource},
         healing::{HealPlan, Restore},
         map::GameMap,
         targeting::{AreaTarget, TargetFilter, TargetMode},
@@ -72,7 +72,10 @@ pub fn cast_ability(ctx: &mut TickCtx, agent_key: AgentKey, ability_id: Creature
                 agent_key,
                 &attack.target,
                 attack.effect_id,
-                attack.missile_id,
+                attack.missile_id.and_then(|source| match source {
+                    MissileSource::Fixed(missile) => Some(missile),
+                    MissileSource::Weapon => None,
+                }),
             ) {
                 if let Some(missile) = strike.missile {
                     ctx.events
@@ -363,17 +366,19 @@ mod tests {
     }
 
     use crate::actors::world::WorldCommand;
+    use crate::entities::conditions::ConditionAttack;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
-    use crate::entities::creature::ConditionAttack;
 
     #[test]
     fn a_condition_attack_poisons_its_target_without_a_hit() {
         let (map, demon) = a_map_with(AbilityEffect::Condition(ConditionAttack {
             condition: ConditionSpec {
                 element: CombatElement::Earth,
-                damage: Bounds { min: 40, max: 40 },
                 interval: TickDelta(80),
-                schedule: SpecSchedule::Decaying { start: None },
+                schedule: SpecSchedule::Decaying {
+                    damage: Bounds { min: 40, max: 40 },
+                    start: None,
+                },
                 delayed: true,
             },
             target: TargetMode::Target { range: 1 },

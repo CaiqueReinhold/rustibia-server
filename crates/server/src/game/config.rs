@@ -12,7 +12,7 @@ use crate::{
     entities::{
         chat::ChannelId,
         creature::CreatureKindId,
-        effects::EffectId,
+        effects::{EffectId, MissileId},
         items::{ItemId, ItemMultiAction},
     },
     game::TickDelta,
@@ -44,6 +44,7 @@ pub struct GameConfig {
     pub movement: MovementConfig,
     pub chat: ChatConfig,
     pub effect_ids: EffectsConfig,
+    pub weapon_missiles: WeaponMissiles,
     pub text_colors: TextColors,
     pub combat: CombatConfig,
     pub skills: SkillsConfig,
@@ -160,6 +161,13 @@ pub struct EffectsConfig {
     pub puff: EffectId,
     pub healing_spell: EffectId,
     pub mana_hit: EffectId,
+}
+
+#[derive(Deserialize)]
+pub struct WeaponMissiles {
+    pub sword: MissileId,
+    pub axe: MissileId,
+    pub club: MissileId,
 }
 
 #[derive(Deserialize, Debug, Clone, Copy, PartialEq)]

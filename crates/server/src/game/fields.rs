@@ -111,9 +111,11 @@ mod tests {
             vec![
                 ItemAttribute::Field(Arc::new(ConditionSpec {
                     element: CombatElement::Fire,
-                    damage: Bounds { min: 20, max: 20 },
                     interval: TickDelta(200),
-                    schedule: SpecSchedule::Flat { count: 7 },
+                    schedule: SpecSchedule::Flat {
+                        damage: Bounds { min: 20, max: 20 },
+                        count: 7,
+                    },
                     delayed: false,
                 })),
                 ItemAttribute::Decay {

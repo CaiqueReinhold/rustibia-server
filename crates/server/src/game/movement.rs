@@ -387,12 +387,14 @@ mod tests {
     fn a_field(damage: u32) -> Item {
         an_item_with(vec![ItemAttribute::Field(Arc::new(ConditionSpec {
             element: CombatElement::Fire,
-            damage: Bounds {
-                min: damage,
-                max: damage,
-            },
             interval: TickDelta(200),
-            schedule: SpecSchedule::Flat { count: 7 },
+            schedule: SpecSchedule::Flat {
+                damage: Bounds {
+                    min: damage,
+                    max: damage,
+                },
+                count: 7,
+            },
             delayed: false,
         }))])
     }

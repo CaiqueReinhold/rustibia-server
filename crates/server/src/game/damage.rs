@@ -756,9 +756,11 @@ mod tests {
                 missed: false,
                 condition: Some(ConditionSpec {
                     element: CombatElement::Earth,
-                    damage: Bounds { min: 40, max: 40 },
                     interval: TickDelta(80),
-                    schedule: SpecSchedule::Decaying { start: None },
+                    schedule: SpecSchedule::Decaying {
+                        damage: Bounds { min: 40, max: 40 },
+                        start: None,
+                    },
                     delayed: true,
                 }),
             },
