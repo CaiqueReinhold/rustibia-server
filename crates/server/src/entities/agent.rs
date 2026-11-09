@@ -155,6 +155,13 @@ enum AgentInner {
 
 new_key_type! { pub struct AgentKey; }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Challenge {
+    pub by: AgentKey,
+    pub since: Tick,
+    pub until: Tick,
+}
+
 #[derive(Clone, Debug)]
 pub struct Agent {
     inner: AgentInner,
@@ -176,6 +183,8 @@ pub struct Agent {
     next_auto_attack_tick: Tick,
     next_use_tick: Tick,
     next_say_tick: Tick,
+    challenge: Option<Challenge>,
+    melee_until: Tick,
 }
 
 pub fn walk_ticks(speed: u16, tile_friction: u16, diagonal: bool) -> TickDelta {
@@ -281,6 +290,8 @@ impl Agent {
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
             conditions: Conditions::new(),
             keyword_branch: None,
+            challenge: None,
+            melee_until: Tick(0),
         }
     }
 
@@ -311,6 +322,8 @@ impl Agent {
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
             conditions: Conditions::new(),
             keyword_branch: None,
+            challenge: None,
+            melee_until: Tick(0),
         }
     }
 
@@ -351,6 +364,8 @@ impl Agent {
             group_cooldowns: [Tick(0); SpellGroup::COUNT],
             conditions: Conditions::new(),
             keyword_branch: None,
+            challenge: None,
+            melee_until: Tick(0),
         }
     }
 
@@ -416,10 +431,34 @@ impl Agent {
         self.mana.change_capacity(amount);
     }
 
-    pub fn is_fleeing(&self) -> bool {
-        self.get_creature_kind()
-            .and_then(|kind| kind.flee_threshold)
-            .is_some_and(|threshold| self.life.current <= threshold)
+    pub fn is_fleeing(&self, tick: Tick) -> bool {
+        self.challenge(tick).is_none()
+            && tick >= self.melee_until
+            && self
+                .get_creature_kind()
+                .and_then(|kind| kind.flee_threshold)
+                .is_some_and(|threshold| self.life.current <= threshold)
+    }
+
+    pub fn challenge(&self, tick: Tick) -> Option<Challenge> {
+        self.challenge.filter(|challenge| tick < challenge.until)
+    }
+
+    pub fn set_challenge(&mut self, challenge: Option<Challenge>) {
+        self.challenge = challenge;
+    }
+
+    pub fn force_melee(&mut self, until: Tick) {
+        self.melee_until = until;
+    }
+
+    pub fn target_distance(&self, tick: Tick) -> Option<u16> {
+        let kind = self.get_creature_kind()?;
+        Some(if tick < self.melee_until {
+            1
+        } else {
+            kind.target_distance
+        })
     }
 
     pub fn is_hostile(&self) -> bool {
@@ -671,7 +710,7 @@ mod tests {
     use crate::persistence::player::PlayerSnapshot;
     use crate::persistence::test_fixtures::a_creature_kind;
     use crate::persistence::test_fixtures::{
-        a_test_creature, a_test_passive_creature, a_test_snapshot,
+        a_test_creature, a_test_creature_that_flees, a_test_passive_creature, a_test_snapshot,
     };
     use std::collections::HashMap;
 
@@ -1193,5 +1232,57 @@ mod tests {
 
         assert_eq!(pool.current, 95);
         assert_eq!(pool.missing(), 0);
+    }
+
+    fn a_frightened_rat() -> Agent {
+        let mut rat = a_test_creature_that_flees("Rat", 10, (1, 2), 5);
+        rat.remove_life(6);
+        rat
+    }
+
+    fn a_challenge_until(until: Tick) -> Challenge {
+        Challenge {
+            by: AgentKey::default(),
+            since: Tick(0),
+            until,
+        }
+    }
+
+    #[test]
+    fn a_challenge_lasts_until_its_end_tick() {
+        let mut rat = a_test_creature("Rat", 10, (1, 2));
+        rat.set_challenge(Some(a_challenge_until(Tick(20))));
+
+        assert_eq!(rat.challenge(Tick(19)), Some(a_challenge_until(Tick(20))));
+        assert_eq!(rat.challenge(Tick(20)), None);
+    }
+
+    #[test]
+    fn forced_melee_brings_a_ranged_creature_to_one_tile_until_it_ends() {
+        let mut archer = Agent::from_creature_kind(
+            Arc::new(CreatureKind {
+                target_distance: 4,
+                ..a_creature_kind("Archer")
+            }),
+            Position::new(1, 1, 7),
+        );
+        archer.force_melee(Tick(20));
+
+        assert_eq!(archer.target_distance(Tick(19)), Some(1));
+        assert_eq!(archer.target_distance(Tick(20)), Some(4));
+    }
+
+    #[test]
+    fn a_challenged_or_melee_forced_creature_does_not_flee() {
+        let mut rat = a_frightened_rat();
+        assert!(rat.is_fleeing(Tick(0)));
+
+        rat.set_challenge(Some(a_challenge_until(Tick(20))));
+        assert!(!rat.is_fleeing(Tick(19)));
+        assert!(rat.is_fleeing(Tick(20)));
+
+        rat.force_melee(Tick(30));
+        assert!(!rat.is_fleeing(Tick(29)));
+        assert!(rat.is_fleeing(Tick(30)));
     }
 }

@@ -428,28 +428,25 @@ impl GameMap {
         self.agents.iter()
     }
 
+    pub fn is_walkable(&self, pos: &Position) -> bool {
+        self.get_tile(pos).is_ok_and(|tile| {
+            tile.items
+                .iter()
+                .any(|i| i.config.has_flag(ItemFlag::Ground))
+                && !tile
+                    .items
+                    .iter()
+                    .any(|i| i.config.has_flag(ItemFlag::Unpass))
+        })
+    }
+
     pub fn can_move(&self, pos: &Position, agent_key: AgentKey) -> bool {
-        let tile = self.get_tile(pos);
-        if tile.is_err() {
+        if !self.is_walkable(pos) {
             return false;
         }
-        let tile = tile.unwrap();
-
-        let has_ground = tile
-            .items
-            .iter()
-            .any(|i| i.config.has_flag(ItemFlag::Ground));
-        if !has_ground {
+        let Ok(tile) = self.get_tile(pos) else {
             return false;
-        }
-
-        let unpass = tile
-            .items
-            .iter()
-            .any(|i| i.config.has_flag(ItemFlag::Unpass));
-        if unpass {
-            return false;
-        }
+        };
 
         if let Some(agent) = self.get_agent(agent_key) {
             if let Some(player) = agent.get_player() {

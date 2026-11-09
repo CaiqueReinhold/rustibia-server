@@ -19,6 +19,12 @@ pub enum TargetMode {
     },
     /// The agent the cast aims at, refused when it aims at a tile or at nothing.
     Aimed,
+    /// Hops from the caster to the nearest agent within `hop_range` (Chebyshev) of the
+    /// previous pick, up to `count` picks.
+    Chain {
+        count: u16,
+        hop_range: u16,
+    },
 }
 
 /// Which agents a resolved cast may reach: a heal must not land on what a wave is for.
@@ -26,6 +32,8 @@ pub enum TargetMode {
 pub enum TargetFilter {
     Any,
     Players,
+    Creatures,
+    RangedCreatures,
 }
 
 #[derive(Debug, Clone)]

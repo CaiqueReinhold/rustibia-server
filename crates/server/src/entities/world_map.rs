@@ -1,7 +1,7 @@
 use std::ops::Deref;
 use std::sync::Arc;
 
-use crate::entities::agent::{Agent, AgentKey, Facing};
+use crate::entities::agent::{Agent, AgentKey, Challenge, Facing};
 use crate::entities::conditions::Conditions;
 use crate::entities::inventory::{Inventory, InventorySlot};
 use crate::entities::items::{Item, ItemGuid};
@@ -291,6 +291,14 @@ impl AgentMut<'_> {
 
     pub fn set_target(&mut self, target: Option<AgentKey>, seq: u32) {
         self.agent.set_target(target, seq);
+    }
+
+    pub fn set_challenge(&mut self, challenge: Option<Challenge>) {
+        self.agent.set_challenge(challenge);
+    }
+
+    pub fn force_melee(&mut self, until: Tick) {
+        self.agent.force_melee(until);
     }
 
     pub fn record_damage(&mut self, attacker: AgentKey, damage: u32, at: Tick) {

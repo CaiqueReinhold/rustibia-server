@@ -105,6 +105,30 @@ pub fn reachable_from(
     Reachable { costs }
 }
 
+/// The steps of a walk from `from` to a tile beside `to`, `from` excluded, over tiles anything
+/// could stand on. Straight steps cost 10 and diagonals 35, Canary's `getMapWalkCost`. Empty
+/// when `from` is already beside `to` or no walk stays within `search` tiles of `from`.
+pub fn path_beside(map: &GameMap, from: &Position, to: &Position, search: u16) -> Vec<Position> {
+    let bounds = Rect::radius(from, (search, search));
+    astar(
+        from,
+        |pos| {
+            ALL_DIRECTIONS
+                .iter()
+                .map(|direction| {
+                    let cost: u32 = if direction.is_diagonal() { 35 } else { 10 };
+                    (pos.clone() + *direction, cost)
+                })
+                .filter(|(next, _)| bounds.contains(next) && map.is_walkable(next))
+                .collect::<Vec<_>>()
+        },
+        |pos| 10 * u32::from(pos.distance(to).saturating_sub(1)),
+        |pos| pos.is_within(to, 1),
+    )
+    .map(|(path, _)| path.into_iter().skip(1).collect())
+    .unwrap_or_default()
+}
+
 /// Every tile shares the origin's floor, which is why `cost_to` carries no `z` clause.
 #[derive(Debug)]
 pub struct Reachable {
@@ -758,5 +782,63 @@ mod tests {
 
         assert_eq!(reachable.cost_to(&map, &within), Some(TickDelta(0)));
         assert_eq!(reachable.cost_to(&map, &in_sight), None);
+    }
+
+    #[test]
+    fn a_path_beside_stops_next_to_its_destination() {
+        let map = a_corridor(5..=20);
+
+        assert_eq!(
+            path_beside(&map, &at(10, 10), &at(14, 10), 9),
+            vec![at(11, 10), at(12, 10), at(13, 10)]
+        );
+    }
+
+    #[test]
+    fn a_path_beside_is_empty_when_already_beside() {
+        let map = a_corridor(5..=20);
+
+        assert!(path_beside(&map, &at(10, 10), &at(11, 11), 9).is_empty());
+    }
+
+    #[test]
+    fn a_path_beside_walks_through_creatures_and_round_walls() {
+        let mut map = a_room(5..=15, 5..=15);
+        put_creature(&mut map, 11, 10);
+        for y in 9..=11 {
+            block(&mut map, 12, y, ItemFlag::Unpass);
+        }
+
+        let path = path_beside(&map, &at(10, 10), &at(14, 10), 9);
+
+        assert!(path.contains(&at(11, 10)), "got {path:?}");
+        assert!(
+            path.iter()
+                .all(|tile| tile.x != 12 || !(9..=11).contains(&tile.y))
+        );
+        assert!(path.last().unwrap().is_within(&at(14, 10), 1));
+    }
+
+    #[test]
+    fn a_path_beside_takes_a_diagonal_only_when_it_must() {
+        let map = a_room(5..=15, 5..=15);
+
+        let path = path_beside(&map, &at(10, 10), &at(13, 13), 9);
+        let steps: Vec<_> = std::iter::once(at(10, 10)).chain(path).collect();
+
+        assert!(
+            steps
+                .windows(2)
+                .all(|pair| (pair[0].x == pair[1].x) != (pair[0].y == pair[1].y)),
+            "got {steps:?}"
+        );
+    }
+
+    #[test]
+    fn no_path_beside_means_an_empty_one() {
+        let mut map = a_corridor(5..=20);
+        block(&mut map, 12, 10, ItemFlag::Unpass);
+
+        assert!(path_beside(&map, &at(10, 10), &at(14, 10), 9).is_empty());
     }
 }

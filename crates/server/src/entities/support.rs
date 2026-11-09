@@ -32,6 +32,10 @@ pub enum SupportEffect {
         duration: TickDelta,
     },
     CancelMagicShield,
+    Challenge {
+        duration: TickDelta,
+        melee: Option<TickDelta>,
+    },
     Cure {
         element: CombatElement,
     },

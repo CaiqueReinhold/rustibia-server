@@ -120,7 +120,7 @@ impl CreatureBehaviorActor {
                 async {
                     for action in actions {
                         self.world
-                            .send(WorldCommand::from_creature_action(action))
+                            .send(WorldCommand::from_creature_action(action, tick))
                             .await;
                     }
                 }

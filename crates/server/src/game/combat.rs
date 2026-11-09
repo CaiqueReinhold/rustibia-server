@@ -55,7 +55,7 @@ pub fn plan_auto_attack(
         return None;
     }
 
-    if agent.is_fleeing() || !agent.is_hostile() {
+    if agent.is_fleeing(current_tick) || !agent.is_hostile() {
         return None;
     }
 

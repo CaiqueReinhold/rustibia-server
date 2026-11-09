@@ -2378,3 +2378,38 @@ spells:
       target:
         type: self
       effect_id: 13
+  - id: 110
+    name: Challenge
+    words: exeta res
+    group: support
+    cooldown_ticks: 40
+    mana: 30
+    level: 20
+    icon: 96
+    vocations: [knight]
+    effect:
+      type: challenge
+      target:
+        type: area
+        origin: self
+        shape: boxed
+      duration_ticks: 120
+      effect_id: 13
+  - id: 111
+    name: Chivalrous Challenge
+    words: exeta amp res
+    group: support
+    cooldown_ticks: 40
+    mana: 80
+    level: 150
+    icon: 97
+    vocations: [knight]
+    effect:
+      type: challenge
+      target:
+        type: chain
+        count: 5
+        hop_range: 6
+      duration_ticks: 240
+      melee_ticks: 240
+      effect_id: 219

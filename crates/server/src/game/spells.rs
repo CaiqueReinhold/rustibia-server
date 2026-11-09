@@ -16,7 +16,7 @@ use crate::{
             ChainAttack, ChainSorting, PowerCurve, Spell, SpellAttack, SpellDelivery, SpellEffect,
             SpellField, SpellGroup, SpellHealing,
         },
-        support::SupportCast,
+        support::{SupportCast, SupportEffect},
         targeting::{AreaOrigin, AreaTarget, TargetFilter, TargetMode},
     },
     game::{
@@ -296,6 +296,41 @@ pub fn resolve_targets(
                 delta: Some(delta),
             })
         }
+        TargetMode::Chain { count, hop_range } => {
+            let mut keys: Vec<AgentKey> = Vec::new();
+            let mut from = position.clone();
+            while keys.len() < usize::from(*count) {
+                let squared = |pos: &Position| {
+                    let (dx, dy) = (
+                        i32::from(pos.x) - i32::from(from.x),
+                        i32::from(pos.y) - i32::from(from.y),
+                    );
+                    dx * dx + dy * dy
+                };
+                let Some((key, pos)) = map
+                    .iter_agents_in_rect(&Rect::radius(&from, (*hop_range, *hop_range)), from.z)
+                    .filter(|(key, pos)| {
+                        *key != caster
+                            && !keys.contains(key)
+                            && passes(map, *key, filter)
+                            && can_throw(map, &from, pos, true)
+                    })
+                    .min_by_key(|(_, pos)| squared(pos))
+                else {
+                    break;
+                };
+                keys.push(key);
+                from = pos;
+            }
+            if keys.is_empty() {
+                return Err(SpellCastingDenyReason::InvalidTarget);
+            }
+            Ok(ResolvedTargets {
+                keys,
+                aim: None,
+                delta: None,
+            })
+        }
     }
 }
 
@@ -346,6 +381,11 @@ fn passes(map: &GameMap, key: AgentKey, filter: TargetFilter) -> bool {
     match filter {
         TargetFilter::Any => map.get_agent(key).is_some_and(|a| !a.is_npc()),
         TargetFilter::Players => map.get_player(key).is_some(),
+        TargetFilter::Creatures => map.get_agent(key).is_some_and(Agent::is_creature),
+        TargetFilter::RangedCreatures => map
+            .get_agent(key)
+            .and_then(Agent::get_creature_kind)
+            .is_some_and(|kind| kind.target_distance > 1),
     }
 }
 
@@ -566,8 +606,10 @@ fn support_spell(
     param: Option<&str>,
     cast: &SupportCast,
 ) -> Result<(), SpellCastingDenyReason> {
-    let filter = match cast.target {
-        TargetMode::Aimed => TargetFilter::Any,
+    let filter = match (&cast.effect, &cast.target) {
+        (SupportEffect::Challenge { melee: Some(_), .. }, _) => TargetFilter::RangedCreatures,
+        (SupportEffect::Challenge { melee: None, .. }, _) => TargetFilter::Creatures,
+        (_, TargetMode::Aimed) => TargetFilter::Any,
         _ => TargetFilter::Players,
     };
     let targets = resolve_targets(ctx.map, agent_key, &cast.target, target, param, filter)?;
@@ -688,6 +730,7 @@ mod tests {
     use crate::entities::combat::CombatElement;
     use crate::entities::combat::WeaponType;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule, SpeedEffect};
+    use crate::entities::creature::CreatureKind;
     use crate::entities::effects::AreaShape;
     use crate::entities::effects::EffectId;
     use crate::entities::effects::{MissileId, MissileSource};
@@ -698,7 +741,9 @@ mod tests {
     use crate::entities::vocation::Vocation;
     use crate::game::TestHarness;
     use crate::game::TickDelta;
-    use crate::persistence::test_fixtures::{a_spell, a_test_creature, a_test_snapshot};
+    use crate::persistence::test_fixtures::{
+        a_creature_kind, a_spell, a_test_creature, a_test_snapshot,
+    };
 
     fn a_caster_at(position: &Position) -> (GameMap, AgentKey) {
         let mut map = GameMap::new();
@@ -1301,5 +1346,125 @@ mod tests {
             refused,
             Err(SpellCastingDenyReason::NotEnoughRoom)
         ));
+    }
+
+    fn a_plain() -> GameMap {
+        let mut map = GameMap::new();
+        for x in 95..=120 {
+            for y in 95..=110 {
+                map.insert_tile(Position::new(x, y, 7), MapTile::new());
+            }
+        }
+        map
+    }
+
+    fn put_at(map: &mut GameMap, x: u16, y: u16, agent: Agent) -> AgentKey {
+        map.insert_agent(agent, &Position::new(x, y, 7)).unwrap()
+    }
+
+    fn an_archer() -> Agent {
+        Agent::from_creature_kind(
+            Arc::new(CreatureKind {
+                target_distance: 4,
+                ..a_creature_kind("Archer")
+            }),
+            Position::new(0, 0, 7),
+        )
+    }
+
+    fn chained(
+        map: &GameMap,
+        caster: AgentKey,
+        count: u16,
+        filter: TargetFilter,
+    ) -> Result<Vec<AgentKey>, SpellCastingDenyReason> {
+        resolve_targets(
+            map,
+            caster,
+            &TargetMode::Chain {
+                count,
+                hop_range: 6,
+            },
+            &AreaTarget::None,
+            None,
+            filter,
+        )
+        .map(|targets| targets.keys)
+    }
+
+    /// The caster at (100, 100) and a line of archers each 5 tiles from the last, only the
+    /// first within 6 of the caster, plus one at (100, 102) nearer still.
+    fn a_line_of_archers() -> (GameMap, AgentKey, [AgentKey; 4]) {
+        let mut map = a_plain();
+        let caster = put_at(
+            &mut map,
+            100,
+            100,
+            Agent::from_player(a_test_snapshot(1, 1)),
+        );
+        let nearest = put_at(&mut map, 100, 102, an_archer());
+        let first = put_at(&mut map, 103, 100, an_archer());
+        let second = put_at(&mut map, 108, 100, an_archer());
+        let third = put_at(&mut map, 113, 100, an_archer());
+        (map, caster, [nearest, first, second, third])
+    }
+
+    #[test]
+    fn a_chain_takes_the_nearest_first_and_hops_on_from_each_pick() {
+        let (map, caster, archers) = a_line_of_archers();
+
+        assert_eq!(
+            chained(&map, caster, 5, TargetFilter::RangedCreatures).unwrap(),
+            archers.to_vec()
+        );
+    }
+
+    #[test]
+    fn a_chain_stops_at_its_count() {
+        let (map, caster, [nearest, first, ..]) = a_line_of_archers();
+
+        assert_eq!(
+            chained(&map, caster, 2, TargetFilter::RangedCreatures).unwrap(),
+            vec![nearest, first]
+        );
+    }
+
+    #[test]
+    fn a_chain_skips_what_it_cannot_see_and_what_its_filter_refuses() {
+        let mut map = a_plain();
+        let caster = put_at(
+            &mut map,
+            100,
+            100,
+            Agent::from_player(a_test_snapshot(1, 1)),
+        );
+        let rat = put_at(&mut map, 101, 100, a_test_creature("Rat", 10, (1, 2)));
+        put_at(&mut map, 104, 100, an_archer());
+        map.place_item(
+            &Position::new(102, 100, 7),
+            None,
+            None,
+            Item::new(
+                Arc::new(ItemConfig::new(
+                    ItemId(3),
+                    "wall".to_string(),
+                    None,
+                    None,
+                    std::collections::HashSet::from([ItemFlag::Unsight]),
+                    Vec::new(),
+                )),
+                1,
+            ),
+        )
+        .unwrap();
+
+        assert!(matches!(
+            chained(&map, caster, 5, TargetFilter::RangedCreatures),
+            Err(SpellCastingDenyReason::InvalidTarget)
+        ));
+        assert_eq!(
+            chained(&map, caster, 5, TargetFilter::Creatures).unwrap(),
+            vec![rat]
+        );
     }
 }

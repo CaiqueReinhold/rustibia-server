@@ -21,7 +21,7 @@ pub fn combat_system(ctx: &mut TickCtx) {
         }
 
         if ctx.map.get_agent(agent_key).is_some_and(|agent| {
-            agent.is_creature() && !agent.is_fleeing() && agent.next_walk_tick() <= ctx.tick
+            agent.is_creature() && !agent.is_fleeing(ctx.tick) && agent.next_walk_tick() <= ctx.tick
         }) {
             movement::face_agent(ctx, agent_key, target);
         }

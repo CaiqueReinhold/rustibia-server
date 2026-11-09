@@ -98,6 +98,11 @@ pub enum WorldCommand {
         target: Option<AgentKey>,
         seq: u32,
     },
+    CreatureSetTarget {
+        agent_key: AgentKey,
+        target: Option<AgentKey>,
+        decided_at: Tick,
+    },
     CastSpell {
         agent_key: AgentKey,
         spell: SpellId,
@@ -150,13 +155,13 @@ pub enum WorldCommand {
 }
 
 impl WorldCommand {
-    pub fn from_creature_action(action: CreatureAction) -> Self {
+    pub fn from_creature_action(action: CreatureAction, decided_at: Tick) -> Self {
         match action {
             CreatureAction::Say { agent_key, message } => WorldCommand::Say { agent_key, message },
-            CreatureAction::SetTarget { agent_key, target } => WorldCommand::SetTarget {
+            CreatureAction::SetTarget { agent_key, target } => WorldCommand::CreatureSetTarget {
                 agent_key,
                 target,
-                seq: 0,
+                decided_at,
             },
             CreatureAction::Walk {
                 agent_key,
@@ -580,6 +585,15 @@ impl WorldActor {
             } => {
                 self.with_ctx(broadcast_messages, |ctx| {
                     targeting::set_target(ctx, agent_key, target, seq)
+                });
+            }
+            WorldCommand::CreatureSetTarget {
+                agent_key,
+                target,
+                decided_at,
+            } => {
+                self.with_ctx(broadcast_messages, |ctx| {
+                    targeting::creature_set_target(ctx, agent_key, target, decided_at)
                 });
             }
             WorldCommand::DespawnPlayer {

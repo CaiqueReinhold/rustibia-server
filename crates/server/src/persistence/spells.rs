@@ -171,6 +171,8 @@ struct RawSupport {
     #[serde(default)]
     element: Option<CombatElement>,
     #[serde(default)]
+    melee_ticks: Option<TickDelta>,
+    #[serde(default)]
     effect_id: Option<EffectId>,
     #[serde(default)]
     missile_id: Option<MissileId>,
@@ -433,6 +435,7 @@ fn parse_effect(
                     speed: support.speed,
                     duration_ticks: support.duration_ticks,
                     element: support.element,
+                    melee_ticks: support.melee_ticks,
                 },
             )
             .map_err(|source| SpellsLoadError::Support {
@@ -1331,5 +1334,74 @@ spells:
                 field.item
             );
         }
+    }
+
+    const CHALLENGE_SPELL: &str = r#"
+spells:
+  - id: 12
+    name: Test Challenge
+    words: test challenge
+    group: support
+    cooldown_ticks: 40
+    mana: 80
+    level: 150
+    icon: 97
+    vocations: []
+    effect:
+      type: challenge
+      target:
+        type: chain
+        count: 5
+        hop_range: 6
+      duration_ticks: 240
+      melee_ticks: 240
+      effect_id: 219
+"#;
+
+    #[test]
+    fn a_challenge_spell_carries_its_durations_and_its_chain() {
+        let spells = load_spells_from_str(CHALLENGE_SPELL, &shape("probe")).unwrap();
+        let SpellEffect::Support(support) = &only_spell(&spells).effect else {
+            panic!("not a support spell");
+        };
+
+        assert_eq!(
+            support.effect,
+            SupportEffect::Challenge {
+                duration: TickDelta(240),
+                melee: Some(TickDelta(240)),
+            }
+        );
+        assert!(matches!(
+            support.target,
+            TargetMode::Chain {
+                count: 5,
+                hop_range: 6
+            }
+        ));
+    }
+
+    #[test]
+    fn melee_ticks_on_anything_but_a_challenge_is_refused() {
+        let contents = HASTE_SPELL.replace(
+            "      duration_ticks: 660\n",
+            "      duration_ticks: 660\n      melee_ticks: 240\n",
+        );
+        let error = load_spells_from_str(&contents, &shape("probe"))
+            .expect_err("a haste forces no melee, and one authored would be dropped silently");
+
+        assert!(
+            matches!(
+                error,
+                SpellsLoadError::Support {
+                    source: SupportError::Unexpected {
+                        field: "melee_ticks",
+                        ..
+                    },
+                    ..
+                }
+            ),
+            "unexpected error: {error}"
+        );
     }
 }

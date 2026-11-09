@@ -11,7 +11,7 @@ use crate::entities::targeting::{AreaOrigin, TargetMode};
 /// names the spell or the creature file the target was authored in.
 #[derive(Error, Debug)]
 pub enum TargetModeError {
-    #[error("targets `{target}`, not `self`, `target`, `named`, `aimed` or `area`")]
+    #[error("targets `{target}`, not `self`, `target`, `named`, `aimed`, `area` or `chain`")]
     UnknownTarget { target: String },
     #[error("names the area shape `{shape}`, which `areas.yaml` has not")]
     UnknownShape { shape: AreaShapeId },
@@ -29,6 +29,13 @@ struct RawCaster {}
 #[serde(deny_unknown_fields)]
 struct RawTargeted {
     range: u16,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawChain {
+    count: u16,
+    hop_range: u16,
 }
 
 #[derive(Deserialize)]
@@ -104,6 +111,13 @@ pub fn parse_target_mode(
             Ok(TargetMode::Area {
                 origin: parse_origin(area.origin),
                 shape,
+            })
+        }
+        "chain" => {
+            let chain: RawChain = serde_yaml::from_value(value)?;
+            Ok(TargetMode::Chain {
+                count: chain.count,
+                hop_range: chain.hop_range,
             })
         }
         other => Err(unknown(other.to_string())),

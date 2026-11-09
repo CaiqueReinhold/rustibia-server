@@ -1,7 +1,7 @@
 use crate::entities::agent::AgentKey;
-use crate::game::TickCtx;
 use crate::game::events::BroadcastMessage;
 use crate::game::map_query::can_target;
+use crate::game::{Tick, TickCtx};
 
 pub fn set_target(ctx: &mut TickCtx, agent: AgentKey, target: Option<AgentKey>, seq: u32) {
     if ctx.map.get_agent(agent).is_none() {
@@ -25,6 +25,30 @@ pub fn set_target(ctx: &mut TickCtx, agent: AgentKey, target: Option<AgentKey>, 
             seq,
         });
     }
+}
+
+/// `decided_at` is the tick of the map snapshot the behaviour pass decided on.
+pub fn creature_set_target(
+    ctx: &mut TickCtx,
+    creature: AgentKey,
+    target: Option<AgentKey>,
+    decided_at: Tick,
+) {
+    let challenge = ctx
+        .map
+        .get_agent(creature)
+        .and_then(|agent| agent.challenge(ctx.tick));
+    if let Some(challenge) = challenge {
+        if decided_at < challenge.since {
+            return;
+        }
+        if target != Some(challenge.by)
+            && let Some(mut agent) = ctx.map.agent_mut(creature)
+        {
+            agent.set_challenge(None);
+        }
+    }
+    set_target(ctx, creature, target, 0);
 }
 
 pub fn lose_target(ctx: &mut TickCtx, agent: AgentKey) {
@@ -79,11 +103,13 @@ pub fn drop_unreachable_target(ctx: &mut TickCtx, agent: AgentKey) -> bool {
 mod tests {
     use super::*;
     use crate::entities::agent::Agent;
+    use crate::entities::agent::Challenge;
     use crate::entities::map::{GameMap, MapTile};
     use crate::entities::position::Position;
     use crate::entities::world_map::WorldMap;
     use crate::game::TestHarness;
-    use crate::persistence::test_fixtures::a_test_snapshot;
+    use crate::game::Tick;
+    use crate::persistence::test_fixtures::{a_test_creature, a_test_snapshot};
 
     fn seat(map: &mut GameMap, at: &Position, id: u32) -> AgentKey {
         map.insert_tile(at.clone(), MapTile::new());
@@ -317,5 +343,73 @@ mod tests {
         let mut map = WorldMap::new(map);
         lose_target(&mut h.ctx(&mut map), attacker);
         assert!(h.events.is_empty());
+    }
+
+    /// A rat at (11, 10) challenged at tick 50 by the player west of it, with another player
+    /// to its east.
+    fn a_challenged_rat() -> (GameMap, AgentKey, AgentKey, AgentKey) {
+        let mut map = GameMap::new();
+        let challenger = seat(&mut map, &Position::new(10, 10, 7), 1);
+        let other = seat(&mut map, &Position::new(12, 10, 7), 2);
+        let spot = Position::new(11, 10, 7);
+        map.insert_tile(spot.clone(), MapTile::new());
+        let rat = map
+            .insert_agent(a_test_creature("Rat", 10, (1, 2)), &spot)
+            .unwrap();
+        let creature = map.get_agent_mut(rat).unwrap();
+        creature.set_target(Some(challenger), 0);
+        creature.set_challenge(Some(Challenge {
+            by: challenger,
+            since: Tick(50),
+            until: Tick(200),
+        }));
+        creature.force_melee(Tick(200));
+        (map, rat, challenger, other)
+    }
+
+    #[test]
+    fn a_creatures_switch_decided_before_its_challenge_is_dropped() {
+        let (map, rat, challenger, other) = a_challenged_rat();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness {
+            tick: Tick(60),
+            ..TestHarness::new()
+        };
+
+        creature_set_target(&mut h.ctx(&mut map), rat, Some(other), Tick(49));
+
+        assert_eq!(target_of(&map, rat), Some(challenger));
+        assert!(map.get_agent(rat).unwrap().challenge(Tick(60)).is_some());
+    }
+
+    #[test]
+    fn a_creatures_switch_decided_after_its_challenge_ends_it_but_not_its_melee() {
+        let (map, rat, _, other) = a_challenged_rat();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness {
+            tick: Tick(60),
+            ..TestHarness::new()
+        };
+
+        creature_set_target(&mut h.ctx(&mut map), rat, Some(other), Tick(50));
+
+        let rat = map.get_agent(rat).unwrap();
+        assert_eq!(rat.target(), Some(other));
+        assert_eq!(rat.challenge(Tick(60)), None);
+        assert_eq!(rat.target_distance(Tick(60)), Some(1));
+    }
+
+    #[test]
+    fn a_creature_holding_its_challenger_keeps_the_challenge() {
+        let (map, rat, challenger, _) = a_challenged_rat();
+        let mut map = WorldMap::new(map);
+        let mut h = TestHarness {
+            tick: Tick(60),
+            ..TestHarness::new()
+        };
+
+        creature_set_target(&mut h.ctx(&mut map), rat, Some(challenger), Tick(55));
+
+        assert!(map.get_agent(rat).unwrap().challenge(Tick(60)).is_some());
     }
 }

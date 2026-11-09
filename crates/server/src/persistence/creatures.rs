@@ -290,6 +290,7 @@ fn parse_ability(
                     speed: support.speed,
                     duration_ticks: support.duration_ticks,
                     element: support.element,
+                    melee_ticks: None,
                 },
             )
             .map_err(|source| CreaturesLoadError::Support {

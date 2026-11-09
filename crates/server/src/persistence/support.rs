@@ -65,6 +65,7 @@ pub enum SupportKind {
     MagicShield,
     CancelMagicShield,
     Cure,
+    Challenge,
 }
 
 impl SupportKind {
@@ -75,6 +76,7 @@ impl SupportKind {
             "magic_shield" => Some(Self::MagicShield),
             "cancel_magic_shield" => Some(Self::CancelMagicShield),
             "cure" => Some(Self::Cure),
+            "challenge" => Some(Self::Challenge),
             _ => None,
         }
     }
@@ -86,6 +88,7 @@ impl SupportKind {
             Self::MagicShield => "magic_shield",
             Self::CancelMagicShield => "cancel_magic_shield",
             Self::Cure => "cure",
+            Self::Challenge => "challenge",
         }
     }
 }
@@ -94,6 +97,7 @@ pub struct RawSupportFields {
     pub speed: Option<RawSpeedFormula>,
     pub duration_ticks: Option<TickDelta>,
     pub element: Option<CombatElement>,
+    pub melee_ticks: Option<TickDelta>,
 }
 
 pub fn build_support(
@@ -112,7 +116,12 @@ pub fn build_support(
         speed,
         duration_ticks,
         element,
+        melee_ticks,
     } = fields;
+
+    if melee_ticks.is_some() && !matches!(kind, SupportKind::Challenge) {
+        return Err(unexpected("melee_ticks"));
+    }
 
     match kind {
         SupportKind::Haste | SupportKind::Paralyse => {
@@ -161,6 +170,18 @@ pub fn build_support(
             }
             Ok(SupportEffect::Cure {
                 element: element.ok_or_else(|| missing("element"))?,
+            })
+        }
+        SupportKind::Challenge => {
+            if speed.is_some() {
+                return Err(unexpected("speed"));
+            }
+            if element.is_some() {
+                return Err(unexpected("element"));
+            }
+            Ok(SupportEffect::Challenge {
+                duration: duration_ticks.ok_or_else(|| missing("duration_ticks"))?,
+                melee: melee_ticks,
             })
         }
     }
