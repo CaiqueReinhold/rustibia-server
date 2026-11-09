@@ -16,6 +16,7 @@ use crate::entities::items::{
     ClimbDirection, FloorChangeDirection, FluidType, ItemAction, ItemAttribute, ItemConfig,
     ItemFlag, ItemId, ItemMultiAction,
 };
+use crate::entities::skills::SkillType;
 use crate::entities::spells::SpellId;
 use crate::entities::vocation::{Vocation, VocationSet};
 use crate::game::TickDelta;
@@ -46,6 +47,12 @@ pub enum ItemsLoadError {
         id: ItemId,
         first: PathBuf,
         second: PathBuf,
+    },
+    #[error("item {id} in {path} has an invalid `{key}`")]
+    InvalidAttribute {
+        id: ItemId,
+        key: String,
+        path: PathBuf,
     },
 }
 
@@ -242,6 +249,24 @@ fn parse_attribute(
             shapes.get(value.get("shape")?.as_str()?).cloned()?,
             EffectId(value.get("effect_id")?.as_u64()? as u16),
         )),
+        "skills" => {
+            let bonuses: HashMap<SkillType, i16> = serde_yaml::from_value(value.clone()).ok()?;
+            if bonuses.contains_key(&SkillType::Level) {
+                return None;
+            }
+            Some(ItemAttribute::SkillBonuses(bonuses.into_iter().collect()))
+        }
+        "protection" => {
+            let protection: HashMap<CombatElement, i16> =
+                serde_yaml::from_value(value.clone()).ok()?;
+            Some(ItemAttribute::Protection(protection.into_iter().collect()))
+        }
+        "element_damage" => {
+            let element: CombatElement =
+                serde_yaml::from_value(value.get("element")?.clone()).ok()?;
+            let damage = u16::try_from(value.get("damage")?.as_u64()?).ok()?;
+            Some(ItemAttribute::ElementDamage(element, damage))
+        }
         "speed" => Some(ItemAttribute::Speed(value.as_i64()? as i16)),
         "level" => Some(ItemAttribute::RequiredLevel(
             u16::try_from(value.as_u64()?).ok()?,
@@ -266,12 +291,20 @@ fn parse_attribute(
     }
 }
 
-fn convert(raw: RawItemConfig, shapes: &HashMap<AreaShapeId, Arc<AreaShape>>) -> ItemConfig {
-    let attributes = raw
-        .attributes
-        .iter()
-        .filter_map(|(k, v)| parse_attribute(k, v, shapes))
-        .collect::<Vec<_>>();
+const REFUSED_WHEN_INVALID: [&str; 3] = ["skills", "protection", "element_damage"];
+
+fn convert(
+    raw: RawItemConfig,
+    shapes: &HashMap<AreaShapeId, Arc<AreaShape>>,
+) -> Result<ItemConfig, String> {
+    let mut attributes = Vec::with_capacity(raw.attributes.len());
+    for (key, value) in &raw.attributes {
+        match parse_attribute(key, value, shapes) {
+            Some(attribute) => attributes.push(attribute),
+            None if REFUSED_WHEN_INVALID.contains(&key.as_str()) => return Err(key.clone()),
+            None => {}
+        }
+    }
 
     let mut config = ItemConfig::new(
         raw.id,
@@ -283,7 +316,7 @@ fn convert(raw: RawItemConfig, shapes: &HashMap<AreaShapeId, Arc<AreaShape>>) ->
     );
     config.plural = raw.plural;
     config.show_count = raw.show_count;
-    config
+    Ok(config)
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -341,7 +374,13 @@ fn load_items_from_files<'a>(
                     second: path.to_path_buf(),
                 });
             }
-            items.insert(raw.id, Arc::new(convert(raw, shapes)));
+            let id = raw.id;
+            let config = convert(raw, shapes).map_err(|key| ItemsLoadError::InvalidAttribute {
+                id,
+                key,
+                path: path.to_path_buf(),
+            })?;
+            items.insert(id, Arc::new(config));
         }
     }
     Ok(items)
@@ -352,6 +391,7 @@ mod tests {
     use super::*;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
     use crate::entities::items::{FluidType, ItemId};
+    use crate::entities::skills::SkillType;
     use crate::entities::vocation::Vocation;
 
     fn parse(key: &str, value: &str) -> Option<ItemAttribute> {
@@ -908,5 +948,59 @@ mod tests {
     fn a_flask_that_is_not_an_item_id_takes_the_whole_potion_with_it() {
         assert_eq!(potion("health:\n  min: 1\n  max: 2\nflask: 99999"), None);
         assert_eq!(potion("health:\n  min: 1\n  max: 2\nflask: nope"), None);
+    }
+
+    fn load_one(attributes: &str) -> Result<HashMap<ItemId, Arc<ItemConfig>>, ItemsLoadError> {
+        let contents = format!("- id: 7\n  name: thing\n  attributes:\n{attributes}");
+        load_items_from_files(
+            [(Path::new("thing.yaml"), contents.as_str())],
+            &HashMap::new(),
+        )
+    }
+
+    #[test]
+    fn skill_bonuses_protection_and_element_damage_are_read() {
+        let items = load_one(
+            "    skills: { sword: 3, magic: -1 }\n    protection: { fire: 10, mana: 5 }\n    element_damage: { element: death, damage: 8 }\n",
+        )
+        .unwrap();
+        let thing = &items[&ItemId(7)];
+
+        let skills = thing.attr_skill_bonuses();
+        assert!(skills.contains(&(SkillType::Sword, 3)));
+        assert!(skills.contains(&(SkillType::Magic, -1)));
+        assert_eq!(skills.len(), 2);
+        let protection = thing.attr_protection();
+        assert!(protection.contains(&(CombatElement::Fire, 10)));
+        assert!(protection.contains(&(CombatElement::Mana, 5)));
+        assert_eq!(thing.attr_element_damage(), Some((CombatElement::Death, 8)));
+    }
+
+    #[test]
+    fn an_item_without_them_reads_empty() {
+        let items = load_one("    weight: 1\n").unwrap();
+        let thing = &items[&ItemId(7)];
+
+        assert!(thing.attr_skill_bonuses().is_empty());
+        assert!(thing.attr_protection().is_empty());
+        assert_eq!(thing.attr_element_damage(), None);
+    }
+
+    #[test]
+    fn a_malformed_bonus_refuses_the_load() {
+        for attributes in [
+            "    skills: { fishing: 2 }\n",
+            "    skills: { level: 2 }\n",
+            "    protection: { drown: 10 }\n",
+            "    element_damage: { element: fire }\n",
+        ] {
+            assert!(
+                matches!(
+                    load_one(attributes),
+                    Err(ItemsLoadError::InvalidAttribute { .. })
+                ),
+                "{attributes}"
+            );
+        }
     }
 }

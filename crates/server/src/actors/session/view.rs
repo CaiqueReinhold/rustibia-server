@@ -232,6 +232,7 @@ impl SessionActor {
                 SkillProgress {
                     level: value.value,
                     percent_bp: progress_bp(player.vocation(), &skill, value),
+                    bonus: player.skill_bonus(skill),
                 },
                 (skill == SkillType::Level).then(|| total_experience(value)),
             )
@@ -269,7 +270,7 @@ impl SessionActor {
 
     pub(super) async fn skill_upgraded(&self, skill: SkillType, gained: u16) -> Result<()> {
         let message = self.shared_map.load().get_player(self.player_key).map(|p| {
-            let value = p.skill(skill);
+            let value = p.base_skill(skill);
             match skill {
                 SkillType::Axe => format!("You advanced to axe fighting {value}"),
                 SkillType::Club => format!("You advanced to club fighting {value}"),

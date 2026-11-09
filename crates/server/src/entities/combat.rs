@@ -9,7 +9,9 @@ use crate::entities::{
 };
 use crate::game::Tick;
 
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize)]
+#[derive(
+    Debug, Default, Clone, Copy, PartialEq, Eq, Hash, strum::EnumCount, serde::Deserialize,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum CombatElement {
     #[default]
@@ -59,7 +61,7 @@ pub enum AmmoType {
     Bolt,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct CombatDamage {
     pub element: CombatElement,
     pub value: u32,

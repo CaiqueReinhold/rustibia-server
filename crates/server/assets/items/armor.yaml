@@ -11,6 +11,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: 8
+      fire: -8
 - id: 824
   name: glacier robe
   article: a
@@ -24,6 +27,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: 8
+      energy: -8
 - id: 825
   name: lightning robe
   article: a
@@ -37,6 +43,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: -8
+      energy: 8
 - id: 826
   name: magma coat
   article: a
@@ -50,6 +59,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: -8
+      fire: 8
 - id: 3357
   name: plate armor
   article: a
@@ -212,6 +224,8 @@
     level: 60
     vocations:
     - paladin
+    skills:
+      distance: 3
 - id: 3397
   name: dwarven armor
   article: a
@@ -221,6 +235,8 @@
     weight: 13000
     slot: 4
     armor: 10
+    protection:
+      physical: 5
 - id: 3399
   name: elven mail
   article: an
@@ -398,6 +414,9 @@
     slot: 4
     armor: 11
     level: 50
+    protection:
+      death: 2
+      holy: -2
 - id: 8037
   name: dark lord's cape
   article: a
@@ -411,6 +430,9 @@
     level: 65
     vocations:
     - sorcerer
+    protection:
+      death: 8
+      holy: -8
 - id: 8038
   name: robe of the ice queen
   article: a
@@ -424,6 +446,9 @@
     level: 75
     vocations:
     - druid
+    protection:
+      ice: 12
+      energy: -12
 - id: 8039
   name: dragon robe
   article: a
@@ -437,6 +462,9 @@
     level: 75
     vocations:
     - sorcerer
+    protection:
+      ice: -12
+      fire: 12
 - id: 8040
   name: velvet mantle
   article: a
@@ -450,6 +478,9 @@
     level: 75
     vocations:
     - sorcerer
+    protection:
+      earth: -12
+      energy: 12
 - id: 8041
   name: greenwood coat
   article: a
@@ -462,6 +493,9 @@
     level: 75
     vocations:
     - druid
+    protection:
+      earth: 12
+      fire: -12
 - id: 8042
   name: spirit cloak
   article: a
@@ -474,6 +508,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
 - id: 8043
   name: focus cape
   article: a
@@ -486,6 +522,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
 - id: 8044
   name: belted cape
   article: a
@@ -513,6 +551,8 @@
   attributes:
     weight: 1000
     slot: 4
+    protection:
+      death: 5
 - id: 8047
   name: tunic
   article: a
@@ -542,6 +582,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      ice: -3
+      fire: 3
 - id: 8050
   name: crystalline armor
   article: a
@@ -555,6 +598,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      ice: 3
+      energy: -3
 - id: 8051
   name: voltage armor
   article: a
@@ -568,6 +614,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      earth: -3
+      energy: 3
 - id: 8052
   name: swamplair armor
   article: a
@@ -581,6 +630,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      earth: 3
+      fire: -3
 - id: 8053
   name: fireborn giant armor
   article: a
@@ -593,6 +645,11 @@
     level: 100
     vocations:
     - knight
+    skills:
+      sword: 2
+    protection:
+      ice: -5
+      fire: 5
 - id: 8054
   name: earthborn titan armor
   article: an
@@ -605,6 +662,11 @@
     level: 100
     vocations:
     - knight
+    skills:
+      axe: 2
+    protection:
+      earth: 5
+      fire: -5
 - id: 8055
   name: windborn colossus armor
   article: a
@@ -617,6 +679,11 @@
     level: 100
     vocations:
     - knight
+    skills:
+      club: 2
+    protection:
+      earth: -5
+      energy: 5
 - id: 8056
   name: oceanborn leviathan armor
   article: an
@@ -629,6 +696,11 @@
     level: 100
     vocations:
     - knight
+    skills:
+      shielding: 1
+    protection:
+      ice: 5
+      energy: -5
 - id: 8057
   name: divine plate
   article: a
@@ -641,6 +713,9 @@
     level: 75
     vocations:
     - paladin
+    protection:
+      death: 10
+      holy: -10
 - id: 8058
   name: molten plate
   article: a
@@ -653,6 +728,9 @@
     level: 75
     vocations:
     - paladin
+    protection:
+      ice: -7
+      fire: 7
 - id: 8059
   name: frozen plate
   article: a
@@ -665,6 +743,9 @@
     level: 75
     vocations:
     - paladin
+    protection:
+      ice: 7
+      energy: -7
 - id: 8060
   name: master archer's armor
   article: a
@@ -677,6 +758,8 @@
     level: 100
     vocations:
     - paladin
+    skills:
+      distance: 3
 - id: 8061
   name: skullcracker armor
   article: a
@@ -689,6 +772,9 @@
     level: 85
     vocations:
     - knight
+    protection:
+      death: 5
+      holy: -5
 - id: 8062
   name: robe of the underworld
   article: a
@@ -701,6 +787,9 @@
     level: 100
     vocations:
     - sorcerer
+    protection:
+      death: 12
+      holy: -12
 - id: 8063
   name: paladin armor
   article: a
@@ -712,6 +801,8 @@
     armor: 12
     vocations:
     - paladin
+    skills:
+      distance: 2
 - id: 8064
   name: ethno coat
   article: an
@@ -724,6 +815,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
 - id: 8862
   name: yalahari armor
   article: a
@@ -736,6 +829,8 @@
     level: 80
     vocations:
     - knight
+    protection:
+      death: 3
 - id: 9015
   name: flower dress
   article: a
@@ -805,6 +900,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: -10
+      energy: 10
 - id: 10439
   name: Zaoan robe
   article: a
@@ -818,6 +916,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: -10
+      fire: 10
 - id: 11651
   name: elite draken mail
   article: an
@@ -843,6 +944,10 @@
     level: 100
     vocations:
     - knight
+    skills:
+      shielding: 3
+    protection:
+      physical: 5
 - id: 11687
   name: royal scale robe
   article: a
@@ -856,6 +961,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      fire: 5
 - id: 11701
   name: old cape
   article: an
@@ -878,6 +987,10 @@
     level: 200
     vocations:
     - knight
+    skills:
+      shielding: 3
+    protection:
+      physical: 8
 - id: 13994
   name: depth lorica
   article: a
@@ -890,6 +1003,10 @@
     level: 150
     vocations:
     - paladin
+    skills:
+      distance: 3
+    protection:
+      death: 5
 - id: 14086
   name: calopteryx cape
   article: a
@@ -903,6 +1020,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      ice: 5
 - id: 16105
   name: gill coat
   article: a
@@ -916,6 +1037,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      earth: 10
+      fire: -10
 - id: 16110
   name: prismatic armor
   article: a
@@ -929,6 +1055,8 @@
     vocations:
     - knight
     - paladin
+    protection:
+      physical: 5
 - id: 17829
   name: buckle
   article: a
@@ -965,6 +1093,9 @@
     weight: 5800
     slot: 4
     armor: 12
+    protection:
+      earth: 2
+      fire: -2
 - id: 19391
   name: furious frock
   article: a
@@ -978,6 +1109,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      fire: 5
 - id: 21164
   name: glooth cape
   article: a
@@ -991,6 +1126,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: 5
+      fire: -5
 - id: 21166
   name: mooh'tah plate
   article: a
@@ -1022,6 +1160,9 @@
     slot: 4
     armor: 11
     level: 50
+    protection:
+      ice: 5
+      earth: 5
 - id: 22518
   name: Fireheart cuirass
   article: a
@@ -1034,6 +1175,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      sword: 4
+    protection:
+      ice: -8
+      fire: 8
 - id: 22519
   name: fireheart hauberk
   article: a
@@ -1046,6 +1192,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      axe: 4
+    protection:
+      ice: -8
+      fire: 8
 - id: 22520
   name: fireheart platemail
   article: a
@@ -1058,6 +1209,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      club: 4
+    protection:
+      ice: -8
+      fire: 8
 - id: 22521
   name: earthheart cuirass
   article: an
@@ -1070,6 +1226,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      sword: 4
+    protection:
+      earth: 8
+      fire: -8
 - id: 22522
   name: earthheart hauberk
   article: an
@@ -1082,6 +1243,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      axe: 4
+    protection:
+      earth: 8
+      fire: -8
 - id: 22523
   name: earthheart platemail
   article: an
@@ -1094,6 +1260,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      club: 4
+    protection:
+      earth: 8
+      fire: -8
 - id: 22524
   name: thunderheart cuirass
   article: a
@@ -1106,6 +1277,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      sword: 4
+    protection:
+      earth: -8
+      energy: 8
 - id: 22525
   name: thunderheart hauberk
   article: a
@@ -1118,6 +1294,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      axe: 4
+    protection:
+      earth: -8
+      energy: 8
 - id: 22526
   name: thunderheart platemail
   article: a
@@ -1130,6 +1311,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      club: 4
+    protection:
+      earth: -8
+      energy: 8
 - id: 22527
   name: frostheart cuirass
   article: a
@@ -1142,6 +1328,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      sword: 4
+    protection:
+      ice: 8
+      energy: -8
 - id: 22528
   name: frostheart hauberk
   article: a
@@ -1154,6 +1345,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      axe: 4
+    protection:
+      ice: 8
+      energy: -8
 - id: 22529
   name: frostheart platemail
   article: a
@@ -1166,6 +1362,11 @@
     level: 200
     vocations:
     - knight
+    skills:
+      club: 4
+    protection:
+      ice: 8
+      energy: -8
 - id: 22530
   name: firesoul tabard
   article: a
@@ -1178,6 +1379,11 @@
     level: 200
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      ice: -8
+      fire: 8
 - id: 22531
   name: earthsoul tabard
   article: an
@@ -1190,6 +1396,11 @@
     level: 200
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      earth: 8
+      fire: -8
 - id: 22532
   name: thundersoul tabard
   article: a
@@ -1202,6 +1413,11 @@
     level: 200
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      earth: -8
+      energy: 8
 - id: 22533
   name: frostsoul tabard
   article: a
@@ -1214,6 +1430,11 @@
     level: 200
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      ice: 8
+      energy: -8
 - id: 22534
   name: firemind raiment
   article: a
@@ -1227,6 +1448,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      ice: -8
+      fire: 8
 - id: 22535
   name: earthmind raiment
   article: an
@@ -1240,6 +1466,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      earth: 8
+      fire: -8
 - id: 22536
   name: thundermind raiment
   article: a
@@ -1253,6 +1484,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      earth: -8
+      energy: 8
 - id: 22537
   name: frostmind raiment
   article: a
@@ -1266,6 +1502,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      ice: 8
+      energy: -8
 - id: 24531
   name: old tibia item
   flags:
@@ -1312,6 +1553,9 @@
     slot: 4
     armor: 12
     level: 60
+    protection:
+      earth: 12
+      energy: 12
 - id: 27648
   name: gnome armor
   article: a
@@ -1324,6 +1568,12 @@
     level: 200
     vocations:
     - paladin
+    skills:
+      distance: 3
+    protection:
+      physical: 4
+      ice: -2
+      energy: 8
 - id: 28475
   name: ornate testtplate
   article: an
@@ -1343,6 +1593,10 @@
     level: 300
     vocations:
     - knight
+    skills:
+      shielding: 4
+    protection:
+      physical: 12
 - id: 29418
   name: living armor
   article: a
@@ -1356,6 +1610,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      earth: 12
+      fire: -5
 - id: 29423
   name: dream shroud
   article: a
@@ -1369,6 +1628,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
+    protection:
+      energy: 10
 - id: 31578
   name: bear skin
   article: a
@@ -1381,6 +1644,11 @@
     level: 230
     vocations:
     - druid
+    skills:
+      magic: 4
+    protection:
+      earth: 11
+      fire: -2
 - id: 31579
   name: embrace of nature
   article: an
@@ -1393,6 +1661,11 @@
     level: 220
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      ice: 11
+      energy: -3
 - id: 31583
   name: toga mortis
   article: a
@@ -1405,6 +1678,10 @@
     level: 220
     vocations:
     - sorcerer
+    skills:
+      magic: 4
+    protection:
+      death: 6
 - id: 32099
   name: traditional shirt
   article: a
@@ -1424,6 +1701,8 @@
   attributes:
     weight: 500
     slot: 4
+    protection:
+      death: 5
 - id: 32628
   name: ghost chestplate
   article: a
@@ -1436,6 +1715,10 @@
     level: 230
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      physical: 3
 - id: 32705
   name: pair of old bracers
   article: a
@@ -1458,6 +1741,11 @@
     level: 400
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      physical: 3
+      fire: 15
 - id: 34095
   name: soulmantle
   article: a
@@ -1470,6 +1758,10 @@
     level: 400
     vocations:
     - sorcerer
+    skills:
+      magic: 4
+    protection:
+      physical: 4
 - id: 34096
   name: soulshroud
   article: a
@@ -1482,6 +1774,10 @@
     level: 400
     vocations:
     - druid
+    skills:
+      magic: 4
+    protection:
+      death: 10
 - id: 34157
   name: lion plate
   article: a
@@ -1494,6 +1790,12 @@
     level: 270
     vocations:
     - knight
+    skills:
+      club: 3
+      axe: 3
+      sword: 3
+    protection:
+      physical: 6
 - id: 36663
   name: eldritch cuirass
   article: a
@@ -1506,6 +1808,8 @@
     level: 250
     vocations:
     - knight
+    protection:
+      physical: 10
 - id: 37608
   name: green demon armor
   flags:
@@ -1526,6 +1830,12 @@
     level: 400
     vocations:
     - knight
+    skills:
+      sword: 4
+      axe: 4
+      club: 4
+    protection:
+      physical: 13
 - id: 39164
   name: dawnfire sherwani
   article: a
@@ -1538,6 +1848,11 @@
     level: 270
     vocations:
     - sorcerer
+    skills:
+      magic: 4
+    protection:
+      fire: 10
+      earth: -2
 - id: 39165
   name: midnight tunic
   article: a
@@ -1550,6 +1865,10 @@
     level: 300
     vocations:
     - druid
+    skills:
+      magic: 4
+    protection:
+      physical: 3
 - id: 40533
   name: broken Iks cuirass
   article: the
@@ -1573,6 +1892,11 @@
     level: 270
     vocations:
     - paladin
+    skills:
+      distance: 3
+    protection:
+      physical: 3
+      earth: 8
 - id: 44619
   name: stoic iks cuirass
   flags:
@@ -1584,6 +1908,10 @@
     level: 250
     vocations:
     - druid
+    skills:
+      magic: 4
+    protection:
+      death: 5
 - id: 44620
   name: stoic iks chestplate
   flags:
@@ -1595,6 +1923,10 @@
     level: 250
     vocations:
     - knight
+    skills:
+      shielding: 3
+    protection:
+      physical: 8
 - id: 44621
   name: dauntless dragon scale armor
   article: a
@@ -1607,6 +1939,12 @@
     level: 300
     vocations:
     - knight
+    skills:
+      axe: 3
+      sword: 3
+      club: 3
+    protection:
+      physical: 8
 - id: 44622
   name: unerring dragon scale armor
   article: an
@@ -1619,6 +1957,11 @@
     level: 300
     vocations:
     - paladin
+    skills:
+      distance: 3
+    protection:
+      energy: 10
+      earth: -5
 - id: 44623
   name: arcane dragon robe
   article: an
@@ -1631,6 +1974,11 @@
     level: 300
     vocations:
     - sorcerer
+    skills:
+      magic: 3
+    protection:
+      fire: -6
+      ice: 12
 - id: 44624
   name: mystical dragon robe
   article: an
@@ -1643,3 +1991,8 @@
     level: 300
     vocations:
     - druid
+    skills:
+      magic: 3
+    protection:
+      ice: -6
+      fire: 12

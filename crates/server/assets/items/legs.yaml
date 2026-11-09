@@ -18,6 +18,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: 6
+      fire: -6
 - id: 821
   name: magma legs
   flags:
@@ -30,6 +33,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: -6
+      fire: 6
 - id: 822
   name: lightning legs
   flags:
@@ -42,6 +48,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: -6
+      energy: 6
 - id: 823
   name: glacier kilt
   article: a
@@ -55,6 +64,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: 6
+      energy: -6
 - id: 3362
   name: studded legs
   flags:
@@ -128,6 +140,8 @@
     weight: 4900
     slot: 7
     armor: 7
+    protection:
+      physical: 3
 - id: 3401
   name: elven legs
   flags:
@@ -207,6 +221,10 @@
     level: 80
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      death: 5
 - id: 9014
   name: leaf legs
   article: a
@@ -233,6 +251,8 @@
     weight: 6600
     slot: 7
     armor: 8
+    protection:
+      physical: 2
 - id: 13996
   name: depth ocrea
   article: a
@@ -246,6 +266,8 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      mana: 15
 - id: 13999
   name: ornate legs
   article: an
@@ -258,6 +280,8 @@
     level: 185
     vocations:
     - knight
+    protection:
+      physical: 5
 - id: 14087
   name: grasshopper legs
   article: a
@@ -281,6 +305,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      earth: 8
+      fire: -8
 - id: 16111
   name: prismatic legs
   flags:
@@ -292,6 +321,10 @@
     level: 150
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      physical: 3
 - id: 19366
   name: icy culottes
   flags:
@@ -303,6 +336,8 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: 8
 - id: 21168
   name: alloy legs
   flags:
@@ -384,6 +419,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      ice: -2
+      energy: 7
 - id: 28720
   name: falcon greaves
   flags:
@@ -396,6 +436,14 @@
     vocations:
     - knight
     - paladin
+    skills:
+      distance: 3
+      club: 3
+      axe: 3
+      sword: 3
+    protection:
+      physical: 7
+      ice: 7
 - id: 32097
   name: lederhosen
   article: a
@@ -419,6 +467,14 @@
     vocations:
     - knight
     - paladin
+    skills:
+      distance: 2
+      club: 2
+      axe: 2
+      sword: 2
+    protection:
+      physical: 4
+      fire: 2
 - id: 32618
   name: soulful legs
   article: a
@@ -432,6 +488,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      holy: 8
 - id: 34092
   name: soulshanks
   article: a
@@ -444,6 +504,10 @@
     level: 400
     vocations:
     - sorcerer
+    skills:
+      magic: 3
+    protection:
+      death: 10
 - id: 34093
   name: soulstrider
   article: a
@@ -456,6 +520,10 @@
     level: 400
     vocations:
     - druid
+    skills:
+      magic: 3
+    protection:
+      fire: 10
 - id: 35516
   name: exotic legs
   flags:
@@ -467,6 +535,8 @@
     level: 130
     vocations:
     - knight
+    protection:
+      physical: 4
 - id: 35517
   name: bast legs
   flags:
@@ -478,6 +548,10 @@
     level: 150
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      energy: 4
 - id: 36667
   name: eldritch breeches
   article: a
@@ -490,6 +564,11 @@
     level: 250
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      physical: 2
+      holy: 7
 - id: 37607
   name: green demon legs
   flags:
@@ -510,6 +589,10 @@
     level: 300
     vocations:
     - sorcerer
+    skills:
+      magic: 2
+    protection:
+      physical: 3
 - id: 39167
   name: midnight sarong
   article: a
@@ -522,6 +605,10 @@
     level: 250
     vocations:
     - druid
+    skills:
+      magic: 2
+    protection:
+      ice: 7
 - id: 40531
   name: broken Iks faulds
   article: the
@@ -544,6 +631,13 @@
     level: 270
     vocations:
     - knight
+    skills:
+      club: 2
+      axe: 2
+      sword: 2
+    protection:
+      physical: 5
+      earth: 5
 - id: 40590
   name: mutated skin legs
   flags:
@@ -555,6 +649,11 @@
     level: 270
     vocations:
     - paladin
+    skills:
+      distance: 2
+    protection:
+      physical: 4
+      earth: 4
 - id: 40595
   name: mutant bone kilt
   flags:
@@ -566,6 +665,10 @@
     level: 300
     vocations:
     - druid
+    skills:
+      magic: 2
+    protection:
+      physical: 3
 - id: 43876
   name: sanguine legs
   article: a
@@ -578,6 +681,13 @@
     level: 500
     vocations:
     - knight
+    skills:
+      axe: 4
+      club: 4
+      sword: 4
+    protection:
+      physical: 9
+      death: 6
 - id: 43881
   name: sanguine greaves
   article: a
@@ -590,6 +700,11 @@
     level: 500
     vocations:
     - paladin
+    skills:
+      distance: 4
+    protection:
+      physical: 7
+      energy: 9
 - id: 44642
   name: stoic iks culet
   flags:
@@ -601,6 +716,13 @@
     level: 250
     vocations:
     - knight
+    skills:
+      axe: 2
+      sword: 2
+      club: 2
+    protection:
+      physical: 4
+      energy: 2
 - id: 44643
   name: stoic iks faulds
   flags:
@@ -612,3 +734,7 @@
     level: 250
     vocations:
     - sorcerer
+    skills:
+      magic: 2
+    protection:
+      fire: 6

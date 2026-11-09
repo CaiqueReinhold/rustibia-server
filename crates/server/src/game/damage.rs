@@ -19,6 +19,17 @@ pub fn apply_damage(
     mut damage: CombatDamage,
     source: Option<AgentKey>,
 ) {
+    if let Some(percent) = ctx
+        .map
+        .get_player(target)
+        .map(|player| player.protection(damage.element))
+        .filter(|&percent| percent != 0)
+    {
+        let rolled = damage.value;
+        damage.value = after_protection(rolled, percent);
+        damage.blocked_armor |= rolled > 0 && damage.value == 0;
+    }
+
     if damage.element == CombatElement::Mana {
         drain_mana(ctx, target, damage, source);
         return;
@@ -136,12 +147,25 @@ fn drain_mana(
     });
 }
 
+fn after_protection(value: u32, percent: i16) -> u32 {
+    let cut = (f64::from(value) * f64::from(percent.min(100)) / 100.0).ceil();
+    (f64::from(value) - cut).max(0.0) as u32
+}
+
 pub fn get_player_base_damage(player: &Player, roll: &mut Rolls) -> (CombatElement, u32) {
     let level = player.level();
     let skill = weapon_skill(player);
     let min = get_min_damage(player.weapon_attack(), level, skill.value);
     let max = get_max_damage(player.weapon_attack(), level, skill.value);
     (player.weapon_element(), roll.damage_roll(min, max))
+}
+
+pub fn get_element_damage(player: &Player, attack: u16, roll: &mut Rolls) -> u32 {
+    let level = player.level();
+    let skill = weapon_skill(player);
+    let min = get_min_damage(attack, level, skill.value);
+    let max = get_max_damage(attack, level, skill.value);
+    roll.damage_roll(min, max)
 }
 
 pub fn get_creature_base_damage(
@@ -654,6 +678,8 @@ mod tests {
     use crate::entities::Bounds;
     use crate::entities::combat::AttackCost;
     use crate::entities::conditions::{ConditionSpec, SpecSchedule};
+    use crate::entities::inventory::InventorySlot;
+    use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemId};
     use crate::game::TickDelta;
     use crate::game::combat::execute_attack;
     use smallvec::SmallVec;
@@ -685,6 +711,93 @@ mod tests {
             blocked_shield: false,
             blocked_armor: false,
         }
+    }
+
+    fn protected(map: &mut GameMap, player: AgentKey, element: CombatElement, percent: i16) {
+        let mail = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(4),
+                "mail".to_string(),
+                None,
+                None,
+                [],
+                vec![ItemAttribute::Protection(Arc::from([(element, percent)]))],
+            )),
+            1,
+        );
+        map.get_player_mut(player)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Chest, None, mail)
+            .unwrap();
+    }
+
+    fn life_after(hit: CombatDamage, element: CombatElement, percent: i16) -> u32 {
+        let (mut map, player) = map_with_player();
+        protected(&mut map, player, element, percent);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), player, hit, None);
+
+        map.get_agent(player).unwrap().life().current
+    }
+
+    #[test]
+    fn protection_takes_its_percent_off_rounding_the_cut_up() {
+        assert_eq!(life_after(fire(30), CombatElement::Fire, 10), 73);
+        assert_eq!(life_after(fire(15), CombatElement::Fire, 10), 87);
+    }
+
+    #[test]
+    fn protection_against_another_element_does_nothing() {
+        assert_eq!(life_after(fire(30), CombatElement::Ice, 50), 70);
+    }
+
+    #[test]
+    fn negative_protection_makes_the_hit_worse() {
+        assert_eq!(life_after(fire(15), CombatElement::Fire, -10), 84);
+    }
+
+    #[test]
+    fn full_protection_absorbs_the_hit_and_reports_a_block() {
+        let (mut map, player) = map_with_player();
+        protected(&mut map, player, CombatElement::Physical, 120);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), player, physical(40), None);
+
+        assert_eq!(map.get_agent(player).unwrap().life().current, 100);
+        assert!(h.events.iter().any(|m| matches!(
+            m,
+            BroadcastMessage::DamageTaken { damage, .. }
+                if damage.value == 0 && damage.blocked_armor
+        )));
+    }
+
+    #[test]
+    fn protection_applies_before_the_magic_shield() {
+        let (mut map, player) = a_shielded_player(100);
+        protected(&mut map, player, CombatElement::Fire, 50);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), player, fire(30), None);
+
+        assert_eq!(map.get_agent(player).unwrap().mana().current, 85);
+    }
+
+    #[test]
+    fn mana_protection_reduces_a_mana_drain() {
+        let (mut map, player) = map_with_player();
+        protected(&mut map, player, CombatElement::Mana, 50);
+        let mut h = TestHarness::seeded(1);
+
+        let mut map = WorldMap::new(map);
+        apply_damage(&mut h.ctx(&mut map), player, mana(30), None);
+
+        assert_eq!(map.get_agent(player).unwrap().mana().current, 85);
     }
 
     #[test]

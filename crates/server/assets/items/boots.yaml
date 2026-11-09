@@ -10,6 +10,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: 5
+      fire: -5
 - id: 818
   name: magma boots
   flags:
@@ -22,6 +25,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: -5
+      fire: 5
 - id: 819
   name: glacier shoes
   flags:
@@ -34,6 +40,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      ice: 5
+      energy: -5
 - id: 820
   name: lightning boots
   flags:
@@ -46,6 +55,9 @@
     vocations:
     - sorcerer
     - druid
+    protection:
+      earth: -5
+      energy: 5
 - id: 3079
   name: boots of haste
   flags:
@@ -229,6 +241,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      ice: 3
+      energy: -3
 - id: 10201
   name: dragon scale boots
   flags:
@@ -241,6 +256,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      ice: -3
+      fire: 3
 - id: 10323
   name: guardian boots
   flags:
@@ -253,6 +271,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      physical: 2
+      holy: -2
 - id: 10386
   name: Zaoan shoes
   article: a
@@ -292,6 +313,8 @@
     level: 150
     vocations:
     - knight
+    protection:
+      physical: 5
     speed: -5
 - id: 16112
   name: prismatic boots
@@ -304,6 +327,8 @@
     level: 150
     vocations:
     - paladin
+    protection:
+      death: 3
 - id: 19374
   name: vampire silk slippers
   flags:
@@ -323,6 +348,8 @@
     vocations:
     - knight
     - paladin
+    protection:
+      physical: 1
 - id: 21981
   name: oriental shoes
   flags:
@@ -392,6 +419,8 @@
       decay_to: 0
     armor: 2
     level: 150
+    protection:
+      energy: 10
 - id: 23477
   name: void boots
   description: It can only be wielded properly by players of level 150 or higher.
@@ -423,6 +452,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      earth: 8
 - id: 30196
   name: yetislippers
   article: a
@@ -442,6 +475,8 @@
     level: 220
     vocations:
     - knight
+    protection:
+      physical: 6
 - id: 31617
   name: winged boots
   flags:
@@ -453,6 +488,10 @@
     level: 220
     vocations:
     - paladin
+    skills:
+      distance: 1
+    protection:
+      earth: 7
 - id: 32098
   name: traditional leather shoes
   article: a
@@ -475,6 +514,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      energy: 6
 - id: 34097
   name: pair of soulwalkers
   flags:
@@ -486,6 +529,13 @@
     level: 400
     vocations:
     - knight
+    skills:
+      club: 1
+      axe: 1
+      sword: 1
+    protection:
+      physical: 7
+      fire: 5
 - id: 34098
   name: pair of soulstalkers
   flags:
@@ -497,6 +547,10 @@
     level: 400
     vocations:
     - paladin
+    skills:
+      distance: 1
+    protection:
+      physical: 5
 - id: 35519
   name: makeshift boots
   flags:
@@ -508,6 +562,10 @@
     level: 150
     vocations:
     - sorcerer
+    skills:
+      magic: 1
+    protection:
+      fire: 6
 - id: 35520
   name: make-do boots
   flags:
@@ -519,6 +577,10 @@
     level: 150
     vocations:
     - druid
+    skills:
+      magic: 1
+    protection:
+      ice: 6
 - id: 37610
   name: green demon slippers
   flags:
@@ -538,6 +600,9 @@
     level: 270
     vocations:
     - knight
+    protection:
+      ice: 5
+      physical: 5
 - id: 39161
   name: feverbloom boots
   article: a
@@ -550,6 +615,10 @@
     level: 270
     vocations:
     - paladin
+    skills:
+      distance: 1
+    protection:
+      ice: 7
 - id: 40534
   name: broken Iks sandals
   article: the
@@ -573,6 +642,10 @@
     level: 250
     vocations:
     - sorcerer
+    skills:
+      magic: 1
+    protection:
+      physical: 2
 - id: 40593
   name: mutant bone boots
   article: a
@@ -585,6 +658,10 @@
     level: 250
     vocations:
     - druid
+    skills:
+      magic: 1
+    protection:
+      death: 3
 - id: 43884
   name: sanguine boots
   flags:
@@ -596,6 +673,11 @@
     level: 500
     vocations:
     - sorcerer
+    skills:
+      magic: 2
+    protection:
+      physical: 2
+      ice: 8
 - id: 43887
   name: sanguine galoshes
   article: a
@@ -608,6 +690,11 @@
     level: 500
     vocations:
     - druid
+    skills:
+      magic: 2
+    protection:
+      physical: 2
+      fire: 8
 - id: 44648
   name: stoic iks boots
   flags:
@@ -619,6 +706,8 @@
     level: 250
     vocations:
     - paladin
+    skills:
+      distance: 1
 - id: 44649
   name: stoic iks sandals
   flags:
@@ -630,3 +719,7 @@
     level: 250
     vocations:
     - sorcerer
+    skills:
+      magic: 1
+    protection:
+      ice: 6

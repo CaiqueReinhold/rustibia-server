@@ -672,6 +672,8 @@
   attributes:
     weight: 200
     slot: 10
+    protection:
+      death: 5
 - id: 25976
   name: starlight vial
   article: a
@@ -680,6 +682,8 @@
   attributes:
     weight: 200
     slot: 10
+    protection:
+      mana: 5
 - id: 25977
   name: sun catcher
   article: a
@@ -688,6 +692,8 @@
   attributes:
     weight: 200
     slot: 10
+    protection:
+      fire: 5
 - id: 28493
   name: bone fiddle
   article: a
@@ -737,6 +743,8 @@
   attributes:
     weight: 500
     slot: 10
+    protection:
+      holy: 2
 - id: 34017
   name: lit torch
   article: a
@@ -929,6 +937,8 @@
   attributes:
     weight: 120
     slot: 10
+    protection:
+      earth: 2
 - id: 43863
   name: conch shell horn
   article: a
@@ -938,3 +948,5 @@
   attributes:
     weight: 150
     slot: 10
+    protection:
+      ice: 5

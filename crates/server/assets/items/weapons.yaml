@@ -2,9 +2,9 @@
   name: fiery spike sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -19,9 +19,9 @@
   name: fiery relic sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -37,9 +37,9 @@
   name: fiery mystic blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -55,9 +55,9 @@
   name: fiery blacksteel sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -69,14 +69,14 @@
       damage: 7
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 664
   name: fiery dragon slayer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -88,14 +88,14 @@
       damage: 9
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 665
   name: fiery barbarian axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -111,9 +111,9 @@
   name: fiery knight axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -129,9 +129,9 @@
   name: fiery heroic axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -147,9 +147,9 @@
   name: fiery headchopper
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -161,14 +161,14 @@
       damage: 8
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 669
   name: fiery war axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -180,14 +180,14 @@
       damage: 9
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 670
   name: fiery clerical mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -203,9 +203,9 @@
   name: fiery crystal mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -221,9 +221,9 @@
   name: fiery cranial basher
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -239,9 +239,9 @@
   name: fiery orcish maul
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -256,9 +256,9 @@
   name: fiery war hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -270,14 +270,14 @@
       damage: 9
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 679
   name: icy spike sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -292,9 +292,9 @@
   name: icy relic sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -310,9 +310,9 @@
   name: icy mystic blade
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -328,9 +328,9 @@
   name: icy blacksteel sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -342,14 +342,14 @@
       damage: 7
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 683
   name: icy dragon slayer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -361,14 +361,14 @@
       damage: 9
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 684
   name: icy barbarian axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -384,9 +384,9 @@
   name: icy knight axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -402,9 +402,9 @@
   name: icy heroic axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -420,9 +420,9 @@
   name: icy headchopper
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -434,14 +434,14 @@
       damage: 8
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 688
   name: icy war axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -453,14 +453,14 @@
       damage: 9
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 689
   name: icy clerical mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -476,9 +476,9 @@
   name: icy crystal mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -494,9 +494,9 @@
   name: icy cranial basher
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -512,9 +512,9 @@
   name: icy orcish maul
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -529,9 +529,9 @@
   name: icy war hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -543,14 +543,14 @@
       damage: 9
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 779
   name: earth spike sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -565,9 +565,9 @@
   name: earth relic sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -583,9 +583,9 @@
   name: earth mystic blade
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -601,9 +601,9 @@
   name: earth blacksteel sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -615,14 +615,14 @@
       damage: 7
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 783
   name: earth dragon slayer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -634,14 +634,14 @@
       damage: 9
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 784
   name: earth barbarian axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -657,9 +657,9 @@
   name: earth knight axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -675,9 +675,9 @@
   name: earth heroic axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -693,9 +693,9 @@
   name: earth headchopper
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -707,14 +707,14 @@
       damage: 8
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 788
   name: earth war axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -726,14 +726,14 @@
       damage: 9
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 789
   name: earth clerical mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -749,9 +749,9 @@
   name: earth crystal mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -767,9 +767,9 @@
   name: earth cranial basher
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -785,9 +785,9 @@
   name: earth orcish maul
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -802,9 +802,9 @@
   name: earth war hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -816,14 +816,14 @@
       damage: 9
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 794
   name: energy spike sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -835,9 +835,9 @@
   name: energy relic sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -853,9 +853,9 @@
   name: energy mystic blade
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -871,9 +871,9 @@
   name: energy blacksteel sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -885,14 +885,14 @@
       damage: 7
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 798
   name: energy dragon slayer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -904,14 +904,14 @@
       damage: 9
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 801
   name: energy barbarian axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -927,9 +927,9 @@
   name: energy knight axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -945,9 +945,9 @@
   name: energy heroic axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -963,9 +963,9 @@
   name: energy headchopper
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -977,14 +977,14 @@
       damage: 8
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 805
   name: energy war axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -996,14 +996,14 @@
       damage: 9
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 806
   name: energy clerical mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -1019,9 +1019,9 @@
   name: energy crystal mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -1037,9 +1037,9 @@
   name: energy cranial basher
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -1055,9 +1055,9 @@
   name: energy orcish maul
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -1072,9 +1072,9 @@
   name: energy war hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -1086,15 +1086,15 @@
       damage: 9
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 860
   name: crimson sword
   article: a
   description: Its blade is very notchy
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3600
     slot: 6
@@ -1107,7 +1107,7 @@
   description: You could eat it. But then again, throwing it at others is so much
     more fun
   flags:
-    - take
+  - take
   attributes:
     weight: 80
     slot: 6
@@ -1115,17 +1115,17 @@
   name: hallowed axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
 - id: 1781
   name: small stone
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 360
     slot: 6
@@ -1139,10 +1139,10 @@
   name: snowball
   article: a
   flags:
-    - cumulative
-    - usable
-    - multiuse
-    - take
+  - cumulative
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 80
     slot: 6
@@ -1154,7 +1154,7 @@
   article: a
   description: Small stones are flying from its tip
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -1165,13 +1165,13 @@
     missile_id: 39
     level: 26
     vocations:
-      - druid
+    - druid
 - id: 3066
   name: snakebite rod
   article: a
   description: It seems to twitch and quiver as if trying to escape your grip
   flags:
-    - take
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -1182,13 +1182,13 @@
     missile_id: 39
     level: 6
     vocations:
-      - druid
+    - druid
 - id: 3067
   name: hailstorm rod
   article: a
   description: It grants you the power of striking your foes with furious hailstorms
   flags:
-    - take
+  - take
   attributes:
     weight: 2700
     slot: 6
@@ -1199,14 +1199,14 @@
     missile_id: 37
     level: 33
     vocations:
-      - druid
+    - druid
     attack: 30
 - id: 3069
   name: necrotic rod
   article: a
   description: It was brought up from hell to deliver death
   flags:
-    - take
+  - take
   attributes:
     weight: 2300
     slot: 6
@@ -1217,13 +1217,13 @@
     missile_id: 11
     level: 19
     vocations:
-      - druid
+    - druid
 - id: 3070
   name: moonlight rod
   article: a
   description: Icecold rays of moonlight shimmer on its tip
   flags:
-    - take
+  - take
   attributes:
     weight: 2100
     slot: 6
@@ -1234,13 +1234,13 @@
     missile_id: 37
     level: 13
     vocations:
-      - druid
+    - druid
 - id: 3071
   name: wand of inferno
   article: a
   description: It unleashes the very fires of hell
   flags:
-    - take
+  - take
   attributes:
     weight: 2700
     slot: 6
@@ -1251,14 +1251,14 @@
     missile_id: 4
     level: 33
     vocations:
-      - sorcerer
+    - sorcerer
     attack: 30
 - id: 3072
   name: wand of decay
   article: a
   description: It is half-rotten itself and reeks terribly
   flags:
-    - take
+  - take
   attributes:
     weight: 2300
     slot: 6
@@ -1269,13 +1269,13 @@
     missile_id: 11
     level: 19
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 3073
   name: wand of cosmic energy
   article: a
   description: The energy of a radiant star is trapped inside its globe
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -1286,13 +1286,13 @@
     missile_id: 5
     level: 26
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 3074
   name: wand of vortex
   article: a
   description: Surges of energy rush through the tip of this wand
   flags:
-    - take
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -1303,13 +1303,13 @@
     missile_id: 5
     level: 6
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 3075
   name: wand of dragonbreath
   article: a
   description: Legends say that this wand holds the soul of a young dragon
   flags:
-    - take
+  - take
   attributes:
     weight: 2300
     slot: 6
@@ -1320,15 +1320,15 @@
     missile_id: 4
     level: 13
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 3208
   name: giant smithhammer
   article: a
   description: This cyclopean hammer seems to be an awesome smithing tool
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 6
@@ -1339,9 +1339,9 @@
   name: sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -1353,9 +1353,9 @@
   name: two handed sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -1364,14 +1364,14 @@
     weapon_type: sword
     level: 20
     vocations:
-      - knight
+    - knight
 - id: 3266
   name: battle axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 0
@@ -1379,14 +1379,14 @@
     attack: 25
     weapon_type: axe
     vocations:
-      - knight
+    - knight
 - id: 3267
   name: dagger
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 950
     slot: 6
@@ -1397,9 +1397,9 @@
   name: hand axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1800
     slot: 6
@@ -1410,9 +1410,9 @@
   name: halberd
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 0
@@ -1424,9 +1424,9 @@
   name: club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -1438,9 +1438,9 @@
   article: a
   description: It can be enchanted with an element.
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -1452,9 +1452,9 @@
   name: rapier
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1500
     slot: 6
@@ -1466,9 +1466,9 @@
   name: sabre
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -1480,9 +1480,9 @@
   name: axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 6
@@ -1493,9 +1493,9 @@
   name: double axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -1504,14 +1504,14 @@
     weapon_type: axe
     level: 25
     vocations:
-      - knight
+    - knight
 - id: 3276
   name: hatchet
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -1522,8 +1522,8 @@
   name: spear
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2000
     slot: 6
@@ -1538,9 +1538,9 @@
   article: a
   description: It's the magic Cyclopmania Sword
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4300
     slot: 0
@@ -1549,14 +1549,14 @@
     weapon_type: sword
     level: 140
     vocations:
-      - knight
+    - knight
 - id: 3279
   name: war hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -1565,15 +1565,15 @@
     weapon_type: club
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 3280
   name: fire sword
   article: a
   description: The blade is a magic flame
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2300
     slot: 6
@@ -1590,9 +1590,9 @@
   article: a
   description: This sword has been forged by ancient giants
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 0
@@ -1601,14 +1601,14 @@
     weapon_type: sword
     level: 55
     vocations:
-      - knight
+    - knight
 - id: 3282
   name: morning star
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 6
@@ -1619,9 +1619,9 @@
   name: carlin sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 6
@@ -1634,9 +1634,9 @@
   article: an
   description: A deadly but fragile weapon
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1500
     slot: 6
@@ -1650,9 +1650,9 @@
   name: longsword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4200
     slot: 6
@@ -1663,9 +1663,9 @@
   name: mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 6
@@ -1676,8 +1676,8 @@
   name: throwing star
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -1692,9 +1692,9 @@
   article: a
   description: It's the Sword of Valor
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4200
     slot: 6
@@ -1707,9 +1707,9 @@
   name: staff
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 0
@@ -1720,9 +1720,9 @@
   name: silver dagger
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1020
     slot: 6
@@ -1733,9 +1733,9 @@
   name: knife
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 420
     slot: 6
@@ -1746,9 +1746,9 @@
   name: combat knife
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 870
     slot: 6
@@ -1759,9 +1759,9 @@
   name: sickle
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1050
     slot: 6
@@ -1772,9 +1772,9 @@
   name: short sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -1786,9 +1786,9 @@
   article: a
   description: The blade shimmers in light blue
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -1802,9 +1802,9 @@
   article: a
   description: Strong powers flow in this magic sword
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6400
     slot: 0
@@ -1813,14 +1813,14 @@
     weapon_type: sword
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 3297
   name: serpent sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -1836,8 +1836,8 @@
   article: a
   plural: throwing knives
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 500
     slot: 6
@@ -1851,9 +1851,9 @@
   name: poison dagger
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 880
     slot: 6
@@ -1867,9 +1867,9 @@
   name: katana
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3100
     slot: 6
@@ -1881,9 +1881,9 @@
   name: broadsword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5250
     slot: 0
@@ -1891,15 +1891,15 @@
     attack: 26
     weapon_type: sword
     vocations:
-      - knight
+    - knight
 - id: 3302
   name: dragon lance
   article: a
   description: The extraordinary sharp blade penetrates every armor
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6700
     slot: 0
@@ -1912,9 +1912,9 @@
   article: a
   description: A masterpiece of a dwarven smith
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 0
@@ -1923,15 +1923,15 @@
     weapon_type: axe
     level: 95
     vocations:
-      - knight
+    - knight
 - id: 3304
   name: crowbar
   article: a
   description: It may come in handy sometime
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2100
     slot: 6
@@ -1942,9 +1942,9 @@
   name: battle hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 6
@@ -1955,9 +1955,9 @@
   name: golden sickle
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1950
     slot: 6
@@ -1968,9 +1968,9 @@
   name: scimitar
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -1982,9 +1982,9 @@
   name: machete
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1650
     slot: 6
@@ -1996,9 +1996,9 @@
   article: a
   description: It is blessed by the gods of Tibia
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12500
     slot: 6
@@ -2011,9 +2011,9 @@
   name: iron hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6600
     slot: 6
@@ -2024,9 +2024,9 @@
   name: clerical mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -2040,9 +2040,9 @@
   article: a
   description: You feel an aura of protection
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6700
     slot: 6
@@ -2055,9 +2055,9 @@
   name: obsidian lance
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 0
@@ -2069,9 +2069,9 @@
   name: naginata
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 0
@@ -2083,9 +2083,9 @@
   name: guardian halberd
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 0
@@ -2097,9 +2097,9 @@
   name: orcish axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 6
@@ -2110,9 +2110,9 @@
   name: barbarian axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -2125,9 +2125,9 @@
   name: knight axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -2141,9 +2141,9 @@
   article: a
   description: You feel the power of this mighty axe
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9900
     slot: 6
@@ -2157,9 +2157,9 @@
   article: a
   description: The blade is a magic flame
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 6
@@ -2176,9 +2176,9 @@
   article: an
   description: Temporal magic powers enchant this staff
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 0
@@ -2192,9 +2192,9 @@
   name: dragon hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9700
     slot: 6
@@ -2206,9 +2206,9 @@
   name: dwarven axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 6
@@ -2222,9 +2222,9 @@
   article: a
   description: The staff longs for death
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1700
     slot: 6
@@ -2237,9 +2237,9 @@
   name: light mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -2250,9 +2250,9 @@
   name: epee
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1450
     slot: 6
@@ -2264,9 +2264,9 @@
   name: daramian mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 6
@@ -2277,9 +2277,9 @@
   name: daramian waraxe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5250
     slot: 0
@@ -2288,14 +2288,14 @@
     weapon_type: axe
     level: 25
     vocations:
-      - knight
+    - knight
 - id: 3329
   name: daramian axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -2306,9 +2306,9 @@
   name: heavy machete
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1840
     slot: 6
@@ -2319,9 +2319,9 @@
   name: ravager's axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5250
     slot: 0
@@ -2335,9 +2335,9 @@
   description: A giant is said to have forged this hammer to take revenge for the
     death of his brother
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -2346,14 +2346,14 @@
     weapon_type: club
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 3333
   name: crystal mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -2366,9 +2366,9 @@
   name: pharaoh sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5200
     slot: 6
@@ -2381,9 +2381,9 @@
   name: twin axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6400
     slot: 0
@@ -2392,15 +2392,15 @@
     weapon_type: axe
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 3336
   name: studded club
   article: a
   description: It has been reinforced with iron
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -2412,9 +2412,9 @@
   article: a
   description: It apparently originally belonged to some lesser undead
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3900
     slot: 6
@@ -2425,9 +2425,9 @@
   name: bone sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -2438,9 +2438,9 @@
   name: djinn blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2450
     slot: 6
@@ -2454,9 +2454,9 @@
   article: a
   description: Its tip is made of extremely solid steel
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 0
@@ -2470,9 +2470,9 @@
   description: It is enchanted with ancient magic that renders a weak staff into a
     powerful weapon
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 0
@@ -2484,9 +2484,9 @@
   name: war axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -2495,15 +2495,15 @@
     weapon_type: axe
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 3343
   name: lich staff
   article: a
   description: A scent of death and decay sticks to this weapon
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -2516,9 +2516,9 @@
   name: beastslayer axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 6
@@ -2531,9 +2531,9 @@
   name: templar scytheblade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -2545,9 +2545,9 @@
   name: ripper lance
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 0
@@ -2558,8 +2558,8 @@
   name: hunting spear
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2200
     slot: 6
@@ -2574,9 +2574,9 @@
   name: banana staff
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -2588,7 +2588,7 @@
   name: crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4000
     slot: 0
@@ -2599,7 +2599,7 @@
   name: bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3100
     slot: 0
@@ -2610,9 +2610,9 @@
   name: scythe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3000
     slot: 0
@@ -2624,7 +2624,7 @@
   article: an
   description: It is a bit heavy due to the iron mounting, but very precise
   flags:
-    - take
+  - take
   attributes:
     weight: 9500
     slot: 0
@@ -2635,13 +2635,13 @@
     ammo_type: bolt
     level: 75
     vocations:
-      - paladin
+    - paladin
 - id: 6101
   name: Ron the Ripper's sabre
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -2653,9 +2653,9 @@
   article: the
   description: This holy blade was forged of shattered dreams
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6400
     slot: 0
@@ -2664,14 +2664,14 @@
     weapon_type: sword
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 6553
   name: ruthless axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 0
@@ -2680,13 +2680,13 @@
     weapon_type: axe
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 7366
   name: viper star
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -2701,8 +2701,8 @@
   name: enchanted spear
   article: an
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2000
     slot: 6
@@ -2717,8 +2717,8 @@
   name: assassin star
   article: an
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -2733,8 +2733,8 @@
   name: royal spear
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -2750,9 +2750,9 @@
   article: a
   description: Barbarian women are said to use it for conjuring beasts
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 0
@@ -2765,9 +2765,9 @@
   article: a
   description: This axe is only granted to a greenhorn of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -2776,16 +2776,16 @@
     weapon_type: axe
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 7381
   name: mammoth whopper
   article: a
   description: Made from a mammoth's legbones, it is one of the favoured weapons among
     barbarians
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 6
@@ -2797,9 +2797,9 @@
   name: demonrage sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 15000
     slot: 0
@@ -2808,14 +2808,14 @@
     weapon_type: sword
     level: 60
     vocations:
-      - knight
+    - knight
 - id: 7383
   name: relic sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -2829,9 +2829,9 @@
   article: a
   description: This sword is only granted to a scrapper of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -2844,9 +2844,9 @@
   name: crimson sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3600
     slot: 6
@@ -2860,9 +2860,9 @@
   article: a
   description: This axe is only granted to a scrapper of the Svargrond arena.
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 0
@@ -2871,16 +2871,16 @@
     weapon_type: sword
     level: 40
     vocations:
-      - knight
+    - knight
 - id: 7387
   name: diamond sceptre
   article: a
   description: The beautiful jewel on the top of this sceptre is sharp enough to cut
     through glass
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1500
     slot: 6
@@ -2892,9 +2892,9 @@
   name: vile axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5200
     slot: 6
@@ -2908,9 +2908,9 @@
   article: a
   description: This axe is only granted to a scrapper of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -2924,9 +2924,9 @@
   article: the
   description: This sword is only granted to a warlord of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -2939,9 +2939,9 @@
   name: thaian sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 0
@@ -2950,15 +2950,15 @@
     weapon_type: sword
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 7392
   name: orcish maul
   article: an
   description: This club is only granted to a greenhorn of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -2970,9 +2970,9 @@
   name: dragon slayer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -2981,14 +2981,14 @@
     weapon_type: sword
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 7403
   name: berserker
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 13000
     slot: 0
@@ -2997,14 +2997,14 @@
     weapon_type: sword
     level: 65
     vocations:
-      - knight
+    - knight
 - id: 7404
   name: assassin dagger
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1700
     slot: 6
@@ -3017,9 +3017,9 @@
   name: havoc blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7200
     slot: 0
@@ -3028,15 +3028,15 @@
     weapon_type: sword
     level: 70
     vocations:
-      - knight
+    - knight
 - id: 7406
   name: blacksteel sword
   article: a
   description: This sword is only granted to a greenhorn of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -3045,14 +3045,14 @@
     weapon_type: sword
     level: 35
     vocations:
-      - knight
+    - knight
 - id: 7407
   name: haunted blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3100
     slot: 0
@@ -3061,14 +3061,14 @@
     weapon_type: sword
     level: 30
     vocations:
-      - knight
+    - knight
 - id: 7408
   name: wyvern fang
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2000
     slot: 6
@@ -3081,9 +3081,9 @@
   name: northern star
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4200
     slot: 6
@@ -3096,9 +3096,9 @@
   name: queen's sceptre
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2300
     slot: 6
@@ -3110,9 +3110,9 @@
   name: ornamented axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 6
@@ -3125,9 +3125,9 @@
   name: butcher's axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6300
     slot: 6
@@ -3140,9 +3140,9 @@
   name: titan axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8100
     slot: 0
@@ -3151,16 +3151,16 @@
     weapon_type: axe
     level: 40
     vocations:
-      - knight
+    - knight
 - id: 7414
   name: abyss hammer
   article: an
   description: Floating stones form the tip of this strange weapon, held in place
     by unspeakable magic
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -3169,15 +3169,15 @@
     weapon_type: club
     level: 60
     vocations:
-      - knight
+    - knight
 - id: 7415
   name: cranial basher
   article: a
   description: This club is only granted to a scrapper of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -3190,9 +3190,9 @@
   name: bloody edge
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5200
     slot: 6
@@ -3205,9 +3205,9 @@
   name: runed sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4600
     slot: 6
@@ -3220,9 +3220,9 @@
   name: nightmare blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4600
     slot: 6
@@ -3235,9 +3235,9 @@
   name: dreaded cleaver
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 6
@@ -3250,9 +3250,9 @@
   name: reaper's axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -3265,9 +3265,9 @@
   name: onyx flail
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2600
     slot: 6
@@ -3279,9 +3279,9 @@
   name: jade hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -3294,9 +3294,9 @@
   name: skullcrusher
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -3305,14 +3305,14 @@
     weapon_type: club
     level: 85
     vocations:
-      - knight
+    - knight
 - id: 7424
   name: lunar staff
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 0
@@ -3324,9 +3324,9 @@
   name: taurus mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 0
@@ -3338,9 +3338,9 @@
   name: amber staff
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 0
@@ -3354,9 +3354,9 @@
   description: Only those who have descended to the deepest depths may wield this
     hammer without it cursing them
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6300
     slot: 0
@@ -3369,9 +3369,9 @@
   article: a
   description: This weapon has to be swung in both hands and requires a lot of strength
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -3380,15 +3380,15 @@
     weapon_type: club
     level: 55
     vocations:
-      - knight
+    - knight
 - id: 7429
   name: blessed sceptre
   article: a
   description: This sceptre is only granted to a warlord of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3900
     slot: 6
@@ -3402,9 +3402,9 @@
   article: a
   description: Small flames are dancing around this strange weapon
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1800
     slot: 6
@@ -3416,9 +3416,9 @@
   name: demonbone
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 6
@@ -3431,9 +3431,9 @@
   name: furry club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4200
     slot: 6
@@ -3446,9 +3446,9 @@
   name: ravenwing
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5500
     slot: 6
@@ -3462,9 +3462,9 @@
   article: a
   description: This axe is only granted to a warlord of the Svargrond arena
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9200
     slot: 6
@@ -3477,9 +3477,9 @@
   name: impaler
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 6
@@ -3492,9 +3492,9 @@
   name: angelic axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5600
     slot: 0
@@ -3503,15 +3503,15 @@
     weapon_type: axe
     level: 45
     vocations:
-      - knight
+    - knight
 - id: 7437
   name: sapphire hammer
   article: a
   description: A beautiful gem is embedded in this weapon
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2100
     slot: 6
@@ -3524,7 +3524,7 @@
   article: an
   description: This beautifully ornamented bow was made by a skilled elvish bowmaker
   flags:
-    - take
+  - take
   attributes:
     weight: 3900
     slot: 0
@@ -3536,9 +3536,9 @@
   name: crystal sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6900
     slot: 0
@@ -3547,14 +3547,14 @@
     weapon_type: sword
     level: 25
     vocations:
-      - knight
+    - knight
 - id: 7450
   name: hammer of prophecy
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 0
@@ -3563,14 +3563,14 @@
     weapon_type: club
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 7451
   name: shadow sceptre
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -3582,9 +3582,9 @@
   name: spiked squelcher
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 0
@@ -3593,14 +3593,14 @@
     weapon_type: club
     level: 30
     vocations:
-      - knight
+    - knight
 - id: 7453
   name: executioner
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9900
     slot: 0
@@ -3609,14 +3609,14 @@
     weapon_type: axe
     level: 85
     vocations:
-      - knight
+    - knight
 - id: 7454
   name: glorious axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9500
     slot: 0
@@ -3625,14 +3625,14 @@
     weapon_type: axe
     level: 30
     vocations:
-      - knight
+    - knight
 - id: 7455
   name: mythril axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5500
     slot: 6
@@ -3645,9 +3645,9 @@
   name: noble axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3800
     slot: 6
@@ -3659,9 +3659,9 @@
   name: steel axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -3672,9 +3672,9 @@
   name: jagged sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -3686,7 +3686,7 @@
   name: modified crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 0
@@ -3696,12 +3696,12 @@
     ammo_type: bolt
     level: 45
     vocations:
-      - paladin
+    - paladin
 - id: 8022
   name: chain bolter
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -3711,12 +3711,12 @@
     ammo_type: bolt
     level: 60
     vocations:
-      - paladin
+    - paladin
 - id: 8023
   name: royal crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -3727,12 +3727,12 @@
     ammo_type: bolt
     level: 130
     vocations:
-      - paladin
+    - paladin
 - id: 8024
   name: devileye
   article: the
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -3743,12 +3743,12 @@
     ammo_type: bolt
     level: 100
     vocations:
-      - paladin
+    - paladin
 - id: 8025
   name: ironworker
   article: the
   flags:
-    - take
+  - take
   attributes:
     weight: 15000
     slot: 0
@@ -3758,12 +3758,12 @@
     ammo_type: bolt
     level: 80
     vocations:
-      - paladin
+    - paladin
 - id: 8026
   name: warsinger bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -3774,12 +3774,12 @@
     ammo_type: arrow
     level: 80
     vocations:
-      - paladin
+    - paladin
 - id: 8027
   name: composite hornbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 5200
     slot: 0
@@ -3790,11 +3790,11 @@
     ammo_type: arrow
     level: 50
     vocations:
-      - paladin
+    - paladin
 - id: 8028
   name: Yol's bow
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 0
@@ -3804,12 +3804,12 @@
     ammo_type: arrow
     level: 60
     vocations:
-      - paladin
+    - paladin
 - id: 8029
   name: silkweaver bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 0
@@ -3819,11 +3819,11 @@
     ammo_type: arrow
     level: 40
     vocations:
-      - paladin
+    - paladin
 - id: 8030
   name: Elethriel's elemental bow
   flags:
-    - take
+  - take
   attributes:
     weight: 4400
     slot: 0
@@ -3833,13 +3833,13 @@
     ammo_type: arrow
     level: 70
     vocations:
-      - paladin
+    - paladin
 - id: 8082
   name: underworld rod
   article: an
   description: No one knows which hell this unholy rod comes from
   flags:
-    - take
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -3850,14 +3850,14 @@
     missile_id: 11
     level: 42
     vocations:
-      - druid
+    - druid
 - id: 8083
   name: northwind rod
   article: a
   description: It was made by one of the shamans in Svargrond and symbolises an icy
     mammoth
   flags:
-    - take
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -3868,13 +3868,13 @@
     missile_id: 37
     level: 22
     vocations:
-      - druid
+    - druid
 - id: 8084
   name: springsprout rod
   article: a
   description: It is filled with the energy of growing plants
   flags:
-    - take
+  - take
   attributes:
     weight: 2700
     slot: 6
@@ -3885,13 +3885,13 @@
     missile_id: 39
     level: 37
     vocations:
-      - druid
+    - druid
 - id: 8092
   name: wand of starstorm
   article: a
   description: It is sparkling with universal energy
   flags:
-    - take
+  - take
   attributes:
     weight: 2550
     slot: 6
@@ -3902,14 +3902,14 @@
     missile_id: 5
     level: 37
     vocations:
-      - sorcerer
+    - sorcerer
     attack: 32
 - id: 8093
   name: wand of draconia
   article: a
   description: This wand holds the spirit and soul of a dragon lord
   flags:
-    - take
+  - take
   attributes:
     weight: 2700
     slot: 6
@@ -3920,13 +3920,13 @@
     missile_id: 4
     level: 22
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 8094
   name: wand of voodoo
   article: a
   description: It is filled with the dark hatred and rage of a tormented demonic being
   flags:
-    - take
+  - take
   attributes:
     weight: 2850
     slot: 6
@@ -3937,14 +3937,14 @@
     missile_id: 11
     level: 42
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 8096
   name: hellforged axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8800
     slot: 6
@@ -3957,9 +3957,9 @@
   name: solar axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 6
@@ -3972,9 +3972,9 @@
   name: demonwing axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -3983,14 +3983,14 @@
     weapon_type: axe
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 8099
   name: dark trinity mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9900
     slot: 6
@@ -4003,9 +4003,9 @@
   name: obsidian truncheon
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6500
     slot: 6
@@ -4018,9 +4018,9 @@
   name: stomper
   article: the
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11500
     slot: 0
@@ -4029,14 +4029,14 @@
     weapon_type: club
     level: 100
     vocations:
-      - knight
+    - knight
 - id: 8102
   name: emerald sword
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -4049,9 +4049,9 @@
   name: epiphany
   article: the
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 6
@@ -4064,9 +4064,9 @@
   name: calamity
   article: the
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 0
@@ -4075,12 +4075,12 @@
     weapon_type: sword
     level: 100
     vocations:
-      - knight
+    - knight
 - id: 9373
   name: glutton's mace
   description: It would be an awesome weapon if the handle weren't that greasy
   flags:
-    - take
+  - take
   attributes:
     weight: 1300
     slot: 6
@@ -4093,7 +4093,7 @@
   description: Someone has sharpened this carrot to inflict some nasty damage especially
     on rabbits
   flags:
-    - take
+  - take
   attributes:
     weight: 160
     slot: 6
@@ -4106,7 +4106,7 @@
   description: This bread is so old that it has become unbreakable and a formidable
     weapon
   flags:
-    - take
+  - take
   attributes:
     weight: 500
     slot: 6
@@ -4119,7 +4119,7 @@
   description: If you could only figure out how you are supposed to fire more arrows
     at once
   flags:
-    - take
+  - take
   attributes:
     weight: 1250
     slot: 0
@@ -4131,7 +4131,7 @@
   article: a
   description: This scythe has harvested countless souls and still hungers for more
   flags:
-    - take
+  - take
   attributes:
     weight: 3000
     slot: 0
@@ -4143,7 +4143,7 @@
   article: a
   description: It's ready to unleash a fury's wrath on its enemies
   flags:
-    - take
+  - take
   attributes:
     weight: 500
     slot: 6
@@ -4155,7 +4155,7 @@
   article: a
   description: A weapon forged to fight oppression of the poor underdogs
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 0
@@ -4167,7 +4167,7 @@
   article: a
   description: This feather is mightier than a sword
   flags:
-    - take
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -4180,9 +4180,9 @@
   description: This magnificent weapon was forged to slay arch mumpiz demons with
     a single blow
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4200
     slot: 6
@@ -4193,9 +4193,9 @@
   name: drakinata
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -4207,9 +4207,9 @@
   name: sai
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 0
@@ -4218,14 +4218,14 @@
     weapon_type: sword
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 10390
   name: Zaoan sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4900
     slot: 6
@@ -4238,9 +4238,9 @@
   name: drachaku
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6000
     slot: 0
@@ -4249,14 +4249,14 @@
     weapon_type: club
     level: 55
     vocations:
-      - knight
+    - knight
 - id: 10392
   name: twin hooks
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 0
@@ -4265,14 +4265,14 @@
     weapon_type: sword
     level: 20
     vocations:
-      - knight
+    - knight
 - id: 10406
   name: Zaoan halberd
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8700
     slot: 0
@@ -4284,9 +4284,9 @@
   name: twiceslicer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 0
@@ -4295,14 +4295,14 @@
     weapon_type: sword
     level: 58
     vocations:
-      - knight
+    - knight
 - id: 11692
   name: snake god's sceptre
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12000
     slot: 6
@@ -4315,9 +4315,9 @@
   name: blade of corruption
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6400
     slot: 6
@@ -4331,9 +4331,9 @@
   article: a
   description: This hammer is a lesser version of the fabled Ban-Hammer
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     defense: 14
@@ -4344,7 +4344,7 @@
   article: a
   description: This wand controls the rift between time and space
   flags:
-    - take
+  - take
   attributes:
     weight: 2800
     slot: 6
@@ -4355,14 +4355,14 @@
     missile_id: 5
     level: 37
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 12673
   name: wooden sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2000
     slot: 6
@@ -4373,9 +4373,9 @@
   name: heavy trident
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 0
@@ -4387,9 +4387,9 @@
   name: shimmer sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5200
     slot: 6
@@ -4405,7 +4405,7 @@
   article: a
   description: It feels cold and smooth
   flags:
-    - take
+  - take
   attributes:
     weight: 3100
     slot: 6
@@ -4419,13 +4419,13 @@
     missile_id: 37
     level: 40
     vocations:
-      - druid
+    - druid
 - id: 12733
   name: shimmer bow
   article: a
   description: This bow seems to be alive but keeps perfectly still
   flags:
-    - take
+  - take
   attributes:
     weight: 4800
     slot: 0
@@ -4439,13 +4439,13 @@
     ammo_type: arrow
     level: 40
     vocations:
-      - paladin
+    - paladin
 - id: 12741
   name: shimmer wand
   article: a
   description: It feels cold and smooth
   flags:
-    - take
+  - take
   attributes:
     weight: 3100
     slot: 6
@@ -4459,14 +4459,14 @@
     missile_id: 5
     level: 40
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 13987
   name: deepling staff
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8800
     slot: 0
@@ -4478,9 +4478,9 @@
   name: deepling axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9100
     slot: 6
@@ -4492,9 +4492,9 @@
   name: ornate mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 14900
     slot: 6
@@ -4506,9 +4506,9 @@
   name: warrior's axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8800
     slot: 6
@@ -4520,9 +4520,9 @@
   name: guardian axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 0
@@ -4534,9 +4534,9 @@
   name: hive scythe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7500
     slot: 6
@@ -4548,7 +4548,7 @@
   name: hive bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4600
     slot: 0
@@ -4559,12 +4559,12 @@
     ammo_type: arrow
     level: 85
     vocations:
-      - paladin
+    - paladin
 - id: 14247
   name: ornate crossbow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 9100
     slot: 0
@@ -4575,14 +4575,14 @@
     ammo_type: bolt
     level: 50
     vocations:
-      - paladin
+    - paladin
 - id: 14250
   name: deepling squelcher
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8900
     slot: 6
@@ -4594,7 +4594,7 @@
   name: thorn spitter
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 12600
     slot: 0
@@ -4605,13 +4605,13 @@
     ammo_type: bolt
     level: 150
     vocations:
-      - paladin
+    - paladin
 - id: 16096
   name: wand of defiance
   article: a
   description: It reveals devastating energy arcs
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -4622,13 +4622,15 @@
     missile_id: 5
     level: 65
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 1
 - id: 16115
   name: wand of everblazing
   article: a
   description: It contains the everblazing fire
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -4639,13 +4641,15 @@
     missile_id: 4
     level: 65
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 1
 - id: 16117
   name: muck rod
   article: a
   description: A true staff of old, spitting slimy orbs
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -4656,13 +4660,15 @@
     missile_id: 39
     level: 65
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 1
 - id: 16118
   name: glacial rod
   article: a
   description: Hurls the icy essence of the Svargrond glaciers
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -4673,14 +4679,16 @@
     missile_id: 37
     level: 65
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 1
 - id: 16160
   name: crystalline sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -4695,9 +4703,9 @@
   description: Even in the light of day, the stars seem to reflect in each facet of
     this crystalline axe
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7600
     slot: 6
@@ -4706,13 +4714,15 @@
     attack: 51
     weapon_type: axe
     level: 120
+    skills:
+      axe: 1
 - id: 16162
   name: mycological mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -4721,11 +4731,13 @@
     attack: 50
     weapon_type: club
     level: 120
+    skills:
+      club: 1
 - id: 16163
   name: crystal crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 8400
     slot: 0
@@ -4736,12 +4748,12 @@
     ammo_type: bolt
     level: 90
     vocations:
-      - paladin
+    - paladin
 - id: 16164
   name: mycological bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4900
     slot: 0
@@ -4752,14 +4764,14 @@
     ammo_type: arrow
     level: 105
     vocations:
-      - paladin
+    - paladin
 - id: 16175
   name: shiny blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 6
@@ -4768,14 +4780,16 @@
     attack: 49
     weapon_type: sword
     level: 120
+    skills:
+      sword: 1
 - id: 17109
   name: mean knight sword
   article: a
   description: It can only be wielded properly by players without vocation.
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2000
     slot: 6
@@ -4787,8 +4801,8 @@
   article: a
   description: It can only be wielded properly by players without vocation.
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 1000
     slot: 6
@@ -4803,7 +4817,7 @@
   article: a
   description: It can only be wielded properly by players without vocation.
   flags:
-    - take
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -4817,9 +4831,9 @@
   name: ratana
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3300
     slot: 6
@@ -4832,9 +4846,9 @@
   name: life preserver
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4600
     slot: 6
@@ -4847,9 +4861,9 @@
   name: swampling club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3100
     slot: 6
@@ -4860,9 +4874,9 @@
   name: pair of iron fists
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -4871,14 +4885,14 @@
     weapon_type: club
     level: 50
     vocations:
-      - knight
+    - knight
 - id: 17859
   name: spiky club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3900
     slot: 6
@@ -4890,7 +4904,7 @@
   name: triple bolt crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 6200
     slot: 0
@@ -4901,12 +4915,12 @@
     ammo_type: bolt
     level: 70
     vocations:
-      - paladin
+    - paladin
 - id: 19362
   name: icicle bow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 4200
     slot: 0
@@ -4918,7 +4932,7 @@
 - id: 19400
   name: arcane staff
   flags:
-    - take
+  - take
   attributes:
     weight: 4000
     defense: 30
@@ -4929,9 +4943,9 @@
   name: crude umbral blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6300
     slot: 6
@@ -4941,14 +4955,14 @@
     weapon_type: sword
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20065
   name: umbral blade
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -4958,14 +4972,14 @@
     weapon_type: sword
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20066
   name: umbral masterblade
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5500
     slot: 6
@@ -4975,14 +4989,16 @@
     weapon_type: sword
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 1
 - id: 20067
   name: crude umbral slayer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 10000
     slot: 0
@@ -4991,14 +5007,14 @@
     weapon_type: sword
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20068
   name: umbral slayer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9500
     slot: 0
@@ -5007,14 +5023,14 @@
     weapon_type: sword
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20069
   name: umbral master slayer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 0
@@ -5023,14 +5039,16 @@
     weapon_type: sword
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 20070
   name: crude umbral axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 6
@@ -5040,14 +5058,14 @@
     weapon_type: axe
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20071
   name: umbral axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 6
@@ -5057,14 +5075,14 @@
     weapon_type: axe
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20072
   name: umbral master axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -5074,14 +5092,16 @@
     weapon_type: axe
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 1
 - id: 20073
   name: crude umbral chopper
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -5090,14 +5110,14 @@
     weapon_type: axe
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20074
   name: umbral chopper
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11500
     slot: 0
@@ -5106,14 +5126,14 @@
     weapon_type: axe
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20075
   name: umbral master chopper
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 11000
     slot: 0
@@ -5122,14 +5142,16 @@
     weapon_type: axe
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 3
 - id: 20076
   name: crude umbral mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9000
     slot: 6
@@ -5139,14 +5161,14 @@
     weapon_type: club
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20077
   name: umbral mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 6
@@ -5156,14 +5178,14 @@
     weapon_type: club
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20078
   name: umbral master mace
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -5173,14 +5195,16 @@
     weapon_type: club
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 1
 - id: 20079
   name: crude umbral hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 17000
     slot: 0
@@ -5189,14 +5213,14 @@
     weapon_type: club
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 20080
   name: umbral hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 16500
     slot: 0
@@ -5205,14 +5229,14 @@
     weapon_type: club
     level: 120
     vocations:
-      - knight
+    - knight
 - id: 20081
   name: umbral master hammer
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 16000
     slot: 0
@@ -5221,12 +5245,14 @@
     weapon_type: club
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
 - id: 20082
   name: crude umbral bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 5000
     slot: 0
@@ -5237,12 +5263,12 @@
     ammo_type: arrow
     level: 75
     vocations:
-      - paladin
+    - paladin
 - id: 20083
   name: umbral bow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -5253,12 +5279,12 @@
     ammo_type: arrow
     level: 120
     vocations:
-      - paladin
+    - paladin
 - id: 20084
   name: umbral master bow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 4000
     slot: 0
@@ -5269,12 +5295,14 @@
     ammo_type: arrow
     level: 250
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 3
 - id: 20085
   name: crude umbral crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 13000
     slot: 0
@@ -5285,12 +5313,12 @@
     ammo_type: bolt
     level: 75
     vocations:
-      - paladin
+    - paladin
 - id: 20086
   name: umbral crossbow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 12500
     slot: 0
@@ -5301,12 +5329,12 @@
     ammo_type: bolt
     level: 120
     vocations:
-      - paladin
+    - paladin
 - id: 20087
   name: umbral master crossbow
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 12000
     slot: 0
@@ -5317,14 +5345,16 @@
     ammo_type: bolt
     level: 250
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 3
 - id: 21158
   name: glooth spear
   article: a
   plural: glooth spears
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2600
     slot: 6
@@ -5337,9 +5367,9 @@
   name: metal bat
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -5351,9 +5381,9 @@
   name: glooth whip
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -5365,9 +5395,9 @@
   name: moohtant cudgel
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -5379,9 +5409,9 @@
   name: mino lance
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6500
     slot: 6
@@ -5393,9 +5423,9 @@
   name: execowtioner axe
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -5407,9 +5437,9 @@
   name: cowtana
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2800
     slot: 6
@@ -5422,9 +5452,9 @@
   name: glooth club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1900
     slot: 0
@@ -5436,14 +5466,14 @@
       damage: 26
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 21179
   name: glooth blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1900
     slot: 0
@@ -5455,14 +5485,14 @@
       damage: 26
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 21180
   name: glooth axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1900
     slot: 0
@@ -5474,14 +5504,14 @@
       damage: 26
     level: 75
     vocations:
-      - knight
+    - knight
 - id: 21219
   name: one hit wonder
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9600
     slot: 0
@@ -5494,44 +5524,44 @@
   article: the
   description: It's warm to the touch
   flags:
-    - take
+  - take
   attributes:
     weight: 1500
     slot: 6
     range: 3
     mana_cost: 1
     weapon_type: wand
-    attack: 5
     element: fire
     missile_id: 4
     level: 1
     vocations:
-      - sorcerer
+    - sorcerer
+    attack: 5
 - id: 21350
   name: chiller
   article: the
   description: It is a little, well, chilly to the touch
   flags:
-    - take
+  - take
   attributes:
     weight: 1500
     slot: 6
     range: 3
     mana_cost: 1
     weapon_type: rod
-    attack: 5
     element: ice
     missile_id: 37
     level: 1
     vocations:
-      - druid
+    - druid
+    attack: 5
 - id: 22171
   name: ogre klubba
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7900
     slot: 0
@@ -5543,9 +5573,9 @@
   name: ogre choppa
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7500
     slot: 0
@@ -5557,7 +5587,7 @@
   name: ogre scepta
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -5568,14 +5598,14 @@
     missile_id: 39
     level: 37
     vocations:
-      - druid
+    - druid
 - id: 22727
   name: rift lance
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6600
     slot: 0
@@ -5587,9 +5617,9 @@
   name: plague bite
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9900
     slot: 6
@@ -5605,9 +5635,9 @@
   name: impaler of the igniter
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -5623,9 +5653,9 @@
   name: maimer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7700
     slot: 6
@@ -5639,8 +5669,8 @@
   description: It is made of platinum and emeralds and topped by a large F made of
     gold
   flags:
-    - usable
-    - take
+  - usable
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -5654,7 +5684,7 @@
   description: It is made of platinum and emeralds and topped by a large F made of
     gold
   flags:
-    - take
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -5668,14 +5698,14 @@
     missile_id: 5
     level: 65
     vocations:
-      - sorcerer
+    - sorcerer
 - id: 22766
   name: Ferumbras' staff
   article: a
   description: It is made of platinum and emeralds and topped by a large F made of
     gold
   flags:
-    - take
+  - take
   attributes:
     weight: 2250
     slot: 6
@@ -5689,12 +5719,14 @@
     missile_id: 5
     level: 100
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 1
 - id: 22866
   name: rift bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4100
     slot: 0
@@ -5705,12 +5737,12 @@
     ammo_type: arrow
     level: 120
     vocations:
-      - paladin
+    - paladin
 - id: 22867
   name: rift crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 13000
     slot: 0
@@ -5721,14 +5753,14 @@
     ammo_type: bolt
     level: 120
     vocations:
-      - paladin
+    - paladin
 - id: 22870
   name: throwing star of Sula
   article: a
   description: The golden starfish's arms are sharp as razor blades
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -5743,7 +5775,7 @@
   article: a
   description: It's a gnarly branch with a gleaming blue blossom
   flags:
-    - take
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -5754,14 +5786,16 @@
     missile_id: 5
     level: 80
     vocations:
-      - sorcerer
-      - druid
+    - sorcerer
+    - druid
+    skills:
+      magic: 1
 - id: 25735
   name: leaf star
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 200
     slot: 6
@@ -5779,8 +5813,8 @@
   name: royal star
   article: a
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 220
     slot: 6
@@ -5798,7 +5832,7 @@
   article: a
   description: Temporary magic powers enchant this staff.
   flags:
-    - take
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -5812,14 +5846,16 @@
     missile_id: 11
     level: 41
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
 - id: 25915
   name: fiery spike sword replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -5830,9 +5866,9 @@
   name: fiery relic sword replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -5843,9 +5879,9 @@
   name: fiery mystic blade replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -5856,9 +5892,9 @@
   name: fire blacksteel replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -5869,9 +5905,9 @@
   name: fiery dragon slayer replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -5882,9 +5918,9 @@
   name: fiery barbarian axe replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -5895,9 +5931,9 @@
   name: fiery knight axe replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -5908,9 +5944,9 @@
   name: fiery heroic axe replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -5921,9 +5957,9 @@
   name: fiery headchopper replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -5934,9 +5970,9 @@
   name: fiery war axe replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -5947,9 +5983,9 @@
   name: fiery clerical mace replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -5960,9 +5996,9 @@
   name: fiery crystal mace replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -5973,9 +6009,9 @@
   name: fiery basher replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -5986,9 +6022,9 @@
   name: fiery orcish maul replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -5999,9 +6035,9 @@
   name: fiery war hammer replica
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -6012,9 +6048,9 @@
   name: icy spike sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6025,9 +6061,9 @@
   name: icy relic sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -6038,9 +6074,9 @@
   name: icy mystic blade replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6051,9 +6087,9 @@
   name: icy blacksteel replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -6064,9 +6100,9 @@
   name: icy dragon slayer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -6077,9 +6113,9 @@
   name: icy barbarian axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -6090,9 +6126,9 @@
   name: icy knight axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -6103,9 +6139,9 @@
   name: icy heroic axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -6116,9 +6152,9 @@
   name: icy headchopper replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -6129,9 +6165,9 @@
   name: icy war axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -6142,9 +6178,9 @@
   name: icy clerical mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -6155,9 +6191,9 @@
   name: icy crystal mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -6168,9 +6204,9 @@
   name: icy cranial basher replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -6181,9 +6217,9 @@
   name: icy orcish maul replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -6194,9 +6230,9 @@
   name: icy war hammer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -6207,9 +6243,9 @@
   name: earth spike sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6220,9 +6256,9 @@
   name: earth relic sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -6233,9 +6269,9 @@
   name: earth mystic blade replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6246,9 +6282,9 @@
   name: earth blacksteel replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -6259,9 +6295,9 @@
   name: earth slayer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -6272,9 +6308,9 @@
   name: earth barbaric axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -6285,9 +6321,9 @@
   name: earth knight axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -6298,9 +6334,9 @@
   name: earth heroic axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -6311,9 +6347,9 @@
   name: earth headchopper replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -6324,9 +6360,9 @@
   name: earth war axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -6337,9 +6373,9 @@
   name: earth cleric mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -6350,9 +6386,9 @@
   name: earth crystal mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -6363,9 +6399,9 @@
   name: earth basher replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -6376,9 +6412,9 @@
   name: earth orcish maul replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -6389,9 +6425,9 @@
   name: earth war hammer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -6402,9 +6438,9 @@
   name: energy spike sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6415,9 +6451,9 @@
   name: energy relic sword replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4800
     slot: 6
@@ -6428,9 +6464,9 @@
   name: energy blade replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6441,9 +6477,9 @@
   name: energy blacksteel replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -6454,9 +6490,9 @@
   name: energy slayer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -6467,9 +6503,9 @@
   name: energy axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5100
     slot: 6
@@ -6480,9 +6516,9 @@
   name: energy knight axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5900
     slot: 6
@@ -6493,9 +6529,9 @@
   name: energy heroic axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -6506,9 +6542,9 @@
   name: energy headchopper replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 0
@@ -6519,9 +6555,9 @@
   name: energy war axe replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6150
     slot: 0
@@ -6532,9 +6568,9 @@
   name: energy cleric mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5800
     slot: 6
@@ -6545,9 +6581,9 @@
   name: energy mace replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8000
     slot: 6
@@ -6558,9 +6594,9 @@
   name: energy basher replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7800
     slot: 6
@@ -6571,9 +6607,9 @@
   name: energy orcish maul replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5400
     slot: 0
@@ -6584,9 +6620,9 @@
   name: energy war hammer replica
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -6598,9 +6634,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6612,9 +6648,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6626,9 +6662,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6640,9 +6676,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6654,9 +6690,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6668,9 +6704,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6682,9 +6718,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6696,9 +6732,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6710,9 +6746,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6724,9 +6760,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6738,9 +6774,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6752,9 +6788,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6766,9 +6802,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6780,9 +6816,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6794,9 +6830,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6808,9 +6844,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6822,9 +6858,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6836,9 +6872,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -6850,7 +6886,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -6860,7 +6896,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -6870,7 +6906,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -6880,7 +6916,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -6890,7 +6926,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -6900,7 +6936,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -6910,7 +6946,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6920,7 +6956,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6930,7 +6966,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6940,7 +6976,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6950,7 +6986,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6960,7 +6996,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -6970,9 +7006,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6984,9 +7020,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -6998,9 +7034,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7012,9 +7048,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7026,9 +7062,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7040,9 +7076,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7054,9 +7090,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7068,9 +7104,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7082,9 +7118,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7096,9 +7132,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7110,9 +7146,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7124,9 +7160,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7138,9 +7174,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7152,9 +7188,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7166,9 +7202,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7180,9 +7216,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7194,9 +7230,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7208,9 +7244,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7222,7 +7258,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7232,7 +7268,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7242,7 +7278,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7252,7 +7288,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7262,7 +7298,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7272,7 +7308,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7282,7 +7318,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7292,7 +7328,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7302,7 +7338,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7312,7 +7348,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7322,7 +7358,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7332,7 +7368,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7342,9 +7378,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7356,9 +7392,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7370,9 +7406,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7384,9 +7420,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7398,9 +7434,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7412,9 +7448,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7426,9 +7462,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7440,9 +7476,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7454,9 +7490,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7468,9 +7504,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7482,9 +7518,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7496,9 +7532,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7510,9 +7546,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7524,9 +7560,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7538,9 +7574,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7552,9 +7588,9 @@
   article: a
   description: This replica looks charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7566,9 +7602,9 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7580,9 +7616,9 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7594,7 +7630,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7604,7 +7640,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7614,7 +7650,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7624,7 +7660,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7634,7 +7670,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7644,7 +7680,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7654,7 +7690,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7664,7 +7700,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7674,7 +7710,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7684,7 +7720,7 @@
   article: a
   description: This replica looks charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7694,7 +7730,7 @@
   article: a
   description: This replica looks heavily charged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7704,7 +7740,7 @@
   article: an
   description: This replica looks overcharged
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7713,9 +7749,9 @@
   name: blade of destruction
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7724,14 +7760,14 @@
     weapon_type: sword
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27450
   name: slayer of destruction
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7740,14 +7776,14 @@
     weapon_type: sword
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27451
   name: axe of destruction
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7756,14 +7792,14 @@
     weapon_type: axe
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27452
   name: chopper of destruction
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7772,14 +7808,14 @@
     weapon_type: axe
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27453
   name: mace of destruction
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5000
     slot: 6
@@ -7788,14 +7824,14 @@
     weapon_type: club
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27454
   name: hammer of destruction
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7000
     slot: 0
@@ -7804,12 +7840,12 @@
     weapon_type: club
     level: 200
     vocations:
-      - knight
+    - knight
 - id: 27455
   name: bow of destruction
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 5500
     slot: 0
@@ -7820,12 +7856,12 @@
     ammo_type: arrow
     level: 200
     vocations:
-      - paladin
+    - paladin
 - id: 27456
   name: crossbow of destruction
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -7836,12 +7872,12 @@
     ammo_type: bolt
     level: 200
     vocations:
-      - paladin
+    - paladin
 - id: 27457
   name: wand of destruction
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7852,12 +7888,14 @@
     missile_id: 5
     level: 200
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 1
 - id: 27458
   name: rod of destruction
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -7868,15 +7906,17 @@
     missile_id: 37
     level: 200
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 1
 - id: 27523
   name: strange mallet
   article: a
   description: This mallet seems almost anxious to hit something
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4500
     slot: 6
@@ -7888,7 +7928,7 @@
   article: a
   description: This is the head of a mallet
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
 - id: 27525
@@ -7896,9 +7936,9 @@
   article: a
   description: This seems to be the handle of a mallet
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1500
     slot: 6
@@ -7910,16 +7950,16 @@
   article: a
   description: This seems to be the pommel of a mallet
   flags:
-    - take
+  - take
   attributes:
     weight: 500
 - id: 27651
   name: gnome sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 6
@@ -7932,14 +7972,18 @@
       damage: 42
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 2
+    protection:
+      energy: 6
 - id: 28464
-  name: "test weapon for knights "
+  name: 'test weapon for knights '
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     slot: 6
     weapon_type: sword
@@ -7947,7 +7991,7 @@
   name: bow of destruction test
   article: a
   flags:
-    - take
+  - take
   attributes:
     slot: 0
     weapon_type: distance
@@ -7955,7 +7999,7 @@
   name: sorcerer test weapon TEST
   article: a
   flags:
-    - take
+  - take
   attributes:
     slot: 6
     weapon_type: wand
@@ -7963,7 +8007,7 @@
   name: umbral master bow TEST
   article: an
   flags:
-    - take
+  - take
   attributes:
     slot: 0
     weapon_type: distance
@@ -7971,7 +8015,7 @@
   name: falcon rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -7982,12 +8026,16 @@
     missile_id: 30
     level: 300
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 3
+    protection:
+      energy: 8
 - id: 28717
   name: falcon wand
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3300
     slot: 6
@@ -7998,12 +8046,16 @@
     missile_id: 5
     level: 300
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 3
+    protection:
+      fire: 8
 - id: 28718
   name: falcon bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 0
@@ -8014,14 +8066,18 @@
     ammo_type: arrow
     level: 300
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
+    protection:
+      fire: 5
 - id: 28723
   name: falcon longsword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -8030,14 +8086,18 @@
     weapon_type: sword
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 4
+    protection:
+      earth: 10
 - id: 28724
   name: falcon battleaxe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9500
     slot: 0
@@ -8049,14 +8109,18 @@
       damage: 47
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 4
+    protection:
+      energy: 12
 - id: 28725
   name: falcon mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 6
@@ -8069,14 +8133,18 @@
       damage: 41
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
+    protection:
+      energy: 7
 - id: 28746
   name: zathroth' redeemer
   description: This is an ordinary looking scythe - or is it?
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     slot: 0
     weapon_type: club
@@ -8084,9 +8152,9 @@
   name: zathroth' redeemer
   description: This is an ordinary looking scythe - or is it?
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     slot: 0
     weapon_type: club
@@ -8094,9 +8162,9 @@
   name: zathroth' redeemer
   description: This is an ordinary looking scythe - or is it?
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     slot: 0
     weapon_type: club
@@ -8104,9 +8172,9 @@
   name: zathroth' redeemer
   description: This is an ordinary looking scythe - or is it?
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     slot: 0
     weapon_type: club
@@ -8114,7 +8182,7 @@
   name: deepling ceremonial dagger
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -8125,13 +8193,17 @@
     missile_id: 37
     level: 180
     vocations:
-      - sorcerer
-      - druid
+    - sorcerer
+    - druid
+    skills:
+      magic: 2
+    protection:
+      earth: 5
 - id: 28826
   name: deepling fork
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3300
     slot: 6
@@ -8142,15 +8214,19 @@
     missile_id: 37
     level: 230
     vocations:
-      - sorcerer
-      - druid
+    - sorcerer
+    - druid
+    skills:
+      magic: 2
+    protection:
+      holy: 8
 - id: 28829
   name: rotten demonbone
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 6
@@ -8160,13 +8236,15 @@
     attack: 46
     weapon_type: club
     level: 80
+    protection:
+      earth: 3
 - id: 28830
   name: energized demonbone
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 6
@@ -8176,13 +8254,15 @@
     attack: 46
     weapon_type: club
     level: 80
+    protection:
+      energy: 3
 - id: 28831
   name: unliving demonbone
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 6
@@ -8192,13 +8272,15 @@
     attack: 46
     weapon_type: club
     level: 80
+    protection:
+      death: 3
 - id: 28832
   name: sulphurous demonbone
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 18000
     slot: 6
@@ -8208,15 +8290,17 @@
     attack: 46
     weapon_type: club
     level: 80
+    protection:
+      fire: 3
 - id: 29286
   name: golden axe
   article: a
   description: Forged and wielded by a long forgotten dwarf with a heart as black
     as an adder
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 1989
     slot: 0
@@ -8227,7 +8311,7 @@
   name: living vine bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3800
     slot: 0
@@ -8238,14 +8322,18 @@
     ammo_type: arrow
     level: 220
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 1
+    protection:
+      earth: 4
 - id: 29419
   name: resizer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8900
     slot: 0
@@ -8257,14 +8345,16 @@
       damage: 46
     level: 230
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 2
 - id: 29421
   name: summerblade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4300
     slot: 6
@@ -8277,14 +8367,16 @@
       damage: 41
     level: 200
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 1
 - id: 29422
   name: winterblade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4300
     slot: 6
@@ -8297,12 +8389,14 @@
       damage: 40
     level: 200
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 1
 - id: 29425
   name: energized limb
   article: an
   flags:
-    - take
+  - take
   attributes:
     weight: 2700
     slot: 6
@@ -8313,15 +8407,19 @@
     missile_id: 4
     level: 180
     vocations:
-      - sorcerer
-      - druid
+    - sorcerer
+    - druid
+    skills:
+      magic: 2
+    protection:
+      energy: 10
 - id: 30194
   name: soft hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 420
     slot: 6
@@ -8329,9 +8427,9 @@
   name: ice hatchet
   article: an
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -8345,7 +8443,7 @@
   name: cobra crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4000
     slot: 0
@@ -8356,13 +8454,15 @@
     ammo_type: bolt
     level: 220
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
 - id: 30395
   name: cobra club
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -8375,13 +8475,15 @@
       damage: 44
     level: 220
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 2
 - id: 30396
   name: cobra axe
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 6
@@ -8394,13 +8496,15 @@
       damage: 44
     level: 220
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 2
 - id: 30398
   name: cobra sword
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6300
     slot: 6
@@ -8410,11 +8514,13 @@
     weapon_type: sword
     level: 220
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 30399
   name: cobra wand
   flags:
-    - take
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -8425,11 +8531,13 @@
     missile_id: 5
     level: 270
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
 - id: 30400
   name: cobra rod
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -8440,14 +8548,16 @@
     missile_id: 39
     level: 220
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 2
 - id: 31580
   name: mortal mace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -8460,12 +8570,14 @@
       damage: 44
     level: 220
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 2
 - id: 31581
   name: bow of cataclysm
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -8476,14 +8588,18 @@
     ammo_type: arrow
     level: 250
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
+    protection:
+      death: 4
 - id: 31614
   name: tagralt blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8100
     slot: 0
@@ -8495,14 +8611,16 @@
       damage: 49
     level: 250
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 32093
   name: schnitzel meat grinder
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 343
     slot: 6
@@ -8512,9 +8630,9 @@
   name: phantasmal axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7200
     slot: 0
@@ -8526,14 +8644,16 @@
       damage: 49
     level: 180
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 2
 - id: 34082
   name: soulcutter
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6300
     slot: 6
@@ -8546,14 +8666,16 @@
       damage: 45
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 34083
   name: soulshredder
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8100
     slot: 0
@@ -8565,14 +8687,16 @@
       damage: 47
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 34084
   name: soulbiter
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4000
     slot: 6
@@ -8585,14 +8709,16 @@
       damage: 45
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 34085
   name: souleater
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7200
     slot: 0
@@ -8604,14 +8730,16 @@
       damage: 47
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 34086
   name: soulcrusher
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4100
     slot: 6
@@ -8624,14 +8752,16 @@
       damage: 46
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 34087
   name: soulmaimer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8900
     slot: 0
@@ -8643,12 +8773,14 @@
       damage: 47
     level: 400
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 34088
   name: soulbleeder
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -8659,12 +8791,16 @@
     ammo_type: arrow
     level: 400
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      holy: 7
 - id: 34089
   name: soulpiercer
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4000
     slot: 0
@@ -8675,12 +8811,16 @@
     ammo_type: bolt
     level: 400
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      death: 7
 - id: 34090
   name: soultainter
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 1900
     slot: 6
@@ -8691,12 +8831,16 @@
     missile_id: 32
     level: 400
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 5
+    protection:
+      death: 12
 - id: 34091
   name: soulhexer
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -8707,12 +8851,16 @@
     missile_id: 37
     level: 400
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 5
+    protection:
+      ice: 12
 - id: 34150
   name: lion longbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4800
     slot: 0
@@ -8723,12 +8871,16 @@
     ammo_type: arrow
     level: 270
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
+    protection:
+      ice: 5
 - id: 34151
   name: lion rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2600
     slot: 6
@@ -8739,12 +8891,14 @@
     missile_id: 37
     level: 270
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 2
 - id: 34152
   name: lion wand
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2100
     slot: 6
@@ -8755,14 +8909,16 @@
     missile_id: 37
     level: 220
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
 - id: 34155
   name: lion longsword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7500
     slot: 6
@@ -8775,14 +8931,16 @@
       damage: 44
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 34253
   name: lion axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7900
     slot: 6
@@ -8795,14 +8953,16 @@
       damage: 44
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 3
 - id: 34254
   name: lion hammer
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6500
     slot: 6
@@ -8815,13 +8975,15 @@
       damage: 44
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
 - id: 34331
   name: golden magic longsword
   article: a
   description: This is a golden replica of the famous magic longsword
   flags:
-    - take
+  - take
   attributes:
     weight: 4300
     slot: 6
@@ -8829,9 +8991,9 @@
   name: jungle flail
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8900
     slot: 0
@@ -8840,14 +9002,14 @@
     weapon_type: club
     level: 150
     vocations:
-      - knight
+    - knight
 - id: 35515
   name: throwing axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 4700
     slot: 6
@@ -8857,12 +9019,14 @@
     weapon_type: axe
     level: 150
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 2
 - id: 35518
   name: jungle bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -8873,12 +9037,16 @@
     ammo_type: arrow
     level: 150
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 1
+    protection:
+      physical: 3
 - id: 35521
   name: jungle rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -8889,12 +9057,16 @@
     missile_id: 37
     level: 150
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 1
+    protection:
+      earth: 3
 - id: 35522
   name: jungle wand
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3200
     slot: 6
@@ -8905,14 +9077,18 @@
     missile_id: 39
     level: 150
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 1
+    protection:
+      ice: 3
 - id: 36657
   name: eldritch claymore
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -8924,15 +9100,17 @@
       damage: 50
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 36658
   name: gilded eldritch claymore
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8600
     slot: 0
@@ -8944,14 +9122,16 @@
       damage: 50
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 36659
   name: eldritch warmace
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8200
     slot: 0
@@ -8963,15 +9143,17 @@
       damage: 50
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
 - id: 36660
   name: gilded eldritch warmace
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8300
     slot: 0
@@ -8983,14 +9165,16 @@
       damage: 50
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
 - id: 36661
   name: eldritch greataxe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6500
     slot: 0
@@ -8999,15 +9183,17 @@
     weapon_type: axe
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 3
 - id: 36662
   name: gilded eldritch greataxe
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6600
     slot: 0
@@ -9016,12 +9202,14 @@
     weapon_type: axe
     level: 270
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 3
 - id: 36664
   name: eldritch bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 5800
     slot: 0
@@ -9032,13 +9220,15 @@
     ammo_type: arrow
     level: 250
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
 - id: 36665
   name: gilded eldritch bow
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - take
+  - take
   attributes:
     weight: 5900
     slot: 0
@@ -9049,12 +9239,14 @@
     ammo_type: arrow
     level: 250
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
 - id: 36668
   name: eldritch wand
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3600
     slot: 6
@@ -9064,13 +9256,17 @@
     missile_id: 4
     level: 250
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
+    protection:
+      energy: 4
 - id: 36669
   name: gilded eldritch wand
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - take
+  - take
   attributes:
     weight: 3700
     slot: 6
@@ -9080,12 +9276,16 @@
     missile_id: 4
     level: 250
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
+    protection:
+      energy: 4
 - id: 36674
   name: eldritch rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 3500
     slot: 6
@@ -9096,13 +9296,17 @@
     missile_id: 29
     level: 250
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 2
+    protection:
+      earth: 4
 - id: 36675
   name: gilded eldritch rod
   article: a
   description: Refined by the legendary artisan Gnomaurum
   flags:
-    - take
+  - take
   attributes:
     weight: 3600
     slot: 6
@@ -9113,13 +9317,17 @@
     missile_id: 29
     level: 250
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 2
+    protection:
+      earth: 4
 - id: 38642
   name: golden warlord sword
   article: a
   description: This is a golden replica of the famous warlord sword
   flags:
-    - take
+  - take
   attributes:
     weight: 6400
     slot: 6
@@ -9127,9 +9335,9 @@
   name: naga sword
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5200
     slot: 6
@@ -9142,14 +9350,16 @@
       damage: 44
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 3
 - id: 39156
   name: naga axe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 5500
     slot: 6
@@ -9162,14 +9372,16 @@
       damage: 44
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 3
 - id: 39157
   name: naga club
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6000
     slot: 6
@@ -9179,12 +9391,14 @@
     weapon_type: club
     level: 300
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 3
 - id: 39159
   name: naga crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 10200
     slot: 0
@@ -9195,12 +9409,16 @@
     ammo_type: bolt
     level: 300
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 2
+    protection:
+      earth: 4
 - id: 39162
   name: naga wand
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2800
     slot: 6
@@ -9211,12 +9429,16 @@
     missile_id: 5
     level: 250
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 2
+    protection:
+      ice: 4
 - id: 39163
   name: naga rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2900
     slot: 6
@@ -9227,14 +9449,18 @@
     missile_id: 37
     level: 250
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 2
+    protection:
+      fire: 4
 - id: 40530
   name: broken macuahuitl
   description: This macuahuitl was a once legendary obsidian sword wielded by the
     ancient Iks
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 2400
     slot: 6
@@ -9245,8 +9471,8 @@
   name: broken Iks spear
   description: This spear was once wielded by the ancient Iks
   flags:
-    - cumulative
-    - take
+  - cumulative
+  - take
   attributes:
     weight: 1300
     slot: 0
@@ -9259,9 +9485,9 @@
   name: sanguine blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6100
     slot: 6
@@ -9274,14 +9500,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 43865
   name: grand sanguine blade
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6000
     slot: 6
@@ -9294,14 +9522,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 43866
   name: sanguine cudgel
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6900
     slot: 6
@@ -9314,14 +9544,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 43867
   name: grand sanguine cudgel
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 6800
     slot: 6
@@ -9334,14 +9566,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 43868
   name: sanguine hatchet
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7200
     slot: 6
@@ -9354,14 +9588,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 43869
   name: grand sanguine hatchet
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7200
     slot: 6
@@ -9374,14 +9610,16 @@
       damage: 46
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 43870
   name: sanguine razor
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8100
     slot: 0
@@ -9393,14 +9631,16 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 43871
   name: grand sanguine razor
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 7900
     slot: 0
@@ -9412,14 +9652,16 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      sword: 5
 - id: 43872
   name: sanguine bludgeon
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9300
     slot: 0
@@ -9431,14 +9673,16 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 43873
   name: grand sanguine bludgeon
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 9100
     slot: 0
@@ -9450,14 +9694,16 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      club: 5
 - id: 43874
   name: sanguine battleaxe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8500
     slot: 0
@@ -9469,14 +9715,16 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 43875
   name: grand sanguine battleaxe
   article: a
   flags:
-    - usable
-    - multiuse
-    - take
+  - usable
+  - multiuse
+  - take
   attributes:
     weight: 8300
     slot: 0
@@ -9488,12 +9736,14 @@
       damage: 50
     level: 600
     vocations:
-      - knight
+    - knight
+    skills:
+      axe: 5
 - id: 43877
   name: sanguine bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -9504,12 +9754,16 @@
     ammo_type: arrow
     level: 600
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      earth: 6
 - id: 43878
   name: grand sanguine bow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -9520,12 +9774,16 @@
     ammo_type: arrow
     level: 600
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      earth: 6
 - id: 43879
   name: sanguine crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -9536,12 +9794,16 @@
     ammo_type: bolt
     level: 600
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      fire: 6
 - id: 43880
   name: grand sanguine crossbow
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 4700
     slot: 0
@@ -9552,12 +9814,16 @@
     ammo_type: bolt
     level: 600
     vocations:
-      - paladin
+    - paladin
+    skills:
+      distance: 4
+    protection:
+      fire: 6
 - id: 43882
   name: sanguine coil
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2200
     slot: 6
@@ -9568,12 +9834,16 @@
     missile_id: 5
     level: 600
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 5
+    protection:
+      earth: 7
 - id: 43883
   name: grand sanguine coil
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2100
     slot: 6
@@ -9584,12 +9854,16 @@
     missile_id: 5
     level: 600
     vocations:
-      - sorcerer
+    - sorcerer
+    skills:
+      magic: 5
+    protection:
+      earth: 7
 - id: 43885
   name: sanguine rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2500
     slot: 6
@@ -9600,12 +9874,16 @@
     missile_id: 30
     level: 600
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 5
+    protection:
+      death: 7
 - id: 43886
   name: grand sanguine rod
   article: a
   flags:
-    - take
+  - take
   attributes:
     weight: 2400
     slot: 6
@@ -9616,4 +9894,8 @@
     missile_id: 30
     level: 600
     vocations:
-      - druid
+    - druid
+    skills:
+      magic: 5
+    protection:
+      death: 7

@@ -1,9 +1,11 @@
 use std::ops::Deref;
 use std::sync::Arc;
 
+use strum::IntoEnumIterator;
+
 use crate::entities::agent::{Agent, AgentKey, Challenge, Facing};
 use crate::entities::conditions::Conditions;
-use crate::entities::inventory::{Inventory, InventorySlot};
+use crate::entities::inventory::{EquipmentStats, Inventory, InventorySlot};
 use crate::entities::items::{Item, ItemGuid};
 #[cfg(test)]
 use crate::entities::map::MapTile;
@@ -401,15 +403,25 @@ impl InventoryMut<'_> {
         &mut self,
         slot: InventorySlot,
         container: Option<&ItemGuid>,
-        speed_before: i16,
+        before: EquipmentStats,
     ) {
         match container {
             Some(guid) => self.delta.mark_container(guid),
             None => self.delta.mark_slot(self.key, slot),
         }
         self.delta.mark_agent(self.key, AgentFlag::Capacity);
-        if self.inventory.stats().speed != speed_before {
+        self.mark_stats(before);
+    }
+
+    fn mark_stats(&mut self, before: EquipmentStats) {
+        let after = *self.inventory.stats();
+        if after.speed != before.speed {
             self.delta.mark_agent(self.key, AgentFlag::Speed);
+        }
+        for skill in SkillType::iter() {
+            if after.skills.get(skill) != before.skills.get(skill) {
+                self.delta.mark_skill(self.key, skill);
+            }
         }
     }
 
@@ -419,9 +431,9 @@ impl InventoryMut<'_> {
         container: Option<(&ItemGuid, usize)>,
         item: Item,
     ) -> Result<Option<Item>, ItemMovementError> {
-        let speed = self.inventory.stats().speed;
+        let before = *self.inventory.stats();
         let displaced = self.inventory.insert(slot, container, item)?;
-        self.record_write(slot, container.map(|(guid, _)| guid), speed);
+        self.record_write(slot, container.map(|(guid, _)| guid), before);
         Ok(displaced)
     }
 
@@ -431,25 +443,23 @@ impl InventoryMut<'_> {
         guid: &ItemGuid,
         amount: u8,
     ) -> Option<(Item, Option<(ItemGuid, usize)>)> {
-        let speed = self.inventory.stats().speed;
+        let before = *self.inventory.stats();
         let removed = self.inventory.remove(slot, guid, amount)?;
-        self.record_write(slot, removed.1.as_ref().map(|(parent, _)| parent), speed);
+        self.record_write(slot, removed.1.as_ref().map(|(parent, _)| parent), before);
         Some(removed)
     }
 
     pub fn take_slot(&mut self, slot: &InventorySlot) -> Option<Item> {
-        let speed = self.inventory.stats().speed;
+        let before = *self.inventory.stats();
         let taken = self.inventory.take_slot(slot)?;
-        self.record_write(*slot, None, speed);
+        self.record_write(*slot, None, before);
         Some(taken)
     }
 
     pub fn set_wearer_level(&mut self, level: u16) {
-        let speed = self.inventory.stats().speed;
+        let before = *self.inventory.stats();
         self.inventory.set_wearer_level(level);
-        if self.inventory.stats().speed != speed {
-            self.delta.mark_agent(self.key, AgentFlag::Speed);
-        }
+        self.mark_stats(before);
     }
 
     pub(in crate::entities) fn stack_onto(
@@ -459,7 +469,7 @@ impl InventoryMut<'_> {
         item: &mut Item,
     ) -> u8 {
         let unit_weight = item.config.attr_weight().unwrap_or(0);
-        let speed = self.inventory.stats().speed;
+        let before = *self.inventory.stats();
         let Some(slot_item) = self.inventory.get_mut(&slot) else {
             return 0;
         };
@@ -477,7 +487,7 @@ impl InventoryMut<'_> {
         let carried = self.inventory.carried_weight();
         self.inventory
             .set_carried_weight(carried + unit_weight * moved as u32);
-        self.record_write(slot, container, speed);
+        self.record_write(slot, container, before);
         moved
     }
 }
@@ -1178,5 +1188,90 @@ mod tests {
 
         assert!(map.player_mut(player).unwrap().withdraw(10));
         assert!(map.take_delta().agents().any(|(_, dirty)| dirty.bank()));
+    }
+
+    fn a_ring_of(skill: SkillType, bonus: i16, level: u16) -> Item {
+        Item::new(
+            config(
+                3004,
+                HashSet::new(),
+                vec![
+                    ItemAttribute::SkillBonuses(Arc::from([(skill, bonus)])),
+                    ItemAttribute::RequiredLevel(level),
+                ],
+            ),
+            1,
+        )
+    }
+
+    #[test]
+    fn equipment_that_changes_a_skill_bonus_marks_that_skill() {
+        let (mut map, key) = a_player_alone();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Ring, None, a_ring_of(SkillType::Sword, 4, 1))
+            .unwrap();
+
+        assert_eq!(
+            map.delta().agent(key).skills().collect::<Vec<_>>(),
+            vec![SkillType::Sword]
+        );
+    }
+
+    #[test]
+    fn taking_the_equipment_off_marks_the_skill_again() {
+        let (mut map, key) = a_player_alone();
+        map.inner_mut()
+            .get_player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Ring, None, a_ring_of(SkillType::Club, 4, 1))
+            .unwrap();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .take_slot(&InventorySlot::Ring);
+
+        assert_eq!(
+            map.delta().agent(key).skills().collect::<Vec<_>>(),
+            vec![SkillType::Club]
+        );
+    }
+
+    #[test]
+    fn a_level_that_switches_a_bonus_on_marks_the_skill() {
+        let (mut map, key) = a_player_alone();
+        map.inner_mut()
+            .get_player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Ring, None, a_ring_of(SkillType::Magic, 1, 2))
+            .unwrap();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .set_wearer_level(2);
+
+        assert_eq!(
+            map.delta().agent(key).skills().collect::<Vec<_>>(),
+            vec![SkillType::Magic]
+        );
+    }
+
+    #[test]
+    fn equipment_without_a_skill_bonus_marks_no_skill() {
+        let (mut map, key) = a_player_alone();
+
+        map.player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Feet, None, boots(20))
+            .unwrap();
+
+        assert_eq!(map.delta().agent(key).skills().count(), 0);
     }
 }

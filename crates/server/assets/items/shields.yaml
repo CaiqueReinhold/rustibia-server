@@ -407,6 +407,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
 - id: 8073
   name: spellbook of warding
   article: a
@@ -422,6 +424,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
 - id: 8074
   name: spellbook of mind control
   article: a
@@ -437,6 +441,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
 - id: 8075
   name: spellbook of lost souls
   article: a
@@ -452,6 +458,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
 - id: 8076
   name: spellscroll of prophecies
   article: a
@@ -467,6 +475,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
 - id: 8077
   name: rainbow shield
   article: a
@@ -497,6 +507,8 @@
     level: 100
     vocations:
     - knight
+    skills:
+      shielding: 3
 - id: 8079
   name: icy rainbow shield
   article: an
@@ -562,6 +574,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
 - id: 9372
   name: meat shield
   article: a
@@ -632,6 +646,8 @@
     level: 80
     vocations:
     - knight
+    skills:
+      sword: 3
 - id: 11691
   name: snake god's wristguard
   article: a
@@ -647,6 +663,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
 - id: 13998
   name: depth scutum
   article: a
@@ -660,6 +678,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
 - id: 14000
   name: ornate shield
   article: an
@@ -672,6 +692,8 @@
     level: 130
     vocations:
     - knight
+    protection:
+      physical: 5
 - id: 14042
   name: warrior's shield
   article: a
@@ -725,6 +747,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      death: 5
 - id: 16107
   name: spellbook of vigilance
   article: a
@@ -740,6 +766,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
+    protection:
+      earth: 3
+      fire: -3
 - id: 16116
   name: prismatic shield
   article: a
@@ -752,6 +783,10 @@
     level: 150
     vocations:
     - knight
+    skills:
+      shielding: 2
+    protection:
+      physical: 4
 - id: 17810
   name: spike shield
   article: a
@@ -802,6 +837,13 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 1
+    protection:
+      ice: 2
+      earth: 2
+      fire: 2
+      energy: 2
 - id: 20089
   name: umbral spellbook
   article: an
@@ -816,6 +858,13 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      ice: 3
+      earth: 3
+      fire: 3
+      energy: 3
 - id: 20090
   name: umbral master spellbook
   article: an
@@ -830,6 +879,13 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      ice: 5
+      earth: 5
+      fire: 5
+      energy: 5
 - id: 20140
   name: eerie song book
   article: an
@@ -928,6 +984,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
 - id: 22758
   name: death gaze
   article: a
@@ -1056,6 +1114,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
+    protection:
+      earth: 5
 - id: 25982
   name: mathmaster shield
   article: a
@@ -1098,6 +1160,12 @@
     vocations:
     - knight
     - paladin
+    skills:
+      shielding: 2
+    protection:
+      physical: 6
+      ice: -2
+      energy: 8
 - id: 28494
   name: silver chimes
   article: a
@@ -1122,6 +1190,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      physical: 6
+      fire: 10
 - id: 28722
   name: falcon escutcheon
   article: a
@@ -1135,6 +1206,9 @@
     vocations:
     - knight
     - paladin
+    protection:
+      physical: 7
+      fire: 15
 - id: 28887
   name: journal shield
   article: a
@@ -1206,6 +1280,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
+    protection:
+      physical: 2
+      earth: 6
 - id: 29426
   name: brain in a jar
   article: a
@@ -1220,6 +1299,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 3
+    protection:
+      earth: 7
 - id: 29430
   name: ectoplasmic shield
   article: an
@@ -1232,6 +1315,12 @@
     level: 180
     vocations:
     - knight
+    skills:
+      club: 3
+      axe: 3
+    protection:
+      ice: 7
+      fire: -3
 - id: 29431
   name: spirit guide
   article: a
@@ -1246,6 +1335,10 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      energy: 6
 - id: 30181
   name: shield of endless search
   article: a
@@ -1290,6 +1383,9 @@
     level: 400
     vocations:
     - knight
+    protection:
+      physical: 10
+      death: 10
 - id: 34153
   name: lion spellbook
   article: a
@@ -1304,6 +1400,11 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 4
+    protection:
+      physical: 3
+      ice: 7
 - id: 34154
   name: lion shield
   article: a
@@ -1316,6 +1417,9 @@
     level: 250
     vocations:
     - knight
+    protection:
+      physical: 7
+      earth: 10
 - id: 35524
   name: jungle quiver
   article: a
@@ -1385,6 +1489,8 @@
     level: 270
     vocations:
     - knight
+    protection:
+      physical: 4
 - id: 36666
   name: eldritch quiver
   article: a
@@ -1413,6 +1519,10 @@
     level: 300
     vocations:
     - sorcerer
+    skills:
+      magic: 4
+    protection:
+      earth: 6
 - id: 36673
   name: eldritch tome
   article: a
@@ -1426,6 +1536,10 @@
     level: 300
     vocations:
     - druid
+    skills:
+      magic: 4
+    protection:
+      fire: 6
 - id: 36994
   name: golden blessed shield
   article: a
@@ -1467,6 +1581,8 @@
     level: 400
     vocations:
     - paladin
+    skills:
+      magic: 1
 - id: 39152
   name: arcanomancer folio
   article: an
@@ -1480,6 +1596,11 @@
     level: 400
     vocations:
     - sorcerer
+    skills:
+      magic: 5
+    protection:
+      fire: 8
+      physical: 3
 - id: 39154
   name: arboreal tome
   article: an
@@ -1493,6 +1614,11 @@
     level: 400
     vocations:
     - druid
+    skills:
+      magic: 5
+    protection:
+      physical: 4
+      energy: 6
 - id: 39160
   name: naga quiver
   article: a
@@ -1508,6 +1634,8 @@
     level: 250
     vocations:
     - paladin
+    protection:
+      ice: 2
 - id: 40594
   name: alchemist's notepad
   article: an
@@ -1521,6 +1649,10 @@
     level: 250
     vocations:
     - sorcerer
+    skills:
+      magic: 2
+    protection:
+      death: 5
 - id: 43517
   name: shield of destiny replica
   article: a

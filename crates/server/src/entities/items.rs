@@ -20,6 +20,7 @@ use crate::{
         effects::{AreaShape, EffectId, MissileId},
         inventory::InventorySlot,
         position::{ItemPlacement, Position},
+        skills::SkillType,
         spells::SpellId,
         vocation::{Vocation, VocationSet},
     },
@@ -251,6 +252,9 @@ pub enum ItemAttribute {
     ExtraDef(i16),
     Armor(u16),
     Speed(i16),
+    SkillBonuses(Arc<[(SkillType, i16)]>),
+    Protection(Arc<[(CombatElement, i16)]>),
+    ElementDamage(CombatElement, u16),
     RequiredLevel(u16),
     Vocations(VocationSet),
     Field(Arc<ConditionSpec>),
@@ -358,6 +362,31 @@ impl ItemConfig {
     pub fn attr_weapon_area(&self) -> Option<(&AreaShape, EffectId)> {
         self.get_attributes().find_map(|attr| match attr {
             ItemAttribute::WeaponArea(shape, effect_id) => Some((shape.as_ref(), *effect_id)),
+            _ => None,
+        })
+    }
+
+    pub fn attr_skill_bonuses(&self) -> &[(SkillType, i16)] {
+        self.get_attributes()
+            .find_map(|attr| match attr {
+                ItemAttribute::SkillBonuses(bonuses) => Some(bonuses.as_ref()),
+                _ => None,
+            })
+            .unwrap_or(&[])
+    }
+
+    pub fn attr_protection(&self) -> &[(CombatElement, i16)] {
+        self.get_attributes()
+            .find_map(|attr| match attr {
+                ItemAttribute::Protection(protection) => Some(protection.as_ref()),
+                _ => None,
+            })
+            .unwrap_or(&[])
+    }
+
+    pub fn attr_element_damage(&self) -> Option<(CombatElement, u16)> {
+        self.get_attributes().find_map(|attr| match attr {
+            ItemAttribute::ElementDamage(element, damage) => Some((*element, *damage)),
             _ => None,
         })
     }
@@ -842,6 +871,9 @@ mod tests {
         check("vocations", c.attr_vocations().is_some());
         check("decay", c.attr_decay().is_some());
         check("field", c.attr_field().is_some());
+        check("skill_bonuses", !c.attr_skill_bonuses().is_empty());
+        check("protection", !c.attr_protection().is_empty());
+        check("element_damage", c.attr_element_damage().is_some());
         found
     }
 
@@ -884,6 +916,18 @@ mod tests {
             (ItemAttribute::ManaCost(1), "mana_cost"),
             (ItemAttribute::MissileId(MissileId(1)), "missile_id"),
             (ItemAttribute::Speed(1), "speed"),
+            (
+                ItemAttribute::SkillBonuses(Arc::from([(SkillType::Sword, 1)])),
+                "skill_bonuses",
+            ),
+            (
+                ItemAttribute::Protection(Arc::from([(CombatElement::Fire, 1)])),
+                "protection",
+            ),
+            (
+                ItemAttribute::ElementDamage(CombatElement::Fire, 1),
+                "element_damage",
+            ),
             (ItemAttribute::RequiredLevel(1), "required_level"),
             (
                 ItemAttribute::Vocations([Vocation::Knight].into_iter().collect()),

@@ -561,7 +561,7 @@ fn attack_spell(
     let chain = spell_attack
         .chain
         .as_ref()
-        .and_then(|chain| plan.damage.first().map(|(t, d)| (chain, *t, d.clone())));
+        .and_then(|chain| plan.damage.first().map(|(t, d)| (chain, *t, *d)));
 
     if let Some((chain, target, damage)) = chain
         && let Some(target_pos) = ctx.map.agent_position(target)
@@ -1122,6 +1122,33 @@ mod tests {
             s.command,
             WorldCommand::DamageOverTimeTick { agent_key, .. } if agent_key == rat
         )));
+    }
+
+    #[test]
+    fn a_magic_level_bonus_counts_toward_a_spells_requirement() {
+        let (mut map, key) = a_player_at(&Position::new(100, 100, 7), 30, 3);
+        let book = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(1),
+                "book".to_string(),
+                None,
+                None,
+                [],
+                vec![ItemAttribute::SkillBonuses(Arc::from([(
+                    SkillType::Magic,
+                    1,
+                )]))],
+            )),
+            1,
+        );
+        map.get_player_mut(key)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::RightHand, None, book)
+            .unwrap();
+        let player = map.get_player(key).unwrap();
+
+        assert!(has_spell_requirements(&a_spell(1, 4, Vec::new()), player));
     }
 
     #[test]

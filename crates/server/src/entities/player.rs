@@ -166,6 +166,12 @@ impl Player {
             .unwrap_or(CombatElement::Physical)
     }
 
+    pub fn weapon_element_damage(&self) -> Option<(CombatElement, u16)> {
+        self.weapon_ammo()
+            .and_then(|it| it.config.attr_element_damage())
+            .or_else(|| self.weapon().and_then(|it| it.config.attr_element_damage()))
+    }
+
     pub fn weapon_attack(&self) -> u16 {
         self.weapon_ammo()
             .and_then(|it| it.config.attr_weapon_attack())
@@ -227,12 +233,25 @@ impl Player {
     }
 
     pub fn skill(&self, skill: SkillType) -> u16 {
+        self.base_skill(skill)
+            .saturating_add_signed(self.skill_bonus(skill))
+    }
+
+    pub fn base_skill(&self, skill: SkillType) -> u16 {
         let default = skill.default_value();
         self.skills.get(&skill).map_or(default, |st| st.value)
     }
 
+    pub fn skill_bonus(&self, skill: SkillType) -> i16 {
+        self.inventory.stats().skills.get(skill)
+    }
+
+    pub fn protection(&self, element: CombatElement) -> i16 {
+        self.inventory.stats().protection.get(element)
+    }
+
     pub fn level(&self) -> u16 {
-        self.skill(SkillType::Level)
+        self.base_skill(SkillType::Level)
     }
 
     pub fn can_use(&self, item: &Item) -> bool {
@@ -416,5 +435,85 @@ mod tests {
         let knight = a_knight_of_level(49, HashMap::from([(InventorySlot::RightHand, shield)]));
 
         assert!(!knight.get_player().unwrap().has_shield());
+    }
+
+    fn a_ring(attributes: Vec<ItemAttribute>) -> HashMap<InventorySlot, Item> {
+        HashMap::from([(InventorySlot::Ring, item(HashSet::new(), attributes))])
+    }
+
+    #[test]
+    fn a_worn_bonus_raises_the_skill_and_not_its_base() {
+        let agent = a_knight_of_level(
+            8,
+            a_ring(vec![ItemAttribute::SkillBonuses(Arc::from([(
+                SkillType::Sword,
+                4,
+            )]))]),
+        );
+        let player = agent.get_player().unwrap();
+
+        assert_eq!(player.base_skill(SkillType::Sword), 10);
+        assert_eq!(player.skill(SkillType::Sword), 14);
+        assert_eq!(player.skill_bonus(SkillType::Sword), 4);
+    }
+
+    #[test]
+    fn a_penalty_cannot_take_a_skill_below_zero() {
+        let agent = a_knight_of_level(
+            8,
+            a_ring(vec![ItemAttribute::SkillBonuses(Arc::from([(
+                SkillType::Shielding,
+                -50,
+            )]))]),
+        );
+
+        assert_eq!(agent.get_player().unwrap().skill(SkillType::Shielding), 0);
+    }
+
+    #[test]
+    fn protection_is_read_per_element() {
+        let agent = a_knight_of_level(
+            8,
+            a_ring(vec![ItemAttribute::Protection(Arc::from([(
+                CombatElement::Fire,
+                20,
+            )]))]),
+        );
+        let player = agent.get_player().unwrap();
+
+        assert_eq!(player.protection(CombatElement::Fire), 20);
+        assert_eq!(player.protection(CombatElement::Ice), 0);
+    }
+
+    #[test]
+    fn the_ammos_element_damage_wins_over_the_bows() {
+        let bow = item(
+            HashSet::new(),
+            vec![
+                ItemAttribute::WeaponType(WeaponType::Bow),
+                ItemAttribute::ElementDamage(CombatElement::Fire, 5),
+            ],
+        );
+        let arrow = item(
+            HashSet::new(),
+            vec![
+                ItemAttribute::AmmoType(AmmoType::Arrow),
+                ItemAttribute::ElementDamage(CombatElement::Energy, 14),
+            ],
+        );
+        let mut quiver = item(HashSet::from([ItemFlag::AmmoContainer]), vec![]);
+        quiver.set_content(vec![arrow]);
+        let agent = a_knight_of_level(
+            8,
+            HashMap::from([
+                (InventorySlot::LeftHand, bow),
+                (InventorySlot::RightHand, quiver),
+            ]),
+        );
+
+        assert_eq!(
+            agent.get_player().unwrap().weapon_element_damage(),
+            Some((CombatElement::Energy, 14))
+        );
     }
 }

@@ -171,6 +171,7 @@ pub enum TextMessageType {
 pub struct SkillProgress {
     pub level: u16,
     pub percent_bp: u16,
+    pub bonus: i16,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -903,6 +904,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                     dst.put_u8(skill.as_id());
                     dst.put_u16_le(progress.level);
                     dst.put_u16_le(progress.percent_bp);
+                    dst.put_i16_le(progress.bonus);
                 }
             }
             ServerMessage::SkillUpdated { skill, progress } => {
@@ -910,6 +912,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 dst.put_u8(skill.as_id());
                 dst.put_u16_le(progress.level);
                 dst.put_u16_le(progress.percent_bp);
+                dst.put_i16_le(progress.bonus);
             }
             ServerMessage::ExperienceUpdated { experience } => {
                 dst.put_u8(SRV_EXPERIENCE_UPDATED);
@@ -2038,6 +2041,7 @@ mod tests {
                         SkillProgress {
                             level: 8,
                             percent_bp: 4321,
+                            bonus: 2,
                         },
                     )],
                 },
@@ -2048,7 +2052,7 @@ mod tests {
         assert_eq!(
             &dst[..],
             &[
-                15,
+                17,
                 0, // payload length
                 SRV_PLAYER_SKILLS,
                 0x87,
@@ -2065,6 +2069,8 @@ mod tests {
                 0, // level
                 0xE1,
                 0x10, // 43.21%
+                2,
+                0, // bonus +2
             ]
         );
     }
@@ -2176,6 +2182,7 @@ mod tests {
                     progress: SkillProgress {
                         level: 12,
                         percent_bp: 4909,
+                        bonus: -3,
                     },
                 },
                 &mut dst,
@@ -2185,7 +2192,7 @@ mod tests {
         assert_eq!(
             &dst[..],
             &[
-                6,
+                8,
                 0, // payload length
                 SRV_SKILL_UPDATED,
                 3, // SkillType::Sword
@@ -2193,6 +2200,8 @@ mod tests {
                 0, // level
                 0x2D,
                 0x13, // 49.09%
+                0xFD,
+                0xFF, // bonus -3
             ]
         );
     }

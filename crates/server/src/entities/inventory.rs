@@ -1,6 +1,8 @@
-use strum::FromRepr;
+use strum::{EnumCount, FromRepr};
 
+use crate::entities::combat::CombatElement;
 use crate::entities::items::{Item, ItemGuid};
+use crate::entities::skills::SkillType;
 use crate::entities::vocation::Vocation;
 use crate::game::item_movement::ItemMovementError;
 use std::collections::HashMap;
@@ -43,11 +45,41 @@ impl InventorySlot {
     }
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct SkillBonuses([i16; SkillType::COUNT]);
+
+impl SkillBonuses {
+    pub fn get(&self, skill: SkillType) -> i16 {
+        self.0[skill as usize]
+    }
+
+    fn add(&mut self, skill: SkillType, value: i16) {
+        let slot = &mut self.0[skill as usize];
+        *slot = slot.saturating_add(value);
+    }
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Protection([i16; CombatElement::COUNT]);
+
+impl Protection {
+    pub fn get(&self, element: CombatElement) -> i16 {
+        self.0[element as usize]
+    }
+
+    fn add(&mut self, element: CombatElement, value: i16) {
+        let slot = &mut self.0[element as usize];
+        *slot = slot.saturating_add(value);
+    }
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct EquipmentStats {
     pub defense: u16,
     pub armor: u16,
     pub speed: i16,
+    pub skills: SkillBonuses,
+    pub protection: Protection,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -202,6 +234,7 @@ impl Inventory {
         self.update_armor();
         self.update_defense();
         self.update_speed();
+        self.update_bonuses();
     }
 
     fn can_wear(&self, item: &Item) -> bool {
@@ -241,6 +274,21 @@ impl Inventory {
             .sum();
     }
 
+    fn update_bonuses(&mut self) {
+        let mut skills = SkillBonuses::default();
+        let mut protection = Protection::default();
+        for item in self.worn_items() {
+            for &(skill, value) in item.config.attr_skill_bonuses() {
+                skills.add(skill, value);
+            }
+            for &(element, value) in item.config.attr_protection() {
+                protection.add(element, value);
+            }
+        }
+        self.stats.skills = skills;
+        self.stats.protection = protection;
+    }
+
     #[cfg(test)]
     pub fn total_weight(&self) -> u32 {
         self.slots.values().map(|it| it.total_weight()).sum()
@@ -263,8 +311,10 @@ fn find_available_container(item: &Item) -> Option<&ItemGuid> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::entities::combat::CombatElement;
     use crate::entities::items::ItemId;
     use crate::entities::items::{ItemAttribute, ItemConfig, ItemFlag};
+    use crate::entities::skills::SkillType;
     use crate::entities::vocation::Vocation;
     use std::collections::HashSet;
     use std::sync::Arc;
@@ -550,5 +600,46 @@ mod tests {
 
         assert_eq!(inventory.carried_weight, 40);
         assert_accounted(&inventory);
+    }
+
+    #[test]
+    fn skill_bonuses_and_protection_add_up_across_slots() {
+        let helmet = gear(vec![
+            ItemAttribute::SkillBonuses(Arc::from([(SkillType::Sword, 2), (SkillType::Magic, 1)])),
+            ItemAttribute::Protection(Arc::from([(CombatElement::Fire, 10)])),
+        ]);
+        let mail = gear(vec![
+            ItemAttribute::SkillBonuses(Arc::from([(SkillType::Sword, 3)])),
+            ItemAttribute::Protection(Arc::from([
+                (CombatElement::Fire, 5),
+                (CombatElement::Physical, -4),
+            ])),
+        ]);
+        let inventory = Inventory::from_snapshot(
+            HashMap::from([(InventorySlot::Head, helmet), (InventorySlot::Chest, mail)]),
+            anyone(),
+        );
+
+        let stats = inventory.stats();
+        assert_eq!(stats.skills.get(SkillType::Sword), 5);
+        assert_eq!(stats.skills.get(SkillType::Magic), 1);
+        assert_eq!(stats.skills.get(SkillType::Axe), 0);
+        assert_eq!(stats.protection.get(CombatElement::Fire), 15);
+        assert_eq!(stats.protection.get(CombatElement::Physical), -4);
+        assert_eq!(stats.protection.get(CombatElement::Ice), 0);
+    }
+
+    #[test]
+    fn bonuses_above_the_wearers_level_count_for_nothing() {
+        let helmet = gear(vec![
+            ItemAttribute::SkillBonuses(Arc::from([(SkillType::Sword, 2)])),
+            ItemAttribute::Protection(Arc::from([(CombatElement::Fire, 10)])),
+            ItemAttribute::RequiredLevel(20),
+        ]);
+
+        let stats = *worn_at(19, InventorySlot::Head, helmet).stats();
+
+        assert_eq!(stats.skills.get(SkillType::Sword), 0);
+        assert_eq!(stats.protection.get(CombatElement::Fire), 0);
     }
 }

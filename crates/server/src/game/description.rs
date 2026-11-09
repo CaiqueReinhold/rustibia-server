@@ -4,11 +4,12 @@ use std::sync::Arc;
 use crate::{
     entities::{
         agent::{Agent, AgentKey},
-        combat::WeaponType,
+        combat::{CombatElement, WeaponType},
         items::{FluidType, Item, ItemConfig, ItemFlag, ItemMultiAction},
         map::GameMap,
         position::{ItemPlacement, Position},
         sex::Sex,
+        skills::SkillType,
         spells::{Spell, SpellId},
         vocation::{Vocation, VocationSet},
     },
@@ -157,7 +158,13 @@ fn attribute_group(config: &ItemConfig) -> String {
                 entries.push(format!("Vol:{capacity}"));
             }
             if let Some(attack) = config.attr_weapon_attack().filter(|&a| a != 0) {
-                entries.push(format!("Atk:{attack}"));
+                match config.attr_element_damage() {
+                    Some((element, extra)) => entries.push(format!(
+                        "Atk:{attack} physical + {extra} {}",
+                        element_name(element)
+                    )),
+                    None => entries.push(format!("Atk:{attack}")),
+                }
             }
             let defense = config.attr_defense().unwrap_or(0);
             match config.attr_extra_def().unwrap_or(0) {
@@ -170,6 +177,25 @@ fn attribute_group(config: &ItemConfig) -> String {
     if let Some(armor) = config.attr_armor().filter(|&a| a != 0) {
         entries.push(format!("Arm:{armor}"));
     }
+    let skills = config.attr_skill_bonuses();
+    for (skill, label) in SKILL_LABELS {
+        if let Some(&(_, bonus)) = skills.iter().find(|(s, b)| *s == skill && *b != 0) {
+            entries.push(format!("{label} {bonus:+}"));
+        }
+    }
+    let protection = config.attr_protection();
+    let protected: Vec<String> = PROTECTION_ORDER
+        .iter()
+        .filter_map(|&element| {
+            protection
+                .iter()
+                .find(|(e, p)| *e == element && *p != 0)
+                .map(|&(_, percent)| format!("{} {percent:+}%", element_name(element)))
+        })
+        .collect();
+    if !protected.is_empty() {
+        entries.push(format!("protection {}", protected.join(", ")));
+    }
     if let Some(speed) = config.attr_speed().filter(|&s| s != 0) {
         entries.push(format!("speed {speed:+}"));
     }
@@ -177,6 +203,39 @@ fn attribute_group(config: &ItemConfig) -> String {
     match entries.is_empty() {
         true => String::new(),
         false => format!(" ({})", entries.join(", ")),
+    }
+}
+
+const SKILL_LABELS: [(SkillType, &str); 6] = [
+    (SkillType::Club, "club fighting"),
+    (SkillType::Sword, "sword fighting"),
+    (SkillType::Axe, "axe fighting"),
+    (SkillType::Distance, "distance fighting"),
+    (SkillType::Shielding, "shielding"),
+    (SkillType::Magic, "magic level"),
+];
+
+const PROTECTION_ORDER: [CombatElement; 8] = [
+    CombatElement::Physical,
+    CombatElement::Energy,
+    CombatElement::Earth,
+    CombatElement::Fire,
+    CombatElement::Mana,
+    CombatElement::Ice,
+    CombatElement::Holy,
+    CombatElement::Death,
+];
+
+fn element_name(element: CombatElement) -> &'static str {
+    match element {
+        CombatElement::Physical => "physical",
+        CombatElement::Energy => "energy",
+        CombatElement::Fire => "fire",
+        CombatElement::Earth => "earth",
+        CombatElement::Ice => "ice",
+        CombatElement::Holy => "holy",
+        CombatElement::Death => "death",
+        CombatElement::Mana => "mana",
     }
 }
 
@@ -508,6 +567,38 @@ mod tests {
                 ItemAttribute::Speed(20),
             ]),
             "You see a sword (Atk:10, Arm:2, speed +20)."
+        );
+    }
+
+    #[test]
+    fn element_damage_follows_the_attack() {
+        assert_eq!(
+            a_sword(vec![
+                ItemAttribute::WeaponAttack(44),
+                ItemAttribute::ElementDamage(CombatElement::Fire, 8),
+            ]),
+            "You see a sword (Atk:44 physical + 8 fire)."
+        );
+    }
+
+    #[test]
+    fn skills_magic_level_and_protection_follow_the_armour() {
+        assert_eq!(
+            a_sword(vec![
+                ItemAttribute::Armor(2),
+                ItemAttribute::SkillBonuses(Arc::from([
+                    (SkillType::Magic, 1),
+                    (SkillType::Shielding, -10),
+                    (SkillType::Sword, 3),
+                ])),
+                ItemAttribute::Protection(Arc::from([
+                    (CombatElement::Fire, 10),
+                    (CombatElement::Physical, 5),
+                ])),
+                ItemAttribute::Speed(20),
+            ]),
+            "You see a sword (Arm:2, sword fighting +3, shielding -10, magic level +1, \
+             protection physical +5%, fire +10%, speed +20)."
         );
     }
 

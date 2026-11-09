@@ -20,7 +20,9 @@ use crate::{
     game::{
         Tick, TickCtx, conditions,
         config::{Color, GAME_CONFIG},
-        damage::{apply_damage, get_creature_base_damage, get_player_base_damage},
+        damage::{
+            apply_damage, get_creature_base_damage, get_element_damage, get_player_base_damage,
+        },
         events::BroadcastMessage,
         item_movement::remove_item_at,
         map_query::can_throw,
@@ -120,6 +122,15 @@ pub fn plan_auto_attack(
         } else {
             get_player_base_damage(agent.get_player()?, roll)
         };
+        let element_hit = agent.get_player().and_then(|player| {
+            let (element, attack) = player.weapon_element_damage()?;
+            Some(CombatDamage {
+                element,
+                value: get_element_damage(player, attack, roll),
+                blocked_shield: false,
+                blocked_armor: false,
+            })
+        });
 
         for target in targets {
             let Some(target_agent) = map.get_agent(target) else {
@@ -144,6 +155,9 @@ pub fn plan_auto_attack(
                     blocked_armor,
                 },
             ));
+            if let Some(hit) = element_hit.filter(|hit| hit.value > 0) {
+                damage.push((target, hit));
+            }
         }
     }
 
@@ -348,13 +362,18 @@ pub fn execute_attack(ctx: &mut TickCtx, plan: AttackPlan) {
 
     let is_player = |map: &GameMap, key| map.get_agent(key).is_some_and(|a| a.is_player());
     let player_attacker = is_player(ctx.map, plan.attacker);
+    let mut conditioned: SmallVec<[AgentKey; 1]> = SmallVec::new();
     for (target, mut dmg) in plan.damage.into_iter() {
         let landed = dmg.value > 0;
         if player_attacker && is_player(ctx.map, target) {
             dmg.value /= 2;
         }
         apply_damage(ctx, target, dmg, Some(plan.attacker));
-        if landed && let Some(spec) = &plan.condition {
+        if landed
+            && let Some(spec) = &plan.condition
+            && !conditioned.contains(&target)
+        {
+            conditioned.push(target);
             conditions::apply_condition(ctx, target, spec, Some(plan.attacker));
         }
     }
@@ -856,8 +875,7 @@ mod tests {
         (map, attacker, target)
     }
 
-    /// An auto attack plans at most one damage entry, against its own target; an empty
-    /// list is a miss.
+    /// The first entry: the physical hit on the target. An empty list is a miss.
     fn planned_damage(plan: &AttackPlan) -> Option<&CombatDamage> {
         plan.damage.first().map(|(_, damage)| damage)
     }
@@ -1941,5 +1959,165 @@ mod tests {
 
         assert!(high > low, "{high} !> {low}");
         assert_eq!(high, tabled_hit_chance(90, 300, 1), "capped at 74");
+    }
+
+    fn a_sword_with(element: CombatElement, damage: u16) -> Item {
+        Item::new(
+            a_config(
+                ItemId(16),
+                HashSet::new(),
+                vec![
+                    ItemAttribute::WeaponType(WeaponType::Sword),
+                    ItemAttribute::WeaponAttack(20),
+                    ItemAttribute::ElementDamage(element, damage),
+                ],
+            ),
+            1,
+        )
+    }
+
+    #[test]
+    fn an_elemental_weapon_plans_a_second_hit_that_nothing_blocks() {
+        let (map, attacker, target) = duel(
+            Agent::from_player(armed(Some(a_sword_with(CombatElement::Fire, 20)), None)),
+            a_test_creature_with_defences("Elf", 100, (0, 15), 60, 60),
+        );
+        let mut roll = Rolls::new(1);
+
+        let plan = plan_auto_attack(&map, attacker, &mut roll, Tick(0)).unwrap();
+
+        assert_eq!(plan.damage.len(), 2);
+        let (physical_target, physical) = &plan.damage[0];
+        let (element_target, element) = &plan.damage[1];
+        assert_eq!((*physical_target, *element_target), (target, target));
+        assert_eq!(physical.element, CombatElement::Physical);
+        assert_eq!(element.element, CombatElement::Fire);
+        assert!(element.value > 0);
+        assert!(!element.blocked_shield && !element.blocked_armor);
+    }
+
+    #[test]
+    fn a_weapon_without_element_damage_plans_one_hit() {
+        let (map, attacker, _) = duel(
+            Agent::from_player(armed(Some(a_weapon_with_attack(20)), None)),
+            a_test_creature("Rat", 100, (1, 2)),
+        );
+        let mut roll = Rolls::new(1);
+
+        let plan = plan_auto_attack(&map, attacker, &mut roll, Tick(0)).unwrap();
+
+        assert_eq!(plan.damage.len(), 1);
+    }
+
+    #[test]
+    fn a_missed_elemental_shot_plans_neither_hit() {
+        let arrow = Item::new(
+            a_config(
+                ItemId(17),
+                HashSet::new(),
+                vec![
+                    ItemAttribute::AmmoType(AmmoType::Arrow),
+                    ItemAttribute::WeaponAttack(25),
+                    ItemAttribute::HitChance(-1),
+                    ItemAttribute::ElementDamage(CombatElement::Energy, 14),
+                ],
+            ),
+            10,
+        );
+        let (map, attacker, _) = duel(
+            Agent::from_player(armed(Some(a_bow(None)), Some(a_quiver_holding(arrow)))),
+            a_test_creature("Rat", 100, (1, 2)),
+        );
+        let mut roll = Rolls::new(1);
+
+        let plan = plan_auto_attack(&map, attacker, &mut roll, Tick(0)).unwrap();
+
+        assert!(plan.missed);
+        assert!(plan.damage.is_empty());
+    }
+
+    fn two_hits(
+        attacker: AgentKey,
+        target: AgentKey,
+        first: u32,
+        condition: Option<ConditionSpec>,
+    ) -> AttackPlan {
+        let hit = |element, value| CombatDamage {
+            element,
+            value,
+            blocked_shield: false,
+            blocked_armor: false,
+        };
+        AttackPlan {
+            attacker,
+            damage: SmallVec::from_vec(Vec::from([
+                (target, hit(CombatElement::Physical, first)),
+                (target, hit(CombatElement::Fire, 5)),
+            ])),
+            cost: AttackCost::None,
+            trains: None,
+            missile: None,
+            area_effect: None,
+            missed: false,
+            condition,
+        }
+    }
+
+    /// A second application replaces the condition whenever it rolls stronger, so across
+    /// enough seeds a doubled application would schedule a second chain.
+    #[test]
+    fn a_two_part_hit_applies_its_condition_once() {
+        for seed in 1..=20 {
+            let (map, attacker, target) = duel(
+                Agent::from_player(armed(None, None)),
+                a_test_creature("Rat", 100, (1, 2)),
+            );
+            let mut h = TestHarness::seeded(seed);
+            let plan = two_hits(
+                attacker,
+                target,
+                5,
+                Some(ConditionSpec {
+                    element: CombatElement::Fire,
+                    interval: TickDelta(180),
+                    schedule: SpecSchedule::Decaying {
+                        damage: Bounds { min: 1, max: 100 },
+                        start: None,
+                    },
+                    delayed: true,
+                }),
+            );
+
+            let mut map = WorldMap::new(map);
+            execute_attack(&mut h.ctx(&mut map), plan);
+
+            let scheduled = h
+                .scheduled
+                .iter()
+                .filter(|s| matches!(s.command, WorldCommand::DamageOverTimeTick { .. }))
+                .count();
+            assert_eq!(scheduled, 1, "seed {seed}");
+        }
+    }
+
+    #[test]
+    fn a_target_killed_by_the_physical_part_takes_the_element_part_silently() {
+        let (map, attacker, target) = duel(
+            Agent::from_player(armed(None, None)),
+            a_test_creature("Rat", 10, (1, 2)),
+        );
+        let mut h = TestHarness::seeded(1);
+        let plan = two_hits(attacker, target, 500, None);
+
+        let mut map = WorldMap::new(map);
+        execute_attack(&mut h.ctx(&mut map), plan);
+
+        assert!(map.get_agent(target).is_none());
+        let reports = h
+            .events
+            .iter()
+            .filter(|m| matches!(m, BroadcastMessage::DamageTaken { .. }))
+            .count();
+        assert_eq!(reports, 1);
     }
 }

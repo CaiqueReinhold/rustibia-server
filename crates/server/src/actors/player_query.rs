@@ -59,6 +59,7 @@ pub fn get_player_skills(map: &GameMap, key: AgentKey) -> Option<ServerMessage> 
                 SkillProgress {
                     level: value.value,
                     percent_bp: progress_bp(player.vocation(), skill, value),
+                    bonus: player.skill_bonus(*skill),
                 },
             )
         })
@@ -124,6 +125,8 @@ pub fn get_agent_desc(
 mod tests {
     use super::*;
     use crate::entities::agent::{Agent, AgentKind};
+    use crate::entities::inventory::InventorySlot;
+    use crate::entities::items::{Item, ItemAttribute, ItemConfig, ItemId};
     use crate::entities::map::MapTile;
     use crate::entities::skills::{SkillType, SkillValue};
     use crate::messages::ServerMessage;
@@ -293,5 +296,48 @@ mod tests {
                 ..
             }
         ));
+    }
+
+    #[tokio::test]
+    async fn a_worn_bonus_travels_beside_the_base_level() {
+        let position = Position::new(100, 100, 7);
+        let mut map = GameMap::new();
+        map.insert_tile(position.clone(), MapTile::new());
+        let key = map
+            .insert_agent(Agent::from_player(a_test_snapshot(1, 1)), &position)
+            .unwrap();
+        let player = map.get_player_mut(key).unwrap();
+        player.skills_mut().insert(
+            SkillType::Sword,
+            SkillValue {
+                value: 11,
+                current_ticks: 0,
+            },
+        );
+        let ring = Item::new(
+            Arc::new(ItemConfig::new(
+                ItemId(3094),
+                "ring".to_string(),
+                None,
+                None,
+                [],
+                vec![ItemAttribute::SkillBonuses(Arc::from([(
+                    SkillType::Sword,
+                    4,
+                )]))],
+            )),
+            1,
+        );
+        player
+            .inventory_mut()
+            .insert(InventorySlot::Ring, None, ring)
+            .unwrap();
+
+        let ServerMessage::PlayerSkills { skills, .. } = get_player_skills(&map, key).unwrap()
+        else {
+            panic!("expected PlayerSkills");
+        };
+        let (_, sword) = skills.iter().find(|(s, _)| *s == SkillType::Sword).unwrap();
+        assert_eq!((sword.level, sword.bonus), (11, 4));
     }
 }

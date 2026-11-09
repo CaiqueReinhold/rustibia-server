@@ -68,6 +68,14 @@
   attributes:
     weight: 100
     slot: 9
+    protection:
+      physical: 20
+      fire: 20
+      earth: 20
+      energy: 20
+      ice: 20
+      holy: 20
+      death: 20
 - id: 3049
   name: stealth ring
   article: a
@@ -212,6 +220,8 @@
     decay:
       duration: 36000
       decay_to: 0
+    skills:
+      sword: 4
 - id: 3095
   name: axe ring
   article: an
@@ -223,6 +233,8 @@
     decay:
       duration: 36000
       decay_to: 0
+    skills:
+      axe: 4
 - id: 3096
   name: club ring
   article: a
@@ -234,6 +246,8 @@
     decay:
       duration: 36000
       decay_to: 0
+    skills:
+      club: 4
 - id: 3097
   name: dwarven ring
   article: a
@@ -290,6 +304,8 @@
     weight: 80
     slot: 9
     armor: 1
+    protection:
+      death: 5
 - id: 6300
   name: death ring
   article: a
@@ -303,6 +319,10 @@
       duration: 9600
       decay_to: 0
     armor: 1
+    skills:
+      shielding: -10
+    protection:
+      death: 5
 - id: 9392
   name: claw of 'The Noxious Spawn'
   article: a
@@ -429,6 +449,9 @@
     weight: 105
     slot: 9
     level: 120
+    protection:
+      physical: 10
+      energy: 8
 - id: 16264
   name: prismatic ring
   article: a
@@ -441,6 +464,9 @@
       duration: 72000
       decay_to: 0
     level: 120
+    protection:
+      physical: 10
+      energy: 8
 - id: 18935
   name: vampire's signet ring
   article: a
@@ -524,6 +550,9 @@
     level: 100
     vocations:
     - paladin
+    skills:
+      magic: 1
+      distance: 3
 - id: 23531
   name: ring of green plasma
   flags:
@@ -550,6 +579,8 @@
     vocations:
     - sorcerer
     - druid
+    skills:
+      magic: 2
 - id: 23533
   name: ring of red plasma
   flags:
@@ -574,6 +605,12 @@
     level: 100
     vocations:
     - knight
+    skills:
+      club: 3
+      axe: 3
+      sword: 3
+    protection:
+      physical: 3
 - id: 25698
   name: butterfly ring
   article: a
@@ -584,6 +621,8 @@
     slot: 9
     armor: 2
     level: 50
+    protection:
+      death: 3
 - id: 30279
   name: frozen claw
   article: a
@@ -638,6 +677,8 @@
       duration: 72000
       decay_to: 31621
     level: 220
+    protection:
+      fire: 6
 - id: 31621
   name: blister ring
   article: a
@@ -669,6 +710,8 @@
       duration: 144000
       decay_to: 32636
     level: 200
+    protection:
+      physical: 2
 - id: 32636
   name: ring of souls
   article: a
@@ -713,6 +756,16 @@
     level: 400
     vocations:
     - knight
+    skills:
+      club: 3
+      axe: 3
+      sword: 3
+    protection:
+      physical: 8
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39179
   name: spiritthorn ring
   article: a
@@ -724,6 +777,12 @@
     level: 400
     vocations:
     - knight
+    protection:
+      physical: 2
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39180
   name: charged alicorn ring
   article: a
@@ -749,6 +808,16 @@
     level: 400
     vocations:
     - paladin
+    skills:
+      magic: 1
+      distance: 3
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
+      holy: 4
+      death: 4
 - id: 39182
   name: alicorn ring
   article: an
@@ -760,6 +829,11 @@
     level: 400
     vocations:
     - paladin
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39183
   name: charged arcanomancer sigil
   article: a
@@ -785,6 +859,13 @@
     level: 400
     vocations:
     - sorcerer
+    skills:
+      magic: 2
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39185
   name: arcanomancer sigil
   article: an
@@ -796,6 +877,11 @@
     level: 400
     vocations:
     - sorcerer
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39186
   name: charged arboreal ring
   article: a
@@ -820,6 +906,13 @@
     level: 400
     vocations:
     - druid
+    skills:
+      magic: 2
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4
 - id: 39188
   name: arboreal ring
   article: an
@@ -831,3 +924,8 @@
     level: 400
     vocations:
     - druid
+    protection:
+      fire: 4
+      earth: 4
+      energy: 4
+      ice: 4

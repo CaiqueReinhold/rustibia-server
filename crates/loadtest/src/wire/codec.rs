@@ -776,7 +776,15 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
                     .ok_or(WireError::Malformed { opcode: 0 })?;
                 let level = payload.try_get_u16_le()?;
                 let percent_bp = payload.try_get_u16_le()?;
-                skills.push((skill, SkillProgress { level, percent_bp }));
+                let bonus = payload.try_get_i16_le()?;
+                skills.push((
+                    skill,
+                    SkillProgress {
+                        level,
+                        percent_bp,
+                        bonus,
+                    },
+                ));
             }
             Ok(ServerMessage::PlayerSkills { experience, skills })
         }
@@ -785,9 +793,14 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
                 .ok_or(WireError::Malformed { opcode: 0 })?;
             let level = payload.try_get_u16_le()?;
             let percent_bp = payload.try_get_u16_le()?;
+            let bonus = payload.try_get_i16_le()?;
             Ok(ServerMessage::SkillUpdated {
                 skill,
-                progress: SkillProgress { level, percent_bp },
+                progress: SkillProgress {
+                    level,
+                    percent_bp,
+                    bonus,
+                },
             })
         }
         SRV_EXPERIENCE_UPDATED => Ok(ServerMessage::ExperienceUpdated {
@@ -1286,6 +1299,7 @@ mod tests {
                     SkillProgress {
                         level: 8,
                         percent_bp: 4321,
+                        bonus: 2,
                     },
                 )],
             },
@@ -1294,6 +1308,7 @@ mod tests {
                 progress: SkillProgress {
                     level: 12,
                     percent_bp: 4909,
+                    bonus: -3,
                 },
             },
             ServerMessage::ExperienceUpdated { experience: 4231 },
