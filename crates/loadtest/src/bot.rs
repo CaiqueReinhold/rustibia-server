@@ -597,6 +597,7 @@ mod tests {
             while let Some(Ok(_)) = framed.next().await {
                 framed
                     .send(ServerMessage::OpenContainer {
+                        item_id: ItemId(1),
                         container_id: ContainerId(9),
                         capacity: 20,
                         has_parent: false,

@@ -1,4 +1,4 @@
-FROM rust:1.95-slim
+FROM rust:1.99-slim
 WORKDIR /app
 
 # Build context is the workspace root, so both manifests and the shared lockfile are

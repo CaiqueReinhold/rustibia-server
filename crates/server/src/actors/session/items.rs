@@ -204,6 +204,7 @@ impl SessionActor {
 
         self.connection
             .send_message(ServerMessage::OpenContainer {
+                item_id: item.id(),
                 container_id,
                 capacity,
                 has_parent,

@@ -582,12 +582,14 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             Ok(ServerMessage::TextMessage { text, message_type })
         }
         SRV_OPEN_CONTAINER => {
+            let item_id = ItemId(payload.try_get_u16_le()?);
             let container_id = ContainerId(payload.try_get_u16_le()?);
             let capacity = payload.try_get_u8()?;
             let has_parent = payload.try_get_u8()? != 0;
             let title = read_short_string(payload)?;
             let items = read_container_items(payload)?;
             Ok(ServerMessage::OpenContainer {
+                item_id,
                 container_id,
                 capacity,
                 has_parent,
@@ -1210,6 +1212,7 @@ mod tests {
                 message_type: TextMessageType::ServerMessage,
             },
             ServerMessage::OpenContainer {
+                item_id: ItemId(1),
                 container_id: ContainerId(3),
                 capacity: 8,
                 has_parent: false,

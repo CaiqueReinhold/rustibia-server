@@ -257,6 +257,7 @@ pub enum ServerMessage {
         message_type: TextMessageType,
     },
     OpenContainer {
+        item_id: ItemId,
         container_id: ContainerId,
         capacity: u8,
         has_parent: bool,
@@ -725,6 +726,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 dst.put_u8(encode_text_message_type(message_type));
             }
             ServerMessage::OpenContainer {
+                item_id,
                 container_id,
                 capacity,
                 has_parent,
@@ -732,6 +734,7 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 items,
             } => {
                 dst.put_u8(SRV_OPEN_CONTAINER);
+                dst.put_u16_le(item_id.0);
                 dst.put_u16_le(container_id.0);
                 dst.put_u8(capacity);
                 dst.put_u8(if has_parent { 1 } else { 0 });
@@ -2187,6 +2190,7 @@ mod tests {
         GameMessageCodec {}
             .encode(
                 ServerMessage::OpenContainer {
+                    item_id: ItemId(1),
                     container_id: ContainerId(3),
                     capacity: 8,
                     has_parent: false,
@@ -2200,9 +2204,11 @@ mod tests {
         let payload_len = u16::from_le_bytes([dst[0], dst[1]]) as usize;
         assert_eq!(payload_len, dst.len() - 2);
         assert_eq!(
-            &dst[2..2 + 1 + 2 + 1 + 1 + 4],
+            &dst[2..2 + 2 + 1 + 2 + 1 + 1 + 4],
             &[
                 SRV_OPEN_CONTAINER,
+                1,
+                0, // item id
                 3,
                 0, // container id
                 8, // capacity

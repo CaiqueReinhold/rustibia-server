@@ -852,6 +852,7 @@ mod tests {
     fn a_container_update_tracks_what_is_left_in_the_bag() {
         let mut world = World::new(catalogue());
         world.apply(&ServerMessage::OpenContainer {
+            item_id: ItemId(1),
             container_id: ContainerId(0),
             capacity: 20,
             has_parent: false,
@@ -876,6 +877,7 @@ mod tests {
     fn an_opened_container_does_not_count_until_marked_as_carried() {
         let mut world = World::new(catalogue());
         world.apply(&ServerMessage::OpenContainer {
+            item_id: ItemId(1),
             container_id: ContainerId(1),
             capacity: 20,
             has_parent: false,
@@ -893,6 +895,7 @@ mod tests {
     fn closing_a_carried_container_forgets_it() {
         let mut world = World::new(catalogue());
         world.apply(&ServerMessage::OpenContainer {
+            item_id: ItemId(1),
             container_id: ContainerId(1),
             capacity: 20,
             has_parent: false,

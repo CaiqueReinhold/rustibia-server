@@ -1151,6 +1151,7 @@ mod tests {
         assert!(matches!(opened, Some(ClientMessage::UseItem { .. })));
 
         world.apply(&ServerMessage::OpenContainer {
+            item_id: ItemId(1),
             container_id: ContainerId(7),
             capacity: 20,
             has_parent: false,

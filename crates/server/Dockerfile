@@ -1,4 +1,4 @@
-FROM rust:1.95-slim-trixie AS builder
+FROM rust:1.99-slim-trixie AS builder
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
