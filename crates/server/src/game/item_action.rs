@@ -58,7 +58,7 @@ pub fn decay_item(ctx: &mut TickCtx, item_ref: ItemRef) {
         return;
     }
     let Some(config) = ITEM_CONFIGS.get(&decay_to) else {
-        error!("Config not found for item id {decay_to}");
+        warn!("Config not found for item id {decay_to}");
         return;
     };
 
@@ -160,7 +160,7 @@ pub fn use_item(ctx: &mut TickCtx, agent_key: AgentKey, item_ref: ItemRef) {
             Err(e) => {
                 let message = match e {
                     ItemActionError::InvalidState => {
-                        warn!("{e}");
+                        warn!(agent = ?agent_key, "Item use reached an invalid state: {e}");
                         "Item cannot be used"
                     }
                     e => &e.to_string(),
@@ -191,7 +191,7 @@ pub fn route_action(
         ItemAction::Door { new } => match ITEM_CONFIGS.get(new) {
             Some(config) => toggle_door(ctx, item, config),
             None => {
-                error!(
+                warn!(
                     "cannot turn door {:?} into {new}: no such item config",
                     item.guid
                 );
@@ -212,7 +212,7 @@ pub(super) fn transform(
     into: ItemId,
 ) -> Result<(), ItemActionError> {
     let Some(config) = ITEM_CONFIGS.get(&into) else {
-        error!(
+        warn!(
             "cannot transform {:?} into {into}: no such item config",
             item.guid
         );

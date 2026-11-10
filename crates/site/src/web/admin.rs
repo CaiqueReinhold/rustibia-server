@@ -75,7 +75,7 @@ pub async fn post_admin_news(
         )
             .into_response(),
         Err(err) => {
-            tracing::error!("news post failed: {err}");
+            tracing::error!(account = admin.account_id, "news post failed: {err}");
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 HtmlTemplate(AdminNewsPage {

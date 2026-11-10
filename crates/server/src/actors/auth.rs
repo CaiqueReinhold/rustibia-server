@@ -1,9 +1,10 @@
+use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Instant;
 
 use anyhow::Result;
 use tokio::sync::{mpsc, oneshot};
-use tracing::{error, info};
+use tracing::{debug, error};
 
 use super::{SharedContext, connection::ConnectionError, session::SessionActor};
 use crate::actors::connection::ConnectionActorHandle;
@@ -37,6 +38,7 @@ impl AuthActorHandle {
 
 pub struct AuthActor {
     session_id: String,
+    addr: SocketAddr,
     rx: mpsc::Receiver<AuthCommand>,
     world_ctx: SharedContext,
     login: Arc<Login>,
@@ -45,6 +47,7 @@ pub struct AuthActor {
 impl AuthActor {
     pub fn start(
         session_id: String,
+        addr: SocketAddr,
         conn_rx: oneshot::Receiver<ConnectionActorHandle>,
         login: Arc<Login>,
         world_ctx: SharedContext,
@@ -54,6 +57,7 @@ impl AuthActor {
         tokio::spawn(async move {
             let actor = Self {
                 session_id,
+                addr,
                 rx,
                 world_ctx,
                 login,
@@ -65,7 +69,7 @@ impl AuthActor {
     }
 
     async fn run(mut self, conn_rx: oneshot::Receiver<ConnectionActorHandle>) {
-        info!(session = self.session_id, "Auth actor started");
+        debug!(session = self.session_id, "Auth actor started");
 
         let connection = match conn_rx.await {
             Ok(c) => c,
@@ -73,7 +77,7 @@ impl AuthActor {
         };
 
         if let Err(e) = self.authenticate(&connection).await {
-            info!(session = self.session_id, "Auth failed: {e}");
+            debug!(session = self.session_id, "Login did not complete: {e}");
             let _ = connection.close().await;
         }
     }
@@ -86,8 +90,11 @@ impl AuthActor {
 
         let auth_token = match msg {
             ClientMessage::Login { auth_token } => auth_token,
-            msg => {
-                info!("{:?}", msg);
+            _ => {
+                debug!(
+                    session = self.session_id,
+                    "Refusing a connection whose first message is not a login"
+                );
                 let _ = connection.send_message(ServerMessage::LoginError).await;
                 return Err(ConnectionError::WrongMessageType.into());
             }
@@ -99,7 +106,7 @@ impl AuthActor {
             Err(e) => {
                 let outcome = match &e {
                     LoginError::Rejected => {
-                        info!(session = self.session_id, "Login rejected: {e}");
+                        debug!(session = self.session_id, "Login rejected: {e}");
                         "rejected"
                     }
                     LoginError::Unavailable(detail) => {
@@ -120,9 +127,10 @@ impl AuthActor {
             Some(guard) => guard,
             None => {
                 telemetry::metrics().record_login("already_online", redeem_start.elapsed());
-                info!(
+                debug!(
                     session = self.session_id,
-                    "Character {} is already online.", player.name
+                    character = %player.id,
+                    "Login refused, the character is already online"
                 );
                 let _ = connection.send_message(ServerMessage::LoginError).await;
                 return Err(anyhow::anyhow!("Character {} is already online", player.id));
@@ -132,6 +140,8 @@ impl AuthActor {
 
         let session = SessionActor::start(
             self.session_id.clone(),
+            self.addr,
+            player.id,
             connection.clone(),
             self.world_ctx.clone(),
             Agent::from_player(*player),
@@ -140,7 +150,7 @@ impl AuthActor {
 
         connection.set_session(session).await?;
 
-        info!(
+        debug!(
             session = self.session_id,
             "Auth complete, session handed off"
         );
@@ -226,7 +236,13 @@ mod tests {
         let (connection, mut connection_rx) = ConnectionActorHandle::for_test();
         let (conn_tx, conn_rx) = oneshot::channel();
 
-        let handle = AuthActor::start("test-session".to_string(), conn_rx, Arc::new(login), ctx);
+        let handle = AuthActor::start(
+            "test-session".to_string(),
+            "127.0.0.1:0".parse().unwrap(),
+            conn_rx,
+            Arc::new(login),
+            ctx,
+        );
         conn_tx.send(connection).ok().unwrap();
         handle.receive_message(first_message).await.unwrap();
 

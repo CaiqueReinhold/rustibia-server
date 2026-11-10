@@ -90,7 +90,7 @@ pub fn use_item_with(ctx: &mut TickCtx, agent_key: AgentKey, source: ItemRef, ta
         Err(ItemActionError::Reported) => {}
         Err(e) => {
             if let ItemActionError::InvalidState = e {
-                warn!("{e}");
+                warn!(agent = ?agent_key, "Item use reached an invalid state: {e}");
             }
             use_item_failed(ctx, mark, agent_key, "Can't use that");
         }
@@ -146,7 +146,7 @@ fn route_multi_action(
         ItemMultiAction::Rune { spell } => match SPELLS.get(spell) {
             Some(found) => rune(ctx, agent_key, source, found, target),
             None => {
-                error!("rune {source:?} names spell {spell:?}, which is not in the catalogue");
+                warn!("rune {source:?} names spell {spell:?}, which is not in the catalogue");
                 Err(ItemActionError::ActionFailed)
             }
         },
@@ -243,7 +243,7 @@ fn dig_sand(
         transform(ctx, &sand, config.hole_into)?;
     } else if roll <= config.coin_chance {
         let Some(coin) = ITEM_CONFIGS.get(&config.coin_id) else {
-            error!(
+            warn!(
                 "sand digging yields {}, which is not in the catalogue",
                 config.coin_id
             );
@@ -253,7 +253,7 @@ fn dig_sand(
             .map_err(|_| ItemActionError::ActionFailed)?;
     } else if roll + config.creature_chance > 100 {
         let Some(kind) = CREATURE_KINDS.get(&config.creature).cloned() else {
-            error!(
+            warn!(
                 "sand digging spawns {:?}, which is not a creature kind",
                 config.creature
             );
@@ -423,10 +423,10 @@ fn potion(
             Some(config) => {
                 let flask = Item::new(config.clone(), 1);
                 if let Err(e) = return_item(ctx, agent_key, &potion.placement, None, flask) {
-                    error!("could not give the empty flask to {agent_key:?}: {e}");
+                    error!(agent = ?agent_key, "Could not give back the empty flask: {e}");
                 }
             }
-            None => error!("potion returns flask {flask}, which is not in the catalogue"),
+            None => warn!("potion returns flask {flask}, which is not in the catalogue"),
         }
     }
 

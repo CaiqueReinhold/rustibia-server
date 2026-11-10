@@ -5,13 +5,18 @@
 mod chat;
 mod combat;
 mod delta;
+mod end;
 mod items;
 mod movement;
 mod shop;
 mod view;
 
+pub use end::SessionEnd;
+
 use std::collections::BTreeMap;
+use std::net::SocketAddr;
 use std::sync::Arc;
+use std::sync::OnceLock;
 
 use anyhow::Result;
 use arc_swap::ArcSwap;
@@ -21,8 +26,11 @@ use tokio::sync::mpsc;
 use tokio::sync::oneshot;
 use tokio::sync::watch;
 use tokio_util::sync::CancellationToken;
+use tracing::Level;
+use tracing::debug;
 use tracing::error;
 use tracing::info;
+use tracing::warn;
 
 use crate::actors::SharedContext;
 use crate::actors::chat::ChatActorHandle;
@@ -39,6 +47,7 @@ use crate::entities::items::ContainerId;
 use crate::entities::items::ItemGuid;
 use crate::entities::items::ItemId;
 use crate::entities::map::GameMap;
+use crate::entities::player::PlayerId;
 use crate::entities::position::Direction;
 use crate::entities::world_delta::WorldDelta;
 use crate::game::Tick;
@@ -85,10 +94,13 @@ pub enum SessionCommand {
 pub struct SessionActorHandle {
     tx: mpsc::Sender<SessionCommand>,
     token: CancellationToken,
+    end: Arc<OnceLock<SessionEnd>>,
 }
 
 impl SessionActorHandle {
-    pub fn close(&self) {
+    /// The first reason given is the one the session reports.
+    pub fn close(&self, end: SessionEnd) {
+        let _ = self.end.set(end);
         self.token.cancel();
     }
 
@@ -151,6 +163,7 @@ impl SessionActorHandle {
             Self {
                 tx,
                 token: CancellationToken::new(),
+                end: Arc::default(),
             },
             rx,
         )
@@ -159,6 +172,9 @@ impl SessionActorHandle {
 
 pub struct SessionActor {
     session_id: String,
+    character: PlayerId,
+    name: String,
+    end: Arc<OnceLock<SessionEnd>>,
     rx: mpsc::Receiver<SessionCommand>,
     token: CancellationToken,
     connection: ConnectionActorHandle,
@@ -189,6 +205,8 @@ type TestSession = (
 impl SessionActor {
     pub fn start(
         session_id: String,
+        addr: SocketAddr,
+        character: PlayerId,
         connection: ConnectionActorHandle,
         context: SharedContext,
         agent: Agent,
@@ -196,9 +214,12 @@ impl SessionActor {
     ) -> SessionActorHandle {
         let (tx, rx) = mpsc::channel(CONFIG.max_buffered_messages);
         let token = CancellationToken::new();
+        let end = Arc::new(OnceLock::new());
+        let name = agent.name().to_owned();
         let self_handle = SessionActorHandle {
             tx,
             token: token.clone(),
+            end: end.clone(),
         };
 
         let self_handle_clone = self_handle.clone();
@@ -211,8 +232,19 @@ impl SessionActor {
             match spawn_result {
                 Ok((agent_key, message_router_guard)) => {
                     let _router_guard = message_router_guard;
+                    info!(
+                        session = session_id,
+                        character = %character,
+                        name,
+                        agent = ?agent_key,
+                        %addr,
+                        "Player logged in"
+                    );
                     let actor = Self {
                         session_id,
+                        character,
+                        name,
+                        end,
                         rx,
                         token,
                         connection,
@@ -241,14 +273,13 @@ impl SessionActor {
     }
 
     async fn run(mut self) {
-        info!(session = self.session_id, "Session actor started");
+        debug!(session = self.session_id, "Session actor started");
 
-        let mut clean_logout = false;
-        loop {
+        let (end, error) = loop {
             let result = select! { biased;
                 _ = self.token.cancelled() => {
                     self.close_connection().await;
-                    break;
+                    break (SessionEnd::ConnectionLost, None);
                 }
                 changed = self.tick_rx.changed() => {
                     if changed.is_err() {
@@ -267,17 +298,11 @@ impl SessionActor {
                     },
             };
             if let Err(e) = result {
-                if e.downcast_ref::<SessionError>()
-                    .is_some_and(|e| matches!(e, SessionError::Logout))
-                {
-                    clean_logout = true;
-                    info!(session = self.session_id, "Player logged out cleanly");
-                } else {
-                    error!(session = self.session_id, "Error on session command: {e}");
-                }
-                break;
+                break (SessionEnd::from_error(&e), Some(e.to_string()));
             }
-        }
+        };
+        let clean_logout = end == SessionEnd::Logout;
+        self.log_end(self.end.get().copied().unwrap_or(end), error);
 
         let _ = self.connection.close().await;
         if !clean_logout {
@@ -296,6 +321,24 @@ impl SessionActor {
 
     async fn close_connection(&self) {
         let _ = self.connection.close().await;
+    }
+
+    fn log_end(&self, end: SessionEnd, error: Option<String>) {
+        let session = self.session_id.as_str();
+        let character = self.character.0;
+        let name = self.name.as_str();
+        let agent = self.player_key;
+        let reason = end.reason();
+        let error = error.as_deref();
+        match end.level() {
+            Level::ERROR => {
+                error!(session, character, name, agent = ?agent, reason, error, "Session ended")
+            }
+            Level::WARN => {
+                warn!(session, character, name, agent = ?agent, reason, error, "Session ended")
+            }
+            _ => info!(session, character, name, agent = ?agent, reason, error, "Session ended"),
+        }
     }
 
     async fn route_command(&mut self, cmd: SessionCommand) -> Result<()> {
@@ -555,6 +598,9 @@ impl SessionActor {
         (
             Self {
                 session_id: "test".to_owned(),
+                character: PlayerId(1),
+                name: "test".to_owned(),
+                end: Arc::default(),
                 rx,
                 token: CancellationToken::new(),
                 connection,

@@ -1,4 +1,4 @@
-use tracing::error;
+use tracing::{error, warn};
 
 use crate::actors::world::{ScheduledCommand, WorldCommand};
 use crate::constants::items::MAX_STACK_AMOUNT;
@@ -50,7 +50,7 @@ pub fn reap(ctx: &mut TickCtx, agent_key: AgentKey) {
     };
     let agent_corpse = agent.get_corpse();
     let Some(config) = ITEM_CONFIGS.get(&agent_corpse) else {
-        error!("creature corpse with id {} not found", agent_corpse);
+        warn!("creature corpse with id {} not found", agent_corpse);
         return;
     };
     let mut corpse = Item::new(config.clone(), 1);
@@ -155,7 +155,7 @@ fn roll_creature_loot(corpse: &mut Item, creature: &CreatureKind, rolls: &mut Ro
 // returns true when the corpse is full
 fn add_to_corpse(corpse: &mut Item, item_id: ItemId, amount: u32) -> bool {
     let Some(config) = ITEM_CONFIGS.get(&item_id) else {
-        error!(
+        warn!(
             "Item id {} present in loot table but missing from item config",
             item_id
         );
@@ -166,7 +166,7 @@ fn add_to_corpse(corpse: &mut Item, item_id: ItemId, amount: u32) -> bool {
         if let Some(content) = corpse.content_mut() {
             content.push(item);
         } else {
-            error!("Corpse {} is not a container", corpse.id());
+            warn!("Corpse {} is not a container", corpse.id());
         }
         corpse.available_capacity() == Some(0) || corpse.available_capacity().is_none()
     };

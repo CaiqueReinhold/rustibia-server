@@ -141,7 +141,10 @@ pub async fn post_character_new(
         Ok(_) => Redirect::to("/account").into_response(),
         Err(AppError::Validation(message)) => rerender(message, &form.name),
         Err(err) => {
-            tracing::error!("character creation failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                "character creation failed: {err}"
+            );
             rerender(err.public_message(), &form.name)
         }
     }
@@ -182,7 +185,11 @@ pub async fn post_character_delete(
         // endpoint cannot be used to probe which character ids exist or who is online.
         Ok(false) => return fail("That character does not exist.").await,
         Err(err) => {
-            tracing::error!("ownership check failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                character = %character_id,
+                "ownership check failed: {err}"
+            );
             return fail("Something went wrong. Please try again.").await;
         }
     }
@@ -191,7 +198,11 @@ pub async fn post_character_delete(
         Ok(true) => return fail("That character is currently online. Log out first.").await,
         Ok(false) => {}
         Err(err) => {
-            tracing::error!("online check failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                character = %character_id,
+                "online check failed: {err}"
+            );
             return fail("Something went wrong. Please try again.").await;
         }
     }
@@ -200,7 +211,11 @@ pub async fn post_character_delete(
         Ok(()) => Redirect::to("/account").into_response(),
         Err(AppError::NotFound) => fail("That character does not exist.").await,
         Err(err) => {
-            tracing::error!("character deletion failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                character = %character_id,
+                "character deletion failed: {err}"
+            );
             fail("Something went wrong. Please try again.").await
         }
     }
@@ -264,7 +279,10 @@ pub async fn post_password(
         Ok(Some(stored)) => stored,
         Ok(None) => return rerender("Something went wrong. Please try again."),
         Err(err) => {
-            tracing::error!("password change lookup failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                "password change lookup failed: {err}"
+            );
             return rerender("Something went wrong. Please try again.");
         }
     };
@@ -286,7 +304,10 @@ pub async fn post_password(
         })
         .into_response(),
         Err(err) => {
-            tracing::error!("password change failed: {err}");
+            tracing::error!(
+                account = account.account_id,
+                "password change failed: {err}"
+            );
             rerender("Something went wrong. Please try again.")
         }
     }

@@ -32,7 +32,10 @@ impl FromRequestParts<AppState> for Viewer {
             Ok(Some(account)) => account.is_admin,
             Ok(None) => false,
             Err(err) => {
-                tracing::error!("could not read admin status for the navigation: {err}");
+                tracing::error!(
+                    account = current.account_id,
+                    "could not read admin status for the navigation: {err}"
+                );
                 false
             }
         };

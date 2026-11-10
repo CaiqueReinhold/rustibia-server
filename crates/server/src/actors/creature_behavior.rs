@@ -5,7 +5,7 @@ use std::time::Instant;
 use arc_swap::ArcSwap;
 use slotmap::Key;
 use tokio::sync::watch;
-use tracing::{Instrument, Span, error, field, info, info_span};
+use tracing::{Instrument, Span, debug, error, field, info_span};
 
 use crate::actors::world::{WorldActorHandle, WorldCommand};
 use crate::entities::agent::AgentKey;
@@ -47,7 +47,7 @@ impl CreatureBehaviorActor {
     }
 
     async fn run(mut self) {
-        info!("CreatureBehaviorActor started");
+        debug!("CreatureBehaviorActor started");
         while self.tick_rx.changed().await.is_ok() {
             let tick = *self.tick_rx.borrow();
             self.process_tick(tick).await;

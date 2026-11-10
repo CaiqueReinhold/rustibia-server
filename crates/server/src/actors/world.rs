@@ -316,7 +316,7 @@ impl WorldActor {
         let mut spawned = Vec::new();
         for spawn in spawns {
             let Some(kind) = CREATURE_KINDS.get(&spawn.kind).cloned() else {
-                error!(
+                warn!(
                     "Unknown creature kind '{}' for the spawn at {:?}",
                     spawn.kind, spawn.position
                 );
@@ -352,7 +352,7 @@ impl WorldActor {
                     });
                 }
                 Err(e) => {
-                    error!("Failed to place NPC '{id}' at {origin:?}: {e:?}");
+                    warn!("Failed to place NPC '{id}' at {origin:?}: {e:?}");
                 }
             }
         }

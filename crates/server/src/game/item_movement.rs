@@ -60,10 +60,7 @@ fn displace_inventory_items(
                 None,
             )
         {
-            error!(
-                "Failed to displace item on move. Agent: {:?}, Item: {:?}",
-                agent, current_item
-            );
+            error!(agent = ?agent, item = ?current_item, "Failed to displace an item on move");
             return Err(e);
         }
     }

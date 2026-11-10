@@ -1,4 +1,4 @@
-use tracing::error;
+use tracing::debug;
 
 use crate::{
     entities::{
@@ -57,7 +57,7 @@ pub fn parse_command(ctx: &mut TickCtx, command: &str, agent_key: AgentKey) -> b
             true
         }
         Some(cmd) => {
-            error!("Invalid command: {}", cmd);
+            debug!("Invalid admin command: {}", cmd);
             false
         }
         None => false,

@@ -135,7 +135,7 @@ fn buy(
 
     for item in items {
         if let Err(e) = stow_item(ctx, player_key, item) {
-            error!("a purchase planned for {player_key:?} found no room: {e}");
+            error!(agent = ?player_key, "A planned purchase found no room: {e}");
             return Ok(());
         }
     }

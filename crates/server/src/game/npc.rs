@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
 
 use minijinja::Value;
-use tracing::error;
+use tracing::{error, warn};
 
 use crate::{
     actors::world::{ScheduledCommand, WorldCommand},
@@ -87,7 +87,7 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
         keyword
             .allows(&npc_def.environment, &context(found, from_branch, &[]))
             .unwrap_or_else(|e| {
-                error!("NPC {} could not check {:?}: {e}", npc_def.name, found.word);
+                warn!("NPC {} could not check {:?}: {e}", npc_def.name, found.word);
                 false
             })
     };
@@ -97,7 +97,7 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
     let set = match keyword.bindings(&npc_def.environment, &context(&found, from_branch, &[])) {
         Ok(set) => set,
         Err(e) => {
-            error!("NPC {} could not set {:?}: {e}", npc_def.name, found.word);
+            warn!("NPC {} could not set {:?}: {e}", npc_def.name, found.word);
             return;
         }
     };
@@ -105,7 +105,7 @@ pub fn respond_player(ctx: &mut TickCtx, player_key: AgentKey, npc_key: AgentKey
     {
         Ok(response) => response,
         Err(e) => {
-            error!(
+            warn!(
                 "NPC {} could not answer {:?}: {e}",
                 npc_def.name, found.word
             );

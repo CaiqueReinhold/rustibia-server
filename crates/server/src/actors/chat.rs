@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use tokio::sync::mpsc;
-use tracing::info;
+use tracing::debug;
 
 use crate::{
     actors::message_router::MessageRouterActorHandle,
@@ -146,7 +146,7 @@ impl ChatActor {
     }
 
     async fn run(mut self) {
-        info!("Chat actor started");
+        debug!("Chat actor started");
 
         loop {
             let command = self.rx.recv().await;

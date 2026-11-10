@@ -179,7 +179,7 @@ pub fn pay(ctx: &mut TickCtx, player: AgentKey, payment: Payment, coins: &Coins)
             .player_mut(player)
             .and_then(|mut player| player.inventory_mut().remove(slot, &guid, amount));
         if removed.is_none() {
-            error!("payment planned for {player:?} no longer matches their inventory");
+            error!(agent = ?player, "A planned payment no longer matches the inventory");
             return;
         }
     }
@@ -195,13 +195,14 @@ pub fn give_change(ctx: &mut TickCtx, player: AgentKey, coin: Item) {
     }
     let Some(feet) = ctx.map.agent_position(player).cloned() else {
         error!(
-            "{player:?} vanished before receiving {} change",
+            agent = ?player,
+            "The player vanished before receiving {} change",
             coin.amount
         );
         return;
     };
     if let Err(e) = insert_item_at(ctx, coin, &ItemPlacement::Map(feet), None) {
-        error!("change for {player:?} could not be dropped at their feet: {e}");
+        error!(agent = ?player, "Change could not be dropped at the player's feet: {e}");
     }
 }
 

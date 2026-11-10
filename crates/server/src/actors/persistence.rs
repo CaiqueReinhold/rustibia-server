@@ -6,7 +6,7 @@ use arc_swap::ArcSwap;
 use rustibia_contract::{CharacterSave, WorldSave};
 use tokio::sync::{mpsc, oneshot};
 use tokio::time::{Instant, MissedTickBehavior, interval_at, sleep_until};
-use tracing::{error, info, warn};
+use tracing::{debug, error, info, warn};
 
 use crate::entities::map::GameMap;
 use crate::entities::player::PlayerId;
@@ -158,7 +158,7 @@ impl PersistenceActor {
     }
 
     async fn run(mut self) {
-        info!("Persistence actor started");
+        debug!("Persistence actor started");
         let mut timer = interval_at(Instant::now() + self.save_every, self.save_every);
         timer.set_missed_tick_behavior(MissedTickBehavior::Delay);
         loop {

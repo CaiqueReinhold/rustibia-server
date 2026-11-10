@@ -16,10 +16,11 @@ use tokio::select;
 use tokio::sync::mpsc;
 use tokio_stream::StreamExt;
 use tokio_util::codec::{FramedRead, FramedWrite};
-use tracing::{error, info};
+use tracing::{debug, warn};
 
 use crate::actors::auth::AuthActorHandle;
 use crate::actors::session::SessionActorHandle;
+use crate::actors::session::SessionEnd;
 use crate::config::CONFIG;
 use crate::messages::{
     ClientMessage, GameMessageCodec, MessageDecodeError, MessageEncodeError, ServerMessage,
@@ -115,7 +116,7 @@ where
     }
 
     async fn run(mut self) {
-        info!(session = self.session_id, "Connection started");
+        debug!(session = self.session_id, "Connection started");
         // Reused across iterations so a busy connection is not reallocating a
         // batch buffer every wake-up. `drain` keeps the capacity.
         let mut commands = Vec::with_capacity(CONFIG.max_buffered_messages);
@@ -128,14 +129,30 @@ where
                     self.handle_connection_commands(&mut commands).await
             };
             if let Err(e) = result {
-                error!(session = self.session_id, "Connection error: {e}");
+                match &e {
+                    ConnectionError::ReadError(MessageDecodeError::WrongSequence)
+                    | ConnectionError::WrongMessageType => warn!(
+                        session = self.session_id,
+                        "Closing the connection, the client sent a frame out of order: {e:?}"
+                    ),
+                    ConnectionError::ReadError(MessageDecodeError::ReadError(io)) => {
+                        debug!(session = self.session_id, "Connection lost: {io}")
+                    }
+                    ConnectionError::ConnectionClosed => {
+                        debug!(session = self.session_id, "Connection closed")
+                    }
+                    ConnectionError::ServerError => debug!(
+                        session = self.session_id,
+                        "Connection closed, the actor it fed has ended"
+                    ),
+                }
                 break;
             }
         }
         if let Upstream::Session(session) = self.upstream {
-            session.close();
+            session.close(SessionEnd::ConnectionLost);
         }
-        info!(session = self.session_id, "Connection finished");
+        debug!(session = self.session_id, "Connection finished");
     }
 
     async fn handle_client_message(
@@ -174,7 +191,7 @@ where
                     break;
                 }
                 ConnectionCommand::SetSession(session) => {
-                    info!(session = self.session_id, "Upstream switched to session");
+                    debug!(session = self.session_id, "Upstream switched to session");
                     self.upstream = Upstream::Session(session);
                 }
                 ConnectionCommand::SendPlayerMessage(msg) => {

@@ -28,12 +28,12 @@ enum StepEffect {
 
 pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
     let Some(agent) = ctx.map.get_agent(agent_key) else {
-        error!("agent {agent_key:?} not spawned");
+        error!(agent = ?agent_key, "Agent is not spawned");
         return;
     };
     let next_walk_tick = agent.next_walk_tick();
     let Some(current_pos) = ctx.map.agent_position(agent_key).cloned() else {
-        error!("agent {agent_key:?} position not found");
+        error!(agent = ?agent_key, "Agent has no position");
         return;
     };
 
@@ -76,7 +76,7 @@ pub fn walk(ctx: &mut TickCtx, direction: Direction, agent_key: AgentKey) {
     {
         Ok(stack) => stack,
         Err(e) => {
-            error!("agent {agent_key:?} could not walk to {new_pos}: {e:?}");
+            error!(agent = ?agent_key, "Could not walk to {new_pos}: {e:?}");
             return;
         }
     };
@@ -112,7 +112,7 @@ pub fn push(ctx: &mut TickCtx, agent_key: AgentKey, direction: Direction) {
     let stack = match ctx.map.step_agent(agent_key, &to, facing) {
         Ok(stack) => stack,
         Err(e) => {
-            error!("agent {agent_key:?} could not be pushed to {to}: {e:?}");
+            error!(agent = ?agent_key, "Could not be pushed to {to}: {e:?}");
             return;
         }
     };
@@ -152,17 +152,17 @@ fn step_onto(ctx: &mut TickCtx, agent_key: AgentKey, pos: &Position, depth: u8) 
 
 fn relocate(ctx: &mut TickCtx, agent_key: AgentKey, from: &Position, to: &Position, depth: u8) {
     if depth >= MAX_STEP_CHAIN {
-        error!("agent {agent_key:?} is caught in a floor-change loop at {from}");
+        error!(agent = ?agent_key, "Caught in a floor-change loop at {from}");
         return;
     }
     if ctx.map.get_tile(to).is_err() {
-        warn!("agent {agent_key:?} cannot be moved from {from} to {to}: there is no tile");
+        warn!(agent = ?agent_key, "Cannot be moved from {from} to {to}: there is no tile");
         return;
     }
     let stack = match ctx.map.move_agent(agent_key, to) {
         Ok(stack) => stack,
         Err(e) => {
-            error!("agent {agent_key:?} could not be moved from {from} to {to}: {e:?}");
+            error!(agent = ?agent_key, "Could not be moved from {from} to {to}: {e:?}");
             return;
         }
     };

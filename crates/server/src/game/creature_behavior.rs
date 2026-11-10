@@ -204,15 +204,15 @@ enum CreatureBehavior {
 
 fn get_state(ctx: &CreatureBehaviourContext) -> CreatureBehavior {
     let Some(agent) = ctx.map.get_agent(ctx.creature) else {
-        error!("Creature {:?} not found on map", ctx.creature);
+        error!(agent = ?ctx.creature, "Creature not found on the map");
         return CreatureBehavior::Idle;
     };
     if !agent.is_creature() {
-        error!("Agent {:?} is not creature", ctx.creature);
+        error!(agent = ?ctx.creature, "Agent is not a creature");
         return CreatureBehavior::Idle;
     }
     let Some(position) = ctx.map.agent_position(ctx.creature) else {
-        error!("No position for agent {:?}", ctx.creature);
+        error!(agent = ?ctx.creature, "Creature has no position");
         return CreatureBehavior::Idle;
     };
 
@@ -2551,19 +2551,27 @@ mod tests {
     }
 
     #[test]
-    fn a_damage_search_ignores_an_attacker_it_cannot_see() {
-        let mut map = a_corridor(5..=25);
+    fn a_damage_search_picks_an_attacker_it_can_walk_to_but_not_see() {
+        let mut map = a_field(5..=25, 8..=12);
         let rat = put_creature(&mut map, 15);
-        let visible = put_player(&mut map, 12, 1);
-        let hidden = put_player(&mut map, 19, 2);
-        block_sight(&mut map, 17);
+        let hidden = put_player(&mut map, 19, 1);
+        for y in 8..=11 {
+            map.place_item(
+                &at(17, y),
+                None,
+                None,
+                an_item(3, HashSet::from([ItemFlag::Unpass, ItemFlag::Unsight])),
+            )
+            .unwrap();
+        }
         map.get_agent_mut(rat)
             .unwrap()
             .record_damage(hidden, 50, Tick(0));
 
+        assert!(!can_throw(&map, &at(15, 10), &at(19, 10), true));
         assert!(
             (0..64)
-                .all(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed) == Some(visible))
+                .all(|seed| search(&map, rat, TargetSearchStrategy::Damage, seed) == Some(hidden))
         );
     }
 

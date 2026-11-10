@@ -132,7 +132,7 @@ pub async fn post_register(
             (headers, Redirect::to("/account")).into_response()
         }
         Err(err) => {
-            tracing::error!("session issue failed after registration: {err}");
+            tracing::error!(account = %account.id, "session issue failed after registration: {err}");
             rerender("Something went wrong. Please try again.", &form.email)
         }
     }
@@ -173,7 +173,7 @@ pub async fn post_login(State(state): State<AppState>, Form(form): Form<LoginFor
             (headers, Redirect::to("/account")).into_response()
         }
         Err(err) => {
-            tracing::error!("session issue failed after login: {err}");
+            tracing::error!(account = %account.id, "session issue failed after login: {err}");
             rerender()
         }
     }

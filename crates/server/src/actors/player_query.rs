@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use tracing::error;
+use tracing::warn;
 
 use crate::{
     entities::{
@@ -111,7 +111,7 @@ pub fn rune_list_for(
                 return None;
             };
             let Some(found) = spells.get(&spell) else {
-                error!(
+                warn!(
                     "rune {:?} names spell {spell:?}, which is not in the catalogue",
                     config.id
                 );

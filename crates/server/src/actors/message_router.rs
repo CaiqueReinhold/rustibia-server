@@ -3,10 +3,10 @@ use arc_swap::ArcSwap;
 use std::{collections::HashMap, sync::Arc};
 use tokio::sync::mpsc::{self, error::TrySendError};
 use tokio::sync::oneshot;
-use tracing::{Instrument, info, info_span, warn};
+use tracing::{Instrument, debug, info_span, warn};
 
 use crate::{
-    actors::session::{SessionActorHandle, SessionCommand},
+    actors::session::{SessionActorHandle, SessionCommand, SessionEnd},
     config::CONFIG,
     entities::{
         agent::AgentKey, chat::ChannelId, map::GameMap, position::Position, world_delta::WorldDelta,
@@ -187,7 +187,7 @@ impl MessageRouterActor {
     }
 
     pub async fn run(mut self) {
-        info!("Message router actor started");
+        debug!("Message router actor started");
         loop {
             let command = self.rx.recv().await;
             match command {
@@ -340,7 +340,7 @@ impl MessageRouterActor {
             }
             Err(TrySendError::Full(..)) => {
                 telemetry::metrics().record_session_evicted("full");
-                session.close();
+                session.close(SessionEnd::Evicted);
                 self.unsubscribe(agent_key);
                 false
             }

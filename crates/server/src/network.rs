@@ -4,7 +4,7 @@ use std::{
     sync::Arc,
     time::{Duration, Instant},
 };
-use tracing::{error, info, warn};
+use tracing::{debug, warn};
 
 use anyhow::Result;
 use tokio::{
@@ -49,7 +49,7 @@ impl Listener {
                 let context = Arc::clone(&context);
                 async move {
                     if let Err(e) = accept_connection(stream, &context).await {
-                        error!("accept_connection failed: {e}")
+                        debug!("A connection ended before it was set up: {e}")
                     }
                 }
             },
@@ -77,12 +77,12 @@ async fn accept_loop<F, Fut>(
                 continue;
             }
         };
-        info!("new connection from {:?}", addr);
+        debug!(%addr, "New connection");
         // Movement frames are a few bytes each. Nagle would hold them
         // until the previous segment is acknowledged, adding up to a
         // round trip of variable delay to every walk.
         if let Err(e) = stream.set_nodelay(true) {
-            warn!("could not disable Nagle for {addr:?}: {e}");
+            warn!(%addr, "Could not disable Nagle: {e}");
         }
 
         let acceptor = acceptor.clone();
@@ -105,11 +105,11 @@ async fn handshake(
     let (outcome, stream) = match tokio::time::timeout(limit, acceptor.accept(stream)).await {
         Ok(Ok(stream)) => ("ok", Some(stream)),
         Ok(Err(e)) => {
-            warn!("TLS handshake with {addr:?} failed: {e}");
+            debug!(%addr, "TLS handshake failed: {e}");
             ("error", None)
         }
         Err(_) => {
-            warn!("TLS handshake with {addr:?} timed out");
+            debug!(%addr, "TLS handshake timed out");
             ("timeout", None)
         }
     };
@@ -118,11 +118,13 @@ async fn handshake(
 }
 
 async fn accept_connection(stream: TlsStream<TcpStream>, context: &Context) -> Result<()> {
+    let addr = stream.get_ref().0.peer_addr()?;
     let session_id = uuid::Uuid::new_v7(Timestamp::now(NoContext)).to_string();
     let (conn_tx, conn_rx) = oneshot::channel();
 
     let auth = AuthActor::start(
         session_id.clone(),
+        addr,
         conn_rx,
         context.login.clone(),
         context.shared_ctx.clone(),
@@ -130,7 +132,7 @@ async fn accept_connection(stream: TlsStream<TcpStream>, context: &Context) -> R
     let connection = ConnectionActor::start(session_id, stream, auth);
 
     if let Err(conn) = conn_tx.send(connection) {
-        info!("failed to open connection");
+        debug!("The auth actor ended before its connection was handed over");
         conn.close().await?;
     }
     Ok(())
