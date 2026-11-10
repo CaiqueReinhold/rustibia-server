@@ -281,13 +281,13 @@ impl World {
         }
     }
 
-    /// `SpellCast` carries no group, so the caller — which sent the cast and knows
-    /// which spell it was — supplies it along with the clock the timers run on.
+    /// The caller supplies the group of the spell it sent, along with the clock the timers run on.
     pub fn apply_at(&mut self, message: &ServerMessage, group: SpellGroup, now: Instant) {
         if let ServerMessage::SpellCast {
             spell,
             spell_cooldown_ms,
             group_cooldown_ms,
+            ..
         } = message
         {
             self.spell_cooldowns.insert(
@@ -958,6 +958,7 @@ mod tests {
                 spell: SpellId(1),
                 spell_cooldown_ms: 1000,
                 group_cooldown_ms: 2000,
+                group: SpellGroup::Healing,
             },
             SpellGroup::Healing,
             now,

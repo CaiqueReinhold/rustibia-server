@@ -10,8 +10,8 @@ use rustibia_server::entities::{
     spells::{SpellGroup, SpellId, SpellTarget},
 };
 use rustibia_server::messages::{
-    ClientMessage, Color, FloatingTextType, ItemStack, ServerMessage, ShopOfferEntry,
-    SkillProgress, SpellListEntry, TextMessageType,
+    ClientMessage, Color, FloatingTextType, ItemStack, RuneListEntry, ServerMessage,
+    ShopOfferEntry, SkillProgress, SpellListEntry, TextMessageType,
 };
 use tokio_util::bytes::{Buf, BufMut, BytesMut, TryGetError};
 use tokio_util::codec::{Decoder, Encoder};
@@ -310,6 +310,9 @@ const SRV_DAMAGED_BY: u8 = 35;
 const SRV_DIED: u8 = 36;
 const SRV_SHOP: u8 = 37;
 const SRV_SHOP_CLOSED: u8 = 38;
+const SRV_CARRIED_ITEMS: u8 = 39;
+const SRV_USE_COOLDOWN: u8 = 40;
+const SRV_RUNE_LIST: u8 = 41;
 
 fn read_utf8(buf: &mut BytesMut, len: usize) -> Result<String, WireError> {
     if buf.len() < len {
@@ -810,10 +813,12 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             let spell = SpellId(payload.try_get_u16_le()?);
             let spell_cooldown_ms = payload.try_get_u32_le()?;
             let group_cooldown_ms = payload.try_get_u32_le()?;
+            let group = read_spell_group(payload)?;
             Ok(ServerMessage::SpellCast {
                 spell,
                 spell_cooldown_ms,
                 group_cooldown_ms,
+                group,
             })
         }
         SRV_SPELL_LIST => {
@@ -879,6 +884,32 @@ fn decode_body(opcode: u8, payload: &mut BytesMut) -> Result<ServerMessage, Wire
             })
         }
         SRV_SHOP_CLOSED => Ok(ServerMessage::ShopClosed),
+        SRV_CARRIED_ITEMS => {
+            let count = payload.try_get_u16_le()?;
+            let mut items = Vec::with_capacity(count as usize);
+            for _ in 0..count {
+                items.push((ItemId(payload.try_get_u16_le()?), payload.try_get_u32_le()?));
+            }
+            Ok(ServerMessage::CarriedItems { items })
+        }
+        SRV_USE_COOLDOWN => Ok(ServerMessage::UseCooldown {
+            ms: payload.try_get_u32_le()?,
+        }),
+        SRV_RUNE_LIST => {
+            let count = payload.try_get_u16_le()?;
+            let mut runes = Vec::with_capacity(count as usize);
+            for _ in 0..count {
+                let item_id = ItemId(payload.try_get_u16_le()?);
+                let spell = SpellId(payload.try_get_u16_le()?);
+                let group = read_spell_group(payload)?;
+                runes.push(RuneListEntry {
+                    item_id,
+                    spell,
+                    group,
+                });
+            }
+            Ok(ServerMessage::RuneList { runes })
+        }
         _ => Err(WireError::UnknownOpcode(opcode)),
     }
 }
@@ -1055,7 +1086,7 @@ mod tests {
         }
     }
 
-    const SERVER_MESSAGE_VARIANTS: usize = 39;
+    const SERVER_MESSAGE_VARIANTS: usize = 42;
 
     /// Exhaustive for the same reason as `client_message_variant_index`.
     fn server_message_variant_index(message: &ServerMessage) -> usize {
@@ -1099,6 +1130,9 @@ mod tests {
             ServerMessage::PlayerDied => 36,
             ServerMessage::Shop { .. } => 37,
             ServerMessage::ShopClosed => 38,
+            ServerMessage::CarriedItems { .. } => 39,
+            ServerMessage::UseCooldown { .. } => 40,
+            ServerMessage::RuneList { .. } => 41,
         }
     }
 
@@ -1316,6 +1350,7 @@ mod tests {
                 spell: SpellId(4),
                 spell_cooldown_ms: 1000,
                 group_cooldown_ms: 2000,
+                group: SpellGroup::Support,
             },
             ServerMessage::SpellList {
                 spells: vec![SpellListEntry {
@@ -1356,6 +1391,17 @@ mod tests {
                 goods: vec![(ItemId(283), 0, 3)],
             },
             ServerMessage::ShopClosed,
+            ServerMessage::CarriedItems {
+                items: vec![(ItemId(3031), 1240), (ItemId(268), 7)],
+            },
+            ServerMessage::UseCooldown { ms: 1000 },
+            ServerMessage::RuneList {
+                runes: vec![RuneListEntry {
+                    item_id: ItemId(3155),
+                    spell: SpellId(41),
+                    group: SpellGroup::Attack,
+                }],
+            },
         ]
     }
 

@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use crate::{
     constants::view::{
         BASE_FLOOR, MAX_FLOOR, MAX_VISIBLE_ITEMS, MIN_FLOOR, PLAYER_VIEWPORT_HEIGHT,
@@ -6,7 +8,7 @@ use crate::{
     },
     entities::{
         agent::{AgentKey, Facing},
-        inventory::InventorySlot,
+        inventory::{Inventory, InventorySlot},
         items::{ClientItemRef, ContainerId, Item, ItemGuid, ItemId},
         map::{GameMap, MapTile},
         position::{Direction, ItemPlacement, PlacementSite, Position, Rect},
@@ -240,6 +242,21 @@ pub fn retrieve_item<'a>(
         other => item_at_placement(map, other)?,
     };
     (item.id() == cli_item.item_id).then_some((item, placement))
+}
+
+pub fn carried_totals(inventory: &Inventory) -> BTreeMap<ItemId, u32> {
+    fn add(item: &Item, totals: &mut BTreeMap<ItemId, u32>) {
+        *totals.entry(item.id()).or_default() += u32::from(item.amount);
+        for inner in item.content().into_iter().flatten() {
+            add(inner, totals);
+        }
+    }
+
+    let mut totals = BTreeMap::new();
+    for item in inventory.slots().values() {
+        add(item, &mut totals);
+    }
+    totals
 }
 
 /// The first item of `item_id` the agent carries: its slots in slot order, each searched
@@ -1081,6 +1098,51 @@ mod tests {
         let (map, key) = carrying(a_player_with_a_full_backpack(1, 1));
 
         assert!(find_carried_item(&map, ItemId(9999), key).is_none());
+    }
+
+    #[test]
+    fn carried_totals_sum_every_stack_at_every_depth() {
+        use crate::entities::items::ItemId;
+        use crate::persistence::test_fixtures::a_player_with_a_full_backpack;
+
+        let (map, key) = carrying(a_player_with_a_full_backpack(1, 1));
+
+        let totals = carried_totals(map.get_player(key).unwrap().inventory());
+
+        assert_eq!(totals.get(&ItemId(2148)), Some(&144));
+        assert_eq!(totals.get(&ItemId(1988)), Some(&1));
+        assert_eq!(totals.get(&ItemId(1991)), Some(&1));
+        assert_eq!(totals.len(), 6);
+    }
+
+    #[test]
+    fn carried_totals_reach_every_equipment_slot() {
+        use crate::entities::items::ItemId;
+        use crate::persistence::test_fixtures::a_player_with_a_full_backpack;
+
+        let mut snapshot = a_player_with_a_full_backpack(1, 1);
+        let pouch = snapshot
+            .inventory
+            .get_mut(&InventorySlot::Backpack)
+            .unwrap()
+            .content_mut()
+            .unwrap()
+            .remove(3);
+        snapshot.inventory.insert(InventorySlot::Head, pouch);
+        let (map, key) = carrying(snapshot);
+
+        let totals = carried_totals(map.get_player(key).unwrap().inventory());
+
+        assert_eq!(totals.get(&ItemId(2148)), Some(&144));
+    }
+
+    #[test]
+    fn carried_totals_of_an_empty_inventory_are_empty() {
+        use crate::persistence::test_fixtures::a_test_snapshot;
+
+        let (map, key) = carrying(a_test_snapshot(1, 1));
+
+        assert!(carried_totals(map.get_player(key).unwrap().inventory()).is_empty());
     }
 
     #[test]

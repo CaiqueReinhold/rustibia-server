@@ -4,7 +4,7 @@
 use anyhow::Result;
 
 use crate::actors::player_query::{
-    get_agent_desc, get_player_desc, get_player_skills, get_spell_list,
+    get_agent_desc, get_player_desc, get_player_skills, get_spell_list, rune_list_for,
 };
 use crate::actors::session::{SessionActor, SessionError};
 use crate::constants::view::AGENT_DESPAWN_RADIUS;
@@ -18,6 +18,7 @@ use crate::game::map_query::get_agents_in_viewport;
 use crate::game::map_query::get_map_desc_on_viewport;
 use crate::game::skills::{progress_bp, total_experience};
 use crate::messages::{FloatingTextType, ServerMessage, SkillProgress, TextMessageType};
+use crate::persistence::{items::ITEM_CONFIGS, spells::SPELLS};
 
 impl SessionActor {
     pub(super) async fn player_spawned(
@@ -46,8 +47,12 @@ impl SessionActor {
             if let Some(spells_msg) = get_spell_list(&map, self.player_key) {
                 self.connection.send_message(spells_msg).await?;
             }
+            self.connection
+                .send_message(rune_list_for(&ITEM_CONFIGS, &SPELLS))
+                .await?;
 
             self.player_status_updated().await?;
+            self.send_carried_items().await?;
 
             Ok(())
         } else {

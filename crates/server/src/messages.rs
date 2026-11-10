@@ -159,6 +159,9 @@ const SRV_DAMAGED_BY: u8 = 35;
 const SRV_DIED: u8 = 36;
 const SRV_SHOP: u8 = 37;
 const SRV_SHOP_CLOSED: u8 = 38;
+const SRV_CARRIED_ITEMS: u8 = 39;
+const SRV_USE_COOLDOWN: u8 = 40;
+const SRV_RUNE_LIST: u8 = 41;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum TextMessageType {
@@ -197,6 +200,13 @@ pub struct SpellListEntry {
     pub level: u16,
     pub icon: u16,
     pub aimable: bool,
+    pub group: SpellGroup,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct RuneListEntry {
+    pub item_id: ItemId,
+    pub spell: SpellId,
     pub group: SpellGroup,
 }
 
@@ -357,6 +367,7 @@ pub enum ServerMessage {
         spell: SpellId,
         spell_cooldown_ms: u32,
         group_cooldown_ms: u32,
+        group: SpellGroup,
     },
     SpellList {
         spells: Vec<SpellListEntry>,
@@ -376,6 +387,15 @@ pub enum ServerMessage {
         goods: Vec<(ItemId, u8, u16)>,
     },
     ShopClosed,
+    CarriedItems {
+        items: Vec<(ItemId, u32)>,
+    },
+    UseCooldown {
+        ms: u32,
+    },
+    RuneList {
+        runes: Vec<RuneListEntry>,
+    },
 }
 
 #[derive(Error, Debug)]
@@ -922,11 +942,13 @@ impl Encoder<ServerMessage> for GameMessageCodec {
                 spell,
                 spell_cooldown_ms,
                 group_cooldown_ms,
+                group,
             } => {
                 dst.put_u8(SRV_SPELL_CAST);
                 dst.put_u16_le(spell.0);
                 dst.put_u32_le(spell_cooldown_ms);
                 dst.put_u32_le(group_cooldown_ms);
+                dst.put_u8(group.as_id());
             }
             ServerMessage::SpellList { spells } => {
                 dst.put_u8(SRV_SPELL_LIST);
@@ -979,6 +1001,27 @@ impl Encoder<ServerMessage> for GameMessageCodec {
             }
             ServerMessage::ShopClosed => {
                 dst.put_u8(SRV_SHOP_CLOSED);
+            }
+            ServerMessage::CarriedItems { items } => {
+                dst.put_u8(SRV_CARRIED_ITEMS);
+                dst.put_u16_le(items.len() as u16);
+                for (item_id, total) in items {
+                    dst.put_u16_le(item_id.0);
+                    dst.put_u32_le(total);
+                }
+            }
+            ServerMessage::UseCooldown { ms } => {
+                dst.put_u8(SRV_USE_COOLDOWN);
+                dst.put_u32_le(ms);
+            }
+            ServerMessage::RuneList { runes } => {
+                dst.put_u8(SRV_RUNE_LIST);
+                dst.put_u16_le(runes.len() as u16);
+                for rune in runes {
+                    dst.put_u16_le(rune.item_id.0);
+                    dst.put_u16_le(rune.spell.0);
+                    dst.put_u8(rune.group.as_id());
+                }
             }
         }
 
@@ -2331,6 +2374,129 @@ mod tests {
             .unwrap();
 
         assert_eq!(&dst[..], &[1, 0, SRV_SHOP_CLOSED]);
+    }
+
+    /// The literal frame the client's `spell_cast_decodes_both_cooldowns_and_the_group`
+    /// (rustibia-client, src/network/messages.rs) reads; nothing else links the two layouts.
+    #[test]
+    fn spell_cast_encodes_a_known_frame() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::SpellCast {
+                    spell: SpellId(4),
+                    spell_cooldown_ms: 2000,
+                    group_cooldown_ms: 4000,
+                    group: SpellGroup::Healing,
+                },
+                &mut dst,
+            )
+            .unwrap();
+
+        assert_eq!(
+            &dst[..],
+            &[
+                12,
+                0, // payload length
+                SRV_SPELL_CAST,
+                4,
+                0, // spell
+                0xD0,
+                0x07,
+                0,
+                0, // 2000 ms
+                0xA0,
+                0x0F,
+                0,
+                0, // 4000 ms
+                1, // healing
+            ]
+        );
+    }
+
+    /// The literal frame the client's `carried_items_decode_the_servers_frame`
+    /// (rustibia-client, src/network/messages.rs) reads; nothing else links the two layouts.
+    #[test]
+    fn carried_items_encode_a_known_frame() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::CarriedItems {
+                    items: vec![(ItemId(3031), 1240), (ItemId(268), 7)],
+                },
+                &mut dst,
+            )
+            .unwrap();
+
+        assert_eq!(
+            &dst[..],
+            &[
+                15,
+                0, // payload length
+                SRV_CARRIED_ITEMS,
+                2,
+                0, // two entries
+                0xD7,
+                0x0B,
+                0xD8,
+                0x04,
+                0,
+                0, // item 3031, 1240 carried
+                0x0C,
+                0x01,
+                7,
+                0,
+                0,
+                0, // item 268, 7 carried
+            ]
+        );
+    }
+
+    /// The literal frame the client's `use_cooldown_decodes_the_servers_frame`
+    /// (rustibia-client, src/network/messages.rs) reads; nothing else links the two layouts.
+    #[test]
+    fn use_cooldown_encodes_a_known_frame() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(ServerMessage::UseCooldown { ms: 1000 }, &mut dst)
+            .unwrap();
+
+        assert_eq!(&dst[..], &[5, 0, SRV_USE_COOLDOWN, 0xE8, 0x03, 0, 0]);
+    }
+
+    /// The literal frame the client's `rune_list_decodes_the_servers_frame`
+    /// (rustibia-client, src/network/messages.rs) reads; nothing else links the two layouts.
+    #[test]
+    fn rune_list_encodes_a_known_frame() {
+        let mut dst = BytesMut::new();
+        GameMessageCodec {}
+            .encode(
+                ServerMessage::RuneList {
+                    runes: vec![RuneListEntry {
+                        item_id: ItemId(3155),
+                        spell: SpellId(41),
+                        group: SpellGroup::Attack,
+                    }],
+                },
+                &mut dst,
+            )
+            .unwrap();
+
+        assert_eq!(
+            &dst[..],
+            &[
+                8,
+                0, // payload length
+                SRV_RUNE_LIST,
+                1,
+                0, // one rune
+                0x53,
+                0x0C, // item 3155
+                41,
+                0, // spell
+                0, // attack
+            ]
+        );
     }
 
     /// The frames the client's `shop_requests_encode` writes.

@@ -268,6 +268,7 @@ impl AgentMut<'_> {
 
     pub fn stamp_use(&mut self, tick: Tick) {
         self.agent.stamp_use_item(tick);
+        self.mark(AgentFlag::UseCooldown);
     }
 
     pub fn stamp_say(&mut self, tick: Tick) {
@@ -756,13 +757,23 @@ mod tests {
 
         let mut agent = map.agent_mut(key).unwrap();
         agent.stamp_walk(Tick(5));
-        agent.stamp_use(Tick(5));
         agent.stamp_auto_attack(Tick(5));
         agent.set_target(None, 0);
         agent.record_damage(key, 3, Tick(0));
 
         assert!(map.delta().is_empty());
         assert_eq!(map.get_agent(key).unwrap().next_walk_tick(), Tick(5));
+    }
+
+    #[test]
+    fn a_stamped_use_marks_the_use_cooldown_and_nothing_else() {
+        let (mut map, key) = a_player_alone();
+
+        map.agent_mut(key).unwrap().stamp_use(Tick(5));
+
+        let dirty = map.delta().agent(key);
+        assert!(dirty.use_cooldown());
+        assert!(!dirty.capacity() && !dirty.life() && !dirty.status());
         assert_eq!(
             map.get_agent(key).unwrap().next_use_tick(),
             Tick(5) + GAME_CONFIG.action.use_item_cooldown_ticks

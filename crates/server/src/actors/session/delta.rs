@@ -65,6 +65,10 @@ impl SessionActor {
             }
             if dirty.capacity() {
                 self.send_capacity().await?;
+                self.send_carried_items().await?;
+            }
+            if dirty.use_cooldown() {
+                self.send_use_cooldown().await?;
             }
             if dirty.status() {
                 self.player_status_updated().await?;
@@ -107,6 +111,75 @@ mod tests {
                 _ => None,
             })
             .collect()
+    }
+
+    #[tokio::test]
+    async fn carried_items_are_resent_only_when_a_total_changes() {
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let mut world = WorldMap::new(map);
+        let helmet = a_helmet();
+        let helmet_guid = helmet.guid;
+        world
+            .player_mut(me)
+            .unwrap()
+            .inventory_mut()
+            .insert(InventorySlot::Head, None, helmet)
+            .unwrap();
+        let worn = world.take_delta();
+        let (mut session, mut connection_rx, _world_rx, _tick_tx) =
+            SessionActor::for_test(me, world.snapshot());
+        session.agents.get_or_insert(me);
+
+        session.apply_delta(&worn).await.unwrap();
+        session.apply_delta(&worn).await.unwrap();
+        world
+            .player_mut(me)
+            .unwrap()
+            .inventory_mut()
+            .remove(InventorySlot::Head, &helmet_guid, 1)
+            .unwrap();
+        let removed = world.take_delta();
+        session.shared_map.store(Arc::new(world.snapshot()));
+        session.apply_delta(&removed).await.unwrap();
+
+        let tables: Vec<Vec<(ItemId, u32)>> = sent(&mut connection_rx)
+            .into_iter()
+            .filter_map(|message| match message {
+                ServerMessage::CarriedItems { items } => Some(items),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(tables, vec![vec![(ItemId(3355), 1)], vec![]]);
+    }
+
+    #[tokio::test]
+    async fn a_stamped_use_sends_the_use_cooldown() {
+        use crate::config::CONFIG;
+        use crate::game::config::GAME_CONFIG;
+
+        let mut map = GameMap::new();
+        let me = seat_player(&mut map, &Position::new(100, 100, 7), 1);
+        let mut world = WorldMap::new(map);
+        world.agent_mut(me).unwrap().stamp_use(Tick(10));
+        let delta = world.take_delta();
+        let (mut session, mut connection_rx, _world_rx, tick_tx) =
+            SessionActor::for_test(me, world.snapshot());
+        session.agents.get_or_insert(me);
+        tick_tx.send(Tick(10)).unwrap();
+
+        session.apply_delta(&delta).await.unwrap();
+
+        let cooldowns: Vec<u32> = sent(&mut connection_rx)
+            .into_iter()
+            .filter_map(|message| match message {
+                ServerMessage::UseCooldown { ms } => Some(ms),
+                _ => None,
+            })
+            .collect();
+        let expected =
+            GAME_CONFIG.action.use_item_cooldown_ticks.0 * CONFIG.tick_duration.as_millis() as u64;
+        assert_eq!(cooldowns, vec![expected as u32]);
     }
 
     async fn tiles_sent(player_at: Position, changed: Position) -> Vec<Position> {

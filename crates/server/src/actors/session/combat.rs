@@ -191,6 +191,7 @@ impl SessionActor {
                             .0
                             * CONFIG.tick_duration.as_millis() as u64)
                             as u32,
+                        group: spell.group,
                     })
                 } else {
                     None

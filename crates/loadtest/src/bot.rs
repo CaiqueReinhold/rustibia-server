@@ -915,6 +915,7 @@ mod tests {
                         spell: spell_id,
                         spell_cooldown_ms: 2000,
                         group_cooldown_ms: 2000,
+                        group: SpellGroup::Attack,
                     }
                 } else {
                     ServerMessage::Pong

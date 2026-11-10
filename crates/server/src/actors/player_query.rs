@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
+use tracing::error;
+
 use crate::{
     entities::{
         agent::{Agent, AgentId, AgentKey},
         inventory::InventorySlot,
+        items::{ItemConfig, ItemId, ItemMultiAction},
         map::GameMap,
         position::Position,
         skills::SkillType,
@@ -12,7 +15,7 @@ use crate::{
         vocation::Vocation,
     },
     game::skills::{progress_bp, total_experience},
-    messages::{ServerMessage, SkillProgress, SpellListEntry},
+    messages::{RuneListEntry, ServerMessage, SkillProgress, SpellListEntry},
     persistence::spells::SPELLS,
 };
 
@@ -95,6 +98,34 @@ pub fn spell_list_for(vocation: Vocation, spells: &HashMap<SpellId, Arc<Spell>>)
         .collect();
     entries.sort_by_key(|entry| (entry.level, entry.id.0));
     ServerMessage::SpellList { spells: entries }
+}
+
+pub fn rune_list_for(
+    items: &HashMap<ItemId, Arc<ItemConfig>>,
+    spells: &HashMap<SpellId, Arc<Spell>>,
+) -> ServerMessage {
+    let mut runes: Vec<RuneListEntry> = items
+        .values()
+        .filter_map(|config| {
+            let ItemMultiAction::Rune { spell } = config.attr_multi_action()? else {
+                return None;
+            };
+            let Some(found) = spells.get(&spell) else {
+                error!(
+                    "rune {:?} names spell {spell:?}, which is not in the catalogue",
+                    config.id
+                );
+                return None;
+            };
+            Some(RuneListEntry {
+                item_id: config.id,
+                spell,
+                group: found.group,
+            })
+        })
+        .collect();
+    runes.sort_by_key(|rune| rune.item_id.0);
+    ServerMessage::RuneList { runes }
 }
 
 pub fn get_spell_list(map: &GameMap, key: AgentKey) -> Option<ServerMessage> {
@@ -281,6 +312,72 @@ mod tests {
             spells.iter().map(|entry| entry.id).collect::<Vec<_>>(),
             Vec::from([SpellId(1)])
         );
+    }
+
+    fn a_rune(id: u16, spell: u16) -> (ItemId, Arc<ItemConfig>) {
+        use crate::entities::items::{ItemAttribute, ItemMultiAction};
+
+        (
+            ItemId(id),
+            Arc::new(ItemConfig::new(
+                ItemId(id),
+                format!("rune {id}"),
+                None,
+                None,
+                [],
+                vec![ItemAttribute::MultiAction(ItemMultiAction::Rune {
+                    spell: SpellId(spell),
+                })],
+            )),
+        )
+    }
+
+    #[test]
+    fn each_rune_is_listed_with_its_spell_and_that_spells_group() {
+        use crate::entities::spells::{SpellDelivery, SpellGroup};
+        use crate::persistence::test_fixtures::a_spell;
+
+        let mut spell = a_spell(1, 0, Vec::new());
+        spell.id = SpellId(41);
+        spell.group = SpellGroup::Attack;
+        spell.delivery = SpellDelivery::Rune;
+        let spells = HashMap::from([(SpellId(41), Arc::new(spell))]);
+        let not_a_rune = (
+            ItemId(3031),
+            Arc::new(ItemConfig::new(
+                ItemId(3031),
+                "coin".into(),
+                None,
+                None,
+                [],
+                vec![],
+            )),
+        );
+        let items = HashMap::from([a_rune(3155, 41), not_a_rune]);
+
+        let ServerMessage::RuneList { runes } = rune_list_for(&items, &spells) else {
+            panic!("expected RuneList");
+        };
+
+        assert_eq!(
+            runes,
+            vec![RuneListEntry {
+                item_id: ItemId(3155),
+                spell: SpellId(41),
+                group: SpellGroup::Attack,
+            }]
+        );
+    }
+
+    #[test]
+    fn a_rune_naming_a_missing_spell_is_left_out() {
+        let items = HashMap::from([a_rune(3155, 99)]);
+
+        let ServerMessage::RuneList { runes } = rune_list_for(&items, &HashMap::new()) else {
+            panic!("expected RuneList");
+        };
+
+        assert!(runes.is_empty());
     }
 
     #[test]

@@ -5,15 +5,17 @@ use anyhow::Result;
 
 use crate::actors::session::{SessionActor, SessionError};
 use crate::actors::world::WorldCommand;
+use crate::config::CONFIG;
 use crate::entities::agent::AgentId;
 use crate::entities::inventory::InventorySlot;
 use crate::entities::items::{ClientItemRef, ContainerId, ItemGuid, ItemId, ItemRef};
 use crate::entities::position::{ItemPlacement, Position};
+use crate::game::Tick;
 use crate::game::description::get_look_description;
 use crate::game::item_multi_action::UseTarget;
 use crate::game::map_query::{
-    find_item, find_item_in_reach, find_parent_container, resolve_client_coord, retrieve_item,
-    tile_stack,
+    carried_totals, find_item, find_item_in_reach, find_parent_container, resolve_client_coord,
+    retrieve_item, tile_stack,
 };
 use crate::messages::ServerMessage;
 use crate::messages::TextMessageType;
@@ -291,6 +293,47 @@ impl SessionActor {
         }
         Ok(())
     }
+
+    pub(super) async fn send_carried_items(&mut self) -> Result<()> {
+        let Some(totals) = self
+            .shared_map
+            .load()
+            .get_player(self.player_key)
+            .map(|player| carried_totals(player.inventory()))
+        else {
+            return Ok(());
+        };
+        if self.last_carried.as_ref() == Some(&totals) {
+            return Ok(());
+        }
+        self.connection
+            .send_message(ServerMessage::CarriedItems {
+                items: totals.iter().map(|(id, total)| (*id, *total)).collect(),
+            })
+            .await?;
+        self.last_carried = Some(totals);
+        Ok(())
+    }
+
+    pub(super) async fn send_use_cooldown(&self) -> Result<()> {
+        let next_use = self
+            .shared_map
+            .load()
+            .get_agent(self.player_key)
+            .map(|agent| agent.next_use_tick());
+        let now = *self.tick_rx.borrow();
+        if let Some(ms) = next_use.and_then(|next_use| use_cooldown_ms(next_use, now)) {
+            self.connection
+                .send_message(ServerMessage::UseCooldown { ms })
+                .await?;
+        }
+        Ok(())
+    }
+}
+
+fn use_cooldown_ms(next_use: Tick, now: Tick) -> Option<u32> {
+    let remaining = next_use.saturating_sub(now).0;
+    (remaining > 0).then(|| (remaining * CONFIG.tick_duration.as_millis() as u64) as u32)
 }
 
 #[cfg(test)]
@@ -303,6 +346,15 @@ mod tests {
     use crate::constants::items::{CARRIED_SEARCH_FLAG, INVENTORY_COORD_FLAG};
     use crate::entities::agent::Agent;
     use crate::persistence::test_fixtures::a_player_with_a_full_backpack;
+
+    #[test]
+    fn the_use_cooldown_is_what_remains_of_it_in_milliseconds() {
+        let tick_ms = crate::config::CONFIG.tick_duration.as_millis() as u32;
+
+        assert_eq!(use_cooldown_ms(Tick(30), Tick(10)), Some(20 * tick_ms));
+        assert_eq!(use_cooldown_ms(Tick(30), Tick(30)), None);
+        assert_eq!(use_cooldown_ms(Tick(30), Tick(40)), None);
+    }
 
     /// Same window as `a_tick_after_the_player_left_the_map_waits_for_the_despawn`: a look that
     /// arrives after the player left the map but before their despawn is delivered.

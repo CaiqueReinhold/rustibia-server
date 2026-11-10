@@ -10,6 +10,7 @@ mod movement;
 mod shop;
 mod view;
 
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
 use anyhow::Result;
@@ -36,6 +37,7 @@ use crate::entities::chat::ChannelId;
 use crate::entities::effects::AreaEffect;
 use crate::entities::items::ContainerId;
 use crate::entities::items::ItemGuid;
+use crate::entities::items::ItemId;
 use crate::entities::map::GameMap;
 use crate::entities::position::Direction;
 use crate::entities::world_delta::WorldDelta;
@@ -169,6 +171,7 @@ pub struct SessionActor {
     tick_rx: watch::Receiver<Tick>,
     next_chat_tick: Tick,
     queued_walk: Option<Direction>,
+    last_carried: Option<BTreeMap<ItemId, u32>>,
     _registry: RegistryGuard,
 }
 
@@ -222,6 +225,7 @@ impl SessionActor {
                         tick_rx: context.tick_rx.clone(),
                         next_chat_tick: Tick(0),
                         queued_walk: None,
+                        last_carried: None,
                         _registry: registry,
                     };
                     actor.run().await;
@@ -563,6 +567,7 @@ impl SessionActor {
                 tick_rx,
                 next_chat_tick: Tick(0),
                 queued_walk: None,
+                last_carried: None,
                 _registry: registry,
             },
             connection_rx,

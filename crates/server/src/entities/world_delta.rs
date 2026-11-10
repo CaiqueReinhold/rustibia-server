@@ -20,11 +20,12 @@ pub(in crate::entities) enum AgentFlag {
     Facing = 1 << 5,
     Shop = 1 << 6,
     Bank = 1 << 7,
+    UseCooldown = 1 << 8,
 }
 
 #[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
 pub struct AgentDirty {
-    flags: u8,
+    flags: u16,
     skills: u8,
 }
 
@@ -34,7 +35,7 @@ fn skill_bit(skill: SkillType) -> u8 {
 
 impl AgentDirty {
     fn has(self, flag: AgentFlag) -> bool {
-        self.flags & flag as u8 != 0
+        self.flags & flag as u16 != 0
     }
 
     pub fn life(self) -> bool {
@@ -67,6 +68,10 @@ impl AgentDirty {
 
     pub fn bank(self) -> bool {
         self.has(AgentFlag::Bank)
+    }
+
+    pub fn use_cooldown(self) -> bool {
+        self.has(AgentFlag::UseCooldown)
     }
 
     pub fn skills(self) -> impl Iterator<Item = SkillType> {
@@ -137,7 +142,7 @@ impl WorldDelta {
     }
 
     pub(in crate::entities) fn mark_agent(&mut self, key: AgentKey, flag: AgentFlag) {
-        self.agents.entry(key).or_default().flags |= flag as u8;
+        self.agents.entry(key).or_default().flags |= flag as u16;
     }
 
     pub(in crate::entities) fn mark_skill(&mut self, key: AgentKey, skill: SkillType) {
